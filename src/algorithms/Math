@@ -1,0 +1,36 @@
+WAVE
+
+
+Blocks in one layer of mine: 10404
+
+Radius value in code: 102
+Size: 102x102
+direct fortune value 10404*<fortune>
+
+Fortune dampened: 500/120 = 4.167
+New value: 10404*4.167*1.0e7= 4.3e11 (433 billion) take 10 off of dampen every level
+
+ 
+
+EXPLOSION + CORRUPT
+
+
+
+Blocks in zone: 76
+
+76*500= 38000 blocks
+
+38,000 * 1.0e7 = $380 billion take this, dampen fortune by 10 || take 1 off of dampen every level.
+
+
+
+
+VAPORIZE
+
+
+blocks in mine: 665856
+
+665856*(500/200)=1664640 blocks
+
+1664640*1.0e7= 16tril || take 10 off dampen every level.
+
