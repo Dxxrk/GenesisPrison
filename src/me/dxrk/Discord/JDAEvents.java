@@ -1,40 +1,50 @@
 package me.dxrk.Discord;
 
-import java.awt.Color;
-
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import java.awt.*;
 
-public class JDAEvents extends ListenerAdapter{
-	
-	
-	public void onMessage(@NotNull MessageReceivedEvent e) {
-		if(e.getChannel().getId().equals("883900303181770793")) {
-			String msg = e.getMessage().getContentRaw();
-			if(msg.equalsIgnoreCase("!test")) {
-				EmbedBuilder emb = new EmbedBuilder();
-				emb.setTitle("Title");
-				emb.setDescription("Desc");
-				emb.addField("Field1", "text", false);
-				emb.addField("Field2", "text", false);
-				emb.setColor(Color.BLUE);
-				emb.setFooter("Created by: ", e.getGuild().getOwner().getUser().getAvatarUrl());
-				e.getChannel().sendMessageEmbeds(emb.build()).queue();
-				emb.clear();
-				//push
-				
-				
-			}
+public class JDAEvents extends ListenerAdapter implements Listener {
+
+
+	@Override
+	public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+		if(event.getMessage().getContentRaw().contains("ping")){
+			event.getGuild().getTextChannelById("991316164011622452").sendMessage("pong!");
 		}
 	}
-	
-	
-	public void on(ButtonInteractionEvent e) {
-		
+
+	@Override
+	public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
+		User user = event.getUser();
+		String emoji = event.getReaction().getEmoji().getAsReactionCode();
+		String channelMention = event.getChannel().getAsMention();
+		String jumpLink = event.getJumpUrl();
+		String message = user.getAsTag() + " reacted with "+emoji+" in "+channelMention+" channel";
+		EmbedBuilder b = new EmbedBuilder();
+		b.setTitle("__Dxrk Activated a Sell Boost__");
+		b.addField("Multiplier: 2.0x", "Length: 15:00", false);
+		b.setColor(Color.BLUE);
+
+
+
+		event.getGuild().getTextChannelById("991316164011622452").sendMessageEmbeds(b.build()).queue();
+
 	}
 
+	@Override
+	public void onReady(@NotNull ReadyEvent event) {
+		Bukkit.getConsoleSender().sendMessage("DiscordBot is Online!");
+	}
 }

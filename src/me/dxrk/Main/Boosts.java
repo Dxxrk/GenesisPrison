@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -161,7 +162,7 @@ public class Boosts implements Listener, CommandExecutor{
 			i.setItem(12, emptySell);
 		}
 		
-		if(QueueSell(nextUpsell).size() >2 && !QueueSell(nextUpsell).get(2).equals(null)) {
+		if(QueueSell(nextUpsell).size() >2 && QueueSell(nextUpsell).get(2) != null) {
 			i.setItem(13, QueueSell(nextUpsell).get(2));
 		} else {
 			i.setItem(13, emptySell);
@@ -313,7 +314,11 @@ public class Boosts implements Listener, CommandExecutor{
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l"+ args[1]+" &dhas activated a "+amp+"x Sell Boost!");
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &7Length: &b"+timeFormat(dur));
 					
-					TextChannel channel = jdaHandler.jda.getTextChannelById("883900303181770793");
+					TextChannel channel = jdaHandler.jda.getTextChannelById("991316164011622452");
+
+					EmbedBuilder emb = new EmbedBuilder();
+					emb.setTitle("**"+args[1]+"** Activated a Sell Boost!");
+
 					channel.sendMessage("testSell").queue();
 					
 					sname = c("&a$&d"+amp+"x");
@@ -392,7 +397,7 @@ public class Boosts implements Listener, CommandExecutor{
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l"+ args[1]+" &dhas activated a "+amp+"x XP Boost!");
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &7Length: &b"+timeFormat(dur));
 					
-					TextChannel channel = jdaHandler.jda.getTextChannelById("883900303181770793");
+					TextChannel channel = jdaHandler.jda.getTextChannelById("991316164011622452");
 					channel.sendMessage("testXP").queue();
 					
 					xname = c("&a✴&e"+amp+"x");

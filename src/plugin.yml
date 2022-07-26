@@ -1,0 +1,151 @@
+name: GenesisPrison
+main: me.dxrk.Main.Main
+version: "2.0.1"
+description: "The features!"
+depend: [JetsPrisonMines, ProtocolLib]
+commands:
+  daily:
+  options:
+  openall:
+  crateinfo:
+  buymsg:
+  giveplotitem:
+  rm:
+  checkminereset:
+  voteshop:
+  blockstop:
+  aru:
+  resetmine:
+  Auc:
+  Auction:
+  Bid:
+  lottery:
+  DonorShard:
+  mine:
+  prestiges:
+  RedeemDonor:
+  Options:
+  freeze:
+  ChatColor:
+  Youtuber:
+  InfoBook:
+  RenamePaper:
+  Fortune:
+  Tags:
+  KeyFinder:
+  Welcome:
+  Who:
+  List:
+  CoinFlip:
+  Chat:
+  UpgradeBookRandom:
+  KF:
+  RedeemRank:
+  SaveRank:
+  MuteChat:
+  TradeFish:
+  giveenchant:
+  blocks:
+  UpdateBC:
+  topkillers:
+  MonthlyDP:
+  Website:
+  updates:
+  ClearChat:
+  Color:
+  Glow:
+  Nicknames:
+  Nick:
+  Nickname:
+  ToggleRewards:
+  Trash:
+  Disposal:
+  rewards:
+  Dispose:
+  GiveRank:
+  whowho:
+  givebook:
+  withdraw:
+  wings:
+  joke:
+  vanish:
+  v:
+  ev:
+  voteparty:
+  evanish:
+  pick:
+  pickaxe:
+  resetallmines:
+  efffix:
+  motdchange:
+  prestige:
+  activeboost:
+  boost:
+  giveboost:
+  EpsilonDp:
+    description: Epsilon Drop Party!
+  Sbtoggle:
+    description: Custom Epsilon Help!
+  Help:
+    description: Custom Epsilon Help!
+  DropParty:
+    description: Drop Party!
+  Lsgive:
+    description: Admin Use Only!
+  MineFlyToggle:
+    description: Toggle Auto Fly!
+  Vote:
+    description: Vote for the Server.
+  SBGive:
+    description: Admin Use Only!
+  GrappleGive:
+    description: Admin Use Only!
+  Tokens:
+    description: Recieve Help for Tokens.
+  Token:
+    description: Recieve Help for Tokens.
+  Staffsgive:
+    description: Shows all epsilon staffs!
+  Staffs:
+    description: opens staffs menu.
+  SupplyDrop:
+    description: Gives player a voting key!
+  Say:
+    description: Broadcast a server wide message!
+  rename:
+    description: Gives player a voting key!
+  relore:
+    description: Broadcast a server wide message!
+  blockpass:
+    description: Broadcast a server wide message!
+  upgrade:
+    description: Broadcast a server wide message!
+  upgradebook:
+    description: Broadcast a server wide message!
+  addlore:
+  dellore:
+  trash:
+  ac:
+  picksell:
+  autosell:
+  cratekey:
+  bp:
+  backpack:
+  sellall:
+  rankup:
+  rankupmax:
+  maxrankup:
+  locksmith:
+  ls:
+  keys:
+  clearchat:
+  dr:
+  dp:
+  multi:
+    description: Shows your multi.
+  setrank:
+  forcereset:
+  autorankup:
+  bpreset:
+  givedust:
+  givetrinket:

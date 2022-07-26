@@ -45,7 +45,7 @@ public class EnchantMethods {
 	  }
 	
 	private Methods m = Methods.getInstance();
-	private SettingsManager settings = SettingsManager.getInstance();
+	private final SettingsManager settings = SettingsManager.getInstance();
 	
 	public boolean isInt(String s) {
 	    try {
@@ -65,14 +65,9 @@ public class EnchantMethods {
 	      return false;
 	    }
 	  }
-	  public List<String> getEnchants(ItemStack i) {
-		    return i.getItemMeta().getLore();
-		  }
-	  
-	  
-		  
-	  
-	  public int getFortune(String s) {
+
+
+	public int getFortune(String s) {
 	        StringBuilder lvl = new StringBuilder();
 	        s = ChatColor.stripColor((String)s);
 	        char[] arrayOfChar = s.toCharArray();

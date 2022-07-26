@@ -1,13 +1,14 @@
 package me.dxrk.Discord;
 
-import javax.security.auth.login.LoginException;
-
 import me.dxrk.Main.Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+
+import javax.security.auth.login.LoginException;
 
 public class jdaHandler extends ListenerAdapter {
 	
@@ -32,25 +33,17 @@ public class jdaHandler extends ListenerAdapter {
 		JDABuilder builder = JDABuilder.createDefault(token);
 		
 		builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
+		builder.setStatus(OnlineStatus.ONLINE);
 		
 		builder.setActivity(Activity.playing("MCGenesis.net"));
 		
 		builder.addEventListeners(new JDAEvents());
-		
 		try {
-			jda = builder.build();
-		} catch (LoginException e) {
+			jda = builder.build().awaitReady();
+		} catch (LoginException | InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 
 }
