@@ -123,8 +123,10 @@ public class DailyRewards implements Listener, CommandExecutor{
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily &9Captain &bClaimed!"));
 		}
 		if(rank.equals("colonel")) {
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givedust "+p.getName()+" common");
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givedust "+p.getName()+" rare");
-			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givedust "+p.getName()+" rare");
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givedust "+p.getName()+" epic");
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givedust "+p.getName()+" legendary");
 			this.settings.getDaily().set(p.getUniqueId().toString()+".ColonelReward", getTodayDate());
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily &6Colonel &bClaimed!"));
 		}
@@ -216,6 +218,10 @@ public class DailyRewards implements Listener, CommandExecutor{
 		    	e.setCancelled(true);
 		    	
 		    	if(e.getSlot() == 0) {
+					if(!p.hasPermission("rank.cavalry")) {
+						p.sendMessage(m.c("&cNo Permission!"));
+						return;
+					}
 		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".CavalryReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
@@ -224,6 +230,10 @@ public class DailyRewards implements Listener, CommandExecutor{
 		    		}
 		    	}
 		    	if(e.getSlot() == 10) {
+					if(!p.hasPermission("rank.hoplite")) {
+						p.sendMessage(m.c("&cNo Permission!"));
+						return;
+					}
 		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".HopliteReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
@@ -232,6 +242,10 @@ public class DailyRewards implements Listener, CommandExecutor{
 		    		}
 		    	}
 		    	if(e.getSlot() == 20) {
+					if(!p.hasPermission("rank.captain")) {
+						p.sendMessage(m.c("&cNo Permission!"));
+						return;
+					}
 		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".CaptainReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
@@ -240,6 +254,10 @@ public class DailyRewards implements Listener, CommandExecutor{
 		    		}
 		    	}
 		    	if(e.getSlot() == 12) {
+					if(!p.hasPermission("rank.colonel")) {
+						p.sendMessage(m.c("&cNo Permission!"));
+						return;
+					}
 		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".ColonelReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
@@ -248,6 +266,10 @@ public class DailyRewards implements Listener, CommandExecutor{
 		    		}
 		    	}
 		    	if(e.getSlot() == 4) {
+					if(!p.hasPermission("rank.ares")) {
+						p.sendMessage(m.c("&cNo Permission!"));
+						return;
+					}
 		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".AresReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
@@ -256,6 +278,10 @@ public class DailyRewards implements Listener, CommandExecutor{
 		    		}
 		    	}
 		    	if(e.getSlot() == 14) {
+					if(!p.hasPermission("rank.hermes")) {
+						p.sendMessage(m.c("&cNo Permission!"));
+						return;
+					}
 		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".HermesReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
@@ -264,6 +290,10 @@ public class DailyRewards implements Listener, CommandExecutor{
 		    		}
 		    	}
 		    	if(e.getSlot() == 24) {
+					if(!p.hasPermission("rank.apollo")) {
+						p.sendMessage(m.c("&cNo Permission!"));
+						return;
+					}
 		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".ApolloReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
@@ -272,6 +302,10 @@ public class DailyRewards implements Listener, CommandExecutor{
 		    		}
 		    	}
 		    	if(e.getSlot() == 16) {
+					if(!p.hasPermission("rank.kronos")) {
+						p.sendMessage(m.c("&cNo Permission!"));
+						return;
+					}
 		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".KronosReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
@@ -280,6 +314,10 @@ public class DailyRewards implements Listener, CommandExecutor{
 		    		}
 		    	}
 		    	if(e.getSlot() == 8) {
+					if(!p.hasPermission("rank.zeus")) {
+						p.sendMessage(m.c("&cNo Permission!"));
+						return;
+					}
 		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".ZeusReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;

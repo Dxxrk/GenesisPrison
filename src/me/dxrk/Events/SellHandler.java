@@ -374,6 +374,22 @@ public class SellHandler implements Listener, CommandExecutor {
     		p.getScoreboard().getTeam("percent").setSuffix(c("&c")+(dRound)+"%");
     }
     }
+	  p.getScoreboard().getTeam("xp").setPrefix(c("&7XP: &bâœ´"));
+
+
+
+	  for (i = (arrayOfItemStack = p.getInventory().getContents()).length, b = 0; b < i; ) {
+		  ItemStack itemStack = arrayOfItemStack[b];
+		  if(itemStack != null && itemStack.getType().equals(Material.DIAMOND_PICKAXE)) {
+			  if(itemStack.hasItemMeta()) {
+				  if(itemStack.getItemMeta().hasLore()) {
+					  String xp = Main.formatAmt(PickXPHandler.getBlocks(itemStack.getItemMeta().getLore().get(1)));
+					  p.getScoreboard().getTeam("xp").setSuffix(c("&b"+xp));
+				  }
+			  }
+		  }
+		  b = (byte)(b + 1);
+	  }
     
   }
   
@@ -448,7 +464,7 @@ public class SellHandler implements Listener, CommandExecutor {
 		    ApplicableRegionSet set = wg.getRegionManager(p.getWorld())
 		      .getApplicableRegions(e.getBlock().getLocation());
 		    if (set.allows(DefaultFlag.LIGHTER)) {
-		    	p.sendMessage(c("&9&lGenesis&8» &5Can't place blocks in the mine!"));
+		    	p.sendMessage(c("&9&lGenesis&8ï¿½ &5Can't place blocks in the mine!"));
 		    	e.setCancelled(true);
 		    }
 	  }

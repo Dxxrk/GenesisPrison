@@ -670,7 +670,7 @@ public class EnchantMethods {
 		  
 		 Random r = new Random();
 		 int fmin = 100;
-		 int fmax = 500;
+		 int fmax = 2000;
 		 int fortune = r.nextInt(fmax - fmin)+ fmin;
 		 
 		 
@@ -716,7 +716,7 @@ public class EnchantMethods {
 		  double luck = Functions.luckBoost(p);
 	    	
 		  int level = 0;
-	    	int chance = 4500;
+	    	int chance = 3500;
 			for (String s : p.getItemInHand().getItemMeta().getLore()) {
 				
 				      if (ChatColor.stripColor(s).contains("Junkpile")) {
@@ -726,9 +726,9 @@ public class EnchantMethods {
 				  
 				  if(level == 0) return;
 				  if(level == 1) {
-					  chance = (int) (4500 / lucky / luck);
+					  chance = (int) (3500 / lucky / luck);
 				  } else {
-					  chance = (int) ((4500 - (11*level))/lucky / luck);
+					  chance = (int) ((3500 - (11*level))/lucky / luck);
 				  }
 		    	  int i = r.nextInt(chance);
 		    	   

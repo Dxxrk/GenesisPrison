@@ -45,7 +45,7 @@ public class CrateHandler implements Listener, CommandExecutor {
   
   public FileConfiguration cr = this.settings.getCrates();
   
-  Plugin pl = Bukkit.getPluginManager().getPlugin("GenesisEcon");
+
   
   public static CrateHandler instance = new CrateHandler();
   
@@ -79,7 +79,7 @@ public class CrateHandler implements Listener, CommandExecutor {
             Bukkit.getLogger().info(CrateHandler.this.c("&4FAILED TO LOAD PARTICLES AROUND CRATES!"));
           } 
         }
-      }).runTaskTimer(this.pl, 0L, 5L);
+      }).runTaskTimer(Main.plugin, 0L, 5L);
   }
   
   public List<Location> locations() {
@@ -235,7 +235,7 @@ public class CrateHandler implements Listener, CommandExecutor {
             p.playSound(p.getLocation(), s, 1.0F, 1.0F);
           } 
         }
-      }).runTaskLater(this.pl, time);
+      }).runTaskLater(Main.plugin, time);
   }
   
   public void openCrate(String crate, Player p) {
@@ -439,7 +439,7 @@ public ItemStack loadItem(String s, String slot) {
     if (lore != null) {
       List<String> newlore = new ArrayList<>();
       for (String l : lore)
-        newlore.add(c(l.replaceAll("§", "&"))); 
+        newlore.add(c(l.replaceAll("ï¿½", "&"))); 
       am.setLore(newlore);
     } 
     if(id == 373) {
@@ -508,16 +508,11 @@ public ItemStack loadItem(String s, String slot) {
     	    	double mm = Double.parseDouble(nn[0]);
     	    	
     	    	multi += mm;
-    	    }else if(name.contains("Billion")) {
-    	    	double m = getValuedbl(name)*1e9;
-    	    	money += m;
-    	    	
-    	    } else if(name.contains("Trillion")) {
-    	    	double m = getValuedbl(name)*1e12;
-    	    	money += m;
-    	    	
-    	    } else if(name.contains("Quadrillion")) {
-    	    	double m = getValuedbl(name)*1e15;
+    	    }else if(name.contains("%")) {
+
+                int percent = getValueInt(name);
+                double per = ((double)percent)/100;
+    	    	double m = RankupHandler.getInstance().rankPrice(p) * per;
     	    	money += m;
     	    	
     	    } else {
@@ -628,18 +623,13 @@ public ItemStack loadItem(String s, String slot) {
     	double mm = Double.parseDouble(nn[0]);
     	
     	multi += mm;
-    }else if(name.contains("Billion")) {
-    	double m = getValuedbl(name)*1e9;
-    	money += m;
-    	
-    } else if(name.contains("Trillion")) {
-    	double m = getValuedbl(name)*1e12;
-    	money += m;
-    	
-    } else if(name.contains("Quadrillion")) {
-    	double m = getValuedbl(name)*1e15;
-    	money += m;
-    	
+    }else if(name.contains("%")) {
+
+        int percent = getValueInt(name);
+        double per = ((double)percent)/100;
+        double m = RankupHandler.getInstance().rankPrice(p) * per;
+        money += m;
+
     } else {
     	rww.add(c(won.getItemMeta().getDisplayName()));
     }
@@ -684,19 +674,14 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    }else if(name.contains("Billion")) {
-	    	double m = getValuedbl(name)*1e9;
-	    	money += m;
-	    	
-	    } else if(name.contains("Trillion")) {
-	    	double m = getValuedbl(name)*1e12;
-	    	money += m;
-	    	
-	    } else if(name.contains("Quadrillion")) {
-	    	double m = getValuedbl(name)*1e15;
-	    	money += m;
-	    	
-	    } else {
+	    }else if(name.contains("%")) {
+
+            int percent = getValueInt(name);
+            double per = ((double)percent)/100;
+            double m = RankupHandler.getInstance().rankPrice(p) * per;
+            money += m;
+
+        } else {
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -740,19 +725,14 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    }else if(name.contains("Billion")) {
-	    	double m = getValuedbl(name)*1e9;
-	    	money += m;
-	    	
-	    } else if(name.contains("Trillion")) {
-	    	double m = getValuedbl(name)*1e12;
-	    	money += m;
-	    	
-	    } else if(name.contains("Quadrillion")) {
-	    	double m = getValuedbl(name)*1e15;
-	    	money += m;
-	    	
-	    } else {
+	    }else if(name.contains("%")) {
+
+            int percent = getValueInt(name);
+            double per = ((double)percent)/100;
+            double m = RankupHandler.getInstance().rankPrice(p) * per;
+            money += m;
+
+        } else {
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -796,19 +776,14 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    }else if(name.contains("Billion")) {
-	    	double m = getValuedbl(name)*1e9;
-	    	money += m;
-	    	
-	    } else if(name.contains("Trillion")) {
-	    	double m = getValuedbl(name)*1e12;
-	    	money += m;
-	    	
-	    } else if(name.contains("Quadrillion")) {
-	    	double m = getValuedbl(name)*1e15;
-	    	money += m;
-	    	
-	    } else {
+	    }else if(name.contains("%")) {
+
+            int percent = getValueInt(name);
+            double per = ((double)percent)/100;
+            double m = RankupHandler.getInstance().rankPrice(p) * per;
+            money += m;
+
+        } else {
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -852,19 +827,14 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    }else if(name.contains("Billion")) {
-	    	double m = getValuedbl(name)*1e9;
-	    	money += m;
-	    	
-	    } else if(name.contains("Trillion")) {
-	    	double m = getValuedbl(name)*1e12;
-	    	money += m;
-	    	
-	    } else if(name.contains("Quadrillion")) {
-	    	double m = getValuedbl(name)*1e15;
-	    	money += m;
-	    	
-	    } else {
+	    }else if(name.contains("%")) {
+
+            int percent = getValueInt(name);
+            double per = ((double)percent)/100;
+            double m = RankupHandler.getInstance().rankPrice(p) * per;
+            money += m;
+
+        } else {
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -908,19 +878,14 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    }else if(name.contains("Billion")) {
-	    	double m = getValuedbl(name)*1e9;
-	    	money += m;
-	    	
-	    } else if(name.contains("Trillion")) {
-	    	double m = getValuedbl(name)*1e12;
-	    	money += m;
-	    	
-	    } else if(name.contains("Quadrillion")) {
-	    	double m = getValuedbl(name)*1e15;
-	    	money += m;
-	    	
-	    } else {
+	    }else if(name.contains("%")) {
+
+            int percent = getValueInt(name);
+            double per = ((double)percent)/100;
+            double m = RankupHandler.getInstance().rankPrice(p) * per;
+            money += m;
+
+        } else {
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -964,19 +929,14 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    }else if(name.contains("Billion")) {
-	    	double m = getValuedbl(name)*1e9;
-	    	money += m;
-	    	
-	    } else if(name.contains("Trillion")) {
-	    	double m = getValuedbl(name)*1e12;
-	    	money += m;
-	    	
-	    } else if(name.contains("Quadrillion")) {
-	    	double m = getValuedbl(name)*1e15;
-	    	money += m;
-	    	
-	    } else {
+	    }else if(name.contains("%")) {
+
+            int percent = getValueInt(name);
+            double per = ((double)percent)/100;
+            double m = RankupHandler.getInstance().rankPrice(p) * per;
+            money += m;
+
+        } else {
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -1020,19 +980,14 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    }else if(name.contains("Billion")) {
-	    	double m = getValuedbl(name)*1e9;
-	    	money += m;
-	    	
-	    } else if(name.contains("Trillion")) {
-	    	double m = getValuedbl(name)*1e12;
-	    	money += m;
-	    	
-	    } else if(name.contains("Quadrillion")) {
-	    	double m = getValuedbl(name)*1e15;
-	    	money += m;
-	    	
-	    } else {
+	    }else if(name.contains("%")) {
+
+            int percent = getValueInt(name);
+            double per = ((double)percent)/100;
+            double m = RankupHandler.getInstance().rankPrice(p) * per;
+            money += m;
+
+        } else {
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    

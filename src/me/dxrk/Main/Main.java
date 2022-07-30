@@ -1,20 +1,15 @@
 package me.dxrk.Main;
 
 import com.earth2me.essentials.Essentials;
-
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Locale;
-
-import javax.security.auth.login.LoginException;
-
+import me.dxrk.Commands.*;
+import me.dxrk.Discord.CMDDiscord;
+import me.dxrk.Discord.JDAEvents;
+import me.dxrk.Discord.jdaHandler;
+import me.dxrk.Events.*;
+import me.dxrk.Tokens.*;
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -34,59 +29,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 
-import me.dxrk.Commands.BasicCommands;
-import me.dxrk.Commands.BuycraftMessages;
-import me.dxrk.Commands.CMDAc;
-import me.dxrk.Commands.CMDAutosell;
-import me.dxrk.Commands.CMDClearchat;
-import me.dxrk.Commands.CMDDp;
-import me.dxrk.Commands.CMDDr;
-import me.dxrk.Commands.CMDItemEdits;
-import me.dxrk.Commands.CMDPicksell;
-import me.dxrk.Commands.CMDRankup;
-import me.dxrk.Commands.CMDTrash;
-import me.dxrk.Commands.CoinFlip;
-import me.dxrk.Commands.DailyRewards;
-import me.dxrk.Commands.Freeze;
-import me.dxrk.Commands.GiveBook;
-import me.dxrk.Commands.GiveRank;
-import me.dxrk.Commands.MineCMD;
-import me.dxrk.Commands.Nicks;
-import me.dxrk.Commands.Options;
-import me.dxrk.Commands.Rename;
-import me.dxrk.Commands.Say;
-import me.dxrk.Commands.Tags;
-import me.dxrk.Commands.Updates;
-import me.dxrk.Commands.Upgrade;
-import me.dxrk.Commands.Vanish;
-import me.dxrk.Commands.VoteShop;
-import me.dxrk.Commands.Voting;
-import me.dxrk.Commands.Welcome;
-import me.dxrk.Discord.jdaHandler;
-import me.dxrk.Events.BlockCounting;
-import me.dxrk.Events.PickXPHandler;
-import me.dxrk.Events.CrateHandler;
-import me.dxrk.Events.CreateMine;
-import me.dxrk.Events.DeathLogger;
-import me.dxrk.Events.DonorItems;
-import me.dxrk.Events.KeysHandler;
-import me.dxrk.Events.KitAndWarp;
-import me.dxrk.Events.Leaderboards;
-import me.dxrk.Events.LocksmithHandler;
-import me.dxrk.Events.PlayerDataHandler;
-import me.dxrk.Events.ProtectOP;
-import me.dxrk.Events.RankupHandler;
-import me.dxrk.Events.ScoreboardHandler;
-import me.dxrk.Events.SellHandler;
-import me.dxrk.Events.Staff;
-import me.dxrk.Events.TrinketHandler;
-import me.dxrk.Tokens.EnchantTokensCommand;
-import me.dxrk.Tokens.EnchantTokensListener;
-import me.dxrk.Tokens.Enchants;
-import me.dxrk.Tokens.Lottery;
-import me.dxrk.Tokens.NPCHandler;
-import me.dxrk.Tokens.PickaxeLevel;
-import me.dxrk.Tokens.VirtualShop;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Locale;
 
 public class Main extends JavaPlugin implements Listener, CommandExecutor {
 	
@@ -304,6 +253,11 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("buymsg").setExecutor((CommandExecutor) new BuycraftMessages());
     getCommand("options").setExecutor((CommandExecutor)new Options());
     getCommand("daily").setExecutor((CommandExecutor)new DailyRewards());
+    getCommand("discord").setExecutor((CommandExecutor) new JDAEvents());
+    getCommand("ranktop").setExecutor((CommandExecutor) new Leaderboards());
+    getCommand("rankstop").setExecutor((CommandExecutor) new Leaderboards());
+    getCommand("givemoney").setExecutor((CommandExecutor) new RankupHandler());
+    getCommand("randomtag").setExecutor((CommandExecutor) new tagsHandler());
     pm.registerEvents((Listener)new CrateHandler(), (Plugin)this);
     pm.registerEvents((Listener)new SellHandler(), (Plugin)this);
     pm.registerEvents((Listener)new PlayerDataHandler(), (Plugin)this);
@@ -314,8 +268,11 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     pm.registerEvents((Listener)new TrinketHandler(),(Plugin)this);
     pm.registerEvents((Listener)new Options(),(Plugin)this);
     pm.registerEvents((Listener)new DailyRewards(),(Plugin)this);
+    pm.registerEvents((Listener)new JDAEvents(),(Plugin)this);
     
-    
+
+      JDAEvents.getInstance().serverLink();
+
     new BukkitRunnable() {
 
 		@Override
@@ -407,8 +364,11 @@ new BukkitRunnable() {
     	double amp = this.settings.getBoost().getDouble("ActiveSell.Amp");
     	String act = this.settings.getBoost().getString("ActivatorSell");
     	this.settings.getBoost().set("TimeLeftSell", 0);
-    	
-    	Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "activeboost sell " + act+" "+amp+" "+timeleft);
+        new BukkitRunnable() {
+            public void run() {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "activeboost sell " + act + " " + amp + " " + timeleft);
+            }
+        }.runTaskLater(this, 20*5L);
     	
     }
     if(this.settings.getBoost().getInt("ActiveXP.Amp") != 0) {
@@ -416,8 +376,13 @@ new BukkitRunnable() {
     	int amp = this.settings.getBoost().getInt("ActiveXP.Amp");
     	String act = this.settings.getBoost().getString("ActivatorXP");
     	this.settings.getBoost().set("TimeLeftXP", 0);
-    	
-    	Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "activeboost XP " + act+" "+amp+" "+timeleft);
+    	new BukkitRunnable() {
+            public void run() {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"activeboost XP "+act+" "+amp+" "+timeleft);
+            }
+
+
+        }.runTaskLater(this, 20*5L);
     	
     }
     

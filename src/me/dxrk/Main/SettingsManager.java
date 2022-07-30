@@ -107,6 +107,10 @@ FileConfiguration PlayerData;
   FileConfiguration daily;
   
   File dailyfile;
+
+  FileConfiguration discord;
+
+  File discordfile;
   
   
   
@@ -129,8 +133,16 @@ FileConfiguration PlayerData;
     this.coinfile = new File(p.getDataFolder(), "coinflip.yml");
     this.boostfile = new File(p.getDataFolder(), "boost.yml");
     this.dailyfile = new File(p.getDataFolder(), "daily.yml");
-    
-    
+    this.discordfile = new File(p.getDataFolder(), "discord.yml");
+
+
+    if (!this.discordfile.exists())
+      try {
+        this.discordfile.createNewFile();
+      } catch (IOException e) {
+        Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create discord.yml");
+      }
+
     if (!this.dailyfile.exists())
         try {
           this.dailyfile.createNewFile();
@@ -306,6 +318,11 @@ FileConfiguration PlayerData;
     this.blocks = (FileConfiguration)YamlConfiguration.loadConfiguration(this.bfile);
     this.boost = (FileConfiguration)YamlConfiguration.loadConfiguration(this.boostfile);
     this.daily = (FileConfiguration)YamlConfiguration.loadConfiguration(this.dailyfile);
+    this.discord = (FileConfiguration)YamlConfiguration.loadConfiguration(this.discordfile);
+  }
+
+  public FileConfiguration getDiscord() {
+      return this.discord;
   }
   
   public FileConfiguration getDaily() {
@@ -404,7 +421,15 @@ FileConfiguration PlayerData;
   public FileConfiguration getYT() {
     return this.youtube;
   }
-  
+
+
+  public void saveDiscord() {
+    try {
+      this.discord.save(this.discordfile);
+    } catch (IOException e) {
+      Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not save discord.yml!");
+    }
+  }
   public void saveDaily() {
 	  try {
 	      this.daily.save(this.dailyfile);

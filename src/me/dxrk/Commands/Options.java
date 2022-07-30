@@ -139,15 +139,21 @@ public class Options implements Listener, CommandExecutor{
 		    		if(name[0].equals("Autoselll") && !p.hasPermission("command.autosell")) return;
 		    		if(name[1].equals("Enabled")) {
 		    			if(name[0].equals("Autosell")) {
-		    				SellHandler.autosell.remove(p);
-		    				this.settings.getOptions().set(p.getUniqueId().toString()+"."+name[0], false);
+
+								SellHandler.autosell.remove(p);
+								this.settings.getOptions().set(p.getUniqueId().toString() + "." + name[0], false);
+
 		    			} else {
 		    				this.settings.getOptions().set(p.getUniqueId().toString()+"."+name[0], false);
 		    			}
 		    		} else if(name[1].equals("Disabled")) {
 		    			if(name[0].equals("Autosell")) {
-		    				SellHandler.autosell.add(p);
-		    				this.settings.getOptions().set(p.getUniqueId().toString()+"."+name[0], true);
+							if(p.hasPermission("command.autosell")) {
+								SellHandler.autosell.add(p);
+								this.settings.getOptions().set(p.getUniqueId().toString() + "." + name[0], true);
+							} else{
+								p.sendMessage(m.c("&cThis perk is only for Ares and higher."));
+							}
 		    			} else {
 		    				this.settings.getOptions().set(p.getUniqueId().toString()+"."+name[0], true);
 		    			}

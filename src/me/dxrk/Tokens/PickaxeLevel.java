@@ -7,6 +7,7 @@ import me.dxrk.Events.PickXPHandler;
 import me.dxrk.Events.RankupHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.ResetHandler;
+import me.dxrk.Main.SettingsManager;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.*;
@@ -24,6 +25,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -46,7 +48,8 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 	  public static PickaxeLevel getInstance() {
 	    return instance;
 	  }
-	
+
+	  public SettingsManager settings = SettingsManager.getInstance();
 	
 	public ItemStack spacer() {
 	    ItemStack a = new ItemStack(Material.DIAMOND_PICKAXE, 1, (short)0);
@@ -519,7 +522,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 			if(!p.hasPermission("enchant.lucky")) {
 				i.setType(Material.BARRIER);
 				im = i.getItemMeta();
-				im.setDisplayName(c("&cYou must be Prestige 50+ to unlock Lucky!"));
+				im.setDisplayName(c("&cYou must be Prestige 40+ to unlock Lucky!"));
 				im.setLore(null);
 				i.setItemMeta(im);
 			}
@@ -534,7 +537,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 			if(!p.hasPermission("enchant.booster")) {
 				i.setType(Material.BARRIER);
 				im = i.getItemMeta();
-				im.setDisplayName(c("&cYou must be Prestige 50+ to unlock Booster!"));
+				im.setDisplayName(c("&cYou must be Prestige 35+ to unlock Booster!"));
 				im.setLore(null);
 				i.setItemMeta(im);
 			}
@@ -549,7 +552,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 			if(!p.hasPermission("enchant.runeparty")) {
 				i.setType(Material.BARRIER);
 				im = i.getItemMeta();
-				im.setDisplayName(c("&cYou must be Prestige 50+ to unlock RuneParty!"));
+				im.setDisplayName(c("&cYou must be Prestige 25+ to unlock RuneParty!"));
 				im.setLore(null);
 				i.setItemMeta(im);
 			}
@@ -564,7 +567,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 			if(!p.hasPermission("enchant.multiply")) {
 				i.setType(Material.BARRIER);
 				im = i.getItemMeta();
-				im.setDisplayName(c("&cYou must be Prestige 50+ to unlock Multiply!"));
+				im.setDisplayName(c("&cYou must be Prestige 30+ to unlock Multiply!"));
 				im.setLore(null);
 				i.setItemMeta(im);
 			}
@@ -610,7 +613,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		setEnchantItem("RuneParty", c("&bUpgrade RuneParty"), c("&7Chance to give everyone online a rune."), 100000, 0.1, 10, enchantmenu, 4, p);
 		setEnchantItem("Multiply", c("&bUpgrade Multiply"), c("&7Chance to double the effectiveness of TokenFinder."), 100000, 0.1, 10, enchantmenu, 5, p);
 		setEnchantItem("Fortuity", c("&bUpgrade Fortuity"), c("&7Boosts the effectiveness of Fortune."), 100000, 0.1, 10, enchantmenu, 6, p);
-		setEnchantItem("Discovery", c("&bUpgrade Discovery"), c("&7Finds a Rune after “Blocks Till Dust” Quota is met."), 1000, 0.181626, 100, enchantmenu, 0, p);
+		setEnchantItem("Discovery", c("&bUpgrade Discovery"), c("&7Finds a Rune after ï¿½Blocks Till Dustï¿½ Quota is met."), 1000, 0.181626, 100, enchantmenu, 0, p);
 		setEnchantItem("Encounter", c("&bUpgrade Encounter"), c("&7Chance to find a Rune after breaking a block."), 1000, 0.181626, 100, enchantmenu, 1, p);
 		setEnchantItem("Wave", c("&bUpgrade Wave"), c("&7Chance to break an entire layer of the mine."), 1000, 0.181626, 100, enchantmenu, 7, p);
 		setEnchantItem("Explosion", c("&bUpgrade Explosion"), c("&7Chance to explode a large hole in the mine(5x5x5)."), 1000, 0.181626, 100, enchantmenu, 8, p);
@@ -819,942 +822,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 			
 			if(e.getSlot() == 2) {
 				if(RankupHandler.getInstance().getRank(p) >=100) {
-					if(p.hasPermission("prestige.100")) {
-						p.closeInventory();
-						p.sendMessage(c("&f&l&kO&e&lMax Prestige&f&l&kO&r"));
-					}
-					
-					else if(p.hasPermission("prestige.99")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.100");
-						Main.perms.playerRemove(p, "prestige.99");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&f&l&kO&e&lOlympus&f&l&kO&r &6&l10"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.98")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.99");
-						Main.perms.playerRemove(p, "prestige.98");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&f&l&kO&e&lOlympus&f&l&kO&r &6&l9"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.97")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.98");
-						Main.perms.playerRemove(p, "prestige.97");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&f&l&kO&e&lOlympus&f&l&kO&r &6&l8"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.96")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.97");
-						Main.perms.playerRemove(p, "prestige.96");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&f&l&kO&e&lOlympus&f&l&kO&r &6&l7"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.95")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.96");
-						Main.perms.playerRemove(p, "prestige.95");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&f&l&kO&e&lOlympus&f&l&kO&r &6&l6"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.94")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.95");
-						Main.perms.playerRemove(p, "prestige.94");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&f&l&kO&e&lOlympus&f&l&kO&r &6&l5"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.93")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.94");
-						Main.perms.playerRemove(p, "prestige.93");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&f&l&kO&e&lOlympus&f&l&kO&r &6&l4"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.92")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.93");
-						Main.perms.playerRemove(p, "prestige.92");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&f&l&kO&e&lOlympus&f&l&kO&r &6&l3"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.91")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.92");
-						Main.perms.playerRemove(p, "prestige.91");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&f&l&kO&e&lOlympus&f&l&kO&r &6&l2"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}
-					else if(p.hasPermission("prestige.90")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.91");
-						Main.perms.playerRemove(p, "prestige.90");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&f&l&kO&e&lOlympus&f&l&kO&r &6&l1"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}
-					else if(p.hasPermission("prestige.89")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.90");
-						Main.perms.playerRemove(p, "prestige.89");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&a&lElysian Fields &6&l10"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.88")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.89");
-						Main.perms.playerRemove(p, "prestige.88");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&a&lElysian Fields &6&l9"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.87")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.88");
-						Main.perms.playerRemove(p, "prestige.87");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&a&lElysian Fields &6&l8"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.86")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.87");
-						Main.perms.playerRemove(p, "prestige.86");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&a&lElysian Fields &6&l7"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.85")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.86");
-						Main.perms.playerRemove(p, "prestige.85");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&a&lElysian Fields &6&l6"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.84")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.85");
-						Main.perms.playerRemove(p, "prestige.84");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&a&lElysian Fields &6&l5"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.83")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.84");
-						Main.perms.playerRemove(p, "prestige.83");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&a&lElysian Fields &6&l4"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.82")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.83");
-						Main.perms.playerRemove(p, "prestige.82");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&a&lElysian Fields &6&l3"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.81")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.82");
-						Main.perms.playerRemove(p, "prestige.81");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&a&lElysian Fields &6&l2"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}
-					else if(p.hasPermission("prestige.80")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.81");
-						Main.perms.playerRemove(p, "prestige.80");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&a&lElysian Fields &6&l1"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}
-					else if(p.hasPermission("prestige.79")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.80");
-						Main.perms.playerRemove(p, "prestige.79");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&b&lMeadows of Asphodel &6&l10"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.78")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.79");
-						Main.perms.playerRemove(p, "prestige.78");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&b&lMeadows of Asphodel &6&l9"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.77")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.78");
-						Main.perms.playerRemove(p, "prestige.77");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&b&lMeadows of Asphodel &6&l8"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.76")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.77");
-						Main.perms.playerRemove(p, "prestige.76");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&b&lMeadows of Asphodel &6&l7"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.75")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.76");
-						Main.perms.playerRemove(p, "prestige.75");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&b&lMeadows of Asphodel &6&l6"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.74")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.75");
-						Main.perms.playerRemove(p, "prestige.74");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&b&lMeadows of Asphodel &6&l5"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.73")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.74");
-						Main.perms.playerRemove(p, "prestige.73");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&b&lMeadows of Asphodel &6&l4"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.72")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.73");
-						Main.perms.playerRemove(p, "prestige.72");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&b&lMeadows of Asphodel &6&l3"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.71")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.72");
-						Main.perms.playerRemove(p, "prestige.71");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&b&lMeadows of Asphodel &6&l2"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}
-					else if(p.hasPermission("prestige.70")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.71");
-						Main.perms.playerRemove(p, "prestige.70");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&b&lMeadows of Asphodel &6&l1"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}
-					else if(p.hasPermission("prestige.69")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.70");
-						Main.perms.playerRemove(p, "prestige.69");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&c&lFields of Mourning &6&l10"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.68")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.69");
-						Main.perms.playerRemove(p, "prestige.68");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&c&lFields of Mourning &6&l9"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.67")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.68");
-						Main.perms.playerRemove(p, "prestige.67");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&c&lFields of Mourning &6&l8"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.66")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.67");
-						Main.perms.playerRemove(p, "prestige.66");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&c&lFields of Mourning &6&l7"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.65")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.66");
-						Main.perms.playerRemove(p, "prestige.65");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&c&lFields of Mourning &6&l6"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.64")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.65");
-						Main.perms.playerRemove(p, "prestige.64");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&c&lFields of Mourning &6&l5"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.63")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.64");
-						Main.perms.playerRemove(p, "prestige.63");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&c&lFields of Mourning &6&l4"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.62")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.63");
-						Main.perms.playerRemove(p, "prestige.62");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&c&lFields of Mourning &6&l3"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.61")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.62");
-						Main.perms.playerRemove(p, "prestige.61");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&c&lFields of Mourning &6&l2"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}
-					else if(p.hasPermission("prestige.60")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.61");
-						Main.perms.playerRemove(p, "prestige.60");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&c&lFields of Mourning &6&l1"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}
-					else if(p.hasPermission("prestige.59")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.60");
-						Main.perms.playerRemove(p, "prestige.59");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&2&lLethe &6&l10"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.58")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.59");
-						Main.perms.playerRemove(p, "prestige.58");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&2&lLethe &6&l9"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.57")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.58");
-						Main.perms.playerRemove(p, "prestige.57");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&2&lLethe &6&l8"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.56")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.57");
-						Main.perms.playerRemove(p, "prestige.56");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&2&lLethe &6&l7"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.55")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.56");
-						Main.perms.playerRemove(p, "prestige.55");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&2&lLethe &6&l6"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.54")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.55");
-						Main.perms.playerRemove(p, "prestige.54");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&2&lLethe &6&l5"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.53")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.54");
-						Main.perms.playerRemove(p, "prestige.53");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&2&lLethe &6&l4"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.52")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.53");
-						Main.perms.playerRemove(p, "prestige.52");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&2&lLethe &6&l3"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.51")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.52");
-						Main.perms.playerRemove(p, "prestige.51");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&2&lLethe &6&l2"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}
-					else if(p.hasPermission("prestige.50")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.51");
-						Main.perms.playerRemove(p, "prestige.50");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&2&lLethe &6&l1"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.49")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.50");
-						Main.perms.playerAdd(p, "enchant.lucky");
-						Main.perms.playerAdd(p, "enchant.runeparty");
-						Main.perms.playerAdd(p, "enchant.booster");
-						Main.perms.playerAdd(p, "enchant.multiply");
-						Main.perms.playerAdd(p, "enchant.fortuity");
-						Main.perms.playerRemove(p, "prestige.49");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lCocytus &6&l10"));
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.48")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.49");
-						Main.perms.playerRemove(p, "prestige.48");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lCocytus &6&l9"));
-						
-						
-					}else if(p.hasPermission("prestige.47")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.48");
-						Main.perms.playerRemove(p, "prestige.47");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lCocytus &6&l8"));
-						
-						
-					}else if(p.hasPermission("prestige.46")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.47");
-						Main.perms.playerRemove(p, "prestige.46");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lCocytus &6&l7"));
-						
-						
-					}else if(p.hasPermission("prestige.45")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.46");
-						Main.perms.playerRemove(p, "prestige.45");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lCocytus &6&l6"));
-						
-						
-					}else if(p.hasPermission("prestige.44")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.45");
-						Main.perms.playerRemove(p, "prestige.44");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lCocytus &6&l5"));
-						
-						
-					}else if(p.hasPermission("prestige.43")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.44");
-						Main.perms.playerRemove(p, "prestige.43");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lCocytus &6&l4"));
-						
-						
-					}else if(p.hasPermission("prestige.42")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.43");
-						Main.perms.playerRemove(p, "prestige.42");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lCocytus &6&l3"));
-						
-						
-					}else if(p.hasPermission("prestige.41")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.42");
-						Main.perms.playerRemove(p, "prestige.41");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lCocytus &6&l2"));
-						
-						
-					}
-					
-					
-					else if(p.hasPermission("prestige.40")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.41");
-						Main.perms.playerRemove(p, "prestige.40");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lCocytus &6&l1"));
-					}else if(p.hasPermission("prestige.39")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.40");
-						Main.perms.playerRemove(p, "prestige.39");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lAcheron &6&l10"));
-						
-						
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.38")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.39");
-						Main.perms.playerRemove(p, "prestige.38");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lAcheron &6&l9"));
-						
-						
-					}else if(p.hasPermission("prestige.37")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.38");
-						Main.perms.playerRemove(p, "prestige.37");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lAcheron &6&l8"));
-						
-						
-					}else if(p.hasPermission("prestige.36")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.37");
-						Main.perms.playerRemove(p, "prestige.36");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lAcheron &6&l7"));
-						
-						
-					}else if(p.hasPermission("prestige.35")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.36");
-						Main.perms.playerRemove(p, "prestige.35");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lAcheron &6&l6"));
-						
-						
-					}else if(p.hasPermission("prestige.34")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.35");
-						Main.perms.playerRemove(p, "prestige.34");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lAcheron &6&l5"));
-						
-						
-					}else if(p.hasPermission("prestige.33")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.34");
-						Main.perms.playerRemove(p, "prestige.33");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lAcheron &6&l4"));
-						
-						
-					}else if(p.hasPermission("prestige.32")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.33");
-						Main.perms.playerRemove(p, "prestige.32");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lAcheron &6&l3"));
-						
-						
-					}else if(p.hasPermission("prestige.31")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.32");
-						Main.perms.playerRemove(p, "prestige.31");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lAcheron &6&l2"));
-						
-						
-					}
-					
-					else if(p.hasPermission("prestige.30")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.31");
-						Main.perms.playerRemove(p, "prestige.30");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lAcheron &6&l1"));
-					}else if(p.hasPermission("prestige.29")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.30");
-						Main.perms.playerRemove(p, "prestige.29");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lStyx &6&l10"));
-						
-						
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.28")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.29");
-						Main.perms.playerRemove(p, "prestige.28");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lStyx &6&l9"));
-						
-						
-					}else if(p.hasPermission("prestige.27")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.28");
-						Main.perms.playerRemove(p, "prestige.27");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lStyx &6&l8"));
-						
-						
-					}else if(p.hasPermission("prestige.26")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.27");
-						Main.perms.playerRemove(p, "prestige.26");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lStyx &6&l7"));
-						
-						
-					}else if(p.hasPermission("prestige.25")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.26");
-						Main.perms.playerRemove(p, "prestige.25");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lStyx &6&l6"));
-						
-						
-					}else if(p.hasPermission("prestige.24")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.25");
-						Main.perms.playerRemove(p, "prestige.24");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lStyx &6&l5"));
-						
-						
-					}else if(p.hasPermission("prestige.23")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.24");
-						Main.perms.playerRemove(p, "prestige.23");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lStyx &6&l4"));
-						
-						
-					}else if(p.hasPermission("prestige.22")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.23");
-						Main.perms.playerRemove(p, "prestige.22");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lStyx &6&l3"));
-						
-						
-					}else if(p.hasPermission("prestige.21")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.22");
-						Main.perms.playerRemove(p, "prestige.21");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lStyx &6&l2"));
-						
-						
-					}
-					
-					
-					else if(p.hasPermission("prestige.20")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.21");
-						Main.perms.playerRemove(p, "prestige.20");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lStyx &6&l1"));
-						
-					}else if(p.hasPermission("prestige.19")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.20");
-						Main.perms.playerAdd(p, "enchant.stake");
-						Main.perms.playerRemove(p, "prestige.19");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lTartarus &6&l10"));
-						
-						
-						p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
-					}else if(p.hasPermission("prestige.18")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.19");
-						Main.perms.playerRemove(p, "prestige.18");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lTartarus &6&l9"));
-						
-						
-					}else if(p.hasPermission("prestige.17")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.18");
-						Main.perms.playerRemove(p, "prestige.17");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lTartarus &6&l8"));
-						
-						
-					}else if(p.hasPermission("prestige.16")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.17");
-						Main.perms.playerRemove(p, "prestige.16");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lTartarus &6&l7"));
-						
-						
-					}else if(p.hasPermission("prestige.15")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.16");
-						Main.perms.playerRemove(p, "prestige.15");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lTartarus &6&l6"));
-						
-						
-					}else if(p.hasPermission("prestige.14")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.15");
-						Main.perms.playerRemove(p, "prestige.14");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lTartarus &6&l5"));
-						
-						
-					}else if(p.hasPermission("prestige.13")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.14");
-						Main.perms.playerRemove(p, "prestige.13");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lTartarus &6&l4"));
-						
-						
-					}else if(p.hasPermission("prestige.12")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.13");
-						Main.perms.playerRemove(p, "prestige.12");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lTartarus &6&l3"));
-						
-						
-					}else if(p.hasPermission("prestige.11")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.12");
-						Main.perms.playerRemove(p, "prestige.11");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lTartarus &6&l2"));
-						
-						
-					}else if(p.hasPermission("prestige.10")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.11");
-						Main.perms.playerRemove(p, "prestige.10");
-						RankupHandler.getInstance().setRank(p, 1);
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&4&lTartarus &6&l1"));
-						
-						
-						
-					} else if(p.hasPermission("prestige.9")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.10");
-						Main.perms.playerAdd(p, "enchant.junkpile");
-						Main.perms.playerRemove(p, "prestige.9");
-						RankupHandler.getInstance().setRank(p, 1);
-						
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&6&lPrestige 10"));
-						
-						
-					} else if(p.hasPermission("prestige.8")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.9");
-						Main.perms.playerRemove(p, "prestige.8");
-						RankupHandler.getInstance().setRank(p, 1);
-						
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&6&lPrestige 9"));
-						
-						
-					} else if(p.hasPermission("prestige.7")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.8");
-						Main.perms.playerRemove(p, "prestige.7");
-						RankupHandler.getInstance().setRank(p, 1);
-						
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&6&lPrestige 8"));
-						
-						
-					} else if(p.hasPermission("prestige.6")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.7");
-						Main.perms.playerRemove(p, "prestige.6");
-						RankupHandler.getInstance().setRank(p, 1);
-						
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&6&lPrestige 7"));
-						
-						
-					} else if(p.hasPermission("prestige.5")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.6");
-						Main.perms.playerRemove(p, "prestige.5");
-						RankupHandler.getInstance().setRank(p, 1);
-						
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&6&lPrestige 6"));
-						
-						
-					} else if(p.hasPermission("prestige.4")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.5");
-						Main.perms.playerAdd(p, "enchant.vaporize");
-						Main.perms.playerRemove(p, "prestige.4");
-						RankupHandler.getInstance().setRank(p, 1);
-						
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&6&lPrestige 5"));
-						
-						
-					} else if(p.hasPermission("prestige.3")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.4");
-						Main.perms.playerRemove(p, "prestige.3");
-						RankupHandler.getInstance().setRank(p, 1);
-						
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&6&lPrestige 4"));
-						
-						
-					} else if(p.hasPermission("prestige.2")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.3");
-						Main.perms.playerRemove(p, "prestige.2");
-						RankupHandler.getInstance().setRank(p, 1);
-						
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&6&lPrestige 3"));
-						
-						
-					} else if(p.hasPermission("prestige.1")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.2");
-						Main.perms.playerRemove(p, "prestige.1");
-						RankupHandler.getInstance().setRank(p, 1);
-						
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&6&lPrestige 2"));
-						
-						
-					} else if(!p.hasPermission("prestige.1")) {
-						p.closeInventory();
-						Main.perms.playerAdd(p, "prestige.1");
-						RankupHandler.getInstance().setRank(p, 1);
-						
-						LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-						
-						TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&6&lPrestige 1"));
-						
-						
-					}
+					prestige(p);
 				} else {
 					p.closeInventory();
 					p.sendMessage(c("&cNot High Enough Level!"));
@@ -1765,6 +833,87 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		
 		
 		
+	}
+
+	@EventHandler
+	public void onJoin(PlayerJoinEvent e) {
+		Player p = e.getPlayer();
+
+		for(int i = 0; i < 101; i++) {
+			if (p.hasPermission("prestige." + i)) {
+				settings.getPlayerData().set(p.getUniqueId().toString() + ".Prestige", i);
+				settings.savePlayerData();
+				return;
+			}
+		}
+		if(!p.hasPermission("prestige.1")){
+			settings.getPlayerData().set(p.getUniqueId().toString() + ".Prestige", 0);
+			settings.savePlayerData();
+			return;
+		}
+
+	}
+
+
+	public void prestige(Player p){
+
+		for(int i = 1; i < 101; i++){
+			if(p.hasPermission("prestige."+i)){
+				if(i==4){
+					Main.perms.playerAdd(p, "enchant.vaporize");
+				}
+				if(i==9){
+					Main.perms.playerAdd(p, "enchant.junkpile");
+				}
+				if(i==19){
+					Main.perms.playerAdd(p, "enchant.stake");
+				}
+				if(i==24){
+					Main.perms.playerAdd(p, "enchant.runeparty");
+				}
+				if(i==29){
+					Main.perms.playerAdd(p, "enchant.multiply");
+				}
+				if(i==34){
+					Main.perms.playerAdd(p, "enchant.booster");
+				}
+				if(i==39){
+					Main.perms.playerAdd(p, "enchant.lucky");
+				}
+				if(i==49){
+					Main.perms.playerAdd(p, "enchant.fortuity");
+				}
+				if(i==100){
+					return;
+				}
+				p.closeInventory();
+				Main.perms.playerAdd(p, "prestige."+(i+1));
+				Main.perms.playerRemove(p, "prestige."+i);
+				settings.getPlayerData().set(p.getUniqueId().toString()+".Prestige", (i+1));
+				RankupHandler.getInstance().setRank(p, 1);
+
+				LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
+
+				TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&6&lPrestige "+(i+1)));
+				settings.savePlayerData();
+				return;
+			}
+
+
+		}
+		if(!p.hasPermission("prestige.1")){
+			p.closeInventory();
+			Main.perms.playerAdd(p, "prestige.1");
+			settings.getPlayerData().set(p.getUniqueId().toString()+".Prestige", 1);
+			RankupHandler.getInstance().setRank(p, 1);
+
+			LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
+
+			TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&6&lPrestige 1"));
+			settings.savePlayerData();
+			return;
+		}
+
 	}
 	
 	

@@ -1,5 +1,6 @@
 package me.dxrk.Main;
 
+import java.awt.*;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -314,12 +315,14 @@ public class Boosts implements Listener, CommandExecutor{
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l"+ args[1]+" &dhas activated a "+amp+"x Sell Boost!");
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &7Length: &b"+timeFormat(dur));
 					
-					TextChannel channel = jdaHandler.jda.getTextChannelById("991316164011622452");
+					TextChannel channel = jdaHandler.jda.getTextChannelById("1003031504278016051");
 
-					EmbedBuilder emb = new EmbedBuilder();
-					emb.setTitle("**"+args[1]+"** Activated a Sell Boost!");
+					EmbedBuilder b = new EmbedBuilder();
+					b.setTitle("__Dxrk Activated a Sell Boost__");
+					b.addField("Multiplier: "+amp+"x", "Length: "+timeFormat(dur), false);
+					b.setColor(Color.BLUE);
 
-					channel.sendMessage("testSell").queue();
+					channel.sendMessageEmbeds(b.build()).queue();
 					
 					sname = c("&a$&d"+amp+"x");
 					
@@ -397,8 +400,13 @@ public class Boosts implements Listener, CommandExecutor{
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l"+ args[1]+" &dhas activated a "+amp+"x XP Boost!");
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &7Length: &b"+timeFormat(dur));
 					
-					TextChannel channel = jdaHandler.jda.getTextChannelById("991316164011622452");
-					channel.sendMessage("testXP").queue();
+					TextChannel channel = jdaHandler.jda.getTextChannelById("1003031504278016051");
+					EmbedBuilder b = new EmbedBuilder();
+					b.setTitle("__Dxrk Activated an XP Boost__");
+					b.addField("Multiplier: "+amp+"x", "Length: "+timeFormat(dur), false);
+					b.setColor(Color.GREEN);
+
+					channel.sendMessageEmbeds(b.build()).queue();
 					
 					xname = c("&a✴&e"+amp+"x");
 					

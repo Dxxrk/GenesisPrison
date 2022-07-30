@@ -1,5 +1,6 @@
 package me.dxrk.Events;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -149,7 +150,7 @@ public class RankupHandler implements Listener, CommandExecutor{
   }
   
   public double rankPrice(Player p) {
-	 double price = 1e12;
+	 double price;
 	  
 	  if(p.hasPermission("prestige.1")) {
 		  price = 1e12;
@@ -158,47 +159,47 @@ public class RankupHandler implements Listener, CommandExecutor{
 	  else if(p.hasPermission("prestige.2")) {
 		  price = 1e12;
 		    return ((200+getRank(p))*price)*1.40;
-		  
+
 	  }
 	  else if(p.hasPermission("prestige.3")) {
 		  price = 1e12;
 		    return ((300+getRank(p))*price)*1.60;
-		  
+
 	  }
 	  else if(p.hasPermission("prestige.4")) {
 		  price = 1e12;
 		    return ((400+getRank(p))*price)*1.8;
-		  
+
 	  }
 	  else if(p.hasPermission("prestige.5")) {
 		  price = 1e12;
 		    return ((500+getRank(p))*price)*2.0;
-		  
+
 	  }
 	  else if(p.hasPermission("prestige.6")) {
 		  price = 1e12;
 		    return ((600+getRank(p))*price)*2.2;
-		  
+
 	  }
 	  else if(p.hasPermission("prestige.7")) {
 		  price = 1e12;
 		    return ((700+getRank(p))*price)*2.4;
-		  
+
 	  }
 	  else if(p.hasPermission("prestige.8")) {
 		  price = 1e12;
 		    return ((800+getRank(p))*price)*2.6;
-		  
+
 	  }
 	  else if(p.hasPermission("prestige.9")) {
 		  price = 1e12;
 		    return ((900+getRank(p))*price)*2.8;
-		  
+
 	  }
 	  else if(p.hasPermission("prestige.10")) {
 		  price = 1e12;
 		    return ((1000+getRank(p))*price)*3.0;
-		  
+
 	  }
 	  else if(p.hasPermission("prestige.11")) {
 		  price = 2e12;
@@ -536,11 +537,11 @@ public class RankupHandler implements Listener, CommandExecutor{
     if (Main.econ.getBalance((OfflinePlayer)p) < rankPrice(p)) {
       p.sendMessage(ChatColor.DARK_GRAY +""+ ChatColor.STRIKETHROUGH + "--------------------->" + nextRank(p) + ChatColor.DARK_GRAY + ChatColor.STRIKETHROUGH + "<---------------------");
       p.sendMessage(" ");
-      p.sendMessage(ChatColor.LIGHT_PURPLE + "      ¤ " + ChatColor.GRAY + "You Are Currently " + ChatColor.DARK_GRAY + "[" + ChatColor.AQUA + getRank(p) + ChatColor.DARK_GRAY + "]");
+      p.sendMessage(ChatColor.LIGHT_PURPLE + "      ï¿½ " + ChatColor.GRAY + "You Are Currently " + ChatColor.DARK_GRAY + "[" + ChatColor.AQUA + getRank(p) + ChatColor.DARK_GRAY + "]");
       p.sendMessage(" ");
-      p.sendMessage(ChatColor.LIGHT_PURPLE + "      ¤ " + ChatColor.GRAY + nextRank(p) + ChatColor.GRAY + " Costs " + ChatColor.AQUA + Methods.formatAmt(rankPrice(p)) + ChatColor.GRAY + "!");
+      p.sendMessage(ChatColor.LIGHT_PURPLE + "      ï¿½ " + ChatColor.GRAY + nextRank(p) + ChatColor.GRAY + " Costs " + ChatColor.AQUA + Methods.formatAmt(rankPrice(p)) + ChatColor.GRAY + "!");
       p.sendMessage(" ");
-      p.sendMessage(ChatColor.LIGHT_PURPLE + "      ¤ " + ChatColor.GRAY + ChatColor.GRAY + "You Need " + ChatColor.AQUA + Methods.formatAmt(Double.valueOf(rankPrice(p) - Main.econ.getBalance((OfflinePlayer)p)).doubleValue()) + ChatColor.GRAY + " To Rank Up!");
+      p.sendMessage(ChatColor.LIGHT_PURPLE + "      ï¿½ " + ChatColor.GRAY + ChatColor.GRAY + "You Need " + ChatColor.AQUA + Methods.formatAmt(Double.valueOf(rankPrice(p) - Main.econ.getBalance((OfflinePlayer)p)).doubleValue()) + ChatColor.GRAY + " To Rank Up!");
       p.sendMessage(" ");
       p.sendMessage(ChatColor.DARK_GRAY +""+ ChatColor.STRIKETHROUGH + "--------------------->" + nextRank(p) + ChatColor.DARK_GRAY + ChatColor.STRIKETHROUGH + "<---------------------");
       return false;
@@ -573,11 +574,11 @@ public class RankupHandler implements Listener, CommandExecutor{
 	  if (Main.econ.getBalance((OfflinePlayer)p) < rankPrice(p)) {
 	      p.sendMessage(ChatColor.DARK_GRAY +""+ ChatColor.STRIKETHROUGH + "--------------------->" + nextRank(p) + ChatColor.DARK_GRAY + ChatColor.STRIKETHROUGH + "<---------------------");
 	      p.sendMessage(" ");
-	      p.sendMessage(ChatColor.LIGHT_PURPLE + "      ¤ " + ChatColor.GRAY + "You Are Currently " + ChatColor.DARK_GRAY + "[" + ChatColor.AQUA + getRank(p) + ChatColor.DARK_GRAY + "]");
+	      p.sendMessage(ChatColor.LIGHT_PURPLE + "      ï¿½ " + ChatColor.GRAY + "You Are Currently " + ChatColor.DARK_GRAY + "[" + ChatColor.AQUA + getRank(p) + ChatColor.DARK_GRAY + "]");
 	      p.sendMessage(" ");
-	      p.sendMessage(ChatColor.LIGHT_PURPLE + "      ¤ " + ChatColor.GRAY + nextRank(p) + ChatColor.GRAY + " Costs " + ChatColor.AQUA + Methods.formatAmt(rankPrice(p)) + ChatColor.GRAY + "!");
+	      p.sendMessage(ChatColor.LIGHT_PURPLE + "      ï¿½ " + ChatColor.GRAY + nextRank(p) + ChatColor.GRAY + " Costs " + ChatColor.AQUA + Methods.formatAmt(rankPrice(p)) + ChatColor.GRAY + "!");
 	      p.sendMessage(" ");
-	      p.sendMessage(ChatColor.LIGHT_PURPLE + "      ¤ " + ChatColor.GRAY + ChatColor.GRAY + "You Need " + ChatColor.AQUA + Methods.formatAmt(Double.valueOf(rankPrice(p) - Main.econ.getBalance((OfflinePlayer)p)).doubleValue()) + ChatColor.GRAY + " To Rank Up!");
+	      p.sendMessage(ChatColor.LIGHT_PURPLE + "      ï¿½ " + ChatColor.GRAY + ChatColor.GRAY + "You Need " + ChatColor.AQUA + Methods.formatAmt(Double.valueOf(rankPrice(p) - Main.econ.getBalance((OfflinePlayer)p)).doubleValue()) + ChatColor.GRAY + " To Rank Up!");
 	      p.sendMessage(" ");
 	      p.sendMessage(ChatColor.DARK_GRAY +""+ ChatColor.STRIKETHROUGH + "--------------------->" + nextRank(p) + ChatColor.DARK_GRAY + ChatColor.STRIKETHROUGH + "<---------------------");
 	      return false;
@@ -638,18 +639,25 @@ public class RankupHandler implements Listener, CommandExecutor{
   static String c(String s) {
 	    return ChatColor.translateAlternateColorCodes('&', s);
 	  }
-  
 
 
 
+	public boolean isInt(String s) {
+		try {
+			int i = Integer.parseInt(s);
+			return true;
+		} catch (Exception e1) {
+			return false;
+		}
+	}
 @Override
 public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-	Player p = (Player)sender;
+
 	
 	
 	
 	if(label.equalsIgnoreCase("autorankup") || label.equalsIgnoreCase("aru")) {
-		
+		Player p = (Player)sender;
 			if(!aru.contains(p)) {
 				aru.add(p);
 				p.sendMessage(c("&aAutoRankup Enabled!"));
@@ -667,8 +675,35 @@ public boolean onCommand(CommandSender sender, Command cmd, String label, String
 			
 		
 	}
+	if(label.equalsIgnoreCase("givemoney")){
+		if(sender.isOp()){
+			if(args.length == 2) {
+				if(isInt(args[1])) {
+					Player pl = Bukkit.getServer().getPlayer(args[0]);
+					int percent = Integer.valueOf(args[1]);
+					double per = ((double)percent)/100;
+					double money = rankPrice(pl) * per;
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + pl.getName() + " " + formatDbl(money));
+				}
+
+			}
+
+		}
+	}
+
 	return false;
 }
+
+	public String formatDbl(double value){
+		DecimalFormat formatter;
+
+		if(value - (int)value > 0.0)
+			formatter = new DecimalFormat("0.00"); //Here you can also deal with rounding if you wish..
+		else
+			formatter = new DecimalFormat("0");
+
+		return formatter.format(value);
+	}
   
   
   
