@@ -318,7 +318,7 @@ public class Boosts implements Listener, CommandExecutor{
 					TextChannel channel = jdaHandler.jda.getTextChannelById("1003031504278016051");
 
 					EmbedBuilder b = new EmbedBuilder();
-					b.setTitle("__Dxrk Activated a Sell Boost__");
+					b.setTitle("__"+args[1]+" Activated a Sell Boost__");
 					b.addField("Multiplier: "+amp+"x", "Length: "+timeFormat(dur), false);
 					b.setColor(Color.BLUE);
 
@@ -402,7 +402,7 @@ public class Boosts implements Listener, CommandExecutor{
 					
 					TextChannel channel = jdaHandler.jda.getTextChannelById("1003031504278016051");
 					EmbedBuilder b = new EmbedBuilder();
-					b.setTitle("__Dxrk Activated an XP Boost__");
+					b.setTitle("__"+args[1]+" Activated an XP Boost__");
 					b.addField("Multiplier: "+amp+"x", "Length: "+timeFormat(dur), false);
 					b.setColor(Color.GREEN);
 
