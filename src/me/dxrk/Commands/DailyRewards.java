@@ -44,6 +44,62 @@ public class DailyRewards implements Listener, CommandExecutor{
 		ItemMeta im = i.getItemMeta();
 		im.setDisplayName(name);
 		List<String> loree = new ArrayList<String>();
+		if(lore.equals(m.c("&7Click to Claim!"))){
+			loree.add(m.c("&7&lRewards:"));
+		}
+		if(name.equals(m.c("&cCavalry Reward!"))){
+			loree.add(m.c("&6&lPickaxe XP Voucher 1500"));
+		}
+		else if(name.equals(m.c("&eHoplite Reward!"))){
+			loree.add(m.c("&6&lPickaxe XP Voucher 2000"));
+			loree.add(m.c("&4&lHades Rune +1"));
+		}
+		else if(name.equals(m.c("&9Captain Reward!"))){
+			loree.add(m.c("&f&lPolis Rune +1"));
+			loree.add(m.c("&e&lTokens +1000"));
+		}
+		else if(name.equals(m.c("&6Colonel Reward!"))){
+			loree.add(m.c("&bCommon Trnket Dust +1"));
+			loree.add(m.c("&9Rare Trinket Dust +1"));
+			loree.add(m.c("&5Epic Trinket Dust +1"));
+			loree.add(m.c("&6Legendary Trinket Dust +1"));
+		}
+		else if(name.equals(m.c("&c&lAres Reward!"))){
+			loree.add(m.c("&6&lPickaxe XP Voucher 2500"));
+			loree.add(m.c("&f&lPolis Rune +2"));
+		}
+		else if(name.equals(m.c("&a&lHermes Reward!"))){
+			loree.add(m.c("&e&lTokens +1500"));
+			loree.add(m.c("&4&lHades Rune +2"));
+			loree.add(m.c("&f&lPolis Rune +2"));
+		}
+		else if(name.equals(m.c("&6&lApollo Reward!"))){
+			loree.add(m.c("&e&lTokens +1500"));
+			loree.add(m.c("&e&lMidas Rune +5"));
+			loree.add(m.c("&9&lPoseidon Rune +5"));
+		}
+		else if(name.equals(m.c("&8&lKronos Reward!"))){
+			loree.add(m.c("&6&lPickaxe XP Voucher 3000"));
+			loree.add(m.c("&4&lOblivion Rune +1"));
+		}
+		else if(name.equals(m.c("&f&lZeus Reward!"))){
+			loree.add(m.c("&e&lTokens +2500"));
+			loree.add(m.c("&6&lPickaxe XP Voucher 5000"));
+			loree.add(m.c("&e&lMidas Rune +2"));
+			loree.add(m.c("&9&lPoseidon Rune +2"));
+			loree.add(m.c("&4&lHades Rune +2"));
+			loree.add(m.c("&f&lPolis Rune +2"));
+			loree.add(m.c("&4&lOblivion Rune +2"));
+		}
+		else if(name.equals(m.c("&6Free Daily Reward!"))){
+			loree.add(m.c("&e&lMidas Rune +1"));
+			loree.add(m.c("&9&lPoseidon Rune +1"));
+			loree.add(m.c("&4&lHades Rune +1"));
+			loree.add(m.c("&f&lPolis Rune +1"));
+			loree.add(m.c("&6&lPickaxe XP Voucher 1000"));
+			loree.add(m.c("&e&lTokens +500"));
+		}
+		loree.add("");
 		loree.add(lore);
 		im.setLore(loree);
 		i.setItemMeta(im);

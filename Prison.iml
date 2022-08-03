@@ -7,23 +7,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="patched_1.8.8" level="project" />
-    <orderEntry type="library" name="ActionBarAPI-1.5.4" level="project" />
-    <orderEntry type="library" name="EssentialsX-2.19.4" level="project" />
-    <orderEntry type="library" name="FastAsyncWorldEdit-bukkit-21.03.26-b67f782-1287-22.3.10" level="project" />
-    <orderEntry type="library" name="WorldEdit" level="project" />
-    <orderEntry type="library" name="worldguard-6.2" level="project" />
-    <orderEntry type="library" name="Discord Bot API V 5.3" level="project" />
-    <orderEntry type="library" name="Citizens-2.0.28-b2329" level="project" />
-    <orderEntry type="library" name="GenesisEnchants" level="project" />
-    <orderEntry type="library" name="GenesisGangs" level="project" />
-    <orderEntry type="library" name="GroupManager" level="project" />
-    <orderEntry type="library" name="nuvotifier" level="project" />
-    <orderEntry type="library" name="PlotSquared-Bukkit-3.823" level="project" />
-    <orderEntry type="library" name="Vault" level="project" />
-    <orderEntry type="library" name="TitleAPI-1.8.1" level="project" />
-    <orderEntry type="library" name="ProtocolLib" level="project" />
-    <orderEntry type="library" name="HolographicDisplays" level="project" />
-    <orderEntry type="library" name="JetsPrisonMines-4.2.2" level="project" />
+    <orderEntry type="library" name="librariesgenesis" level="project" />
   </component>
 </module>
