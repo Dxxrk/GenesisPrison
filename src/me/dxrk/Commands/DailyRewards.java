@@ -45,7 +45,8 @@ public class DailyRewards implements Listener, CommandExecutor{
 		im.setDisplayName(name);
 		List<String> loree = new ArrayList<String>();
 		if(lore.equals(m.c("&7Click to Claim!"))){
-			loree.add(m.c("&7&lRewards:"));
+			loree.add("");
+			loree.add(m.c("&7Rewards:"));
 		}
 		if(name.equals(m.c("&cCavalry Reward!"))){
 			loree.add(m.c("&6&lPickaxe XP Voucher 1500"));

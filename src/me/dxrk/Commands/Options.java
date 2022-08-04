@@ -136,7 +136,7 @@ public class Options implements Listener, CommandExecutor{
 		    	if(e.getCurrentItem().equals(Spacer())) return;
 		    	if(e.getCurrentItem().getType().equals(Material.INK_SACK)) {
 		    		String[] name = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).split(" ");
-		    		if(name[0].equals("Autoselll") && !p.hasPermission("command.autosell")) return;
+		    		if(name[0].equals("Autosell") && !p.hasPermission("command.autosell")) return;
 		    		if(name[1].equals("Enabled")) {
 		    			if(name[0].equals("Autosell")) {
 
