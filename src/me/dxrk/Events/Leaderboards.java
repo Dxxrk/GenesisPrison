@@ -23,7 +23,7 @@ import com.earth2me.essentials.Essentials;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
-import me.dxrk.Commands.Voting;
+import me.dxrk.Commands.CMDVote;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.SettingsManager;
 
@@ -117,7 +117,7 @@ public class Leaderboards implements Listener, CommandExecutor{
 	  }
 	
 	public static void loadHolos() {
-		BlockCounting.getInstance().onEndLB();
+		BlocksHandler.getInstance().onEndLB();
 		for(Hologram h : HologramsAPI.getHolograms(Main.plugin)){
 			deleteIfOld(h);
 		}
@@ -166,20 +166,20 @@ public class Leaderboards implements Listener, CommandExecutor{
 		ordertime.clear();
 		
 		
-		Voting.getInstance().orderTop();
+		CMDVote.getInstance().orderTop();
 		Hologram voteholo = HologramsAPI.createHologram(Main.getInstance(), vote);
 		voteholo.appendTextLine(c("&f&lVotes")); 
 		voteholo.appendTextLine("");
-		if(Voting.top5.size() >=1)
-			voteholo.appendTextLine(c("&7#1 &d"+Bukkit.getOfflinePlayer(UUID.fromString(Voting.top5.get(0))).getName()+": &7"+getVotes(Bukkit.getOfflinePlayer(UUID.fromString(Voting.top5.get(0))))));
-		if(Voting.top5.size() >=2)
-			voteholo.appendTextLine(c("&7#2 &d"+Bukkit.getOfflinePlayer(UUID.fromString(Voting.top5.get(1))).getName()+": &7"+getVotes(Bukkit.getOfflinePlayer(UUID.fromString(Voting.top5.get(1))))));
-		if(Voting.top5.size() >=3)
-			voteholo.appendTextLine(c("&7#3 &d"+Bukkit.getOfflinePlayer(UUID.fromString(Voting.top5.get(2))).getName()+": &7"+getVotes(Bukkit.getOfflinePlayer(UUID.fromString(Voting.top5.get(2))))));
-		if(Voting.top5.size() >=4)
-			voteholo.appendTextLine(c("&7#4 &d"+Bukkit.getOfflinePlayer(UUID.fromString(Voting.top5.get(3))).getName()+": &7"+getVotes(Bukkit.getOfflinePlayer(UUID.fromString(Voting.top5.get(3))))));
-		if(Voting.top5.size() >=5)
-			voteholo.appendTextLine(c("&7#5 &d"+Bukkit.getOfflinePlayer(UUID.fromString(Voting.top5.get(4))).getName()+": &7"+getVotes(Bukkit.getOfflinePlayer(UUID.fromString(Voting.top5.get(4))))));
+		if(CMDVote.top5.size() >=1)
+			voteholo.appendTextLine(c("&7#1 &d"+Bukkit.getOfflinePlayer(UUID.fromString(CMDVote.top5.get(0))).getName()+": &7"+getVotes(Bukkit.getOfflinePlayer(UUID.fromString(CMDVote.top5.get(0))))));
+		if(CMDVote.top5.size() >=2)
+			voteholo.appendTextLine(c("&7#2 &d"+Bukkit.getOfflinePlayer(UUID.fromString(CMDVote.top5.get(1))).getName()+": &7"+getVotes(Bukkit.getOfflinePlayer(UUID.fromString(CMDVote.top5.get(1))))));
+		if(CMDVote.top5.size() >=3)
+			voteholo.appendTextLine(c("&7#3 &d"+Bukkit.getOfflinePlayer(UUID.fromString(CMDVote.top5.get(2))).getName()+": &7"+getVotes(Bukkit.getOfflinePlayer(UUID.fromString(CMDVote.top5.get(2))))));
+		if(CMDVote.top5.size() >=4)
+			voteholo.appendTextLine(c("&7#4 &d"+Bukkit.getOfflinePlayer(UUID.fromString(CMDVote.top5.get(3))).getName()+": &7"+getVotes(Bukkit.getOfflinePlayer(UUID.fromString(CMDVote.top5.get(3))))));
+		if(CMDVote.top5.size() >=5)
+			voteholo.appendTextLine(c("&7#5 &d"+Bukkit.getOfflinePlayer(UUID.fromString(CMDVote.top5.get(4))).getName()+": &7"+getVotes(Bukkit.getOfflinePlayer(UUID.fromString(CMDVote.top5.get(4))))));
 		
 		
 	}

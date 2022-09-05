@@ -21,13 +21,10 @@ import org.bukkit.scoreboard.*;
 import com.connorlinfoot.titleapi.TitleAPI;
 import com.earth2me.essentials.Essentials;
 
-import me.dxrk.Commands.Vanish;
-import me.dxrk.Main.Boosts;
+import me.dxrk.Commands.CMDVanish;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.SettingsManager;
-import me.dxrk.Tokens.PickaxeLevel;
 import me.dxrk.Tokens.Tokens;
-import net.ess3.api.events.UserBalanceUpdateEvent;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
@@ -44,7 +41,7 @@ public class ScoreboardHandler implements Listener{
 	public static int getPlayersOnline() {
 	    int x = 0;
 	    for (Player p : Bukkit.getOnlinePlayers()) {
-	    	if (!Vanish.vanished.contains(p.getUniqueId()))
+	    	if (!CMDVanish.vanished.contains(p.getUniqueId()))
 	        x++; 
 	    } 
 	    return x;
@@ -1205,15 +1202,15 @@ public class ScoreboardHandler implements Listener{
 					if(titlechanged == false) {
 					
 						TitleAPI.sendTabTitle(p, c("&9&lGenesis&b&lMC\n&aConnected to: &9Prison\n\n&dPlayers Online: &c"+getPlayersOnline()+"\n&7Ping: &a"+ping+"\n\n&8&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"), 
-								c("&7&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n&6Boosts\n"+Boosts.sname+"&7/"+Boosts.xname+"\n"+Boosts.stimeLeft+"&7/"+Boosts.xtimeLeft+"\n"));
+								c("&7&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n&6Boosts\n"+ BoostsHandler.sname+"&7/"+ BoostsHandler.xname+"\n"+ BoostsHandler.stimeLeft+"&7/"+ BoostsHandler.xtimeLeft+"\n"));
 					titlechanged = true;
 					} else {
 						TitleAPI.sendTabTitle(p, c("&9&lGenesis&b&lMC\n&aConnected to: &9Prison\n\n&dPlayers Online: &c"+getPlayersOnline()+"\n&7Ping: &a"+ping+"\n\n&7&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"), 
-								c("&8&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n&6Boosts\n"+Boosts.sname+"&7/"+Boosts.xname+"\n"+Boosts.stimeLeft+"&7/"+Boosts.xtimeLeft+"\n"));
+								c("&8&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n&6Boosts\n"+ BoostsHandler.sname+"&7/"+ BoostsHandler.xname+"\n"+ BoostsHandler.stimeLeft+"&7/"+ BoostsHandler.xtimeLeft+"\n"));
 						titlechanged = false;
 					}
 					if(!p.isOnline()) {
-						this.cancel();
+						cancel();
 					}
 	    		}
 	    		

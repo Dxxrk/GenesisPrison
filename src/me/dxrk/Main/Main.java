@@ -1,12 +1,13 @@
 package me.dxrk.Main;
 
+import me.dxrk.Enchants.Enchants;
 import com.earth2me.essentials.Essentials;
 import me.dxrk.Commands.*;
-import me.dxrk.Discord.CMDDiscord;
 import me.dxrk.Discord.JDAEvents;
 import me.dxrk.Discord.jdaHandler;
 import me.dxrk.Events.*;
 import me.dxrk.Tokens.*;
+import me.dxrk.Enchants.*;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -23,7 +24,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -53,7 +53,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
   
   public static Chat chat = null;
   
-  public ArrayList<String> Sb = new ArrayList<String>();
+  public ArrayList<String> Sb = new ArrayList<>();
   
   public static Plugin plugin;
   
@@ -71,7 +71,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
   
   public void onEnable() {
 	  
-    plugin = (Plugin)this;
+    plugin = this;
     INSTANCE = this;
     
     this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -79,7 +79,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     
     ess = (Essentials)Bukkit.getPluginManager().getPlugin("Essentials");
     setupEconomy();
-    this.settings.setup((Plugin)this);
+    this.settings.setup(this);
     setupPermissions();
     setupChat();
     
@@ -90,24 +90,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     }
     new jdaHandler(this);
     
-    Lottery.getInstance().startLottery();
-    
-    Lottery.scheduleLottery(this, new Runnable()
-    {
-        public void run()
-        {
-            Lottery.lottery = true;
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), (c("bc &3&lLottery &8&l┃ &7&lLOTTERY IS NOW OPEN!")));
-        }
-    }, 4);
-    Lottery.scheduleLottery(this, new Runnable()
-    {
-        public void run()
-        {
-            Lottery.lottery = false;
-            Lottery.getInstance().ChooseWinner();
-        }
-    }, 3);
+
     
     TrinketHandler t = new TrinketHandler();
     t.customDustCommon();
@@ -121,154 +104,120 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     t.legendaryDusting();
     
     
-    getCommand("blocks").setExecutor((CommandExecutor)new BlockCounting());
-    getCommand("joke").setExecutor((CommandExecutor)new BasicCommands());
-    getCommand("ChatColor").setExecutor((CommandExecutor)new me.dxrk.Events.Chat());
-    getCommand("Chat").setExecutor((CommandExecutor)new me.dxrk.Events.Chat());
-    getCommand("MuteChat").setExecutor((CommandExecutor)new me.dxrk.Events.Chat());
-    getCommand("rename").setExecutor((CommandExecutor)new Rename());
-    getCommand("renamepaper").setExecutor((CommandExecutor)new Rename());
-    getCommand("GiveRank").setExecutor((CommandExecutor)new GiveRank());
-    getCommand("relore").setExecutor((CommandExecutor)new Rename());
-    getCommand("Vote").setExecutor((CommandExecutor)new Voting());
-    getCommand("voteparty").setExecutor((CommandExecutor)new Voting());
-    getCommand("voteshop").setExecutor((CommandExecutor)new VoteShop());
-    getCommand("Tags").setExecutor((CommandExecutor)new Tags());
-    getCommand("Help").setExecutor((CommandExecutor)new BasicCommands());
-    getCommand("Website").setExecutor((CommandExecutor)new BasicCommands());
-    getCommand("Trash").setExecutor((CommandExecutor)new BasicCommands());
-    getCommand("glow").setExecutor((CommandExecutor)new BasicCommands());
-    getCommand("Glow").setExecutor((CommandExecutor)new BasicCommands());
-    getCommand("UpdateBC").setExecutor((CommandExecutor)new BasicCommands());
-    getCommand("Disposal").setExecutor((CommandExecutor)new BasicCommands());
-    getCommand("Dispose").setExecutor((CommandExecutor)new BasicCommands());
-    getCommand("Color").setExecutor((CommandExecutor)new BasicCommands());
-    getCommand("RedeemDonor").setExecutor((CommandExecutor)new BasicCommands());
-    getCommand("Updates").setExecutor((CommandExecutor)new Updates());
-    getCommand("rewards").setExecutor((CommandExecutor)new Voting());
-    getCommand("Fortune").setExecutor((CommandExecutor)new BasicCommands());
-    getCommand("Prestiges").setExecutor((CommandExecutor)new BasicCommands());
-    getCommand("Say").setExecutor((CommandExecutor)new Say());
-    //getCommand("epsilondp").setExecutor((CommandExecutor)new EpsilonDp());
-    getCommand("upgrade").setExecutor((CommandExecutor)new Upgrade());
-    getCommand("upgradebook").setExecutor((CommandExecutor)new Upgrade());
-    getCommand("upgradebookrandom").setExecutor((CommandExecutor)new Upgrade());
-    getCommand("CoinFlip").setExecutor((CommandExecutor)new CoinFlip());
-    getCommand("Tokens").setExecutor((CommandExecutor)new EnchantTokensCommand());
-    getCommand("Token").setExecutor((CommandExecutor)new EnchantTokensCommand());
-    getCommand("Who").setExecutor((CommandExecutor)new BasicCommands());
-    getCommand("List").setExecutor((CommandExecutor)new BasicCommands());
-    getCommand("givebook").setExecutor((CommandExecutor)new GiveBook(this));
-    getCommand("nick").setExecutor((CommandExecutor)new Nicks());
-    getCommand("nickname").setExecutor((CommandExecutor)new Nicks());
-    getCommand("nicknames").setExecutor((CommandExecutor)new Nicks());
-    getCommand("withdraw").setExecutor((CommandExecutor)new BasicCommands());
-    getCommand("welcome").setExecutor((CommandExecutor)new Welcome());
-    getCommand("mine").setExecutor((CommandExecutor)new MineCMD());
-    getCommand("freeze").setExecutor((CommandExecutor)new Freeze());
-    getCommand("vanish").setExecutor((CommandExecutor)new Vanish());
-    getCommand("v").setExecutor((CommandExecutor)new Vanish());
-    getCommand("ev").setExecutor((CommandExecutor)new Vanish());
-    getCommand("evanish").setExecutor((CommandExecutor)new Vanish());
-    getCommand("pick").setExecutor((CommandExecutor)new PickaxeLevel());
-    getCommand("pickaxe").setExecutor((CommandExecutor)new PickaxeLevel());
-    getCommand("resetallmines").setExecutor((CommandExecutor)new PickaxeLevel());
-    getCommand("motdchange").setExecutor((CommandExecutor)this);
-    getCommand("prestige").setExecutor((CommandExecutor)new PickaxeLevel());
-    getCommand("giveenchant").setExecutor((CommandExecutor)new DonorItems());
-    getCommand("activeboost").setExecutor((CommandExecutor)new Boosts());
-    getCommand("boost").setExecutor((CommandExecutor)new Boosts());
-    getCommand("giveboost").setExecutor((CommandExecutor)new Boosts());
-    getCommand("lottery").setExecutor((CommandExecutor)new Lottery());
-    getCommand("blockstop").setExecutor((CommandExecutor)new Leaderboards());
-    getCommand("givedust").setExecutor((CommandExecutor)new TrinketHandler());
-    getCommand("givetrinket").setExecutor((CommandExecutor)new TrinketHandler());
-    registerEvents((Plugin)this, new Listener[] { (Listener)new Freeze() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new VoteShop() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new Welcome() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new EnchantTokensCommand() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new Staff() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new KitAndWarp() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new Tags() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new CoinFlip() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new GiveRank() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new ProtectOP() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new BasicCommands() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new VirtualShop() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new BlockCounting() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new me.dxrk.Events.Chat() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new Voting() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new DeathLogger() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new Upgrade() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new EnchantTokensListener() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new GiveBook(this) });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new Nicks() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new BasicCommands() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new PickaxeLevel() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new Enchants() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new PickXPHandler() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new Boosts() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new NPCHandler() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new Lottery() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new CreateMine() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new Leaderboards() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new MineCMD() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)new DonorItems() });
-    registerEvents((Plugin)this, new Listener[] { (Listener)this});
-    PluginManager pm = getServer().getPluginManager();
-    //getCommand("rename").setExecutor((CommandExecutor)new CMDItemEdits());
-    getCommand("relore").setExecutor((CommandExecutor)new CMDItemEdits());
-    getCommand("addlore").setExecutor((CommandExecutor)new CMDItemEdits());
-    getCommand("dellore").setExecutor((CommandExecutor)new CMDItemEdits());
-    getCommand("trash").setExecutor((CommandExecutor)new CMDTrash());
-    getCommand("ac").setExecutor((CommandExecutor)new CMDAc());
-    getCommand("autosell").setExecutor((CommandExecutor)new CMDAutosell());
-    getCommand("picksell").setExecutor((CommandExecutor)new CMDPicksell());
-    getCommand("cratekey").setExecutor((CommandExecutor)new CrateHandler());
-    getCommand("crateinfo").setExecutor((CommandExecutor)new CrateHandler());
-    getCommand("openall").setExecutor((CommandExecutor)new CrateHandler());
-    getCommand("backpack").setExecutor((CommandExecutor)new SellHandler());
-    getCommand("bp").setExecutor((CommandExecutor)new SellHandler());
-    getCommand("sellall").setExecutor((CommandExecutor)new SellHandler());
-    getCommand("rankup").setExecutor((CommandExecutor)new CMDRankup());
-    getCommand("maxrankup").setExecutor((CommandExecutor)new CMDRankup());
-    getCommand("rankupmax").setExecutor((CommandExecutor)new CMDRankup());
-    getCommand("locksmith").setExecutor((CommandExecutor)new LocksmithHandler());
-    getCommand("ls").setExecutor((CommandExecutor)new LocksmithHandler());
-    getCommand("keys").setExecutor((CommandExecutor)new LocksmithHandler());
-    getCommand("clearchat").setExecutor((CommandExecutor)new CMDClearchat());
-    getCommand("dr").setExecutor((CommandExecutor)new CMDDr());
-    getCommand("dp").setExecutor((CommandExecutor)new CMDDp());
-    getCommand("multi").setExecutor((CommandExecutor)new SellHandler());
-    getCommand("withdraw").setExecutor((CommandExecutor)new SellHandler());
-    getCommand("setrank").setExecutor((CommandExecutor)new CMDRankup());
-    getCommand("forcereset").setExecutor((CommandExecutor)new SellHandler());
-    getCommand("bpreset").setExecutor((CommandExecutor)new SellHandler());
-    getCommand("resetmine").setExecutor((CommandExecutor)new SellHandler());
-    getCommand("checkminereset").setExecutor((CommandExecutor)new CreateMine());
-    getCommand("rm").setExecutor((CommandExecutor)new SellHandler());
-    getCommand("autorankup").setExecutor((CommandExecutor)new RankupHandler());
-    getCommand("aru").setExecutor((CommandExecutor)new RankupHandler());
-    getCommand("giveplotitem").setExecutor((CommandExecutor)new CreateMine());
-    getCommand("buymsg").setExecutor((CommandExecutor) new BuycraftMessages());
-    getCommand("options").setExecutor((CommandExecutor)new Options());
-    getCommand("daily").setExecutor((CommandExecutor)new DailyRewards());
-    getCommand("discord").setExecutor((CommandExecutor) new JDAEvents());
-    getCommand("ranktop").setExecutor((CommandExecutor) new Leaderboards());
-    getCommand("rankstop").setExecutor((CommandExecutor) new Leaderboards());
-    getCommand("givemoney").setExecutor((CommandExecutor) new RankupHandler());
-    getCommand("randomtag").setExecutor((CommandExecutor) new tagsHandler());
-    pm.registerEvents((Listener)new CrateHandler(), (Plugin)this);
-    pm.registerEvents((Listener)new SellHandler(), (Plugin)this);
-    pm.registerEvents((Listener)new PlayerDataHandler(), (Plugin)this);
-    pm.registerEvents((Listener)new KeysHandler(), (Plugin)this);
-    pm.registerEvents((Listener)new LocksmithHandler(), (Plugin)this);
-    pm.registerEvents((Listener)new RankupHandler(),(Plugin)this);
-    pm.registerEvents((Listener)new ScoreboardHandler(),(Plugin)this);
-    pm.registerEvents((Listener)new TrinketHandler(),(Plugin)this);
-    pm.registerEvents((Listener)new Options(),(Plugin)this);
-    pm.registerEvents((Listener)new DailyRewards(),(Plugin)this);
-    pm.registerEvents((Listener)new JDAEvents(),(Plugin)this);
+    getCommand("blocks").setExecutor(new BlocksHandler());
+    getCommand("ChatColor").setExecutor(new ChatHandler());
+    getCommand("Chat").setExecutor(new ChatHandler());
+    getCommand("MuteChat").setExecutor(new ChatHandler());
+    getCommand("rename").setExecutor(new CMDRename());
+    getCommand("renamepaper").setExecutor(new CMDRename());
+    getCommand("relore").setExecutor(new CMDRename());
+    getCommand("Vote").setExecutor(new CMDVote());
+    getCommand("voteparty").setExecutor(new CMDVote());
+    getCommand("voteshop").setExecutor(new CMDVoteShop());
+    getCommand("Tags").setExecutor(new CMDTags());
+    getCommand("rewards").setExecutor(new CMDVote());
+    getCommand("Say").setExecutor(new CMDSay());
+    getCommand("CoinFlip").setExecutor(new CMDCoinflip());
+    getCommand("Tokens").setExecutor(new TokensCMD());
+    getCommand("Token").setExecutor(new TokensCMD());
+    getCommand("nick").setExecutor(new CMDNickname());
+    getCommand("nickname").setExecutor(new CMDNickname());
+    getCommand("nicknames").setExecutor(new CMDNickname());
+    getCommand("mine").setExecutor(new CMDMine());
+    getCommand("vanish").setExecutor(new CMDVanish());
+    getCommand("v").setExecutor(new CMDVanish());
+    getCommand("ev").setExecutor(new CMDVanish());
+    getCommand("evanish").setExecutor(new CMDVanish());
+    getCommand("pick").setExecutor(new PickaxeLevel());
+    getCommand("pickaxe").setExecutor(new PickaxeLevel());
+    getCommand("resetallmines").setExecutor(new PickaxeLevel());
+    getCommand("motdchange").setExecutor(this);
+    getCommand("prestige").setExecutor(new PickaxeLevel());
+    getCommand("giveenchant").setExecutor(new DonorItems());
+    getCommand("activeboost").setExecutor(new BoostsHandler());
+    getCommand("boost").setExecutor(new BoostsHandler());
+    getCommand("giveboost").setExecutor(new BoostsHandler());
+    getCommand("blockstop").setExecutor(new Leaderboards());
+    getCommand("givedust").setExecutor(new TrinketHandler());
+    getCommand("givetrinket").setExecutor(new TrinketHandler());
+    getCommand("relore").setExecutor(new CMDItemEdits());
+    getCommand("addlore").setExecutor(new CMDItemEdits());
+    getCommand("dellore").setExecutor(new CMDItemEdits());
+    getCommand("trash").setExecutor(new CMDTrash());
+    getCommand("ac").setExecutor(new CMDAc());
+    getCommand("autosell").setExecutor(new CMDAutosell());
+    getCommand("picksell").setExecutor(new CMDPicksell());
+    getCommand("cratekey").setExecutor(new CrateHandler());
+    getCommand("crateinfo").setExecutor(new CrateHandler());
+    getCommand("openall").setExecutor(new CrateHandler());
+    getCommand("backpack").setExecutor(new SellHandler());
+    getCommand("bp").setExecutor(new SellHandler());
+    getCommand("sellall").setExecutor(new SellHandler());
+    getCommand("rankup").setExecutor(new CMDRankup());
+    getCommand("maxrankup").setExecutor(new CMDRankup());
+    getCommand("rankupmax").setExecutor(new CMDRankup());
+    getCommand("locksmith").setExecutor(new LocksmithHandler());
+    getCommand("ls").setExecutor(new LocksmithHandler());
+    getCommand("keys").setExecutor(new LocksmithHandler());
+    getCommand("clearchat").setExecutor(new CMDClearchat());
+    getCommand("dr").setExecutor(new CMDDr());
+    getCommand("dp").setExecutor(new CMDDp());
+    getCommand("multi").setExecutor(new SellHandler());
+    getCommand("withdraw").setExecutor(new SellHandler());
+    getCommand("setrank").setExecutor(new CMDRankup());
+    getCommand("forcereset").setExecutor(new SellHandler());
+    getCommand("bpreset").setExecutor(new SellHandler());
+    getCommand("resetmine").setExecutor(new SellHandler());
+    getCommand("checkminereset").setExecutor(new MineHandler());
+    getCommand("rm").setExecutor(new SellHandler());
+    getCommand("autorankup").setExecutor(new RankupHandler());
+    getCommand("aru").setExecutor(new RankupHandler());
+    getCommand("giveplotitem").setExecutor(new MineHandler());
+    getCommand("buymsg").setExecutor( new CMDBuycraft());
+    getCommand("options").setExecutor(new CMDOptions());
+    getCommand("daily").setExecutor(new CMDDaily());
+    getCommand("discord").setExecutor( new JDAEvents());
+    getCommand("ranktop").setExecutor( new Leaderboards());
+    getCommand("rankstop").setExecutor( new Leaderboards());
+    getCommand("givemoney").setExecutor( new RankupHandler());
+    getCommand("randomtag").setExecutor( new TagsHandler());
+    getCommand("givecrate").setExecutor(new MysteryBoxHandler());
+    getCommand("testchestopen").setExecutor(new MysteryBoxHandler());
+    registerEvents(this, new Listener[] { new CMDVoteShop() });
+    registerEvents(this, new Listener[] { new TokensCMD() });
+    registerEvents(this, new Listener[] { new KitAndWarp() });
+    registerEvents(this, new Listener[] { new CMDTags() });
+    registerEvents(this, new Listener[] { new CMDCoinflip() });
+    registerEvents(this, new Listener[] { new ProtectOP() });
+    registerEvents(this, new Listener[] { new TokenShop() });
+    registerEvents(this, new Listener[] { new BlocksHandler() });
+    registerEvents(this, new Listener[] { new ChatHandler() });
+    registerEvents(this, new Listener[] { new CMDVote() });
+    registerEvents(this, new Listener[] { new DeathLogger() });
+    registerEvents(this, new Listener[] { new TokensListener() });
+    registerEvents(this, new Listener[] { new CMDNickname() });
+    registerEvents(this, new Listener[] { new PickaxeLevel() });
+    registerEvents(this, new Listener[] { new Enchants() });
+    registerEvents(this, new Listener[] { new PickXPHandler() });
+    registerEvents(this, new Listener[] { new BoostsHandler() });
+    registerEvents(this, new Listener[] { new MineHandler() });
+    registerEvents(this, new Listener[] { new Leaderboards() });
+    registerEvents(this, new Listener[] { new CMDMine() });
+    registerEvents(this, new Listener[] { new DonorItems() });
+    registerEvents(this, new Listener[] { new CrateHandler() });
+    registerEvents(this, new Listener[] { new SellHandler() });
+    registerEvents(this, new Listener[] { new PlayerDataHandler() });
+    registerEvents(this, new Listener[] { new KeysHandler() });
+    registerEvents(this, new Listener[] { new LocksmithHandler() });
+    registerEvents(this, new Listener[] { new RankupHandler() });
+    registerEvents(this, new Listener[] { new ScoreboardHandler() });
+    registerEvents(this, new Listener[] { new TrinketHandler() });
+    registerEvents(this, new Listener[] { new CMDOptions() });
+    registerEvents(this, new Listener[] { new CMDDaily() });
+    registerEvents(this, new Listener[] { new JDAEvents() });
+    registerEvents(this, new Listener[] { new MysteryBoxHandler() });
+    registerEvents(this, new Listener[] { this});
+
     
 
       JDAEvents.getInstance().serverLink();
@@ -279,6 +228,8 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
 		public void run() {
 			for(Player p : Bukkit.getOnlinePlayers()) {
 				if(!p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)) return;
+                if(!p.getItemInHand().hasItemMeta()) return;
+                if(!p.getItemInHand().getItemMeta().hasLore()) return;
 				 
 				int level = PickXPHandler.getBlocks(p.getItemInHand().getItemMeta().getLore().get(1));
 				p.setLevel(level);
@@ -300,7 +251,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
 
 		}
 
- }.runTaskTimer((Plugin)this, 0L, 20*2L);
+ }.runTaskTimer(this, 0L, 20*2L);
     
     new BukkitRunnable() {
 
@@ -319,7 +270,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
 
 		}
 
- }.runTaskTimer((Plugin)this, 0L, 20*2L);
+ }.runTaskTimer(this, 0L, 20*2L);
  
  
  new BukkitRunnable() {
@@ -331,7 +282,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
 
 		}
 
-}.runTaskTimer((Plugin)this, 0L, 20*20L);
+}.runTaskTimer(this, 0L, 20*20L);
 
 new BukkitRunnable() {
 
@@ -342,7 +293,7 @@ new BukkitRunnable() {
 
 	}
 
-}.runTaskTimer((Plugin)this, 0L, 20L);
+}.runTaskTimer(this, 0L, 20L);
  
     
     
@@ -354,10 +305,10 @@ new BukkitRunnable() {
       if (re != null && re.getResult().getType() == Material.GOLDEN_APPLE)
         it.remove(); 
     }
-    Boosts.nextUpsell.clear();
-    Boosts.nextUpsell.addAll(this.settings.getBoost().getStringList("nextUpSell"));
-    Boosts.nextUpxp.clear();
-    Boosts.nextUpxp.addAll(this.settings.getBoost().getStringList("nextUpXP"));
+    BoostsHandler.nextUpsell.clear();
+    BoostsHandler.nextUpsell.addAll(this.settings.getBoost().getStringList("nextUpSell"));
+    BoostsHandler.nextUpxp.clear();
+    BoostsHandler.nextUpxp.addAll(this.settings.getBoost().getStringList("nextUpXP"));
     
     if(this.settings.getBoost().getDouble("ActiveSell.Amp") != 0.0D) {
     	int timeleft = this.settings.getBoost().getInt("TimeLeftSell");
@@ -389,7 +340,7 @@ new BukkitRunnable() {
     
     
     
-    Lottery.scheduleLottery((Plugin)this, new Runnable()
+    Methods.schedule(this, new Runnable()
     {
         public void run()
         {
@@ -421,7 +372,7 @@ new BukkitRunnable() {
     }, 3);
     
     
-    Lottery.scheduleLottery((Plugin)this, new Runnable()
+    Methods.schedule(this, new Runnable()
 	    {
 	        public void run()
 	        {
@@ -480,15 +431,15 @@ new BukkitRunnable() {
 	    if (amt <= 0.0D)
 	      return String.valueOf(0); 
 	    if (amt >= 1.0E18D)
-	        return String.format("%.1f Quint", new Object[] { Double.valueOf(amt / 1.0E18D) });
+	        return String.format("%.1f Quint", amt / 1.0E18D);
 	    if(amt >= 1.0E15D)
-	    	return String.format("%.1f Quad", new Object[] { Double.valueOf(amt / 1.0E15D) }); 
+	    	return String.format("%.1f Quad", amt / 1.0E15D);
 	    if (amt >= 1.0E12D)
-	      return String.format("%.1f Tril", new Object[] { Double.valueOf(amt / 1.0E12D) }); 
+	      return String.format("%.1f Tril", amt / 1.0E12D);
 	    if (amt >= 1.0E9D)
-	      return String.format("%.1f Bil", new Object[] { Double.valueOf(amt / 1.0E9D) }); 
+	      return String.format("%.1f Bil", amt / 1.0E9D);
 	    if (amt >= 1000000.0D)
-	      return String.format("%.1f Mil", new Object[] { Double.valueOf(amt / 1000000.0D) }); 
+	      return String.format("%.1f Mil", amt / 1000000.0D);
 	    return NumberFormat.getNumberInstance(Locale.US).format(amt);
 	  }
   
@@ -502,27 +453,27 @@ new BukkitRunnable() {
 	  settings.saveVote();
 	  
 	  if(settings.getBoost().getDouble("ActiveSell.Amp") != 0.0D) {
-	  this.settings.getBoost().set("TimeLeftSell", Boosts.selltime);
+	  this.settings.getBoost().set("TimeLeftSell", BoostsHandler.selltime);
 	  }
 	  if(settings.getBoost().getDouble("ActiveXP.Amp") != 0.0D) {
-		  this.settings.getBoost().set("TimeLeftXP", Boosts.xptime);
+		  this.settings.getBoost().set("TimeLeftXP", BoostsHandler.xptime);
 		  }
 	  for(Player p : Bukkit.getOnlinePlayers()) {
-		  Boosts.getInstance().saveBinv(p);
-		  Boosts.boostsinv.remove(p);
+		  BoostsHandler.getInstance().saveBinv(p);
+		  BoostsHandler.boostsinv.remove(p);
 	  }
 	  
-	  this.settings.getBoost().set("nextUpSell", Boosts.nextUpsell);
-	  this.settings.getBoost().set("nextUpXP", Boosts.nextUpxp);
+	  this.settings.getBoost().set("nextUpSell", BoostsHandler.nextUpsell);
+	  this.settings.getBoost().set("nextUpXP", BoostsHandler.nextUpxp);
 	  this.settings.saveboosts();
 	  
-	  this.settings.getVote().set("VoteShopLog", VoteShop.votelog);
+	  this.settings.getVote().set("VoteShopLog", CMDVoteShop.votelog);
 	  this.settings.saveVote();
 	  
 	  
 	  
     this.settings.saveData();
-    BlockCounting.getInstance().onEnd();
+    BlocksHandler.getInstance().onEnd();
     
     for(Player p : Bukkit.getOnlinePlayers()) {
     ByteArrayOutputStream b = new ByteArrayOutputStream();
@@ -540,14 +491,14 @@ new BukkitRunnable() {
   
   private boolean setupPermissions() {
     RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-    perms = (Permission)rsp.getProvider();
-    return (perms != null);
+    perms = rsp.getProvider();
+    return perms != null;
   }
   
   private boolean setupChat() {
 	  RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
-	  chat = (Chat)rsp.getProvider();
-	  return (chat != null);
+	  chat = rsp.getProvider();
+	  return chat != null;
 	  
   }
   
@@ -565,12 +516,12 @@ new BukkitRunnable() {
   
   private boolean setupEconomy() {
     if (getServer().getPluginManager().getPlugin("Vault") == null)
-      return false; 
+      return false;
     RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
     if (rsp == null)
-      return false; 
-    econ = (Economy)rsp.getProvider();
-    return (econ != null);
+      return false;
+    econ = rsp.getProvider();
+    return econ != null;
   }
   
   

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import me.dxrk.Main.Functions;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.RomanNumber;
 import me.dxrk.Main.SettingsManager;

@@ -12,14 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import me.dxrk.Main.Boosts;
+import me.dxrk.Main.Functions;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
-import me.dxrk.Main.ResetHandler;
 import me.dxrk.Main.SettingsManager;
-import me.dxrk.Main.ResetHandler.ResetReason;
-import me.dxrk.Tokens.EnchantMethods;
-import me.dxrk.Tokens.PickaxeLevel;
+import me.dxrk.Events.ResetHandler.ResetReason;
+import me.dxrk.Enchants.EnchantMethods;
+import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Tokens.Tokens;
 import me.jet315.prisonmines.mine.Mine;
 
@@ -247,7 +246,7 @@ public class SellHandler implements Listener, CommandExecutor {
 	    int amountotal = 0;
 	    double greed = Functions.greed(p);
 	    double sell = Functions.sellBoost(p);
-	    double miningboost = Boosts.sell;
+	    double miningboost = BoostsHandler.sell;
     	SettingsManager.getInstance().getMultiplier();
 	    double multi = SellHandler.getInstance().getMulti(p);
 	    for (ItemStack i : items) {
@@ -282,7 +281,7 @@ public class SellHandler implements Listener, CommandExecutor {
   	    double total = 0.0D;
   	  double greed = Functions.greed(p);
   	double sell = Functions.sellBoost(p);
-  	double miningboost = Boosts.sell;
+  	double miningboost = BoostsHandler.sell;
     
       
   	
@@ -322,7 +321,7 @@ public class SellHandler implements Listener, CommandExecutor {
     double multi = SellHandler.getInstance().getMulti(p);
     double greed = Functions.greed(p);
     double sell = Functions.sellBoost(p);
-    double miningboost = Boosts.sell;
+    double miningboost = BoostsHandler.sell;
     
     
     
@@ -905,25 +904,25 @@ public class SellHandler implements Listener, CommandExecutor {
         	im.setDisplayName(c("&6&lBackpack Info"));
         	lore.add(c("&cBackpack Rows: &b " + this.settings.getbpSize().getInt(p.getUniqueId().toString())));
         	if(p.hasPermission("bplevel.10")) {
-        	lore.add(c("&cFor Enchants: : &bLevel 10"));
+        	lore.add(c("&cFor me.dxrk.Enchants: : &bLevel 10"));
         	} else if(p.hasPermission("bplevel.9")) {
-        		lore.add(c("&cFor Enchants: : &bLevel 9"));
+        		lore.add(c("&cFor me.dxrk.Enchants: : &bLevel 9"));
         	} else if(p.hasPermission("bplevel.8")) {
-        		lore.add(c("&cFor Enchants: : &bLevel 8"));
+        		lore.add(c("&cFor me.dxrk.Enchants: : &bLevel 8"));
         	} else if(p.hasPermission("bplevel.7")) {
-        		lore.add(c("&cFor Enchants: : &bLevel 7"));
+        		lore.add(c("&cFor me.dxrk.Enchants: : &bLevel 7"));
         	} else if(p.hasPermission("bplevel.6")) {
-        		lore.add(c("&cFor Enchants: : &bLevel 6"));
+        		lore.add(c("&cFor me.dxrk.Enchants: : &bLevel 6"));
         	} else if(p.hasPermission("bplevel.5")) {
-        		lore.add(c("&cFor Enchants: : &bLevel 5"));
+        		lore.add(c("&cFor me.dxrk.Enchants: : &bLevel 5"));
         	} else if(p.hasPermission("bplevel.4")) {
-        		lore.add(c("&cFor Enchants: : &bLevel 4"));
+        		lore.add(c("&cFor me.dxrk.Enchants: : &bLevel 4"));
         	} else if(p.hasPermission("bplevel.3")) {
-        		lore.add(c("&cFor Enchants: : &bLevel 3"));
+        		lore.add(c("&cFor me.dxrk.Enchants: : &bLevel 3"));
         	} else if(p.hasPermission("bplevel.2")) {
-        		lore.add(c("&cFor Enchants: : &bLevel 2"));
+        		lore.add(c("&cFor me.dxrk.Enchants: : &bLevel 2"));
         	} else if(p.hasPermission("bplevel.1")) {
-        		lore.add(c("&cFor Enchants: : &bLevel 1"));
+        		lore.add(c("&cFor me.dxrk.Enchants: : &bLevel 1"));
         	}
         	im.setLore(lore);
         	lore.clear();
@@ -933,7 +932,7 @@ public class SellHandler implements Listener, CommandExecutor {
           ItemStack stage1 = new ItemStack(Material.CHEST);
           ItemMeta m1 = stage1.getItemMeta();
           m1.setDisplayName(c("&c&lBackpack Stage 1!"));   
-          lore.add(c("&7&oEffective for Level 1 Enchants."));
+          lore.add(c("&7&oEffective for Level 1 me.dxrk.Enchants."));
           lore.add(c("&7&o2 Backpack Rows."));
           lore.add(c("&b2,500 &dTokens"));
           m1.setLore(lore);
@@ -944,7 +943,7 @@ public class SellHandler implements Listener, CommandExecutor {
           ItemStack stage2 = new ItemStack(Material.CHEST);
           ItemMeta m2 = stage2.getItemMeta();
           m2.setDisplayName(c("&c&lBackpack Stage 2!"));   
-          lore.add(c("&7&oEffective for Level 2 Enchants."));
+          lore.add(c("&7&oEffective for Level 2 me.dxrk.Enchants."));
           lore.add(c("&7&o3 Backpack Rows."));
           lore.add(c("&b7,500 &dTokens"));
           m2.setLore(lore);
@@ -955,7 +954,7 @@ public class SellHandler implements Listener, CommandExecutor {
           ItemStack stage3 = new ItemStack(Material.CHEST);
           ItemMeta m3 = stage3.getItemMeta();
           m3.setDisplayName(c("&c&lBackpack Stage 3!"));   
-          lore.add(c("&7&oEffective for Level 3 Enchants."));
+          lore.add(c("&7&oEffective for Level 3 me.dxrk.Enchants."));
           lore.add(c("&7&o4 Backpack Rows."));
           lore.add(c("&b10,000 &dTokens"));
           m3.setLore(lore);
@@ -966,7 +965,7 @@ public class SellHandler implements Listener, CommandExecutor {
           ItemStack stage4 = new ItemStack(Material.CHEST);
           ItemMeta m4 = stage4.getItemMeta();
           m4.setDisplayName(c("&c&lBackpack Stage 4!"));   
-          lore.add(c("&7&oEffective for Level 4 Enchants."));
+          lore.add(c("&7&oEffective for Level 4 me.dxrk.Enchants."));
           lore.add(c("&7&o5 Backpack Rows."));
           lore.add(c("&b15,000 &dTokens"));
           m4.setLore(lore);
@@ -977,7 +976,7 @@ public class SellHandler implements Listener, CommandExecutor {
           ItemStack stage5 = new ItemStack(Material.CHEST);
           ItemMeta m5 = stage5.getItemMeta();
           m5.setDisplayName(c("&c&lBackpack Stage 5!"));   
-          lore.add(c("&7&oEffective for Level 5 Enchants."));
+          lore.add(c("&7&oEffective for Level 5 me.dxrk.Enchants."));
           lore.add(c("&7&o6 Backpack Rows."));
           lore.add(c("&b20,000 &dTokens"));
           m5.setLore(lore);
@@ -988,7 +987,7 @@ public class SellHandler implements Listener, CommandExecutor {
           ItemStack stage6 = new ItemStack(Material.CHEST);
           ItemMeta m6 = stage6.getItemMeta();
           m6.setDisplayName(c("&c&lBackpack Stage 6!"));   
-          lore.add(c("&7&oEffective for Level 6 Enchants."));
+          lore.add(c("&7&oEffective for Level 6 me.dxrk.Enchants."));
           lore.add(c("&7&o7 Backpack Rows."));
           lore.add(c("&b30,000 &dTokens"));
           m6.setLore(lore);
@@ -999,7 +998,7 @@ public class SellHandler implements Listener, CommandExecutor {
           ItemStack stage7 = new ItemStack(Material.CHEST);
           ItemMeta m7 = stage7.getItemMeta();
           m7.setDisplayName(c("&c&lBackpack Stage 7!"));   
-          lore.add(c("&7&oEffective for Level 7 Enchants."));
+          lore.add(c("&7&oEffective for Level 7 me.dxrk.Enchants."));
           lore.add(c("&7&o8 Backpack Rows."));
           lore.add(c("&b40,000 &dTokens"));
           m7.setLore(lore);
@@ -1010,7 +1009,7 @@ public class SellHandler implements Listener, CommandExecutor {
           ItemStack stage8 = new ItemStack(Material.CHEST);
           ItemMeta m8 = stage8.getItemMeta();
           m8.setDisplayName(c("&c&lBackpack Stage 8!"));   
-          lore.add(c("&7&oEffective for Level 8 Enchants."));
+          lore.add(c("&7&oEffective for Level 8 me.dxrk.Enchants."));
           lore.add(c("&7&o9 Backpack Rows."));
           lore.add(c("&b50,000 &dTokens"));
           m8.setLore(lore);
@@ -1021,7 +1020,7 @@ public class SellHandler implements Listener, CommandExecutor {
           ItemStack stage9 = new ItemStack(Material.CHEST);
           ItemMeta m9 = stage9.getItemMeta();
           m9.setDisplayName(c("&c&lBackpack Stage 9!"));   
-          lore.add(c("&7&oEffective for Level 9 Enchants."));
+          lore.add(c("&7&oEffective for Level 9 me.dxrk.Enchants."));
           lore.add(c("&7&o10 Backpack Rows."));
           lore.add(c("&b75,000 &dTokens"));
           m9.setLore(lore);
@@ -1032,7 +1031,7 @@ public class SellHandler implements Listener, CommandExecutor {
           ItemStack stage10 = new ItemStack(Material.CHEST);
           ItemMeta m10 = stage10.getItemMeta();
           m10.setDisplayName(c("&c&lBackpack Stage 10!"));   
-          lore.add(c("&7&oEffective for Level 10 Enchants."));
+          lore.add(c("&7&oEffective for Level 10 me.dxrk.Enchants."));
           lore.add(c("&7&o11 Backpack Rows."));
           lore.add(c("&b100,000 &dTokens"));
           m10.setLore(lore);

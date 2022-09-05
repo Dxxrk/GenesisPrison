@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import me.dxrk.Main.Boosts;
 import me.dxrk.Main.Methods;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -16,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -187,7 +185,7 @@ implements Listener {
 
     public void addXP(Player p, ItemStack ii, int XP) {
         int blockss = getBlocks((String)ii.getItemMeta().getLore().get(1));
-        int blocks = XP*Boosts.xp;
+        int blocks = XP* BoostsHandler.xp;
         ItemStack i = ii.clone();
         ItemMeta im = i.getItemMeta();
         List<String> lore = im.getLore();
