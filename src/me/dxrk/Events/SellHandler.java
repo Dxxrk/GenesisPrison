@@ -4,28 +4,18 @@ import com.connorlinfoot.titleapi.TitleAPI;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-
+import me.dxrk.Enchants.EnchantMethods;
+import me.dxrk.Enchants.PickaxeLevel;
+import me.dxrk.Events.ResetHandler.ResetReason;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
-import me.dxrk.Events.ResetHandler.ResetReason;
-import me.dxrk.Enchants.EnchantMethods;
-import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Tokens.Tokens;
 import me.jet315.prisonmines.mine.Mine;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -45,6 +35,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.text.NumberFormat;
+import java.util.*;
 
 @SuppressWarnings("deprecation")
 public class SellHandler implements Listener, CommandExecutor {
@@ -79,15 +72,15 @@ public class SellHandler implements Listener, CommandExecutor {
   
   public static String format(double amt) {
 	  if (amt >= 1.0E18D)
-	      return String.format("%.1f Quint", new Object[] { Double.valueOf(amt / 1.0E18D) }); 
+	      return String.format("%.1f Quint", amt / 1.0E18D); 
     if (amt >= 1.0E15D)
-      return String.format("%.1f Quad", new Object[] { Double.valueOf(amt / 1.0E15D) }); 
+      return String.format("%.1f Quad", amt / 1.0E15D); 
     if (amt >= 1.0E12D)
-      return String.format("%.1f Tril", new Object[] { Double.valueOf(amt / 1.0E12D) }); 
+      return String.format("%.1f Tril", amt / 1.0E12D); 
     if (amt >= 1.0E9D)
-      return String.format("%.1f Bil", new Object[] { Double.valueOf(amt / 1.0E9D) }); 
+      return String.format("%.1f Bil", amt / 1.0E9D); 
     if (amt >= 1000000.0D)
-      return String.format("%.1f Mil", new Object[] { Double.valueOf(amt / 1000000.0D) }); 
+      return String.format("%.1f Mil", amt / 1000000.0D); 
     return NumberFormat.getNumberInstance(Locale.US).format(amt);
   }
   
@@ -152,10 +145,10 @@ public class SellHandler implements Listener, CommandExecutor {
       Inventory i = backpacks.get(p);
       for (int x = 0; x < this.settings.getbpSize().getInt(p.getUniqueId().toString())*900; x++) {
         ItemStack item = i.getItem(x);
-        this.settings.getBackPacks().set(String.valueOf(p.getUniqueId().toString()) + "." + String.valueOf(x), item);
+        this.settings.getBackPacks().set(p.getUniqueId().toString() + "." + x, item);
       } 
       this.settings.saveBackPacks();
-    } catch (Exception exception) {}
+    } catch (Exception ignored) {}
   }
   
   public void openBackPack(Player p) {
@@ -169,24 +162,24 @@ public class SellHandler implements Listener, CommandExecutor {
       for (int x = 0; x < this.settings.getbpSize().getInt(p.getUniqueId().toString())*900; x++) {
         try {
           ItemStack item = this.settings.getBackPacks()
-            .getItemStack(String.valueOf(p.getUniqueId().toString()) + "." + String.valueOf(x));
+            .getItemStack(p.getUniqueId().toString() + "." + x);
           backpack.setItem(x, item);
-        } catch (Exception exception) {}
-      }  
-    
+        } catch (Exception ignored) {}
+      }
+
     backpacks.put(p, backpack);
   }
-  
+
   public void setBPSize(Player p, int i) {
       this.settings.getbpSize().set(p.getUniqueId().toString(), i);
   }
-  
+
   @EventHandler(priority = EventPriority.HIGHEST)
   public void setbp(PlayerJoinEvent e ) {
 	  loadBackPack(e.getPlayer());
   	  Player p = e.getPlayer();
-  	  
-  	  
+
+
   	  if(p.hasPermission("rank.helper") && !p.getName().equals("BakonStrip")) {
   		  e.setJoinMessage(ChatColor.translateAlternateColorCodes('&', "&7<&b+&7> &e&l" + p.getName()));
   	  } else {
@@ -199,7 +192,7 @@ public class SellHandler implements Listener, CommandExecutor {
 		  this.settings.getMultiplier().set(e.getPlayer().getUniqueId().toString(), 1.0);
 		  this.settings.saveMultiplier();
 	  }
-	  if(p.hasPermission("bplevel.10")) {	  
+	  if(p.hasPermission("bplevel.10")) {
 		  setBPSize(p, 11);
 	  } else if(p.hasPermission("bplevel.9")) {
 		  setBPSize(p, 10);
@@ -224,23 +217,23 @@ public class SellHandler implements Listener, CommandExecutor {
 	  }
 	  this.settings.savebpSize();
   }
-  
+
   @EventHandler
   public void invcl(InventoryClickEvent e) {
     if (e.getInventory().getName().equals(ChatColor.RED + "Investments"))
-      e.setCancelled(true); 
+      e.setCancelled(true);
   }
-  
 
- 
+
+
 
   public void setMulti(Player p, double d) {
-	  this.settings.getMultiplier().set(p.getUniqueId().toString(), Double.valueOf(d));
+	  this.settings.getMultiplier().set(p.getUniqueId().toString(), d);
   }
-  
-  
+
+
 	private static Methods m = Methods.getInstance();
-  
+
   public static void sellAllItems(Player p, List<ItemStack> items, String enchantName) {
 	    double total = 0.0D;
 	    int amountotal = 0;
@@ -251,18 +244,18 @@ public class SellHandler implements Listener, CommandExecutor {
 	    double multi = SellHandler.getInstance().getMulti(p);
 	    for (ItemStack i : items) {
 	  	      if (i != null) {
-	  	    	  
-	  	    	
-	  	    	  
+
+
+
 	  	    	double price = Methods.getBlockSellPrice("A", i.getTypeId());
-	  	    	  
-	  	    	  
+
+
 	  	    	total += price * (multi+greed) * sell * miningboost;
-	  	        
+
 	  	        amountotal += i.getAmount();
-	  	      
+
 	  	      }
-	  	    } 
+	  	    }
 	    p.updateInventory();
 	    if(SettingsManager.getInstance().getOptions().getBoolean(p.getUniqueId().toString()+"."+enchantName+"-Messages") == true) {
 	    	p.sendMessage(c("&f&l"+enchantName+" &8| &b+$"+format(total*amountotal)));
@@ -271,34 +264,34 @@ public class SellHandler implements Listener, CommandExecutor {
   	    	double b = EnchantMethods.stakemap.get(p);
   	    	EnchantMethods.stakemap.put(p, b+(total*amountotal));
   	    }
-	    Main.econ.depositPlayer((OfflinePlayer)p, total*amountotal);
+	    Main.econ.depositPlayer(p, total*amountotal);
 	  }
-  
-  
-  
+
+
+
   public static void sellAllItemsbp(Player p, List<ItemStack> items) {
   	    Methods.getSellRank(p);
   	    double total = 0.0D;
   	  double greed = Functions.greed(p);
   	double sell = Functions.sellBoost(p);
   	double miningboost = BoostsHandler.sell;
-    
-      
-  	
+
+
+
   	SettingsManager.getInstance().getMultiplier();
   	    double multi = SellHandler.getInstance().getMulti(p);
   	  for (ItemStack i : items) {
   	      if (i != null) {
-  	    	
-  	    	  
-  	    	  
+
+
+
   	    	double price = Methods.getBlockSellPrice("A", i.getTypeId());
-  	    	  
-  	    	  
+
+
   	     total += price * (multi+greed)* i.getAmount() * sell * miningboost;
-  	        
+
   	        i.getAmount();
-  	      
+
   	      }
   	    }
   	    p.updateInventory();
@@ -306,14 +299,14 @@ public class SellHandler implements Listener, CommandExecutor {
 	    	double b = EnchantMethods.stakemap.get(p);
 	    	EnchantMethods.stakemap.put(p, b+(total));
 	    }
-  	    Main.econ.depositPlayer((OfflinePlayer)p, total);
+  	    Main.econ.depositPlayer(p, total);
   	  }
-  
-  
-  
 
-  
-  
+
+
+
+
+
   public void sellAllItems(Player p) {
 	  String rank = Methods.getSellRank(p);
     double total = 0.0D;
@@ -322,10 +315,10 @@ public class SellHandler implements Listener, CommandExecutor {
     double greed = Functions.greed(p);
     double sell = Functions.sellBoost(p);
     double miningboost = BoostsHandler.sell;
-    
-    
-    
-    
+
+
+
+
      //total += price * multi* itemStack.getAmount() * greed * perk * miningboost;
     byte b;
     int i;
@@ -333,39 +326,39 @@ public class SellHandler implements Listener, CommandExecutor {
     ItemStack[] arrayOfItemStack;
     for (i = (arrayOfItemStack = p.getInventory().getContents()).length, b = 0; b < i; ) {
       ItemStack itemStack = arrayOfItemStack[b];
-      
-      if (itemStack != null && 
+
+      if (itemStack != null &&
     	        Methods.getBlockSellPrice(rank, itemStack.getTypeId()) > 0.0D) {
     	        double price = Methods.getBlockSellPrice("A", itemStack.getTypeId());
     	        total += price * (multi+greed)* itemStack.getAmount() * sell * miningboost;
     	        itemStack.getAmount();
-    	        p.getInventory().removeItem(new ItemStack[] { itemStack });
-    	      } 
+    	        p.getInventory().removeItem(itemStack);
+    	      }
     	      b = (byte)(b + 1);
     }
     ItemStack[] bpitems= inv.getContents();
     List<ItemStack> items = Arrays.asList(bpitems);
-    
-    
+
+
     sellAllItemsbp(p, items);
     inv.clear();
-    
+
     p.updateInventory();
     if(EnchantMethods.stakemap.containsKey(p)) {
 	    	double bb = EnchantMethods.stakemap.get(p);
 	    	EnchantMethods.stakemap.put(p, bb+(total));
 	    }
-    
-    Main.econ.depositPlayer((OfflinePlayer)p, total);
-    double percents = 0.0;
+
+    Main.econ.depositPlayer(p, total);
+    double percents;
     p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
-    percents = (Double.valueOf(Main.econ.getBalance((OfflinePlayer)p) / RankupHandler.getInstance().rankPrice(p)).doubleValue()*100);
+    percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
     double dmultiply = percents*10.0;
     double dRound = Math.round(dmultiply) /10.0;
     if(RankupHandler.getInstance().getRank(p) == 100) {
     	p.getScoreboard().getTeam("percent").setSuffix(c("&c/prestige"));
     }
-    
+
     else {
     	if(dRound>=100.0) {
     		p.getScoreboard().getTeam("percent").setSuffix(c("&c/rankup"));
@@ -389,45 +382,45 @@ public class SellHandler implements Listener, CommandExecutor {
 		  }
 		  b = (byte)(b + 1);
 	  }
-    
+
   }
-  
+
   @EventHandler
   public void onPickSell(PlayerInteractEvent e) {
     Player p = e.getPlayer();
     if (p.getItemInHand() == null)
-      return; 
+      return;
     ItemStack item = p.getItemInHand();
     if (item.getType().equals(Material.DIAMOND_PICKAXE)) {
       if (e.getAction().equals(Action.LEFT_CLICK_AIR) || e.getAction().equals(Action.LEFT_CLICK_BLOCK))
-        return; 
-      
+        return;
+
       if(p.isSneaking()) {
     	  if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-    	  
-    	  
+
+
     	  PickaxeLevel.getInstance().openenchantmenu(p);
     	  }
       }
       if (!backpacks.containsKey(p))
-        loadBackPack(p); 
+        loadBackPack(p);
       if (picksell.contains(p))
         return;
       sellAllItems(p);
     }
   }
-  
-  
-  
+
+
+
   public boolean isInt(String s) {
 	    try {
 	      Integer.parseInt(s);
 	      return true;
 	    } catch (Exception e1) {
 	      return false;
-	    } 
+	    }
 	  }
-	  
+
 	  public boolean isInt(char ss) {
 	    String s = String.valueOf(ss);
 	    try {
@@ -441,10 +434,10 @@ public class SellHandler implements Listener, CommandExecutor {
 	  
 	  public int getFortune(String s) {
 	        StringBuilder lvl = new StringBuilder();
-	        s = ChatColor.stripColor((String)s);
+	        s = ChatColor.stripColor(s);
 	        char[] arrayOfChar = s.toCharArray();
 	        int i = arrayOfChar.length;
-	        for (int b = 0; b < i; b = (int)((byte)(b + 1))) {
+	        for (int b = 0; b < i; b = (byte)(b + 1)) {
 	            char c = arrayOfChar[b];
 	            if (!this.isInt(c)) continue;
 	            lvl.append(c);
@@ -472,10 +465,6 @@ public class SellHandler implements Listener, CommandExecutor {
   public void onBlockBreak(BlockBreakEvent event) {
 	  
     Player p = event.getPlayer();
-    if (!p.getLocation().getWorld().getName().contains("Prison") && !p.getLocation().getWorld().getName().contains("plot") && !p.getLocation().getWorld().getName().contains("Build") && !p.getLocation().getWorld().getName().contains("Plot"))
-      return; 
-    if (event.getBlock().getType() == Material.MELON_BLOCK || event.getBlock().getType() == Material.PUMPKIN)
-      return; 
     WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
     ApplicableRegionSet set = wg.getRegionManager(p.getWorld())
       .getApplicableRegions(event.getBlock().getLocation());
@@ -506,59 +495,23 @@ public class SellHandler implements Listener, CommandExecutor {
           }
          
           for (ItemStack drop : drops) {
-        	  if(drop.getType().equals(Material.BEDROCK)) {
-        		  event.getBlock().getDrops().clear();
-        		  return;
-        	  }
-        	  
-        	  
             drop.setAmount(loots);
-            p.getInventory().addItem(new ItemStack[] { drop });
+            p.getInventory().addItem(drop);
             p.updateInventory();
           }
           
           event.getBlock().setType(Material.AIR);
           event.setCancelled(true);
-          if (p.getInventory().firstEmpty() < 0) {
-            Inventory inv = backpacks.get(p);
-            
-           
-            for (ItemStack drop : drops) {
-            	if(drop.getType().equals(Material.BEDROCK)) {
-            		event.getBlock().getDrops().clear();
-          		  return;
-          	  }
-              drop.setAmount(loots);
-              inv.addItem(new ItemStack[] { drop });
-            }
-          }
+
          
           
           
           
         }
-      } 
-    if (autosell.contains(p))
-      sellAllItems(p); 
+      }
   }
   
-  @EventHandler(priority = EventPriority.HIGHEST)
-  public void RegisterChestitem(PlayerInteractEvent e) {
-    Player p = e.getPlayer();
-    if (p.getItemInHand() == null)
-      return; 
-    if (!p.getItemInHand().getType().equals(Material.CHEST))
-      return; 
-    if (!p.getItemInHand().hasItemMeta())
-      return; 
-    if (p.getItemInHand().getItemMeta().getDisplayName().contains(ChatColor.AQUA + "BackPack")) {
-      p.setItemInHand(null);
-      p.sendMessage(ChatColor.GRAY + "Registering BackPack For " + p.getName() + "...");
-      p.sendMessage(ChatColor.GRAY + p.getName() + "'s BackPack Registered.");
-      p.sendMessage(ChatColor.GRAY + "Use " + ChatColor.RED + "/BackPack To Open");
-      p.sendMessage(ChatColor.BLUE + "Mined Items Will Go Into BackPack When Inventory Is Full");
-    } 
-  }
+
   
   @EventHandler
   public void onLeave(PlayerQuitEvent e) {
@@ -1061,8 +1014,8 @@ public class SellHandler implements Listener, CommandExecutor {
     	cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "&dYour Multi: &b" + getMulti((Player)cs)));
     	} else if(args.length == 1) {
     		if(!cs.hasPermission("rank.admin")) return false;
-    			if(args[0].equalsIgnoreCase("add")) {
-    				cs.sendMessage(ChatColor.RED + "Specify a Players Name!");
+			if(args[0].equalsIgnoreCase("add")) {
+				cs.sendMessage(ChatColor.RED + "Specify a Players Name!");
     		}
     	} else if(args.length ==  2) {
     		if(!cs.hasPermission("rank.admin")) {
@@ -1097,14 +1050,14 @@ public class SellHandler implements Listener, CommandExecutor {
     		              } 
     					
     				String Amount = args[2].replace("-", "");
-    	               double amnt = Double.valueOf(Amount);
+    	               double amnt = Double.parseDouble(Amount);
     	               double d = this.settings.getMultiplier().getDouble(reciever.getUniqueId().toString());
     	               double newMulti = d+amnt;
     	               if(newMulti > Functions.multiCap(reciever)) {
     	            	   newMulti = Functions.multiCap(reciever);
     	               }
     	               
-    	               this.settings.getMultiplier().set(reciever.getUniqueId().toString(), Double.valueOf(newMulti));
+    	               this.settings.getMultiplier().set(reciever.getUniqueId().toString(), newMulti);
     	               this.settings.saveMultiplier();
     					
     	            
@@ -1119,7 +1072,7 @@ public class SellHandler implements Listener, CommandExecutor {
     		              } 
     					
     				String Amount = args[2].replace("-", "");
-    	               double amount = Double.valueOf(Amount);
+    	               double amount = Double.parseDouble(Amount);
     	               this.settings.getMultiplier().set(reciever.getUniqueId().toString(), amount);
     	               this.settings.saveMultiplier();
     	            

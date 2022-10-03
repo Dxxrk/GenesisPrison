@@ -146,7 +146,6 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("trash").setExecutor(new CMDTrash());
     getCommand("ac").setExecutor(new CMDAc());
     getCommand("autosell").setExecutor(new CMDAutosell());
-    getCommand("picksell").setExecutor(new CMDPicksell());
     getCommand("cratekey").setExecutor(new CrateHandler());
     getCommand("crateinfo").setExecutor(new CrateHandler());
     getCommand("openall").setExecutor(new CrateHandler());

@@ -12,6 +12,7 @@ import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.RegionGroup;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.GlobalProtectedRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Events.ResetHandler.ResetReason;
@@ -143,12 +144,14 @@ public class MineHandler implements Listener, CommandExecutor{
 		MultiverseCore core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
 		MVWorldManager wm = core.getMVWorldManager();
 
+
+		//Setting up the world
 		wm.cloneWorld("Dxrk", p.getName()+"sWorld");
 
 		Location pworld = new Location(Bukkit.getWorld(p.getName()+"sWorld"), -3, 65, 0);
 
 		WorldBorder wb = Bukkit.getWorld(p.getName()+"sWorld").getWorldBorder();
-		wb.setCenter(0, 0);
+		wb.setCenter(-3, 22);
 		wb.setSize(250);
 
 		p.teleport(pworld);
@@ -158,6 +161,8 @@ public class MineHandler implements Listener, CommandExecutor{
 		Location point1 = new Location(p.getWorld(), 13, 64, 6);
 		Location point2 = new Location(p.getWorld(), -19, 1, 38);
 
+
+		//Creating the actual mine
 		ResetHandler.api.createMine(p.getUniqueId().toString(), point1, point2);
 		Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
 
@@ -181,10 +186,19 @@ public class MineHandler implements Listener, CommandExecutor{
 			regions.removeRegion(p.getUniqueId().toString());
 		}
 
+		//Create region that allows building within limits.
+		ProtectedRegion global = new GlobalProtectedRegion("global");
+		global.setFlag(DefaultFlag.BLOCK_PLACE, StateFlag.State.ALLOW);
+		global.setFlag(DefaultFlag.BLOCK_BREAK, StateFlag.State.ALLOW);
+		global.setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
+		region.setFlag(DefaultFlag.LIGHTER, StateFlag.State.DENY);
+		region.setFlag(DefaultFlag.USE, StateFlag.State.ALLOW);
+		region.setFlag(DefaultFlag.INTERACT, StateFlag.State.ALLOW);
+		region.setFlag(DefaultFlag.OTHER_EXPLOSION, StateFlag.State.DENY);
 
+		regions.addRegion(global);
 
-
-
+		//Create Mine region that allows the enchants to work only inside the mine
 		region.setFlag(DefaultFlag.LIGHTER, StateFlag.State.ALLOW);
 		region.setFlag(DefaultFlag.BLOCK_PLACE, StateFlag.State.DENY);
 		region.setFlag(DefaultFlag.BLOCK_BREAK.getRegionGroupFlag(), RegionGroup.MEMBERS);
