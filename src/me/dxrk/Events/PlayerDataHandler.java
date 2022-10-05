@@ -23,45 +23,45 @@ public class PlayerDataHandler implements Listener {
   public void onJoin(PlayerJoinEvent e) {
     String name = e.getPlayer().getName();
     String uuid = e.getPlayer().getUniqueId().toString();
-    if (this.pl.get(String.valueOf(uuid) + ".Name") == null) {
-      this.pl.set(String.valueOf(uuid) + ".Name", name);
+    if (this.pl.get(uuid + ".Name") == null) {
+      this.pl.set(uuid + ".Name", name);
       this.settings.savePlayerData();
     } 
-    if (this.pl.get(String.valueOf(uuid) + ".KeysFound") == null) {
-      this.pl.set(String.valueOf(uuid) + ".KeysFound", Integer.valueOf(0));
+    if (this.pl.get(uuid + ".KeysFound") == null) {
+      this.pl.set(uuid + ".KeysFound", 0);
       this.settings.savePlayerData();
     } 
-    if (this.pl.get(String.valueOf(uuid) + ".BlocksBroken") == null) {
-      this.pl.set(String.valueOf(uuid) + ".BlocksBroken", Integer.valueOf(0));
+    if (this.pl.get(uuid + ".BlocksBroken") == null) {
+      this.pl.set(uuid + ".BlocksBroken", 0);
       this.settings.savePlayerData();
     } 
-    if (this.pl.get(String.valueOf(uuid) + ".CratesOpened") == null) {
-      this.pl.set(String.valueOf(uuid) + ".CratesOpened", Integer.valueOf(0));
+    if (this.pl.get(uuid + ".CratesOpened") == null) {
+      this.pl.set(uuid + ".CratesOpened", 0);
       this.settings.savePlayerData();
     } 
-    if (this.pl.get(String.valueOf(uuid) + ".TimePlayed") == null) {
-      this.pl.set(String.valueOf(uuid) + ".TimePlayed", Integer.valueOf(0));
+    if (this.pl.get(uuid + ".TimePlayed") == null) {
+      this.pl.set(uuid + ".TimePlayed", 0);
+      this.settings.savePlayerData();
+    }
+    if (this.pl.get(uuid + ".RankupMessages") == null) {
+      this.pl.set(uuid + ".RankupMessages", Boolean.TRUE);
       this.settings.savePlayerData();
     } 
-    if (this.pl.get(String.valueOf(uuid) + ".PicksellSTFU") == null) {
-      this.pl.set(String.valueOf(uuid) + ".PicksellSTFU", Boolean.valueOf(false));
+    if (this.pl.get(uuid + ".KeyFinderMessages") == null) {
+      this.pl.set(uuid + ".KeyFinderMessages", Boolean.TRUE);
       this.settings.savePlayerData();
     } 
-    if (this.pl.get(String.valueOf(uuid) + ".Beta") == null) {
-      this.pl.set(String.valueOf(uuid) + ".Beta", Boolean.valueOf(false));
+    if (this.pl.get(uuid + ".Particles") == null) {
+      this.pl.set(uuid + ".Particles", Boolean.TRUE);
       this.settings.savePlayerData();
-    } 
-    if (this.pl.get(String.valueOf(uuid) + ".RankupMessages") == null) {
-      this.pl.set(String.valueOf(uuid) + ".RankupMessages", Boolean.valueOf(true));
+    }
+    if (this.pl.get(uuid + ".TimesPrestiged") == null) {
+      this.pl.set(uuid + ".TimesPrestiged", 0);
       this.settings.savePlayerData();
-    } 
-    if (this.pl.get(String.valueOf(uuid) + ".KeyFinderMessages") == null) {
-      this.pl.set(String.valueOf(uuid) + ".KeyFinderMessages", Boolean.valueOf(true));
+    }
+    if (this.pl.get(uuid + ".Prestiges") == null) {
+      this.pl.set(uuid + ".Prestiges", 0);
       this.settings.savePlayerData();
-    } 
-    if (this.pl.get(String.valueOf(uuid) + ".Particles") == null) {
-      this.pl.set(String.valueOf(uuid) + ".Particles", Boolean.valueOf(true));
-      this.settings.savePlayerData();
-    } 
+    }
   }
 }

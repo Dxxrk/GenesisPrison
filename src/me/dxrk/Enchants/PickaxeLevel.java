@@ -313,45 +313,13 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		List<String> lore = im.getLore();
 		
 		
-		if(p.hasPermission("prestige.41") || p.hasPermission("prestige.42") || p.hasPermission("prestige.43") || p.hasPermission("prestige.44") || p.hasPermission("prestige.45")
-				||p.hasPermission("prestige.46")||p.hasPermission("prestige.47")||p.hasPermission("prestige.48")||p.hasPermission("prestige.49")||p.hasPermission("prestige.50")) {
-				if(getBlocks(lore.get(2)) >= 30000) {
-					p.sendMessage(c("&cYou already have the maximum level of this enchant!"));
-					return;
-				}
-			}
 		
-		
-		else if(p.hasPermission("prestige.31") || p.hasPermission("prestige.32") || p.hasPermission("prestige.33") || p.hasPermission("prestige.34") || p.hasPermission("prestige.35")
-				||p.hasPermission("prestige.36")||p.hasPermission("prestige.37")||p.hasPermission("prestige.38")||p.hasPermission("prestige.39")||p.hasPermission("prestige.40")) {
-				if(getBlocks(lore.get(2)) >= 30000) {
-					p.sendMessage(c("&cYou already have the maximum level of this enchant!"));
-					return;
-				}
-			}
-		
-		
-		else if(p.hasPermission("prestige.21") || p.hasPermission("prestige.22") || p.hasPermission("prestige.23") || p.hasPermission("prestige.24") || p.hasPermission("prestige.25")
-				||p.hasPermission("prestige.26")||p.hasPermission("prestige.27")||p.hasPermission("prestige.28")||p.hasPermission("prestige.29")||p.hasPermission("prestige.30")) {
-				if(getBlocks(lore.get(2)) >= 30000) {
-					p.sendMessage(c("&cYou already have the maximum level of this enchant!"));
-					return;
-				}
-			}
-		
-		else if(p.hasPermission("prestige.11") || p.hasPermission("prestige.12") || p.hasPermission("prestige.13") || p.hasPermission("prestige.14") || p.hasPermission("prestige.15")
-			|| p.hasPermission("prestige.16") || p.hasPermission("prestige.17") || p.hasPermission("prestige.18") || p.hasPermission("prestige.19") || p.hasPermission("prestige.20")) {
-			if(getBlocks(lore.get(2)) >= 30000) {
-				p.sendMessage(c("&cYou already have the maximum level of this enchant!"));
-				return;
-			}
-		} else {
 		
 		if(getBlocks(lore.get(2)) >= 30000) {
 			p.sendMessage(c("&cYou already have the maximum level of this enchant!"));
 			return;
 		}
-		}
+
 		int blockss = getBlocks(i.getItemMeta().getLore().get(1));
 		if(blockss >= price) {
 			

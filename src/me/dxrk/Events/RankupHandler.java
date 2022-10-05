@@ -56,11 +56,6 @@ public class RankupHandler implements Listener, CommandExecutor{
 			  aru.add(p);
 		  }
 	  }
-	  if(!SellHandler.autosell.contains(p)) {
-		  if(settings.getOptions().getBoolean(p.getUniqueId().toString()+".Autosell") == true) {
-			  SellHandler.autosell.add(p);
-		  }
-	  }
 	  p.setAllowFlight(true);
 	  p.setFlying(true);
 	  
