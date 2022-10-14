@@ -59,8 +59,8 @@ public class BoostsHandler implements Listener, CommandExecutor{
 	public static String sacname = "";
 	public static String xacname = "";
 	
-	public static ArrayList<String> nextUpsell = new ArrayList<String>();
-	public static ArrayList<String> nextUpxp = new ArrayList<String>();
+	public static ArrayList<String> nextUpsell = new ArrayList<>();
+	public static ArrayList<String> nextUpxp = new ArrayList<>();
 	
 	public static String timeFormat(int i) {
 		Date d = new Date(i * 1000L);
@@ -88,38 +88,36 @@ public class BoostsHandler implements Listener, CommandExecutor{
 	  }
 	
 	public ArrayList<ItemStack> QueueSell(ArrayList<String> array) {
-		ArrayList<ItemStack> queue = new ArrayList<ItemStack>();
-		for(int i = 0; i <array.size(); i++) {
-			String s = array.get(i);
+		ArrayList<ItemStack> queue = new ArrayList<>();
+		for (String s : array) {
 			String[] split = s.split(" ");
-			ItemStack item = new ItemStack(Material.POTION, 1, (short)8260);
+			ItemStack item = new ItemStack(Material.POTION, 1, (short) 8260);
 			ItemMeta im = item.getItemMeta();
 			im.addItemFlags(ItemFlag.values());
-			im.setDisplayName(c("&f&l"+split[3]+"x Sell Boost"));
-			List<String> lore = new ArrayList<String>();
-			lore.add(c("&dActivated By: &f"+split[2]));
-			lore.add(c("&d"+timeFormat(Integer.parseInt(split[4]))));
+			im.setDisplayName(c("&f&l" + split[3] + "x Sell Boost"));
+			List<String> lore = new ArrayList<>();
+			lore.add(c("&dActivated By: &f" + split[2]));
+			lore.add(c("&d" + timeFormat(Integer.parseInt(split[4]))));
 			im.setLore(lore);
 			item.setItemMeta(im);
 			queue.add(item);
-			
+
 		}
 		
 		return queue;
 	}
 	
 	public ArrayList<ItemStack> QueueXP(ArrayList<String> array) {
-		ArrayList<ItemStack> queue = new ArrayList<ItemStack>();
-		for(int i = 0; i < array.size(); i++) {
-			String s = array.get(i);
+		ArrayList<ItemStack> queue = new ArrayList<>();
+		for (String s : array) {
 			String[] split = s.split(" ");
 			ItemStack item = new ItemStack(Material.EXP_BOTTLE);
 			ItemMeta im = item.getItemMeta();
 			im.addItemFlags(ItemFlag.values());
-			im.setDisplayName(c("&f&l"+split[3]+"x XP Boost"));
-			List<String> lore = new ArrayList<String>();
-			lore.add(c("&dActivated By: &f"+split[2]));
-			lore.add(c("&d"+timeFormat(Integer.parseInt(split[4]))));
+			im.setDisplayName(c("&f&l" + split[3] + "x XP Boost"));
+			List<String> lore = new ArrayList<>();
+			lore.add(c("&dActivated By: &f" + split[2]));
+			lore.add(c("&d" + timeFormat(Integer.parseInt(split[4]))));
 			im.setLore(lore);
 			item.setItemMeta(im);
 			queue.add(item);
@@ -153,13 +151,13 @@ public class BoostsHandler implements Listener, CommandExecutor{
 		
 		
 		
-		if(QueueSell(nextUpsell).size() >0 && !QueueSell(nextUpsell).get(0).equals(null)) {
+		if(QueueSell(nextUpsell).size() >0 && QueueSell(nextUpsell).get(0) != null) {
 			i.setItem(11, QueueSell(nextUpsell).get(0));
 		} else {
 			i.setItem(11, emptySell);
 		}
 		
-		if(QueueSell(nextUpsell).size() >1 && !QueueSell(nextUpsell).get(1).equals(null)) {
+		if(QueueSell(nextUpsell).size() >1 && QueueSell(nextUpsell).get(1) != null) {
 			i.setItem(12, QueueSell(nextUpsell).get(1));
 		} else {
 			i.setItem(12, emptySell);
@@ -170,37 +168,37 @@ public class BoostsHandler implements Listener, CommandExecutor{
 		} else {
 			i.setItem(13, emptySell);
 		}
-		if(QueueSell(nextUpsell).size() >3 && !QueueSell(nextUpsell).get(3).equals(null)) {
+		if(QueueSell(nextUpsell).size() >3 && QueueSell(nextUpsell).get(3) != null) {
 			i.setItem(14, QueueSell(nextUpsell).get(3));
 			} else {
 				i.setItem(14, emptySell);
 			}
-		if(QueueSell(nextUpsell).size() >4 && !QueueSell(nextUpsell).get(4).equals(null)) {
+		if(QueueSell(nextUpsell).size() >4 && QueueSell(nextUpsell).get(4) != null) {
 			i.setItem(15, QueueSell(nextUpsell).get(4));
 			} else {
 				i.setItem(15, emptySell);
 			}
-		if(QueueXP(nextUpxp).size() >0 && !QueueXP(nextUpxp).get(0).equals(null)) {
+		if(QueueXP(nextUpxp).size() >0 && QueueXP(nextUpxp).get(0) != null) {
 			i.setItem(29, QueueXP(nextUpxp).get(0));
 		} else {
 			i.setItem(29, emptyXP);
 		}
-		if(QueueXP(nextUpxp).size() >1 && !QueueXP(nextUpxp).get(1).equals(null)) {
+		if(QueueXP(nextUpxp).size() >1 && QueueXP(nextUpxp).get(1) != null) {
 			i.setItem(30, QueueXP(nextUpxp).get(1));
 			} else {
 				i.setItem(30, emptyXP);
 			}
-		if(QueueXP(nextUpxp).size() >2 && !QueueXP(nextUpxp).get(2).equals(null)) {
+		if(QueueXP(nextUpxp).size() >2 && QueueXP(nextUpxp).get(2) != null) {
 			i.setItem(31, QueueXP(nextUpxp).get(2));
 			} else {
 				i.setItem(31, emptyXP);
 			}
-		if(QueueXP(nextUpxp).size() >3 && !QueueXP(nextUpxp).get(3).equals(null)) {
+		if(QueueXP(nextUpxp).size() >3 && QueueXP(nextUpxp).get(3) != null) {
 			i.setItem(32, QueueXP(nextUpxp).get(3));
 			} else {
 				i.setItem(32, emptyXP);
 			}
-		if(QueueXP(nextUpxp).size() >4 && !QueueXP(nextUpxp).get(4).equals(null)) {
+		if(QueueXP(nextUpxp).size() >4 && QueueXP(nextUpxp).get(4) != null) {
 			i.setItem(33, QueueXP(nextUpxp).get(4));
 			} else {
 				i.setItem(33, emptyXP);
@@ -279,11 +277,7 @@ public class BoostsHandler implements Listener, CommandExecutor{
 						if(nextUpsell.size() > 0) {
 							String[] first = nextUpsell.get(0).split(" ");
 							if(amp > Double.parseDouble(first[3])) {
-								ArrayList<String> hold = new ArrayList<String>();
-								for(int x = 0; x < nextUpsell.size(); x++) {
-									String s = nextUpsell.get(x);
-									hold.add(s);
-								}
+								ArrayList<String> hold = new ArrayList<>(nextUpsell);
 								nextUpsell.clear();
 								nextUpsell.add("activeboost sell " + args[1]+" "+ amp+" "+dur);
 								nextUpsell.addAll(hold);
@@ -324,37 +318,33 @@ public class BoostsHandler implements Listener, CommandExecutor{
 					b.addField("Multiplier: "+amp+"x", "Length: "+timeFormat(dur), false);
 					b.setColor(Color.BLUE);
 
+					assert channel != null;
 					channel.sendMessageEmbeds(b.build()).queue();
 					
 					sname = c("&a$&d"+amp+"x");
 					
-					Bukkit.getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
-
-						@Override
-						public void run() {
-							if(sactive == true) {
-								Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &f&l"+args[1]+"'s &d&l"+amp+"x Sell Boost has ended!");
-								}
-							sactive = false;
-							sname = c("&a$&f1.0x");
-							selltime = 0;
-							stimeLeft = c("&d"+timeFormat(0));
-							sell = 1;
-							
-							settings.getBoost().set("ActiveSell.Amp", 0);
-							settings.getBoost().set("ActiveSell.Duration", 0);
-							
-							settings.getBoost().set("ActivatorSell", "");
-							settings.saveboosts();
-							if(!nextUpsell.isEmpty()) {
-								String next = nextUpsell.get(0);
-								nextUpsell.remove(0);
-								
-								new BukkitRunnable() {@Override public void run() { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), next); } }.runTaskLater(Main.plugin, 40L);
+					Bukkit.getScheduler().scheduleSyncDelayedTask(Main.plugin, () -> {
+						if(sactive == true) {
+							Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &f&l"+args[1]+"'s &d&l"+amp+"x Sell Boost has ended!");
 							}
-							
+						sactive = false;
+						sname = c("&a$&f1.0x");
+						selltime = 0;
+						stimeLeft = c("&d"+timeFormat(0));
+						sell = 1;
+
+						settings.getBoost().set("ActiveSell.Amp", 0);
+						settings.getBoost().set("ActiveSell.Duration", 0);
+
+						settings.getBoost().set("ActivatorSell", "");
+						settings.saveboosts();
+						if(!nextUpsell.isEmpty()) {
+							String next = nextUpsell.get(0);
+							nextUpsell.remove(0);
+
+							new BukkitRunnable() {@Override public void run() { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), next); } }.runTaskLater(Main.plugin, 40L);
 						}
-						
+
 					}, dur*20L);
 					
 				}
@@ -365,11 +355,7 @@ public class BoostsHandler implements Listener, CommandExecutor{
 						if(nextUpxp.size() > 0) {
 							String[] first = nextUpxp.get(0).split(" ");
 							if(amp > Integer.parseInt(first[3])) {
-								ArrayList<String> hold = new ArrayList<String>();
-								for(int x = 0; x < nextUpxp.size(); x++) {
-									String s = nextUpxp.get(x);
-									hold.add(s);
-								}
+								ArrayList<String> hold = new ArrayList<>(nextUpxp);
 								nextUpxp.clear();
 								nextUpxp.add("activeboost XP " + args[1]+" "+ amp+" "+dur);
 								nextUpxp.addAll(hold);
@@ -408,38 +394,34 @@ public class BoostsHandler implements Listener, CommandExecutor{
 					b.addField("Multiplier: "+amp+"x", "Length: "+timeFormat(dur), false);
 					b.setColor(Color.GREEN);
 
+					assert channel != null;
 					channel.sendMessageEmbeds(b.build()).queue();
 					
 					xname = c("&a✴&e"+amp+"x");
 					
-					Bukkit.getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
-
-						@Override
-						public void run() {
-							if(xactive == true) {
-								Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &f&l"+args[1]+"'s &d&l"+amp+"x XP Boost has ended!");
-								}
-							xactive = false;
-							xname = c("&a✴&f1x");
-							xptime = 0;
-							xtimeLeft = c("&d"+timeFormat(0));
-							xp = 1;
-							
-							settings.getBoost().set("ActiveXP.Amp", 0);
-							settings.getBoost().set("ActiveXP.Duration", 0);
-							
-							settings.getBoost().set("ActivatorXP", "");
-							settings.saveboosts();
-							if(!nextUpxp.isEmpty()) {
-								String next = nextUpxp.get(0);
-								nextUpxp.remove(0);
-								
-								
-								new BukkitRunnable() {@Override public void run() { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), next); } }.runTaskLater(Main.plugin, 40L);
+					Bukkit.getScheduler().scheduleSyncDelayedTask(Main.plugin, () -> {
+						if(xactive == true) {
+							Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &f&l"+args[1]+"'s &d&l"+amp+"x XP Boost has ended!");
 							}
-							
+						xactive = false;
+						xname = c("&a✴&f1x");
+						xptime = 0;
+						xtimeLeft = c("&d"+timeFormat(0));
+						xp = 1;
+
+						settings.getBoost().set("ActiveXP.Amp", 0);
+						settings.getBoost().set("ActiveXP.Duration", 0);
+
+						settings.getBoost().set("ActivatorXP", "");
+						settings.saveboosts();
+						if(!nextUpxp.isEmpty()) {
+							String next = nextUpxp.get(0);
+							nextUpxp.remove(0);
+
+
+							new BukkitRunnable() {@Override public void run() { Bukkit.dispatchCommand(Bukkit.getConsoleSender(), next); } }.runTaskLater(Main.plugin, 40L);
 						}
-						
+
 					}, dur*20L);
 					
 				}
@@ -494,11 +476,11 @@ public class BoostsHandler implements Listener, CommandExecutor{
 	      
 	      for (int x = 0; x < i.size(); x++) {
 	        ItemStack item = i.get(x);
-	        this.settings.getBoost().set(String.valueOf(p.getUniqueId().toString()) + "." + String.valueOf(x), item);
+	        this.settings.getBoost().set(p.getUniqueId().toString() + "." + x, item);
 	      }
 	      
 	      this.settings.saveboosts();
-	    } catch (Exception exception) {}
+	    } catch (Exception ignored) {}
 	  }
 	  
 	  public void openBoost(Player p) {
@@ -509,22 +491,22 @@ public class BoostsHandler implements Listener, CommandExecutor{
 	    	try {
 	    		ItemStack item = bp.get(x);
 	    		i.setItem(x, item);
-	    	} catch (Exception exception) {}
+	    	} catch (Exception ignored) {}
 	    }
 	    
 	    p.openInventory(i);
 	  }
 	  
 	  public void loadBoost(Player p) {
-	    ArrayList<ItemStack> boost = new ArrayList<ItemStack>();
+	    ArrayList<ItemStack> boost = new ArrayList<>();
 	    if (this.settings.getBoost().contains(p.getUniqueId().toString()))
 	      for (int x = 0; x < 2500; x++) {
 	        try {
 	          ItemStack item = this.settings.getBoost()
-	            .getItemStack(String.valueOf(p.getUniqueId().toString()) + "." + String.valueOf(x));
+	            .getItemStack(p.getUniqueId().toString() + "." + x);
 	          if(item != null)
 	        	  boost.add(item);
-	        } catch (Exception exception) {}
+	        } catch (Exception ignored) {}
 	      }  
 	    	
 	    
@@ -571,10 +553,10 @@ public class BoostsHandler implements Listener, CommandExecutor{
 	  
 	  public int getInt(String s) {
 	        StringBuilder lvl = new StringBuilder();
-	        s = ChatColor.stripColor((String)s);
+	        s = ChatColor.stripColor(s);
 	        char[] arrayOfChar = s.toCharArray();
 	        int i = arrayOfChar.length;
-	        for (int b = 0; b < i; b = (int)((byte)(b + 1))) {
+	        for (int b = 0; b < i; b = (byte)(b + 1)) {
 	            char c = arrayOfChar[b];
 	            if (!this.isInt(c)) continue;
 	            lvl.append(c);
@@ -676,7 +658,7 @@ public class BoostsHandler implements Listener, CommandExecutor{
 	        Field field = net.minecraft.server.v1_8_R3.Item.class.getDeclaredField("maxStackSize");
 	        field.setAccessible(true);
 	        field.setInt(getitem, i);
-	        } catch (Exception e) {}}
+	        } catch (Exception ignored) {}}
 	
 	 
 	public ItemStack BoostSell(String name, String length) {

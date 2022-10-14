@@ -36,24 +36,24 @@ public class KeysHandler implements Listener {
   
   
   public void addKey(Player p, String key, int amt) {
-    int keys = this.settings.getLocksmith().getInt(String.valueOf(p.getUniqueId().toString()) + "." + key.toLowerCase());
+    int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + key.toLowerCase());
     key = key.toLowerCase();
-    if (this.settings.getLocksmith().get(String.valueOf(p.getUniqueId().toString()) + "." + p.getName()) == null) {
-      this.settings.getLocksmith().set(String.valueOf(p.getUniqueId().toString()) + ".name", p.getName());
+    if (this.settings.getLocksmith().get(p.getUniqueId().toString() + "." + p.getName()) == null) {
+      this.settings.getLocksmith().set(p.getUniqueId().toString() + ".name", p.getName());
       this.settings.saveLocksmith();
     } 
-    this.settings.getLocksmith().set(String.valueOf(p.getUniqueId().toString()) + "." + key, Integer.valueOf(keys + amt));
+    this.settings.getLocksmith().set(p.getUniqueId().toString() + "." + key, keys + amt);
     this.settings.saveLocksmith();
   }
   
   public void takeKey(Player p, String key, int amt) {
-    int keys = this.settings.getLocksmith().getInt(String.valueOf(p.getUniqueId().toString()) + "." + key.toLowerCase());
+    int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + key.toLowerCase());
     key = key.toLowerCase();
-    if (this.settings.getLocksmith().get(String.valueOf(p.getUniqueId().toString()) + "." + p.getName()) == null) {
-      this.settings.getLocksmith().set(String.valueOf(p.getUniqueId().toString()) + ".name", p.getName());
+    if (this.settings.getLocksmith().get(p.getUniqueId().toString() + "." + p.getName()) == null) {
+      this.settings.getLocksmith().set(p.getUniqueId().toString() + ".name", p.getName());
       this.settings.saveLocksmith();
     } 
-    this.settings.getLocksmith().set(String.valueOf(p.getUniqueId().toString()) + "." + key, Integer.valueOf(keys - amt));
+    this.settings.getLocksmith().set(p.getUniqueId().toString() + "." + key, keys - amt);
     this.settings.saveLocksmith();
   }
   
@@ -98,55 +98,58 @@ public class KeysHandler implements Listener {
   }
   
   public void DiscMSG(Player p, String dust) {
-	  if(dust.equals("Common")) {
-		  p.getInventory().addItem(TrinketHandler.getInstance().commonDust());
-		  if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Discovery-Messages") == true) {
-		  p.sendMessage(m.c("&f&lDiscovery &8| &b+1 Common Trinket Dust"));
-		  }
-	  } else if(dust.equals("Rare")) {
-		  p.getInventory().addItem(TrinketHandler.getInstance().rareDust());
-		  if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Discovery-Messages") == true) {
-		  p.sendMessage(m.c("&f&lDiscovery &8| &9+1 Rare Trinket Dust"));
-		  }
-	  } else if(dust.equals("Epic")) {
-		  p.getInventory().addItem(TrinketHandler.getInstance().epicDust());
-		  if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Discovery-Messages") == true) {
-		  p.sendMessage(m.c("&f&lDiscovery &8| &5+1 Epic Trinket Dust"));
-		  }
-	  } else if(dust.equals("Legendary")) {
-		  p.getInventory().addItem(TrinketHandler.getInstance().legDust());
-		  if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Discovery-Messages") == true) {
-		  p.sendMessage(m.c("&f&lDiscovery &8| &6+1 Legendary Trinket Dust"));
-		  }
-	  } else if(dust.equals("Heroic")) {
-		  p.getInventory().addItem(TrinketHandler.getInstance().herDust());
-		  if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Discovery-Messages") == true) {
-			  p.sendMessage(m.c("&f&lDiscovery &8| &4+1 Heroic Trinket Dust"));
-		  }
+	  switch (dust) {
+		  case "Common":
+			  p.getInventory().addItem(TrinketHandler.getInstance().commonDust());
+			  if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Discovery-Messages") == true) {
+				  p.sendMessage(m.c("&f&lDiscovery &8| &b+1 Common Trinket Dust"));
+			  }
+			  break;
+		  case "Rare":
+			  p.getInventory().addItem(TrinketHandler.getInstance().rareDust());
+			  if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Discovery-Messages") == true) {
+				  p.sendMessage(m.c("&f&lDiscovery &8| &9+1 Rare Trinket Dust"));
+			  }
+			  break;
+		  case "Epic":
+			  p.getInventory().addItem(TrinketHandler.getInstance().epicDust());
+			  if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Discovery-Messages") == true) {
+				  p.sendMessage(m.c("&f&lDiscovery &8| &5+1 Epic Trinket Dust"));
+			  }
+			  break;
+		  case "Legendary":
+			  p.getInventory().addItem(TrinketHandler.getInstance().legDust());
+			  if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Discovery-Messages") == true) {
+				  p.sendMessage(m.c("&f&lDiscovery &8| &6+1 Legendary Trinket Dust"));
+			  }
+			  break;
+		  case "Heroic":
+			  p.getInventory().addItem(TrinketHandler.getInstance().herDust());
+			  if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Discovery-Messages") == true) {
+				  p.sendMessage(m.c("&f&lDiscovery &8| &4+1 Heroic Trinket Dust"));
+			  }
+			  break;
 	  }
   }
   
   
   
   public boolean findKey(int level) {
-    if (this.r.nextInt(level) == 1)
-      return true; 
-    return false;
+	  return this.r.nextInt(level) == 1;
   }
   
   public void discovery(Player p, int x, String s) {
 	  int level = 0;
 	  ItemStack i = p.getItemInHand();
 	  List<String> lore = i.getItemMeta().getLore();
-	  
-	  for (int z = 0; z < lore.size(); z++) {
-	      String ss = lore.get(z);
-	      if (ChatColor.stripColor(ss).contains("Discovery")) {
-	    	  level = Integer.parseInt(ChatColor.stripColor(ss).split(" ")[1]);
-	      }
+
+	  for (String ss : lore) {
+		  if (ChatColor.stripColor(ss).contains("Discovery")) {
+			  level = Integer.parseInt(ChatColor.stripColor(ss).split(" ")[1]);
+		  }
 	  }
 	  if(level == 0) return;
-	  int blockstill = 3000;
+	  int blockstill;
 	  if(level == 1) {
 		  blockstill = 3000;
 	  } else {
@@ -162,37 +165,29 @@ public class KeysHandler implements Listener {
         String s1 = lore.get(x - 1);
         if (s1.contains("Discovery ")) {
           ItemMeta itemMeta = p.getItemInHand().getItemMeta();
-          lore.set(x, ChatColor.GRAY + "Blocks Till Dust: " + ChatColor.AQUA + String.valueOf(blockstill));
+          lore.set(x, ChatColor.GRAY + "Blocks Till Dust: " + ChatColor.AQUA + blockstill);
           itemMeta.setLore(lore);
           p.getItemInHand().setItemMeta(itemMeta);
           p.updateInventory();
           keyToGive(6, p);
         } 
       } else {
-        lore.set(x, ChatColor.GRAY + "Blocks Till Dust: " + ChatColor.AQUA + String.valueOf(amount - 1));
+        lore.set(x, ChatColor.GRAY + "Blocks Till Dust: " + ChatColor.AQUA + (amount - 1));
       } 
       ItemMeta meta = p.getItemInHand().getItemMeta();
       meta.setLore(lore);
       p.getItemInHand().setItemMeta(meta);
       p.updateInventory();
-    } catch (Exception exception) {}
+    } catch (Exception ignored) {}
   }
   
-  public void giveDust(Player p, String lvl) {
-	  Random r = new Random();
-	  int rint = r.nextInt(100);
-	  if(rint >0 && rint >20) {
-		  
-	  }
-	  
-	  
-  }
+
   
   
   public void keyToGive(int kfLvL, Player p) {
     double rand = this.r.nextInt(1000);
     
-    if(rand >=0 && rand <=499) {
+    if(rand <=499) {
     	DiscMSG(p, "Common");
     } else if(rand >= 500 && rand <=799) {
     	DiscMSG(p, "Rare");
@@ -210,58 +205,57 @@ public class KeysHandler implements Listener {
     double rand = this.r.nextInt(100);
     int chance = 0;
     List<String> lore = p.getItemInHand().getItemMeta().getLore();
-    for(int x = 0; x < lore.size(); x++) {
-    	String s = lore.get(x);
-    	if(ChatColor.stripColor(s).contains("Double Keys")) {
-    		chance += m.getBlocks(s);
-    	}
-    }
+	  for (String s : lore) {
+		  if (ChatColor.stripColor(s).contains("Double Keys")) {
+			  chance += m.getBlocks(s);
+		  }
+	  }
     int kf = this.r.nextInt(100);
-    if(chance > 0 && kf >=0 && kf <=chance) { // change to check for lore on pickaxe having "Key Fortune"
+    if(chance > 0 && kf <= chance) { // change to check for lore on pickaxe having "Key Fortune"
     	if(kfLvL < 50) {
-    		if (rand >= 0 && rand < 10.0D) {
+    		if (rand < 10.0D) {
     	          KRMSG2(p, "Polis", "&f&l", false, RomanNumber.toRoman(kfLvL));
-    	        } else if (rand >= 10.0D && rand < 35.0D) {
+    	        } else if (rand < 35.0D) {
     	          KRMSG2(p, "Hades", "&4&l", false, RomanNumber.toRoman(kfLvL));
-    	        } else if (rand >= 35.0D && rand < 67.5D) {
+    	        } else if (rand < 67.5D) {
     	          KRMSG2(p, "Midas", "&e&l", false, RomanNumber.toRoman(kfLvL));
-    	        } else if(rand >= 67.5){
+    	        } else {
     	          KRMSG2(p, "Poseidon", "&9&l", false, RomanNumber.toRoman(kfLvL));
     	        }
-    	} else if(kfLvL >=50) {
-    		if (rand >= 0 && rand < 0.25D) {
+    	} else {
+    		if (rand < 0.25D) {
   	          KRMSG2(p, "Oblivion", "&c&l", false, RomanNumber.toRoman(kfLvL));
-  	        } else if (rand >= 0.25D && rand < 15.0D) {
+  	        } else if (rand < 15.0D) {
   	          KRMSG2(p, "Polis", "&f&l", false, RomanNumber.toRoman(kfLvL));
-  	        } else if (rand >=15.0D && rand < 45.0D) {
+  	        } else if (rand < 45.0D) {
   	          KRMSG2(p, "Hades", "&4&l", false, RomanNumber.toRoman(kfLvL));
-  	        }else if (rand >= 45.0D && rand < 72.5D) {
+  	        }else if (rand < 72.5D) {
     	      KRMSG2(p, "Midas", "&e&l", false, RomanNumber.toRoman(kfLvL));
-    	    } else if(rand >=72.5D){
+    	    } else {
   	          KRMSG2(p, "Poseidon", "&9&l", false, RomanNumber.toRoman(kfLvL));
   	        }
     	}
     } else {
     	if(kfLvL < 50) {
-    		if (rand >= 0 && rand < 10.0D) {
+    		if (rand < 10.0D) {
     	          KRMSG(p, "Polis", "&f&l", false, RomanNumber.toRoman(kfLvL));
-    	        } else if (rand >= 10.0D && rand < 35.0D) {
+    	        } else if (rand < 35.0D) {
     	          KRMSG(p, "Hades", "&4&l", false, RomanNumber.toRoman(kfLvL));
-    	        } else if (rand >= 35.0D && rand < 67.5D) {
+    	        } else if (rand < 67.5D) {
     	          KRMSG(p, "Midas", "&e&l", false, RomanNumber.toRoman(kfLvL));
-    	        } else if(rand >= 67.5){
+    	        } else {
     	          KRMSG(p, "Poseidon", "&9&l", false, RomanNumber.toRoman(kfLvL));
     	        }
-    	} else if(kfLvL >=50) {
-    		if (rand >= 0 && rand < 0.25D) {
+    	} else {
+    		if (rand < 0.25D) {
   	          KRMSG(p, "Oblivion", "&c&l", false, RomanNumber.toRoman(kfLvL));
-  	        } else if (rand >= 0.25D && rand < 15.0D) {
+  	        } else if (rand < 15.0D) {
   	          KRMSG(p, "Polis", "&f&l", false, RomanNumber.toRoman(kfLvL));
-  	        } else if (rand >=15.0D && rand < 45.0D) {
+  	        } else if (rand < 45.0D) {
   	          KRMSG(p, "Hades", "&4&l", false, RomanNumber.toRoman(kfLvL));
-  	        }else if (rand >= 45.0D && rand < 72.5D) {
+  	        }else if (rand < 72.5D) {
     	      KRMSG(p, "Midas", "&e&l", false, RomanNumber.toRoman(kfLvL));
-    	    } else if(rand >=72.5D){
+    	    } else {
   	          KRMSG(p, "Poseidon", "&9&l", false, RomanNumber.toRoman(kfLvL));
   	        }
     	}
@@ -274,7 +268,7 @@ public class KeysHandler implements Listener {
 	  
 	  
 	  int level = m.getBlocks(s);
-	  int blockstill = 1350;
+	  int blockstill;
 	  if(level == 0) return;
 	  if(level == 1) {
 		  blockstill = 1350;
@@ -289,11 +283,8 @@ public class KeysHandler implements Listener {
   }
   
   public boolean DoesNotHaveLoreKF(String s2) {
-		  if(!ChatColor.stripColor(s2).contains("Discovery ") && !ChatColor.stripColor(s2).contains("Encounter ")) 
-			  return true;
-	  
-	return false;
-	  
+	  return !ChatColor.stripColor(s2).contains("Discovery ") && !ChatColor.stripColor(s2).contains("Encounter ");
+
   }
   
   
@@ -307,18 +298,15 @@ public void tokenstoGive(int tokens, Player p) {
 	
 	
 	if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".TokenFinder-Messages") == true) {
-		p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lTokenFinder &8| &b+" + (((int)rand*multiply)) + " Tokens"));
+		p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lTokenFinder &8| &b+" + ((rand *multiply)) + " Tokens"));
 	}
-	Tokens.getInstance().addTokens(p, (int) (((int)rand*multiply)));
+	Tokens.getInstance().addTokens(p, (int) ((rand *multiply)));
 	for(Player pp : Bukkit.getOnlinePlayers()) {
-		if(p.getUniqueId() == pp.getUniqueId()) {
-			continue;
-		}else {
 			if(this.settings.getOptions().getBoolean(pp.getUniqueId().toString()+".TokenFinder-Messages") == true) {
-				pp.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lTokenFinder &8| &bFrom &d" + p.getName() + " &b+" + ((int)rand10) + " Tokens"));
+				pp.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lTokenFinder &8| &bFrom &d" + p.getName() + " &b+" + rand10 + " Tokens"));
 			}
-		Tokens.getInstance().addTokens(pp, (int) (((int)rand10)));
-		}
+		Tokens.getInstance().addTokens(pp, rand10);
+
 	}
 	    
 }
@@ -329,7 +317,7 @@ public void tokenFinder(Player p) {
 	double luck = Functions.luckBoost(p);
 	
 	int level = 0;
-	int chance = 2650;
+	int chance;
 	for (String s : p.getItemInHand().getItemMeta().getLore()) {
 		
 		      if (ChatColor.stripColor(s).contains("TokenFinder")) {
@@ -376,6 +364,7 @@ public void tokenFinder(Player p) {
   
   
   @EventHandler
+  @SuppressWarnings("deprecation")
   public void onBreak(BlockBreakEvent e) {
     Player p = e.getPlayer();
     if (p.getItemInHand() == null)
@@ -426,18 +415,18 @@ public void tokenFinder(Player p) {
         try {
           String sss = lore.get(x + 1);
           loree = true;
-        } catch (Exception exception) {}
-        if (!loree || !((String)lore.get(x + 1)).contains("Blocks Till Dust:")) {
+        } catch (Exception ignored) {}
+        if (!loree || !lore.get(x + 1).contains("Blocks Till Dust:")) {
           ItemMeta meta = p.getItemInHand().getItemMeta();
           List<String> newLore = new ArrayList<>();
           int y;
           for (y = 0; y < x + 1; y++)
             newLore.add(lore.get(y)); 
-          newLore.add(ChatColor.GRAY + "Blocks Till Dust: " + ChatColor.AQUA + String.valueOf(100));
+          newLore.add(ChatColor.GRAY + "Blocks Till Dust: " + ChatColor.AQUA + 100);
           try {
             for (y = x + 1; y < lore.size(); y++)
               newLore.add(lore.get(y)); 
-          } catch (Exception exception) {}
+          } catch (Exception ignored) {}
           meta.setLore(newLore);
           p.getItemInHand().setItemMeta(meta);
           p.updateInventory();

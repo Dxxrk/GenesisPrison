@@ -1,13 +1,11 @@
 package me.dxrk.Events;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
+import me.dxrk.Main.Main;
+import me.dxrk.Main.Methods;
+import me.dxrk.Main.SettingsManager;
+import me.dxrk.Tokens.Tokens;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,13 +14,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import me.dxrk.Main.Main;
-import me.dxrk.Main.Methods;
-import me.dxrk.Main.SettingsManager;
-import me.dxrk.Tokens.Tokens;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RankupHandler implements Listener, CommandExecutor{
   public SettingsManager settings = SettingsManager.getInstance();
@@ -48,7 +44,7 @@ public class RankupHandler implements Listener, CommandExecutor{
       int i = this.settings.getRankupPrices().getInt(p.getUniqueId().toString());
 	  
 	  if(i == 0) {
-		  this.settings.getRankupPrices().set(p.getUniqueId().toString(), Integer.valueOf(1));
+		  this.settings.getRankupPrices().set(p.getUniqueId().toString(), 1);
 		  this.settings.saveRankupPrices();
 	  }
 	  if(!aru.contains(p)) {
@@ -126,7 +122,7 @@ public class RankupHandler implements Listener, CommandExecutor{
 	  }
 	    
 	  int i = this.settings.getRankupPrices().getInt(p.getUniqueId().toString());
-	    this.settings.getRankupPrices().set(p.getUniqueId().toString(), Integer.valueOf(i + 1));
+	    this.settings.getRankupPrices().set(p.getUniqueId().toString(), i + 1);
 	    this.settings.saveRankupPrices();
 	    
 	    p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
@@ -525,28 +521,28 @@ public class RankupHandler implements Listener, CommandExecutor{
     
   }
   
-  public boolean rankup(Player p) {
+  public void rankup(Player p) {
 	  if(nextRank(p) > 100) {
-		  return false;
+		  return;
 	  }
-    if (Main.econ.getBalance((OfflinePlayer)p) < rankPrice(p)) {
+    if (Main.econ.getBalance(p) < rankPrice(p)) {
       p.sendMessage(ChatColor.DARK_GRAY +""+ ChatColor.STRIKETHROUGH + "--------------------->" + nextRank(p) + ChatColor.DARK_GRAY + ChatColor.STRIKETHROUGH + "<---------------------");
       p.sendMessage(" ");
       p.sendMessage(ChatColor.LIGHT_PURPLE + "      � " + ChatColor.GRAY + "You Are Currently " + ChatColor.DARK_GRAY + "[" + ChatColor.AQUA + getRank(p) + ChatColor.DARK_GRAY + "]");
       p.sendMessage(" ");
       p.sendMessage(ChatColor.LIGHT_PURPLE + "      � " + ChatColor.GRAY + nextRank(p) + ChatColor.GRAY + " Costs " + ChatColor.AQUA + Methods.formatAmt(rankPrice(p)) + ChatColor.GRAY + "!");
       p.sendMessage(" ");
-      p.sendMessage(ChatColor.LIGHT_PURPLE + "      � " + ChatColor.GRAY + ChatColor.GRAY + "You Need " + ChatColor.AQUA + Methods.formatAmt(Double.valueOf(rankPrice(p) - Main.econ.getBalance((OfflinePlayer)p)).doubleValue()) + ChatColor.GRAY + " To Rank Up!");
+      p.sendMessage(ChatColor.LIGHT_PURPLE + "      � " + ChatColor.GRAY + ChatColor.GRAY + "You Need " + ChatColor.AQUA + Methods.formatAmt(rankPrice(p) - Main.econ.getBalance(p)) + ChatColor.GRAY + " To Rank Up!");
       p.sendMessage(" ");
       p.sendMessage(ChatColor.DARK_GRAY +""+ ChatColor.STRIKETHROUGH + "--------------------->" + nextRank(p) + ChatColor.DARK_GRAY + ChatColor.STRIKETHROUGH + "<---------------------");
-      return false;
+      return;
     } 
-    Main.econ.withdrawPlayer((OfflinePlayer)p, rankPrice(p));
+    Main.econ.withdrawPlayer(p, rankPrice(p));
     upRank(p);
     p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
-	double percents = 0.0;
+	double percents;
     p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
-    percents = (Double.valueOf(Main.econ.getBalance((OfflinePlayer)p) / RankupHandler.getInstance().rankPrice(p)).doubleValue()*100);
+    percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
     double dmultiply = percents*10.0;
     double dRound = Math.round(dmultiply) /10.0;
     if(RankupHandler.getInstance().getRank(p) == 100) {
@@ -560,32 +556,30 @@ public class RankupHandler implements Listener, CommandExecutor{
     		p.getScoreboard().getTeam("percent").setSuffix(c("&c")+(dRound)+"%");
     }
     }
-    this.settings.getRankupPrices();
     this.settings.saveRankupPrices();
-    return true;
   }
   
-  public boolean MaxRankup(Player p) {
-	  if (Main.econ.getBalance((OfflinePlayer)p) < rankPrice(p)) {
+  public void MaxRankup(Player p) {
+	  if (Main.econ.getBalance(p) < rankPrice(p)) {
 	      p.sendMessage(ChatColor.DARK_GRAY +""+ ChatColor.STRIKETHROUGH + "--------------------->" + nextRank(p) + ChatColor.DARK_GRAY + ChatColor.STRIKETHROUGH + "<---------------------");
 	      p.sendMessage(" ");
 	      p.sendMessage(ChatColor.LIGHT_PURPLE + "      � " + ChatColor.GRAY + "You Are Currently " + ChatColor.DARK_GRAY + "[" + ChatColor.AQUA + getRank(p) + ChatColor.DARK_GRAY + "]");
 	      p.sendMessage(" ");
 	      p.sendMessage(ChatColor.LIGHT_PURPLE + "      � " + ChatColor.GRAY + nextRank(p) + ChatColor.GRAY + " Costs " + ChatColor.AQUA + Methods.formatAmt(rankPrice(p)) + ChatColor.GRAY + "!");
 	      p.sendMessage(" ");
-	      p.sendMessage(ChatColor.LIGHT_PURPLE + "      � " + ChatColor.GRAY + ChatColor.GRAY + "You Need " + ChatColor.AQUA + Methods.formatAmt(Double.valueOf(rankPrice(p) - Main.econ.getBalance((OfflinePlayer)p)).doubleValue()) + ChatColor.GRAY + " To Rank Up!");
+	      p.sendMessage(ChatColor.LIGHT_PURPLE + "      � " + ChatColor.GRAY + ChatColor.GRAY + "You Need " + ChatColor.AQUA + Methods.formatAmt(rankPrice(p) - Main.econ.getBalance(p)) + ChatColor.GRAY + " To Rank Up!");
 	      p.sendMessage(" ");
 	      p.sendMessage(ChatColor.DARK_GRAY +""+ ChatColor.STRIKETHROUGH + "--------------------->" + nextRank(p) + ChatColor.DARK_GRAY + ChatColor.STRIKETHROUGH + "<---------------------");
-	      return false;
+	      return;
 	    } 
-	  while(Main.econ.getBalance((OfflinePlayer)p) > rankPrice(p)) {
-		  if(getRank(p) >= 100) return false;
-		  Main.econ.withdrawPlayer((OfflinePlayer)p, rankPrice(p));
+	  while(Main.econ.getBalance(p) > rankPrice(p)) {
+		  if(getRank(p) >= 100) return;
+		  Main.econ.withdrawPlayer(p, rankPrice(p));
 		    upRank(p);
 		    p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
-	    	double percents = 0.0;
+	    	double percents;
 	        p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
-	        percents = (Double.valueOf(Main.econ.getBalance((OfflinePlayer)p) / RankupHandler.getInstance().rankPrice(p)).doubleValue()*100);
+	        percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
 	        double dmultiply = percents*10.0;
 	        double dRound = Math.round(dmultiply) /10.0;
 	        if(RankupHandler.getInstance().getRank(p) == 100) {
@@ -600,22 +594,20 @@ public class RankupHandler implements Listener, CommandExecutor{
 	        }
 	        }
 	  }
-    return true;
   }
   
   
   
-  public boolean autorankup(Player p) {
+  public void autorankup(Player p) {
 	  if(getRank(p) == 100) {
-		  return false;
+		  return;
 	  }
-	    if (Main.econ.getBalance((OfflinePlayer)p) < rankPrice(p)) {
-	      return false;
+	    if (Main.econ.getBalance(p) < rankPrice(p)) {
+	      return;
 	    } 
-	    Main.econ.withdrawPlayer((OfflinePlayer)p, rankPrice(p));
+	    Main.econ.withdrawPlayer(p, rankPrice(p));
 	    upRank(p);
-	    return true;
-	  }
+  }
   
   @EventHandler
   public void onMove(BlockBreakEvent e) {
@@ -657,25 +649,21 @@ public boolean onCommand(CommandSender sender, Command cmd, String label, String
 				aru.add(p);
 				p.sendMessage(c("&aAutoRankup Enabled!"));
 				settings.getOptions().set(p.getUniqueId().toString()+".Autorankup", true);
-				return true;
-			}
-		
-		
-			if(aru.contains(p)) {
+			} else {
 				aru.remove(p);
 				p.sendMessage(c("&cAutoRankup Disabled!"));
 				settings.getOptions().set(p.getUniqueId().toString()+".Autorankup", false);
-				return true;
 			}
-			
-		
+		return true;
+
+
 	}
 	if(label.equalsIgnoreCase("givemoney")){
 		if(sender.isOp()){
 			if(args.length == 2) {
 				if(isInt(args[1])) {
 					Player pl = Bukkit.getServer().getPlayer(args[0]);
-					int percent = Integer.valueOf(args[1]);
+					int percent = Integer.parseInt(args[1]);
 					double per = ((double)percent)/100;
 					double money = rankPrice(pl) * per;
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + pl.getName() + " " + formatDbl(money));

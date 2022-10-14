@@ -1,15 +1,12 @@
 package me.dxrk.Enchants;
 
 import com.connorlinfoot.titleapi.TitleAPI;
-
-import me.dxrk.Events.LocksmithHandler;
 import me.dxrk.Events.PickXPHandler;
-import me.dxrk.Events.RankupHandler;
-import me.dxrk.Main.Main;
 import me.dxrk.Events.ResetHandler;
+import me.dxrk.Main.Main;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Tokens.Tokens;
 import net.md_5.bungee.api.ChatColor;
-
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,16 +22,13 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 public class PickaxeLevel implements Listener, CommandExecutor{
@@ -75,10 +69,10 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 	
 	public int getBlocks(String s) {
         StringBuilder lvl = new StringBuilder();
-        s = ChatColor.stripColor((String)s);
+        s = ChatColor.stripColor(s);
         char[] arrayOfChar = s.toCharArray();
         int i = arrayOfChar.length;
-        for (int b = 0; b < i; b = (int)((byte)(b + 1))) {
+        for (int b = 0; b < i; b = (byte)(b + 1)) {
             char c = arrayOfChar[b];
             if (!this.isInt(c)) continue;
             lvl.append(c);
@@ -111,7 +105,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
     }
     
     public void addUnlock(Player p, ItemStack ii) {
-        int blockss = this.getBlocks((String)ii.getItemMeta().getLore().get(0));
+        int blockss = this.getBlocks(ii.getItemMeta().getLore().get(0));
         ItemStack i = ii.clone();
         ItemMeta im = i.getItemMeta();
         List<String> lore = im.getLore();
@@ -127,15 +121,15 @@ public class PickaxeLevel implements Listener, CommandExecutor{
     
    
     
-    HashMap<Player, ItemStack> held = new HashMap<Player, ItemStack>();
+    HashMap<Player, ItemStack> held = new HashMap<>();
     
     
     
     
     
-   public HashMap<Player, Boolean> happened = new HashMap<Player, Boolean>();
+   public HashMap<Player, Boolean> happened = new HashMap<>();
     
-   public HashMap<Player, Integer> enchants = new HashMap<Player, Integer>();
+   public HashMap<Player, Integer> enchants = new HashMap<>();
    
    
     
@@ -165,13 +159,10 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 					
 					p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
 					TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lLevel Up!"), c("&6&l+1 Unlock Token"));
-					Bukkit.getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
-				        @Override
-				        public void run() {
-				        	p.closeInventory();
-							spawnFireworks(p.getLocation(), 1);
-				        }
-				    }, 40L);
+					Bukkit.getScheduler().scheduleSyncDelayedTask(Main.plugin, () -> {
+						p.closeInventory();
+						spawnFireworks(p.getLocation(), 1);
+					}, 40L);
 					PickXPHandler.getInstance().removeXP(p, p.getItemInHand(), 55555);
 				
 					
@@ -183,7 +174,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 	
     }
     public void takeUnlock(Player p, ItemStack ii) {
-    	int blockss = this.getBlocks((String)ii.getItemMeta().getLore().get(0));
+    	int blockss = this.getBlocks(ii.getItemMeta().getLore().get(0));
         ItemStack i = ii.clone();
         ItemMeta im = i.getItemMeta();
         List<String> lore = im.getLore();
@@ -193,6 +184,14 @@ public class PickaxeLevel implements Listener, CommandExecutor{
         p.setItemInHand(i);
         p.updateInventory();
     }
+
+
+
+	public void practice(int x){
+		if(x == 100){
+			return; // cancels
+		}
+	}
     
     
     
@@ -304,44 +303,76 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 	    return i;
 	  }
 	
-	public void addFortune(Player p, int num) {
-		for(int n = 0; n < num; n++) {
-			int level = getBlocks(p.getItemInHand().getItemMeta().getLore().get(2));
-			int price = (int) (10*(level*0.0025));
-		ItemStack i = p.getItemInHand().clone();
-		ItemMeta im = i.getItemMeta();
-		List<String> lore = im.getLore();
-		
-		
-		
-		
-		if(getBlocks(lore.get(2)) >= 30000) {
-			p.sendMessage(c("&cYou already have the maximum level of this enchant!"));
-			return;
-		}
+	public void addFortune(Player p, int num, Boolean isMax) {
+		if(isMax == false) {
+			for (int n = 0; n < num; n++) {
+				int level = getBlocks(p.getItemInHand().getItemMeta().getLore().get(2));
+				int price = (int) (100 * (level * 0.2));
+				ItemStack i = p.getItemInHand().clone();
+				ItemMeta im = i.getItemMeta();
+				List<String> lore = im.getLore();
 
-		int blockss = getBlocks(i.getItemMeta().getLore().get(1));
-		if(blockss >= price) {
-			
-			lore.set(1, ChatColor.GRAY + "XP: " + ChatColor.AQUA + (blockss - price));
-			int one = 1;
-			lore.set(2, c("&7Fortune: "+ (getBlocks(lore.get(2))+one)));
-			im.setLore(lore);
-			i.setItemMeta(im);
-			p.setItemInHand(i);
-			p.updateInventory();
-			
-			
-		} else {
-			p.sendMessage(c("&cNot Enough XP"));
-			return;
+
+				if (getBlocks(lore.get(2)) >= 10000) {
+					p.sendMessage(c("&cYou already have the maximum level of this enchant!"));
+					return;
+				}
+
+				int blockss = getBlocks(i.getItemMeta().getLore().get(1));
+				if (blockss >= price) {
+
+					lore.set(1, ChatColor.GRAY + "XP: " + ChatColor.AQUA + (blockss - price));
+					int one = 1;
+					lore.set(2, c("&7Fortune: " + (getBlocks(lore.get(2)) + one)));
+					im.setLore(lore);
+					i.setItemMeta(im);
+					p.setItemInHand(i);
+					p.updateInventory();
+
+
+				} else {
+					return;
+				}
+			}
 		}
+			if(isMax == true){
+				for(int n = 0; n < 100000; n++) {
+					int level = getBlocks(p.getItemInHand().getItemMeta().getLore().get(2));
+					int price = (int) (10*(level*0.0025));
+					ItemStack i = p.getItemInHand().clone();
+					ItemMeta im = i.getItemMeta();
+					List<String> lore = im.getLore();
+
+
+
+
+					if(getBlocks(lore.get(2)) >= 30000) {
+						p.sendMessage(c("&cYou already have the maximum level of this enchant!"));
+						return;
+					}
+
+					int blockss = getBlocks(i.getItemMeta().getLore().get(1));
+					if(blockss >= price) {
+
+					lore.set(1, ChatColor.GRAY + "XP: " + ChatColor.AQUA + (blockss - price));
+					int one = 1;
+					lore.set(2, c("&7Fortune: "+ (getBlocks(lore.get(2))+one)));
+					im.setLore(lore);
+					i.setItemMeta(im);
+					p.setItemInHand(i);
+					p.updateInventory();
+
+
+					} else {
+						return;
+					}
+				}
 		}
 	}
 	
 	
 	
-	public void setEnchantItem(String enchantName, String name, String desc, int priceStart, double priceMultiple, int maxLevel, Inventory inv, int slot, Player p) {
+	public void setEnchantItem(String enchantName, Material mat, String name, String desc, int priceStart, double priceMultiple, int maxLevel, Inventory inv, int slot, Player p) {
 		
 		int enchantLevel = 0;
 		
@@ -351,14 +382,14 @@ public class PickaxeLevel implements Listener, CommandExecutor{
   	    		enchantLevel = getBlocks(p.getItemInHand().getItemMeta().getLore().get(x));
   	    	}
   	    }
-		int price = 0;
+		int price;
 		if(enchantLevel == 0) {
 			price = priceStart;
 		}else {
 			price = priceStart+((int) (priceStart*(enchantLevel*priceMultiple)));
 		}
 		
-		String cost = "";
+		String cost;
 		
 		if(enchantLevel != maxLevel){
 			cost = c("&dCost: &b"+price+" XP");
@@ -367,10 +398,10 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 			}
 		
 		
-		ItemStack i = new ItemStack(Material.ENCHANTED_BOOK);
+		ItemStack i = new ItemStack(mat);
 		ItemMeta im = i.getItemMeta();
 		im.setDisplayName(name);
-		List<String> lore = new ArrayList<String>();
+		List<String> lore = new ArrayList<>();
 		lore.add(c("&dCurrent Level: &b"+enchantLevel));
 		lore.add(c("&dMax Level: &b"+maxLevel));
 		lore.add(cost);
@@ -378,183 +409,6 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		im.setLore(lore);
 		i.setItemMeta(im);
 		lore.clear();
-		if(enchantName.equals("Discovery")) {
-			if(!p.hasPermission("enchant.discoveryunlock")) {
-				i.setType(Material.GOLD_BLOCK);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&6&lSpend 1 Unlock Token to unlock Discovery"));
-				im.setLore(null);
-				i.setItemMeta(im);
-			}
-		}
-		if(enchantName.equals("Encounter")) {
-			if(!p.hasPermission("enchant.encounterunlock")) {
-				i.setType(Material.GOLD_BLOCK);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&6&lSpend 1 Unlock Token to unlock Encounter"));
-				im.setLore(null);
-				i.setItemMeta(im);
-			}
-		}
-		if(enchantName.equals("Wave")) {
-			if(!p.hasPermission("enchant.waveunlock")) {
-				i.setType(Material.GOLD_BLOCK);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&6&lSpend 1 Unlock Token to unlock Wave"));
-				im.setLore(null);
-				i.setItemMeta(im);
-			}
-		}
-		if(enchantName.equals("Greed")) {
-			if(!p.hasPermission("enchant.greedunlock")) {
-				i.setType(Material.GOLD_BLOCK);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&6&lSpend 1 Unlock Token to unlock Greed"));
-				im.setLore(null);
-				i.setItemMeta(im);
-			}
-		}
-		if(enchantName.equals("Research")) {
-			if(!p.hasPermission("enchant.researchunlock")) {
-				i.setType(Material.GOLD_BLOCK);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&6&lSpend 1 Unlock Token to unlock Research"));
-				im.setLore(null);
-				i.setItemMeta(im);
-			}
-		}
-		if(enchantName.equals("TokenFinder")) {
-			if(!p.hasPermission("enchant.tokenfinderunlock")) {
-				i.setType(Material.GOLD_BLOCK);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&6&lSpend 1 Unlock Token to unlock TokenFinder"));
-				im.setLore(null);
-				i.setItemMeta(im);
-			}
-		}
-		
-		if(enchantName.equals("Vaporize")) {
-			if(!p.hasPermission("enchant.vaporizeunlock")) {
-				i.setType(Material.GOLD_BLOCK);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&6&lSpend 1 Unlock Token to unlock Vaporize"));
-				im.setLore(null);
-				i.setItemMeta(im);
-			}
-			if(!p.hasPermission("enchant.vaporize")) {
-				i.setType(Material.BARRIER);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&cYou must be Prestige 5+ to unlock Vaporize!"));
-				im.setLore(null);
-				i.setItemMeta(im);
-			}
-			
-		}
-		if(enchantName.equals("Junkpile")) {
-			if(!p.hasPermission("enchant.junkpileunlock")) {
-				i.setType(Material.GOLD_BLOCK);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&6&lSpend 1 Unlock Token to unlock Junkpile"));
-				i.setItemMeta(im);
-			}
-			if(!p.hasPermission("enchant.junkpile")) {
-				i.setType(Material.BARRIER);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&cYou must be Prestige 10+ to unlock Junkpile!"));
-				im.setLore(null);
-				i.setItemMeta(im);
-			}
-		}
-		if(enchantName.equals("Stake")) {
-			if(!p.hasPermission("enchant.stakeunlock")) {
-				i.setType(Material.GOLD_BLOCK);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&6&lSpend 1 Unlock Token to unlock Stake"));
-				i.setItemMeta(im);
-			}
-			if(!p.hasPermission("enchant.stake")) {
-				i.setType(Material.BARRIER);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&cYou must be Prestige 20+ to unlock Stake!"));
-				im.setLore(null);
-				i.setItemMeta(im);
-			}
-		}
-		if(enchantName.equals("Lucky")) {
-			if(!p.hasPermission("enchant.luckyunlock")) {
-				i.setType(Material.GOLD_BLOCK);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&6&lSpend 1 Unlock Token to unlock Lucky"));
-				i.setItemMeta(im);
-			}
-			if(!p.hasPermission("enchant.lucky")) {
-				i.setType(Material.BARRIER);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&cYou must be Prestige 40+ to unlock Lucky!"));
-				im.setLore(null);
-				i.setItemMeta(im);
-			}
-		}
-		if(enchantName.equals("Booster")) {
-			if(!p.hasPermission("enchant.boosterunlock")) {
-				i.setType(Material.GOLD_BLOCK);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&6&lSpend 1 Unlock Token to unlock Booster"));
-				i.setItemMeta(im);
-			}
-			if(!p.hasPermission("enchant.booster")) {
-				i.setType(Material.BARRIER);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&cYou must be Prestige 35+ to unlock Booster!"));
-				im.setLore(null);
-				i.setItemMeta(im);
-			}
-		}
-		if(enchantName.equals("RuneParty")) {
-			if(!p.hasPermission("enchant.runepartyunlock")) {
-				i.setType(Material.GOLD_BLOCK);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&6&lSpend 1 Unlock Token to unlock RuneParty"));
-				i.setItemMeta(im);
-			}
-			if(!p.hasPermission("enchant.runeparty")) {
-				i.setType(Material.BARRIER);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&cYou must be Prestige 25+ to unlock RuneParty!"));
-				im.setLore(null);
-				i.setItemMeta(im);
-			}
-		}
-		if(enchantName.equals("Multiply")) {
-			if(!p.hasPermission("enchant.multiplyunlock")) {
-				i.setType(Material.GOLD_BLOCK);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&6&lSpend 1 Unlock Token to unlock Multiply"));
-				i.setItemMeta(im);
-			}
-			if(!p.hasPermission("enchant.multiply")) {
-				i.setType(Material.BARRIER);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&cYou must be Prestige 30+ to unlock Multiply!"));
-				im.setLore(null);
-				i.setItemMeta(im);
-			}
-		}
-		if(enchantName.equals("Fortuity")) {
-			if(!p.hasPermission("enchant.fortuityunlock")) {
-				i.setType(Material.GOLD_BLOCK);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&6&lSpend 1 Unlock Token to unlock Fortuity"));
-				i.setItemMeta(im);
-			}
-			if(!p.hasPermission("enchant.fortuity")) {
-				i.setType(Material.BARRIER);
-				im = i.getItemMeta();
-				im.setDisplayName(c("&cYou must be Prestige 50+ to unlock Fortuity!"));
-				im.setLore(null);
-				i.setItemMeta(im);
-			}
-		}
 		
 		
 		inv.setItem(slot, i);
@@ -563,52 +417,31 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 	
 	
 	public void openenchantmenu(Player p) {
-		Inventory enchantmenu = Bukkit.createInventory(null, InventoryType.CHEST, c("&d&lPurchase me.dxrk.Enchants!"));
-		ItemStack upgrade = new ItemStack(Material.DIAMOND_PICKAXE);
-		ItemMeta um = upgrade.getItemMeta();
-		um.setDisplayName(c("&d&lUpgrade your pickaxe!"));
-		List<String> lore = new ArrayList<String>();
-		lore.add(c("&6&l+1 Unlock Token"));
-		lore.add(c("&5Need 55,555XP"));
-		um.setLore(lore);
-		upgrade.setItemMeta(um);
-		lore.clear();
-		
-		enchantmenu.setItem(22, upgrade);
-		
-		setEnchantItem("Lucky", c("&bUpgrade Lucky"), c("&7Boosts the chance of other enchants to proc."), 100000, 0.1, 10, enchantmenu, 2, p);
-		setEnchantItem("Booster", c("&bUpgrade Booster"), c("&7Chance to find low timed boosts."), 100000, 0.05, 10, enchantmenu, 3, p);
-		setEnchantItem("RuneParty", c("&bUpgrade RuneParty"), c("&7Chance to give everyone online a rune."), 100000, 0.1, 10, enchantmenu, 4, p);
-		setEnchantItem("Multiply", c("&bUpgrade Multiply"), c("&7Chance to double the effectiveness of TokenFinder."), 100000, 0.1, 10, enchantmenu, 5, p);
-		setEnchantItem("Fortuity", c("&bUpgrade Fortuity"), c("&7Boosts the effectiveness of Fortune."), 100000, 0.1, 10, enchantmenu, 6, p);
-		setEnchantItem("Discovery", c("&bUpgrade Discovery"), c("&7Finds a Rune after �Blocks Till Dust� Quota is met."), 1000, 0.181626, 100, enchantmenu, 0, p);
-		setEnchantItem("Encounter", c("&bUpgrade Encounter"), c("&7Chance to find a Rune after breaking a block."), 1000, 0.181626, 100, enchantmenu, 1, p);
-		setEnchantItem("Wave", c("&bUpgrade Wave"), c("&7Chance to break an entire layer of the mine."), 1000, 0.181626, 100, enchantmenu, 7, p);
-		setEnchantItem("Explosion", c("&bUpgrade Explosion"), c("&7Chance to explode a large hole in the mine(5x5x5)."), 1000, 0.181626, 100, enchantmenu, 8, p);
-		setEnchantItem("Greed", c("&bUpgrade Greed"), c("&7Increases selling price for blocks."), 1000, 0.181626, 100, enchantmenu, 9, p);
-		setEnchantItem("Research", c("&bUpgrade Research"), c("&7Chance to grant you one level instantly."), 1000, 0.181626, 100, enchantmenu, 10, p);
-		setEnchantItem("TokenFinder", c("&bUpgrade TokenFinder"), c("&7Gives you a random amount of tokens and gives everyone online 10% of the amount."), 1000, 0.181626, 100, enchantmenu, 11, p);
-		setEnchantItem("Vaporize", c("&bUpgrade Vaporize"), c("&7Low Chance to break the entire mine."), 1000, 0.181626, 100, enchantmenu, 15, p);
-		setEnchantItem("Stake", c("&bUpgrade Stake"), c("&7 When activated the money you make for 30 seconds will be given as a bonus after the timer ends."), 1000, 0.181626, 100, enchantmenu, 16, p);
-		setEnchantItem("Junkpile", c("&bUpgrade Junkpile"), c("&7Chance to find random items while mining."), 1000, 0.181626, 100, enchantmenu, 17, p);
+		Inventory enchantmenu = Bukkit.createInventory(null, InventoryType.CHEST, c("&d&lPurchase Enchants!"));
+
+		List<String> lore = new ArrayList<>();
+
+		setEnchantItem("Lucky", Material.GOLD_NUGGET, c("&bUpgrade Lucky"), c("&7Boosts the chance of other enchants to proc."), 100000, 0.1, 10, enchantmenu, 2, p);
+		setEnchantItem("Booster", Material.POTION, c("&bUpgrade Booster"), c("&7Chance to find low timed boosts."), 100000, 0.05, 10, enchantmenu, 3, p);
+		setEnchantItem("Key Party", Material.EYE_OF_ENDER, c("&bUpgrade Key Party"), c("&7Chance to give everyone online a rune."), 100000, 0.1, 10, enchantmenu, 4, p);
+		setEnchantItem("Multiply", Material.EMERALD, c("&bUpgrade Multiply"), c("&7Chance to double the effectiveness of all currencies"), 100000, 0.1, 10, enchantmenu, 5, p);
+		setEnchantItem("Fortuity", Material.GOLD_INGOT, c("&bUpgrade Fortuity"), c("&7Boosts the effectiveness of Fortune."), 100000, 0.1, 10, enchantmenu, 6, p);
+		setEnchantItem("Dust Finder", Material.SUGAR, c("&bUpgrade Dust Finder"), c("&7Finds a Rune after �Blocks Till Dust� Quota is met."), 1000, 0.181626, 100, enchantmenu, 0, p);
+		setEnchantItem("Key Finder", Material.TRIPWIRE_HOOK, c("&bUpgrade Key Finder"), c("&7Chance to find a Rune after breaking a block."), 1000, 0.181626, 100, enchantmenu, 1, p);
+		setEnchantItem("Wave", Material.GOLD_PLATE, c("&bUpgrade Wave"), c("&7Chance to break an entire layer of the mine."), 1000, 0.181626, 100, enchantmenu, 7, p);
+		setEnchantItem("Explosion", Material.FIREWORK_CHARGE, c("&bUpgrade Explosion"), c("&7Chance to explode a large hole in the mine(5x5x5)."), 1000, 0.181626, 100, enchantmenu, 8, p);
+		setEnchantItem("Greed", Material.DIAMOND, c("&bUpgrade Greed"), c("&7Increases selling price for blocks."), 1000, 0.181626, 100, enchantmenu, 9, p);
+		setEnchantItem("Research", Material.REDSTONE, c("&bUpgrade Research"), c("&7Chance to grant you one level instantly."), 1000, 0.181626, 100, enchantmenu, 10, p);
+		setEnchantItem("Token Finder", Material.PRISMARINE_CRYSTALS, c("&bUpgrade Token Finder"), c("&7Gives you a random amount of tokens and gives everyone online 10% of the amount."), 1000, 0.181626, 100, enchantmenu, 11, p);
+		setEnchantItem("Nuke", Material.TNT, c("&bUpgrade Nuke"), c("&7Low Chance to break the entire mine."), 1000, 0.181626, 100, enchantmenu, 15, p);
+		setEnchantItem("Junkpile", Material.BUCKET, c("&bUpgrade Junkpile"), c("&7Chance to find random items while mining."), 1000, 0.181626, 100, enchantmenu, 17, p);
+		setEnchantItem("Fortune", Material.NETHER_STAR, c("&bUpgrade Fortune"), c("&7Increases amount of blocks you sell."), 1000, 0.181626, 100, enchantmenu, 17, p);
+		setEnchantItem("Prestige Finder", Material.BEACON, c("&bUpgrade Prestige Finder"), c("&7Chance to randomly gain some prestiges"), 1000, 0.181626, 100, enchantmenu, 17, p);
+		setEnchantItem("XP <>", Material.EXP_BOTTLE, c("&bUpgrade XP <>"), c("&7..."), 1000, 0.181626, 100, enchantmenu, 17, p);
+		setEnchantItem("Laser", Material.BLAZE_ROD, c("&bUpgrade Laser"), c("&7..."), 1000, 0.181626, 100, enchantmenu, 17, p);
 		
 		
-		
-	  int level = getBlocks(p.getItemInHand().getItemMeta().getLore().get(2));
-		int price = (int) (10*(level*0.0025));
-		ItemStack fortune = new ItemStack(Material.ENCHANTED_BOOK);
-		ItemMeta fm = fortune.getItemMeta();
-		fm.setDisplayName(c("&bUpgrade Fortune"));
-		lore.add(c("&dCurrent Level: &b"+getBlocks(p.getItemInHand().getItemMeta().getLore().get(2))));
-		lore.add(c("&dMax Level: &b30,000"));
-		lore.add(c("&5Cost: &b"+price+" " + "XP"));
-		lore.add(c("&7Left Click: 1"));
-		lore.add(c("&7Right Click: 10"));
-		lore.add(c("&7Shift +Left Click: 100"));
-		fm.setLore(lore);
-		lore.clear();
-		fortune.setItemMeta(fm);
-		enchantmenu.setItem(13, fortune);
+
 		
 		
 		
@@ -625,88 +458,302 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		
 	  p.openInventory(enchantmenu);
 	}
-	
-	public void upgradeEnchant(Player p, ItemStack i) {
-		
-		 
-		
-		String[] display = ChatColor.stripColor(i.getItemMeta().getDisplayName()).split(" ");
-		String name = display[1];
-		int price = getBlocks(i.getItemMeta().getLore().get(2));
-		
-		ItemStack pi = p.getItemInHand().clone();
-		ItemMeta pm = pi.getItemMeta();
-		List<String> lore = pm.getLore();
-		List<String> trinket = new ArrayList<String>();
-		for(int t = 0; t < lore.size(); t++) {
-			String s = lore.get(t);
-			if(ChatColor.stripColor(s).toLowerCase().contains("trinket:")) {
-				lore.remove(t);
-				trinket.add(s);
+
+	public int lineOfEnchant(Player p, String Enchant){
+		int x = 0;
+		ItemStack pitem = p.getItemInHand().clone();
+		List<String> lore = pitem.getItemMeta().getLore();
+		for(int i = 0; i < lore.size(); i++){
+			String s = lore.get(i);
+			if(ChatColor.stripColor(s).contains(Enchant)){
+				x = i;
 			}
 		}
-		
-		
-			int line = 0;
-		
-		int x;
-		for (x = 0; x < lore.size(); x++) {
-  	    	String s = lore.get(x);
-  	    	if (ChatColor.stripColor(s).contains(name)) {
-  	    		line = x;
-  	    	}
-  	    }
-		if(line !=0) {
-		int level = this.getBlocks(lore.get(line));
-		int plus = level+1;
-		if(level == getBlocks(i.getItemMeta().getLore().get(1))) {
-			p.sendMessage(c("&cYou already have the maximum level of this enchant!"));
-			return;
+
+		return x;
+	}
+
+	private List<String> Enchants(){
+		List<String> list = new ArrayList<>();
+		list.add("Key Finder");
+		list.add("Key Party");
+		list.add("Dust Finder");
+		list.add("Token Finder");
+		list.add("Wave");
+		list.add("Junkpile");
+		list.add("Nuke");
+		list.add("Explosion");
+		list.add("Fortuity");
+		list.add("Lucky");
+		list.add("Booster");
+		list.add("Research");
+		list.add("Multiply");
+		list.add("Fortune");
+		list.add("Greed");
+		list.add("Prestige Finder");
+		list.add("XP");
+		list.add("Laser");
+		list.add("Charity");
+
+		return list;
+	}
+	private List<String> Trinkets(){
+		List<String> list = new ArrayList<>();
+		list.add("Token");
+		list.add("Key");
+		list.add("XP");
+		list.add("Luck");
+
+		return list;
+	}
+
+	public List<String> orgainzeEnchants(List<String> list){
+		List<String> lore = new ArrayList<>();
+		lore.add(c("&b&m-<>-&aEnchants&b&m-<>-"));
+		List<String> ilore = list;
+		List<String> Enchants = new ArrayList<>();
+		for(String s : ilore){
+			if(Enchants().contains(ChatColor.stripColor(s))){
+				Enchants.add(s);
+			}
 		}
-  			lore.set(line, c("&9&l"+name+" &b"+ (plus)));
-		
-		
-		} else {
-			lore.add(c("&9&l"+name+" &b1"));
+		Collections.sort(Enchants);
+		lore.addAll(Enchants);
+
+
+
+		return lore;
+	}
+
+	public List<String> organizeTrinkets(List<String> list){
+		List<String> lore = new ArrayList<>();
+		lore.add(c("&b&m-<>-&aTrinkets&b&m-<>-"));
+		List<String> ilore = list;
+		List<String> Trinkets = new ArrayList<>();
+		for(String s : ilore){
+			if(Trinkets().contains(ChatColor.stripColor(s))){
+				Trinkets.add(s);
+			}
 		}
-		
-		
-		
-		int blocks = getBlocks(lore.get(1));
-		
-		if(blocks >= price) {
-		
-			lore.addAll(trinket);
-			pm.setLore(lore);
-	        pi.setItemMeta(pm);
-	        p.setItemInHand(pi);
-	        p.updateInventory();
-	        
-	        PickXPHandler.getInstance().removeXP(p, p.getItemInHand(), price);
-		}else {
-			p.sendMessage(c("&cNot Enough XP"));
-			return;
+		Collections.sort(Trinkets);
+		lore.addAll(Trinkets);
+
+		return lore;
+	}
+
+	public List<String> pickLevel(List<String> list){
+		List<String> lore = new ArrayList<>();
+		List<String> ilore = list;
+		for(String s : ilore){
+			if(ChatColor.stripColor(s).contains("Level:")){
+				lore.add(s);
+			}
 		}
-		openenchantmenu(p);
+		for(String s : ilore){
+			if(ChatColor.stripColor(s).contains("Progress:")){
+				lore.add(s);
+			}
+		}
+
+
+		return lore;
+	}
+	public List<String> Lore(List<String> list){
+		List<String> lore = new ArrayList<>(orgainzeEnchants(list));
+		lore.add(c("  "));
+		lore.addAll(organizeTrinkets(list));
+		lore.add(c("  "));
+		lore.add(c("&b&m-<>-&aLevel&b&m-<>-"));
+		lore.addAll(pickLevel(list));
+		return lore;
+	}
+
+	public double enchantPrice(String Enchant, int level){
+		double i = 0;
+		switch (Enchant) {
+			case "Key Finder":
+				i = 1000 * (level * 0.0015); // 18 Million Level 5,000 MAX
+
+				break;
+			case "Dust Finder":
+				i = 1000 * (level * 0.002); // 25 Million Level 5,000 MAX
+
+				break;
+			case "Fortune":
+				i = 100 * (level * 0.002); // 1 Billion Level 100,000 MAX
+
+				break;
+			case "Wave":
+				i = 5000 * (level * 0.02); // 50 Million Level 1,000 MAX
+
+				break;
+			case "Token Finder":
+				i = 500 * (level * 0.02); // 31 Million Level 2,500 MAX
+
+				break;
+			case "Charity":
+				i = 2500 * (level * 0.15); // 187 Million Level 1,000 MAX
+
+				break;
+			case "Nuke":
+				i = 10000*(level*1.19760479049); // 1.5 Billion Level 500 MAX
+
+				break;
+			case "Explosion":
+				i = 2500*(level*0.025); // 31 Million Level 1,000 MAX
+
+				break;
+			case "Research":
+				i = 3000*(level*0.008); // 108 Million Level 3,000 MAX
+
+				break;
+			case "Greed":
+				i = 5000*(level*10); // 252 Million Level 100 MAX
+
+				break;
+			case "Junkpile":
+				i = 2500*(level*0.02); // 100 Million Level 2,000 MAX
+
+				break;
+			case "Key Party":
+				i = 3500*(level*0.035); // 61 Million Level 1,000 MAX
+
+				break;
+			case "Prestige Finder":
+				i = 2500*(level*0.005); // 156 Million Level 5,000 MAX
+
+				break;
+			case "XP":
+				i = 1000*(level*0.005); // 250 Million Level 10,000 MAX
+
+				break;
+			case "Fortuity":
+				i = 7500*(level*0.1); // 375 Million Level 1,000 MAX
+
+				break;
+			case "Booster":
+				i = 5000*(level*0.017); // 265 Million Level 2,500 MAX
+
+				break;
+			case "Multiply":
+				i = 10000*(level*0.1); // 1.12 Billion Level 1,500 MAX
+
+				break;
+			case "Lucky":
+				i = 4000*(level*0.0023); // 115 Million Level 5,000 MAX
+
+				break;
+			case "Laser":
+				i = 8500*(level*0.4); // 957 Million Level 750 MAX
+
+				break;
+
+		}
+
+
+		return i;
+	}
+
+	
+	public void upgradeEnchant(Player p, ItemStack i, String Enchant, int num, Boolean isMax) {
+		
+		 //Fix the way trinkets apply according to the new lore setup + refine trinkets in their handler -- done 1/2
+		//Change this to accomodate for the new lore setup / try to find a way to organize enchants on apply -- done
+		
+		//Enchants
+		ItemStack pitem = i.clone();
+		ItemMeta pm = pitem.getItemMeta();
+		List<String> lore = pm.getLore();
+		if(isMax == false) {
+
+			if (!lore.contains(Enchant)) {
+				for(int x = 0; x < num; x++) {
+					int level = 0;
+					int plus = level + 1;
+					double price = enchantPrice(Enchant, level);
+					if (Tokens.getInstance().getTokens(p) > price) {
+						p.sendMessage(c("&f&lTokens &8| &7Not enough Tokens."));
+						return;
+					}
+					lore.add(c("&c" + Enchant + " &e" + plus));
+					Tokens.getInstance().takeTokens(p, price);
+				}
+			} else {
+				int line = 0;
+				for(int z = 0; z < lore.size(); z++){
+					String s = lore.get(z);
+					if(ChatColor.stripColor(s).contains(Enchant))
+						line = z;
+				}
+				for(int x = 0; x < num; x++){
+					int level = getBlocks(lore.get(line));
+					int plus = level + 1;
+					double price = enchantPrice(Enchant, level);
+					if(Tokens.getInstance().getTokens(p) > price){
+						p.sendMessage(c("&f&lTokens &8| &7Not enough Tokens."));
+						return;
+					}
+					lore.set(line, c("&c"+Enchant+" &e"+plus));
+					Tokens.getInstance().takeTokens(p, price);
+				}
+			}
+		}
+		else {
+			if (!lore.contains(Enchant)) {
+				for(int x = 0; x < 100001; x++) {
+					int level = 0;
+					int plus = level + 1;
+					double price = enchantPrice(Enchant, level);
+					if (Tokens.getInstance().getTokens(p) > price) {
+						p.sendMessage(c("&f&lTokens &8| &7Not enough Tokens."));
+						return;
+					}
+					lore.add(c("&c" + Enchant + " &e" + plus));
+					Tokens.getInstance().takeTokens(p, price);
+				}
+			} else {
+				int line = 0;
+				for(int z = 0; z < lore.size(); z++){
+					String s = lore.get(z);
+					if(ChatColor.stripColor(s).contains(Enchant))
+						line = z;
+				}
+				for(int x = 0; x < 100001; x++){
+					int level = getBlocks(lore.get(line));
+					int plus = level + 1;
+					double price = enchantPrice(Enchant, level);
+					if(Tokens.getInstance().getTokens(p) > price){
+						p.sendMessage(c("&f&lTokens &8| &7Not enough Tokens."));
+						return;
+					}
+					lore.set(line, c("&c"+Enchant+" &e"+plus));
+					Tokens.getInstance().takeTokens(p, price);
+				}
+			}
+
+		}
+		pm.setLore(Lore(lore));
+		i.setItemMeta(pm);
+		p.updateInventory();
+
+
+
 	}
 	
 	@EventHandler
-	  public void onPickSell(PlayerInteractEvent e) {
+	  public void openMenu(PlayerInteractEvent e) {
 	    Player p = e.getPlayer();
 	    if (p.getItemInHand() == null)
 	      return; 
 	    ItemStack item = p.getItemInHand();
 	    if (item.getType().equals(Material.DIAMOND_PICKAXE)) {
 	      if (e.getAction().equals(Action.LEFT_CLICK_AIR) || e.getAction().equals(Action.LEFT_CLICK_BLOCK))
-	        return; 
-	      
-	      if(p.isSneaking()) {
-	    	  if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-	    	  
-	    	  openenchantmenu(p);
+	        return;
+		  if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+				  openenchantmenu(p);
 	    	  
 	    	  }
-	      }
+
 	    }
 	  }
 	
@@ -723,166 +770,41 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		
 		
 		
-		if(e.getClickedInventory().getName().equals(c("&d&lPurchase me.dxrk.Enchants!"))) {
+		if(e.getClickedInventory().getName().equals(c("&d&lPurchase Enchants!"))) {
 			e.setCancelled(true);
-			if(e.getClick().equals(ClickType.LEFT)) {
+
 				if((e.getSlot() >= 0 && e.getSlot() <= 12) || (e.getSlot() >= 14 && e.getSlot() <= 21) || (e.getSlot() >=23 && e.getSlot() <=26)) {
-					if(e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem().equals(null)) return;
-					if(e.getCurrentItem().equals(Spacer())) return;
-					
-						if(e.getCurrentItem().getType().equals(Material.BARRIER)) {
-							return;
+					if(e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return; if(e.getCurrentItem().equals(Spacer())) return;
+						String[] display = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).split(" ");
+						String name = display[1];
+
+						if(e.getClick().equals(ClickType.LEFT)) {
+							upgradeEnchant(p, p.getItemInHand(), name, 1, false);
+						} else if(e.getClick().equals(ClickType.RIGHT)){
+							upgradeEnchant(p, p.getItemInHand(), name, 10, false);
+						} else if(e.getClick().equals(ClickType.SHIFT_RIGHT)){
+							upgradeEnchant(p, p.getItemInHand(), name, 100, false);
+						} else if(e.getClick().equals(ClickType.SHIFT_LEFT)){
+							upgradeEnchant(p, p.getItemInHand(), name, 1, true);
 						}
-						if(e.getCurrentItem().getType().equals(Material.GOLD_BLOCK)) {
-							if(getBlocks(p.getItemInHand().getItemMeta().getLore().get(0)) >0) {
-								
-							String[] s = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).split(" ");
-							String ss = s[6];
-							Main.perms.playerAdd(p, "enchant."+ss+"unlock");
-							takeUnlock(p, p.getItemInHand());
-							openenchantmenu(p);
-							return;
-							} else {
-								p.closeInventory();
-								p.sendMessage(c("&cNot Enough Unlock Tokens"));
-								return;
-							}
-						}
-						
-						upgradeEnchant(p, e.getCurrentItem());
 					}
-				if(e.getSlot() == 22) {
-					upgrade(p);
-					p.closeInventory();
-				}
-				
-				}
-			if(e.getSlot() == 13) {
-				if(e.getClick().equals(ClickType.LEFT)) {
-					addFortune(p, 1);
-				} else if(e.getClick().equals(ClickType.SHIFT_LEFT)) {
-					addFortune(p, 100);
-				} else if(e.getClick().equals(ClickType.RIGHT)) {
-					addFortune(p, 10);
-				}
-				
-				
-				openenchantmenu(p);
-			}
-			
-			
-			
-			
-			
-			
-		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		if(e.getInventory().getName().equals(c("&6&lPRESTIGE OPTIONS"))) {
-			e.setCancelled(true);
-			
-			if(e.getSlot() == 2) {
-				if(RankupHandler.getInstance().getRank(p) >=100) {
-					prestige(p);
-				} else {
-					p.closeInventory();
-					p.sendMessage(c("&cNot High Enough Level!"));
-					return;
-				}
-			}
-		}
-		
-		
-		
-	}
 
-	@EventHandler
-	public void onJoin(PlayerJoinEvent e) {
-		Player p = e.getPlayer();
+				
 
-		for(int i = 0; i < 101; i++) {
-			if (p.hasPermission("prestige." + i)) {
-				settings.getPlayerData().set(p.getUniqueId().toString() + ".Prestige", i);
-				settings.savePlayerData();
-				return;
-			}
+			p.updateInventory();
+			openenchantmenu(p);
+			
+			
+			
+			
+			
 		}
-		if(!p.hasPermission("prestige.1")){
-			settings.getPlayerData().set(p.getUniqueId().toString() + ".Prestige", 0);
-			settings.savePlayerData();
-			return;
-		}
-
 	}
 
 
-	public void prestige(Player p){
-
-		for(int i = 1; i < 101; i++){
-			if(p.hasPermission("prestige."+i)){
-				if(i==4){
-					Main.perms.playerAdd(p, "enchant.vaporize");
-				}
-				if(i==9){
-					Main.perms.playerAdd(p, "enchant.junkpile");
-				}
-				if(i==19){
-					Main.perms.playerAdd(p, "enchant.stake");
-				}
-				if(i==24){
-					Main.perms.playerAdd(p, "enchant.runeparty");
-				}
-				if(i==29){
-					Main.perms.playerAdd(p, "enchant.multiply");
-				}
-				if(i==34){
-					Main.perms.playerAdd(p, "enchant.booster");
-				}
-				if(i==39){
-					Main.perms.playerAdd(p, "enchant.lucky");
-				}
-				if(i==49){
-					Main.perms.playerAdd(p, "enchant.fortuity");
-				}
-				if(i==100){
-					return;
-				}
-				p.closeInventory();
-				Main.perms.playerAdd(p, "prestige."+(i+1));
-				Main.perms.playerRemove(p, "prestige."+i);
-				settings.getPlayerData().set(p.getUniqueId().toString()+".Prestige", (i+1));
-				RankupHandler.getInstance().setRank(p, 1);
-
-				LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-
-				TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&6&lPrestige "+(i+1)));
-				settings.savePlayerData();
-				return;
-			}
 
 
-		}
-		if(!p.hasPermission("prestige.1")){
-			p.closeInventory();
-			Main.perms.playerAdd(p, "prestige.1");
-			settings.getPlayerData().set(p.getUniqueId().toString()+".Prestige", 1);
-			RankupHandler.getInstance().setRank(p, 1);
 
-			LocksmithHandler.getInstance().addKey(p, "Prestige", 1);
-
-			TitleAPI.sendTitle(p, 2, 40,  2, c("&c&lRank Prestiged"), c("&6&lPrestige 1"));
-			settings.savePlayerData();
-			return;
-		}
-
-	}
 	
 	
 	

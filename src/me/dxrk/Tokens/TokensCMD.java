@@ -22,18 +22,16 @@ public class TokensCMD implements CommandExecutor, Listener {
   
   Tokens tokens = Tokens.getInstance();
   
-  String prefix = ChatColor.translateAlternateColorCodes('&', "&7&k&li&b&lTokens&7&l&ki&r &7➤ ");
+  String prefix = ChatColor.translateAlternateColorCodes('&', "&f&lTokens &8| ");
   
   public void prefixMsg(Player p, String s) {
-    p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.valueOf(this.prefix) + s));
+    p.sendMessage(ChatColor.translateAlternateColorCodes('&', this.prefix + s));
   }
   
   public boolean isInt(String str) {
     try {
       int i = Integer.parseInt(str);
-      if (i < 1)
-        return false; 
-      return true;
+      return i >= 1;
     } catch (NumberFormatException e) {
       return false;
     } 
@@ -46,7 +44,7 @@ public class TokensCMD implements CommandExecutor, Listener {
         if (line.contains("Price")) {
           String level = ChatColor.stripColor(line).replace("Price:", "").replace("Tokens", "").replace(" ", "");
           level = ChatColor.stripColor(level);
-          String S = level.toString();
+          String S = level;
           return S;
         } 
       }  
@@ -75,31 +73,32 @@ public class TokensCMD implements CommandExecutor, Listener {
           }
           if (isInt(args[2])) {
             String Amount = args[2];
-            int amount = Integer.valueOf(Amount).intValue();
+            int amount = Integer.parseInt(Amount);
             this.tokens.addTokens(reciever, amount);
           } 
         } 
       } else {
         Player p = (Player)sender;
+        String s = ChatColor.GRAY + "-- (" + ChatColor.AQUA + "+" + ChatColor.GRAY + ") -- (" + ChatColor.LIGHT_PURPLE + "+" + ChatColor.GRAY + ") -- (" + ChatColor.AQUA + "Tokens" + ChatColor.GRAY + ") -- (" + ChatColor.LIGHT_PURPLE + "+" + ChatColor.GRAY + ") -- (" + ChatColor.AQUA + "+" + ChatColor.GRAY + ") --";
         if (args.length == 0) {
-          p.sendMessage(ChatColor.GRAY + "-- (" + ChatColor.AQUA + "+" + ChatColor.GRAY + ") -- (" + ChatColor.LIGHT_PURPLE + "+" + ChatColor.GRAY + ") -- (" + ChatColor.AQUA + "Tokens" + ChatColor.GRAY + ") -- (" + ChatColor.LIGHT_PURPLE + "+" + ChatColor.GRAY + ") -- (" + ChatColor.AQUA + "+" + ChatColor.GRAY + ") --");
+          p.sendMessage(s);
           p.sendMessage(ChatColor.AQUA + "/Tokens Balance" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Displays your Epsilon token balance");
           p.sendMessage(ChatColor.AQUA + "/Tokens Send (Player) (Amount)" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Send someone tokens");
           p.sendMessage(ChatColor.AQUA + "/Tokens Withdraw" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Turn tokens to virtual items for shops!");
           p.sendMessage(ChatColor.AQUA + "/Tokens Buy" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Buy some more tokens!");
           p.sendMessage(ChatColor.AQUA + "/Tokens Shop" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Spend your tokens");
           p.sendMessage(ChatColor.AQUA + "/Enchanter" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Buy Custom me.dxrk.Enchants!");
-          p.sendMessage(ChatColor.GRAY + "-- (" + ChatColor.AQUA + "+" + ChatColor.GRAY + ") -- (" + ChatColor.LIGHT_PURPLE + "+" + ChatColor.GRAY + ") -- (" + ChatColor.AQUA + "Tokens" + ChatColor.GRAY + ") -- (" + ChatColor.LIGHT_PURPLE + "+" + ChatColor.GRAY + ") -- (" + ChatColor.AQUA + "+" + ChatColor.GRAY + ") --");
-        } else if (args.length >= 1) {
+          p.sendMessage(s);
+        } else {
           if (args[0].equalsIgnoreCase("Help")) {
-        	  p.sendMessage(ChatColor.GRAY + "-- (" + ChatColor.AQUA + "+" + ChatColor.GRAY + ") -- (" + ChatColor.LIGHT_PURPLE + "+" + ChatColor.GRAY + ") -- (" + ChatColor.AQUA + "Tokens" + ChatColor.GRAY + ") -- (" + ChatColor.LIGHT_PURPLE + "+" + ChatColor.GRAY + ") -- (" + ChatColor.AQUA + "+" + ChatColor.GRAY + ") --");
+        	  p.sendMessage(s);
               p.sendMessage(ChatColor.AQUA + "/Tokens Balance" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Displays your Epsilon token balance");
               p.sendMessage(ChatColor.AQUA + "/Tokens Send (Player) (Amount)" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Send someone tokens");
               p.sendMessage(ChatColor.AQUA + "/Tokens Withdraw" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Turn tokens to virtual items for shops!");
               p.sendMessage(ChatColor.AQUA + "/Tokens Buy" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Buy some more tokens!");
               p.sendMessage(ChatColor.AQUA + "/Tokens Shop" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Spend your tokens");
               p.sendMessage(ChatColor.AQUA + "/Enchanter" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Buy Custom me.dxrk.Enchants!");
-              p.sendMessage(ChatColor.GRAY + "-- (" + ChatColor.AQUA + "+" + ChatColor.GRAY + ") -- (" + ChatColor.LIGHT_PURPLE + "+" + ChatColor.GRAY + ") -- (" + ChatColor.AQUA + "Tokens" + ChatColor.GRAY + ") -- (" + ChatColor.LIGHT_PURPLE + "+" + ChatColor.GRAY + ") -- (" + ChatColor.AQUA + "+" + ChatColor.GRAY + ") --");
+              p.sendMessage(s);
           } else if (args[0].equalsIgnoreCase("Balance") || args[0].equalsIgnoreCase("Bal")) {
             prefixMsg(p, "You have &b" + this.tokens.getTokens(p) + "&7 tokens.");
           } else if (args[0].equalsIgnoreCase("AddCommand")) {
@@ -107,12 +106,12 @@ public class TokensCMD implements CommandExecutor, Listener {
             int slot = Integer.parseInt(args[2]);
             StringBuilder sb = new StringBuilder();
             for (int x = 3; x < args.length; x++)
-              sb.append(String.valueOf(args[x]) + " "); 
-            List<String> commands = new ArrayList<String>();
-            if (this.tokens.settings.getTokenShop().contains(String.valueOf(page) + "." + slot + ".command"))
-              commands = this.tokens.settings.getTokenShop().getStringList(String.valueOf(page) + "." + slot + ".command"); 
+              sb.append(args[x]).append(" ");
+            List<String> commands = new ArrayList<>();
+            if (this.tokens.settings.getTokenShop().contains(page + "." + slot + ".command"))
+              commands = this.tokens.settings.getTokenShop().getStringList(page + "." + slot + ".command");
             commands.add(sb.toString());
-            this.tokens.settings.getTokenShop().set(String.valueOf(page) + "." + slot + ".command", commands);
+            this.tokens.settings.getTokenShop().set(page + "." + slot + ".command", commands);
             this.tokens.settings.saveTokenShop();
           } else if (args[0].equalsIgnoreCase("EditShop")) {
             if (!p.hasPermission("Tokens.EditShop")) {
@@ -121,8 +120,8 @@ public class TokensCMD implements CommandExecutor, Listener {
               if (args.length != 2) {
                 p.sendMessage(ChatColor.RED + "Please pick which shop you want to edit!");
                 StringBuilder sb = new StringBuilder();
-                for (String s : this.settings.getTokenShop().getKeys(false))
-                  sb.append(ChatColor.GOLD + s + ", "); 
+                for (String ss : this.settings.getTokenShop().getKeys(false))
+                  sb.append(ChatColor.GOLD).append(ss).append(", ");
                 p.sendMessage(sb.toString());
               } else {
                 this.tokens.loadEditableShop(p, args[1]);
@@ -131,8 +130,8 @@ public class TokensCMD implements CommandExecutor, Listener {
             if (args.length != 2)
               return false; 
             if (isInt(args[1])) {
-              int bal = this.tokens.getTokens(p);
-              int i = Integer.valueOf(args[1]).intValue();
+              double bal = this.tokens.getTokens(p);
+              int i = Integer.parseInt(args[1]);
               if (bal >= i) {
                 ItemStack token = new ItemStack(Material.PRISMARINE_CRYSTALS, i);
                 ItemMeta MS8 = token.getItemMeta();
@@ -142,7 +141,7 @@ public class TokensCMD implements CommandExecutor, Listener {
                 	p.sendMessage(ChatColor.RED+"You cannot hold that many tokens!");
                 	return false;
                 }
-                p.getInventory().addItem(new ItemStack[] { token });
+                p.getInventory().addItem(token);
                 p.updateInventory();
                 this.tokens.takeTokens(p, i);
               } else {
@@ -164,8 +163,8 @@ public class TokensCMD implements CommandExecutor, Listener {
               }
               if (isInt(args[2])) {
                 String Amount = args[2].replace("-", "");
-                int amount = Integer.valueOf(Amount).intValue();
-                int PlayerAmount = this.tokens.getTokens(p);
+                int amount = Integer.parseInt(Amount);
+                double PlayerAmount = this.tokens.getTokens(p);
                 if (PlayerAmount >= amount) {
                   this.tokens.sendTokens(p, reciever, amount);
                 } else {
@@ -186,7 +185,7 @@ public class TokensCMD implements CommandExecutor, Listener {
               } 
               if (isInt(args[2])) {
                 String Amount = args[2];
-                int amount = Integer.valueOf(Amount).intValue();
+                int amount = Integer.parseInt(Amount);
                 this.tokens.addTokens(p, amount);
               } else {
                 p.sendMessage(ChatColor.AQUA + "Not an int");

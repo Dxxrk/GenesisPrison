@@ -6,7 +6,6 @@ import me.dxrk.Main.SettingsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -33,37 +32,37 @@ public class Tokens {
     return Main.econ.getBalance(p);
   }
   
-  public boolean hasTokens(Player p, int tokens) {
+  public boolean hasTokens(Player p, double tokens) {
     return getTokens(p) >= tokens;
   }
   
-  public int getTokens(Player p) {
+  public double getTokens(Player p) {
     if (!this.settings.getET().contains(p.getUniqueId().toString()))
       return 0; 
     return this.settings.getET().getInt(p.getUniqueId().toString());
   }
   
-  public void setTokens(Player p, int tokens) {
+  public void setTokens(Player p, double tokens) {
     this.settings.getET().set(p.getUniqueId().toString(), tokens);
     p.sendMessage(this.prefix + "Tokens set to " + tokens);
     this.settings.saveEtFile();
     p.getScoreboard().getTeam("tokens").setSuffix(m.c("&e"+Main.formatAmt(getTokens(p))));
   }
   
-  public void addTokens(Player p, int tokens) {
+  public void addTokens(Player p, double tokens) {
     this.settings.getET().set(p.getUniqueId().toString(), getTokens(p) + tokens);
     this.settings.saveEtFile();
     p.getScoreboard().getTeam("tokens").setSuffix(m.c("&e"+Main.formatAmt(getTokens(p))));
   }
   
-  public void takeTokens(Player p, int tokens) {
+  public void takeTokens(Player p, double tokens) {
     this.settings.getET().set(p.getUniqueId().toString(), getTokens(p) - tokens);
     this.settings.saveEtFile();
     p.sendMessage(this.prefix + "You now have " + getTokens(p) + " tokens.");
     p.getScoreboard().getTeam("tokens").setSuffix(m.c("&e"+Main.formatAmt(getTokens(p))));
   }
   
-  public void sendTokens(Player sender, Player reciever, int tokens) {
+  public void sendTokens(Player sender, Player reciever, double tokens) {
     if (getTokens(sender) < tokens) {
       sender.sendMessage(this.prefix + "You do not have enough tokens!");
       return;

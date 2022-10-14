@@ -1,5 +1,6 @@
 package me.dxrk.Events;
 
+import com.connorlinfoot.titleapi.TitleAPI;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import org.bukkit.Bukkit;
@@ -54,7 +55,8 @@ public class PrestigeHandler implements Listener {
 
         //Adding Prestiges(boost)
         int rank = RankupHandler.getInstance().getRank(p);
-        double divisor = 10 * 1.5;
+        double base = 1.5;
+        double divisor = 10 * Math.pow(base, timesprestied);
         int prestiges;
         if(timesprestied ==0) {
             prestiges = rank/10;
@@ -62,6 +64,8 @@ public class PrestigeHandler implements Listener {
             prestiges = (int) (rank / divisor);
         }
         this.pl.set(uuid+".Prestiges", prestiges);
+        settings.savePlayerData();
+        TitleAPI.sendTitle(p, 2, 40, 2, m.c("&9&lPrestiged!"), m.c("&b&lPrestiges Gained: +"+prestiges));
 
 
     }
