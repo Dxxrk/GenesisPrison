@@ -186,22 +186,6 @@ public class PickaxeLevel implements Listener, CommandExecutor{
     }
 
 
-
-	public void practice(int x){
-		if(x == 100){
-			return; // cancels
-		}
-	}
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] arg3) {
@@ -303,76 +287,11 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 	    return i;
 	  }
 	
-	public void addFortune(Player p, int num, Boolean isMax) {
-		if(isMax == false) {
-			for (int n = 0; n < num; n++) {
-				int level = getBlocks(p.getItemInHand().getItemMeta().getLore().get(2));
-				int price = (int) (100 * (level * 0.2));
-				ItemStack i = p.getItemInHand().clone();
-				ItemMeta im = i.getItemMeta();
-				List<String> lore = im.getLore();
 
-
-				if (getBlocks(lore.get(2)) >= 10000) {
-					p.sendMessage(c("&cYou already have the maximum level of this enchant!"));
-					return;
-				}
-
-				int blockss = getBlocks(i.getItemMeta().getLore().get(1));
-				if (blockss >= price) {
-
-					lore.set(1, ChatColor.GRAY + "XP: " + ChatColor.AQUA + (blockss - price));
-					int one = 1;
-					lore.set(2, c("&7Fortune: " + (getBlocks(lore.get(2)) + one)));
-					im.setLore(lore);
-					i.setItemMeta(im);
-					p.setItemInHand(i);
-					p.updateInventory();
-
-
-				} else {
-					return;
-				}
-			}
-		}
-			if(isMax == true){
-				for(int n = 0; n < 100000; n++) {
-					int level = getBlocks(p.getItemInHand().getItemMeta().getLore().get(2));
-					int price = (int) (10*(level*0.0025));
-					ItemStack i = p.getItemInHand().clone();
-					ItemMeta im = i.getItemMeta();
-					List<String> lore = im.getLore();
-
-
-
-
-					if(getBlocks(lore.get(2)) >= 30000) {
-						p.sendMessage(c("&cYou already have the maximum level of this enchant!"));
-						return;
-					}
-
-					int blockss = getBlocks(i.getItemMeta().getLore().get(1));
-					if(blockss >= price) {
-
-					lore.set(1, ChatColor.GRAY + "XP: " + ChatColor.AQUA + (blockss - price));
-					int one = 1;
-					lore.set(2, c("&7Fortune: "+ (getBlocks(lore.get(2))+one)));
-					im.setLore(lore);
-					i.setItemMeta(im);
-					p.setItemInHand(i);
-					p.updateInventory();
-
-
-					} else {
-						return;
-					}
-				}
-		}
-	}
 	
 	
 	
-	public void setEnchantItem(String enchantName, Material mat, String name, String desc, int priceStart, double priceMultiple, int maxLevel, Inventory inv, int slot, Player p) {
+	public void setEnchantItem(String enchantName, Material mat, String name, String desc, int priceStart, Inventory inv, int slot, Player p) {
 		
 		int enchantLevel = 0;
 		
@@ -382,16 +301,16 @@ public class PickaxeLevel implements Listener, CommandExecutor{
   	    		enchantLevel = getBlocks(p.getItemInHand().getItemMeta().getLore().get(x));
   	    	}
   	    }
-		int price;
+		double price;
 		if(enchantLevel == 0) {
 			price = priceStart;
 		}else {
-			price = priceStart+((int) (priceStart*(enchantLevel*priceMultiple)));
+			price = enchantPrice(enchantName, enchantLevel);
 		}
 		
 		String cost;
 		
-		if(enchantLevel != maxLevel){
+		if(enchantLevel != maxLevel(enchantName)){
 			cost = c("&dCost: &b"+price+" XP");
 			}else {
 				cost = c("&dCost: &bMAX LEVEL!");
@@ -403,7 +322,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		im.setDisplayName(name);
 		List<String> lore = new ArrayList<>();
 		lore.add(c("&dCurrent Level: &b"+enchantLevel));
-		lore.add(c("&dMax Level: &b"+maxLevel));
+		lore.add(c("&dMax Level: &b"+maxLevel(enchantName)));
 		lore.add(cost);
 		lore.add(desc);
 		im.setLore(lore);
@@ -421,24 +340,24 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 
 		List<String> lore = new ArrayList<>();
 
-		setEnchantItem("Lucky", Material.GOLD_NUGGET, c("&bUpgrade Lucky"), c("&7Boosts the chance of other enchants to proc."), 100000, 0.1, 10, enchantmenu, 2, p);
-		setEnchantItem("Booster", Material.POTION, c("&bUpgrade Booster"), c("&7Chance to find low timed boosts."), 100000, 0.05, 10, enchantmenu, 3, p);
-		setEnchantItem("Key Party", Material.EYE_OF_ENDER, c("&bUpgrade Key Party"), c("&7Chance to give everyone online a rune."), 100000, 0.1, 10, enchantmenu, 4, p);
-		setEnchantItem("Multiply", Material.EMERALD, c("&bUpgrade Multiply"), c("&7Chance to double the effectiveness of all currencies"), 100000, 0.1, 10, enchantmenu, 5, p);
-		setEnchantItem("Fortuity", Material.GOLD_INGOT, c("&bUpgrade Fortuity"), c("&7Boosts the effectiveness of Fortune."), 100000, 0.1, 10, enchantmenu, 6, p);
-		setEnchantItem("Dust Finder", Material.SUGAR, c("&bUpgrade Dust Finder"), c("&7Finds a Rune after �Blocks Till Dust� Quota is met."), 1000, 0.181626, 100, enchantmenu, 0, p);
-		setEnchantItem("Key Finder", Material.TRIPWIRE_HOOK, c("&bUpgrade Key Finder"), c("&7Chance to find a Rune after breaking a block."), 1000, 0.181626, 100, enchantmenu, 1, p);
-		setEnchantItem("Wave", Material.GOLD_PLATE, c("&bUpgrade Wave"), c("&7Chance to break an entire layer of the mine."), 1000, 0.181626, 100, enchantmenu, 7, p);
-		setEnchantItem("Explosion", Material.FIREWORK_CHARGE, c("&bUpgrade Explosion"), c("&7Chance to explode a large hole in the mine(5x5x5)."), 1000, 0.181626, 100, enchantmenu, 8, p);
-		setEnchantItem("Greed", Material.DIAMOND, c("&bUpgrade Greed"), c("&7Increases selling price for blocks."), 1000, 0.181626, 100, enchantmenu, 9, p);
-		setEnchantItem("Research", Material.REDSTONE, c("&bUpgrade Research"), c("&7Chance to grant you one level instantly."), 1000, 0.181626, 100, enchantmenu, 10, p);
-		setEnchantItem("Token Finder", Material.PRISMARINE_CRYSTALS, c("&bUpgrade Token Finder"), c("&7Gives you a random amount of tokens and gives everyone online 10% of the amount."), 1000, 0.181626, 100, enchantmenu, 11, p);
-		setEnchantItem("Nuke", Material.TNT, c("&bUpgrade Nuke"), c("&7Low Chance to break the entire mine."), 1000, 0.181626, 100, enchantmenu, 15, p);
-		setEnchantItem("Junkpile", Material.BUCKET, c("&bUpgrade Junkpile"), c("&7Chance to find random items while mining."), 1000, 0.181626, 100, enchantmenu, 17, p);
-		setEnchantItem("Fortune", Material.NETHER_STAR, c("&bUpgrade Fortune"), c("&7Increases amount of blocks you sell."), 1000, 0.181626, 100, enchantmenu, 17, p);
-		setEnchantItem("Prestige Finder", Material.BEACON, c("&bUpgrade Prestige Finder"), c("&7Chance to randomly gain some prestiges"), 1000, 0.181626, 100, enchantmenu, 17, p);
-		setEnchantItem("XP <>", Material.EXP_BOTTLE, c("&bUpgrade XP <>"), c("&7..."), 1000, 0.181626, 100, enchantmenu, 17, p);
-		setEnchantItem("Laser", Material.BLAZE_ROD, c("&bUpgrade Laser"), c("&7..."), 1000, 0.181626, 100, enchantmenu, 17, p);
+		setEnchantItem("Lucky", Material.GOLD_NUGGET, c("&bUpgrade Lucky"), c("&7Boosts the chance of other enchants to proc."), 100000, enchantmenu, 2, p);
+		setEnchantItem("Booster", Material.POTION, c("&bUpgrade Booster"), c("&7Chance to find low timed boosts."), 100000, enchantmenu, 3, p);
+		setEnchantItem("Key Party", Material.EYE_OF_ENDER, c("&bUpgrade Key Party"), c("&7Chance to give everyone online a rune."), 100000, enchantmenu, 4, p);
+		setEnchantItem("Multiply", Material.EMERALD, c("&bUpgrade Multiply"), c("&7Chance to double the effectiveness of all currencies"), 100000, enchantmenu, 5, p);
+		setEnchantItem("Fortuity", Material.GOLD_INGOT, c("&bUpgrade Fortuity"), c("&7Boosts the effectiveness of Fortune."), 100000, enchantmenu, 6, p);
+		setEnchantItem("Dust Finder", Material.SUGAR, c("&bUpgrade Dust Finder"), c("&7Finds a Rune after Blocks Till Dust Quota is met."), 1000, enchantmenu, 0, p);
+		setEnchantItem("Key Finder", Material.TRIPWIRE_HOOK, c("&bUpgrade Key Finder"), c("&7Chance to find a Rune after breaking a block."), 1000, enchantmenu, 1, p);
+		setEnchantItem("Wave", Material.GOLD_PLATE, c("&bUpgrade Wave"), c("&7Chance to break an entire layer of the mine."), 1000, enchantmenu, 7, p);
+		setEnchantItem("Explosion", Material.FIREWORK_CHARGE, c("&bUpgrade Explosion"), c("&7Chance to explode a large hole in the mine(5x5x5)."), 1000, enchantmenu, 8, p);
+		setEnchantItem("Greed", Material.DIAMOND, c("&bUpgrade Greed"), c("&7Increases selling price for blocks."), 1000, enchantmenu, 9, p);
+		setEnchantItem("Research", Material.REDSTONE, c("&bUpgrade Research"), c("&7Chance to grant you one level instantly."), 1000, enchantmenu, 10, p);
+		setEnchantItem("Token Finder", Material.PRISMARINE_CRYSTALS, c("&bUpgrade Token Finder"), c("&7Increase the amount of tokens randomly found."), 1000, enchantmenu, 11, p);
+		setEnchantItem("Nuke", Material.TNT, c("&bUpgrade Nuke"), c("&7Low Chance to break the entire mine."), 1000,  enchantmenu, 15, p);
+		setEnchantItem("Junkpile", Material.BUCKET, c("&bUpgrade Junkpile"), c("&7Chance to find random items while mining."), 1000, enchantmenu, 17, p);
+		setEnchantItem("Fortune", Material.NETHER_STAR, c("&bUpgrade Fortune"), c("&7Increases amount of blocks you sell."), 1000, enchantmenu, 17, p);
+		setEnchantItem("Prestige Finder", Material.BEACON, c("&bUpgrade Prestige Finder"), c("&7Chance to randomly gain some prestiges"), 1000, enchantmenu, 17, p);
+		setEnchantItem("XP <>", Material.EXP_BOTTLE, c("&bUpgrade XP <>"), c("&7..."), 1000, enchantmenu, 17, p);
+		setEnchantItem("Laser", Material.BLAZE_ROD, c("&bUpgrade Laser"), c("&7..."), 1000, enchantmenu, 17, p);
 		
 		
 
@@ -654,6 +573,72 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		return i;
 	}
 
+	public int maxLevel(String Enchant){
+		int i = 0;
+		switch(Enchant){
+			case "Key Finder":
+			case "Dust Finder":
+			case "Prestige Finder":
+			case "Lucky":
+				i = 5000;
+
+				break;
+
+			case "Wave":
+			case "Fortuity":
+			case "Key Party":
+			case "Explosion":
+			case "Charity":
+				i = 1000;
+
+				break;
+			case "Token Finder":
+			case "Booster":
+				i = 2500;
+
+				break;
+
+			case "Fortune":
+				i = 100000;
+
+				break;
+
+			case "Nuke":
+				i = 500;
+
+				break;
+
+			case "Research":
+				i = 3000;
+
+				break;
+			case "Greed":
+				i = 100;
+
+				break;
+			case "Junkpile":
+				i = 2000;
+
+				break;
+
+			case "XP":
+				i = 10000;
+
+				break;
+
+			case "Multiply":
+				i = 1500;
+
+				break;
+
+			case "Laser":
+				i = 750;
+
+				break;
+		}
+		return i;
+	}
+
 	
 	public void upgradeEnchant(Player p, ItemStack i, String Enchant, int num, Boolean isMax) {
 		
@@ -675,6 +660,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 						p.sendMessage(c("&f&lTokens &8| &7Not enough Tokens."));
 						return;
 					}
+					if(plus >= maxLevel(Enchant)) return;
 					lore.add(c("&c" + Enchant + " &e" + plus));
 					Tokens.getInstance().takeTokens(p, price);
 				}
@@ -693,6 +679,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 						p.sendMessage(c("&f&lTokens &8| &7Not enough Tokens."));
 						return;
 					}
+					if(plus >= maxLevel(Enchant)) return;
 					lore.set(line, c("&c"+Enchant+" &e"+plus));
 					Tokens.getInstance().takeTokens(p, price);
 				}
@@ -708,6 +695,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 						p.sendMessage(c("&f&lTokens &8| &7Not enough Tokens."));
 						return;
 					}
+					if(plus >= maxLevel(Enchant)) return;
 					lore.add(c("&c" + Enchant + " &e" + plus));
 					Tokens.getInstance().takeTokens(p, price);
 				}
@@ -726,6 +714,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 						p.sendMessage(c("&f&lTokens &8| &7Not enough Tokens."));
 						return;
 					}
+					if(plus >= maxLevel(Enchant)) return;
 					lore.set(line, c("&c"+Enchant+" &e"+plus));
 					Tokens.getInstance().takeTokens(p, price);
 				}
