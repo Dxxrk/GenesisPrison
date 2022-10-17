@@ -84,7 +84,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 	
 	
 	public ItemStack commonDust() {
-		ArrayList<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<>();
 		ItemStack dust = new ItemStack(Material.SUGAR);
 		ItemMeta dm = dust.getItemMeta();
 		dm.setDisplayName(m.c("&bCommon Trinket Dust"));
@@ -94,7 +94,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 		return dust;
 	}
 	public ItemStack rareDust() {
-		ArrayList<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<>();
 		ItemStack dust = new ItemStack(Material.SUGAR);
 		ItemMeta dm = dust.getItemMeta();
 		dm.setDisplayName(m.c("&9Rare Trinket Dust"));
@@ -104,7 +104,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 		return dust;
 	}
 	public ItemStack epicDust() {
-		ArrayList<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<>();
 		ItemStack dust = new ItemStack(Material.SUGAR);
 		ItemMeta dm = dust.getItemMeta();
 		dm.setDisplayName(m.c("&5Epic Trinket Dust"));
@@ -114,7 +114,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 		return dust;
 	}
 	public ItemStack legDust() {
-		ArrayList<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<>();
 		ItemStack dust = new ItemStack(Material.SUGAR);
 		ItemMeta dm = dust.getItemMeta();
 		dm.setDisplayName(m.c("&6Legendary Trinket Dust"));
@@ -124,7 +124,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 		return dust;
 	}
 	public ItemStack herDust() {
-		ArrayList<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<>();
 		ItemStack dust = new ItemStack(Material.SUGAR);
 		ItemMeta dm = dust.getItemMeta();
 		dm.setDisplayName(m.c("&4Heroic Trinket Dust"));
@@ -135,7 +135,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 	}
 	
 	public ItemStack commonTrinket(int amount) {
-		ArrayList<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<>();
 		ItemStack trinket = new ItemStack(Material.EMERALD, amount);
 		ItemMeta dm = trinket.getItemMeta();
 		dm.setDisplayName(m.c("&bCommon Trinket"));
@@ -145,7 +145,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 		return trinket;
 	}
 	public ItemStack rareTrinket(int amount) {
-		ArrayList<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<>();
 		ItemStack trinket = new ItemStack(Material.EMERALD, amount);
 		ItemMeta dm = trinket.getItemMeta();
 		dm.setDisplayName(m.c("&9Rare Trinket"));
@@ -155,7 +155,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 		return trinket;
 	}
 	public ItemStack epicTrinket(int amount) {
-		ArrayList<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<>();
 		ItemStack trinket = new ItemStack(Material.EMERALD, amount);
 		ItemMeta dm = trinket.getItemMeta();
 		dm.setDisplayName(m.c("&5Epic Trinket"));
@@ -165,7 +165,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 		return trinket;
 	}
 	public ItemStack legTrinket(int amount) {
-		ArrayList<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<>();
 		ItemStack trinket = new ItemStack(Material.EMERALD, amount);
 		ItemMeta dm = trinket.getItemMeta();
 		dm.setDisplayName(m.c("&6Legendary Trinket"));
@@ -175,7 +175,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 		return trinket;
 	}
 	public ItemStack herTrinket(int amount) {
-		ArrayList<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<>();
 		ItemStack trinket = new ItemStack(Material.EMERALD, amount);
 		ItemMeta dm = trinket.getItemMeta();
 		dm.setDisplayName(m.c("&4Heroic Trinket"));
@@ -273,7 +273,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 	}
 	
 	
-	
+	//Create Custom inventory for creating higher tier trinkets
 	
 	@EventHandler
 	public void afterCraft(PrepareItemCraftEvent e) {
@@ -321,7 +321,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 			
 			
 			if(e.getRecipe().getResult().equals(commonTrinket(1))) {
-				List<String> lore = new ArrayList<String>();
+				List<String> lore = new ArrayList<>();
 				lore.add(m.c("&7&oUse this to craft a &bCommon &7&oTrinket"));
 				boolean goodToCraft = false;
 				ItemStack[] items = e.getInventory().getMatrix();
@@ -340,7 +340,6 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				}
 				if(goodToCraft == true) {
 					e.getInventory().setResult(commonTrinket(1));
-					return;
 				} else if(goodToCraft == false) {
 					lore.clear();
 					lore.add(m.c("&7&oUse this to craft a &9Rare &7&oTrinket"));
@@ -360,7 +359,6 @@ public class TrinketHandler implements Listener, CommandExecutor{
 					}
 					if(goodToCraft == true) {
 						e.getInventory().setResult(rareTrinket(1));
-						return;
 					} else if(goodToCraft == false) {
 						lore.clear();
 						lore.add(m.c("&7&oUse this to craft a &5Epic &7&oTrinket"));
@@ -381,7 +379,6 @@ public class TrinketHandler implements Listener, CommandExecutor{
 						}
 						if(goodToCraft == true) {
 							e.getInventory().setResult(epicTrinket(1));
-							return;
 						} else if(goodToCraft == false) {
 							lore.clear();
 							lore.add(m.c("&7&oUse this to craft a &6Legendary &7&oTrinket"));
@@ -401,7 +398,6 @@ public class TrinketHandler implements Listener, CommandExecutor{
 							}
 							if(goodToCraft == true) {
 								e.getInventory().setResult(legTrinket(1));
-								return;
 							} else if(goodToCraft == false) {
 								lore.clear();
 								lore.add(m.c("&7&oUse this to craft a &4Heroic &7&oTrinket"));
@@ -421,7 +417,6 @@ public class TrinketHandler implements Listener, CommandExecutor{
 								}
 								if(goodToCraft == true) {
 									e.getInventory().setResult(herTrinket(1));
-									return;
 								} else if(goodToCraft == false) {
 									e.getInventory().setResult(null);
 								}
@@ -435,62 +430,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 		}
 		
 	}
-	
-	/*@EventHandler
-	public void Craft(CraftItemEvent e) {
-		
-		
-		if(e.getCurrentItem().equals(commonTrinket(1))) {
-			ItemStack[] items = e.getInventory().getMatrix();
-			if(items[0].getAmount() >1) {
-				items[0].setAmount(items[0].getAmount() -1);
-			} else {
-				items[0].setType(Material.AIR);
-			}
-			if(items[1].getAmount() >1) {
-				items[1].setAmount(items[1].getAmount() -1);
-			} else {
-				items[1].setType(Material.AIR);
-			}
-			if(items[2].getAmount() >1) {
-				items[2].setAmount(items[2].getAmount() -1);
-			} else {
-				items[2].setType(Material.AIR);
-			}
-			if(items[3].getAmount() >1) {
-				items[3].setAmount(items[3].getAmount() -1);
-			} else {
-				items[3].setType(Material.AIR);
-			}
-			if(items[4].getAmount() >1) {
-				items[4].setAmount(items[4].getAmount() -1);
-			} else {
-				items[4].setType(Material.AIR);
-			}
-			if(items[5].getAmount() >1) {
-				items[5].setAmount(items[5].getAmount() -1);
-			} else {
-				items[5].setType(Material.AIR);
-			}
-			if(items[6].getAmount() >1) {
-				items[6].setAmount(items[6].getAmount() -1);
-			} else {
-				items[6].setType(Material.AIR);
-			}
-			if(items[7].getAmount() >1) {
-				items[7].setAmount(items[7].getAmount() -1);
-			} else {
-				items[7].setType(Material.AIR);
-			}
-			if(items[8].getAmount() >1) {
-				items[8].setAmount(items[8].getAmount() -1);
-			} else {
-				items[8].setType(Material.AIR);
-			}
-		}else {
-			
-		}
-	}*/
+
 	
 	public void openTrinket(Player p, int rarity) {
 		Random r = new Random();
@@ -502,7 +442,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int min = 3;
 				int max = 10;
 				 int Sell = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&bCommon Sell Trinket"));
@@ -517,7 +457,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int min = 2;
 				int max = 10;
 				 int XP = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&bCommon XP Trinket"));
@@ -534,7 +474,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int min = 2;
 				int max = 5;
 				 int Key = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&bCommon KeyFortune Trinket"));
@@ -547,11 +487,11 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				
 				p.getInventory().addItem(trinket);
 				
-			} else if(rint == 3) {
+			} else {
 				int min = 5;
 				int max = 10;
 				 int Luck = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&bCommon Lucky Trinket"));
@@ -571,7 +511,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int min = 10;
 				int max = 18;
 				 int Sell = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&9Rare Sell Trinket"));
@@ -586,7 +526,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int min = 10;
 				int max = 17;
 				 int XP = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&9Rare XP Trinket"));
@@ -603,7 +543,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int min = 5;
 				int max = 8;
 				 int Key = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&9Rare KeyFortune Trinket"));
@@ -616,11 +556,11 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				
 				p.getInventory().addItem(trinket);
 				
-			} else if(rint == 3) {
+			} else {
 				int min = 10;
 				int max = 15;
 				 int Luck = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&9Rare Lucky Trinket"));
@@ -640,7 +580,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int min = 18;
 				int max = 25;
 				 int Sell = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&5Epic Sell Trinket"));
@@ -655,7 +595,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int min = 17;
 				int max = 25;
 				 int XP = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&5Epic XP Trinket"));
@@ -672,7 +612,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int min = 8;
 				int max = 11;
 				 int Key = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&5Epic KeyFortune Trinket"));
@@ -685,11 +625,11 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				
 				p.getInventory().addItem(trinket);
 				
-			} else if(rint == 3) {
+			} else {
 				int min = 15;
 				int max = 20;
 				 int Luck = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&5Epic Lucky Trinket"));
@@ -709,7 +649,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int min = 25;
 				int max = 40;
 				 int Sell = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&6Legendary Sell Trinket"));
@@ -724,7 +664,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int min = 25;
 				int max = 35;
 				 int XP = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&6Legendary XP Trinket"));
@@ -741,7 +681,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int min = 11;
 				int max = 14;
 				 int Key = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&6Legendary KeyFortune Trinket"));
@@ -754,11 +694,11 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				
 				p.getInventory().addItem(trinket);
 				
-			} else if(rint == 3) {
+			} else {
 				int min = 20;
 				int max = 25;
 				 int Luck = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&6Legendary Lucky Trinket"));
@@ -778,7 +718,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int min = 45;
 				int max = 75;
 				 int Sell = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&4Heroic Sell Trinket"));
@@ -793,7 +733,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int min = 50;
 				int max = 100;
 				 int XP = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&4Heroic XP Trinket"));
@@ -810,7 +750,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int min = 14;
 				int max = 20;
 				 int Key = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&4Heroic KeyFortune Trinket"));
@@ -823,11 +763,11 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				
 				p.getInventory().addItem(trinket);
 				
-			} else if(rint == 3) {
+			} else {
 				int min = 25;
 				int max = 35;
 				 int Luck = r.nextInt(max-min)+min;
-				ArrayList<String> lore = new ArrayList<String>();
+				ArrayList<String> lore = new ArrayList<>();
 				ItemStack trinket = new ItemStack(Material.EMERALD);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&4Heroic Lucky Trinket"));
@@ -913,28 +853,28 @@ public class TrinketHandler implements Listener, CommandExecutor{
 					String[] ss = ChatColor.stripColor(s).split(" ");
 					if(ss[2].equals("Sell")) {
 						im.setDisplayName(m.c("&bCommon Sell Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&b"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
 						loree.add(m.c("&7&oDrag onto an item to apply"));
 						im.setLore(loree);
 						i.setItemMeta(im);
 					} else if(ss.length > 4 && ss[5].equals("XP")) {
 						im.setDisplayName(m.c("&bCommon XP Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&b"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
 						loree.add(m.c("&7&oDrag onto an item to apply"));
 						im.setLore(loree);
 						i.setItemMeta(im);
 					} else if(ss.length > 4 && ss[5].equals("Keys")) {
 						im.setDisplayName(m.c("&bCommon KeyFortune Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&b"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
 						loree.add(m.c("&7&oDrag onto an item to apply"));
 						im.setLore(loree);
 						i.setItemMeta(im);
 					} else if(ss[3].equals("Luck")) {
 						im.setDisplayName(m.c("&bCommon Lucky Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&b"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
 						loree.add(m.c("&7&oDrag onto an item to apply"));
 						im.setLore(loree);
@@ -959,28 +899,28 @@ public class TrinketHandler implements Listener, CommandExecutor{
 					String[] ss = ChatColor.stripColor(s).split(" ");
 					if(ss[2].equals("Sell")) {
 						im.setDisplayName(m.c("&9Rare Sell Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&9"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
 						loree.add(m.c("&7&oDrag onto an item to apply"));
 						im.setLore(loree);
 						i.setItemMeta(im);
 					} else if(ss.length > 4 && ss[5].equals("XP")) {
 						im.setDisplayName(m.c("&9Rare XP Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&9"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
 						loree.add(m.c("&7&oDrag onto an item to apply"));
 						im.setLore(loree);
 						i.setItemMeta(im);
 					} else if(ss.length > 4 && ss[5].equals("Keys")) {
 						im.setDisplayName(m.c("&9Rare KeyFortune Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&9"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
 						loree.add(m.c("&7&oDrag onto an item to apply"));
 						im.setLore(loree);
 						i.setItemMeta(im);
 					} else if(ss[3].equals("Luck")) {
 						im.setDisplayName(m.c("&9Rare Lucky Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&b"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
 						loree.add(m.c("&9&oDrag onto an item to apply"));
 						im.setLore(loree);
@@ -1005,28 +945,28 @@ public class TrinketHandler implements Listener, CommandExecutor{
 					String[] ss = ChatColor.stripColor(s).split(" ");
 					if(ss[2].equals("Sell")) {
 						im.setDisplayName(m.c("&5Epic Sell Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&5"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
 						loree.add(m.c("&7&oDrag onto an item to apply"));
 						im.setLore(loree);
 						i.setItemMeta(im);
 					} else if(ss.length > 4 && ss[5].equals("XP")) {
 						im.setDisplayName(m.c("&5Epic XP Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&5"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
 						loree.add(m.c("&7&oDrag onto an item to apply"));
 						im.setLore(loree);
 						i.setItemMeta(im);
 					} else if(ss.length > 4 && ss[5].equals("Keys")) {
 						im.setDisplayName(m.c("&5Epic KeyFortune Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&5"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
 						loree.add(m.c("&7&oDrag onto an item to apply"));
 						im.setLore(loree);
 						i.setItemMeta(im);
 					} else if(ss[3].equals("Luck")) {
 						im.setDisplayName(m.c("&5Epic Lucky Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&b"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
 						loree.add(m.c("&5&oDrag onto an item to apply"));
 						im.setLore(loree);
@@ -1051,28 +991,28 @@ public class TrinketHandler implements Listener, CommandExecutor{
 					String[] ss = ChatColor.stripColor(s).split(" ");
 					if(ss[2].equals("Sell")) {
 						im.setDisplayName(m.c("&6Legendary Sell Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&6"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
 						loree.add(m.c("&7&oDrag onto an item to apply"));
 						im.setLore(loree);
 						i.setItemMeta(im);
 					} else if(ss.length > 4 && ss[5].equals("XP")) {
 						im.setDisplayName(m.c("&6Legendary XP Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&6"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
 						loree.add(m.c("&7&oDrag onto an item to apply"));
 						im.setLore(loree);
 						i.setItemMeta(im);
 					} else if(ss.length > 4 && ss[5].equals("Keys")) {
 						im.setDisplayName(m.c("&6Legendary KeyFortune Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&6"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
 						loree.add(m.c("&7&oDrag onto an item to apply"));
 						im.setLore(loree);
 						i.setItemMeta(im);
 					} else if(ss[3].equals("Luck")) {
 						im.setDisplayName(m.c("&6Legendary Lucky Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&b"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
 						loree.add(m.c("&6&oDrag onto an item to apply"));
 						im.setLore(loree);
@@ -1097,28 +1037,28 @@ public class TrinketHandler implements Listener, CommandExecutor{
 					String[] ss = ChatColor.stripColor(s).split(" ");
 					if(ss[2].equals("Sell")) {
 						im.setDisplayName(m.c("&4Heroic Sell Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&4"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
 						loree.add(m.c("&7&oDrag onto an item to apply"));
 						im.setLore(loree);
 						i.setItemMeta(im);
 					} else if(ss.length > 4 && ss[5].equals("XP")) {
 						im.setDisplayName(m.c("&4Heroic XP Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&4"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
 						loree.add(m.c("&7&oDrag onto an item to apply"));
 						im.setLore(loree);
 						i.setItemMeta(im);
 					} else if(ss.length > 4 && ss[5].equals("Keys")) {
 						im.setDisplayName(m.c("&4Heroic KeyFortune Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&4"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
 						loree.add(m.c("&7&oDrag onto an item to apply"));
 						im.setLore(loree);
 						i.setItemMeta(im);
 					} else if(ss[3].equals("Luck")) {
 						im.setDisplayName(m.c("&4Heroic Lucky Trinket"));
-						ArrayList<String> loree = new ArrayList<String>();
+						ArrayList<String> loree = new ArrayList<>();
 						loree.add(m.c("&b"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
 						loree.add(m.c("&4&oDrag onto an item to apply"));
 						im.setLore(loree);
@@ -1153,10 +1093,9 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				if(!e.getClickedInventory().equals(p.getInventory())) return;
 				List<String> ilore = e.getCurrentItem().getItemMeta().getLore();
 				int count = 0;
-				for(int i = 0; i < ilore.size(); i++) {
-					String s = ilore.get(i);
+				for (String s : ilore) {
 					String[] v = ChatColor.stripColor(s).split(" ");
-					if(v[0].equals(m.c("Trinket:"))) {
+					if (v[0].equals(m.c("Trinket:"))) {
 						count += 1;
 					}
 				}

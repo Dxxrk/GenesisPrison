@@ -329,7 +329,7 @@ public class SellHandler implements Listener, CommandExecutor {
   private ArrayList<String> reset = new ArrayList<>();
   
   
-  public Inventory inv = Bukkit.createInventory(null, 45, c("&cBackpack"));
+
   
   public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
 	  

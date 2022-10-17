@@ -22,7 +22,7 @@ public class TokensCMD implements CommandExecutor, Listener {
   
   Tokens tokens = Tokens.getInstance();
   
-  String prefix = ChatColor.translateAlternateColorCodes('&', "&f&lTokens &8| ");
+  String prefix = ChatColor.translateAlternateColorCodes('&', "&f&lTokens &8|&r ");
   
   public void prefixMsg(Player p, String s) {
     p.sendMessage(ChatColor.translateAlternateColorCodes('&', this.prefix + s));
@@ -100,7 +100,7 @@ public class TokensCMD implements CommandExecutor, Listener {
               p.sendMessage(ChatColor.AQUA + "/Enchanter" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Buy Custom me.dxrk.Enchants!");
               p.sendMessage(s);
           } else if (args[0].equalsIgnoreCase("Balance") || args[0].equalsIgnoreCase("Bal")) {
-            prefixMsg(p, "You have &b" + this.tokens.getTokens(p) + "&7 tokens.");
+            prefixMsg(p, "&e" + ((int)this.tokens.getTokens(p)) + "⛀");
           } else if (args[0].equalsIgnoreCase("AddCommand")) {
             String page = args[1];
             int slot = Integer.parseInt(args[2]);

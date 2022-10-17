@@ -5,7 +5,6 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,11 +21,11 @@ public class TokenShop implements Listener {
   Tokens tokens = Tokens.getInstance();
   
   SettingsManager settings = SettingsManager.getInstance();
-  
-  String prefix = ChatColor.translateAlternateColorCodes('&', "&7&k&li&b&lTokens&7&l&ki&r &7➤ ");
+
+  String prefix = ChatColor.translateAlternateColorCodes('&', "&f&lTokens &8|&r ");
   
   public void prefixMsg(Player p, String s) {
-    p.sendMessage(ChatColor.translateAlternateColorCodes('&', String.valueOf(this.prefix) + s));
+    p.sendMessage(ChatColor.translateAlternateColorCodes('&', this.prefix + s));
   }
   
   public int getPrice(String s) {
@@ -49,20 +48,20 @@ public class TokenShop implements Listener {
   public void giveItem(Player p, ItemStack ii, int slot) {
     String page = "";
     for (String s : this.settings.getTokenShop().getKeys(false)) {
-      if (this.settings.getTokenShop().contains(String.valueOf(s) + "." + slot) && 
-        this.settings.getTokenShop().getItemStack(String.valueOf(s) + "." + slot + ".item").equals(ii))
+      if (this.settings.getTokenShop().contains(s + "." + slot) &&
+        this.settings.getTokenShop().getItemStack(s + "." + slot + ".item").equals(ii))
         page = s; 
     } 
-    if (this.settings.getTokenShop().contains(String.valueOf(page) + "." + slot + ".command")) {
-      for (String command : this.settings.getTokenShop().getStringList(String.valueOf(page) + "." + slot + ".command")) {
+    if (this.settings.getTokenShop().contains(page + "." + slot + ".command")) {
+      for (String command : this.settings.getTokenShop().getStringList(page + "." + slot + ".command")) {
         String cmd = command.replace("#p", p.getName());
-        Bukkit.getServer().dispatchCommand((CommandSender)Bukkit.getServer().getConsoleSender(), cmd);
+        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), cmd);
       } 
       return;
     } 
     ItemStack i = ii.clone();
     ItemMeta im = i.getItemMeta();
-    List<String> lore = new ArrayList<String>();
+    List<String> lore = new ArrayList<>();
     if (im.getLore().size() != 1)
       if (im.getLore().size() == 2) {
         lore.add(im.getLore().get(0));
@@ -70,12 +69,12 @@ public class TokenShop implements Listener {
         for (int x = 0; x < im.getLore().size() - 1; x++) {
           try {
             lore.add(i.getItemMeta().getLore().get(x));
-          } catch (Exception exception) {}
+          } catch (Exception ignored) {}
         } 
       }  
     im.setLore(lore);
     i.setItemMeta(im);
-    p.getInventory().addItem(new ItemStack[] { i });
+    p.getInventory().addItem(i);
   }
   
   public boolean isInt(String s) {

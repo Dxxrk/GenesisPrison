@@ -135,27 +135,12 @@ public class CMDOptions implements Listener, CommandExecutor{
 		    	if(e.getCurrentItem().equals(Spacer())) return;
 		    	if(e.getCurrentItem().getType().equals(Material.INK_SACK)) {
 		    		String[] name = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).split(" ");
-		    		if(name[0].equals("Autosell") && !p.hasPermission("command.autosell")) return;
 		    		if(name[1].equals("Enabled")) {
-		    			if(name[0].equals("Autosell")) {
+						this.settings.getOptions().set(p.getUniqueId().toString()+"."+name[0], false);
 
-								SellHandler.autosell.remove(p);
-								this.settings.getOptions().set(p.getUniqueId().toString() + "." + name[0], false);
-
-		    			} else {
-		    				this.settings.getOptions().set(p.getUniqueId().toString()+"."+name[0], false);
-		    			}
 		    		} else if(name[1].equals("Disabled")) {
-		    			if(name[0].equals("Autosell")) {
-							if(p.hasPermission("command.autosell")) {
-								SellHandler.autosell.add(p);
-								this.settings.getOptions().set(p.getUniqueId().toString() + "." + name[0], true);
-							} else{
-								p.sendMessage(m.c("&cThis perk is only for Ares and higher."));
-							}
-		    			} else {
-		    				this.settings.getOptions().set(p.getUniqueId().toString()+"."+name[0], true);
-		    			}
+						this.settings.getOptions().set(p.getUniqueId().toString()+"."+name[0], true);
+
 		    		}
 		    	}
 		    	openOptions(p);

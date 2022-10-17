@@ -148,9 +148,6 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("cratekey").setExecutor(new CrateHandler());
     getCommand("crateinfo").setExecutor(new CrateHandler());
     getCommand("openall").setExecutor(new CrateHandler());
-    getCommand("backpack").setExecutor(new SellHandler());
-    getCommand("bp").setExecutor(new SellHandler());
-    getCommand("sellall").setExecutor(new SellHandler());
     getCommand("rankup").setExecutor(new CMDRankup());
     getCommand("maxrankup").setExecutor(new CMDRankup());
     getCommand("rankupmax").setExecutor(new CMDRankup());

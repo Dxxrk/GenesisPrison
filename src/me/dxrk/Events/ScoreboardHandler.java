@@ -1,26 +1,7 @@
 package me.dxrk.Events;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.text.NumberFormat;
-import java.util.Locale;
-import java.util.Random;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.*;
-
 import com.connorlinfoot.titleapi.TitleAPI;
 import com.earth2me.essentials.Essentials;
-
 import me.dxrk.Commands.CMDVanish;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.SettingsManager;
@@ -29,6 +10,22 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerListHeaderFooter;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.*;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.text.NumberFormat;
+import java.util.Locale;
+import java.util.Random;
 
 public class ScoreboardHandler implements Listener{
 	
@@ -42,7 +39,7 @@ public class ScoreboardHandler implements Listener{
 	    int x = 0;
 	    for (Player p : Bukkit.getOnlinePlayers()) {
 	    	if (!CMDVanish.vanished.contains(p.getUniqueId()))
-	        x++; 
+	        	x++;
 	    } 
 	    return x;
 	  }
@@ -66,13 +63,9 @@ public class ScoreboardHandler implements Listener{
 		    if (x == 2)
 		      return ChatColor.RED; 
 		    if (x == 3)
-		      return ChatColor.YELLOW; 
-		    if(x == 4)
-		      return ChatColor.LIGHT_PURPLE;
-		    if(x == 5)
-		      return ChatColor.DARK_AQUA;
-		    return ChatColor.WHITE;
-		  }
+		      return ChatColor.YELLOW;
+		  return ChatColor.LIGHT_PURPLE;
+	  }
 	
 	
 	  
@@ -139,7 +132,7 @@ public class ScoreboardHandler implements Listener{
 		    if (amt <= 0.0D)
 		      return String.valueOf(0); 
 		    if (amt >= 1000.0D)
-			      return String.format("%.1f K", new Object[] { Double.valueOf(amt / 1000.0D) }).replace(".0 ", "")
+			      return String.format("%.1f K", amt / 1000.0D).replace(".0 ", "")
 			    		  .replace(".1 ", "")
 			    		  .replace(".2 ", "")
 			    		  .replace(".3 ", "")
@@ -381,11 +374,8 @@ public class ScoreboardHandler implements Listener{
 	    static Essentials ess = (Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
 	    
 	    public static boolean isAFK(Player p) {
-	    	if(ess.getUser(p) != null && ess.getUser(p).isAfk()) {
-	    		return true;
-	    	}
-	    	return false;
-	    }
+			return ess.getUser(p) != null && ess.getUser(p).isAfk();
+		}
 	    
 	    
 	        @SuppressWarnings("deprecation")
@@ -648,9 +638,9 @@ public class ScoreboardHandler implements Listener{
 		        	        NewBoard.getTeam("percent").setPrefix(c("&7Rankup: "));
 		        	        
 		        	        p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
-		        	    	double percents = 0.0;
+		        	    	double percents;
 		        	        p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
-		        	        percents = (Double.valueOf(Main.econ.getBalance((OfflinePlayer)p) / RankupHandler.getInstance().rankPrice(p)).doubleValue()*100);
+		        	        percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
 		        	        double dmultiply = percents*10.0;
 		        	        double dRound = Math.round(dmultiply) /10.0;
 		        	        if(RankupHandler.getInstance().getRank(p) == 100) {
@@ -695,7 +685,6 @@ public class ScoreboardHandler implements Listener{
 		        	       
 		        	        //multi
 		        	        NewBoard.getTeam("multi").setPrefix(c("&7Multi: "));
-		        	        SellHandler.getInstance();
 							NewBoard.getTeam("multi").setSuffix(c("&b"+SellHandler.getInstance().getMulti(p)));
 		        	        
 		        	        //tps
@@ -1150,9 +1139,9 @@ public class ScoreboardHandler implements Listener{
 	        NewBoard.getTeam("percent").setPrefix(c("&7Rankup: "));
 	        
 	        p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
-	    	double percents = 0.0;
+	    	double percents;
 	        p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
-	        percents = (Double.valueOf(Main.econ.getBalance((OfflinePlayer)p) / RankupHandler.getInstance().rankPrice(p)).doubleValue()*100);
+	        percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
 	        double dmultiply = percents*10.0;
 	        double dRound = Math.round(dmultiply) /10.0;
 	        if(RankupHandler.getInstance().getRank(p) == 100) {
@@ -1176,7 +1165,6 @@ public class ScoreboardHandler implements Listener{
 	       
 	        //multi
 	        NewBoard.getTeam("multi").setPrefix(c("&7Multi: "));
-	        SellHandler.getInstance();
 			NewBoard.getTeam("multi").setSuffix(c("&b"+SellHandler.getInstance().getMulti(p)));
 	        
 	        //tps

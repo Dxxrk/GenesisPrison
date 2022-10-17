@@ -25,8 +25,8 @@ public class Tokens {
   
   SettingsManager settings = SettingsManager.getInstance();
   Methods m = Methods.getInstance();
-  
-  String prefix = ChatColor.translateAlternateColorCodes('&', "&7&k&li&b&lTokens&7&l&ki&r &7➤ ");
+
+  String prefix = ChatColor.translateAlternateColorCodes('&', "&f&lTokens &8|&r ");
   
   public double getBalance(Player p) {
     return Main.econ.getBalance(p);
@@ -58,7 +58,6 @@ public class Tokens {
   public void takeTokens(Player p, double tokens) {
     this.settings.getET().set(p.getUniqueId().toString(), getTokens(p) - tokens);
     this.settings.saveEtFile();
-    p.sendMessage(this.prefix + "You now have " + getTokens(p) + " tokens.");
     p.getScoreboard().getTeam("tokens").setSuffix(m.c("&e"+Main.formatAmt(getTokens(p))));
   }
   
@@ -67,8 +66,8 @@ public class Tokens {
       sender.sendMessage(this.prefix + "You do not have enough tokens!");
       return;
     } 
-    sender.sendMessage(this.prefix + "You have sent " + reciever.getName() + " " + tokens + " tokens.");
-    reciever.sendMessage(this.prefix + sender.getName() + " has sent you " + tokens + " tokens.");
+    sender.sendMessage(this.prefix + "&7You have sent &b" + reciever.getName() + " &e" + tokens + "⛀");
+    reciever.sendMessage(this.prefix +"&b"+ sender.getName() + "&7 has sent you &e" + tokens + "⛀");
     addTokens(reciever, tokens);
     takeTokens(sender, tokens);
   }
