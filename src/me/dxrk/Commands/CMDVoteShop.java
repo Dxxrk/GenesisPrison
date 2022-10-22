@@ -343,7 +343,6 @@ public class CMDVoteShop implements Listener, CommandExecutor{
 		    	if(e.getSlot() == 33) {
 		    		int price = getPrice(e.getCurrentItem().getItemMeta().getLore().get(1));
 		    		if(getVotePoints(p)>=price) {
-		    			PickXPHandler.getInstance().giveXPItem(p, 50000);
 		    			removeVotePoints(p, price);
 		    		} else {
 		    			p.sendMessage(m.c("&cError: Not Enough Points"));
@@ -354,7 +353,6 @@ public class CMDVoteShop implements Listener, CommandExecutor{
 		    	if(e.getSlot() == 34) {
 		    		int price = getPrice(e.getCurrentItem().getItemMeta().getLore().get(1));
 		    		if(getVotePoints(p)>=price) {
-		    			PickXPHandler.getInstance().giveXPItem(p, 200000);
 		    			removeVotePoints(p, price);
 		    		} else {
 		    			p.sendMessage(m.c("&cError: Not Enough Points"));
@@ -365,7 +363,6 @@ public class CMDVoteShop implements Listener, CommandExecutor{
 		    	if(e.getSlot() == 35) {
 		    		int price = getPrice(e.getCurrentItem().getItemMeta().getLore().get(1));
 		    		if(getVotePoints(p)>=price) {
-		    			PickXPHandler.getInstance().giveXPItem(p, 500000);
 		    			removeVotePoints(p, price);
 		    		} else {
 		    			p.sendMessage(m.c("&cError: Not Enough Points"));

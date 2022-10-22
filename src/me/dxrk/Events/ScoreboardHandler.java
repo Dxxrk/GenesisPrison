@@ -152,219 +152,6 @@ public class ScoreboardHandler implements Listener{
 	    	if(p.hasPermission("prestige.100")) {
 	    		return c("&6O10-"+formatAmt(rank)+" ");
 	    	}
-	    		
-	    	else if(p.hasPermission("prestige.99")) {
-	    		return c("&cO9-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.98")) {
-	    		return c("&eO8-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.97")) {
-	    		return c("&3O7-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.96")) {
-	    		return c("&dO6-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.95")) {
-	    		return c("&4O5-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.94")) {
-	    		return c("&5O4-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.93")) {
-	    		return c("&2O3-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.92")) {
-	    		return c("&9O2-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.91")) {
-	    		return c("&bO1-"+formatAmt(rank)+" ");
-	    	}
-	    	else if(p.hasPermission("prestige.90")) {
-	    		return c("&6E10-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.89")) {
-	    		return c("&cE9-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.88")) {
-	    		return c("&eE8-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.87")) {
-	    		return c("&3E7-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.86")) {
-	    		return c("&dE6-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.85")) {
-	    		return c("&4E5-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.84")) {
-	    		return c("&5E4-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.83")) {
-	    		return c("&2E3-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.82")) {
-	    		return c("&9E2-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.81")) {
-	    		return c("&bE1-"+formatAmt(rank)+" ");
-	    	}
-	    	else if(p.hasPermission("prestige.80")) {
-	    		return c("&6M10-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.79")) {
-	    		return c("&cM9-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.78")) {
-	    		return c("&eM8-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.77")) {
-	    		return c("&3M7-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.76")) {
-	    		return c("&dM6-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.75")) {
-	    		return c("&4M5-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.74")) {
-	    		return c("&5M4-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.73")) {
-	    		return c("&2M3-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.72")) {
-	    		return c("&9M2-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.71")) {
-	    		return c("&bM1-"+formatAmt(rank)+" ");
-	    	}
-	    	else if(p.hasPermission("prestige.70")) {
-	    		return c("&6F10-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.69")) {
-	    		return c("&cF9-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.68")) {
-	    		return c("&eF8-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.67")) {
-	    		return c("&3F7-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.66")) {
-	    		return c("&dF6-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.65")) {
-	    		return c("&4F5-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.64")) {
-	    		return c("&5F4-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.63")) {
-	    		return c("&2F3-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.62")) {
-	    		return c("&9F2-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.61")) {
-	    		return c("&bF1-"+formatAmt(rank)+" ");
-	    	}
-	    	else if(p.hasPermission("prestige.60")) {
-	    		return c("&6L10-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.59")) {
-	    		return c("&cL9-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.58")) {
-	    		return c("&eL8-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.57")) {
-	    		return c("&3L7-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.56")) {
-	    		return c("&dL6-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.55")) {
-	    		return c("&4L5-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.54")) {
-	    		return c("&5L4-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.53")) {
-	    		return c("&2L3-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.52")) {
-	    		return c("&9L2-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.51")) {
-	    		return c("&bL1-"+formatAmt(rank)+" ");
-	    	}
-	    		else if(p.hasPermission("prestige.50")) {
-		    		return c("&6C10-"+formatAmt(rank)+" ");
-		    	} else if(p.hasPermission("prestige.49")) {
-		    		return c("&cC9-"+formatAmt(rank)+" ");
-		    	}else if(p.hasPermission("prestige.48")) {
-		    		return c("&eC8-"+formatAmt(rank)+" ");
-		    	}else if(p.hasPermission("prestige.47")) {
-		    		return c("&3C7-"+formatAmt(rank)+" ");
-		    	}else if(p.hasPermission("prestige.46")) {
-		    		return c("&dC6-"+formatAmt(rank)+" ");
-		    	}else if(p.hasPermission("prestige.45")) {
-		    		return c("&4C5-"+formatAmt(rank)+" ");
-		    	}else if(p.hasPermission("prestige.44")) {
-		    		return c("&5C4-"+formatAmt(rank)+" ");
-		    	}else if(p.hasPermission("prestige.43")) {
-		    		return c("&2C3-"+formatAmt(rank)+" ");
-		    	}else if(p.hasPermission("prestige.42")) {
-		    		return c("&9C2-"+formatAmt(rank)+" ");
-		    	}else if(p.hasPermission("prestige.41")) {
-		    		return c("&bC1-"+formatAmt(rank)+" ");
-		    	}
-		    	else
-			    	if(p.hasPermission("prestige.40")) {
-			    		return c("&6A10-"+formatAmt(rank)+" ");
-			    	} else if(p.hasPermission("prestige.39")) {
-			    		return c("&cA9-"+formatAmt(rank)+" ");
-			    	}else if(p.hasPermission("prestige.38")) {
-			    		return c("&eA8-"+formatAmt(rank)+" ");
-			    	}else if(p.hasPermission("prestige.37")) {
-			    		return c("&3A7-"+formatAmt(rank)+" ");
-			    	}else if(p.hasPermission("prestige.36")) {
-			    		return c("&dA6-"+formatAmt(rank)+" ");
-			    	}else if(p.hasPermission("prestige.35")) {
-			    		return c("&4A5-"+formatAmt(rank)+" ");
-			    	}else if(p.hasPermission("prestige.34")) {
-			    		return c("&5A4-"+formatAmt(rank)+" ");
-			    	}else if(p.hasPermission("prestige.33")) {
-			    		return c("&2A3-"+formatAmt(rank)+" ");
-			    	}else if(p.hasPermission("prestige.32")) {
-			    		return c("&9A2-"+formatAmt(rank)+" ");
-			    	}else if(p.hasPermission("prestige.31")) {
-			    		return c("&bA1-"+formatAmt(rank)+" ");
-			    	}
-			    	else
-				    	if(p.hasPermission("prestige.30")) {
-				    		return c("&6S10-"+formatAmt(rank)+" ");
-				    	} else if(p.hasPermission("prestige.29")) {
-				    		return c("&cS9-"+formatAmt(rank)+" ");
-				    	}else if(p.hasPermission("prestige.28")) {
-				    		return c("&eS8-"+formatAmt(rank)+" ");
-				    	}else if(p.hasPermission("prestige.27")) {
-				    		return c("&3S7-"+formatAmt(rank)+" ");
-				    	}else if(p.hasPermission("prestige.26")) {
-				    		return c("&dS6-"+formatAmt(rank)+" ");
-				    	}else if(p.hasPermission("prestige.25")) {
-				    		return c("&4S5-"+formatAmt(rank)+" ");
-				    	}else if(p.hasPermission("prestige.24")) {
-				    		return c("&5S4-"+formatAmt(rank)+" ");
-				    	}else if(p.hasPermission("prestige.23")) {
-				    		return c("&2S3-"+formatAmt(rank)+" ");
-				    	}else if(p.hasPermission("prestige.22")) {
-				    		return c("&9S2-"+formatAmt(rank)+" ");
-				    	}else if(p.hasPermission("prestige.21")) {
-				    		return c("&bS1-"+formatAmt(rank)+" ");
-				    	}
-				    	else if(p.hasPermission("prestige.20")) {
-	    		return c("&6T10-"+formatAmt(rank)+" ");
-	    	} else if(p.hasPermission("prestige.19")) {
-	    		return c("&cT9-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.18")) {
-	    		return c("&eT8-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.17")) {
-	    		return c("&3T7-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.16")) {
-	    		return c("&dT6-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.15")) {
-	    		return c("&4T5-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.14")) {
-	    		return c("&5T4-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.13")) {
-	    		return c("&2T3-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.12")) {
-	    		return c("&9T2-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.11")) {
-	    		return c("&bT1-"+formatAmt(rank)+" ");
-	    	}else
-	    	if(p.hasPermission("prestige.10")) {
-	    		return c("&6P10-"+formatAmt(rank)+" ");
-	    	} else if(p.hasPermission("prestige.9")) {
-	    		return c("&cP9-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.8")) {
-	    		return c("&eP8-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.7")) {
-	    		return c("&3P7-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.6")) {
-	    		return c("&dP6-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.5")) {
-	    		return c("&4P5-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.4")) {
-	    		return c("&5P4-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.3")) {
-	    		return c("&2P3-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.2")) {
-	    		return c("&9P2-"+formatAmt(rank)+" ");
-	    	}else if(p.hasPermission("prestige.1")) {
-	    		return c("&bP1-"+formatAmt(rank)+" ");
-	    	}else if(!p.hasPermission("prestige.1")) {
-	    		return c("&a"+formatAmt(rank)+" ");
-	    	}
 	    	
 	    	
 	    	
@@ -419,217 +206,7 @@ public class ScoreboardHandler implements Listener{
 		            	
 		        	        //Prestige
 		      	        	NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
-		      	        	if(p.hasPermission("Prestige.100")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&6&lO10         "));
-		      	        	}else if(p.hasPermission("Prestige.99")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&c&lO9          "));
-		      	        	}else if(p.hasPermission("Prestige.98")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&e&lO8          "));
-		      	        	}else if(p.hasPermission("Prestige.97")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&3&lO7          "));
-		      	        	}else if(p.hasPermission("Prestige.96")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&d&lO6          "));
-		      	        	}else if(p.hasPermission("Prestige.95")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&4&lO5          "));
-		      	        	}else if(p.hasPermission("Prestige.94")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&5&lO4          "));
-		      	        	}else if(p.hasPermission("Prestige.93")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&2&lO3          "));
-		      	        	}else if(p.hasPermission("Prestige.92")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&9&lO2          "));
-		      	        	}else if(p.hasPermission("Prestige.91")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&b&lO1          "));
-		      	        	}
-		      	        	else if(p.hasPermission("Prestige.90")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&6&lE10         "));
-		      	        	}else if(p.hasPermission("Prestige.89")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&c&lE9          "));
-		      	        	}else if(p.hasPermission("Prestige.88")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&e&lE8          "));
-		      	        	}else if(p.hasPermission("Prestige.87")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&3&lE7          "));
-		      	        	}else if(p.hasPermission("Prestige.86")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&d&lE6          "));
-		      	        	}else if(p.hasPermission("Prestige.85")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&4&lE5          "));
-		      	        	}else if(p.hasPermission("Prestige.84")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&5&lE4          "));
-		      	        	}else if(p.hasPermission("Prestige.83")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&2&lE3          "));
-		      	        	}else if(p.hasPermission("Prestige.82")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&9&lE2          "));
-		      	        	}else if(p.hasPermission("Prestige.81")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&b&lE1          "));
-		      	        	}
-		      	        	else if(p.hasPermission("Prestige.80")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&6&lM10         "));
-		      	        	}else if(p.hasPermission("Prestige.79")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&c&lM9          "));
-		      	        	}else if(p.hasPermission("Prestige.78")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&e&lM8          "));
-		      	        	}else if(p.hasPermission("Prestige.77")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&3&lM7          "));
-		      	        	}else if(p.hasPermission("Prestige.76")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&d&lM6          "));
-		      	        	}else if(p.hasPermission("Prestige.75")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&4&lM5          "));
-		      	        	}else if(p.hasPermission("Prestige.74")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&5&lM4          "));
-		      	        	}else if(p.hasPermission("Prestige.73")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&2&lM3          "));
-		      	        	}else if(p.hasPermission("Prestige.72")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&9&lM2          "));
-		      	        	}else if(p.hasPermission("Prestige.71")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&b&lM1          "));
-		      	        	}
-		      	        	else if(p.hasPermission("Prestige.70")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&6&lF10         "));
-		      	        	}else if(p.hasPermission("Prestige.69")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&c&lF9          "));
-		      	        	}else if(p.hasPermission("Prestige.68")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&e&lF8          "));
-		      	        	}else if(p.hasPermission("Prestige.67")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&3&lF7          "));
-		      	        	}else if(p.hasPermission("Prestige.66")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&d&lF6          "));
-		      	        	}else if(p.hasPermission("Prestige.65")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&4&lF5          "));
-		      	        	}else if(p.hasPermission("Prestige.64")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&5&lF4          "));
-		      	        	}else if(p.hasPermission("Prestige.63")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&2&lF3          "));
-		      	        	}else if(p.hasPermission("Prestige.62")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&9&lF2          "));
-		      	        	}else if(p.hasPermission("Prestige.61")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&b&lF1          "));
-		      	        	}
-		      	        	else if(p.hasPermission("Prestige.60")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&6&lL10         "));
-		      	        	}else if(p.hasPermission("Prestige.59")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&c&lL9          "));
-		      	        	}else if(p.hasPermission("Prestige.58")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&e&lL8          "));
-		      	        	}else if(p.hasPermission("Prestige.57")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&3&lL7          "));
-		      	        	}else if(p.hasPermission("Prestige.56")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&d&lL6          "));
-		      	        	}else if(p.hasPermission("Prestige.55")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&4&lL5          "));
-		      	        	}else if(p.hasPermission("Prestige.54")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&5&lL4          "));
-		      	        	}else if(p.hasPermission("Prestige.53")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&2&lL3          "));
-		      	        	}else if(p.hasPermission("Prestige.52")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&9&lL2          "));
-		      	        	}else if(p.hasPermission("Prestige.51")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&b&lL1          "));
-		      	        	}
-		      	        	else if(p.hasPermission("Prestige.50")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&6&lC10         "));
-		      	        	} else if(p.hasPermission("Prestige.49")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&c&lC9          "));
-		      	        	}else if(p.hasPermission("Prestige.48")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&e&lC8          "));
-		      	        	}else if(p.hasPermission("Prestige.47")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&3&lC7          "));
-		      	        	}else if(p.hasPermission("Prestige.46")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&d&lC6          "));
-		      	        	}else if(p.hasPermission("Prestige.45")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&4&lC5          "));
-		      	        	}else if(p.hasPermission("Prestige.44")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&5&lC4          "));
-		      	        	}else if(p.hasPermission("Prestige.43")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&2&lC3          "));
-		      	        	}else if(p.hasPermission("Prestige.42")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&9&lC2          "));
-		      	        	}else if(p.hasPermission("Prestige.41")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&b&lC1          "));
-		      	        	}
-		      	        	else if(p.hasPermission("Prestige.40")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&6&lA10         "));
-		      	        	} else if(p.hasPermission("Prestige.39")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&c&lA9          "));
-		      	        	}else if(p.hasPermission("Prestige.38")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&e&lA8          "));
-		      	        	}else if(p.hasPermission("Prestige.37")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&3&lA7          "));
-		      	        	}else if(p.hasPermission("Prestige.36")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&d&lA6          "));
-		      	        	}else if(p.hasPermission("Prestige.35")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&4&lA5          "));
-		      	        	}else if(p.hasPermission("Prestige.34")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&5&lA4          "));
-		      	        	}else if(p.hasPermission("Prestige.33")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&2&lA3          "));
-		      	        	}else if(p.hasPermission("Prestige.32")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&9&lA2          "));
-		      	        	}else if(p.hasPermission("Prestige.31")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&b&lA1          "));
-		      	        	}
-		      	        	else if(p.hasPermission("Prestige.30")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&6&lS10         "));
-		      	        	} else if(p.hasPermission("Prestige.29")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&c&lS9          "));
-		      	        	}else if(p.hasPermission("Prestige.28")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&e&lS8          "));
-		      	        	}else if(p.hasPermission("Prestige.27")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&3&lS7          "));
-		      	        	}else if(p.hasPermission("Prestige.26")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&d&lS6          "));
-		      	        	}else if(p.hasPermission("Prestige.25")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&4&lS5          "));
-		      	        	}else if(p.hasPermission("Prestige.24")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&5&lS4          "));
-		      	        	}else if(p.hasPermission("Prestige.23")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&2&lS3          "));
-		      	        	}else if(p.hasPermission("Prestige.22")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&9&lS2          "));
-		      	        	}else if(p.hasPermission("Prestige.21")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&b&lS1          "));
-		      	        	}
-		      	        	else if(p.hasPermission("Prestige.20")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&6&lT10         "));
-		      	        	} else if(p.hasPermission("Prestige.19")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&c&lT9          "));
-		      	        	}else if(p.hasPermission("Prestige.18")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&e&lT8          "));
-		      	        	}else if(p.hasPermission("Prestige.17")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&3&lT7          "));
-		      	        	}else if(p.hasPermission("Prestige.16")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&d&lT6          "));
-		      	        	}else if(p.hasPermission("Prestige.15")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&4&lT5          "));
-		      	        	}else if(p.hasPermission("Prestige.14")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&5&lT4          "));
-		      	        	}else if(p.hasPermission("Prestige.13")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&2&lT3          "));
-		      	        	}else if(p.hasPermission("Prestige.12")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&9&lT2          "));
-		      	        	}else if(p.hasPermission("Prestige.11")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&b&lT1          "));
-		      	        	}else if(p.hasPermission("Prestige.10")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&6&l10          "));
-		      	        	} else if(p.hasPermission("Prestige.9")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&c&l9           "));
-		      	        	}else if(p.hasPermission("Prestige.8")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&e&l8           "));
-		      	        	}else if(p.hasPermission("Prestige.7")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&3&l7           "));
-		      	        	}else if(p.hasPermission("Prestige.6")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&d&l6           "));
-		      	        	}else if(p.hasPermission("Prestige.5")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&4&l5           "));
-		      	        	}else if(p.hasPermission("Prestige.4")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&5&l4           "));
-		      	        	}else if(p.hasPermission("Prestige.3")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&2&l3           "));
-		      	        	}else if(p.hasPermission("Prestige.2")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&9&l2           "));
-		      	        	}else if(p.hasPermission("Prestige.1")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&b&l1           "));
-		      	        	}else if(!p.hasPermission("Prestige.1")) {
-		      	        		NewBoard.getTeam("prestige").setSuffix(c("&a&l0           "));
-		      	        	}
+
 		                    //prisonrank
 		        	        NewBoard.getTeam("prank").setPrefix(c("&7Level: "));
 		        	        
@@ -979,54 +556,81 @@ public class ScoreboardHandler implements Listener{
 		        stLine.addEntry(ChatColor.BLUE+"");
 		        stLine.setPrefix(c(""));
 		        stLine.setSuffix(c(""));
-		        obj.getScore(ChatColor.BLUE+"").setScore(13);
+		        obj.getScore(ChatColor.BLUE+"").setScore(18);
+
+				//Player
+				Team player = NewBoard.registerNewTeam("Player");
+				player.addEntry(ChatColor.RED+""+ChatColor.BLACK);
+				player.setPrefix(c("&9PLAYER:"));
+				obj.getScore(ChatColor.RED+""+ChatColor.BLACK).setScore(17);
 		        
 		        //DonorRank
 		        Team donor = NewBoard.registerNewTeam("donor");
 		        donor.addEntry(ChatColor.DARK_AQUA+"");
-		        obj.getScore(ChatColor.DARK_AQUA+"").setScore(12);
+		        obj.getScore(ChatColor.DARK_AQUA+"").setScore(16);
 		        //Prestige
 		        Team prestige = NewBoard.registerNewTeam("prestige");
 		        prestige.addEntry(ChatColor.LIGHT_PURPLE+"");
-		        obj.getScore(ChatColor.LIGHT_PURPLE+"").setScore(11);
+		        obj.getScore(ChatColor.LIGHT_PURPLE+"").setScore(15);
 		        //Prisonrank
 		        Team prank = NewBoard.registerNewTeam("prank");
 		        prank.addEntry(ChatColor.BLACK+"");
-		        obj.getScore(ChatColor.BLACK+"").setScore(10);
+		        obj.getScore(ChatColor.BLACK+"").setScore(14);
+				//rankup%
+				Team percent = NewBoard.registerNewTeam("percent");
+				percent.addEntry(ChatColor.WHITE+"");
+				obj.getScore(ChatColor.WHITE+"").setScore(13);
 		        
 		        
 		        //2ndLine
 		        Team ndLine = NewBoard.registerNewTeam("2ndline");
-			      ndLine.addEntry((ChatColor.BLUE +""+ChatColor.BLACK  ));
+			      ndLine.addEntry((ChatColor.BLUE +""+ChatColor.BLACK));
 			      ndLine.setPrefix(c(""));
 			      ndLine.setSuffix(c(""));
-			     obj.getScore(ChatColor.BLUE +""+ ChatColor.BLACK).setScore(9);
+			     obj.getScore(ChatColor.BLUE +""+ ChatColor.BLACK).setScore(12);
+				 //Bank
+				Team Bank = NewBoard.registerNewTeam("Bank");
+				Bank.addEntry(ChatColor.RED+""+ChatColor.AQUA);
+				Bank.setPrefix(c("&9BANK:"));
+				obj.getScore(ChatColor.RED+""+ChatColor.AQUA).setScore(11);
 		        //Balance
 		        Team balance = NewBoard.registerNewTeam("balance");
 		        balance.addEntry(ChatColor.DARK_BLUE+"");
-		        obj.getScore(ChatColor.DARK_BLUE+"").setScore(8);
-		        //rankup%
-		        Team percent = NewBoard.registerNewTeam("percent");
-		        percent.addEntry(ChatColor.WHITE+"");
-		        obj.getScore(ChatColor.WHITE+"").setScore(7);
+		        obj.getScore(ChatColor.DARK_BLUE+"").setScore(10);
+
 		        //Tokens
 		        Team tokens = NewBoard.registerNewTeam("tokens");
 		        tokens.addEntry(ChatColor.GOLD+"");
-		        obj.getScore(ChatColor.GOLD+"").setScore(6);
-		        //XP
-		        Team xp = NewBoard.registerNewTeam("xp");
-		        xp.addEntry(ChatColor.AQUA+"");
-		        obj.getScore(ChatColor.AQUA+"").setScore(5);
+		        obj.getScore(ChatColor.GOLD+"").setScore(9);
+
 		        //Multi
 		        Team multi = NewBoard.registerNewTeam("multi");
 		        multi.addEntry(ChatColor.DARK_RED+"");
-		        obj.getScore(ChatColor.DARK_RED+"").setScore(4);
+		        obj.getScore(ChatColor.DARK_RED+"").setScore(8);
 		        //3rdLine
 		        Team rdLine = NewBoard.registerNewTeam("3rdLine");
 		        rdLine.addEntry(ChatColor.GREEN+"");
 		        rdLine.setPrefix(c(""));
 			    rdLine.setSuffix(c(""));
-		        obj.getScore(ChatColor.GREEN+"").setScore(3);
+		        obj.getScore(ChatColor.GREEN+"").setScore(7);
+				//Pickaxe
+				Team Pickaxe = NewBoard.registerNewTeam("Pickaxe");
+				Pickaxe.addEntry(ChatColor.GOLD+""+ChatColor.GRAY);
+				Pickaxe.setPrefix(c("&9PICKAXE:"));
+				obj.getScore(ChatColor.GOLD+""+ChatColor.GRAY).setScore(6);
+				//XP
+				Team xp = NewBoard.registerNewTeam("xp");
+				xp.addEntry(ChatColor.AQUA+"");
+				obj.getScore(ChatColor.AQUA+"").setScore(5);
+				//PickLevel
+				Team pickLevel = NewBoard.registerNewTeam("PickLevel");
+				pickLevel.addEntry(ChatColor.DARK_AQUA+""+ChatColor.DARK_PURPLE);
+				obj.getScore(ChatColor.DARK_AQUA+""+ChatColor.DARK_PURPLE).setScore(4);
+				//Server
+				Team Server = NewBoard.registerNewTeam("Server");
+				Server.addEntry(ChatColor.LIGHT_PURPLE+""+ChatColor.DARK_RED);
+				Server.setPrefix(c("&9SERVER:"));
+				obj.getScore(ChatColor.LIGHT_PURPLE+""+ChatColor.DARK_RED).setScore(3);
 		        //vote
 		        Team vote = NewBoard.registerNewTeam("vote");
 		        vote.addEntry(ChatColor.DARK_PURPLE+"");
@@ -1086,51 +690,7 @@ public class ScoreboardHandler implements Listener{
     	
 	        //Prestige
 	        	NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
-  	        	if(p.hasPermission("Prestige.20")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&6&l1T0         "));
-  	        	} else if(p.hasPermission("Prestige.19")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&c&lT9          "));
-  	        	}else if(p.hasPermission("Prestige.18")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&e&lT8          "));
-  	        	}else if(p.hasPermission("Prestige.17")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&3&lT7          "));
-  	        	}else if(p.hasPermission("Prestige.16")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&d&lT6          "));
-  	        	}else if(p.hasPermission("Prestige.15")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&4&lT5          "));
-  	        	}else if(p.hasPermission("Prestige.14")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&5&lT4          "));
-  	        	}else if(p.hasPermission("Prestige.13")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&2&lT3          "));
-  	        	}else if(p.hasPermission("Prestige.12")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&9&lT2          "));
-  	        	}else if(p.hasPermission("Prestige.11")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&b&lT1          "));
-  	        	}else if(!p.hasPermission("Prestige.1")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&a&l0           "));
-  	        	}else if(p.hasPermission("Prestige.10")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&6&l10          "));
-  	        	} else if(p.hasPermission("Prestige.9")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&c&l9           "));
-  	        	}else if(p.hasPermission("Prestige.8")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&e&l8           "));
-  	        	}else if(p.hasPermission("Prestige.7")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&3&l7           "));
-  	        	}else if(p.hasPermission("Prestige.6")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&d&l6           "));
-  	        	}else if(p.hasPermission("Prestige.5")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&4&l5           "));
-  	        	}else if(p.hasPermission("Prestige.4")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&5&l4           "));
-  	        	}else if(p.hasPermission("Prestige.3")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&2&l3           "));
-  	        	}else if(p.hasPermission("Prestige.2")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&9&l2           "));
-  	        	}else if(p.hasPermission("Prestige.1")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&b&l1           "));
-  	        	}else if(!p.hasPermission("Prestige.1")) {
-  	        		NewBoard.getTeam("prestige").setSuffix(c("&a&l0           "));
-  	        	}
+
             //prisonrank
 	        NewBoard.getTeam("prank").setPrefix(c("&7Level: "));
 	        
@@ -1161,7 +721,8 @@ public class ScoreboardHandler implements Listener{
 	        NewBoard.getTeam("balance").setPrefix(c("&7Balance: &a&l$"));
 	        
 	        //tokens
-	        NewBoard.getTeam("tokens").setPrefix(c("&7Tokens: &e⛀"));
+	        NewBoard.getTeam("tokens").setPrefix(c("&7Tokens: "));
+			p.getScoreboard().getTeam("tokens").setSuffix(c("&e"+Main.formatAmt(Tokens.getInstance().getTokens(p))+"⛀"));
 	       
 	        //multi
 	        NewBoard.getTeam("multi").setPrefix(c("&7Multi: "));
@@ -1177,8 +738,11 @@ public class ScoreboardHandler implements Listener{
 	        int servervotes = settings.getVote().getInt("ServerVotes");
 	        NewBoard.getTeam("vote").setPrefix(c("&dVoteParty: "));
 	        NewBoard.getTeam("vote").setSuffix(c("&b"+(30-servervotes)+"/30"));
+			//PickLevel
+			NewBoard.getTeam("PickLevel").setPrefix(c("&7Level: "));
+			NewBoard.getTeam("PickLevel").setSuffix(c("&b"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickLevel")));
 	    	
-	        p.getScoreboard().getTeam("tokens").setSuffix(c("&e"+Main.formatAmt(Tokens.getInstance().getTokens(p))));
+
 	    	
 	    	new BukkitRunnable(){
 	    		boolean titlechanged = false;

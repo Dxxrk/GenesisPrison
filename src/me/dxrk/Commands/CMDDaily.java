@@ -157,18 +157,16 @@ public class CMDDaily implements Listener, CommandExecutor{
 			LocksmithHandler.getInstance().addKey(p, "Poseidon", 1);
 			LocksmithHandler.getInstance().addKey(p, "Hades", 1);
 			LocksmithHandler.getInstance().addKey(p, "Polis", 1);
-			PickXPHandler.getInstance().giveXPItem(p, 1000);
 			Tokens.getInstance().addTokens(p, 500);
 			this.settings.getDaily().set(p.getUniqueId().toString()+".FreeReward", getTodayDate());
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily Claimed!"));
 		}
 		if(rank.equals("cavalry")) {
-			PickXPHandler.getInstance().giveXPItem(p, 1500);
+
 			this.settings.getDaily().set(p.getUniqueId().toString()+".CavalryReward", getTodayDate());
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily &cCavalry &bClaimed!"));
 		}
 		if(rank.equals("hoplite")) {
-			PickXPHandler.getInstance().giveXPItem(p, 2000);
 			LocksmithHandler.getInstance().addKey(p, "Hades", 1);
 			this.settings.getDaily().set(p.getUniqueId().toString()+".HopliteReward", getTodayDate());
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily &eHoplite &bClaimed!"));		}
@@ -187,7 +185,6 @@ public class CMDDaily implements Listener, CommandExecutor{
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily &6Colonel &bClaimed!"));
 		}
 		if(rank.equals("ares")) {
-			PickXPHandler.getInstance().giveXPItem(p, 2500);
 			LocksmithHandler.getInstance().addKey(p, "Polis", 2);
 			this.settings.getDaily().set(p.getUniqueId().toString()+".AresReward", getTodayDate());
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily &c&lAres &bClaimed!"));
@@ -207,14 +204,12 @@ public class CMDDaily implements Listener, CommandExecutor{
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily &6&lApollo &bClaimed!"));
 		}
 		if(rank.equals("kronos")) {
-			PickXPHandler.getInstance().giveXPItem(p, 3000);
 			LocksmithHandler.getInstance().addKey(p, "Oblivion", 1);
 			this.settings.getDaily().set(p.getUniqueId().toString()+".KronosReward", getTodayDate());
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily &8&lKronos &bClaimed!"));
 		}
 		if(rank.equals("zeus")) {
 			Tokens.getInstance().addTokens(p, 2500);
-			PickXPHandler.getInstance().giveXPItem(p, 5000);
 			LocksmithHandler.getInstance().addKey(p, "Midas", 2);
 			LocksmithHandler.getInstance().addKey(p, "Poseidon", 2);
 			LocksmithHandler.getInstance().addKey(p, "Hades", 2);

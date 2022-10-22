@@ -682,7 +682,7 @@ public class EnchantMethods {
 		 
 		 int rr = r.nextInt(100);
 		 if(rr >=0 && rr <40) {
-			 PickXPHandler.getInstance().giveXPItem(p, fortune);
+
 			 if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Junkpile-Messages") == true) {
 			 p.sendMessage(c("&f&lJunkpile &8| &b+"+fortune+" XP"));
 			 }

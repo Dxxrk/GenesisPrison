@@ -63,5 +63,13 @@ public class PlayerDataHandler implements Listener {
       this.pl.set(uuid + ".Prestiges", 0);
       this.settings.savePlayerData();
     }
+    if(this.pl.get(uuid+".PickLevel") == null){
+      this.pl.set(uuid+".PickLevel", 0);
+      this.settings.savePlayerData();
+    }
+    if(this.pl.get(uuid+".PickXP") == null){
+      this.pl.set(uuid+".PickXP", 0);
+      this.settings.savePlayerData();
+    }
   }
 }
