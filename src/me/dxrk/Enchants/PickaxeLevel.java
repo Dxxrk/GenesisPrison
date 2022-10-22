@@ -61,19 +61,8 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 	    a.setItemMeta(am);
 	    return a;
 	  }
-	
-	
-	public void EFFfix(Player p, ItemStack i ) {
-		ItemStack hand = i.clone();
-		ItemMeta am = hand.getItemMeta();
-	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
-	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-	    hand.setItemMeta(am);
-	    p.setItemInHand(hand);
-        p.updateInventory();
-	}
-	
-	
+
+
 	public int getBlocks(String s) {
         StringBuilder lvl = new StringBuilder();
         s = ChatColor.stripColor(s);
@@ -110,28 +99,8 @@ public class PickaxeLevel implements Listener, CommandExecutor{
             return false;
         }
     }
-    
-    public void addUnlock(Player p, ItemStack ii) {
-        int blockss = this.getBlocks(ii.getItemMeta().getLore().get(0));
-        ItemStack i = ii.clone();
-        ItemMeta im = i.getItemMeta();
-        List<String> lore = im.getLore();
-        lore.set(0, c("&6&lUnlock Tokens: " +(blockss + 1)));
-        im.setLore(lore);
-        i.setItemMeta(im);
-        p.setItemInHand(i);
-        p.updateInventory();
-    }
-    
-    
-    
-    
-   
-    
 
-    
 
-    
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] arg3) {
 		
@@ -172,32 +141,8 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		}
 		return false;
 	}
-	
-	
-	static boolean isMultipleof5 (int n) 
-	{ 
-		return n%5 == 0;
-	}
-	
-	
-	
-	
-	
-	
-	public void ResetXP(Player p) {
-		ItemStack pick = p.getItemInHand().clone();
-		ItemMeta pm = pick.getItemMeta();
-		List<String> lore = pm.getLore();
-		lore.set(1, c("&7XP: &b0"));
-		pm.setLore(lore);
-		pick.setItemMeta(pm);
-		p.setItemInHand(pick);
-		
-	}
-	
-	
-	
-	
+
+
 	public ItemStack Spacer() {
 	    ItemStack i = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)8);
 	    ItemMeta im = i.getItemMeta();
