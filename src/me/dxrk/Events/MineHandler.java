@@ -64,43 +64,24 @@ public class MineHandler implements Listener, CommandExecutor{
 	private ArrayList<Player> list = new ArrayList<>();
 	
 	
-	
+	/*
+		Finding a players Mine Block when first creating.
+	 */
 
-	private List<UUID> cavalry = new ArrayList<>();
-	private List<UUID> hoplite = new ArrayList<>();
-	private List<UUID> captain = new ArrayList<>();
-	private List<UUID> colonel = new ArrayList<>();
-	private List<UUID> ares = new ArrayList<>();
-	private List<UUID> hermes = new ArrayList<>();
-	private List<UUID> apollo = new ArrayList<>();
-	private List<UUID> kronos = new ArrayList<>();
-	private List<UUID> zeus = new ArrayList<>();
-	
-	
-	
+	public Material mineBlock(Player p){
+		Material mat = Material.COBBLESTONE;
+		//Find players prestige/rank
 
-	
-	public void givePlotItem(Player p, String s) {
-		ItemStack i = new ItemStack(Material.GRASS);
-		ItemMeta im = i.getItemMeta();
-		im.setDisplayName(c("&a&lPlace on a Plot to Claim!"));
-		List<String> lore = new ArrayList<>();
-		lore.add(c("&8Owner: &7"+s));
-		im.setLore(lore);
-		i.setItemMeta(im);
-		p.getInventory().addItem(i);
+
+
+		return mat;
 	}
 	
-	public ItemStack plotItem(String s) {
-		ItemStack i = new ItemStack(Material.GRASS);
-		ItemMeta im = i.getItemMeta();
-		im.setDisplayName(c("&a&lPlace on a Plot to Claim!"));
-		List<String> lore = new ArrayList<>();
-		lore.add(c("&8Owner: &7"+s));
-		im.setLore(lore);
-		i.setItemMeta(im);
-		return i;
-	}
+	
+	
+
+	
+
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
@@ -111,17 +92,12 @@ public class MineHandler implements Listener, CommandExecutor{
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmdd, String label, String[] args) {
 		Player player = (Player)sender;
-		if(label.equalsIgnoreCase("giveplotitem")) {
-			if(args.length == 2) {
-				Player p = Bukkit.getPlayer(args[0]);
-				givePlotItem(p, args[1]);
-			}
-		}
+
 		if(label.equalsIgnoreCase("removemine")) {
 			if(!player.hasPermission("staff.removemine")) return false;
 			if(args.length == 1) {
 				OfflinePlayer p = Bukkit.getOfflinePlayer(args[0]);
-				PlotPlayer pp = PlotPlayer.wrap(p);
+				//Add options to remove mine
 			}
 		}
 		return false;
@@ -148,7 +124,7 @@ public class MineHandler implements Listener, CommandExecutor{
 		//Setting up the world
 		wm.cloneWorld("Dxrk", p.getName()+"sWorld");
 
-		Location pworld = new Location(Bukkit.getWorld(p.getName()+"sWorld"), -3, 65, 0);
+		Location pworld = new Location(Bukkit.getWorld(p.getName()+"sWorld"), -2.5, 65, 0.5);
 
 		WorldBorder wb = Bukkit.getWorld(p.getName()+"sWorld").getWorldBorder();
 		wb.setCenter(-3, 22);
@@ -158,8 +134,8 @@ public class MineHandler implements Listener, CommandExecutor{
 
 		Location ploc = p.getLocation();
 
-		Location point1 = new Location(p.getWorld(), 13, 64, 6);
-		Location point2 = new Location(p.getWorld(), -19, 1, 38);
+		Location point1 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 13, 64, 6);
+		Location point2 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), -19, 1, 38);
 
 
 		//Creating the actual mine
@@ -176,7 +152,7 @@ public class MineHandler implements Listener, CommandExecutor{
 		m.getResetManager().setPercentageReset(20);
 		m.getMineRegion().setBlocksMinedInRegion(0);
 		m.save();
-		ResetHandler.resetMineFull(m, ResetReason.NORMAL, m.getBlockManager().getRandomBlockFromMine().getTypeId());
+		ResetHandler.resetMineFull(m, ResetReason.NORMAL, mineBlock(p).getId());
 
 
 		ProtectedRegion region = new ProtectedCuboidRegion(p.getUniqueId().toString(),
@@ -218,7 +194,7 @@ public class MineHandler implements Listener, CommandExecutor{
 		UPDATING THE MINE
 	 */
 	
-	public void upgradeMine(Player p, String rank, int prestige){
+	public void updateMine(Player p, String rank, int prestige){
 		if(rank == null && prestige ==0) return;
 
 		if(rank == null && prestige >0) {

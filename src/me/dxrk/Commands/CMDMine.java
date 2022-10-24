@@ -57,8 +57,12 @@ public class CMDMine implements CommandExecutor, Listener {
 		if(args.length == 1) {
 			Player p = (Player)sender;
 			if(args[0].equalsIgnoreCase("teleport") || args[0].equalsIgnoreCase("tp")) {
-				Location pworld = new Location(Bukkit.getWorld(p.getName()+"sWorld"), -3, 65, 0);
-				p.teleport(pworld);
+				if(Bukkit.getWorlds().contains(Bukkit.getWorld(p.getName() + "sWorld"))) {
+					Location pworld = new Location(Bukkit.getWorld(p.getName() + "sWorld"), -2.5, 66, 0.5);
+					p.teleport(pworld);
+				} else {
+					p.sendMessage(c("&f&lMine &8| &7Unable to find your mine(/mine)."));
+				}
 			}
 		}
       

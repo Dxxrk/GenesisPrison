@@ -220,17 +220,13 @@ public class ScoreboardHandler implements Listener{
 		        	        percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
 		        	        double dmultiply = percents*10.0;
 		        	        double dRound = Math.round(dmultiply) /10.0;
-		        	        if(RankupHandler.getInstance().getRank(p) == 100) {
-		        	        	p.getScoreboard().getTeam("percent").setSuffix(c("&c/prestige"));
-		        	        }
-		        	        
-		        	        else {
+
 		        	        	if(dRound>=100.0) {
 		        	        		p.getScoreboard().getTeam("percent").setSuffix(c("&c/rankup"));
 		        	        	} else {
 		        	        		p.getScoreboard().getTeam("percent").setSuffix(c("&c")+(dRound)+"%");
 		        	        }
-		        	        }
+
 		        	        p.getScoreboard().getTeam("tokens").setSuffix(c("&e"+Main.formatAmt(Tokens.getInstance().getTokens(p))));
 		        	      
 		        	        //balance
@@ -248,7 +244,7 @@ public class ScoreboardHandler implements Listener{
 		        	        ItemStack[] arrayOfItemStack;
 		        	        for (i = (arrayOfItemStack = p.getInventory().getContents()).length, b = 0; b < i; ) {
 		        	          ItemStack itemStack = arrayOfItemStack[b];
-		        	        	if(itemStack != null && itemStack.getType().equals(Material.DIAMOND_PICKAXE)) {
+		        	        	if(itemStack != null && itemStack.getType().equals(Material.DIAMOND_PICKAXE)) { //change this
 		        	        		if(itemStack.hasItemMeta()) {
 		        	        			if(itemStack.getItemMeta().hasLore()) {
 		        	        				String xp = Main.formatAmt(PickXPHandler.getBlocks(itemStack.getItemMeta().getLore().get(1)));
@@ -704,17 +700,13 @@ public class ScoreboardHandler implements Listener{
 	        percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
 	        double dmultiply = percents*10.0;
 	        double dRound = Math.round(dmultiply) /10.0;
-	        if(RankupHandler.getInstance().getRank(p) == 100) {
-	        	p.getScoreboard().getTeam("percent").setSuffix(c("&c/prestige"));
-	        }
-	        
-	        else {
+	        //adjust for new rank without "prestige" and change rankuphandler. + change scoreboard titles
 	        	if(dRound>=100.0) {
 	        		p.getScoreboard().getTeam("percent").setSuffix(c("&c/rankup"));
 	        	} else {
 	        		p.getScoreboard().getTeam("percent").setSuffix(c("&c")+(dRound)+"%");
 	        }
-	        }
+
 	        p.getScoreboard().getTeam("tokens").setSuffix(c("&e"+Main.formatAmt(Tokens.getInstance().getTokens(p))));
 	      
 	        //balance

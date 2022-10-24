@@ -1,29 +1,32 @@
 package me.dxrk.Events;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
+import me.dxrk.Enchants.PickaxeLevel;
+import me.dxrk.Main.Methods;
+import me.dxrk.Main.SettingsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import me.dxrk.Main.Methods;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class TrinketHandler implements Listener, CommandExecutor{
 	static TrinketHandler instance = new TrinketHandler();
@@ -32,6 +35,8 @@ public class TrinketHandler implements Listener, CommandExecutor{
 		return instance;
 	}
 	Methods m = Methods.getInstance();
+
+	SettingsManager settings = SettingsManager.getInstance();
 	
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -76,6 +81,14 @@ public class TrinketHandler implements Listener, CommandExecutor{
 					 }
 				}
 			}
+		if(label.equalsIgnoreCase("trinket") || label.equalsIgnoreCase("trinkets") ) {
+			Player p = (Player) sender;
+			if(p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)) {
+				openTrinkets(p);
+			} else {
+				p.sendMessage(m.c("&f&lTrinkets &8| &7Please hold your pickaxe!"));
+			}
+		}
 		
 		
 		
@@ -136,7 +149,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 	
 	public ItemStack commonTrinket(int amount) {
 		ArrayList<String> lore = new ArrayList<>();
-		ItemStack trinket = new ItemStack(Material.EMERALD, amount);
+		ItemStack trinket = new ItemStack(Material.GOLD_NUGGET, amount);
 		ItemMeta dm = trinket.getItemMeta();
 		dm.setDisplayName(m.c("&bCommon Trinket"));
 		lore.add(m.c("&7&oRight Click to unveil"));
@@ -146,7 +159,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 	}
 	public ItemStack rareTrinket(int amount) {
 		ArrayList<String> lore = new ArrayList<>();
-		ItemStack trinket = new ItemStack(Material.EMERALD, amount);
+		ItemStack trinket = new ItemStack(Material.GOLD_NUGGET, amount);
 		ItemMeta dm = trinket.getItemMeta();
 		dm.setDisplayName(m.c("&9Rare Trinket"));
 		lore.add(m.c("&7&oRight Click to unveil"));
@@ -156,7 +169,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 	}
 	public ItemStack epicTrinket(int amount) {
 		ArrayList<String> lore = new ArrayList<>();
-		ItemStack trinket = new ItemStack(Material.EMERALD, amount);
+		ItemStack trinket = new ItemStack(Material.GOLD_NUGGET, amount);
 		ItemMeta dm = trinket.getItemMeta();
 		dm.setDisplayName(m.c("&5Epic Trinket"));
 		lore.add(m.c("&7&oRight Click to unveil"));
@@ -166,7 +179,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 	}
 	public ItemStack legTrinket(int amount) {
 		ArrayList<String> lore = new ArrayList<>();
-		ItemStack trinket = new ItemStack(Material.EMERALD, amount);
+		ItemStack trinket = new ItemStack(Material.GOLD_NUGGET, amount);
 		ItemMeta dm = trinket.getItemMeta();
 		dm.setDisplayName(m.c("&6Legendary Trinket"));
 		lore.add(m.c("&7&oRight Click to unveil"));
@@ -176,7 +189,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 	}
 	public ItemStack herTrinket(int amount) {
 		ArrayList<String> lore = new ArrayList<>();
-		ItemStack trinket = new ItemStack(Material.EMERALD, amount);
+		ItemStack trinket = new ItemStack(Material.GOLD_NUGGET, amount);
 		ItemMeta dm = trinket.getItemMeta();
 		dm.setDisplayName(m.c("&4Heroic Trinket"));
 		lore.add(m.c("&7&oRight Click to unveil"));
@@ -246,39 +259,193 @@ public class TrinketHandler implements Listener, CommandExecutor{
 	public void commonDusting() {
 		ShapelessRecipe r = new ShapelessRecipe(rareDust());
 		
-		r.addIngredient(1, Material.EMERALD);
+		r.addIngredient(1, Material.GOLD_NUGGET);
 		
 		Bukkit.addRecipe(r);
 	}
 	public void rareDusting() {
 		ShapelessRecipe r = new ShapelessRecipe(epicDust());
 		
-		r.addIngredient(1, Material.EMERALD);
+		r.addIngredient(1, Material.GOLD_NUGGET);
 		
 		Bukkit.addRecipe(r);
 	}
 	public void epicDusting() {
 		ShapelessRecipe r = new ShapelessRecipe(legDust());
 		
-		r.addIngredient(1, Material.EMERALD);
+		r.addIngredient(1, Material.GOLD_NUGGET);
 		
 		Bukkit.addRecipe(r);
 	}
 	public void legendaryDusting() {
 		ShapelessRecipe r = new ShapelessRecipe(herDust());
 		
-		r.addIngredient(1, Material.EMERALD);
+		r.addIngredient(1, Material.GOLD_NUGGET);
 		
 		Bukkit.addRecipe(r);
 	}
 	
 	
-	//Create Custom inventory for creating higher tier trinkets
+	//Create Custom inventory for creating higher tier trinkets -- nevermind?
+
+	public ItemStack Spacer() {
+		ItemStack i = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)8);
+		ItemMeta im = i.getItemMeta();
+		im.setDisplayName(net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', "&9Genesis"));
+		im.addEnchant(Enchantment.DURABILITY, 0, false);
+		i.setItemMeta(im);
+		i.removeEnchantment(Enchantment.DURABILITY);
+		return i;
+	}
+	public void openTrinkets(Player p){
+		Inventory trinket = Bukkit.createInventory(null, 9, m.c("&a&lTrinkets:"));
+
+		List<String> TrinketList = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".Trinkets");
+
+		ItemStack trinket1 = new ItemStack(Material.GOLD_NUGGET);
+		ItemMeta tm1 = trinket1.getItemMeta();
+		List<String> lore = new ArrayList<>();
+		if(TrinketList.size() > 0){
+			if(TrinketList.get(0) != null){
+				tm1.setDisplayName(TrinketList.get(0));
+			}
+		} else {
+			tm1.setDisplayName(m.c("&cNo Trinket Applied"));
+			lore.add(m.c("&7&oDrag a Trinket Here to Apply."));
+			tm1.setLore(lore);
+		}
+		trinket1.setItemMeta(tm1);
+		trinket.setItem(1, trinket1);
+		lore.clear();
+
+		ItemStack trinket2 = new ItemStack(Material.GOLD_NUGGET);
+		ItemMeta tm2 = trinket2.getItemMeta();
+		if(TrinketList.size() > 1){
+			if(TrinketList.get(1) != null){
+				tm2.setDisplayName(TrinketList.get(1));
+			}
+		} else {
+			tm2.setDisplayName(m.c("&cNo Trinket Applied"));
+			lore.add(m.c("&7&oDrag a Trinket Here to Apply."));
+			tm2.setLore(lore);
+		}
+		trinket2.setItemMeta(tm2);
+		trinket.setItem(3, trinket2);
+		lore.clear();
+
+		ItemStack trinket3 = new ItemStack(Material.GOLD_NUGGET);
+		ItemMeta tm3 = trinket3.getItemMeta();
+		if(TrinketList.size() > 2){
+			if(TrinketList.get(2) != null){
+				tm3.setDisplayName(TrinketList.get(2));
+			}
+		} else {
+			tm3.setDisplayName(m.c("&cNo Trinket Applied"));
+			lore.add(m.c("&7&oDrag a Trinket Here to Apply."));
+			tm3.setLore(lore);
+		}
+		trinket3.setItemMeta(tm3);
+		trinket.setItem(5, trinket3);
+		lore.clear();
+
+		ItemStack trinket4 = new ItemStack(Material.GOLD_NUGGET);
+		ItemMeta tm4 = trinket4.getItemMeta();
+		if(TrinketList.size() > 3){
+			if(TrinketList.get(3) != null){
+				tm4.setDisplayName(TrinketList.get(3));
+			}
+		} else {
+			tm4.setDisplayName(m.c("&cNo Trinket Applied"));
+			lore.add(m.c("&7&oDrag a Trinket Here to Apply."));
+			tm4.setLore(lore);
+		}
+		trinket4.setItemMeta(tm4);
+		trinket.setItem(7, trinket4);
+		lore.clear();
+
+		trinket.setItem(0, Spacer());
+		trinket.setItem(2, Spacer());
+		trinket.setItem(4, Spacer());
+		trinket.setItem(6, Spacer());
+		trinket.setItem(8, Spacer());
+
+		p.openInventory(trinket);
+
+	}
+
+	@EventHandler
+	public void onInvClick(InventoryClickEvent e){
+		Player p = (Player) e.getWhoClicked();
+
+		if (e.getClickedInventory() == null)
+			return;
+		if (e.getClickedInventory().getName() == null)
+			return;
+		if(e.getCurrentItem() == null) {
+			return;
+		}
+
+		if(e.getClickedInventory().getName().equals(m.c("&a&lTrinkets:"))){
+			if(e.getSlot() == 1 || e.getSlot() == 3 || e.getSlot() == 5 || e.getSlot() == 7){
+				e.setCancelled(true);
+				if(e.getCursor().getType().equals(Material.GOLD_NUGGET)){
+					if(ChatColor.stripColor(e.getCursor().getItemMeta().getDisplayName()).contains("Trinket")){
+						List<String> trinket = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".Trinkets");
+						if(e.getSlot() == 1) {
+							if(trinket.size() > 0 && trinket.get(0) !=null) {
+								trinket.set(0, e.getCursor().getItemMeta().getDisplayName() + " - "+e.getCursor().getItemMeta().getLore().get(0).split(" ")[0]);
+							} else {
+								trinket.add(e.getCursor().getItemMeta().getDisplayName() + " - "+e.getCursor().getItemMeta().getLore().get(0).split(" ")[0]);
+							}
+						}
+						if(e.getSlot() == 3) {
+							if(trinket.size() > 1 && trinket.get(1) !=null) {
+								trinket.set(1, e.getCursor().getItemMeta().getDisplayName() + " - "+e.getCursor().getItemMeta().getLore().get(0).split(" ")[0]);
+							} else {
+								trinket.add(e.getCursor().getItemMeta().getDisplayName() + " - "+e.getCursor().getItemMeta().getLore().get(0).split(" ")[0]);
+							}
+						}
+						if(e.getSlot() == 5) {
+							if(trinket.size() > 2 && trinket.get(2) !=null) {
+								trinket.set(2, e.getCursor().getItemMeta().getDisplayName() + " - "+e.getCursor().getItemMeta().getLore().get(0).split(" ")[0]);
+							} else {
+								trinket.add(e.getCursor().getItemMeta().getDisplayName() + " - "+e.getCursor().getItemMeta().getLore().get(0).split(" ")[0]);
+							}
+						}
+						if(e.getSlot() == 7) {
+							if(trinket.size() > 3 && trinket.get(3) !=null) {
+								trinket.set(3, e.getCursor().getItemMeta().getDisplayName() + " - "+e.getCursor().getItemMeta().getLore().get(0).split(" ")[0]);
+							} else {
+								trinket.add(e.getCursor().getItemMeta().getDisplayName() + " - "+e.getCursor().getItemMeta().getLore().get(0).split(" ")[0]);
+							}
+						}
+						settings.getPlayerData().set(p.getUniqueId().toString()+".Trinkets", trinket);
+						e.setCursor(null);
+						openTrinkets(p);
+						ItemStack pitem = p.getItemInHand().clone();
+						ItemMeta pm = pitem.getItemMeta();
+						List<String> lore = pm.getLore();
+						pm.setLore(PickaxeLevel.getInstance().Lore(lore, p));
+						pitem.setItemMeta(pm);
+						p.setItemInHand(pitem);
+						p.updateInventory();
+					}
+
+				}
+			} else {
+				e.setCancelled(true);
+			}
+		}
+	}
+
+
+
+
+
 	
 	@EventHandler
 	public void afterCraft(PrepareItemCraftEvent e) {
-		if(e.getView().getType().equals(InventoryType.PLAYER)) return;
-		if(e.getView().getType().equals(InventoryType.WORKBENCH)) {
+		if(e.getView().getType().equals(InventoryType.WORKBENCH) || e.getView().getType().equals(InventoryType.PLAYER)) {
 			
 			if(e.getRecipe().getResult().equals(rareDust())) {
 				ItemStack[] items = e.getInventory().getMatrix();
@@ -437,17 +604,17 @@ public class TrinketHandler implements Listener, CommandExecutor{
 		
 		
 		if(rarity == 1) {
-			int rint = r.nextInt(4);
+			int rint = r.nextInt(5);
 			if(rint == 0) {
 				int min = 3;
 				int max = 10;
 				 int Sell = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&bCommon Sell Trinket"));
 				lore.add(m.c("&b"+(Sell)+ "% &7Sell Boost"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
@@ -458,11 +625,11 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int max = 10;
 				 int XP = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&bCommon XP Trinket"));
-				lore.add(m.c("&b"+(XP)+ "% &7Chance for Double XP"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				lore.add(m.c("&b"+(XP)+ "% &7Bonus XP"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
@@ -475,11 +642,11 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int max = 5;
 				 int Key = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
-				tm.setDisplayName(m.c("&bCommon KeyFortune Trinket"));
-				lore.add(m.c("&b"+(Key)+ "% &7Chance for Double Keys"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				tm.setDisplayName(m.c("&bCommon Double Keys Trinket"));
+				lore.add(m.c("&b"+(Key)+ "% &7Double Keys"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
@@ -487,36 +654,50 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				
 				p.getInventory().addItem(trinket);
 				
-			} else {
+			} else if(rint == 3){
 				int min = 5;
 				int max = 10;
 				 int Luck = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&bCommon Lucky Trinket"));
 				lore.add(m.c("&b"+(Luck)+ "% &7Additional Luck"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
 				
 				
 				p.getInventory().addItem(trinket);
-				
+			} else {
+				int min = 5;
+				int max = 10;
+				int Luck = r.nextInt(max-min)+min;
+				ArrayList<String> lore = new ArrayList<>();
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+				ItemMeta tm = trinket.getItemMeta();
+				tm.setDisplayName(m.c("&bCommon Token Trinket"));
+				lore.add(m.c("&b"+(Luck)+ "% &7Extra Tokens"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
+				tm.setLore(lore);
+				trinket.setItemMeta(tm);
+				lore.clear();
 			}
+			
+			
 		} else if(rarity == 2) {
-			int rint = r.nextInt(4);
+			int rint = r.nextInt(5);
 			if(rint == 0) {
 				int min = 10;
 				int max = 18;
 				 int Sell = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&9Rare Sell Trinket"));
 				lore.add(m.c("&9"+(Sell)+ "% &7Sell Boost"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
@@ -527,11 +708,11 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int max = 17;
 				 int XP = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&9Rare XP Trinket"));
-				lore.add(m.c("&9"+(XP)+ "% &7Chance for Double XP"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				lore.add(m.c("&9"+(XP)+ "% &7Bonus XP"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
@@ -544,11 +725,28 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int max = 8;
 				 int Key = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
-				tm.setDisplayName(m.c("&9Rare KeyFortune Trinket"));
-				lore.add(m.c("&9"+(Key)+ "% &7Chance for Double Keys"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				tm.setDisplayName(m.c("&9Rare Double Keys Trinket"));
+				lore.add(m.c("&9"+(Key)+ "% &7Double Keys"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
+				tm.setLore(lore);
+				trinket.setItemMeta(tm);
+				lore.clear();
+				
+				
+				p.getInventory().addItem(trinket);
+				
+			} else if(rint == 3) {
+				int min = 10;
+				int max = 15;
+				 int Luck = r.nextInt(max-min)+min;
+				ArrayList<String> lore = new ArrayList<>();
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+				ItemMeta tm = trinket.getItemMeta();
+				tm.setDisplayName(m.c("&9Rare Lucky Trinket"));
+				lore.add(m.c("&9"+(Luck)+ "% &7Additional Luck"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
@@ -559,33 +757,33 @@ public class TrinketHandler implements Listener, CommandExecutor{
 			} else {
 				int min = 10;
 				int max = 15;
-				 int Luck = r.nextInt(max-min)+min;
+				int Luck = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
-				tm.setDisplayName(m.c("&9Rare Lucky Trinket"));
-				lore.add(m.c("&9"+(Luck)+ "% &7Additional Luck"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				tm.setDisplayName(m.c("&9Rare Token Trinket"));
+				lore.add(m.c("&9"+(Luck)+ "% &7Extra Tokens"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
-				
-				
+
+
 				p.getInventory().addItem(trinket);
-				
+
 			}
 		} else if(rarity == 3) {
-			int rint = r.nextInt(4);
+			int rint = r.nextInt(5);
 			if(rint == 0) {
 				int min = 18;
 				int max = 25;
 				 int Sell = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&5Epic Sell Trinket"));
 				lore.add(m.c("&5"+(Sell)+ "% &7Sell Boost"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
@@ -596,11 +794,11 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int max = 25;
 				 int XP = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&5Epic XP Trinket"));
-				lore.add(m.c("&5"+(XP)+ "% &7Chance for Double XP"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				lore.add(m.c("&5"+(XP)+ "% &7Bonus XP"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
@@ -613,11 +811,28 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int max = 11;
 				 int Key = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
-				tm.setDisplayName(m.c("&5Epic KeyFortune Trinket"));
-				lore.add(m.c("&5"+(Key)+ "% &7Chance for Double Keys"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				tm.setDisplayName(m.c("&5Epic Double Keys Trinket"));
+				lore.add(m.c("&5"+(Key)+ "% &7Double Keys"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
+				tm.setLore(lore);
+				trinket.setItemMeta(tm);
+				lore.clear();
+				
+				
+				p.getInventory().addItem(trinket);
+				
+			} else if(rint == 3){
+				int min = 15;
+				int max = 20;
+				 int Luck = r.nextInt(max-min)+min;
+				ArrayList<String> lore = new ArrayList<>();
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+				ItemMeta tm = trinket.getItemMeta();
+				tm.setDisplayName(m.c("&5Epic Lucky Trinket"));
+				lore.add(m.c("&5"+(Luck)+ "% &7Additional Luck"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
@@ -628,33 +843,33 @@ public class TrinketHandler implements Listener, CommandExecutor{
 			} else {
 				int min = 15;
 				int max = 20;
-				 int Luck = r.nextInt(max-min)+min;
+				int Luck = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
-				tm.setDisplayName(m.c("&5Epic Lucky Trinket"));
-				lore.add(m.c("&5"+(Luck)+ "% &7Additional Luck"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				tm.setDisplayName(m.c("&5Epic Token Trinket"));
+				lore.add(m.c("&5"+(Luck)+ "% &7Extra Tokens"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
-				
-				
+
+
 				p.getInventory().addItem(trinket);
-				
+
 			}
 		} else if(rarity == 4) {
-			int rint = r.nextInt(4);
+			int rint = r.nextInt(5);
 			if(rint == 0) {
 				int min = 25;
 				int max = 40;
 				 int Sell = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&6Legendary Sell Trinket"));
 				lore.add(m.c("&6"+(Sell)+ "% &7Sell Boost"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
@@ -665,11 +880,11 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int max = 35;
 				 int XP = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&6Legendary XP Trinket"));
-				lore.add(m.c("&6"+(XP)+ "% &7Chance for Double XP"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				lore.add(m.c("&6"+(XP)+ "% &7Bonus XP"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
@@ -682,11 +897,28 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int max = 14;
 				 int Key = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
-				tm.setDisplayName(m.c("&6Legendary KeyFortune Trinket"));
-				lore.add(m.c("&6"+(Key)+ "% &7Chance for Double Keys"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				tm.setDisplayName(m.c("&6Legendary Double Keys Trinket"));
+				lore.add(m.c("&6"+(Key)+ "% &7Double Keys"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
+				tm.setLore(lore);
+				trinket.setItemMeta(tm);
+				lore.clear();
+				
+				
+				p.getInventory().addItem(trinket);
+				
+			} else if(rint == 3){
+				int min = 20;
+				int max = 25;
+				 int Luck = r.nextInt(max-min)+min;
+				ArrayList<String> lore = new ArrayList<>();
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+				ItemMeta tm = trinket.getItemMeta();
+				tm.setDisplayName(m.c("&6Legendary Lucky Trinket"));
+				lore.add(m.c("&6"+(Luck)+ "% &7Additional Luck"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
@@ -697,33 +929,33 @@ public class TrinketHandler implements Listener, CommandExecutor{
 			} else {
 				int min = 20;
 				int max = 25;
-				 int Luck = r.nextInt(max-min)+min;
+				int Luck = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
-				tm.setDisplayName(m.c("&6Legendary Lucky Trinket"));
-				lore.add(m.c("&6"+(Luck)+ "% &7Additional Luck"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				tm.setDisplayName(m.c("&6Legendary Token Trinket"));
+				lore.add(m.c("&6"+(Luck)+ "% &7Extra Tokens"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
-				
-				
+
+
 				p.getInventory().addItem(trinket);
-				
+
 			}
 		} else if(rarity == 5) {
-			int rint = r.nextInt(4);
+			int rint = r.nextInt(5);
 			if(rint == 0) {
 				int min = 45;
 				int max = 75;
 				 int Sell = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&4Heroic Sell Trinket"));
 				lore.add(m.c("&4"+(Sell)+ "% &7Sell Boost"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
@@ -734,11 +966,11 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int max = 100;
 				 int XP = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
 				tm.setDisplayName(m.c("&4Heroic XP Trinket"));
-				lore.add(m.c("&4"+(XP)+ "% &7Chance for Double XP"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				lore.add(m.c("&4"+(XP)+ "% &7Bonus XP"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
@@ -751,11 +983,28 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				int max = 20;
 				 int Key = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
-				tm.setDisplayName(m.c("&4Heroic KeyFortune Trinket"));
-				lore.add(m.c("&4"+(Key)+ "% &7Chance for Double Keys"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				tm.setDisplayName(m.c("&4Heroic Double Keys Trinket"));
+				lore.add(m.c("&4"+(Key)+ "% &7Double Keys"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
+				tm.setLore(lore);
+				trinket.setItemMeta(tm);
+				lore.clear();
+				
+				
+				p.getInventory().addItem(trinket);
+				
+			} else if(rint == 3){
+				int min = 25;
+				int max = 35;
+				 int Luck = r.nextInt(max-min)+min;
+				ArrayList<String> lore = new ArrayList<>();
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+				ItemMeta tm = trinket.getItemMeta();
+				tm.setDisplayName(m.c("&4Heroic Lucky Trinket"));
+				lore.add(m.c("&4"+(Luck)+ "% &7Additional Luck"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
@@ -766,20 +1015,20 @@ public class TrinketHandler implements Listener, CommandExecutor{
 			} else {
 				int min = 25;
 				int max = 35;
-				 int Luck = r.nextInt(max-min)+min;
+				int Luck = r.nextInt(max-min)+min;
 				ArrayList<String> lore = new ArrayList<>();
-				ItemStack trinket = new ItemStack(Material.EMERALD);
+				ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
 				ItemMeta tm = trinket.getItemMeta();
-				tm.setDisplayName(m.c("&4Heroic Lucky Trinket"));
-				lore.add(m.c("&4"+(Luck)+ "% &7Additional Luck"));
-				lore.add(m.c("&7&oDrag onto an item to apply"));
+				tm.setDisplayName(m.c("&4Heroic Token Trinket"));
+				lore.add(m.c("&4"+(Luck)+ "% &7Extra Tokens"));
+				lore.add(m.c("&7&o/Trinkets to apply"));
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
-				
-				
+
+
 				p.getInventory().addItem(trinket);
-				
+
 			}
 		}
 	}
@@ -830,616 +1079,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 			
 	}
 	
-	@SuppressWarnings("deprecation")
-	@EventHandler
-	public void dragTrinket(InventoryClickEvent e) {
-		Player p = (Player)e.getWhoClicked();
-		
-		if(e.getCurrentItem() == null) return;
-		if (e.getCurrentItem().getType().equals(Material.AIR))
-		      return; 
-		
-		if(e.getClick().equals(ClickType.RIGHT)) {
-			if(!e.getClickedInventory().equals(p.getInventory())) return;
-			List<String> lore = e.getCurrentItem().getItemMeta().getLore();
-			int x;
-			for(x = 0; x < lore.size(); x++) {
-				String s = lore.get(x);
-				String[] v = s.split(" ");
-				if(v[0].equals(m.c("&bTrinket:"))) {
-					e.setCancelled(true);
-					ItemStack i = new ItemStack(Material.EMERALD);
-					ItemMeta im = i.getItemMeta();
-					String[] ss = ChatColor.stripColor(s).split(" ");
-					if(ss[2].equals("Sell")) {
-						im.setDisplayName(m.c("&bCommon Sell Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&b"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
-						loree.add(m.c("&7&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					} else if(ss.length > 4 && ss[5].equals("XP")) {
-						im.setDisplayName(m.c("&bCommon XP Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&b"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
-						loree.add(m.c("&7&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					} else if(ss.length > 4 && ss[5].equals("Keys")) {
-						im.setDisplayName(m.c("&bCommon KeyFortune Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&b"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
-						loree.add(m.c("&7&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					} else if(ss[3].equals("Luck")) {
-						im.setDisplayName(m.c("&bCommon Lucky Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&b"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
-						loree.add(m.c("&7&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					}
-					if(e.getCursor() != null) {
-						p.getInventory().addItem(e.getCursor().clone());
-						e.setCursor(null);
-					}
-					e.setCursor(i);
-					lore.remove(x);
-					ItemStack clone = e.getCurrentItem().clone();
-					ItemMeta cm = clone.getItemMeta();
-					cm.setLore(lore);
-					clone.setItemMeta(cm);
-					p.getInventory().setItem(e.getSlot(), clone);
-					p.updateInventory();
-				} else if(v[0].equals(m.c("&9Trinket:"))) {
-					e.setCancelled(true);
-					ItemStack i = new ItemStack(Material.EMERALD);
-					ItemMeta im = i.getItemMeta();
-					String[] ss = ChatColor.stripColor(s).split(" ");
-					if(ss[2].equals("Sell")) {
-						im.setDisplayName(m.c("&9Rare Sell Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&9"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
-						loree.add(m.c("&7&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					} else if(ss.length > 4 && ss[5].equals("XP")) {
-						im.setDisplayName(m.c("&9Rare XP Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&9"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
-						loree.add(m.c("&7&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					} else if(ss.length > 4 && ss[5].equals("Keys")) {
-						im.setDisplayName(m.c("&9Rare KeyFortune Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&9"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
-						loree.add(m.c("&7&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					} else if(ss[3].equals("Luck")) {
-						im.setDisplayName(m.c("&9Rare Lucky Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&b"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
-						loree.add(m.c("&9&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					}
-					if(e.getCursor() != null) {
-						p.getInventory().addItem(e.getCursor().clone());
-						e.setCursor(null);
-					}
-					e.setCursor(i);
-					lore.remove(x);
-					ItemStack clone = e.getCurrentItem().clone();
-					ItemMeta cm = clone.getItemMeta();
-					cm.setLore(lore);
-					clone.setItemMeta(cm);
-					p.getInventory().setItem(e.getSlot(), clone);
-					p.updateInventory();
-				} else if(v[0].equals(m.c("&5Trinket:"))) {
-					e.setCancelled(true);
-					ItemStack i = new ItemStack(Material.EMERALD);
-					ItemMeta im = i.getItemMeta();
-					String[] ss = ChatColor.stripColor(s).split(" ");
-					if(ss[2].equals("Sell")) {
-						im.setDisplayName(m.c("&5Epic Sell Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&5"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
-						loree.add(m.c("&7&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					} else if(ss.length > 4 && ss[5].equals("XP")) {
-						im.setDisplayName(m.c("&5Epic XP Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&5"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
-						loree.add(m.c("&7&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					} else if(ss.length > 4 && ss[5].equals("Keys")) {
-						im.setDisplayName(m.c("&5Epic KeyFortune Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&5"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
-						loree.add(m.c("&7&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					} else if(ss[3].equals("Luck")) {
-						im.setDisplayName(m.c("&5Epic Lucky Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&b"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
-						loree.add(m.c("&5&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					}
-					if(e.getCursor() != null) {
-						p.getInventory().addItem(e.getCursor().clone());
-						e.setCursor(null);
-					}
-					e.setCursor(i);
-					lore.remove(x);
-					ItemStack clone = e.getCurrentItem().clone();
-					ItemMeta cm = clone.getItemMeta();
-					cm.setLore(lore);
-					clone.setItemMeta(cm);
-					p.getInventory().setItem(e.getSlot(), clone);
-					p.updateInventory();
-				} else if(v[0].equals(m.c("&6Trinket:"))) {
-					e.setCancelled(true);
-					ItemStack i = new ItemStack(Material.EMERALD);
-					ItemMeta im = i.getItemMeta();
-					String[] ss = ChatColor.stripColor(s).split(" ");
-					if(ss[2].equals("Sell")) {
-						im.setDisplayName(m.c("&6Legendary Sell Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&6"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
-						loree.add(m.c("&7&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					} else if(ss.length > 4 && ss[5].equals("XP")) {
-						im.setDisplayName(m.c("&6Legendary XP Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&6"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
-						loree.add(m.c("&7&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					} else if(ss.length > 4 && ss[5].equals("Keys")) {
-						im.setDisplayName(m.c("&6Legendary KeyFortune Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&6"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
-						loree.add(m.c("&7&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					} else if(ss[3].equals("Luck")) {
-						im.setDisplayName(m.c("&6Legendary Lucky Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&b"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
-						loree.add(m.c("&6&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					}
-					if(e.getCursor() != null) {
-						p.getInventory().addItem(e.getCursor().clone());
-						e.setCursor(null);
-					}
-					e.setCursor(i);
-					lore.remove(x);
-					ItemStack clone = e.getCurrentItem().clone();
-					ItemMeta cm = clone.getItemMeta();
-					cm.setLore(lore);
-					clone.setItemMeta(cm);
-					p.getInventory().setItem(e.getSlot(), clone);
-					p.updateInventory();
-				} else if(v[0].equals(m.c("&4Trinket:"))) {
-					e.setCancelled(true);
-					ItemStack i = new ItemStack(Material.EMERALD);
-					ItemMeta im = i.getItemMeta();
-					String[] ss = ChatColor.stripColor(s).split(" ");
-					if(ss[2].equals("Sell")) {
-						im.setDisplayName(m.c("&4Heroic Sell Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&4"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
-						loree.add(m.c("&7&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					} else if(ss.length > 4 && ss[5].equals("XP")) {
-						im.setDisplayName(m.c("&4Heroic XP Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&4"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
-						loree.add(m.c("&7&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					} else if(ss.length > 4 && ss[5].equals("Keys")) {
-						im.setDisplayName(m.c("&4Heroic KeyFortune Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&4"+ss[1]+" &7"+ss[2]+" &7"+ss[3]+" &7"+ss[4]+" &7"+ss[5]));
-						loree.add(m.c("&7&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					} else if(ss[3].equals("Luck")) {
-						im.setDisplayName(m.c("&4Heroic Lucky Trinket"));
-						ArrayList<String> loree = new ArrayList<>();
-						loree.add(m.c("&b"+ss[1]+" &7"+ss[2]+" &7"+ss[3]));
-						loree.add(m.c("&4&oDrag onto an item to apply"));
-						im.setLore(loree);
-						i.setItemMeta(im);
-					}
-					if(e.getCursor() != null) {
-						p.getInventory().addItem(e.getCursor().clone());
-						e.setCursor(null);
-					}
-					e.setCursor(i);
-					lore.remove(x);
-					ItemStack clone = e.getCurrentItem().clone();
-					ItemMeta cm = clone.getItemMeta();
-					cm.setLore(lore);
-					clone.setItemMeta(cm);
-					p.getInventory().setItem(e.getSlot(), clone);
-					p.updateInventory();
-				}
-			}
-		}
-		
-		if(e.getCursor().getType() != Material.EMERALD) return;
-		if (e.getCursor() == null)
-		      return; 
-		    if (e.getRawSlot() == e.getSlot())
-		      return; 
-		    if (!e.getCursor().hasItemMeta())
-		      return; 
-		    if (!e.getCursor().getItemMeta().hasLore())
-		      return; 
-			if(e.getClick().equals(ClickType.LEFT)) {
-				if(!e.getClickedInventory().equals(p.getInventory())) return;
-				List<String> ilore = e.getCurrentItem().getItemMeta().getLore();
-				int count = 0;
-				for (String s : ilore) {
-					String[] v = ChatColor.stripColor(s).split(" ");
-					if (v[0].equals(m.c("Trinket:"))) {
-						count += 1;
-					}
-				}
-				if(!p.hasPermission("trinket.extra")) {
-				if(count >= 3) {
-					p.sendMessage(m.c("&cYou can only apply 3 Trinkets at a time"));
-					e.setCancelled(true);
-					return;
-				}
-				} else {
-					if(count >= 4) {
-						p.sendMessage(m.c("&cYou can only apply 4 Trinkets at a time"));
-						e.setCancelled(true);
-						return;
-					}
-					}
-				
-					if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&bCommon Sell Trinket"))) {
-						List<String> tlore = e.getCursor().getItemMeta().getLore();
-								if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-									p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-									return;
-								}
-								ItemStack pi = e.getCurrentItem().clone();
-								ItemMeta pim = pi.getItemMeta();
-								List<String> pilore = pim.getLore();
-								pilore.add(m.c("&bTrinket: "+ tlore.get(0)));
-								pim.setLore(pilore);
-								pi.setItemMeta(pim);
-								p.getInventory().setItem(e.getSlot(), pi);
-								p.updateInventory();
-								e.setCursor(null);
-								e.setCancelled(true);
-					} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&bCommon XP Trinket"))) {
-						List<String> tlore = e.getCursor().getItemMeta().getLore();
-						if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-							p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-							return;
-						}
-							ItemStack pi = e.getCurrentItem().clone();
-							ItemMeta pim = pi.getItemMeta();
-							List<String> pilore = pim.getLore();
-							pilore.add(m.c("&bTrinket: "+ tlore.get(0)));
-							pim.setLore(pilore);
-							pi.setItemMeta(pim);
-							p.getInventory().setItem(e.getSlot(), pi);
-							p.updateInventory();
-							e.setCursor(null);
-							e.setCancelled(true);
-					} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&bCommon KeyFortune Trinket"))) {
-						List<String> tlore = e.getCursor().getItemMeta().getLore();
-						if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-							p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-							return;
-						}
-							ItemStack pi = e.getCurrentItem().clone();
-							ItemMeta pim = pi.getItemMeta();
-							List<String> pilore = pim.getLore();
-							pilore.add(m.c("&bTrinket: "+ tlore.get(0)));
-							pim.setLore(pilore);
-							pi.setItemMeta(pim);
-							p.getInventory().setItem(e.getSlot(), pi);
-							p.updateInventory();
-							e.setCursor(null);
-							e.setCancelled(true);
-					} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&bCommon Lucky Trinket"))) {
-						List<String> tlore = e.getCursor().getItemMeta().getLore();
-						if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-							p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-							return;
-						}
-							ItemStack pi = e.getCurrentItem().clone();
-							ItemMeta pim = pi.getItemMeta();
-							List<String> pilore = pim.getLore();
-							pilore.add(m.c("&bTrinket: "+ tlore.get(0)));
-							pim.setLore(pilore);
-							pi.setItemMeta(pim);
-							p.getInventory().setItem(e.getSlot(), pi);
-							p.updateInventory();
-							e.setCursor(null);
-							e.setCancelled(true);
-					} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&9Rare Sell Trinket"))) {
-						List<String> tlore = e.getCursor().getItemMeta().getLore();
-						if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-							p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-							return;
-						}
-						ItemStack pi = e.getCurrentItem().clone();
-						ItemMeta pim = pi.getItemMeta();
-						List<String> pilore = pim.getLore();
-						pilore.add(m.c("&9Trinket: "+ tlore.get(0)));
-						pim.setLore(pilore);
-						pi.setItemMeta(pim);
-						p.getInventory().setItem(e.getSlot(), pi);
-						p.updateInventory();
-						e.setCursor(null);
-						e.setCancelled(true);
-			} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&9Rare XP Trinket"))) {
-				List<String> tlore = e.getCursor().getItemMeta().getLore();
-				if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-					p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-					return;
-				}
-					ItemStack pi = e.getCurrentItem().clone();
-					ItemMeta pim = pi.getItemMeta();
-					List<String> pilore = pim.getLore();
-					pilore.add(m.c("&9Trinket: "+ tlore.get(0)));
-					pim.setLore(pilore);
-					pi.setItemMeta(pim);
-					p.getInventory().setItem(e.getSlot(), pi);
-					p.updateInventory();
-					e.setCursor(null);
-					e.setCancelled(true);
-			} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&9Rare KeyFortune Trinket"))) {
-				List<String> tlore = e.getCursor().getItemMeta().getLore();
-				if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-					p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-					return;
-				}
-					ItemStack pi = e.getCurrentItem().clone();
-					ItemMeta pim = pi.getItemMeta();
-					List<String> pilore = pim.getLore();
-					pilore.add(m.c("&9Trinket: "+ tlore.get(0)));
-					pim.setLore(pilore);
-					pi.setItemMeta(pim);
-					p.getInventory().setItem(e.getSlot(), pi);
-					p.updateInventory();
-					e.setCursor(null);
-					e.setCancelled(true);
-			} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&9Rare Lucky Trinket"))) {
-				List<String> tlore = e.getCursor().getItemMeta().getLore();
-				if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-					p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-					return;
-				}
-					ItemStack pi = e.getCurrentItem().clone();
-					ItemMeta pim = pi.getItemMeta();
-					List<String> pilore = pim.getLore();
-					pilore.add(m.c("&9Trinket: "+ tlore.get(0)));
-					pim.setLore(pilore);
-					pi.setItemMeta(pim);
-					p.getInventory().setItem(e.getSlot(), pi);
-					p.updateInventory();
-					e.setCursor(null);
-					e.setCancelled(true);
-			}else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&5Epic Sell Trinket"))) {
-				List<String> tlore = e.getCursor().getItemMeta().getLore();
-				if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-					p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-					return;
-				}
-				ItemStack pi = e.getCurrentItem().clone();
-				ItemMeta pim = pi.getItemMeta();
-				List<String> pilore = pim.getLore();
-				pilore.add(m.c("&5Trinket: "+ tlore.get(0)));
-				pim.setLore(pilore);
-				pi.setItemMeta(pim);
-				p.getInventory().setItem(e.getSlot(), pi);
-				p.updateInventory();
-				e.setCursor(null);
-				e.setCancelled(true);
-	} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&5Epic XP Trinket"))) {
-		List<String> tlore = e.getCursor().getItemMeta().getLore();
-		if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-			p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-			return;
-		}
-			ItemStack pi = e.getCurrentItem().clone();
-			ItemMeta pim = pi.getItemMeta();
-			List<String> pilore = pim.getLore();
-			pilore.add(m.c("&5Trinket: "+ tlore.get(0)));
-			pim.setLore(pilore);
-			pi.setItemMeta(pim);
-			p.getInventory().setItem(e.getSlot(), pi);
-			p.updateInventory();
-			e.setCursor(null);
-			e.setCancelled(true);
-	} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&5Epic KeyFortune Trinket"))) {
-		List<String> tlore = e.getCursor().getItemMeta().getLore();
-		if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-			p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-			return;
-		}
-			ItemStack pi = e.getCurrentItem().clone();
-			ItemMeta pim = pi.getItemMeta();
-			List<String> pilore = pim.getLore();
-			pilore.add(m.c("&5Trinket: "+ tlore.get(0)));
-			pim.setLore(pilore);
-			pi.setItemMeta(pim);
-			p.getInventory().setItem(e.getSlot(), pi);
-			p.updateInventory();
-			e.setCursor(null);
-			e.setCancelled(true);
-	} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&5Epic Lucky Trinket"))) {
-		List<String> tlore = e.getCursor().getItemMeta().getLore();
-		if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-			p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-			return;
-		}
-			ItemStack pi = e.getCurrentItem().clone();
-			ItemMeta pim = pi.getItemMeta();
-			List<String> pilore = pim.getLore();
-			pilore.add(m.c("&5Trinket: "+ tlore.get(0)));
-			pim.setLore(pilore);
-			pi.setItemMeta(pim);
-			p.getInventory().setItem(e.getSlot(), pi);
-			p.updateInventory();
-			e.setCursor(null);
-			e.setCancelled(true);
-	} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&6Legendary Sell Trinket"))) {
-		List<String> tlore = e.getCursor().getItemMeta().getLore();
-		if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-			p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-			return;
-		}
-		ItemStack pi = e.getCurrentItem().clone();
-		ItemMeta pim = pi.getItemMeta();
-		List<String> pilore = pim.getLore();
-		pilore.add(m.c("&6Trinket: "+ tlore.get(0)));
-		pim.setLore(pilore);
-		pi.setItemMeta(pim);
-		p.getInventory().setItem(e.getSlot(), pi);
-		p.updateInventory();
-		e.setCursor(null);
-		e.setCancelled(true);
-} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&6Legendary XP Trinket"))) {
-List<String> tlore = e.getCursor().getItemMeta().getLore();
-if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-	p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-	return;
-}
-	ItemStack pi = e.getCurrentItem().clone();
-	ItemMeta pim = pi.getItemMeta();
-	List<String> pilore = pim.getLore();
-	pilore.add(m.c("&6Trinket: "+ tlore.get(0)));
-	pim.setLore(pilore);
-	pi.setItemMeta(pim);
-	p.getInventory().setItem(e.getSlot(), pi);
-	p.updateInventory();
-	e.setCursor(null);
-	e.setCancelled(true);
-} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&6Legendary KeyFortune Trinket"))) {
-List<String> tlore = e.getCursor().getItemMeta().getLore();
-if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-	p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-	return;
-}
-	ItemStack pi = e.getCurrentItem().clone();
-	ItemMeta pim = pi.getItemMeta();
-	List<String> pilore = pim.getLore();
-	pilore.add(m.c("&6Trinket: "+ tlore.get(0)));
-	pim.setLore(pilore);
-	pi.setItemMeta(pim);
-	p.getInventory().setItem(e.getSlot(), pi);
-	p.updateInventory();
-	e.setCursor(null);
-	e.setCancelled(true);
-} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&6Legendary Lucky Trinket"))) {
-List<String> tlore = e.getCursor().getItemMeta().getLore();
-if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-	p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-	return;
-}
-	ItemStack pi = e.getCurrentItem().clone();
-	ItemMeta pim = pi.getItemMeta();
-	List<String> pilore = pim.getLore();
-	pilore.add(m.c("&6Trinket: "+ tlore.get(0)));
-	pim.setLore(pilore);
-	pi.setItemMeta(pim);
-	p.getInventory().setItem(e.getSlot(), pi);
-	p.updateInventory();
-	e.setCursor(null);
-	e.setCancelled(true);
-}else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&4Heroic Sell Trinket"))) {
-	List<String> tlore = e.getCursor().getItemMeta().getLore();
-	if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-		p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-		return;
-	}
-	ItemStack pi = e.getCurrentItem().clone();
-	ItemMeta pim = pi.getItemMeta();
-	List<String> pilore = pim.getLore();
-	pilore.add(m.c("&4Trinket: "+ tlore.get(0)));
-	pim.setLore(pilore);
-	pi.setItemMeta(pim);
-	p.getInventory().setItem(e.getSlot(), pi);
-	p.updateInventory();
-	e.setCursor(null);
-	e.setCancelled(true);
-} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&4Heroic XP Trinket"))) {
-List<String> tlore = e.getCursor().getItemMeta().getLore();
-if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-return;
-}
-ItemStack pi = e.getCurrentItem().clone();
-ItemMeta pim = pi.getItemMeta();
-List<String> pilore = pim.getLore();
-pilore.add(m.c("&4Trinket: "+ tlore.get(0)));
-pim.setLore(pilore);
-pi.setItemMeta(pim);
-p.getInventory().setItem(e.getSlot(), pi);
-p.updateInventory();
-e.setCursor(null);
-e.setCancelled(true);
-} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&4Heroic KeyFortune Trinket"))) {
-List<String> tlore = e.getCursor().getItemMeta().getLore();
-if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-return;
-}
-ItemStack pi = e.getCurrentItem().clone();
-ItemMeta pim = pi.getItemMeta();
-List<String> pilore = pim.getLore();
-pilore.add(m.c("&4Trinket: "+ tlore.get(0)));
-pim.setLore(pilore);
-pi.setItemMeta(pim);
-p.getInventory().setItem(e.getSlot(), pi);
-p.updateInventory();
-e.setCursor(null);
-e.setCancelled(true);
-} else if(e.getCursor().getItemMeta().getDisplayName().equals(m.c("&4Heroic Lucky Trinket"))) {
-List<String> tlore = e.getCursor().getItemMeta().getLore();
-if(!e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE)) {
-p.sendMessage(m.c("&cThis Trinket can only be applied to &bPickaxe&c!"));
-return;
-}
-ItemStack pi = e.getCurrentItem().clone();
-ItemMeta pim = pi.getItemMeta();
-List<String> pilore = pim.getLore();
-pilore.add(m.c("&4Trinket: "+ tlore.get(0)));
-pim.setLore(pilore);
-pi.setItemMeta(pim);
-p.getInventory().setItem(e.getSlot(), pi);
-p.updateInventory();
-e.setCursor(null);
-e.setCancelled(true);
-}
-						
-					}
-			
-			}
-			
-		
+	
 		
 	}
 	

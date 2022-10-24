@@ -1,6 +1,5 @@
 package me.dxrk.Events;
 
-import com.connorlinfoot.titleapi.TitleAPI;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
@@ -15,7 +14,7 @@ import me.jet315.prisonmines.mine.Mine;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,11 +25,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.NumberFormat;
@@ -186,35 +181,45 @@ public class SellHandler implements Listener, CommandExecutor {
 
 
   public static void sell(Player p, List<ItemStack> items) {
-  	    double total = 0.0D;
-  	  double greed = Functions.greed(p);
-  	double sell = Functions.sellBoost(p);
-  	double miningboost = BoostsHandler.sell;
+	  double total = 0.0D;
+	  int amountotal = 0;
+	  double greed = Functions.greed(p);
+	  double sell = Functions.sellBoost(p);
+	  double miningboost = BoostsHandler.sell;
+	  double multi = SellHandler.getInstance().getMulti(p);
+	  for (ItemStack i : items) {
+		  if (i != null) {
 
 
-
-  	    double multi = SellHandler.getInstance().getMulti(p);
-  	  for (ItemStack i : items) {
-  	      if (i != null) {
+			  //Change this config file to look a lot nicer + add different block prices
+			  double price = Methods.getBlockSellPrice("A", i.getTypeId());
 
 
+			  total += price * (multi+greed) * sell * miningboost;
 
-  	    	double price = Methods.getBlockSellPrice("A", i.getTypeId());
+			  amountotal += i.getAmount();
 
+		  }
+	  }
 
-  	     total += price * (multi+greed)* i.getAmount() * sell * miningboost;
+	  p.updateInventory();
 
-  	        i.getAmount();
-
-  	      }
-  	    }
-  	    p.updateInventory();
-  	  if(EnchantMethods.stakemap.containsKey(p)) {
-	    	double b = EnchantMethods.stakemap.get(p);
-	    	EnchantMethods.stakemap.put(p, b+(total));
-	    }
-  	    Main.econ.depositPlayer(p, total);
-  	  }
+	  if(EnchantMethods.stakemap.containsKey(p)) {
+		  double b = EnchantMethods.stakemap.get(p);
+		  EnchantMethods.stakemap.put(p, b+(total*amountotal));
+	  }
+	  Main.econ.depositPlayer(p, total*amountotal);
+	  double percents;
+	  p.getScoreboard().getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
+	  percents = Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) * 100.0D;
+	  double dmultiply = percents * 10.0D;
+	  double dRound = Math.round(dmultiply) / 10.0D;
+	  if (dRound >= 100.0D) {
+		  p.getScoreboard().getTeam("percent").setSuffix(c("&c/rankup"));
+	  } else {
+		  p.getScoreboard().getTeam("percent").setSuffix(c("&c") + dRound + "%");
+	  }
+  }
 
 
 
@@ -295,24 +300,27 @@ public class SellHandler implements Listener, CommandExecutor {
     
     if (!event.isCancelled())
       if (p.getItemInHand() != null) {
-        if (p.getItemInHand().getItemMeta().getLore().get(2).contains("Fortune")) {
-          int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(2))*fortuity /
+
+		  int line = 0;
+		  for(int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++){
+			  if(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")){
+				  line = x;
+			  }
+		  }
+          int fortune = (int) (getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity /
             (3.5));
 
           
-          event.getBlock().setType(Material.AIR);
-          event.setCancelled(true);
 
-		  List<ItemStack> drops = new ArrayList<>();
-		  ItemStack drop = new ItemStack(event.getBlock().getType(), fortune);
-		  drops.add(drop);
-		  sell(p, drops);
 
-         
-          
-          
-          
-        }
+		  ArrayList<ItemStack> sellblocks = new ArrayList<>();
+
+		  sellblocks.add(new ItemStack(event.getBlock().getType(), fortune));
+		  event.getBlock().setType(Material.AIR);
+		  event.setCancelled(true);
+
+		  sell(p, sellblocks);
+
       }
   }
   

@@ -8,6 +8,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import me.dxrk.Main.SettingsManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlayerDataHandler implements Listener {
   public SettingsManager settings = SettingsManager.getInstance();
   
@@ -69,6 +72,11 @@ public class PlayerDataHandler implements Listener {
     }
     if(this.pl.get(uuid+".PickXP") == null){
       this.pl.set(uuid+".PickXP", 0);
+      this.settings.savePlayerData();
+    }
+    if(this.pl.get(uuid+".Trinkets") == null){
+      List<String> Trinkets = new ArrayList<>();
+      this.pl.set(uuid+".Trinkets", Trinkets);
       this.settings.savePlayerData();
     }
   }

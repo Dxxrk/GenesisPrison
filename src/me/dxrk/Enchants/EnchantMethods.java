@@ -190,95 +190,24 @@ public class EnchantMethods {
 		              blocks = blocks+1;
 		    	  } 
  			}
-			int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(2))/8.6);
-			
-			
-			
-			
 			double fortuity = Functions.Foruity(p);
-			
-			int bplevel = this.settings.getbpSize().getInt(p.getUniqueId().toString());
-			
-		    if(level >=1 && level <=10) {
-		    	if(bplevel <2) {
-		    		p.sendMessage(c("&cYour BackPack is not level 1. Upgrade to recieve money!")); return;
-		    	}else {
-		    		bplevel = 1;
-		    	}
-		    }
-		    if(level >=11 && level <=20) {
-		    	if(bplevel <2) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}		    	}else {
-		    		bplevel = 2;
-		    	}
-		    }
-		    if(level >=21 && level <=30) {
-		    	if(bplevel <3) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}		    	}else {
-		    		bplevel = 3;
-		    	}
-		    }
-		    if(level >=31 && level <=40) {
-		    	if(bplevel <4) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}		    	}else {
-		    		bplevel = 4;
-		    	}
-		    }
-		    if(level >=41 && level <=50) {
-		    	if(bplevel <5) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}		    	}else {
-		    		bplevel = 5;
-		    	}
-		    }
-		    if(level >=51 && level <=60) {
-		    	if(bplevel <6) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}		    	}else {
-		    		bplevel = 6;
-		    	}
-		    }
-		    if(level >=61 && level <=70) {
-		    	if(bplevel <7) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}		    	}else {
-		    		bplevel = 7;
-		    	}
-		    }
-		    if(level >=71 && level <=80) {
-		    	if(bplevel <8) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}		    	}else {
-		    		bplevel = 8;
-		    	}
-		    }
-		    if(level >=81 && level <=90) {
-		    	if(bplevel <9) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}		    		
-		    	} else {
-		    		bplevel = 9;
-		    	}
-		    }
-		    if(level >=91 && level <=100) {
-		    	if(bplevel <10) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}		    	}
-		    }
+				int line = 0;
+				for(int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++){
+					if(org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")){
+						line = x;
+					}
+				}
+				int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity /
+						(8.6));
+
+				double levelcap = level/10;
+
+				if(levelcap <1){
+					levelcap = 1;
+				}
+
 		    
-		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks* (fortune*fortuity) *level)/(12-bplevel))));
+		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks* (fortune)*levelcap))));
 		    
 		    SellHandler.sellEnchant(p, sellblocks, "Wave");
 					
@@ -340,98 +269,30 @@ public class EnchantMethods {
 			          
 			        }
 				}
-				int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(2))/8.6);
+
 				
 				double fortuity = Functions.Foruity(p);
-				int bplevel = this.settings.getbpSize().getInt(p.getUniqueId().toString());
-			
-			    if(level >=1 && level <=10) {
-			    	if(bplevel <2) {
-			    		p.sendMessage(c("&cYour BackPack is not level 1. Upgrade to recieve money!")); return;
-			    	}else {
-			    		bplevel = 1;
-			    	}
-			    }
-			    if(level >=11 && level <=20) {
-			    	if(bplevel <2) {
-			    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-			    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-			    		}			    	}else {
-			    		bplevel = 2;
-			    	}
-			    }
-			    if(level >=21 && level <=30) {
-			    	if(bplevel <3) {
-			    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-			    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-			    		}			    	}else {
-			    		bplevel = 3;
-			    	}
-			    }
-			    if(level >=31 && level <=40) {
-			    	if(bplevel <4) {
-			    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-			    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-			    		}
-			    	}else {
-			    		bplevel = 4;
-			    	}
-			    }
-			    if(level >=41 && level <=50) {
-			    	if(bplevel <5) {
-			    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-			    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-			    		}
-			    	}else {
-			    		bplevel = 5;
-			    	}
-			    }
-			    if(level >=51 && level <=60) {
-			    	if(bplevel <6) {
-			    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-			    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-			    		}
-			    	}else {
-			    		bplevel = 6;
-			    	}
-			    }
-			    if(level >=61 && level <=70) {
-			    	if(bplevel <7) {
-			    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-			    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-			    		}
-			    	}else {
-			    		bplevel = 7;
-			    	}
-			    }
-			    if(level >=71 && level <=80) {
-			    	if(bplevel <8) {
-			    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-			    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-			    		}
-			    	}else {
-			    		bplevel = 8;
-			    	}
-			    }
-			    if(level >=81 && level <=90) {
-			    	if(bplevel <9) {
-			    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-			    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-			    		}
-			    		
-			    	} else {
-			    		bplevel = 9;
-			    	}
-			    }
-			    if(level >=91 && level <=100) {
-			    	if(bplevel <10) {
-			    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-			    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-			    		}
-			    	}
-			    }
+				int line = 0;
+				for(int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++){
+					if(org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")){
+						line = x;
+					}
+				}
+				int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity /
+						(8.6));
+
+				double levelcap = level/10;
+
+				if(levelcap <1){
+					levelcap = 1;
+				}
+
+
+
+
+
 			    
-			    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks* (fortune*fortuity) *level)/(12-bplevel))));
+			    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks* (fortune))*levelcap)));
 			    
 			    SellHandler.sellEnchant(p, sellblocks, "Explosion");
 			}
@@ -530,102 +391,28 @@ public class EnchantMethods {
 				
 	        	  
 	        	  ResetHandler.resetMine(m, ResetReason.NUKE);
-	        	  
-			
-			int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(2))/8.6);
+
+
+
 			
 			double fortuity = Functions.Foruity(p);
+				int line = 0;
+				for(int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++){
+					if(org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")){
+						line = x;
+					}
+				}
+				int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity /
+						(8.6));
+
+				double levelcap = level/10;
+
+				if(levelcap <1){
+					levelcap = 1;
+				}
 		
-			int bplevel = this.settings.getbpSize().getInt(p.getUniqueId().toString());
-			
-		    if(level >=1 && level <=10) {
-		    	if(bplevel <2) {
-		    		p.sendMessage(c("&cYour BackPack is not level 1. Upgrade to recieve money!")); return;
-		    	}else {
-		    		bplevel = 1;
-		    	}
-		    }
-		    if(level >=11 && level <=20) {
-		    	if(bplevel <2) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}
-		    	}else {
-		    		bplevel = 2;
-		    	}
-		    }
-		    if(level >=21 && level <=30) {
-		    	if(bplevel <3) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}
-		    	}else {
-		    		bplevel = 3;
-		    	}
-		    }
-		    if(level >=31 && level <=40) {
-		    	if(bplevel <4) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}
-		    	}else {
-		    		bplevel = 4;
-		    	}
-		    }
-		    if(level >=41 && level <=50) {
-		    	if(bplevel <5) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}
-		    	}else {
-		    		bplevel = 5;
-		    	}
-		    }
-		    if(level >=51 && level <=60) {
-		    	if(bplevel <6) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}
-		    	}else {
-		    		bplevel = 6;
-		    	}
-		    }
-		    if(level >=61 && level <=70) {
-		    	if(bplevel <7) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}
-		    	}else {
-		    		bplevel = 7;
-		    	}
-		    }
-		    if(level >=71 && level <=80) {
-		    	if(bplevel <8) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}
-		    	}else {
-		    		bplevel = 8;
-		    	}
-		    }
-		    if(level >=81 && level <=90) {
-		    	if(bplevel <9) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}
-		    		
-		    	} else {
-		    		bplevel = 9;
-		    	}
-		    }
-		    if(level >=91 && level <=100) {
-		    	if(bplevel <10) {
-		    		if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Backpack-Warnings") == true) {
-		    			p.sendMessage(c("&cYour BackPack cannot hold the full amount. Upgrade!"));
-		    		}
-		    	}
-		    }
-		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((amountblocks/95* (fortune*fortuity) *level)/(12-bplevel))));
+
+		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((amountblocks/95* (fortune*fortuity)*levelcap))));
 		    
 		    SellHandler.sellEnchant(p, sellblocks, "Vaporize");
 					

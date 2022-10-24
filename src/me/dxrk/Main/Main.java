@@ -140,6 +140,8 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("blockstop").setExecutor(new Leaderboards());
     getCommand("givedust").setExecutor(new TrinketHandler());
     getCommand("givetrinket").setExecutor(new TrinketHandler());
+    getCommand("trinket").setExecutor(new TrinketHandler());
+    getCommand("trinkets").setExecutor(new TrinketHandler());
     getCommand("relore").setExecutor(new CMDItemEdits());
     getCommand("addlore").setExecutor(new CMDItemEdits());
     getCommand("dellore").setExecutor(new CMDItemEdits());

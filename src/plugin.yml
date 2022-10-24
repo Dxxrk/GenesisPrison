@@ -151,3 +151,5 @@ commands:
   bpreset:
   givedust:
   givetrinket:
+  trinket:
+  trinkets:

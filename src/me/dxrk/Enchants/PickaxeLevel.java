@@ -50,11 +50,11 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 	    am.setDisplayName(c("&cTest Pickaxe"));
 	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
 	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-		lore.add(c("&b&m-<>-&aEnchants&b&m-<>-"));
-		lore.add(" ");
-		lore.add(c("&b&m-<>-&aTrinkets 0/4&b&m-<>-"));
-		lore.add(" ");
-		lore.add(c("&b&m-<>-&aLevel&b&m-<>-"));
+		lore.add(c("&b&m-<>-&aEnchants&b&m-<>- "));
+		lore.add("  ");
+		lore.add(c("&b&m-<>-&aTrinkets 0/4&b&m-<>- "));
+		lore.add("  ");
+		lore.add(c("&b&m-<>-&aLevel&b&m-<>- "));
 		lore.add(c("&cLevel: &e1"));
 		lore.add(c("&cProgress: &e0%"));
 		am.setLore(lore);
@@ -286,11 +286,11 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 	}
 	private List<String> Trinkets(){
 		List<String> list = new ArrayList<>();
-		list.add("Extra Tokens");
+		list.add("Token");
 		list.add("Double Keys");
-		list.add("Bonus XP");
-		list.add("Additional Luck");
-		list.add("Sell Boost");
+		list.add("XP");
+		list.add("Lucky");
+		list.add("Sell");
 
 		return list;
 	}
@@ -301,7 +301,8 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		List<String> ilore = list;
 		List<String> Enchants = new ArrayList<>();
 		for(String s : ilore){
-			if(ChatColor.stripColor(s).contains("Enchants") || ChatColor.stripColor(s).contains("Trinkets") || ChatColor.stripColor(s).contains("Level:") || ChatColor.stripColor(s).contains("Progress:"))  continue;
+			if(ChatColor.stripColor(s).contains("Enchants") || ChatColor.stripColor(s).contains("Trinkets") || ChatColor.stripColor(s).contains("Level:") || ChatColor.stripColor(s).contains("Progress:")
+					|| ChatColor.stripColor(s).contains("Trinket"))  continue;
 			if(s.equals(" ")) continue;
 			for(String ss : Enchants()){
 				if(ChatColor.stripColor(s).contains(ss)){
@@ -316,10 +317,10 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		return lore;
 	}
 
-	public List<String> organizeTrinkets(List<String> list){
+	public List<String> organizeTrinkets(Player p){
 		List<String> lore = new ArrayList<>();
 		int trinkets = 0;
-		List<String> ilore = list;
+		List<String> ilore = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".Trinkets");
 		List<String> Trinkets = new ArrayList<>();
 
 		for(String s : ilore){
@@ -358,10 +359,10 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 
 		return lore;
 	}
-	public List<String> Lore(List<String> list){
+	public List<String> Lore(List<String> list, Player p){
 		List<String> lore = new ArrayList<>(orgainzeEnchants(list));
 		lore.add(c("  "));
-		lore.addAll(organizeTrinkets(list));
+		lore.addAll(organizeTrinkets(p));
 		lore.add(c("  "));
 		lore.add(c("&b&m-<>-&aLevel&b&m-<>-"));
 		lore.addAll(pickLevel(list));
@@ -707,7 +708,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 			}
 
 		}
-		pm.setLore(Lore(lore));
+		pm.setLore(Lore(lore, p));
 		pitem.setItemMeta(pm);
 		p.setItemInHand(pitem);
 		p.updateInventory();
