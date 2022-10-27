@@ -132,7 +132,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("pickaxe").setExecutor(new PickaxeLevel());
     getCommand("resetallmines").setExecutor(new PickaxeLevel());
     getCommand("motdchange").setExecutor(this);
-    getCommand("prestige").setExecutor(new PickaxeLevel());
+    getCommand("prestige").setExecutor(new PrestigeHandler());
     getCommand("giveenchant").setExecutor(new DonorItems());
     getCommand("activeboost").setExecutor(new BoostsHandler());
     getCommand("boost").setExecutor(new BoostsHandler());
@@ -213,42 +213,14 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     registerEvents(this, new Listener[] { new CMDDaily() });
     registerEvents(this, new Listener[] { new JDAEvents() });
     registerEvents(this, new Listener[] { new MysteryBoxHandler() });
+      registerEvents(this, new Listener[] { new PrestigeHandler() });
     registerEvents(this, new Listener[] { this});
 
     
 
       JDAEvents.getInstance().serverLink();
 
-    new BukkitRunnable() {
 
-		@Override
-		public void run() {
-			for(Player p : Bukkit.getOnlinePlayers()) {
-				if(!p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)) return;
-                if(!p.getItemInHand().hasItemMeta()) return;
-                if(!p.getItemInHand().getItemMeta().hasLore()) return;
-				 
-				int level = PickXPHandler.getBlocks(p.getItemInHand().getItemMeta().getLore().get(1));
-				p.setLevel(level);
-				
-				float xp =(float) level/55555;
-				if(xp >1.0) {
-					p.setExp(1f);
-				} else {
-				p.setExp(xp);
-				}
-			if(!p.isOnline()) {
-				cancel();
-			}
-			
-			}
-			
-			
- 
-
-		}
-
- }.runTaskTimer(this, 0L, 20*2L);
     
     new BukkitRunnable() {
 
@@ -268,6 +240,27 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
 		}
 
  }.runTaskTimer(this, 0L, 20*2L);
+
+      new BukkitRunnable() {
+
+          @Override
+          public void run() {
+              for(Player p : Bukkit.getOnlinePlayers()) {
+                 if(RankupHandler.aru.contains(p)){
+                     RankupHandler.getInstance().autorankup(p);
+                 }
+
+                  if (!p.isOnline()) {
+                      cancel();
+                  }
+              }
+
+
+
+
+          }
+
+      }.runTaskTimer(this, 0L, 1L);
  
  
  new BukkitRunnable() {

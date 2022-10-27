@@ -33,6 +33,24 @@ public class Functions implements Listener{
 		
 		return sell;
 	}
+
+	public static double xpBoost(Player p) {
+		double xp = 1;
+
+		for (String s : p.getItemInHand().getItemMeta().getLore()) {
+			if(ChatColor.stripColor(s).toLowerCase().contains("xp")) {
+
+				String[] n = ChatColor.stripColor(s).split("%");
+				String[] num = n[0].split(" ");
+				double x = Double.parseDouble(num[4])/100;
+
+				xp += x;
+			}
+		}
+
+		return xp;
+	}
+
 	
 	public static double luckBoost(Player p) {
 		double luck = 1;

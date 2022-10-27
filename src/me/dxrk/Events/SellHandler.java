@@ -14,7 +14,6 @@ import me.jet315.prisonmines.mine.Mine;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,7 +28,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 @SuppressWarnings("deprecation")
 public class SellHandler implements Listener, CommandExecutor {
@@ -136,7 +138,10 @@ public class SellHandler implements Listener, CommandExecutor {
       e.setCancelled(true);
   }
 
-
+	public int getPrestiges(Player p){
+		int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
+		return prestiges;
+	}
 
 
   public void setMulti(Player p, double d) {
@@ -146,13 +151,17 @@ public class SellHandler implements Listener, CommandExecutor {
 
 	private static Methods m = Methods.getInstance();
 
-  public static void sellEnchant(Player p, List<ItemStack> items, String enchantName) {
+  public void sellEnchant(Player p, List<ItemStack> items, String enchantName) {
 	    double total = 0.0D;
 	    int amountotal = 0;
 	    double greed = Functions.greed(p);
 	    double sell = Functions.sellBoost(p);
 	    double miningboost = BoostsHandler.sell;
 	    double multi = SellHandler.getInstance().getMulti(p);
+		double prestige = getPrestiges(p)*0.02;
+		if(prestige < 1){
+			prestige = 1;
+		}
 	    for (ItemStack i : items) {
 	  	      if (i != null) {
 
@@ -161,7 +170,7 @@ public class SellHandler implements Listener, CommandExecutor {
 	  	    	double price = Methods.getBlockSellPrice("A", i.getTypeId());
 
 
-	  	    	total += price * (multi+greed) * sell * miningboost;
+	  	    	total += price * (multi+greed) * sell * miningboost*prestige;
 
 	  	        amountotal += i.getAmount();
 
@@ -180,13 +189,17 @@ public class SellHandler implements Listener, CommandExecutor {
 
 
 
-  public static void sell(Player p, List<ItemStack> items) {
+  public void sell(Player p, List<ItemStack> items) {
 	  double total = 0.0D;
 	  int amountotal = 0;
 	  double greed = Functions.greed(p);
 	  double sell = Functions.sellBoost(p);
 	  double miningboost = BoostsHandler.sell;
 	  double multi = SellHandler.getInstance().getMulti(p);
+	  double prestige = getPrestiges(p)*0.02;
+	  if(prestige < 1){
+		  prestige = 1;
+	  }
 	  for (ItemStack i : items) {
 		  if (i != null) {
 
@@ -195,7 +208,7 @@ public class SellHandler implements Listener, CommandExecutor {
 			  double price = Methods.getBlockSellPrice("A", i.getTypeId());
 
 
-			  total += price * (multi+greed) * sell * miningboost;
+			  total += price * (multi+greed) * sell * miningboost*prestige;
 
 			  amountotal += i.getAmount();
 

@@ -209,7 +209,7 @@ public class EnchantMethods {
 		    
 		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks* (fortune)*levelcap))));
 		    
-		    SellHandler.sellEnchant(p, sellblocks, "Wave");
+		    SellHandler.getInstance().sellEnchant(p, sellblocks, "Wave");
 					
 				
 			}
@@ -293,8 +293,8 @@ public class EnchantMethods {
 
 			    
 			    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks* (fortune))*levelcap)));
-			    
-			    SellHandler.sellEnchant(p, sellblocks, "Explosion");
+
+				SellHandler.getInstance().sellEnchant(p, sellblocks, "Explosion");
 			}
 			
 			
@@ -413,8 +413,8 @@ public class EnchantMethods {
 		
 
 		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((amountblocks/95* (fortune*fortuity)*levelcap))));
-		    
-		    SellHandler.sellEnchant(p, sellblocks, "Vaporize");
+
+				SellHandler.getInstance().sellEnchant(p, sellblocks, "Vaporize");
 					
 				}
 	  }

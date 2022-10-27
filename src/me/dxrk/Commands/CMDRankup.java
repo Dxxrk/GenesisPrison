@@ -43,22 +43,12 @@ public class CMDRankup implements CommandExecutor {
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     Player p = (Player)sender;
     if (label.equalsIgnoreCase("rankup")) {
-      if(RankupHandler.getInstance().getRank(p)== 100) {
-    	  p.sendMessage(c("&c/Prestige"));
-    	  return false;
-      }
-    	  
-    	  
-          if (Main.econ.getBalance((OfflinePlayer)p) >= RankupHandler.getInstance().rankPrice(p)) {
-        	  
-            p.sendMessage("§7You have ranked up to §b" + RankupHandler.getInstance().nextRank(p)); 
-          }
           this.rankup.rankup(p);
           this.settings.saveRankupPrices();
       }
     
     if (label.equalsIgnoreCase("maxrankup") || label.equalsIgnoreCase("rankupmax")) {
-      if (!(p instanceof Player))
+      if (p == null)
         return false; 
       this.rankup.MaxRankup(p);
       this.settings.saveRankupPrices();
@@ -68,7 +58,7 @@ public class CMDRankup implements CommandExecutor {
     	if(args.length == 2) {
     	Player reciever = Bukkit.getServer().getPlayer(args[0]);
     	if(isInt(args[1])) {
-    		this.rankup.setRank(reciever, Integer.valueOf(args[1]));
+    		this.rankup.setRank(reciever, Integer.parseInt(args[1]));
     	} else {
     		p.sendMessage(c("&cThat is not a number!"));
     	}

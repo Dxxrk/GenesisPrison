@@ -51,6 +51,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
 	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		lore.add(c("&b&m-<>-&aEnchants&b&m-<>- "));
+		lore.add(c("&cFortune &e10"));
 		lore.add("  ");
 		lore.add(c("&b&m-<>-&aTrinkets 0/4&b&m-<>- "));
 		lore.add("  ");
@@ -620,7 +621,6 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 
 
 			if (hasEnchant == false) {
-				for(int x = 0; x < num; x++) {
 					int level = 0;
 					int plus = level + 1;
 					int price = (int) enchantPrice(Enchant, level);
@@ -634,7 +634,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 						return;
 					}
 
-				}
+
 
 			} else {
 				int line = 0;
@@ -653,7 +653,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 						this.tokens.takeTokens(p, price);
 					} else {
 						p.sendMessage(c("&f&lTokens &8| &7Not enough Tokens."));
-						return;
+						break;
 					}
 
 				}
@@ -668,7 +668,6 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 			}
 
 			if (hasEnchant == false) {
-				for(int x = 0; x < 100001; x++) {
 					int level = 0;
 					int plus = level + 1;
 					int price = (int) enchantPrice(Enchant, level);
@@ -682,7 +681,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 						return;
 					}
 
-				}
+
 
 			} else {
 				int line = 0;
@@ -701,7 +700,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 						this.tokens.takeTokens(p, price);
 					} else {
 						p.sendMessage(c("&f&lTokens &8| &7Not enough Tokens "));
-						return;
+						break;
 					}
 				}
 

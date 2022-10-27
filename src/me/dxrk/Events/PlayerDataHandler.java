@@ -46,18 +46,6 @@ public class PlayerDataHandler implements Listener {
       this.pl.set(uuid + ".TimePlayed", 0);
       this.settings.savePlayerData();
     }
-    if (this.pl.get(uuid + ".RankupMessages") == null) {
-      this.pl.set(uuid + ".RankupMessages", Boolean.TRUE);
-      this.settings.savePlayerData();
-    } 
-    if (this.pl.get(uuid + ".KeyFinderMessages") == null) {
-      this.pl.set(uuid + ".KeyFinderMessages", Boolean.TRUE);
-      this.settings.savePlayerData();
-    } 
-    if (this.pl.get(uuid + ".Particles") == null) {
-      this.pl.set(uuid + ".Particles", Boolean.TRUE);
-      this.settings.savePlayerData();
-    }
     if (this.pl.get(uuid + ".TimesPrestiged") == null) {
       this.pl.set(uuid + ".TimesPrestiged", 0);
       this.settings.savePlayerData();
@@ -67,11 +55,11 @@ public class PlayerDataHandler implements Listener {
       this.settings.savePlayerData();
     }
     if(this.pl.get(uuid+".PickLevel") == null){
-      this.pl.set(uuid+".PickLevel", 0);
+      this.pl.set(uuid+".PickLevel", 1);
       this.settings.savePlayerData();
     }
     if(this.pl.get(uuid+".PickXP") == null){
-      this.pl.set(uuid+".PickXP", 0);
+      this.pl.set(uuid+".PickXP", 0.0D);
       this.settings.savePlayerData();
     }
     if(this.pl.get(uuid+".Trinkets") == null){

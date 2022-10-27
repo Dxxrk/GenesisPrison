@@ -12,12 +12,10 @@ import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerListHeaderFooter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 
@@ -148,14 +146,9 @@ public class ScoreboardHandler implements Listener{
 	    
 	    
 	    public static String prefix(Player p) {
-	    	int rank = RankupHandler.getInstance().getRank(p);
-	    	if(p.hasPermission("prestige.100")) {
-	    		return c("&6O10-"+formatAmt(rank)+" ");
-	    	}
-	    	
-	    	
-	    	
-	    	return null;
+	    	//Add prefix here if there's enough space.
+
+	    	return "";
 	    }
 	    
 	    static Essentials ess = (Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
@@ -167,13 +160,13 @@ public class ScoreboardHandler implements Listener{
 	    
 	        @SuppressWarnings("deprecation")
 			public static void updateSB(Player p) {
-	        	
-	        	
-		            	
+
+
+
 		            	Scoreboard NewBoard = p.getScoreboard();
 		            	NewBoard.getTeam("donor").setPrefix(c("&7Rank: "));
 		      	        	if (p.getName().equalsIgnoreCase("Dxrk")) {
-		      	              
+
 		      	            NewBoard.getTeam("donor").setSuffix(c("&d&lOwner"));
 		      	            } else if (p.getName().equalsIgnoreCase("BakonStrip") || p.getName().equalsIgnoreCase("32j")) {
 		      	            	NewBoard.getTeam("donor").setSuffix(c("&5&lManager"));
@@ -202,24 +195,27 @@ public class ScoreboardHandler implements Listener{
 		      	            } else if (p.hasPermission("rank.citizen")) {
 		      	            	NewBoard.getTeam("donor").setSuffix(c("&7Member"));
 		      	            }
-		            	
-		            	
+
+
 		        	        //Prestige
 		      	        	NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
+							  //set suffix here
+							int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
+							NewBoard.getTeam("prestige").setSuffix(c("&b"+prestiges));
 
 		                    //prisonrank
 		        	        NewBoard.getTeam("prank").setPrefix(c("&7Level: "));
-		        	        
+
 		        	        //rankup%
-		        	        
+
 		        	        NewBoard.getTeam("percent").setPrefix(c("&7Rankup: "));
-		        	        
+
 		        	        p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
 		        	    	double percents;
 		        	        p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
 		        	        percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
-		        	        double dmultiply = percents*10.0;
-		        	        double dRound = Math.round(dmultiply) /10.0;
+		        	        double dmultiply = percents * 10.0;
+		        	        double dRound = Math.round(dmultiply) / 10.0;
 
 		        	        	if(dRound>=100.0) {
 		        	        		p.getScoreboard().getTeam("percent").setSuffix(c("&c/rankup"));
@@ -228,59 +224,45 @@ public class ScoreboardHandler implements Listener{
 		        	        }
 
 		        	        p.getScoreboard().getTeam("tokens").setSuffix(c("&e"+Main.formatAmt(Tokens.getInstance().getTokens(p))));
-		        	      
+
 		        	        //balance
 		        	        NewBoard.getTeam("balance").setPrefix(c("&7Balance: &a&l$"));
-		        	        
+
 		        	        //tokens
 		        	        NewBoard.getTeam("tokens").setPrefix(c("&7Tokens: &e⛀"));
-		        	        
+
 		        	        //xp
-		        	        NewBoard.getTeam("xp").setPrefix(c("&7XP: &b✴"));
-		        	        
-		        	        
-		        	        byte b;
-		        	        int i;
-		        	        ItemStack[] arrayOfItemStack;
-		        	        for (i = (arrayOfItemStack = p.getInventory().getContents()).length, b = 0; b < i; ) {
-		        	          ItemStack itemStack = arrayOfItemStack[b];
-		        	        	if(itemStack != null && itemStack.getType().equals(Material.DIAMOND_PICKAXE)) { //change this
-		        	        		if(itemStack.hasItemMeta()) {
-		        	        			if(itemStack.getItemMeta().hasLore()) {
-		        	        				String xp = Main.formatAmt(PickXPHandler.getBlocks(itemStack.getItemMeta().getLore().get(1)));
-		        	        				NewBoard.getTeam("xp").setSuffix(c("&b"+xp));
-		        	        			}
-		        	        		}
-		        	        	}
-		        	        	b = (byte)(b + 1);
-		        	        }
-		        	        
-		        	       
+		        	        NewBoard.getTeam("xp").setPrefix(c("&7XP Needed: &b✴"));
+
+							double xp = (PickXPHandler.getInstance().calculateXPNeeded(p,PickXPHandler.getInstance().getLevel(p))-PickXPHandler.getInstance().getXP(p));
+							double xmultiply = xp * 10.0;
+							int xround = (int) (Math.round(xmultiply) / 10.0);
+							NewBoard.getTeam("xp").setSuffix(c("&b"+xround));
+
+							NewBoard.getTeam("PickLevel").setPrefix(c("&7Level: "));
+							NewBoard.getTeam("PickLevel").setSuffix(c("&b"+PickXPHandler.getInstance().getLevel(p)));
+
+
 		        	        //multi
 		        	        NewBoard.getTeam("multi").setPrefix(c("&7Multi: "));
 							NewBoard.getTeam("multi").setSuffix(c("&b"+SellHandler.getInstance().getMulti(p)));
-		        	        
-		        	        //tps
-		        	        for (double tpss : MinecraftServer.getServer().recentTps ) {
-		      		    	  String tp = ( format(tpss));
-		      		    	  
-		      		    	NewBoard.getTeam("tps").setPrefix(ChatColor.GRAY +"TPS: "+  tp);
-		      		      }
+
+
 		        	        //vote
 		        	        int servervotes = settings.getVote().getInt("ServerVotes");
 		        	        NewBoard.getTeam("vote").setPrefix(c("&dVoteParty: "));
 		        	        NewBoard.getTeam("vote").setSuffix(c("&b"+(30-servervotes)+"/30"));
-		        	        
-		
-		        		            
+
+
+
 		        	    	 for(Player pp : Bukkit.getOnlinePlayers()) {
-		        	    		 
-		        	    		 
-		        	    		 
+
+
+
 		        	    		 if (pp.getName().equalsIgnoreCase("Dxrk")) {
-		        		            	if(NewBoard.getTeam("a"+name(pp)) == null) 
+		        		            	if(NewBoard.getTeam("a"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("a"+name(pp));
-		        		            	
+
 		        		            	Team team = NewBoard.getTeam("a"+name(pp));
 		        		            	if(isAFK(pp)) {
 		        		            		team.setPrefix(prefix(pp)+c("&8"));
@@ -289,16 +271,16 @@ public class ScoreboardHandler implements Listener{
 		        		            	}
 		        		            	team.setSuffix(c(" &d&lOwner"));
 		        		            	team.addPlayer(pp);
-		        		              
-		        		              
-		        		              
-		        		              
+
+
+
+
 		        		            }  else if (pp.getName().equalsIgnoreCase("BakonStrip")) {
-		        		            	if(NewBoard.getTeam("f"+name(pp)) == null) 
+		        		            	if(NewBoard.getTeam("f"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("f"+name(pp));
-		        		            	
+
 		        		            	Team team = NewBoard.getTeam("f"+name(pp));
-		        		            	
+
 		        		            	if(isAFK(pp)) {
 		        		            		team.setPrefix(prefix(pp)+c("&8"));
 		        		            	}else {
@@ -306,29 +288,29 @@ public class ScoreboardHandler implements Listener{
 		        		            	}
 		        		            	team.setSuffix(c(" &e⚡&f&lZeus&e⚡"));
 		        		            	team.addPlayer(pp);
-		        		            	
-		        		            	  
-		        		              
-		        		              
-		        		              
+
+
+
+
+
 		        		            } else if (pp.getName().equalsIgnoreCase("32j")) {
-		        		            	if(NewBoard.getTeam("b"+name(pp)) == null) 
+		        		            	if(NewBoard.getTeam("b"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("b"+name(pp));
-		        		            	
+
 		        		            	Team team = NewBoard.getTeam("b"+name(pp));
-		        		            	
+
 		        		            	team.setPrefix(prefix(pp)+c("&d&l"));
 		        		            	team.setSuffix(c(" &5&lManager"));
 		        		            	team.addPlayer(pp);
-		        		            	
-		        		             
-		        		              
+
+
+
 		        		            } else if (pp.hasPermission("rank.admin")) {
-		        		            	if(NewBoard.getTeam("c"+name(pp)) == null) 
+		        		            	if(NewBoard.getTeam("c"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("c"+name(pp));
-		        		            	
+
 		        		            	Team team = NewBoard.getTeam("c"+name(pp));
-		        		            	
+
 		        		            	if(isAFK(pp)) {
 		        		            		team.setPrefix(prefix(pp)+c("&8"));
 		        		            	}else {
@@ -336,15 +318,15 @@ public class ScoreboardHandler implements Listener{
 		        		            	}
 		        		            	team.setSuffix(c(" &4&lAdmin"));
 		        		            	team.addPlayer(pp);
-			        		            	  
-			        		              
-			        		              
+
+
+
 			        		        } else if (pp.hasPermission("rank.builder")) {
-			        		        	if(NewBoard.getTeam("e"+name(pp)) == null) 
+			        		        	if(NewBoard.getTeam("e"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("e"+name(pp));
-		        		            	
+
 		        		            	Team team = NewBoard.getTeam("e"+name(pp));
-		        		            	
+
 		        		            	if(isAFK(pp)) {
 		        		            		team.setPrefix(prefix(pp)+c("&8"));
 		        		            	}else {
@@ -352,16 +334,16 @@ public class ScoreboardHandler implements Listener{
 		        		            	}
 		        		            	team.setSuffix(c(" &a&lBuilder"));
 		        		            	team.addPlayer(pp);
-			        		        	
-		        		            	  
-		        		              
-		        		              
+
+
+
+
 		        		            } else if (pp.hasPermission("rank.mod")) {
-		        		            	if(NewBoard.getTeam("d"+name(pp)) == null) 
+		        		            	if(NewBoard.getTeam("d"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("d"+name(pp));
-		        		            	
+
 		        		            	Team team = NewBoard.getTeam("d"+name(pp));
-		        		            	
+
 		        		            	if(isAFK(pp)) {
 		        		            		team.setPrefix(prefix(pp)+c("&8"));
 		        		            	}else {
@@ -369,14 +351,14 @@ public class ScoreboardHandler implements Listener{
 		        		            	}
 		        		            	team.setSuffix(c(" &9&lMod"));
 		        		            	team.addPlayer(pp);
-		        		            	
-		        		            	 
+
+
 		        		            }  else if (pp.hasPermission("rank.zeus")) {
-		        		            	if(NewBoard.getTeam("f"+name(pp)) == null) 
+		        		            	if(NewBoard.getTeam("f"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("f"+name(pp));
-		        		            	
+
 		        		            	Team team = NewBoard.getTeam("f"+name(pp));
-		        		            	
+
 		        		            	if(isAFK(pp)) {
 		        		            		team.setPrefix(prefix(pp)+c("&8"));
 		        		            	}else {
@@ -384,15 +366,15 @@ public class ScoreboardHandler implements Listener{
 		        		            	}
 		        		            	team.setSuffix(c(" &e⚡&f&lZeus&e⚡"));
 		        		            	team.addPlayer(pp);
-		        		            	
+
 		        		            	//&7&l&ki&e&l⚡&7&l&ki&f&lZeus&7&l&ki&e&l⚡&7&l&ki&r
-		        		            	 
+
 		        		            } else if (pp.hasPermission("rank.kronos")) {
-		        		            	if(NewBoard.getTeam("g"+name(pp)) == null) 
+		        		            	if(NewBoard.getTeam("g"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("g"+name(pp));
-		        		            	
+
 		        		            	Team team = NewBoard.getTeam("g"+name(pp));
-		        		            	
+
 		        		            	if(isAFK(pp)) {
 		        		            		team.setPrefix(prefix(pp)+c("&8"));
 		        		            	}else {
@@ -400,15 +382,15 @@ public class ScoreboardHandler implements Listener{
 		        		            	}
 		        		            	team.setSuffix(c(" &8&lKronos"));
 		        		            	team.addPlayer(pp);
-		        		            	
+
 		        		            	//&f&l&ki&8&lK&0&lr&8&lo&0&ln&8&lo&0&ls&f&l&ki&r
-		        		            	 
+
 		        		            } else if (pp.hasPermission("rank.apollo")) {
-		        		            	if(NewBoard.getTeam("h"+name(pp)) == null) 
+		        		            	if(NewBoard.getTeam("h"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("h"+name(pp));
-		        		            	
+
 		        		            	Team team = NewBoard.getTeam("h"+name(pp));
-		        		            	
+
 		        		            	if(isAFK(pp)) {
 		        		            		team.setPrefix(prefix(pp)+c("&8"));
 		        		            	}else {
@@ -416,14 +398,14 @@ public class ScoreboardHandler implements Listener{
 		        		            	}
 		        		            	team.setSuffix(c(" &6&lApollo"));
 		        		            	team.addPlayer(pp);
-		        		            	
-		        		            	 
+
+
 		        		            } else if (pp.hasPermission("rank.hermes")) {
-		        		            	if(NewBoard.getTeam("i"+name(pp)) == null) 
+		        		            	if(NewBoard.getTeam("i"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("i"+name(pp));
-		        		            	
+
 		        		            	Team team = NewBoard.getTeam("i"+name(pp));
-		        		            	
+
 		        		            	if(isAFK(pp)) {
 		        		            		team.setPrefix(prefix(pp)+c("&8"));
 		        		            	}else {
@@ -431,15 +413,15 @@ public class ScoreboardHandler implements Listener{
 		        		            	}
 		        		            	team.setSuffix(c(" &a&lHermes"));
 		        		            	team.addPlayer(pp);
-		        		            	
-		        		            	
-		        		            	 
+
+
+
 		        		            } else if (pp.hasPermission("rank.ares")) {
-		        		            	if(NewBoard.getTeam("j"+name(pp)) == null) 
+		        		            	if(NewBoard.getTeam("j"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("j"+name(pp));
-		        		            	
+
 		        		            	Team team = NewBoard.getTeam("j"+name(pp));
-		        		            	
+
 		        		            	if(isAFK(pp)) {
 		        		            		team.setPrefix(prefix(pp)+c("&8"));
 		        		            	}else {
@@ -447,15 +429,15 @@ public class ScoreboardHandler implements Listener{
 		        		            	}
 		        		            	team.setSuffix(c(" &c&lAres"));
 		        		            	team.addPlayer(pp);
-		        		            	
-		        		            	
-		        		            	 
+
+
+
 		        		            } else if (pp.hasPermission("rank.Colonel")) {
-		        		            	if(NewBoard.getTeam("k"+name(pp)) == null) 
+		        		            	if(NewBoard.getTeam("k"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("k"+name(pp));
-		        		            	
+
 		        		            	Team team = NewBoard.getTeam("k"+name(pp));
-		        		            	
+
 		        		            	if(isAFK(pp)) {
 		        		            		team.setPrefix(prefix(pp)+c("&8"));
 		        		            	}else {
@@ -463,15 +445,15 @@ public class ScoreboardHandler implements Listener{
 		        		            	}
 		        		            	team.setSuffix(c(" &6Colonel"));
 		        		            	team.addPlayer(pp);
-		        		            	
-		        		            	
-		        		            	 
+
+
+
 		        		            } else if (pp.hasPermission("rank.captain")) {
-		        		            	if(NewBoard.getTeam("l"+name(pp)) == null) 
+		        		            	if(NewBoard.getTeam("l"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("l"+name(pp));
-		        		            	
+
 		        		            	Team team = NewBoard.getTeam("l"+name(pp));
-		        		            	
+
 		        		            	if(isAFK(pp)) {
 		        		            		team.setPrefix(prefix(pp)+c("&8"));
 		        		            	}else {
@@ -479,15 +461,15 @@ public class ScoreboardHandler implements Listener{
 		        		            	}
 		        		            	team.setSuffix(c(" &9Captain"));
 		        		            	team.addPlayer(pp);
-		        		            	
-		        		            	
-		        		            	 
+
+
+
 		        		            } else if (pp.hasPermission("rank.hoplite")) {
-		        		            	if(NewBoard.getTeam("m"+name(pp)) == null) 
+		        		            	if(NewBoard.getTeam("m"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("m"+name(pp));
-		        		            	
+
 		        		            	Team team = NewBoard.getTeam("m"+name(pp));
-		        		            	
+
 		        		            	if(isAFK(pp)) {
 		        		            		team.setPrefix(prefix(pp)+c("&8"));
 		        		            	}else {
@@ -495,15 +477,15 @@ public class ScoreboardHandler implements Listener{
 		        		            	}
 		        		            	team.setSuffix(c(" &eHoplite"));
 		        		            	team.addPlayer(pp);
-		        		            	
-		        		            	
-		        		            	 
+
+
+
 		        		            } else if (pp.hasPermission("rank.cavalry")) {
-		        		            	if(NewBoard.getTeam("n"+name(pp)) == null) 
+		        		            	if(NewBoard.getTeam("n"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("n"+name(pp));
-		        		            	
+
 		        		            	Team team = NewBoard.getTeam("n"+name(pp));
-		        		            	
+
 		        		            	if(isAFK(pp)) {
 		        		            		team.setPrefix(prefix(pp)+c("&8"));
 		        		            	}else {
@@ -511,15 +493,15 @@ public class ScoreboardHandler implements Listener{
 		        		            	}
 		        		            	team.setSuffix(c(" &cCavalry"));
 		        		            	team.addPlayer(pp);
-		        		            	
-		        		            	
-		        		            	 
+
+
+
 		        		            } else {
-		        		            	if(NewBoard.getTeam("o"+name(pp)) == null) 
+		        		            	if(NewBoard.getTeam("o"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("o"+name(pp));
-		        		            	
+
 		        		            	Team team = NewBoard.getTeam("o"+name(pp));
-		        		            	
+
 		        		            	if(isAFK(pp)) {
 		        		            		team.setPrefix(prefix(pp)+c("&8"));
 		        		            	}else {
@@ -527,13 +509,13 @@ public class ScoreboardHandler implements Listener{
 		        		            	}
 		        		            	team.setSuffix(c(""));
 		        		            	team.addPlayer(pp);
-		        		              
-		        		              
-		        		              
+
+
+
 		        		            }
 		        	    	 }
-		        	        
-		        	        
+
+
 	        }
 	        
 	 
@@ -552,90 +534,76 @@ public class ScoreboardHandler implements Listener{
 		        stLine.addEntry(ChatColor.BLUE+"");
 		        stLine.setPrefix(c(""));
 		        stLine.setSuffix(c(""));
-		        obj.getScore(ChatColor.BLUE+"").setScore(18);
+		        obj.getScore(ChatColor.BLUE+"").setScore(15);
 
 				//Player
 				Team player = NewBoard.registerNewTeam("Player");
 				player.addEntry(ChatColor.RED+""+ChatColor.BLACK);
-				player.setPrefix(c("&9PLAYER:"));
-				obj.getScore(ChatColor.RED+""+ChatColor.BLACK).setScore(17);
+				player.setPrefix(c("&9&lPlayer:"));
+				obj.getScore(ChatColor.RED+""+ChatColor.BLACK).setScore(14);
 		        
 		        //DonorRank
 		        Team donor = NewBoard.registerNewTeam("donor");
 		        donor.addEntry(ChatColor.DARK_AQUA+"");
-		        obj.getScore(ChatColor.DARK_AQUA+"").setScore(16);
+		        obj.getScore(ChatColor.DARK_AQUA+"").setScore(13);
 		        //Prestige
 		        Team prestige = NewBoard.registerNewTeam("prestige");
 		        prestige.addEntry(ChatColor.LIGHT_PURPLE+"");
-		        obj.getScore(ChatColor.LIGHT_PURPLE+"").setScore(15);
+		        obj.getScore(ChatColor.LIGHT_PURPLE+"").setScore(12);
 		        //Prisonrank
 		        Team prank = NewBoard.registerNewTeam("prank");
 		        prank.addEntry(ChatColor.BLACK+"");
-		        obj.getScore(ChatColor.BLACK+"").setScore(14);
+		        obj.getScore(ChatColor.BLACK+"").setScore(11);
 				//rankup%
 				Team percent = NewBoard.registerNewTeam("percent");
 				percent.addEntry(ChatColor.WHITE+"");
-				obj.getScore(ChatColor.WHITE+"").setScore(13);
-		        
-		        
-		        //2ndLine
-		        Team ndLine = NewBoard.registerNewTeam("2ndline");
-			      ndLine.addEntry((ChatColor.BLUE +""+ChatColor.BLACK));
-			      ndLine.setPrefix(c(""));
-			      ndLine.setSuffix(c(""));
-			     obj.getScore(ChatColor.BLUE +""+ ChatColor.BLACK).setScore(12);
-				 //Bank
-				Team Bank = NewBoard.registerNewTeam("Bank");
-				Bank.addEntry(ChatColor.RED+""+ChatColor.AQUA);
-				Bank.setPrefix(c("&9BANK:"));
-				obj.getScore(ChatColor.RED+""+ChatColor.AQUA).setScore(11);
+				obj.getScore(ChatColor.WHITE+"").setScore(10);
+
+
 		        //Balance
 		        Team balance = NewBoard.registerNewTeam("balance");
 		        balance.addEntry(ChatColor.DARK_BLUE+"");
-		        obj.getScore(ChatColor.DARK_BLUE+"").setScore(10);
+		        obj.getScore(ChatColor.DARK_BLUE+"").setScore(9);
 
 		        //Tokens
 		        Team tokens = NewBoard.registerNewTeam("tokens");
 		        tokens.addEntry(ChatColor.GOLD+"");
-		        obj.getScore(ChatColor.GOLD+"").setScore(9);
+		        obj.getScore(ChatColor.GOLD+"").setScore(8);
 
 		        //Multi
 		        Team multi = NewBoard.registerNewTeam("multi");
 		        multi.addEntry(ChatColor.DARK_RED+"");
-		        obj.getScore(ChatColor.DARK_RED+"").setScore(8);
+		        obj.getScore(ChatColor.DARK_RED+"").setScore(7);
 		        //3rdLine
 		        Team rdLine = NewBoard.registerNewTeam("3rdLine");
 		        rdLine.addEntry(ChatColor.GREEN+"");
 		        rdLine.setPrefix(c(""));
 			    rdLine.setSuffix(c(""));
-		        obj.getScore(ChatColor.GREEN+"").setScore(7);
+		        obj.getScore(ChatColor.GREEN+"").setScore(6);
 				//Pickaxe
 				Team Pickaxe = NewBoard.registerNewTeam("Pickaxe");
 				Pickaxe.addEntry(ChatColor.GOLD+""+ChatColor.GRAY);
-				Pickaxe.setPrefix(c("&9PICKAXE:"));
-				obj.getScore(ChatColor.GOLD+""+ChatColor.GRAY).setScore(6);
-				//XP
-				Team xp = NewBoard.registerNewTeam("xp");
-				xp.addEntry(ChatColor.AQUA+"");
-				obj.getScore(ChatColor.AQUA+"").setScore(5);
+				Pickaxe.setPrefix(c("&9&lPickaxe:"));
+				obj.getScore(ChatColor.GOLD+""+ChatColor.GRAY).setScore(5);
 				//PickLevel
 				Team pickLevel = NewBoard.registerNewTeam("PickLevel");
 				pickLevel.addEntry(ChatColor.DARK_AQUA+""+ChatColor.DARK_PURPLE);
 				obj.getScore(ChatColor.DARK_AQUA+""+ChatColor.DARK_PURPLE).setScore(4);
+				//XP
+				Team xp = NewBoard.registerNewTeam("xp");
+				xp.addEntry(ChatColor.AQUA+"");
+				obj.getScore(ChatColor.AQUA+"").setScore(3);
 				//Server
 				Team Server = NewBoard.registerNewTeam("Server");
 				Server.addEntry(ChatColor.LIGHT_PURPLE+""+ChatColor.DARK_RED);
-				Server.setPrefix(c("&9SERVER:"));
-				obj.getScore(ChatColor.LIGHT_PURPLE+""+ChatColor.DARK_RED).setScore(3);
+				Server.setPrefix(c(""));
+				Server.setSuffix(c(""));
+				obj.getScore(ChatColor.LIGHT_PURPLE+""+ChatColor.DARK_RED).setScore(2);
 		        //vote
 		        Team vote = NewBoard.registerNewTeam("vote");
 		        vote.addEntry(ChatColor.DARK_PURPLE+"");
-		        obj.getScore(ChatColor.DARK_PURPLE+"").setScore(2);
-		        
-		        //tps
-		        Team tps = NewBoard.registerNewTeam("tps");
-		        tps.addEntry(ChatColor.YELLOW+"");
-		        obj.getScore(ChatColor.YELLOW+"").setScore(1);
+		        obj.getScore(ChatColor.DARK_PURPLE+"").setScore(1);
+
 		        
 		        
 		        
@@ -686,6 +654,9 @@ public class ScoreboardHandler implements Listener{
     	
 	        //Prestige
 	        	NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
+				//set suffix after setting up prestiges.
+				int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
+				NewBoard.getTeam("prestige").setSuffix(c("&b"+prestiges));
 
             //prisonrank
 	        NewBoard.getTeam("prank").setPrefix(c("&7Level: "));
@@ -720,12 +691,7 @@ public class ScoreboardHandler implements Listener{
 	        NewBoard.getTeam("multi").setPrefix(c("&7Multi: "));
 			NewBoard.getTeam("multi").setSuffix(c("&b"+SellHandler.getInstance().getMulti(p)));
 	        
-	        //tps
-	        for (double tpss : MinecraftServer.getServer().recentTps ) {
-		    	  String tp = ( format(tpss));
-		    	  
-		    	NewBoard.getTeam("tps").setPrefix(ChatColor.GRAY +"TPS: "+  tp);
-		      }
+
 	        //vote
 	        int servervotes = settings.getVote().getInt("ServerVotes");
 	        NewBoard.getTeam("vote").setPrefix(c("&dVoteParty: "));
@@ -735,22 +701,41 @@ public class ScoreboardHandler implements Listener{
 			NewBoard.getTeam("PickLevel").setSuffix(c("&b"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickLevel")));
 	    	
 
+
+			/*
+			for (double tpss : MinecraftServer.getServer().recentTps ) {
+		      		    	  String tp = ( format(tpss));
+
+		      		    	NewBoard.getTeam("tps").setPrefix(ChatColor.GRAY +"TPS: "+  tp);
+		      		      }
+			 */
 	    	
 	    	new BukkitRunnable(){
 	    		boolean titlechanged = false;
 	    		@Override
 	    		public void run() {
+
+					String tps = "";
+
+					String store = c("&6store.mcgenesis.net");
+
+					for (double tpss : MinecraftServer.getServer().recentTps ) {
+						String tp = ( format(tpss));
+
+						tps = c("&7Server TPS: "+tp);
+					}
 	    			
 	    			int ping = getPing(p);
 					
 					if(titlechanged == false) {
+						//Add keys, stock market, event, and websites into tablist
 					
-						TitleAPI.sendTabTitle(p, c("&9&lGenesis&b&lMC\n&aConnected to: &9Prison\n\n&dPlayers Online: &c"+getPlayersOnline()+"\n&7Ping: &a"+ping+"\n\n&8&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"), 
-								c("&7&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n&6Boosts\n"+ BoostsHandler.sname+"&7/"+ BoostsHandler.xname+"\n"+ BoostsHandler.stimeLeft+"&7/"+ BoostsHandler.xtimeLeft+"\n"));
+						TitleAPI.sendTabTitle(p, c("&9&lGenesis&b&lMC\n&aConnected to: &9Prison\n\n&dPlayers Online: &c"+getPlayersOnline()+"\n&7Ping: &a"+ping+"\n"+tps+"\n\n&8&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"),
+								c("&7&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n&6Boosts\n"+ BoostsHandler.sname+"&7/"+ BoostsHandler.xname+"\n"+ BoostsHandler.stimeLeft+"&7/"+ BoostsHandler.xtimeLeft+"\n\n"+store));
 					titlechanged = true;
 					} else {
-						TitleAPI.sendTabTitle(p, c("&9&lGenesis&b&lMC\n&aConnected to: &9Prison\n\n&dPlayers Online: &c"+getPlayersOnline()+"\n&7Ping: &a"+ping+"\n\n&7&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"), 
-								c("&8&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n&6Boosts\n"+ BoostsHandler.sname+"&7/"+ BoostsHandler.xname+"\n"+ BoostsHandler.stimeLeft+"&7/"+ BoostsHandler.xtimeLeft+"\n"));
+						TitleAPI.sendTabTitle(p, c("&9&lGenesis&b&lMC\n&aConnected to: &9Prison\n\n&dPlayers Online: &c"+getPlayersOnline()+"\n&7Ping: &a"+ping+"\n"+tps+"\n\n&7&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"),
+								c("&8&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n&6Boosts\n"+ BoostsHandler.sname+"&7/"+ BoostsHandler.xname+"\n"+ BoostsHandler.stimeLeft+"&7/"+ BoostsHandler.xtimeLeft+"\n\n"+store));
 						titlechanged = false;
 					}
 					if(!p.isOnline()) {

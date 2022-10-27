@@ -147,7 +147,7 @@ public class MineHandler implements Listener, CommandExecutor{
 			return;
 		}
 
-		m.setSpawnLocation(new Location(p.getWorld(), pworld.getX(), 65, pworld.getZ()));
+		m.setSpawnLocation(pworld);
 		m.getResetManager().setMineResetTime(999999);
 		m.getResetManager().setPercentageReset(20);
 		m.getMineRegion().setBlocksMinedInRegion(0);
