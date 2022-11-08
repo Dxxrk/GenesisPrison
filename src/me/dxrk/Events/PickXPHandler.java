@@ -50,7 +50,11 @@ implements Listener {
 
     public void levelUp(Player p) {
         int level = getLevel(p);
+        int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
         settings.getPlayerData().set(p.getUniqueId().toString()+".PickLevel", level+1);
+        if(level >=25){
+            settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints+1);
+        }
         settings.savePlayerData();
     }
 
@@ -131,7 +135,7 @@ implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
-        double xpToAdd = Functions.xpBoost(p);
+        double xpToAdd = Functions.xpBoost(p) * Functions.XPEnchant(p) * BoostsHandler.xp;
 
         addXP(p, xpToAdd);
 

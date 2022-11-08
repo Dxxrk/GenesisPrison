@@ -67,5 +67,26 @@ public class PlayerDataHandler implements Listener {
       this.pl.set(uuid+".Trinkets", Trinkets);
       this.settings.savePlayerData();
     }
+    if(this.pl.get(uuid+".PickaxeSkill") == null){
+      this.pl.set(uuid+".PickaxeSkill", "None");
+      this.settings.savePlayerData();
+    }
+    if(this.pl.get(uuid+".PickaxeSkillLevel") == null){
+      this.pl.set(uuid+".PickaxeSkillLevel", 0);
+      this.settings.savePlayerData();
+    }
+    if(this.pl.get(uuid+".PickaxeSkillPoints") == null){
+      this.pl.set(uuid+".PickaxeSkillPoints", 0);
+      this.settings.savePlayerData();
+    }
+    if(this.pl.get(uuid+".PickaxeSkillPointsSpent") == null){
+      this.pl.set(uuid+".PickaxeSkillPointsSpent", 0);
+      this.settings.savePlayerData();
+    }
+    if(this.pl.get(uuid+".PickaxeSkillsUnlocked") == null){
+      List<String> skills = new ArrayList<>();
+      this.pl.set(uuid+".PickaxeSkillsUnlocked", skills);
+      this.settings.savePlayerData();
+    }
   }
 }

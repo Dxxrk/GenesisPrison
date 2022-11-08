@@ -153,3 +153,6 @@ commands:
   givetrinket:
   trinket:
   trinkets:
+  createcoupon:
+  addvotepoint:
+  #laser:

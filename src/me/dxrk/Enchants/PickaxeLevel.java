@@ -1,9 +1,10 @@
 package me.dxrk.Enchants;
 
+import me.dxrk.Events.PickXPHandler;
 import me.dxrk.Events.ResetHandler;
+import me.dxrk.Events.TrinketHandler;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Tokens.Tokens;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -103,7 +104,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] arg3) {
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
 		if(sender instanceof Player) {
 			Player p = (Player)sender;
@@ -140,6 +141,8 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 				}
 			}
 		}
+
+
 		return false;
 	}
 
@@ -158,7 +161,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 	
 	
 	
-	public void setEnchantItem(String enchantName, Material mat, String name, String desc, int priceStart, Inventory inv, int slot, Player p) {
+	public void setEnchantItem(String enchantName, Material mat, String name, String desc, int priceStart, Inventory inv, int slot, Player p, int unlocked) {
 		
 		int enchantLevel = 0;
 		
@@ -198,6 +201,10 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		lore.add(c("&7&oRight Click: Buy 10"));
 		lore.add(c("&7&oShift+Right Click: Buy 100"));
 		lore.add(c("&7&oShift+Left Click: Buy Max"));
+		if(unlocked > PickXPHandler.getInstance().getLevel(p)){
+			lore.clear();
+			lore.add(c("&cUnlocked at level: "+unlocked));
+		}
 
 		im.setLore(lore);
 		i.setItemMeta(im);
@@ -212,36 +219,56 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 	public void openenchantmenu(Player p) {
 		Inventory enchantmenu = Bukkit.createInventory(null, 54, c("&d&lPurchase Enchants!"));
 
+
+		setEnchantItem("Lucky", Material.RABBIT_FOOT, c("&bUpgrade Lucky"), c("&7Boosts the chance of other enchants to proc."), 4000, enchantmenu, 13, p, 70);
+		setEnchantItem("Booster", Material.POTION, c("&bUpgrade Booster"), c("&7Chance to find low timed boosts."), 5000, enchantmenu, 20, p, 50);
+		setEnchantItem("Key Party", Material.EYE_OF_ENDER, c("&bUpgrade Key Party"), c("&7Chance to give everyone online a key."), 3500, enchantmenu, 39, p, 35);
+		setEnchantItem("Multiply", Material.EMERALD, c("&bUpgrade Multiply"), c("&7Chance to double the effectiveness of all currencies for 10s."), 10000, enchantmenu, 23, p, 75);
+		setEnchantItem("Fortuity", Material.GOLD_INGOT, c("&bUpgrade Fortuity"), c("&7Boosts the effectiveness of Fortune."), 7500, enchantmenu, 41, p, 150);
+		setEnchantItem("Dust Finder", Material.SUGAR, c("&bUpgrade Dust Finder"), c("&7Chance to find Trinket dust."), 1000, enchantmenu, 14, p, 10);
+		setEnchantItem("Key Finder", Material.TRIPWIRE_HOOK, c("&bUpgrade Key Finder"), c("&7Chance to find a Key."), 1000, enchantmenu, 4, p, 1);
+		setEnchantItem("Wave", Material.GOLD_PLATE, c("&bUpgrade Wave"), c("&7Chance to break an entire layer of the mine."), 5000, enchantmenu, 32, p, 20);
+		setEnchantItem("Explosion", Material.FIREBALL, c("&bUpgrade Explosion"), c("&7Chance to explode a large hole in the mine(5x5x5)."), 2500, enchantmenu, 30, p, 1);
+		setEnchantItem("Greed", Material.DIAMOND, c("&bUpgrade Greed"), c("&7Increases selling price for blocks."), 5000, enchantmenu, 29, p, 25);
+		setEnchantItem("Research", Material.REDSTONE, c("&bUpgrade Research"), c("&7Chance to grant you one level instantly."), 3000, enchantmenu, 40, p, 25);
+		setEnchantItem("Token Finder", Material.PRISMARINE_CRYSTALS, c("&bUpgrade Token Finder"), c("&7Increase the amount of tokens randomly found."), 500, enchantmenu, 12, p, 1);
+		setEnchantItem("Nuke", Material.TNT, c("&bUpgrade Nuke"), c("&7Low Chance to break the entire mine."), 10000,  enchantmenu, 31, p, 100);
+		setEnchantItem("Junkpile", Material.BUCKET, c("&bUpgrade Junkpile"), c("&7Chance to find random items while mining."), 2500, enchantmenu, 33, p, 45);
+		setEnchantItem("Fortune", Material.NETHER_STAR, c("&bUpgrade Fortune"), c("&7Increases amount of blocks you sell."), 100, enchantmenu, 21, p, 1);
+		setEnchantItem("Prestige Finder", Material.BEACON, c("&bUpgrade Prestige Finder"), c("&7Chance to randomly gain some prestiges"), 2500, enchantmenu, 22, p, 10);
+		setEnchantItem("XP Finder", Material.EXP_BOTTLE, c("&bUpgrade XP Finder"), c("&7Increases the amount of XP found while mining."), 1000, enchantmenu, 24, p, 10);
+		setEnchantItem("Laser", Material.BLAZE_ROD, c("&bUpgrade Laser"), c("&7Chance to summon a laser to obliterate blocks in its path."), 8500, enchantmenu, 49, p, 125);
+		
+		
+		ItemStack trinkets = new ItemStack(Material.GOLD_NUGGET);
+		ItemMeta tm = trinkets.getItemMeta();
+		tm.setDisplayName(c("&e&lTrinkets"));
 		List<String> lore = new ArrayList<>();
+		lore.add(c("&7&oOpen Trinket Menu."));
+		tm.setLore(lore);
+		trinkets.setItemMeta(tm);
+		enchantmenu.setItem(52, trinkets);
+		lore.clear();
 
-		for(int i = 0; i < 54; i++){
-			enchantmenu.setItem(i, Spacer());
-		}
+		ItemStack skills = new ItemStack(Material.WOOD_PICKAXE);
+		ItemMeta sm = skills.getItemMeta();
+		sm.setDisplayName(c("&6Pickaxe Skills"));
+		lore.add(c("&cUnlocks at Pickaxe Level 25!"));
+		sm.setLore(lore);
+		skills.setItemMeta(sm);
+		enchantmenu.setItem(46, skills);
 
-		setEnchantItem("Lucky", Material.GOLD_NUGGET, c("&bUpgrade Lucky"), c("&7Boosts the chance of other enchants to proc."), 4000, enchantmenu, 13, p);
-		setEnchantItem("Booster", Material.POTION, c("&bUpgrade Booster"), c("&7Chance to find low timed boosts."), 5000, enchantmenu, 20, p);
-		setEnchantItem("Key Party", Material.EYE_OF_ENDER, c("&bUpgrade Key Party"), c("&7Chance to give everyone online a key."), 3500, enchantmenu, 39, p);
-		setEnchantItem("Multiply", Material.EMERALD, c("&bUpgrade Multiply"), c("&7Chance to double the effectiveness of all currencies"), 10000, enchantmenu, 23, p);
-		setEnchantItem("Fortuity", Material.GOLD_INGOT, c("&bUpgrade Fortuity"), c("&7Boosts the effectiveness of Fortune."), 7500, enchantmenu, 41, p);
-		setEnchantItem("Dust Finder", Material.SUGAR, c("&bUpgrade Dust Finder"), c("&7Finds a Rune after Blocks Till Dust Quota is met."), 1000, enchantmenu, 14, p);
-		setEnchantItem("Key Finder", Material.TRIPWIRE_HOOK, c("&bUpgrade Key Finder"), c("&7Chance to find a Rune after breaking a block."), 1000, enchantmenu, 4, p);
-		setEnchantItem("Wave", Material.GOLD_PLATE, c("&bUpgrade Wave"), c("&7Chance to break an entire layer of the mine."), 5000, enchantmenu, 32, p);
-		setEnchantItem("Explosion", Material.FIREBALL, c("&bUpgrade Explosion"), c("&7Chance to explode a large hole in the mine(5x5x5)."), 2500, enchantmenu, 30, p);
-		setEnchantItem("Greed", Material.DIAMOND, c("&bUpgrade Greed"), c("&7Increases selling price for blocks."), 5000, enchantmenu, 29, p);
-		setEnchantItem("Research", Material.REDSTONE, c("&bUpgrade Research"), c("&7Chance to grant you one level instantly."), 3000, enchantmenu, 40, p);
-		setEnchantItem("Token Finder", Material.PRISMARINE_CRYSTALS, c("&bUpgrade Token Finder"), c("&7Increase the amount of tokens randomly found."), 500, enchantmenu, 12, p);
-		setEnchantItem("Nuke", Material.TNT, c("&bUpgrade Nuke"), c("&7Low Chance to break the entire mine."), 10000,  enchantmenu, 31, p);
-		setEnchantItem("Junkpile", Material.BUCKET, c("&bUpgrade Junkpile"), c("&7Chance to find random items while mining."), 2500, enchantmenu, 33, p);
-		setEnchantItem("Fortune", Material.NETHER_STAR, c("&bUpgrade Fortune"), c("&7Increases amount of blocks you sell."), 100, enchantmenu, 21, p);
-		setEnchantItem("Prestige Finder", Material.BEACON, c("&bUpgrade Prestige Finder"), c("&7Chance to randomly gain some prestiges"), 2500, enchantmenu, 22, p);
-		setEnchantItem("XP", Material.EXP_BOTTLE, c("&bUpgrade XP <>"), c("&7..."), 1000, enchantmenu, 24, p);
-		setEnchantItem("Laser", Material.BLAZE_ROD, c("&bUpgrade Laser"), c("&7..."), 8500, enchantmenu, 49, p);
-		
-		
-
-		
-		
-		
+		ItemStack spacer = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)0);
+		ItemMeta spm = spacer.getItemMeta();
+		spm.setDisplayName(" ");
+		spacer.setItemMeta(spm);
+		enchantmenu.setItem(45, spacer);
+		enchantmenu.setItem(47, spacer);
+		enchantmenu.setItem(48, spacer);
+		enchantmenu.setItem(49, spacer);
+		enchantmenu.setItem(50, spacer);
+		enchantmenu.setItem(51, spacer);
+		enchantmenu.setItem(53, spacer);
 
 		
 	  p.openInventory(enchantmenu);
@@ -279,7 +306,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		list.add("Fortune");
 		list.add("Greed");
 		list.add("Prestige Finder");
-		list.add("XP");
+		list.add("XP Finder");
 		list.add("Laser");
 		list.add("Charity");
 
@@ -353,6 +380,11 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		}
 		for(String s : ilore){
 			if(ChatColor.stripColor(s).contains("Progress:")){
+				lore.add(s);
+			}
+		}
+		for(String s : ilore){
+			if(ChatColor.stripColor(s).contains("Skill:")){
 				lore.add(s);
 			}
 		}
@@ -477,7 +509,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 				i = 2500+(2500*(level*0.005)); // 156 Million Level 5,000 MAX
 
 				break;
-			case "XP":
+			case "XP Finder":
 				if(level == 0) {
 					i = 1000;
 					break;
@@ -580,7 +612,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 
 				break;
 
-			case "XP":
+			case "XP Finder":
 				i = 10000;
 
 				break;
@@ -614,6 +646,9 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		if(isMax == false) {
 
 			for(String s : lore){
+				if(ChatColor.stripColor(s).contains("Trinket")){
+					continue;
+				}
 				if(ChatColor.stripColor(s).contains(Enchant)){
 					hasEnchant = true;
 				}
@@ -737,37 +772,60 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 	public void oninv(InventoryClickEvent e) {
 		Player p = (Player) e.getWhoClicked();
 		
-		if (e.getClickedInventory() == null)
-		      return; 
-		    if (e.getClickedInventory().getName() == null)
-		      return; 
-		
+		if (e.getClickedInventory() == null) return;
+		if (e.getClickedInventory().getName() == null) return;
 
 		
-		
-		
-		if(e.getClickedInventory().getName().equals(c("&d&lPurchase Enchants!"))) {
+		if(e.getInventory().getName().equals(c("&d&lPurchase Enchants!"))) {
 			e.setCancelled(true);
+			if(e.getClickedInventory().equals(p.getInventory())) return;
+			if(e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return;
+			if(e.getCurrentItem().equals(Spacer())) return;
+
+			if(e.getSlot() == 46){
+				if(PickXPHandler.getInstance().getLevel(p) <25){
+					return;
+				}
+				if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("None")) {
+					PickaxeSkillTree.openSkills(p);
+				} else {
+					if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Zeus")){
+						PickaxeSkillTree.openZeus(p);
+					} else if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Poseidon")){
+						PickaxeSkillTree.openPoseidon(p);
+					} else if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Hades")){
+						PickaxeSkillTree.openHades(p);
+					} else if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Athena")){
+						PickaxeSkillTree.openAthena(p);
+					} else if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Aphrodite")){
+						PickaxeSkillTree.openAphrodite(p);
+					}
+				}
+				return;
+			}
+			if(e.getSlot() == 52){
+				TrinketHandler.getInstance().openTrinkets(p);
+				return;
+			}
 
 
-					if(e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return;
-					if(e.getCurrentItem().equals(Spacer())) return;
-					String[] display = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).split("Upgrade ");
-						String name = display[1];
+			String[] display = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).split("Upgrade ");
+			String name = display[1];
+
+			if(isInt(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(0).split(" ")[3]))) {
+				return;
+			}
 
 
-						if(e.getClick().equals(ClickType.LEFT)) {
-							upgradeEnchant(p, p.getItemInHand(), name, 1, false);
-						} else if(e.getClick().equals(ClickType.RIGHT)){
-							upgradeEnchant(p, p.getItemInHand(), name, 10, false);
-						} else if(e.getClick().equals(ClickType.SHIFT_RIGHT)){
-							upgradeEnchant(p, p.getItemInHand(), name, 100, false);
-						} else if(e.getClick().equals(ClickType.SHIFT_LEFT)){
-							upgradeEnchant(p, p.getItemInHand(), name, 1, true);
-						}
-
-
-				
+			if(e.getClick().equals(ClickType.LEFT)) {
+				upgradeEnchant(p, p.getItemInHand(), name, 1, false);
+			} else if(e.getClick().equals(ClickType.RIGHT)){
+				upgradeEnchant(p, p.getItemInHand(), name, 10, false);
+			} else if(e.getClick().equals(ClickType.SHIFT_RIGHT)){
+				upgradeEnchant(p, p.getItemInHand(), name, 100, false);
+			} else if(e.getClick().equals(ClickType.SHIFT_LEFT)){
+				upgradeEnchant(p, p.getItemInHand(), name, 1, true);
+			}
 
 			p.updateInventory();
 			openenchantmenu(p);

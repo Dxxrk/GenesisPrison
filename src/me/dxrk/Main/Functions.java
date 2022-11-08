@@ -1,12 +1,14 @@
 package me.dxrk.Main;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
-import me.dxrk.Main.Methods;
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Functions implements Listener{
 	
@@ -15,8 +17,27 @@ public class Functions implements Listener{
 		return 300;
 	}
 	static Methods m = Methods.getInstance();
+
+	public static List<Player> multiply = new ArrayList<>();
 	
-	
+
+	public static double XPEnchant(Player p){
+		double xp = 1;
+
+		for (String s : p.getItemInHand().getItemMeta().getLore()) {
+			if(ChatColor.stripColor(s).toLowerCase().contains("xp finder")) {
+
+				String[] n = ChatColor.stripColor(s).split(" ");
+				double x = Double.parseDouble(n[2])/100;
+
+				xp += x;
+			}
+		}
+
+		return xp;
+	}
+
+
 	public static double sellBoost(Player p) {
 		double sell = 1;
 		
@@ -38,7 +59,7 @@ public class Functions implements Listener{
 		double xp = 1;
 
 		for (String s : p.getItemInHand().getItemMeta().getLore()) {
-			if(ChatColor.stripColor(s).toLowerCase().contains("xp")) {
+			if(ChatColor.stripColor(s).toLowerCase().contains("xp trinket")) {
 
 				String[] n = ChatColor.stripColor(s).split("%");
 				String[] num = n[0].split(" ");
@@ -89,129 +110,72 @@ public class Functions implements Listener{
 	
 	public static double Foruity(Player p) {
 
-		
+		int level;
 
-	    for (String s : p.getItemInHand().getItemMeta().getLore()) {
-	      	if(ChatColor.stripColor(s).toLowerCase().contains("fortuity 10")) {
-	      		return 1.55;
-	      	} else if(ChatColor.stripColor(s).toLowerCase().contains("fortuity 9")) {
-	      		return 1.5;
-	      	} else if(ChatColor.stripColor(s).toLowerCase().contains("fortuity 8")) {
-	      		return 1.45;
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("fortuity 7")) {
-	      		return 1.4;
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("fortuity 6")) {
-	      		return 1.35;
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("fortuity 5")) {
-	      		return 1.3;
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("fortuity 4")) {
-	      		return 1.25;
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("fortuity 3")) {
-	      		return 1.2;
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("fortuity 2")) {
-	      		return 1.15;
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("fortuity 1")) {
-	      		return 1.1;
-	      	}
-	      	}
+		for (String s : p.getItemInHand().getItemMeta().getLore()) {
+
+			if (ChatColor.stripColor(s).contains("Fortuity")) {
+				level = m.getBlocks(s);
+				return 1+(level*0.0015);
+			}
+		}
 	    return 1;
 	}
 	
 	
 	public static double Lucky(Player p) {
+		int level;
 
-    	
-    	for (String s : p.getItemInHand().getItemMeta().getLore()) {
-	      	if(ChatColor.stripColor(s).toLowerCase().contains("lucky 10")) {
-	      		return 1.6;
-	      	} else if(ChatColor.stripColor(s).toLowerCase().contains("lucky 9")) {
-	      		return 1.55;
-	      	} else if(ChatColor.stripColor(s).toLowerCase().contains("lucky 8")) {
-	      		return 1.5;
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("lucky 7")) {
-	      		return 1.45;
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("lucky 6")) {
-	      		return 1.4;
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("lucky 5")) {
-	      		return 1.35;
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("lucky 4")) {
-	      		return 1.3;
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("lucky 3")) {
-	      		return 1.25;
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("lucky 2")) {
-	      		return 1.2;
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("lucky 1")) {
-	      		return 1.15;
-	      	}
-	      	}
-    	return 1;
+		for (String s : p.getItemInHand().getItemMeta().getLore()) {
+			if(ChatColor.stripColor(s).contains("Trinket")) continue;
+			if (ChatColor.stripColor(s).contains("Lucky")) {
+				level = m.getBlocks(s);
+				return 1+(level*0.00035);
+			}
+		}
+		return 1;
 	}
 	
 	private static Random r = new Random();
 	
-	public static double Multiply(Player p) {
-		
-		if(!p.hasPermission("enchant.multiply") || !p.hasPermission("enchant.multiplyunlock")) {
-			return 1;
-		}
-		
+	public static void Multiply(Player p) {
+
+
+		double lucky = Functions.Lucky(p);
+		double luck = Functions.luckBoost(p);
+
+		int level = 0;
+		int chance;
 		for (String s : p.getItemInHand().getItemMeta().getLore()) {
-	      	if(ChatColor.stripColor(s).toLowerCase().contains("multiply 10")) {
-				int i = r.nextInt(2);
-				if(i == 1) {
-					return 2;
+
+			if (ChatColor.stripColor(s).contains("Multiply")) {
+				level = m.getBlocks(s);
+			}
+		}
+
+		if(level == 0) return;
+		if(level == 1) {
+			chance = (int) (3000 / lucky / luck);
+		} else {
+			chance = (int) ((3000 - (1.5*level))/lucky / luck);
+		}
+		int i = r.nextInt(chance);
+
+		if(i == 1) {
+			p.sendMessage(m.c("&f&lMultiply &8| &bActivated!"));
+			multiply.add(p);
+
+			new BukkitRunnable(){
+				@Override
+				public void run(){
+					p.sendMessage(m.c("&f&lMultiply &8| &bDeactivated!"));
 				}
-	      	} else if(ChatColor.stripColor(s).toLowerCase().contains("multiply 9")) {
-	      		int i = r.nextInt(3);
-	      		if(i == 1) {
-	      			return 2;
-	      		}
-	      	} else if(ChatColor.stripColor(s).toLowerCase().contains("multiply 8")) {
-	      		int i = r.nextInt(4);
-	      		if(i == 1) {
-	      			return 2;
-	      		}
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("multiply 7")) {
-	      		int i = r.nextInt(5);
-	      		if(i == 1) {
-	      			return 2;
-	      		}
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("multiply 6")) {
-	      		int i = r.nextInt(6);
-	      		if(i == 1) {
-	      			return 2;
-	      		}
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("multiply 5")) {
-	      		int i = r.nextInt(7);
-	      		if(i == 1) {
-	      			return 2;
-	      		}
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("multiply 4")) {
-	      		int i = r.nextInt(8);
-	      		if(i == 1) {
-	      			return 2;
-	      		}
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("multiply 3")) {
-	      		int i = r.nextInt(9);
-	      		if(i == 1) {
-	      			return 2;
-	      		}
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("multiply 2")) {
-	      		int i = r.nextInt(10);
-	      		if(i == 1) {
-	      			return 2;
-	      		}
-	      	}else if(ChatColor.stripColor(s).toLowerCase().contains("multiply 1")) {
-	      		int i = r.nextInt(11);
-	      		if(i == 1) {
-	      			return 2;
-	      		}
-	      	}
-	      	}
-		return 1;
+			}.runTaskLater(Main.plugin, 20*10L);
+
+		}
 	}
 	
-	public static String prestige(Player p) {
+	public static String prestige(Player p) { // remove in chat
 		String prestige = "";
 		
 		for(int i = 1; i <101; i++) {

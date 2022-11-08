@@ -1,4 +1,4 @@
-package me.dxrk.Commands;
+package me.dxrk.Vote;
 
 import java.util.ArrayList;
 import java.util.Arrays;

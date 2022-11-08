@@ -138,47 +138,21 @@ public class KeysHandler implements Listener {
 	  return this.r.nextInt(level) == 1;
   }
   
-  public void discovery(Player p, int x, String s) {
-	  int level = 0;
-	  ItemStack i = p.getItemInHand();
-	  List<String> lore = i.getItemMeta().getLore();
-
-	  for (String ss : lore) {
-		  if (ChatColor.stripColor(ss).contains("Discovery")) {
-			  level = Integer.parseInt(ChatColor.stripColor(ss).split(" ")[1]);
-		  }
-	  }
+  public void dustFinder(Player p, String s) {
+	  int level = m.getBlocks(s);
+	  int chance;
 	  if(level == 0) return;
-	  int blockstill;
 	  if(level == 1) {
-		  blockstill = 3000;
+		  chance = 1350;
 	  } else {
-		  blockstill = 3000 - (10*level);
+		  chance = 1350 - (7*level);
 	  }
-	      
-	  
-	  
-    String amountstring = ChatColor.stripColor(s).replace("Blocks Till Dust: ", "").replace(" ", "");
-    try {
-      int amount = Integer.parseInt(amountstring);
-      if (amount < 0) {
-        String s1 = lore.get(x - 1);
-        if (s1.contains("Discovery ")) {
-          ItemMeta itemMeta = p.getItemInHand().getItemMeta();
-          lore.set(x, ChatColor.GRAY + "Blocks Till Dust: " + ChatColor.AQUA + blockstill);
-          itemMeta.setLore(lore);
-          p.getItemInHand().setItemMeta(itemMeta);
-          p.updateInventory();
-          keyToGive(6, p);
-        } 
-      } else {
-        lore.set(x, ChatColor.GRAY + "Blocks Till Dust: " + ChatColor.AQUA + (amount - 1));
-      } 
-      ItemMeta meta = p.getItemInHand().getItemMeta();
-      meta.setLore(lore);
-      p.getItemInHand().setItemMeta(meta);
-      p.updateInventory();
-    } catch (Exception ignored) {}
+
+	  if (ChatColor.stripColor(s).contains("Encounter ")) {
+		  if (findKey(chance))
+			  keyToGiveR(level, p);
+	  }
+
   }
   
 
@@ -264,100 +238,46 @@ public class KeysHandler implements Listener {
   }
   
   public void keyRoulette(Player p, String s) {
-	  
-	  
-	  
+
 	  int level = m.getBlocks(s);
-	  int blockstill;
+	  int chance;
 	  if(level == 0) return;
 	  if(level == 1) {
-		  blockstill = 1350;
+		  chance = 1350;
 	  } else {
-		  blockstill = 1350 - (7*level);
+		  chance = 1350 - (7*level);
 	  }
 	  
     if (ChatColor.stripColor(s).contains("Encounter ")) {
-      if (findKey(blockstill))
+      if (findKey(chance))
         keyToGiveR(level, p);
     }
   }
-  
-  public boolean DoesNotHaveLoreKF(String s2) {
-	  return !ChatColor.stripColor(s2).contains("Discovery ") && !ChatColor.stripColor(s2).contains("Encounter ");
-
-  }
-  
-  
-
-public void tokenstoGive(int tokens, Player p) {
-	double multiply = Functions.Multiply(p);
-	int rand = this.r.nextInt(tokens);
-	
-	int divisor = 10;
-	int rand10 = (int) (Math.ceil((double)rand*multiply / divisor));
-	
-	
-	if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".TokenFinder-Messages") == true) {
-		p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lTokenFinder &8| &b+" + ((rand *multiply)) + " Tokens"));
-	}
-	Tokens.getInstance().addTokens(p, (int) ((rand *multiply)));
-	for(Player pp : Bukkit.getOnlinePlayers()) {
-			if(this.settings.getOptions().getBoolean(pp.getUniqueId().toString()+".TokenFinder-Messages") == true) {
-				pp.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lTokenFinder &8| &bFrom &d" + p.getName() + " &b+" + rand10 + " Tokens"));
-			}
-		Tokens.getInstance().addTokens(pp, rand10);
-
-	}
-	    
-}
-
-public void tokenFinder(Player p) {
-	
-	double lucky = Functions.Lucky(p);
-	double luck = Functions.luckBoost(p);
-	
-	int level = 0;
-	int chance;
-	for (String s : p.getItemInHand().getItemMeta().getLore()) {
-		
-		      if (ChatColor.stripColor(s).contains("TokenFinder")) {
-		    	  level = m.getBlocks(s);
-		      }
-	}
-	
-	
-	
-	
-		  if(level == 0) return;
-		  
-		  if(level == 1) {
-			  chance = (int) (2650 / lucky / luck);
-		  } else {
-			  chance = (int) ((2650 - (11*level))/lucky / luck);
-		  }
-    	  int i = r.nextInt(chance);
-    	   
-    	  int tokens = 120+ 5*level;
-    	  if(i == 1) {
-    		  tokenstoGive(tokens, p);
-    	  
-    	  }
-	
-}
-
-
-
 
 
 
 	public void findTokens(Player p) {
+		List<String> lore = p.getItemInHand().getItemMeta().getLore();
+		double tf = 1;
+		int x;
+		for (x = 0; x < lore.size(); x++) {
+			String s = lore.get(x);
+			if (ChatColor.stripColor(s).contains("Token Finder")) {
+				tf = m.getBlocks(ChatColor.stripColor(s))*0.0048;
+			}
+		}
+		double multiply = 1;
+		if(Functions.multiply.contains(p)) multiply = 2;
+
 		Random r = new Random();
-		int rint = r.nextInt(777);
-		int tokens = r.nextInt(77);
+		int rint = r.nextInt(150);
+		int fmin = 7500;
+		int fmax = 40000;
+		int tokens = r.nextInt(fmax - fmin)+ fmin;
 		if(rint == 1) {
-			Tokens.getInstance().addTokens(p, tokens+1);
+			Tokens.getInstance().addTokens(p, (tokens+1)*tf*multiply);
 			if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Tokens-Messages") == true) {
-				p.sendMessage(m.c("&f&lTokens &8| &b+"+(tokens+1)));
+				p.sendMessage(m.c("&f&lTokens &8| &b+"+((tokens+1)*tf*multiply)));
 			}
 		}
 	}
@@ -394,43 +314,15 @@ public void tokenFinder(Player p) {
     int x;
     for (x = 0; x < lore.size(); x++) {
       String s = lore.get(x);
-      if (ChatColor.stripColor(s).contains("Encounter")) {
+      if (ChatColor.stripColor(s).contains("Key Finder")) {
         keyRoulette(p, s);
       }
       
     }
     for (x = 0; x < lore.size(); x++) {
-        String s = lore.get(x);
-        if (ChatColor.stripColor(s).contains("TokenFinder")) {
-          tokenFinder(p);
-        }
-        
-      }
-    for (x = 0; x < lore.size(); x++) {
       String s = lore.get(x);
-      if (s.contains("Blocks Till Dust:"))
-        discovery(p, x, s);
-      if (ChatColor.stripColor(s).contains("Discovery")) {
-        boolean loree = false;
-        try {
-          String sss = lore.get(x + 1);
-          loree = true;
-        } catch (Exception ignored) {}
-        if (!loree || !lore.get(x + 1).contains("Blocks Till Dust:")) {
-          ItemMeta meta = p.getItemInHand().getItemMeta();
-          List<String> newLore = new ArrayList<>();
-          int y;
-          for (y = 0; y < x + 1; y++)
-            newLore.add(lore.get(y)); 
-          newLore.add(ChatColor.GRAY + "Blocks Till Dust: " + ChatColor.AQUA + 100);
-          try {
-            for (y = x + 1; y < lore.size(); y++)
-              newLore.add(lore.get(y)); 
-          } catch (Exception ignored) {}
-          meta.setLore(newLore);
-          p.getItemInHand().setItemMeta(meta);
-          p.updateInventory();
-        } 
+      if (ChatColor.stripColor(s).contains("Dust Finder")) {
+			dustFinder(p, s);
       }
       
     }

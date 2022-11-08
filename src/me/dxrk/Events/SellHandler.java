@@ -159,8 +159,12 @@ public class SellHandler implements Listener, CommandExecutor {
 	    double miningboost = BoostsHandler.sell;
 	    double multi = SellHandler.getInstance().getMulti(p);
 		double prestige = getPrestiges(p)*0.02;
+		double multiply = 1;
 		if(prestige < 1){
 			prestige = 1;
+		}
+		if(Functions.multiply.contains(p)){
+			multiply = 2;
 		}
 	    for (ItemStack i : items) {
 	  	      if (i != null) {
@@ -170,7 +174,7 @@ public class SellHandler implements Listener, CommandExecutor {
 	  	    	double price = Methods.getBlockSellPrice("A", i.getTypeId());
 
 
-	  	    	total += price * (multi+greed) * sell * miningboost*prestige;
+	  	    	total += price * (multi+greed) * sell * miningboost*prestige*multiply;
 
 	  	        amountotal += i.getAmount();
 
@@ -180,10 +184,7 @@ public class SellHandler implements Listener, CommandExecutor {
 	    if(SettingsManager.getInstance().getOptions().getBoolean(p.getUniqueId().toString()+"."+enchantName+"-Messages") == true) {
 	    	p.sendMessage(c("&f&l"+enchantName+" &8| &b+$"+format(total*amountotal)));
 	    }
-	    if(EnchantMethods.stakemap.containsKey(p)) {
-  	    	double b = EnchantMethods.stakemap.get(p);
-  	    	EnchantMethods.stakemap.put(p, b+(total*amountotal));
-  	    }
+
 	    Main.econ.depositPlayer(p, total*amountotal);
 	  }
 
@@ -197,8 +198,12 @@ public class SellHandler implements Listener, CommandExecutor {
 	  double miningboost = BoostsHandler.sell;
 	  double multi = SellHandler.getInstance().getMulti(p);
 	  double prestige = getPrestiges(p)*0.02;
+	  double multiply = 1;
 	  if(prestige < 1){
 		  prestige = 1;
+	  }
+	  if(Functions.multiply.contains(p)){
+		  multiply = 2;
 	  }
 	  for (ItemStack i : items) {
 		  if (i != null) {
@@ -208,7 +213,7 @@ public class SellHandler implements Listener, CommandExecutor {
 			  double price = Methods.getBlockSellPrice("A", i.getTypeId());
 
 
-			  total += price * (multi+greed) * sell * miningboost*prestige;
+			  total += price * (multi+greed) * sell * miningboost*prestige*multiply;
 
 			  amountotal += i.getAmount();
 
@@ -217,10 +222,7 @@ public class SellHandler implements Listener, CommandExecutor {
 
 	  p.updateInventory();
 
-	  if(EnchantMethods.stakemap.containsKey(p)) {
-		  double b = EnchantMethods.stakemap.get(p);
-		  EnchantMethods.stakemap.put(p, b+(total*amountotal));
-	  }
+
 	  Main.econ.depositPlayer(p, total*amountotal);
 	  double percents;
 	  p.getScoreboard().getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
@@ -301,8 +303,10 @@ public class SellHandler implements Listener, CommandExecutor {
       .getApplicableRegions(event.getBlock().getLocation());
     if (!set.allows(DefaultFlag.LIGHTER)) {
       if (p.isOp() && p.getItemInHand() != null && 
-        p.getItemInHand().getType() == Material.DIAMOND_PICKAXE)
-        event.setCancelled(true); 
+        p.getItemInHand().getType() == Material.DIAMOND_PICKAXE || p.getItemInHand().getType() == Material.WOOD_PICKAXE
+	  || p.getItemInHand().getType() == Material.STONE_PICKAXE || p.getItemInHand().getType() == Material.GOLD_PICKAXE
+	  || p.getItemInHand().getType() == Material.IRON_PICKAXE)
+        event.setCancelled(true);
       return;
     }
 

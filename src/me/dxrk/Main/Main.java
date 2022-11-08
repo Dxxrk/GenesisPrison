@@ -8,6 +8,10 @@ import me.dxrk.Discord.jdaHandler;
 import me.dxrk.Events.*;
 import me.dxrk.Tokens.*;
 import me.dxrk.Enchants.*;
+import me.dxrk.Vote.BuycraftUtil;
+import me.dxrk.Vote.CMDVote;
+import me.dxrk.Vote.CMDVoteShop;
+import me.dxrk.Vote.SignGUI;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -38,41 +42,31 @@ import java.util.Iterator;
 import java.util.Locale;
 
 public class Main extends JavaPlugin implements Listener, CommandExecutor {
-	
-	
-	private static  Main INSTANCE;
-	
-	
- 
-  
- 
-  
+  private static  Main INSTANCE;
+  private static SignGUI signGUI;
   public static Permission perms = null;
-  
   public static Economy econ = null;
-  
   public static Chat chat = null;
-  
   public ArrayList<String> Sb = new ArrayList<>();
-  
   public static Plugin plugin;
-  
-  
   public static Scoreboard sb;
-  
   SettingsManager settings = SettingsManager.getInstance();
-  
-  
   public static Essentials ess;
-  
+
   public static String c(String s) {
-	    return ChatColor.translateAlternateColorCodes('&', s);
-	  }
+      return ChatColor.translateAlternateColorCodes('&', s);
+  }
+
+  public static SignGUI getSignGUI() {
+      return signGUI;
+  }
   
   public void onEnable() {
 	  
     plugin = this;
     INSTANCE = this;
+
+    signGUI = new SignGUI(this);
     
     this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     
@@ -114,6 +108,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("Vote").setExecutor(new CMDVote());
     getCommand("voteparty").setExecutor(new CMDVote());
     getCommand("voteshop").setExecutor(new CMDVoteShop());
+    getCommand("addvotepoint").setExecutor(new CMDVoteShop());
     getCommand("Tags").setExecutor(new CMDTags());
     getCommand("rewards").setExecutor(new CMDVote());
     getCommand("Say").setExecutor(new CMDSay());
@@ -131,6 +126,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("pick").setExecutor(new PickaxeLevel());
     getCommand("pickaxe").setExecutor(new PickaxeLevel());
     getCommand("resetallmines").setExecutor(new PickaxeLevel());
+    //getCommand("laser").setExecutor(new PickaxeLevel());
     getCommand("motdchange").setExecutor(this);
     getCommand("prestige").setExecutor(new PrestigeHandler());
     getCommand("giveenchant").setExecutor(new DonorItems());
@@ -170,7 +166,8 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("autorankup").setExecutor(new RankupHandler());
     getCommand("aru").setExecutor(new RankupHandler());
     getCommand("giveplotitem").setExecutor(new MineHandler());
-    getCommand("buymsg").setExecutor( new CMDBuycraft());
+    getCommand("buymsg").setExecutor( new BuycraftUtil());
+    getCommand("createcoupon").setExecutor( new BuycraftUtil());
     getCommand("options").setExecutor(new CMDOptions());
     getCommand("daily").setExecutor(new CMDDaily());
     getCommand("discord").setExecutor( new JDAEvents());
@@ -439,6 +436,7 @@ new BukkitRunnable() {
   
   
   public void onDisable() {
+      signGUI.destroy();
 	  
 	  settings.saveVote();
 	  

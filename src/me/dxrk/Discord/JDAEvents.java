@@ -20,10 +20,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class JDAEvents extends ListenerAdapter implements Listener, CommandExecutor {
 
@@ -103,7 +100,7 @@ public class JDAEvents extends ListenerAdapter implements Listener, CommandExecu
 				Player p = Bukkit.getPlayer(msg.getContentRaw());
 				MessageChannel channel = event.getChannel();
 
-				if(uuidIdMap.values().contains(user.getId())) {
+				if(uuidIdMap.containsValue(user.getId())) {
 					channel.sendMessage("You already have a code generated.").queue();
 					return;
 				}
@@ -137,12 +134,12 @@ public class JDAEvents extends ListenerAdapter implements Listener, CommandExecu
 	public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
 		if(event.getMessageId().equals("1003041933561692201")){
 			User user = event.getUser();
-			if(uuidIdMap.values().contains(user.getId())){
+			if(uuidIdMap.containsValue(user.getId())){
 				user.openPrivateChannel().flatMap(channel -> channel.sendMessage("You already have a code Generated.")).queue();
 				return;
 			}
 
-				if(event.getMember().getRoles().stream().filter(role -> role.getName().equals("Linked")).findAny().orElse(null) != null){
+				if(Objects.requireNonNull(event.getMember()).getRoles().stream().filter(role -> role.getName().equals("Linked")).findAny().orElse(null) != null){
 					user.openPrivateChannel().flatMap(channel -> channel.sendMessage("Your Account is already linked with "+settings.getDiscord().get(user.getId()))).queue();
 					return;
 				}

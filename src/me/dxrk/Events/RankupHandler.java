@@ -1,5 +1,6 @@
 package me.dxrk.Events;
 
+import me.dxrk.Enchants.EnchantMethods;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
@@ -61,6 +62,7 @@ public class RankupHandler implements Listener, CommandExecutor{
   
   @EventHandler
   public void onLeave(PlayerQuitEvent e) {
+	  EnchantMethods.laser.remove(e.getPlayer());
 	  this.settings.saveRankupPrices();
 	  this.settings.saveOptions();
   }

@@ -122,31 +122,23 @@ public class Enchants implements Listener{
 		    if(EnchantMethods.set(b).allows(DefaultFlag.LIGHTER)) {
 		    	EnchantMethods.getInstance().Wave(p, b);
 		    	EnchantMethods.getInstance().Explosion(p, b);
-		    	b.getDrops().clear();
+				EnchantMethods.getInstance().Laser(p, b);
+				EnchantMethods.getInstance().Vaporize(p, b);
 		    	EnchantMethods.getInstance().Research(p);
-		    	if(p.hasPermission("enchant.vaporize") && p.hasPermission("enchant.vaporizeunlock")) {
-		    	EnchantMethods.getInstance().Vaporize(p, b);
-		    	}
-		    	if(p.hasPermission("enchant.junkpile") && p.hasPermission("enchant.junkpileunlock")) {
 		    	EnchantMethods.getInstance().Junkpile(p);
-		    	}
-		    	if(p.hasPermission("enchant.stake") && p.hasPermission("enchant.stakeunlock")) {
-		    	EnchantMethods.getInstance().Stake(p);
-		    	}
-		    	if(p.hasPermission("enchant.booster") && p.hasPermission("enchant.boosterunlock")) {
-		    	XPEnchantHandler.getInstance().BoosterBreak(p);
-		    	}
-		    	if(p.hasPermission("enchant.runeparty") && p.hasPermission("enchant.runepartyunlock")) {
-		    	XPEnchantHandler.getInstance().RunePartyBreak(p);
-		    	}
+		    	EnchantMethods.getInstance().BoosterBreak(p);
+		    	EnchantMethods.getInstance().KeyPartyBreak(p);
+				EnchantMethods.getInstance().prestigeBreak(p);
+
 		    	Mine m = null;
 		    	for(Mine mine: ResetHandler.api.getMinesByBlock(b)) {
 		    		m = mine;
 		    	}
 		    	if(m != null)
 		    		m.removeBlockFromRegion(b);
-		    	
-		    	if(m.getMineRegion().getBlocksLeftPercentage() < 75F) {
+
+				assert m != null;
+				if(m.getMineRegion().getBlocksLeftPercentage() < 50F) {
 					ResetHandler.resetMine(m, ResetReason.PERCENTAGE);
 				}
 		    	

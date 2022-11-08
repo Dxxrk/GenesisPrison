@@ -23,7 +23,7 @@ import com.earth2me.essentials.Essentials;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
-import me.dxrk.Commands.CMDVote;
+import me.dxrk.Vote.CMDVote;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.SettingsManager;
 
