@@ -77,7 +77,7 @@ public class Functions implements Listener{
 		double luck = 1;
 		
 		for (String s : p.getItemInHand().getItemMeta().getLore()) {
-			if(ChatColor.stripColor(s).toLowerCase().contains("lucky")) {
+			if(ChatColor.stripColor(s).toLowerCase().contains("lucky") && ChatColor.stripColor(s).toLowerCase().contains("%")) {
 				
 				String[] n = ChatColor.stripColor(s).split("%");
 				String[] num = n[0].split(" ");

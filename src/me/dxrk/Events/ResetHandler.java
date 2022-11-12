@@ -34,6 +34,7 @@ public class ResetHandler {
 				}
 			}
 		}
+
 		
 		
 		for(Location bloc : mine.getMineRegion().getLocationOfBlocksInMine()) {

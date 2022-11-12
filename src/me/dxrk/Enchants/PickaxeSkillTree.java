@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -23,9 +24,9 @@ public class PickaxeSkillTree implements Listener {
 
 
     private static ItemStack Spacer(){
-        ItemStack white = new ItemStack(Material.STAINED_GLASS_PANE, (short)0);
+        ItemStack white = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)0);
         ItemMeta wm = white.getItemMeta();
-        wm.setDisplayName(m.c("&7Skills"));
+        wm.setDisplayName(m.c(" "));
         white.setItemMeta(wm);
         return white;
     }
@@ -62,7 +63,8 @@ public class PickaxeSkillTree implements Listener {
 
         ItemStack zeus = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)4);
         ItemMeta zm = zeus.getItemMeta();
-        lore.add(m.c("&7&oSelect this to confirm your skill path as &e&lZeus."));
+        zm.setDisplayName(m.c("&e&lZeus Path"));
+        lore.add(m.c("&7&oSelect this to confirm your skill path as &e&lskills."));
         zm.setLore(lore);
         zeus.setItemMeta(zm);
         skills.setItem(0, zeus);
@@ -70,6 +72,7 @@ public class PickaxeSkillTree implements Listener {
 
         ItemStack poseidon = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)11);
         ItemMeta pm = poseidon.getItemMeta();
+        pm.setDisplayName(m.c("&9&lPoseidon Path"));
         lore.add(m.c("&7&oSelect this to confirm your skill path as &9&lPoseidon."));
         pm.setLore(lore);
         poseidon.setItemMeta(pm);
@@ -78,6 +81,7 @@ public class PickaxeSkillTree implements Listener {
 
         ItemStack hades = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)14);
         ItemMeta hm = hades.getItemMeta();
+        hm.setDisplayName(m.c("&4&lHades Path"));
         lore.add(m.c("&7&oSelect this to confirm your skill path as &4&lhades."));
         hm.setLore(lore);
         hades.setItemMeta(hm);
@@ -86,6 +90,7 @@ public class PickaxeSkillTree implements Listener {
 
         ItemStack aphrodite = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)6);
         ItemMeta am = aphrodite.getItemMeta();
+        am.setDisplayName(m.c("&d&lAphrodite Path"));
         lore.add(m.c("&7&oSelect this to confirm your skill path as &d&lAphrodite."));
         am.setLore(lore);
         aphrodite.setItemMeta(am);
@@ -94,6 +99,7 @@ public class PickaxeSkillTree implements Listener {
 
         ItemStack athena = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)13);
         ItemMeta atm = athena.getItemMeta();
+        atm.setDisplayName(m.c("&2&lAthena Path"));
         lore.add(m.c("&7&oSelect this to confirm your skill path as &2&lAthena."));
         atm.setLore(lore);
         athena.setItemMeta(atm);
@@ -103,10 +109,159 @@ public class PickaxeSkillTree implements Listener {
     }
 
     private List<String> zeusSkills(){
-        List<String> zeus = new ArrayList<>();
-        zeus.add("Token Bonus (Level 1");
+        List<String> skills = new ArrayList<>();
+        skills.add("Unlocked Zeus");
+        skills.add("Token Bonus (Level 1)");
+        skills.add("Luck Boost (Level 1)");
+        skills.add("Fortune Boost (Level 1)");
+        skills.add("Zeus (Level 2)");
+        skills.add("Token Bonus (Level 2)");
+        skills.add("Luck Boost (Level 2)");
+        skills.add("Token Bonus (Level 3)");
+        skills.add("Coupon Finder (Level 1)");
+        skills.add("Fortune Boost (Level 2)");
+        skills.add("Luck Boost (Level 3)");
+        skills.add("Token Bonus (Level 4)");
+        skills.add("Zeus (Level 3)");
+        skills.add("Token Bonus (Level 5)");
+        skills.add("Luck Boost (Level 4)");
+        skills.add("Fortune Boost (Level 3)");
+        skills.add("Coupon Finder (Level 2)");
+        skills.add("Fortune Boost (Level 4)");
+        skills.add("Luck Boost (Level 5)");
+        skills.add("Token Bonus (Level 6)");
+        skills.add("Fortune Boost (Level 5)");
+        skills.add("Zeus (Level 4)");
+        skills.add("Coupon Finder (Level 3)");
+        skills.add("Coupon Finder (Level 4)");
+        skills.add("Coupon Finder (Level 5)");
+        skills.add("Zeus (Level 5)");
 
-        return zeus;
+        return skills;
+    }
+    private List<String> poseidonSkills(){
+        List<String> skills = new ArrayList<>();
+        skills.add("Poseidon Unlocked");
+        skills.add("Token Bonus (Level 1)");
+        skills.add("Luck Boost (Level 1)");
+        skills.add("Fortune Boost (Level 1)");
+        skills.add("Poseidon (Level 2)");
+        skills.add("Token Bonus (Level 2)");
+        skills.add("Luck Boost (Level 2)");
+        skills.add("Token Bonus (Level 3)");
+        skills.add("Coupon Finder (Level 1)");
+        skills.add("Fortune Boost (Level 2)");
+        skills.add("Luck Boost (Level 3)");
+        skills.add("Token Bonus (Level 4)");
+        skills.add("Poseidon (Level 3)");
+        skills.add("Token Bonus (Level 5)");
+        skills.add("Luck Boost (Level 4)");
+        skills.add("Fortune Boost (Level 3)");
+        skills.add("Coupon Finder (Level 2)");
+        skills.add("Fortune Boost (Level 4)");
+        skills.add("Luck Boost (Level 5)");
+        skills.add("Token Bonus (Level 6)");
+        skills.add("Fortune Boost (Level 5)");
+        skills.add("Poseidon (Level 4)");
+        skills.add("Coupon Finder (Level 3)");
+        skills.add("Coupon Finder (Level 4)");
+        skills.add("Coupon Finder (Level 5)");
+        skills.add("Poseidon (Level 5)");
+
+        return skills;
+    }
+    private List<String> hadesSkills(){
+        List<String> skills = new ArrayList<>();
+        skills.add("Hades Unlocked");
+        skills.add("Token Bonus (Level 1)");
+        skills.add("Luck Boost (Level 1)");
+        skills.add("Fortune Boost (Level 1)");
+        skills.add("Hades (Level 2)");
+        skills.add("Token Bonus (Level 2)");
+        skills.add("Luck Boost (Level 2)");
+        skills.add("Token Bonus (Level 3)");
+        skills.add("Coupon Finder (Level 1)");
+        skills.add("Fortune Boost (Level 2)");
+        skills.add("Luck Boost (Level 3)");
+        skills.add("Token Bonus (Level 4)");
+        skills.add("Hades (Level 3)");
+        skills.add("Token Bonus (Level 5)");
+        skills.add("Luck Boost (Level 4)");
+        skills.add("Fortune Boost (Level 3)");
+        skills.add("Coupon Finder (Level 2)");
+        skills.add("Fortune Boost (Level 4)");
+        skills.add("Luck Boost (Level 5)");
+        skills.add("Token Bonus (Level 6)");
+        skills.add("Fortune Boost (Level 5)");
+        skills.add("Hades (Level 4)");
+        skills.add("Coupon Finder (Level 3)");
+        skills.add("Coupon Finder (Level 4)");
+        skills.add("Coupon Finder (Level 5)");
+        skills.add("Hades (Level 5)");
+
+        return skills;
+    }
+    private List<String> aphroditeSkills(){
+        List<String> skills = new ArrayList<>();
+        skills.add("Aphrodite Unlocked");
+        skills.add("Token Bonus (Level 1)");
+        skills.add("Luck Boost (Level 1)");
+        skills.add("Fortune Boost (Level 1)");
+        skills.add("Aphrodite (Level 2)");
+        skills.add("Token Bonus (Level 2)");
+        skills.add("Luck Boost (Level 2)");
+        skills.add("Token Bonus (Level 3)");
+        skills.add("Coupon Finder (Level 1)");
+        skills.add("Fortune Boost (Level 2)");
+        skills.add("Luck Boost (Level 3)");
+        skills.add("Token Bonus (Level 4)");
+        skills.add("Aphrodite (Level 3)");
+        skills.add("Token Bonus (Level 5)");
+        skills.add("Luck Boost (Level 4)");
+        skills.add("Fortune Boost (Level 3)");
+        skills.add("Coupon Finder (Level 2)");
+        skills.add("Fortune Boost (Level 4)");
+        skills.add("Luck Boost (Level 5)");
+        skills.add("Token Bonus (Level 6)");
+        skills.add("Fortune Boost (Level 5)");
+        skills.add("Aphrodite (Level 4)");
+        skills.add("Coupon Finder (Level 3)");
+        skills.add("Coupon Finder (Level 4)");
+        skills.add("Coupon Finder (Level 5)");
+        skills.add("Aphrodite (Level 5)");
+
+        return skills;
+    }
+    private List<String> athenaSkills(){
+        List<String> skills = new ArrayList<>();
+        skills.add("Athena Unlocked");
+        skills.add("Token Bonus (Level 1)");
+        skills.add("Luck Boost (Level 1)");
+        skills.add("Fortune Boost (Level 1)");
+        skills.add("Athena (Level 2)");
+        skills.add("Token Bonus (Level 2)");
+        skills.add("Luck Boost (Level 2)");
+        skills.add("Token Bonus (Level 3)");
+        skills.add("Coupon Finder (Level 1)");
+        skills.add("Fortune Boost (Level 2)");
+        skills.add("Luck Boost (Level 3)");
+        skills.add("Token Bonus (Level 4)");
+        skills.add("Athena (Level 3)");
+        skills.add("Token Bonus (Level 5)");
+        skills.add("Luck Boost (Level 4)");
+        skills.add("Fortune Boost (Level 3)");
+        skills.add("Coupon Finder (Level 2)");
+        skills.add("Fortune Boost (Level 4)");
+        skills.add("Luck Boost (Level 5)");
+        skills.add("Token Bonus (Level 6)");
+        skills.add("Fortune Boost (Level 5)");
+        skills.add("Athena (Level 4)");
+        skills.add("Coupon Finder (Level 3)");
+        skills.add("Coupon Finder (Level 4)");
+        skills.add("Coupon Finder (Level 5)");
+        skills.add("Athena (Level 5)");
+
+        return skills;
     }
 
     //Each Skill path is able to summon server-wide events from their respective tree.
@@ -117,24 +272,23 @@ public class PickaxeSkillTree implements Listener {
         }
         //Token Bonus
         zeus.setItem(19, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 5% token bonus."), 1));
-        zeus.setItem(13, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 5));
-        zeus.setItem(3, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 9));
-        zeus.setItem(7, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 13));
-        zeus.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 17));
-        zeus.setItem(41, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 5% token bonus."), 21));
-        zeus.setItem(47, skillItem(p, "Token Bonus (Level 7)", m.c("&7Each of these skills gives an additional 5% token bonus."), 25));
+        zeus.setItem(13, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 6));
+        zeus.setItem(3, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 11));
+        zeus.setItem(7, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 16));
+        zeus.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 21));
+        zeus.setItem(47, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 5% token bonus."), 25));
         //Luck Boost
         zeus.setItem(20, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 1));
         zeus.setItem(4, skillItem(p, "Luck Boost (Level 2)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 7));
         zeus.setItem(6, skillItem(p, "Luck Boost (Level 3)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 13));
         zeus.setItem(40, skillItem(p, "Luck Boost (Level 4)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 19));
-        zeus.setItem(46, skillItem(p, "Luck Boost (Level 5)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 25)); // pickaxe level 396 to max
+        zeus.setItem(48, skillItem(p, "Luck Boost (Level 5)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 25)); // pickaxe level 396 to max
         //Fortune
         zeus.setItem(21, skillItem(p, "Fortune Boost (Level 1)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 1));
-        zeus.setItem(41, skillItem(p, "Fortune Boost (Level 2)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 7));
-        zeus.setItem(49, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 13));
-        zeus.setItem(48, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 19));
-        zeus.setItem(5, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 25));
+        zeus.setItem(5, skillItem(p, "Fortune Boost (Level 2)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 7));
+        zeus.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 13));
+        zeus.setItem(49, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 19));
+        zeus.setItem(46, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 25));
         //Coupon finder
         zeus.setItem(2, skillItem(p, "Coupon Finder (Level 1)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 20));
         zeus.setItem(42, skillItem(p, "Coupon Finder (Level 2)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 25));
@@ -317,15 +471,17 @@ public class PickaxeSkillTree implements Listener {
     //The level ups (different pickaxe item dia, gold, etc) are free once available in the tree.
 
 
-
+    @SuppressWarnings("deprecation")
+    @EventHandler
     public void onClick(InventoryClickEvent e){
         Player p = (Player) e.getWhoClicked();
 
         if (e.getClickedInventory() == null) return;
         if (e.getClickedInventory().getName() == null) return;
 
-        if(e.getClickedInventory().getName().equals(m.c("&cSelect a Path"))){
+        if(e.getInventory().getName().equals(m.c("&cSelect a Path"))){
             e.setCancelled(true);
+            if(e.getClickedInventory().equals(p.getInventory())) return;
             if(e.getSlot() == 0){
                 settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkill", "Zeus");
                 settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillLevel", 1);
@@ -372,18 +528,141 @@ public class PickaxeSkillTree implements Listener {
                 openAthena(p);
             }
         }
-        if(e.getClickedInventory().getName().equals(m.c("&e&lZeus Skill Tree"))){
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getDurability() == 5) return;
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getDurability() == 0) return;
+        if(e.getInventory().getName().equals(m.c("&e&lZeus Skill Tree"))){
+            e.setCancelled(true);
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
 
             int price = PickaxeLevel.getInstance().getBlocks(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
             int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
+            String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
+            List<String> skillsUnlocked = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
+            String previous = "";
+            for(int i = 0; i < zeusSkills().size(); i++){
+                if(zeusSkills().get(i).equals(skill)){
+                    previous = zeusSkills().get(zeusSkills().indexOf(skill) - 1);
+                }
+            }
+            if(!skillsUnlocked.contains(previous)) {
+                p.sendMessage(m.c("&cError: Please unlock &a"+previous+" &cfirst."));
+                p.closeInventory();
+                return;
+            }
             if(skillPoints < price) return;
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
-            List<String> skillsUnlocked = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
+
             skillsUnlocked.add(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
+            settings.savePlayerData();
             openZeus(p);
+        }
+        if(e.getClickedInventory().getName().equals(m.c("&9&lPoseidon Skill Tree"))){
+            e.setCancelled(true);
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
+
+            int price = PickaxeLevel.getInstance().getBlocks(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
+            int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
+            String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
+            List<String> skillsUnlocked = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
+            String previous = "";
+            for(int i = 0; i < poseidonSkills().size(); i++){
+                if(poseidonSkills().get(i).equals(skill)){
+                    previous = poseidonSkills().get(poseidonSkills().indexOf(skill) - 1);
+                }
+            }
+            if(!skillsUnlocked.contains(previous)) {
+                p.sendMessage(m.c("&cError: Please unlock &a"+previous+" &cfirst."));
+                return;
+            }
+            if(skillPoints < price) return;
+            settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
+
+            skillsUnlocked.add(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
+            settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
+            settings.savePlayerData();
+            openPoseidon(p);
+        }
+        if(e.getClickedInventory().getName().equals(m.c("&4&lHades Skill Tree"))){
+            e.setCancelled(true);
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
+
+            int price = PickaxeLevel.getInstance().getBlocks(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
+            int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
+            String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
+            List<String> skillsUnlocked = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
+            String previous = "";
+            for(int i = 0; i < hadesSkills().size(); i++){
+                if(hadesSkills().get(i).equals(skill)){
+                    previous = hadesSkills().get(hadesSkills().indexOf(skill) - 1);
+                }
+            }
+            if(!skillsUnlocked.contains(previous)) {
+                p.sendMessage(m.c("&cError: Please unlock &a"+previous+" &cfirst."));
+                return;
+            }
+            if(skillPoints < price) return;
+            settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
+
+            skillsUnlocked.add(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
+            settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
+            settings.savePlayerData();
+            openHades(p);
+        }
+        if(e.getClickedInventory().getName().equals(m.c("&d&lAphrodite Skill Tree"))){
+            e.setCancelled(true);
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
+
+            int price = PickaxeLevel.getInstance().getBlocks(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
+            int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
+            String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
+            List<String> skillsUnlocked = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
+            String previous = "";
+            for(int i = 0; i < aphroditeSkills().size(); i++){
+                if(aphroditeSkills().get(i).equals(skill)){
+                    previous = aphroditeSkills().get(aphroditeSkills().indexOf(skill) - 1);
+                }
+            }
+            if(!skillsUnlocked.contains(previous)) {
+                p.sendMessage(m.c("&cError: Please unlock &a"+previous+" &cfirst."));
+                return;
+            }
+            if(skillPoints < price) return;
+            settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
+
+            skillsUnlocked.add(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
+            settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
+            settings.savePlayerData();
+            openAphrodite(p);
+        }
+        if(e.getClickedInventory().getName().equals(m.c("&2&lAthena Skill Tree"))){
+            e.setCancelled(true);
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
+
+            int price = PickaxeLevel.getInstance().getBlocks(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
+            int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
+            String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
+            List<String> skillsUnlocked = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
+            String previous = "";
+            for(int i = 0; i < athenaSkills().size(); i++){
+                if(athenaSkills().get(i).equals(skill)){
+                    previous = athenaSkills().get(athenaSkills().indexOf(skill) - 1);
+                }
+            }
+            if(!skillsUnlocked.contains(previous)) {
+                p.sendMessage(m.c("&cError: Please unlock &a"+previous+" &cfirst."));
+                return;
+            }
+            if(skillPoints < price) return;
+            settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
+
+            skillsUnlocked.add(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
+            settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
+            settings.savePlayerData();
+            openAthena(p);
         }
 
     }

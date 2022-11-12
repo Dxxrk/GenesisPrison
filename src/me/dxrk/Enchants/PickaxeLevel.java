@@ -265,7 +265,6 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		enchantmenu.setItem(45, spacer);
 		enchantmenu.setItem(47, spacer);
 		enchantmenu.setItem(48, spacer);
-		enchantmenu.setItem(49, spacer);
 		enchantmenu.setItem(50, spacer);
 		enchantmenu.setItem(51, spacer);
 		enchantmenu.setItem(53, spacer);

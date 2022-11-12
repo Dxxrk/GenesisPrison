@@ -210,7 +210,8 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     registerEvents(this, new Listener[] { new CMDDaily() });
     registerEvents(this, new Listener[] { new JDAEvents() });
     registerEvents(this, new Listener[] { new MysteryBoxHandler() });
-      registerEvents(this, new Listener[] { new PrestigeHandler() });
+    registerEvents(this, new Listener[] { new PrestigeHandler() });
+    registerEvents(this, new Listener[] { new PickaxeSkillTree() });
     registerEvents(this, new Listener[] { this});
 
     

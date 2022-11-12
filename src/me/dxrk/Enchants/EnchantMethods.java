@@ -144,7 +144,7 @@ public class EnchantMethods {
 					  Location l = new Location(loc.getWorld(), x, yy, zz);
 					  blocks.add(l.getBlock());
 				  }
-				  for(int y = yy; y < yy+100; y++){
+				  for(int y = yy; y < yy-100; y--){
 					  Location l = new Location(loc.getWorld(), xx, y, zz);
 					  blocks.add(l.getBlock());
 				  }
@@ -165,10 +165,12 @@ public class EnchantMethods {
 
 
 			for (Block b1 : laserBlocks(b.getLocation())) {
-				m.removeBlockFromRegion(b1);
-				if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-					b1.setType(Material.AIR);
-					blocks = blocks+1;
+				if (set(b1).allows(DefaultFlag.LIGHTER)) {
+					m.removeBlockFromRegion(b1);
+					if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+						b1.setType(Material.AIR);
+						blocks = blocks + 1;
+					}
 				}
 			}
 			double fortuity = Functions.Foruity(p);
@@ -267,12 +269,14 @@ public class EnchantMethods {
 			
 			
 			for (Block b1 : blocksFromTwoPoints(min, max, p.getWorld())) {
-		          m.removeBlockFromRegion(b1);
-		          if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-		              b1.setType(Material.AIR); 
-		              blocks = blocks+1;
-		    	  } 
- 			}
+				if (set(b1).allows(DefaultFlag.LIGHTER)) {
+					m.removeBlockFromRegion(b1);
+					if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+						b1.setType(Material.AIR);
+						blocks = blocks + 1;
+					}
+				}
+			}
 			double fortuity = Functions.Foruity(p);
 				int line = 0;
 				for(int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++){

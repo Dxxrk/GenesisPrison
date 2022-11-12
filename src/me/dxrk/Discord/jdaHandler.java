@@ -40,7 +40,7 @@ public class jdaHandler extends ListenerAdapter {
 	}
 	
 	
-	private String token = "ODg0MjE4NjIwMzI1MDE5Njcx.YTVSww.pkb92aPrSoH8GWih77pTRiOYEFA";
+	private String token = "<insert token>";
 	
 	public static JDA jda;
 	

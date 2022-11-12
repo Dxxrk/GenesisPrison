@@ -368,6 +368,7 @@ public class SellHandler implements Listener, CommandExecutor {
 					 p.sendMessage(c("&c/resetmine(/rm) is on cooldown."));
 				 } else {
 					 ResetHandler.resetMine(mine, ResetReason.NORMAL);
+					 p.teleport(mine.getSpawnLocation());
 					 reset.add(p.getUniqueId().toString());
 				 }
 				 new BukkitRunnable() {
