@@ -83,6 +83,10 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
       this.settings.reloadData();
     }
     new jdaHandler(this);
+
+    if(settings.getOptions().getString("DiscordToken") == null){
+        settings.getOptions().set("DiscordToken", "");
+      }
     
 
     

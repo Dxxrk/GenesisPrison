@@ -1,6 +1,7 @@
 package me.dxrk.Discord;
 
 import me.dxrk.Main.Main;
+import me.dxrk.Main.SettingsManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -27,6 +28,7 @@ public class jdaHandler extends ListenerAdapter {
 	public static HashMap<UUID,String>uuidCodeMap;
 	public static HashMap<UUID,String> uuidIdMap;
 	public static Guild guild;
+	SettingsManager settings = SettingsManager.getInstance();
 	
 	public jdaHandler(Main main){
 		this.plugin = main;
@@ -40,7 +42,7 @@ public class jdaHandler extends ListenerAdapter {
 	}
 	
 	
-	private String token = "<insert token>";
+	private String token = settings.getOptions().getString("DiscordToken");
 	
 	public static JDA jda;
 	
