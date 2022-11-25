@@ -756,7 +756,8 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 	    if (p.getItemInHand() == null)
 	      return; 
 	    ItemStack item = p.getItemInHand();
-	    if (item.getType().equals(Material.DIAMOND_PICKAXE)) {
+	    if (item.getType().equals(Material.DIAMOND_PICKAXE) || item.getType().equals(Material.IRON_PICKAXE) || item.getType().equals(Material.GOLD_PICKAXE) || item.getType().equals(Material.STONE_PICKAXE)
+		|| item.getType().equals(Material.WOOD_PICKAXE)) {
 	      if (e.getAction().equals(Action.LEFT_CLICK_AIR) || e.getAction().equals(Action.LEFT_CLICK_BLOCK))
 	        return;
 		  if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {

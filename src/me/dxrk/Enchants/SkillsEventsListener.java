@@ -3,7 +3,9 @@ package me.dxrk.Enchants;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +40,13 @@ public class SkillsEventsListener implements Listener {
     }
 
     public void deactiveGodEvent(String event){
-        if(activeEvents.contains(event)){
-            return;
-        }
         activeEvents.remove(event);
+
+    }
+
+    @EventHandler
+    public void onBreak(BlockBreakEvent e) {
+        Player p = e.getPlayer();
     }
 
 

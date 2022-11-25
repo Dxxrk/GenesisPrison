@@ -157,7 +157,8 @@ public class JDAEvents extends ListenerAdapter implements Listener, CommandExecu
 			}
 			if(args.length == 1){
 				Player p = (Player)cs;
-				p.sendMessage(m.c("&bPlease react to the message in &7#minecraft-link &bin the discord"));
+				if(args[0].equalsIgnoreCase("link"))
+					p.sendMessage(m.c("&bPlease react to the message in &7#minecraft-link &bin the discord"));
 				return false;
 			}
 			if (args.length == 2) {

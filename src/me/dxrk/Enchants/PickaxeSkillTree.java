@@ -263,6 +263,32 @@ public class PickaxeSkillTree implements Listener {
 
         return skills;
     }
+    public int findPickaxeType(Player p) {
+        if(p.getItemInHand().getType().equals(Material.WOOD_PICKAXE)) return 1;
+        if(p.getItemInHand().getType().equals(Material.STONE_PICKAXE)) return 2;
+        if(p.getItemInHand().getType().equals(Material.GOLD_PICKAXE)) return 3;
+        if(p.getItemInHand().getType().equals(Material.IRON_PICKAXE)) return 4;
+        if(p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)) return 5;
+
+        return 1;
+    }
+    public void setType(Player p, int i) {
+        switch(i){
+            case 1:
+                p.getItemInHand().setType(Material.STONE_PICKAXE);
+                break;
+            case 2:
+                p.getItemInHand().setType(Material.GOLD_PICKAXE);
+                break;
+            case 3:
+                p.getItemInHand().setType(Material.IRON_PICKAXE);
+                break;
+            case 4:
+                p.getItemInHand().setType(Material.DIAMOND_PICKAXE);
+                break;
+        }
+
+    }
 
     //Each Skill path is able to summon server-wide events from their respective tree.
     public static void openZeus(Player p){
@@ -470,6 +496,45 @@ public class PickaxeSkillTree implements Listener {
     //Skills cost skill points increasing as you get farther into the tree
     //The level ups (different pickaxe item dia, gold, etc) are free once available in the tree.
 
+    public void selectPath(Player p, String path, String color) {
+        ItemStack pitem = p.getItemInHand().clone();
+        ItemMeta pm = pitem.getItemMeta();
+        List<String> lore = pm.getLore();
+
+        settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkill", path);
+        settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillLevel", 1);
+        List<String> skills = new ArrayList<>();
+        skills.add("Unlocked "+path);
+        int line = 0;
+        for(int i = 0; i < lore.size(); i++){
+            String s = lore.get(i);
+            if(s.contains("Skill:")){
+                line = i;
+            }
+        }
+        lore.set(line, m.c("&cSkill: "+color+path +" (Level 1)"));
+        settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skills);
+        settings.savePlayerData();
+
+        switch(path){
+            case "Zeus":
+                openZeus(p);
+                break;
+            case "Poseidon":
+                openPoseidon(p);
+                break;
+            case "Hades":
+                openHades(p);
+                break;
+            case "Aphrodite":
+                openAphrodite(p);
+                break;
+            case "Athena":
+                openAthena(p);
+                break;
+        }
+    }
+
 
     @SuppressWarnings("deprecation")
     @EventHandler
@@ -478,54 +543,28 @@ public class PickaxeSkillTree implements Listener {
 
         if (e.getClickedInventory() == null) return;
         if (e.getClickedInventory().getName() == null) return;
+        if(e.getCurrentItem() == null) return;
+        if(!e.getCurrentItem().hasItemMeta()) return;
 
         if(e.getInventory().getName().equals(m.c("&cSelect a Path"))){
             e.setCancelled(true);
             if(e.getClickedInventory().equals(p.getInventory())) return;
+
+
             if(e.getSlot() == 0){
-                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkill", "Zeus");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillLevel", 1);
-                List<String> skills = new ArrayList<>();
-                skills.add("Unlocked Zeus");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skills);
-                settings.savePlayerData();
-                openZeus(p);
+                selectPath(p, "Zeus", "&f");
             }
             if(e.getSlot() == 1){
-                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkill", "Poseidon");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillLevel", 1);
-                List<String> skills = new ArrayList<>();
-                skills.add("Unlocked Poseidon");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skills);
-                settings.savePlayerData();
-                openPoseidon(p);
+                selectPath(p, "Poseidon", "&9");
             }
             if(e.getSlot() == 2){
-                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkill", "Hades");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillLevel", 1);
-                List<String> skills = new ArrayList<>();
-                skills.add("Unlocked Hades");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skills);
-                settings.savePlayerData();
-                openHades(p);
+                selectPath(p, "Hades", "&4");
             }
             if(e.getSlot() == 3){
-                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkill", "Aphrodite");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillLevel", 1);
-                List<String> skills = new ArrayList<>();
-                skills.add("Unlocked Aphrodite");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skills);
-                settings.savePlayerData();
-                openAphrodite(p);
+                selectPath(p, "Aphrodite", "&d");
             }
             if(e.getSlot() == 4){
-                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkill", "Athena");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillLevel", 1);
-                List<String> skills = new ArrayList<>();
-                skills.add("Unlocked Athena");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skills);
-                settings.savePlayerData();
-                openAthena(p);
+                selectPath(p, "Athena", "&2");
             }
         }
         if(e.getInventory().getName().equals(m.c("&e&lZeus Skill Tree"))){
@@ -551,7 +590,24 @@ public class PickaxeSkillTree implements Listener {
             if(skillPoints < price) return;
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
 
-            skillsUnlocked.add(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
+            skillsUnlocked.add(skill);
+            if(skill.contains("Zeus")) {
+                setType(p, findPickaxeType(p));
+
+                ItemStack pitem = p.getItemInHand().clone();
+                ItemMeta pm = pitem.getItemMeta();
+                List<String> lore = pm.getLore();
+
+                int line = 0;
+                for(int i = 0; i < lore.size(); i++){
+                    String s = lore.get(i);
+                    if(s.contains("Skill:")){
+                        line = i;
+                    }
+                }
+                lore.set(line, m.c("&cSkill: &fZeus (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+
+            }
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
             settings.savePlayerData();
             openZeus(p);
@@ -578,7 +634,24 @@ public class PickaxeSkillTree implements Listener {
             if(skillPoints < price) return;
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
 
-            skillsUnlocked.add(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
+            skillsUnlocked.add(skill);
+            if(skill.contains("Poseidon")) {
+                setType(p, findPickaxeType(p));
+
+                ItemStack pitem = p.getItemInHand().clone();
+                ItemMeta pm = pitem.getItemMeta();
+                List<String> lore = pm.getLore();
+
+                int line = 0;
+                for(int i = 0; i < lore.size(); i++){
+                    String s = lore.get(i);
+                    if(s.contains("Skill:")){
+                        line = i;
+                    }
+                }
+                lore.set(line, m.c("&cSkill: &9Poseidon (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+
+            }
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
             settings.savePlayerData();
             openPoseidon(p);
@@ -605,7 +678,24 @@ public class PickaxeSkillTree implements Listener {
             if(skillPoints < price) return;
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
 
-            skillsUnlocked.add(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
+            skillsUnlocked.add(skill);
+            if(skill.contains("Hades")) {
+                setType(p, findPickaxeType(p));
+
+                ItemStack pitem = p.getItemInHand().clone();
+                ItemMeta pm = pitem.getItemMeta();
+                List<String> lore = pm.getLore();
+
+                int line = 0;
+                for(int i = 0; i < lore.size(); i++){
+                    String s = lore.get(i);
+                    if(s.contains("Skill:")){
+                        line = i;
+                    }
+                }
+                lore.set(line, m.c("&cSkill: &4Hades (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+
+            }
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
             settings.savePlayerData();
             openHades(p);
@@ -632,7 +722,24 @@ public class PickaxeSkillTree implements Listener {
             if(skillPoints < price) return;
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
 
-            skillsUnlocked.add(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
+            skillsUnlocked.add(skill);
+            if(skill.contains("Aphrodite")) {
+                setType(p, findPickaxeType(p));
+
+                ItemStack pitem = p.getItemInHand().clone();
+                ItemMeta pm = pitem.getItemMeta();
+                List<String> lore = pm.getLore();
+
+                int line = 0;
+                for(int i = 0; i < lore.size(); i++){
+                    String s = lore.get(i);
+                    if(s.contains("Skill:")){
+                        line = i;
+                    }
+                }
+                lore.set(line, m.c("&cSkill: &dAphrodite (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+
+            }
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
             settings.savePlayerData();
             openAphrodite(p);
@@ -659,7 +766,24 @@ public class PickaxeSkillTree implements Listener {
             if(skillPoints < price) return;
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
 
-            skillsUnlocked.add(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
+            skillsUnlocked.add(skill);
+            if(skill.contains("Athena")) {
+                setType(p, findPickaxeType(p));
+
+                ItemStack pitem = p.getItemInHand().clone();
+                ItemMeta pm = pitem.getItemMeta();
+                List<String> lore = pm.getLore();
+
+                int line = 0;
+                for(int i = 0; i < lore.size(); i++){
+                    String s = lore.get(i);
+                    if(s.contains("Skill:")){
+                        line = i;
+                    }
+                }
+                lore.set(line, m.c("&cSkill: &2Athena (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+
+            }
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
             settings.savePlayerData();
             openAthena(p);
