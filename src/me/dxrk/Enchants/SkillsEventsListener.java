@@ -9,6 +9,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class SkillsEventsListener implements Listener {
 
@@ -47,6 +48,8 @@ public class SkillsEventsListener implements Listener {
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
+        Random r = new Random();
+
     }
 
 
