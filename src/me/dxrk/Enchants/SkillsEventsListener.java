@@ -21,7 +21,7 @@ public class SkillsEventsListener implements Listener {
 
 
 
-    public void updateGodEvent(){
+    public void updateEvent(){
         StringBuilder s = new StringBuilder();
         for (String activeEvent : activeEvents) {
             s.append(activeEvent).append(", ");
@@ -30,7 +30,7 @@ public class SkillsEventsListener implements Listener {
     }
 
 
-    public void activateGodEvent(String event) {
+    public void activateEvent(String event) {
         if(activeEvents.contains(event)){
             return;
         }
@@ -40,9 +40,18 @@ public class SkillsEventsListener implements Listener {
 
     }
 
-    public void deactiveGodEvent(String event){
+    public void deactiveEvent(String event){
         activeEvents.remove(event);
 
+    }
+
+    public void eventBreak(Player p, String event){
+        List<String> skillsUnlocked = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
+        for(String s : skillsUnlocked) {
+            if(s.contains(event)) {
+                activateEvent(event);
+            }
+        }
     }
 
     @EventHandler

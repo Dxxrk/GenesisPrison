@@ -322,8 +322,8 @@ public class PickaxeSkillTree implements Listener {
         zeus.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
         zeus.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
         //Level ups / abilities
-        zeus.setItem(18, skillItem(p, "Unlocked Zeus", m.c("&7Chose the Zeus path. Unlocks the chance for the Thunder God Event."), 0));
-        zeus.setItem(22, skillItem(p, "Zeus (Level 2)", m.c("&7Unlocks the Lightning God Event"), 0));
+        zeus.setItem(18, skillItem(p, "Unlocked Zeus", m.c("&7Chose the Zeus path. Unlocks the chance for the Thunder Event."), 0));
+        zeus.setItem(22, skillItem(p, "Zeus (Level 2)", m.c("&7Unlocks the Lightning Event"), 0));
         zeus.setItem(8, skillItem(p, "Zeus (Level 3)", m.c("&7Raises Thunder Event to level 2"), 0));
         zeus.setItem(45, skillItem(p, "Zeus (Level 4)", m.c("&7Raises Thunder Event to level 3"), 0));
         zeus.setItem(26, skillItem(p, "Zeus (Level 5)", m.c("&7Raises Ligntning Event to level 2"), 0));
@@ -362,8 +362,8 @@ public class PickaxeSkillTree implements Listener {
         poseidon.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
         poseidon.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
         //Level ups / abilities
-        poseidon.setItem(18, skillItem(p, "Unlocked Poseidon", m.c("&7Chose the Poseidon path. Unlocks the chance for the Twister God Event."), 0));
-        poseidon.setItem(22, skillItem(p, "Poseidon (Level 2)", m.c("&7Unlocks the Tsunami God Event"), 0));
+        poseidon.setItem(18, skillItem(p, "Unlocked Poseidon", m.c("&7Chose the Poseidon path. Unlocks the chance for the Twister Event."), 0));
+        poseidon.setItem(22, skillItem(p, "Poseidon (Level 2)", m.c("&7Unlocks the Tsunami Event"), 0));
         poseidon.setItem(8, skillItem(p, "Poseidon (Level 3)", m.c("&7Raises Twister Event to level 2"), 0));
         poseidon.setItem(45, skillItem(p, "Poseidon (Level 4)", m.c("&7Raises Twister Event to level 3"), 0));
         poseidon.setItem(26, skillItem(p, "Poseidon (Level 5)", m.c("&7Raises Tsunami Event to level 2"), 0));
@@ -402,8 +402,8 @@ public class PickaxeSkillTree implements Listener {
         hades.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
         hades.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
         //Level ups / abilities
-        hades.setItem(18, skillItem(p, "Unlocked Hades", m.c("&7Chose the Hades path. Unlocks the chance for the Molten Rain God Event."), 0));
-        hades.setItem(22, skillItem(p, "Hades (Level 2)", m.c("&7Unlocks the Broken Earth God Event"), 0));
+        hades.setItem(18, skillItem(p, "Unlocked Hades", m.c("&7Chose the Hades path. Unlocks the chance for the Molten Rain Event."), 0));
+        hades.setItem(22, skillItem(p, "Hades (Level 2)", m.c("&7Unlocks the Broken Earth Event"), 0));
         hades.setItem(8, skillItem(p, "Hades (Level 3)", m.c("&7Raises Molten Rain Event to level 2"), 0));
         hades.setItem(45, skillItem(p, "Hades (Level 4)", m.c("&7Raises Molten Rain Event to level 3"), 0));
         hades.setItem(26, skillItem(p, "Hades (Level 5)", m.c("&7Raises Broken Earth Event to level 2"), 0));
@@ -442,8 +442,8 @@ public class PickaxeSkillTree implements Listener {
         athena.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
         athena.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
         //Level ups / abilities
-        athena.setItem(18, skillItem(p, "Unlocked Athena", m.c("&7Chose the athena path. Unlocks the chance for the Wise Words God Event."), 0));
-        athena.setItem(22, skillItem(p, "Athena (Level 2)", m.c("&7Unlocks the War Torn God Event"), 0));
+        athena.setItem(18, skillItem(p, "Unlocked Athena", m.c("&7Chose the athena path. Unlocks the chance for the Wise Words Event."), 0));
+        athena.setItem(22, skillItem(p, "Athena (Level 2)", m.c("&7Unlocks the War Torn Event"), 0));
         athena.setItem(8, skillItem(p, "Athena (Level 3)", m.c("&7Raises Wise Words Event to level 2"), 0));
         athena.setItem(45, skillItem(p, "Athena (Level 4)", m.c("&7Raises Wise Words Event to level 3"), 0));
         athena.setItem(26, skillItem(p, "Athena (Level 5)", m.c("&7Raises War Torn Event to level 2"), 0));
@@ -482,8 +482,8 @@ public class PickaxeSkillTree implements Listener {
         aphrodite.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
         aphrodite.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
         //Level ups / abilities
-        aphrodite.setItem(18, skillItem(p, "Unlocked Aphrodite", m.c("&7Chose the aphrodite path. Unlocks the chance for the Cease Fire God Event."), 0));
-        aphrodite.setItem(22, skillItem(p, "Aphrodite (Level 2)", m.c("&7Unlocks the God's Grace God Event"), 0));
+        aphrodite.setItem(18, skillItem(p, "Unlocked Aphrodite", m.c("&7Chose the aphrodite path. Unlocks the chance for the Cease Fire Event."), 0));
+        aphrodite.setItem(22, skillItem(p, "Aphrodite (Level 2)", m.c("&7Unlocks the God's Grace Event"), 0));
         aphrodite.setItem(8, skillItem(p, "Aphrodite (Level 3)", m.c("&7Raises Cease Fire Event to level 2"), 0));
         aphrodite.setItem(45, skillItem(p, "Aphrodite (Level 4)", m.c("&7Raises Cease Fire Event to level 3"), 0));
         aphrodite.setItem(26, skillItem(p, "Aphrodite (Level 5)", m.c("&7Raises God's Grace Event to level 2"), 0));
