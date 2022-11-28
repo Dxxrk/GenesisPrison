@@ -46,6 +46,8 @@ public class SkillsEventsListener implements Listener {
     }
 
     public void eventBreak(Player p, String event){
+        Random r = new Random();
+
         List<String> skillsUnlocked = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
         for(String s : skillsUnlocked) {
             if(s.contains(event)) {
