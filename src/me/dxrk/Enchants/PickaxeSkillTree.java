@@ -97,13 +97,13 @@ public class PickaxeSkillTree implements Listener {
         skills.setItem(3, aphrodite);
         lore.clear();
 
-        ItemStack athena = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)13);
-        ItemMeta atm = athena.getItemMeta();
-        atm.setDisplayName(m.c("&2&lAthena Path"));
-        lore.add(m.c("&7&oSelect this to confirm your skill path as &2&lAthena."));
+        ItemStack ares = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)13);
+        ItemMeta atm = ares.getItemMeta();
+        atm.setDisplayName(m.c("&2&lAres Path"));
+        lore.add(m.c("&7&oSelect this to confirm your skill path as &2&lAres."));
         atm.setLore(lore);
-        athena.setItemMeta(atm);
-        skills.setItem(4, athena);
+        ares.setItemMeta(atm);
+        skills.setItem(4, ares);
 
         p.openInventory(skills);
     }
@@ -232,13 +232,13 @@ public class PickaxeSkillTree implements Listener {
 
         return skills;
     }
-    private List<String> athenaSkills(){
+    private List<String> aresSkills(){
         List<String> skills = new ArrayList<>();
-        skills.add("Athena Unlocked");
+        skills.add("Ares Unlocked");
         skills.add("Token Bonus (Level 1)");
         skills.add("Luck Boost (Level 1)");
         skills.add("Fortune Boost (Level 1)");
-        skills.add("Athena (Level 2)");
+        skills.add("Ares (Level 2)");
         skills.add("Token Bonus (Level 2)");
         skills.add("Luck Boost (Level 2)");
         skills.add("Token Bonus (Level 3)");
@@ -246,7 +246,7 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Fortune Boost (Level 2)");
         skills.add("Luck Boost (Level 3)");
         skills.add("Token Bonus (Level 4)");
-        skills.add("Athena (Level 3)");
+        skills.add("Ares (Level 3)");
         skills.add("Token Bonus (Level 5)");
         skills.add("Luck Boost (Level 4)");
         skills.add("Fortune Boost (Level 3)");
@@ -255,11 +255,11 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Luck Boost (Level 5)");
         skills.add("Token Bonus (Level 6)");
         skills.add("Fortune Boost (Level 5)");
-        skills.add("Athena (Level 4)");
+        skills.add("Ares (Level 4)");
         skills.add("Coupon Finder (Level 3)");
         skills.add("Coupon Finder (Level 4)");
         skills.add("Coupon Finder (Level 5)");
-        skills.add("Athena (Level 5)");
+        skills.add("Ares (Level 5)");
 
         return skills;
     }
@@ -410,44 +410,44 @@ public class PickaxeSkillTree implements Listener {
         p.openInventory(hades);
     }
 
-    public static void openAthena(Player p){
-        Inventory athena = Bukkit.createInventory(null,54, m.c("&2&lAthena Skill Tree"));
+    public static void openAres(Player p){
+        Inventory ares = Bukkit.createInventory(null,54, m.c("&2&lAres Skill Tree"));
         for(int i = 0; i < 54; i++){
-            athena.setItem(i, Spacer());
+            ares.setItem(i, Spacer());
         }
         //Token Bonus
-        athena.setItem(19, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 5% token bonus."), 1));
-        athena.setItem(13, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 5));
-        athena.setItem(3, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 9));
-        athena.setItem(7, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 13));
-        athena.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 17));
-        athena.setItem(41, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 5% token bonus."), 21));
-        athena.setItem(47, skillItem(p, "Token Bonus (Level 7)", m.c("&7Each of these skills gives an additional 5% token bonus."), 25));
+        ares.setItem(19, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 5% token bonus."), 1));
+        ares.setItem(13, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 5));
+        ares.setItem(3, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 9));
+        ares.setItem(7, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 13));
+        ares.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 17));
+        ares.setItem(41, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 5% token bonus."), 21));
+        ares.setItem(47, skillItem(p, "Token Bonus (Level 7)", m.c("&7Each of these skills gives an additional 5% token bonus."), 25));
         //Luck Boost
-        athena.setItem(20, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 1));
-        athena.setItem(4, skillItem(p, "Luck Boost (Level 2)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 7));
-        athena.setItem(6, skillItem(p, "Luck Boost (Level 3)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 13));
-        athena.setItem(40, skillItem(p, "Luck Boost (Level 4)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 19));
-        athena.setItem(46, skillItem(p, "Luck Boost (Level 5)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 25)); // pickaxe level 396 to max
+        ares.setItem(20, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 1));
+        ares.setItem(4, skillItem(p, "Luck Boost (Level 2)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 7));
+        ares.setItem(6, skillItem(p, "Luck Boost (Level 3)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 13));
+        ares.setItem(40, skillItem(p, "Luck Boost (Level 4)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 19));
+        ares.setItem(46, skillItem(p, "Luck Boost (Level 5)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 25)); // pickaxe level 396 to max
         //Fortune
-        athena.setItem(21, skillItem(p, "Fortune Boost (Level 1)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 1));
-        athena.setItem(41, skillItem(p, "Fortune Boost (Level 2)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 7));
-        athena.setItem(49, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 13));
-        athena.setItem(48, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 19));
-        athena.setItem(5, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 25));
+        ares.setItem(21, skillItem(p, "Fortune Boost (Level 1)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 1));
+        ares.setItem(41, skillItem(p, "Fortune Boost (Level 2)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 7));
+        ares.setItem(49, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 13));
+        ares.setItem(48, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 19));
+        ares.setItem(5, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 25));
         //Coupon finder
-        athena.setItem(2, skillItem(p, "Coupon Finder (Level 1)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 20));
-        athena.setItem(42, skillItem(p, "Coupon Finder (Level 2)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 25));
-        athena.setItem(23, skillItem(p, "Coupon Finder (Level 3)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 30));
-        athena.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
-        athena.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
+        ares.setItem(2, skillItem(p, "Coupon Finder (Level 1)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 20));
+        ares.setItem(42, skillItem(p, "Coupon Finder (Level 2)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 25));
+        ares.setItem(23, skillItem(p, "Coupon Finder (Level 3)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 30));
+        ares.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
+        ares.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
         //Level ups / abilities
-        athena.setItem(18, skillItem(p, "Unlocked Athena", m.c("&7Chose the athena path. Unlocks the chance for the Wise Words Event."), 0));
-        athena.setItem(22, skillItem(p, "Athena (Level 2)", m.c("&7Unlocks the War Torn Event"), 0));
-        athena.setItem(8, skillItem(p, "Athena (Level 3)", m.c("&7Raises Wise Words Event to level 2"), 0));
-        athena.setItem(45, skillItem(p, "Athena (Level 4)", m.c("&7Raises Wise Words Event to level 3"), 0));
-        athena.setItem(26, skillItem(p, "Athena (Level 5)", m.c("&7Raises War Torn Event to level 2"), 0));
-        p.openInventory(athena);
+        ares.setItem(18, skillItem(p, "Unlocked Ares", m.c("&7Chose the ares path. Unlocks the chance for the Wise Words Event."), 0));
+        ares.setItem(22, skillItem(p, "Ares (Level 2)", m.c("&7Unlocks the War Torn Event"), 0));
+        ares.setItem(8, skillItem(p, "Ares (Level 3)", m.c("&7Raises Wise Words Event to level 2"), 0));
+        ares.setItem(45, skillItem(p, "Ares (Level 4)", m.c("&7Raises Wise Words Event to level 3"), 0));
+        ares.setItem(26, skillItem(p, "Ares (Level 5)", m.c("&7Raises War Torn Event to level 2"), 0));
+        p.openInventory(ares);
     }
 
     public static void openAphrodite(Player p){
@@ -529,8 +529,8 @@ public class PickaxeSkillTree implements Listener {
             case "Aphrodite":
                 openAphrodite(p);
                 break;
-            case "Athena":
-                openAthena(p);
+            case "Ares":
+                openAres(p);
                 break;
         }
     }
@@ -564,7 +564,7 @@ public class PickaxeSkillTree implements Listener {
                 selectPath(p, "Aphrodite", "&d");
             }
             if(e.getSlot() == 4){
-                selectPath(p, "Athena", "&2");
+                selectPath(p, "Ares", "&2");
             }
         }
         if(e.getInventory().getName().equals(m.c("&e&lZeus Skill Tree"))){
@@ -744,7 +744,7 @@ public class PickaxeSkillTree implements Listener {
             settings.savePlayerData();
             openAphrodite(p);
         }
-        if(e.getClickedInventory().getName().equals(m.c("&2&lAthena Skill Tree"))){
+        if(e.getClickedInventory().getName().equals(m.c("&2&lAres Skill Tree"))){
             e.setCancelled(true);
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
@@ -754,9 +754,9 @@ public class PickaxeSkillTree implements Listener {
             String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
             List<String> skillsUnlocked = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
             String previous = "";
-            for(int i = 0; i < athenaSkills().size(); i++){
-                if(athenaSkills().get(i).equals(skill)){
-                    previous = athenaSkills().get(athenaSkills().indexOf(skill) - 1);
+            for(int i = 0; i < aresSkills().size(); i++){
+                if(aresSkills().get(i).equals(skill)){
+                    previous = aresSkills().get(aresSkills().indexOf(skill) - 1);
                 }
             }
             if(!skillsUnlocked.contains(previous)) {
@@ -767,7 +767,7 @@ public class PickaxeSkillTree implements Listener {
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
 
             skillsUnlocked.add(skill);
-            if(skill.contains("Athena")) {
+            if(skill.contains("Ares")) {
                 setType(p, findPickaxeType(p));
 
                 ItemStack pitem = p.getItemInHand().clone();
@@ -781,12 +781,12 @@ public class PickaxeSkillTree implements Listener {
                         line = i;
                     }
                 }
-                lore.set(line, m.c("&cSkill: &2Athena (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+                lore.set(line, m.c("&cSkill: &2Ares (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
 
             }
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
             settings.savePlayerData();
-            openAthena(p);
+            openAres(p);
         }
 
     }
