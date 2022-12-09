@@ -8,6 +8,7 @@ import me.dxrk.Events.*;
 import me.dxrk.Tokens.Tokens;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -136,22 +137,31 @@ public class EnchantMethods {
 	}
 
 		  public static List<Block> laserBlocks(Location loc) {
-			  ArrayList<Block> blocks = new ArrayList<>();
-			  int xx = loc.getBlockX();
-			  int yy = loc.getBlockY();
-			  int zz = loc.getBlockZ();
-				  for(int x = xx; x < xx+100; x++){
-					  Location l = new Location(loc.getWorld(), x, yy, zz);
-					  blocks.add(l.getBlock());
-				  }
-				  for(int y = yy; y < yy-100; y--){
-					  Location l = new Location(loc.getWorld(), xx, y, zz);
-					  blocks.add(l.getBlock());
-				  }
-				  for(int z = zz; z < zz+100; z++){
-					  Location l = new Location(loc.getWorld(), xx, yy, z);
-					  blocks.add(l.getBlock());
-				  }
+			  List<Block> blocks = new ArrayList<>();
+			  Block b = loc.getBlock();
+
+				for(int i = 0; i < 200; i++){
+					World w = b.getLocation().getWorld();
+					int x = b.getX();
+					int y = b.getY();
+					int z = b.getZ();
+					Block bb = w.getBlockAt(new Location(w, x + i, y, z));
+					Block bup = w.getBlockAt(bb.getRelative(BlockFace.UP).getLocation());
+					Block bdown = w.getBlockAt(bb.getRelative(BlockFace.DOWN).getLocation());
+					Block bleft = w.getBlockAt(bb.getRelative(BlockFace.WEST).getLocation());
+					Block bright = w.getBlockAt(bb.getRelative(BlockFace.EAST).getLocation());
+					Block bfront = w.getBlockAt(bb.getRelative(BlockFace.NORTH).getLocation());
+					Block bback = w.getBlockAt(bb.getRelative(BlockFace.SOUTH).getLocation());
+					blocks.add(bup);
+					blocks.add(bdown);
+					blocks.add(bleft);
+					blocks.add(bright);
+					blocks.add(bfront);
+					blocks.add(bback);
+				}
+				//repeat this for every direction of coordinates.
+
+
 			  return blocks;
 		  }
 

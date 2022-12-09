@@ -796,7 +796,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 					} else if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Hades")){
 						PickaxeSkillTree.openHades(p);
 					} else if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Athena")){
-						PickaxeSkillTree.openAthena(p);
+						PickaxeSkillTree.openAres(p);
 					} else if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Aphrodite")){
 						PickaxeSkillTree.openAphrodite(p);
 					}
