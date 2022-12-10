@@ -40,7 +40,7 @@ public class Functions implements Listener{
 
 	public static double sellBoost(Player p) {
 		double sell = 1;
-		
+		if(!p.getItemInHand().hasItemMeta()) return 1;
 		for (String s : p.getItemInHand().getItemMeta().getLore()) {
 			if(ChatColor.stripColor(s).toLowerCase().contains("sell")) {
 				
@@ -57,7 +57,7 @@ public class Functions implements Listener{
 
 	public static double xpBoost(Player p) {
 		double xp = 1;
-
+		if(!p.getItemInHand().hasItemMeta()) return 1;
 		for (String s : p.getItemInHand().getItemMeta().getLore()) {
 			if(ChatColor.stripColor(s).toLowerCase().contains("xp trinket")) {
 
@@ -75,7 +75,7 @@ public class Functions implements Listener{
 	
 	public static double luckBoost(Player p) {
 		double luck = 1;
-		
+		if(!p.getItemInHand().hasItemMeta()) return 1;
 		for (String s : p.getItemInHand().getItemMeta().getLore()) {
 			if(ChatColor.stripColor(s).toLowerCase().contains("lucky") && ChatColor.stripColor(s).toLowerCase().contains("%")) {
 				

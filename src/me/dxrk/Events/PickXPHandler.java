@@ -27,6 +27,7 @@ implements Listener {
 	public Methods m = Methods.getInstance();
 
     SettingsManager settings = SettingsManager.getInstance();
+
 	
 	
 
@@ -55,6 +56,7 @@ implements Listener {
         if(level >=25){
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints+1);
         }
+        settings.getPlayerData().set(p.getUniqueId().toString()+".PickXP", 0);
         settings.savePlayerData();
     }
 

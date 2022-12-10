@@ -4,7 +4,7 @@ version: "2.0.1"
 description: "The features!"
 depend: [JetsPrisonMines, ProtocolLib, DiscordBotAPI]
 commands:
-  testchestopen:
+  givexp:
   givecrate:
   randomtag:
   givemoney:

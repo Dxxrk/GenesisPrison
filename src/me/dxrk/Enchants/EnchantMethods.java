@@ -136,9 +136,8 @@ public class EnchantMethods {
 		return blocks;
 	}
 
-		  public static List<Block> laserBlocks(Location loc) {
+		  public static List<Block> laserBlocks(Block b){
 			  List<Block> blocks = new ArrayList<>();
-			  Block b = loc.getBlock();
 
 				for(int i = 0; i < 200; i++){
 					World w = b.getLocation().getWorld();
@@ -160,6 +159,101 @@ public class EnchantMethods {
 					blocks.add(bback);
 				}
 				//repeat this for every direction of coordinates.
+			  for(int i = 0; i < 200; i++){
+				  World w = b.getLocation().getWorld();
+				  int x = b.getX();
+				  int y = b.getY();
+				  int z = b.getZ();
+				  Block bb = w.getBlockAt(new Location(w, x - i, y, z));
+				  Block bup = w.getBlockAt(bb.getRelative(BlockFace.UP).getLocation());
+				  Block bdown = w.getBlockAt(bb.getRelative(BlockFace.DOWN).getLocation());
+				  Block bleft = w.getBlockAt(bb.getRelative(BlockFace.WEST).getLocation());
+				  Block bright = w.getBlockAt(bb.getRelative(BlockFace.EAST).getLocation());
+				  Block bfront = w.getBlockAt(bb.getRelative(BlockFace.NORTH).getLocation());
+				  Block bback = w.getBlockAt(bb.getRelative(BlockFace.SOUTH).getLocation());
+				  blocks.add(bup);
+				  blocks.add(bdown);
+				  blocks.add(bleft);
+				  blocks.add(bright);
+				  blocks.add(bfront);
+				  blocks.add(bback);
+			  }
+			  for(int i = 0; i < 200; i++){
+				  World w = b.getLocation().getWorld();
+				  int x = b.getX();
+				  int y = b.getY();
+				  int z = b.getZ();
+				  Block bb = w.getBlockAt(new Location(w, x, y + i, z));
+				  Block bup = w.getBlockAt(bb.getRelative(BlockFace.UP).getLocation());
+				  Block bdown = w.getBlockAt(bb.getRelative(BlockFace.DOWN).getLocation());
+				  Block bleft = w.getBlockAt(bb.getRelative(BlockFace.WEST).getLocation());
+				  Block bright = w.getBlockAt(bb.getRelative(BlockFace.EAST).getLocation());
+				  Block bfront = w.getBlockAt(bb.getRelative(BlockFace.NORTH).getLocation());
+				  Block bback = w.getBlockAt(bb.getRelative(BlockFace.SOUTH).getLocation());
+				  blocks.add(bup);
+				  blocks.add(bdown);
+				  blocks.add(bleft);
+				  blocks.add(bright);
+				  blocks.add(bfront);
+				  blocks.add(bback);
+			  }
+			  for(int i = 0; i < 200; i++){
+				  World w = b.getLocation().getWorld();
+				  int x = b.getX();
+				  int y = b.getY();
+				  int z = b.getZ();
+				  Block bb = w.getBlockAt(new Location(w, x, y - i, z));
+				  Block bup = w.getBlockAt(bb.getRelative(BlockFace.UP).getLocation());
+				  Block bdown = w.getBlockAt(bb.getRelative(BlockFace.DOWN).getLocation());
+				  Block bleft = w.getBlockAt(bb.getRelative(BlockFace.WEST).getLocation());
+				  Block bright = w.getBlockAt(bb.getRelative(BlockFace.EAST).getLocation());
+				  Block bfront = w.getBlockAt(bb.getRelative(BlockFace.NORTH).getLocation());
+				  Block bback = w.getBlockAt(bb.getRelative(BlockFace.SOUTH).getLocation());
+				  blocks.add(bup);
+				  blocks.add(bdown);
+				  blocks.add(bleft);
+				  blocks.add(bright);
+				  blocks.add(bfront);
+				  blocks.add(bback);
+			  }
+			  for(int i = 0; i < 200; i++){
+				  World w = b.getLocation().getWorld();
+				  int x = b.getX();
+				  int y = b.getY();
+				  int z = b.getZ();
+				  Block bb = w.getBlockAt(new Location(w, x, y, z + i));
+				  Block bup = w.getBlockAt(bb.getRelative(BlockFace.UP).getLocation());
+				  Block bdown = w.getBlockAt(bb.getRelative(BlockFace.DOWN).getLocation());
+				  Block bleft = w.getBlockAt(bb.getRelative(BlockFace.WEST).getLocation());
+				  Block bright = w.getBlockAt(bb.getRelative(BlockFace.EAST).getLocation());
+				  Block bfront = w.getBlockAt(bb.getRelative(BlockFace.NORTH).getLocation());
+				  Block bback = w.getBlockAt(bb.getRelative(BlockFace.SOUTH).getLocation());
+				  blocks.add(bup);
+				  blocks.add(bdown);
+				  blocks.add(bleft);
+				  blocks.add(bright);
+				  blocks.add(bfront);
+				  blocks.add(bback);
+			  }
+			  for(int i = 0; i < 200; i++){
+				  World w = b.getLocation().getWorld();
+				  int x = b.getX();
+				  int y = b.getY();
+				  int z = b.getZ();
+				  Block bb = w.getBlockAt(new Location(w, x, y, z - i));
+				  Block bup = w.getBlockAt(bb.getRelative(BlockFace.UP).getLocation());
+				  Block bdown = w.getBlockAt(bb.getRelative(BlockFace.DOWN).getLocation());
+				  Block bleft = w.getBlockAt(bb.getRelative(BlockFace.WEST).getLocation());
+				  Block bright = w.getBlockAt(bb.getRelative(BlockFace.EAST).getLocation());
+				  Block bfront = w.getBlockAt(bb.getRelative(BlockFace.NORTH).getLocation());
+				  Block bback = w.getBlockAt(bb.getRelative(BlockFace.SOUTH).getLocation());
+				  blocks.add(bup);
+				  blocks.add(bdown);
+				  blocks.add(bleft);
+				  blocks.add(bright);
+				  blocks.add(bfront);
+				  blocks.add(bback);
+			  }
 
 
 			  return blocks;
@@ -174,7 +268,7 @@ public class EnchantMethods {
 			int blocks = 1;
 
 
-			for (Block b1 : laserBlocks(b.getLocation())) {
+			for (Block b1 : laserBlocks(b)) {
 				if (set(b1).allows(DefaultFlag.LIGHTER)) {
 					m.removeBlockFromRegion(b1);
 					if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {

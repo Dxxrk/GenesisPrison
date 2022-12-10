@@ -322,7 +322,7 @@ public class PickaxeSkillTree implements Listener {
         zeus.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
         zeus.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
         //Level ups / abilities
-        zeus.setItem(18, skillItem(p, "Unlocked Zeus", m.c("&7Chose the Zeus path. Unlocks the Thunder and Lightning Events."), 0));
+        zeus.setItem(18, skillItem(p, "Unlocked Zeus", m.c("&7Chose the Zeus path. Unlocks Thunder and Lightning Events."), 0));
         zeus.setItem(22, skillItem(p, "Zeus (Level 2)", m.c("&7Upgrades Zeus Events."), 0));
         zeus.setItem(8, skillItem(p, "Zeus (Level 3)", m.c("&7Upgrades Zeus Events."), 0));
         zeus.setItem(45, skillItem(p, "Zeus (Level 4)", m.c("&7Upgrades Zeus Events."), 0));
@@ -362,7 +362,7 @@ public class PickaxeSkillTree implements Listener {
         poseidon.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
         poseidon.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
         //Level ups / abilities
-        poseidon.setItem(18, skillItem(p, "Unlocked Poseidon", m.c("&7Chose the Poseidon path. Unlocks the Twister and Tsunami Events."), 0));
+        poseidon.setItem(18, skillItem(p, "Unlocked Poseidon", m.c("&7Chose the Poseidon path. Unlocks Twister and Tsunami Events."), 0));
         poseidon.setItem(22, skillItem(p, "Poseidon (Level 2)", m.c("&7Upgrades Poseidon Events."), 0));
         poseidon.setItem(8, skillItem(p, "Poseidon (Level 3)", m.c("&7Upgrades Poseidon Events."), 0));
         poseidon.setItem(45, skillItem(p, "Poseidon (Level 4)", m.c("&7Upgrades Poseidon Events."), 0));
@@ -402,7 +402,7 @@ public class PickaxeSkillTree implements Listener {
         hades.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
         hades.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
         //Level ups / abilities
-        hades.setItem(18, skillItem(p, "Unlocked Hades", m.c("&7Chose the Hades path. Unlocks the Meteor and Scorched Earth Events."), 0));
+        hades.setItem(18, skillItem(p, "Unlocked Hades", m.c("&7Chose the Hades path. Unlocks Meteor and Scorched Earth Events."), 0));
         hades.setItem(22, skillItem(p, "Hades (Level 2)", m.c("&7Upgrades Hades Events."), 0));
         hades.setItem(8, skillItem(p, "Hades (Level 3)", m.c("&7Upgrades Hades Events."), 0));
         hades.setItem(45, skillItem(p, "Hades (Level 4)", m.c("&7Upgrades Hades Events."), 0));
@@ -442,11 +442,11 @@ public class PickaxeSkillTree implements Listener {
         ares.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
         ares.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
         //Level ups / abilities
-        ares.setItem(18, skillItem(p, "Unlocked Ares", m.c("&7Chose the ares path. Unlocks the chance for the Wise Words Event."), 0));
-        ares.setItem(22, skillItem(p, "Ares (Level 2)", m.c("&7Unlocks the War Torn Event"), 0));
-        ares.setItem(8, skillItem(p, "Ares (Level 3)", m.c("&7Raises Wise Words Event to level 2"), 0));
-        ares.setItem(45, skillItem(p, "Ares (Level 4)", m.c("&7Raises Wise Words Event to level 3"), 0));
-        ares.setItem(26, skillItem(p, "Ares (Level 5)", m.c("&7Raises War Torn Event to level 2"), 0));
+        ares.setItem(18, skillItem(p, "Unlocked Ares", m.c("&7Chose the ares path. Unlocks War Torn and Bloodshed Events."), 0));
+        ares.setItem(22, skillItem(p, "Ares (Level 2)", m.c("&7Upgrades Ares Events."), 0));
+        ares.setItem(8, skillItem(p, "Ares (Level 3)", m.c("&7Upgrades Ares Events."), 0));
+        ares.setItem(45, skillItem(p, "Ares (Level 4)", m.c("&7Upgrades Ares Events."), 0));
+        ares.setItem(26, skillItem(p, "Ares (Level 5)", m.c("&7Upgrades Ares Events."), 0));
         p.openInventory(ares);
     }
 
@@ -482,11 +482,11 @@ public class PickaxeSkillTree implements Listener {
         aphrodite.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
         aphrodite.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
         //Level ups / abilities
-        aphrodite.setItem(18, skillItem(p, "Unlocked Aphrodite", m.c("&7Chose the aphrodite path. Unlocks the chance for the Cease Fire Event."), 0));
-        aphrodite.setItem(22, skillItem(p, "Aphrodite (Level 2)", m.c("&7Unlocks the God's Grace Event"), 0));
-        aphrodite.setItem(8, skillItem(p, "Aphrodite (Level 3)", m.c("&7Raises Cease Fire Event to level 2"), 0));
-        aphrodite.setItem(45, skillItem(p, "Aphrodite (Level 4)", m.c("&7Raises Cease Fire Event to level 3"), 0));
-        aphrodite.setItem(26, skillItem(p, "Aphrodite (Level 5)", m.c("&7Raises God's Grace Event to level 2"), 0));
+        aphrodite.setItem(18, skillItem(p, "Unlocked Aphrodite", m.c("&7Chose the aphrodite path. Unlocks God's Grace and Cease Fire Events."), 0));
+        aphrodite.setItem(22, skillItem(p, "Aphrodite (Level 2)", m.c("&7Upgrades Aphrodite Events."), 0));
+        aphrodite.setItem(8, skillItem(p, "Aphrodite (Level 3)", m.c("&7Upgrades Aphrodite Events."), 0));
+        aphrodite.setItem(45, skillItem(p, "Aphrodite (Level 4)", m.c("&7Upgrades Aphrodite Events."), 0));
+        aphrodite.setItem(26, skillItem(p, "Aphrodite (Level 5)", m.c("&7Upgrades Aphrodite Events."), 0));
         p.openInventory(aphrodite);
     }
 

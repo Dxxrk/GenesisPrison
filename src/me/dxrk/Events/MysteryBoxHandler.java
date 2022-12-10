@@ -4,15 +4,20 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
+import net.minecraft.server.v1_8_R3.BlockDataAbstract;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,9 +26,9 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.Directional;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.EulerAngle;
 import xyz.xenondevs.particle.ParticleBuilder;
 import xyz.xenondevs.particle.ParticleEffect;
@@ -39,7 +44,11 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
 
 
-
+	public void spawnItem(ItemStack i, Location loc){
+		Item item = loc.getWorld().dropItem(loc, i);
+		final ArmorStand stand = loc.getWorld().spawn(loc, ArmorStand.class);
+		stand.setPassenger(item);
+	}
 
 	@EventHandler
 	public void armorstand(PlayerArmorStandManipulateEvent e){
@@ -83,8 +92,12 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 				}
 			}
 		}
-		if(label.equalsIgnoreCase("testchestopen")){
-			summonStand((Player)sender);
+		if(label.equalsIgnoreCase("givexp")){
+			if(args.length == 2){
+				Player p = Bukkit.getPlayer(args[0]);
+				double xp = Double.parseDouble(args[1]);
+				PickXPHandler.getInstance().addXP(p, xp);
+			}
 		}
 
 		return false;
@@ -100,10 +113,10 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 		lore.add(m.c("&a&lRewards:"));
 		lore.add(m.c(" "));
 		lore.add(m.c("&e&l&m--&e&lTokens&m--"));
-		lore.add(m.c("&e⛀25,000-75,000"));
+		lore.add(m.c("&e⛀5,000,000-15,000,000"));
 		lore.add(m.c(" "));
 		lore.add(m.c("&b&l&m--&b&lPick XP&m--"));
-		lore.add(m.c("&b✴250,000-750,000"));
+		lore.add(m.c("&b✴25,000-75,000"));
 		lore.add(m.c(" "));
 		lore.add(m.c("&c&l&m--&c&lKeys&m--"));
 		lore.add(m.c("&c1-10x Random Keys"));
@@ -112,8 +125,8 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 		lore.add(m.c("&5Hermes-Zeus Rank"));
 		lore.add(m.c(" "));
 		lore.add(m.c("&6&l&m--&6&lItems&m--"));
-		lore.add(m.c("&61-5x Legendary Trinkets"));
-		lore.add(m.c("&61-3x Legendary me.dxrk.Enchants"));
+		lore.add(m.c("&61-3x Legendary Trinkets"));
+		lore.add(m.c("&61-5x Epic Trinkets"));
 		lore.add(m.c(" "));
 		lore.add(m.c("&f&l&m--&f&lTroll&m--"));
 		lore.add(m.c("&fMjölnir"));
@@ -136,14 +149,27 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 		ItemMeta rm = reward.getItemMeta();
 		if(crate.equals("genesis")){
 			Random r = new Random();
-			int ri = r.nextInt(2);
+			int ri = r.nextInt(40);
 
-			if(ri < 2){
+			if(ri <= 25){
+				int tmin = 5000000;
+				int tmax = 15000000;
+				int tokens = r.nextInt(tmax - tmin)+ tmin;
+				rm.setDisplayName(m.c("&b"+Main.formatAmt(tokens)+" Tokens"));
+				reward.setType(Material.PRISMARINE_CRYSTALS);
+				List<String> lore = new ArrayList<>();
+				lore.add("tokens add %PLAYER% "+tokens);
+				rm.setLore(lore);
+			}
+			if(ri >25 && ri <=40) {
 				int tmin = 25000;
 				int tmax = 75000;
 				int tokens = r.nextInt(tmax - tmin)+ tmin;
-				rm.setDisplayName(m.c("&b"+Main.formatAmt(tokens)+" Tokens"));
-				reward.setType(Material.DIAMOND_PICKAXE);
+				rm.setDisplayName(m.c("&a"+Main.formatAmt(tokens)+" XP"));
+				reward.setType(Material.EXP_BOTTLE);
+				List<String> lore = new ArrayList<>();
+				lore.add("givexp %PLAYER% "+tokens);
+				rm.setLore(lore);
 			}
 
 		}
@@ -211,7 +237,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
 
 
-	public void spawnArmorStand(JavaPlugin plugin, Location place, List<ArmorStand> stands, List<ItemStack> items, String crate, Player p) {
+	public void spawnArmorStand(JavaPlugin plugin, Location place, List<ArmorStand> stands, List<ItemStack> items, List<Item> it, List<Hologram> holos, String crate, Player p, int time) {
 
 
 		new BukkitRunnable() {
@@ -221,12 +247,15 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
 
 				ItemStack reward = Reward(crate).clone();
+				Item item = place.getWorld().dropItem(place, reward);
+				item.setTicksLived(5635+time);
+				item.setPickupDelay(6000);
 
 
 				//Location faceSouth = new Location(place.getWorld(), place.getX(), place.getY(), place.getZ(), 0f, 0f);
 
 				final ArmorStand stand = place.getWorld().spawn(place, ArmorStand.class);
-
+				stand.setPassenger(item);
 
 				stand.setGravity(false);
 				stand.setVisible(false);
@@ -235,16 +264,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 				Hologram name = HologramsAPI.createHologram(plugin, holo);
 				name.appendTextLine(reward.getItemMeta().getDisplayName());
 
-				stand.setItemInHand(reward);
 
-				EulerAngle item_pose = new EulerAngle(Math.toRadians(280), Math.toRadians(354), Math.toRadians(1));
-
-				stand.setRightArmPose(item_pose);
-				stand.setRightLegPose(new EulerAngle(0, 0, 0));
-				stand.setHeadPose(new EulerAngle(0, 0, 0));
-				stand.setLeftArmPose(new EulerAngle(0, 0, 0));
-				stand.setLeftLegPose(new EulerAngle(0, 0, 0));
-				stand.setBodyPose(new EulerAngle(0, 0, 0));
 
 
 
@@ -253,6 +273,8 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
 				stands.add(stand);
 				items.add(reward);
+				it.add(item);
+				holos.add(name);
 				p.playSound(p.getLocation(), Sound.CHICKEN_EGG_POP, 1.0f, 1.0f);
 
 			}
@@ -268,13 +290,13 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 		}.runTaskLater(plugin, time);
 	}
 
-	public void startAnimation(JavaPlugin plugin, String crate, Location loc, List<ArmorStand> stands, List<ItemStack> items, Player p, int time, double x, double z){
+	public void startAnimation(JavaPlugin plugin, String crate, Location loc, List<ArmorStand> stands, List<ItemStack> items, List<Item> item, List<Hologram> holos, Player p, int time, double x, double y, double z){
 		new BukkitRunnable() {
 
 			@Override
 			public void run() {
 				if(!p.isOnline()) return;
-				Location place = new Location(loc.getWorld(), loc.getX()+x, loc.getY()+0.5, loc.getZ()+z);
+				Location place = new Location(loc.getWorld(), loc.getX()+x, loc.getY()+y+0.5, loc.getZ()+z);
 
 				for (int i = 0; i < 60; i++)
 					playSound(plugin, p, Sound.NOTE_PIANO, i);
@@ -286,7 +308,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 						.setSpeed(0.1f)
 						.display();
 
-				spawnArmorStand(plugin, place, stands, items, crate, p);
+				spawnArmorStand(plugin, place, stands, items, item, holos, crate, p, time);
 
 
 
@@ -296,28 +318,81 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
 	public void displayRewards(JavaPlugin plugin, String crate, String name, Location loc, List<ArmorStand> stands, Player p) {
 
-		Location block = new Location(loc.getWorld(), loc.getX(), loc.getY() +1, loc.getZ());
+		Location block = new Location(loc.getWorld(), loc.getX(), loc.getY() +2, loc.getZ());
 
 
 		block.getWorld().getBlockAt(block).setType(Material.CHEST);
+
 		m.playChestAction((Chest) block.getWorld().getBlockAt(block).getState(), true, p);
+		Block b = block.getWorld().getBlockAt(block);
+		BlockState state = b.getState();
+
+		double rotation = p.getLocation().getYaw() - 180;
+		if (rotation < 0) {
+			rotation += 360.0;
+		}
+		if (0 <= rotation && rotation < 90.5) {
+			org.bukkit.material.Chest c = new org.bukkit.material.Chest(BlockFace.SOUTH);
+			state.setData(c);
+			state.update();
+		}
+		if (90.5 <= rotation && rotation < 180.5) {
+			org.bukkit.material.Chest c = new org.bukkit.material.Chest(BlockFace.WEST);
+			state.setData(c);
+			state.update();
+		}
+		if (180.5 <= rotation && rotation < 270.5) {
+			org.bukkit.material.Chest c = new org.bukkit.material.Chest(BlockFace.NORTH);
+			state.setData(c);
+			state.update();
+		}
+		if (270.5 <= rotation && rotation <= 360) {
+			org.bukkit.material.Chest c = new org.bukkit.material.Chest(BlockFace.EAST);
+			state.setData(c);
+			state.update();
+		}
 
 
-		Location holo = new Location(loc.getWorld(), loc.getX()+0.5, loc.getY() +3.5, loc.getZ());
-		Hologram chest = HologramsAPI.createHologram(plugin, holo);
-		chest.appendTextLine(m.c(name));
+
+
 
 		List<ItemStack> items = new ArrayList<>();
 		List<Hologram> holos = new ArrayList<>();
+		List<Item> item = new ArrayList<>();
 
 
-		//keep y level constant
-		startAnimation(plugin, crate, loc, stands, items, p, 20, 3, -1); // -1z +3x
-		startAnimation(plugin, crate, loc, stands, items, p, 85, 2, 1); // +1z +2x
-		startAnimation(plugin, crate, loc, stands, items, p, 150, 0, 2); // +2z
-		startAnimation(plugin, crate, loc, stands, items, p, 215, -2, 1); // +1z -2x
-		startAnimation(plugin, crate, loc, stands, items, p, 280, -3, -1); // -1z -3x
-		finishOpen(plugin, block, p, stands, items, 365);
+		//WEST and EAST = Z coord || NORTH and SOUTH = X coord
+		if ((0 <= rotation && rotation < 90.5) || (180.5 <= rotation && rotation < 270.5) ) { //SOUTH AND NORTH
+			Location holo = new Location(loc.getWorld(), loc.getX()+0.5, loc.getY() +3.5, loc.getZ());
+			Hologram chest = HologramsAPI.createHologram(plugin, holo);
+			chest.appendTextLine(m.c(name));
+			holos.add(chest);
+
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 20, 0, 0.5, 0);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 85, 0.25, 0.25, 0);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 150, 0.5, 0, 0);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 215, 0.25, -0.25, 0);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 280, 0, -0.5, 0);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 280, -0.25, -0.25, 0);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 280, -0.5, 0, 0);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 280, -0.25, 0.25, 0);
+		}
+		if ((90.5 <= rotation && rotation < 180.5) || (270.5 <= rotation && rotation <= 360) ) { //WEST AND EAST
+			Location holo = new Location(loc.getWorld(), loc.getX(), loc.getY() +3.5, loc.getZ()+0.5);
+			Hologram chest = HologramsAPI.createHologram(plugin, holo);
+			chest.appendTextLine(m.c(name));
+			holos.add(chest);
+
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 20, 0, 0.5, 0);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 85, 0, 0.25, 0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 150, 0, 0, 0.5);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 215, 0, -0.25, 0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 280, 0, -0.5, 0);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 280, 0, -0.25, -0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 280, 0, 0, -0.5);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 280, 0, 0.25, -0.25);
+		}
+		finishOpen(plugin, block, p, stands, items, item, holos, 365);
 
 
 
@@ -325,7 +400,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
 
 
-	public void finishOpen(JavaPlugin plugin, Location loc, Player p, List<ArmorStand> stands, List<ItemStack> items, int time){
+	public void finishOpen(JavaPlugin plugin, Location loc, Player p, List<ArmorStand> stands, List<ItemStack> items, List<Item> item, List<Hologram> holos, int time){
 
 		new BukkitRunnable(){
 			@Override
@@ -336,12 +411,23 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 					s.remove();
 
 				}
+				for(Item i : item){
+					i.remove();
+				}
+				for(Hologram h : holos){
+					h.delete();
+				}
 
 				loc.getWorld().getBlockAt(loc).setType(Material.AIR);
 
 				for(ItemStack item : items){
-					p.getInventory().addItem(item);
-					p.updateInventory();
+					if(item.getItemMeta().hasLore()) {
+						String s = item.getItemMeta().getLore().get(0).replace("%PLAYER%", p.getName());
+						Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s);
+					} else {
+						p.getInventory().addItem(item);
+						p.updateInventory();
+					}
 				}
 			}
 		}.runTaskLater(plugin, time);

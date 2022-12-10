@@ -50,12 +50,14 @@ public class Methods {
         Location location = chest.getLocation();
         World world = ((CraftWorld) location.getWorld()).getHandle();
         BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
+
         double rotation = p.getLocation().getYaw() - 180;
         if (rotation < 0) {
             rotation += 360.0;
         }
         if (0 <= rotation && rotation < 90.5) {
             position.south();
+
         }
         if (90.5 <= rotation && rotation < 180.5) {
             position.west();

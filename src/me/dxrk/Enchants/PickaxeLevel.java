@@ -253,7 +253,11 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		ItemStack skills = new ItemStack(Material.WOOD_PICKAXE);
 		ItemMeta sm = skills.getItemMeta();
 		sm.setDisplayName(c("&6Pickaxe Skills"));
-		lore.add(c("&cUnlocks at Pickaxe Level 25!"));
+		if(PickXPHandler.getInstance().getLevel(p) <25) {
+			lore.add(c("&cUnlocks at Pickaxe Level 25!"));
+		}else {
+			lore.add(c("&aOpen Pickaxe Skills"));
+		}
 		sm.setLore(lore);
 		skills.setItemMeta(sm);
 		enchantmenu.setItem(46, skills);
@@ -724,19 +728,23 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 					if(ChatColor.stripColor(s).contains(Enchant))
 						line = z;
 				}
+
+				int level = getBlocks(lore.get(line));
+				int plus = 0;
+				int price = (int) enchantPrice(Enchant, level);
 				for(int x = 0; x < 100001; x++){
-					int level = getBlocks(lore.get(line));
-					int plus = level + 1;
-					int price = (int) enchantPrice(Enchant, level);
+
 					if(Tokens.getInstance().getTokens(p) >= price) {
-						if (plus > maxLevel(Enchant)) return;
-						lore.set(line, c("&c" + Enchant + " &e" + plus));
-						this.tokens.takeTokens(p, price);
+						if (plus >= maxLevel(Enchant)) break;
 					} else {
 						p.sendMessage(c("&f&lTokens &8| &7Not enough Tokens "));
 						break;
 					}
+					plus = level + 1;
+					price += (int) enchantPrice(Enchant, plus);
 				}
+				lore.set(line, c("&c" + Enchant + " &e" + plus));
+				this.tokens.takeTokens(p, price);
 
 			}
 
