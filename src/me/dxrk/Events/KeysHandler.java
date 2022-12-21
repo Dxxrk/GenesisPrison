@@ -3,13 +3,12 @@ package me.dxrk.Events;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Random;
 
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.Methods;
-import me.dxrk.Main.RomanNumber;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Tokens.Tokens;
 import org.bukkit.Bukkit;
@@ -19,7 +18,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class KeysHandler implements Listener {
   public SettingsManager settings = SettingsManager.getInstance();
@@ -56,48 +54,26 @@ public class KeysHandler implements Listener {
     this.settings.getLocksmith().set(p.getUniqueId().toString() + "." + key, keys - amt);
     this.settings.saveLocksmith();
   }
-  
-  public void KRMSG2(Player p, String key, String color, boolean bc, String lvl) {
-	  String s;
-	  
-    s = ChatColor.translateAlternateColorCodes('&', 
-    		"&f&lEncounter &8| &b+2 " + color + key + " &bRune");
-	  
-	    if (bc) {
-	      Bukkit.broadcastMessage(s);
-	      addKey(p, key, 2);
-	    } else {
-	    	if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Encounter-Messages") == true) {
-	    		p.sendMessage(s);
-	    	}
-	      addKey(p, key, 2);
-	    }
-	    int keysfound = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".KeysFound");
-		  this.settings.getPlayerData().set(p.getUniqueId().toString()+".KeysFound", (keysfound+2));
-	  }
+
 	  
 	  
   
-  public void KRMSG(Player p, String key, String color, boolean bc, String lvl) {
+  public void KeyFinderMSG(Player p, String key, String color, String color2, int amt) {
 	  String s;
 	  
     s = ChatColor.translateAlternateColorCodes('&', 
-        "&f&lEncounter &8| &b+1 " + color + key + " &bRune");
+        "&f&lEncounter &8| &b+"+amt+" " + color + key + color2 + " &bKey");
 	  
-    if (bc) {
-      Bukkit.broadcastMessage(s);
-      addKey(p, key, 1);
-    } else {
+
     	if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Encounter-Messages") == true) {
     		p.sendMessage(s);
     	}
       addKey(p, key, 1);
-    } 
     int keysfound = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".KeysFound");
 	  this.settings.getPlayerData().set(p.getUniqueId().toString()+".KeysFound", (keysfound+1));
   }
   
-  public void DiscMSG(Player p, String dust) {
+  public void DustFinderMSG(Player p, String dust) {
 	  switch (dust) {
 		  case "Common":
 			  p.getInventory().addItem(TrinketHandler.getInstance().commonDust());
@@ -148,9 +124,9 @@ public class KeysHandler implements Listener {
 		  chance = 1350 - (7*level);
 	  }
 
-	  if (ChatColor.stripColor(s).contains("Encounter ")) {
+	  if (ChatColor.stripColor(s).contains("Dust Finder")) {
 		  if (findKey(chance))
-			  keyToGiveR(level, p);
+			  giveDust(p);
 	  }
 
   }
@@ -158,24 +134,24 @@ public class KeysHandler implements Listener {
 
   
   
-  public void keyToGive(int kfLvL, Player p) {
+  public void giveDust(Player p) {
     double rand = this.r.nextInt(1000);
     
     if(rand <=499) {
-    	DiscMSG(p, "Common");
+    	DustFinderMSG(p, "Common");
     } else if(rand >= 500 && rand <=799) {
-    	DiscMSG(p, "Rare");
+    	DustFinderMSG(p, "Rare");
     } else if(rand >= 800 && rand <=949) {
-    	DiscMSG(p, "Epic");
+    	DustFinderMSG(p, "Epic");
     } else if(rand >= 950 && rand <=991) {
-    	DiscMSG(p, "Legendary");
+    	DustFinderMSG(p, "Legendary");
     } else if(rand >=992) {
-    	DiscMSG(p, "Heroic");
+    	DustFinderMSG(p, "Heroic");
     }
     
   }
   
-  public void keyToGiveR(int kfLvL, Player p) {
+  public void giveKey(int kfLvL, Player p) {
     double rand = this.r.nextInt(100);
     int chance = 0;
     List<String> lore = p.getItemInHand().getItemMeta().getLore();
@@ -185,59 +161,49 @@ public class KeysHandler implements Listener {
 		  }
 	  }
     int kf = this.r.nextInt(100);
-    if(chance > 0 && kf <= chance) { // change to check for lore on pickaxe having "Key Fortune"
-    	if(kfLvL < 50) {
-    		if (rand < 10.0D) {
-    	          KRMSG2(p, "Polis", "&f&l", false, RomanNumber.toRoman(kfLvL));
-    	        } else if (rand < 35.0D) {
-    	          KRMSG2(p, "Hades", "&4&l", false, RomanNumber.toRoman(kfLvL));
-    	        } else if (rand < 67.5D) {
-    	          KRMSG2(p, "Midas", "&e&l", false, RomanNumber.toRoman(kfLvL));
-    	        } else {
-    	          KRMSG2(p, "Poseidon", "&9&l", false, RomanNumber.toRoman(kfLvL));
-    	        }
-    	} else {
-    		if (rand < 0.25D) {
-  	          KRMSG2(p, "Oblivion", "&c&l", false, RomanNumber.toRoman(kfLvL));
-  	        } else if (rand < 15.0D) {
-  	          KRMSG2(p, "Polis", "&f&l", false, RomanNumber.toRoman(kfLvL));
-  	        } else if (rand < 45.0D) {
-  	          KRMSG2(p, "Hades", "&4&l", false, RomanNumber.toRoman(kfLvL));
-  	        }else if (rand < 72.5D) {
-    	      KRMSG2(p, "Midas", "&e&l", false, RomanNumber.toRoman(kfLvL));
-    	    } else {
-  	          KRMSG2(p, "Poseidon", "&9&l", false, RomanNumber.toRoman(kfLvL));
-  	        }
-    	}
-    } else {
-    	if(kfLvL < 50) {
-    		if (rand < 10.0D) {
-    	          KRMSG(p, "Polis", "&f&l", false, RomanNumber.toRoman(kfLvL));
-    	        } else if (rand < 35.0D) {
-    	          KRMSG(p, "Hades", "&4&l", false, RomanNumber.toRoman(kfLvL));
-    	        } else if (rand < 67.5D) {
-    	          KRMSG(p, "Midas", "&e&l", false, RomanNumber.toRoman(kfLvL));
-    	        } else {
-    	          KRMSG(p, "Poseidon", "&9&l", false, RomanNumber.toRoman(kfLvL));
-    	        }
-    	} else {
-    		if (rand < 0.25D) {
-  	          KRMSG(p, "Oblivion", "&c&l", false, RomanNumber.toRoman(kfLvL));
-  	        } else if (rand < 15.0D) {
-  	          KRMSG(p, "Polis", "&f&l", false, RomanNumber.toRoman(kfLvL));
-  	        } else if (rand < 45.0D) {
-  	          KRMSG(p, "Hades", "&4&l", false, RomanNumber.toRoman(kfLvL));
-  	        }else if (rand < 72.5D) {
-    	      KRMSG(p, "Midas", "&e&l", false, RomanNumber.toRoman(kfLvL));
-    	    } else {
-  	          KRMSG(p, "Poseidon", "&9&l", false, RomanNumber.toRoman(kfLvL));
-  	        }
-    	}
-      
+    if(chance > 0 && kf <= chance) {
+        if(kf <=20){
+            KeyFinderMSG(p, "Alpha", "&7&l", "", 2);
+        }
+        if(kf >20 && kf <=40){
+            KeyFinderMSG(p, "Beta", "&c&l", "", 2);
+        }
+        if(kf >40 && kf <=60){
+            KeyFinderMSG(p, "Omega", "&4&l", "", 2);
+        }
+        if(kf >60 && kf <=80) {
+            KeyFinderMSG(p, "Token", "&e&l", "", 2);
+        }
+        if(kf >80 && kf <=90) {
+            KeyFinderMSG(p, "Seasonal", "&4&l&ki&f&l", "&4&l&ki&r", 2);
+        }
+        if(kf >90) {
+            KeyFinderMSG(p, "Community", "&5&l", "", 2);
+        }
+	}
+    else {
+        if(kf <=20){
+            KeyFinderMSG(p, "Alpha", "&7&l", "", 1);
+        }
+        if(kf >20 && kf <=40){
+            KeyFinderMSG(p, "Beta", "&c&l", "", 1);
+        }
+        if(kf >40 && kf <=60){
+            KeyFinderMSG(p, "Omega", "&4&l", "", 1);
+        }
+        if(kf >60 && kf <=80) {
+            KeyFinderMSG(p, "Token", "&e&l", "", 1);
+        }
+        if(kf >80 && kf <=90) {
+            KeyFinderMSG(p, "Seasonal", "&4&l&ki&f&l", "&4&l&ki&r", 1);
+        }
+        if(kf >90) {
+            KeyFinderMSG(p, "Community", "&5&l", "", 1);
+        }
     }
   }
   
-  public void keyRoulette(Player p, String s) {
+  public void keyFinder(Player p, String s) {
 
 	  int level = m.getBlocks(s);
 	  int chance;
@@ -248,9 +214,9 @@ public class KeysHandler implements Listener {
 		  chance = 1350 - (7*level);
 	  }
 	  
-    if (ChatColor.stripColor(s).contains("Encounter ")) {
+    if (ChatColor.stripColor(s).contains("Key Finder")) {
       if (findKey(chance))
-        keyToGiveR(level, p);
+        giveKey(level, p);
     }
   }
 
@@ -306,8 +272,8 @@ public class KeysHandler implements Listener {
     Random o = new Random();
     int ol = o.nextInt(500000);
     if(ol == 1) {
-    	Bukkit.broadcastMessage(Methods.getInstance().c("&e&lThe gods have granted &5&l"+p.getName()+" &e&lan &f&l&kOO&e&lOlympus&f&l&kOO&r &e&lRune!"));
-    	addKey(p, "Olympus", 1);
+    	Bukkit.broadcastMessage(Methods.getInstance().c("&f&l"+p.getName()+" &7Has found a &3&lRank &7Key!"));
+    	addKey(p, "Rank", 1);
     }
     
     List<String> lore = i.getItemMeta().getLore();
@@ -315,7 +281,7 @@ public class KeysHandler implements Listener {
     for (x = 0; x < lore.size(); x++) {
       String s = lore.get(x);
       if (ChatColor.stripColor(s).contains("Key Finder")) {
-        keyRoulette(p, s);
+        keyFinder(p, s);
       }
       
     }

@@ -181,6 +181,8 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("randomtag").setExecutor( new TagsHandler());
     getCommand("givecrate").setExecutor(new MysteryBoxHandler());
     getCommand("givexp").setExecutor(new MysteryBoxHandler());
+    getCommand("giverank").setExecutor(new CMDRanks());
+    registerEvents(this, new Listener[] { new CMDRanks() });
     registerEvents(this, new Listener[] { new CMDVoteShop() });
     registerEvents(this, new Listener[] { new TokensCMD() });
     registerEvents(this, new Listener[] { new KitAndWarp() });

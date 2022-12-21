@@ -4,7 +4,6 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
-import net.minecraft.server.v1_8_R3.BlockDataAbstract;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,7 +25,6 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.Directional;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
@@ -103,6 +101,10 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 		return false;
 	}
 
+	public void randomKey() {
+
+	}
+
 	public ItemStack GenesisCrate() {
 		ItemStack gcrate = new ItemStack(Material.CHEST);
 		ItemMeta gm = gcrate.getItemMeta();
@@ -120,24 +122,26 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 		lore.add(m.c(" "));
 		lore.add(m.c("&c&l&m--&c&lKeys&m--"));
 		lore.add(m.c("&c1-10x Random Keys"));
+		lore.add(m.c("&c3x Rank Keys"));
 		lore.add(m.c(" "));
 		lore.add(m.c("&5&l&m--&5&lRanks&m--"));
-		lore.add(m.c("&5Hermes-Zeus Rank"));
+		lore.add(m.c("&e&lOlympian Rank"));
+		lore.add(m.c("&9&lG&b&le&9&ln&b&le&9&ls&b&li&9&ls &b&lRank"));
 		lore.add(m.c(" "));
 		lore.add(m.c("&6&l&m--&6&lItems&m--"));
 		lore.add(m.c("&61-3x Legendary Trinkets"));
-		lore.add(m.c("&61-5x Epic Trinkets"));
+		lore.add(m.c("&51-5x Epic Trinkets"));
 		lore.add(m.c(" "));
 		lore.add(m.c("&f&l&m--&f&lTroll&m--"));
 		lore.add(m.c("&fMjölnir"));
 		lore.add(m.c("&fPack-a-Punch"));
 		lore.add(m.c("&fFree Lunch :)"));
 		lore.add(m.c(" "));
-		lore.add(m.c("&5&l&m--&5&lMisc.&m--"));
-		lore.add(m.c("&5Item Rename"));
-		lore.add(m.c("&53x Sell Boost"));
-		lore.add(m.c("&52x XP Boost"));
-		lore.add(m.c("&52x Sell Boost"));
+		lore.add(m.c("&d&l&m--&5&lMisc.&m--"));
+		lore.add(m.c("&dItem Rename"));
+		lore.add(m.c("&d3x Sell Boost"));
+		lore.add(m.c("&d2x XP Boost"));
+		lore.add(m.c("&d2x Sell Boost"));
 		gm.setLore(lore);
 		gcrate.setItemMeta(gm);
 
@@ -149,7 +153,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 		ItemMeta rm = reward.getItemMeta();
 		if(crate.equals("genesis")){
 			Random r = new Random();
-			int ri = r.nextInt(40);
+			int ri = r.nextInt(100);
 
 			if(ri <= 25){
 				int tmin = 5000000;
@@ -161,7 +165,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 				lore.add("tokens add %PLAYER% "+tokens);
 				rm.setLore(lore);
 			}
-			if(ri >25 && ri <=40) {
+			if(ri > 25 && ri <=50) {
 				int tmin = 25000;
 				int tmax = 75000;
 				int tokens = r.nextInt(tmax - tmin)+ tmin;
@@ -170,6 +174,12 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 				List<String> lore = new ArrayList<>();
 				lore.add("givexp %PLAYER% "+tokens);
 				rm.setLore(lore);
+			}
+			if(ri > 50 && ri <70){
+				int tmin = 1;
+				int tmax = 10;
+				int keys = r.nextInt(tmax - tmin)+ tmin;
+
 			}
 
 		}
@@ -198,6 +208,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 			e.setCancelled(true);
 			p.updateInventory();
 			displayRewards(Main.getInstance(), "genesis", "&f&l&k[&7&l*&f&l&k]&r &9&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r", loc, stands, p);
+			p.setItemInHand(null);
 
 
 		}
@@ -223,11 +234,12 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 			int tick = 0;
 			@Override
 			public void run(){
-				if(stand.equals(null) || stand.isDead()) cancel();
+				if(stand == null || stand.isDead()) cancel();
 				++tick;
 
 
 				Location loc = getLocationInCircle(place, rad*tick);
+				assert stand != null;
 				stand.teleport(loc);
 
 
@@ -266,8 +278,6 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
 
 
-
-
 				rotateStand(stand, place);
 
 
@@ -296,9 +306,9 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 			@Override
 			public void run() {
 				if(!p.isOnline()) return;
-				Location place = new Location(loc.getWorld(), loc.getX()+x, loc.getY()+y+0.5, loc.getZ()+z);
+				Location place = new Location(loc.getWorld(), loc.getX()+x, loc.getY()+y+1, loc.getZ()+z);
 
-				for (int i = 0; i < 60; i++)
+				for (int i = 0; i < 40; i++)
 					playSound(plugin, p, Sound.NOTE_PIANO, i);
 
 				// Try to use a SingleTask - Check GitHub
@@ -318,7 +328,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
 	public void displayRewards(JavaPlugin plugin, String crate, String name, Location loc, List<ArmorStand> stands, Player p) {
 
-		Location block = new Location(loc.getWorld(), loc.getX(), loc.getY() +2, loc.getZ());
+		Location block = new Location(loc.getWorld(), loc.getX(), loc.getY() +3, loc.getZ());
 
 
 		block.getWorld().getBlockAt(block).setType(Material.CHEST);
@@ -363,36 +373,36 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
 		//WEST and EAST = Z coord || NORTH and SOUTH = X coord
 		if ((0 <= rotation && rotation < 90.5) || (180.5 <= rotation && rotation < 270.5) ) { //SOUTH AND NORTH
-			Location holo = new Location(loc.getWorld(), loc.getX()+0.5, loc.getY() +3.5, loc.getZ());
+			Location holo = new Location(loc.getWorld(), loc.getX()+0.5, loc.getY() +0.5, loc.getZ()+0.25);
 			Hologram chest = HologramsAPI.createHologram(plugin, holo);
 			chest.appendTextLine(m.c(name));
 			holos.add(chest);
 
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 20, 0, 0.5, 0);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 85, 0.25, 0.25, 0);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 150, 0.5, 0, 0);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 215, 0.25, -0.25, 0);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 280, 0, -0.5, 0);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 280, -0.25, -0.25, 0);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 280, -0.5, 0, 0);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 280, -0.25, 0.25, 0);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 20, 0.5, 1.75, 0.25); // Adjust by +-0.5 to account for block coords not being in the center of the block
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 65, 1.75, 1.5, 0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 110, 2.0, 0, 0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 155, 1.75, -1.5, 0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 200, 0.5, -1.75, 0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 245, -0.75, -1.5, 0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 290, -1.0, 0, 0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 335, -0.75, 1.5, 0.25);
 		}
 		if ((90.5 <= rotation && rotation < 180.5) || (270.5 <= rotation && rotation <= 360) ) { //WEST AND EAST
-			Location holo = new Location(loc.getWorld(), loc.getX(), loc.getY() +3.5, loc.getZ()+0.5);
+			Location holo = new Location(loc.getWorld(), loc.getX()+0.25, loc.getY() +0.5, loc.getZ()+0.5);
 			Hologram chest = HologramsAPI.createHologram(plugin, holo);
 			chest.appendTextLine(m.c(name));
 			holos.add(chest);
 
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 20, 0, 0.5, 0);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 85, 0, 0.25, 0.25);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 150, 0, 0, 0.5);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 215, 0, -0.25, 0.25);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 280, 0, -0.5, 0);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 280, 0, -0.25, -0.25);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 280, 0, 0, -0.5);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 280, 0, 0.25, -0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 20, 0.25, 1.75, 0.5);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 65, 0.25, 1.5, 1.75);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 110, 0.25, 0, 2.0);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 155, 0.25, -1.5, 1.75);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 200, 0.25, -1.75, 0.5);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 245, 0.25, -1.5, -0.75);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 290, 0.25, 0, -1.0);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 335, 0.25, 1.5, -0.75);
 		}
-		finishOpen(plugin, block, p, stands, items, item, holos, 365);
+		finishOpen(plugin, block, p, stands, items, item, holos, 420);
 
 
 
