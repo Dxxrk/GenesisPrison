@@ -17,7 +17,7 @@ public class CMDRename implements CommandExecutor {
     ItemStack i = new ItemStack(Material.PAPER, amnt);
     ItemMeta im = i.getItemMeta();
     im.setDisplayName(ChatColor.AQUA + "Item Rename");
-    List<String> lore = new ArrayList<String>();
+    List<String> lore = new ArrayList<>();
     lore.add(ChatColor.GRAY + "Type /rename with this item in your inventory!");
     im.setLore(lore);
     i.setItemMeta(im);
@@ -39,7 +39,7 @@ public class CMDRename implements CommandExecutor {
         } 
       } 
       Player who = Bukkit.getPlayer(args[0]);
-      who.getInventory().addItem(new ItemStack[] { renamePaper(1) });
+      who.getInventory().addItem(renamePaper(1));
       who.updateInventory();
       return true;
     } 
@@ -50,14 +50,13 @@ public class CMDRename implements CommandExecutor {
           if (p.getItemInHand() != null && !p.getItemInHand().getType().equals(Material.AIR)) {
             if (args.length >= 1) {
               ItemStack itemStack = p.getItemInHand();
-              String message = "";
-              for (int i = 0; i < args.length; i++)
-                message = String.valueOf(message) + args[i] + " "; 
-              String Message1 = ChatColor.translateAlternateColorCodes('&', message);
+              StringBuilder message = new StringBuilder();
+              for (String arg : args) message.append(arg).append(" ");
+              String Message1 = ChatColor.translateAlternateColorCodes('&', message.toString());
               ItemMeta itemStackMeta = itemStack.getItemMeta();
               itemStackMeta.setDisplayName(Message1);
               itemStack.setItemMeta(itemStackMeta);
-              p.sendMessage(String.valueOf(prefix) + "Item Renamed To: " + ChatColor.RESET + Message1 + ChatColor.AQUA + "!");
+              p.sendMessage(prefix + "Item Renamed To: " + ChatColor.RESET + Message1 + ChatColor.AQUA + "!");
             } else {
               p.sendMessage(ChatColor.AQUA + "Error: " + ChatColor.RED + "You must specify a name!");
             } 
@@ -91,14 +90,13 @@ public class CMDRename implements CommandExecutor {
               return false;
             } 
             ItemStack itemStack = p.getItemInHand();
-            String message = "";
-            for (int i = 0; i < args.length; i++)
-              message = String.valueOf(message) + args[i] + " "; 
-            String Message1 = ChatColor.translateAlternateColorCodes('&', message);
+            StringBuilder message = new StringBuilder();
+            for (String arg : args) message.append(arg).append(" ");
+            String Message1 = ChatColor.translateAlternateColorCodes('&', message.toString());
             ItemMeta itemStackMeta = itemStack.getItemMeta();
             itemStackMeta.setDisplayName(Message1);
             itemStack.setItemMeta(itemStackMeta);
-            p.sendMessage(String.valueOf(prefix) + "Item Renamed To: " + ChatColor.RESET + Message1 + ChatColor.AQUA + "!");
+            p.sendMessage(prefix + "Item Renamed To: " + ChatColor.RESET + Message1 + ChatColor.AQUA + "!");
           } else {
             p.sendMessage(ChatColor.AQUA + "Error: " + ChatColor.RED + "You must specify a name!");
           } 
@@ -115,12 +113,11 @@ public class CMDRename implements CommandExecutor {
           if (p.getItemInHand() != null && !p.getItemInHand().getType().equals(Material.AIR)) {
             if (args.length >= 1) {
               ItemStack itemStack = p.getItemInHand();
-              String message = "";
-              for (int i = 0; i < args.length; i++)
-                message = String.valueOf(message) + args[i] + " "; 
-              String Message1 = ChatColor.translateAlternateColorCodes('&', message);
+              StringBuilder message = new StringBuilder();
+              for (String arg : args) message.append(arg).append(" ");
+              String Message1 = ChatColor.translateAlternateColorCodes('&', message.toString());
               String[] loreNotConverted = Message1.split(";");
-              List<String> lore = new ArrayList();
+              List<String> lore = new ArrayList<>();
               byte b;
               int j;
               String[] arrayOfString1;
@@ -132,7 +129,7 @@ public class CMDRename implements CommandExecutor {
               ItemMeta itemStackMeta = itemStack.getItemMeta();
               itemStackMeta.setLore(lore);
               itemStack.setItemMeta(itemStackMeta);
-              p.sendMessage(String.valueOf(prefix) + ChatColor.AQUA + "Item Relored!");
+              p.sendMessage(prefix + ChatColor.AQUA + "Item Relored!");
             } else {
               p.sendMessage(ChatColor.AQUA + "Error: " + ChatColor.RED + "You must specify a lore!");
             } 

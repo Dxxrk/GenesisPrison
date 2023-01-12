@@ -4,10 +4,7 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -15,6 +12,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -96,12 +94,39 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 				double xp = Double.parseDouble(args[1]);
 				PickXPHandler.getInstance().addXP(p, xp);
 			}
+			if(args.length == 3){
+				Random r = new Random();
+				Player p = Bukkit.getPlayer(args[0]);
+				int xp1 = Integer.parseInt(args[1]);
+				int xp2 = Integer.parseInt(args[2]);
+				int xp = r.nextInt(xp2 - xp1)+ xp1;
+
+				PickXPHandler.getInstance().addXP(p, xp);
+			}
 		}
 
 		return false;
 	}
 
-	public void randomKey() {
+	public String randomKey() {
+		Random r = new Random();
+		int ri = r.nextInt(6);
+		switch(ri){
+			case 0:
+				return m.c("&7&lAlpha &7Key");
+			case 1:
+				return m.c("&c&lBeta &7Key");
+			case 2:
+				return m.c("&4&lOmega &7Key");
+			case 3:
+				return m.c("&e&lToken &7Key");
+			case 4:
+				return m.c("&4&l&ki&f&lSeasonal&4&l&ki&r &7Key");
+			case 5:
+				return m.c("&5&lCommunity &7Key");
+		}
+
+		return "";
 
 	}
 
@@ -110,7 +135,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 		ItemMeta gm = gcrate.getItemMeta();
 		gm.setDisplayName(m.c("&f&l&k[&7&l*&f&l&k]&r &9&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r"));
 		List<String> lore = new ArrayList<>();
-		lore.add(m.c("&7Upon placing this item, you will recieve 5 random items"));
+		lore.add(m.c("&7Upon placing this item, you will recieve 8 random items"));
 		lore.add(m.c("&7From the list below, all rewards are randomly selected."));
 		lore.add(m.c("&a&lRewards:"));
 		lore.add(m.c(" "));
@@ -155,7 +180,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 			Random r = new Random();
 			int ri = r.nextInt(100);
 
-			if(ri <= 25){
+			if(ri <= 20){
 				int tmin = 5000000;
 				int tmax = 15000000;
 				int tokens = r.nextInt(tmax - tmin)+ tmin;
@@ -165,7 +190,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 				lore.add("tokens add %PLAYER% "+tokens);
 				rm.setLore(lore);
 			}
-			if(ri > 25 && ri <=50) {
+			if(ri > 20 && ri <=40) {
 				int tmin = 25000;
 				int tmax = 75000;
 				int tokens = r.nextInt(tmax - tmin)+ tmin;
@@ -175,11 +200,110 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 				lore.add("givexp %PLAYER% "+tokens);
 				rm.setLore(lore);
 			}
-			if(ri > 50 && ri <70){
+			if(ri > 40 && ri <= 55){
 				int tmin = 1;
 				int tmax = 10;
 				int keys = r.nextInt(tmax - tmin)+ tmin;
+				rm.setDisplayName(m.c("&e"+keys+"x ")+randomKey());
+				reward.setType(Material.TRIPWIRE_HOOK);
+				List<String> lore = new ArrayList<>();
+				String key = ChatColor.stripColor(rm.getDisplayName()).split(" ")[0];
+				lore.add("cratekey %PLAYER% "+key+" "+ keys);
+				rm.setLore(lore);
+			}
+			if(ri > 55 && ri <=60) {
+				rm.setDisplayName(m.c("&e3x &3&lRank &7Key"));
+				reward.setType(Material.TRIPWIRE_HOOK);
+				List<String> lore = new ArrayList<>();
+				lore.add("cratekey %PLAYER% rank 3");
+				rm.setLore(lore);
+			}
+			if(ri > 60 && ri <=65){
+				int tmin = 1;
+				int tmax = 3;
+				int trinkets = r.nextInt(tmax - tmin)+ tmin;
+				rm.setDisplayName(m.c("&e"+trinkets+"x &6Legendary Trinket"));
+				reward.setType(Material.GOLD_NUGGET);
+				List<String> lore = new ArrayList<>();
+				lore.add("givetrinket %PLAYER% legendary "+trinkets);
+				rm.setLore(lore);
+			}
+			if(ri > 65 && ri <=75) {
+				int tmin = 1;
+				int tmax = 5;
+				int trinkets = r.nextInt(tmax - tmin)+ tmin;
+				rm.setDisplayName(m.c("&e"+trinkets+"x &5Epic Trinket"));
+				reward.setType(Material.GOLD_NUGGET);
+				List<String> lore = new ArrayList<>();
+				lore.add("givetrinket %PLAYER% epic "+trinkets);
+				rm.setLore(lore);
+			}
+			if(ri > 75 && ri <=80){
+				rm.setDisplayName(m.c("&e&lOlympian Rank"));
+				reward.setType(Material.NETHER_STAR);
+				List<String> lore = new ArrayList<>();
+				lore.add("giverank %PLAYER% &e&lOlympian Rank");
+				rm.setLore(lore);
+			}
+			if(ri == 81){
+				rm.setDisplayName(m.c("&9&lG&b&le&9&ln&b&le&9&ls&b&li&9&ls &b&lRank"));
+				reward.setType(Material.NETHER_STAR);
+				List<String> lore = new ArrayList<>();
+				lore.add("giverank %PLAYER% &9&lG&b&le&9&ln&b&le&9&ls&b&li&9&ls &b&lRank");
+				rm.setLore(lore);
+			}
+			if(ri > 81 && ri <=95) {
+				Random misc = new Random();
+				int misci = misc.nextInt(4);
+				List<String> lore = new ArrayList<>();
+				switch(misci){
+					case 0:
+						reward = new ItemStack(Material.POTION, 1, (short)8260);
+						rm = reward.getItemMeta();
+						rm.setDisplayName(m.c("&f&l3x Sell Boost"));
+						lore.add("giveboost sell %PLAYER% 3 7200");
+						rm.setLore(lore);
+						lore.clear();
+					case 1:
+						reward = new ItemStack(Material.POTION, 1, (short)8260);
+						rm = reward.getItemMeta();
+						rm.setDisplayName(m.c("&f&l2x Sell Boost"));
+						lore.add("giveboost sell %PLAYER% 2 7200");
+						rm.setLore(lore);
+						lore.clear();
+					case 2:
+						reward.setType(Material.EXP_BOTTLE);
+						rm.setDisplayName(m.c("&f&l2x XP Boost"));
+						lore.add("giveboost xp %PLAYER% 2 7200");
+						rm.setLore(lore);
+						lore.clear();
+					case 3:
+						reward.setType(Material.PAPER);
+						rm.setDisplayName(m.c("&bRename Paper"));
+						lore.add("renamepaper %PLAYER%");
+						rm.setLore(lore);
+						lore.clear();
 
+
+				}
+			}
+			if(ri > 95) {
+				Random misc = new Random();
+				int misci = misc.nextInt(3);
+				List<String> lore = new ArrayList<>();
+				switch(misci){
+					case 0:
+						reward.setType(Material.MUSHROOM_SOUP);
+						rm.setDisplayName(m.c("&2Free Lunch :)"));
+					case 1:
+						reward.setType(Material.IRON_AXE);
+						rm.setDisplayName(m.c("&e&l&ki&7&lMjölnir&e&l&ki&r"));
+						reward.addEnchantment(Enchantment.DURABILITY, 3);
+					case 2:
+						reward.setType(Material.DISPENSER);
+						rm.setDisplayName(m.c("&5&lPack-a-Punch"));
+						reward.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 5);
+				}
 			}
 
 		}
@@ -208,7 +332,12 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 			e.setCancelled(true);
 			p.updateInventory();
 			displayRewards(Main.getInstance(), "genesis", "&f&l&k[&7&l*&f&l&k]&r &9&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r", loc, stands, p);
-			p.setItemInHand(null);
+			if(p.getItemInHand().getAmount() > 1){
+				int i = p.getItemInHand().getAmount();
+				p.getItemInHand().setAmount(i-1);
+			} else {
+				p.setItemInHand(null);
+			}
 
 
 		}
@@ -341,6 +470,14 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 		if (rotation < 0) {
 			rotation += 360.0;
 		}
+
+		//FACE WEST == 45 - 135
+		//FACE EAST == 225 - 315
+		//FACE SOUTH == 315 - 45 on opposite side
+		//FACE NORTH (-)135 - 225(+)
+
+
+
 		if (0 <= rotation && rotation < 90.5) {
 			org.bukkit.material.Chest c = new org.bukkit.material.Chest(BlockFace.SOUTH);
 			state.setData(c);
@@ -373,34 +510,34 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
 		//WEST and EAST = Z coord || NORTH and SOUTH = X coord
 		if ((0 <= rotation && rotation < 90.5) || (180.5 <= rotation && rotation < 270.5) ) { //SOUTH AND NORTH
-			Location holo = new Location(loc.getWorld(), loc.getX()+0.5, loc.getY() +0.5, loc.getZ()+0.25);
+			Location holo = new Location(loc.getWorld(), loc.getX()+0.5, loc.getY() +4.5, loc.getZ()+0.25);
 			Hologram chest = HologramsAPI.createHologram(plugin, holo);
 			chest.appendTextLine(m.c(name));
 			holos.add(chest);
 
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 20, 0.5, 1.75, 0.25); // Adjust by +-0.5 to account for block coords not being in the center of the block
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 65, 1.75, 1.5, 0.25);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 110, 2.0, 0, 0.25);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 155, 1.75, -1.5, 0.25);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 200, 0.5, -1.75, 0.25);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 245, -0.75, -1.5, 0.25);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 290, -1.0, 0, 0.25);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 335, -0.75, 1.5, 0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 20, 0.5, 2.5, 0.25); // Adjust by +-0.5 to account for block coords not being in the center of the block
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 65, 1.75, 2.25, 0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 110, 2.0, 0.75, 0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 155, 1.75, -0.75, 0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 200, 0.5, -1.0, 0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 245, -0.75, -0.75, 0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 290, -1.0, 0.75, 0.25);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 335, -0.75, 2.25, 0.25);
 		}
 		if ((90.5 <= rotation && rotation < 180.5) || (270.5 <= rotation && rotation <= 360) ) { //WEST AND EAST
-			Location holo = new Location(loc.getWorld(), loc.getX()+0.25, loc.getY() +0.5, loc.getZ()+0.5);
+			Location holo = new Location(loc.getWorld(), loc.getX()+0.25, loc.getY() +4.5, loc.getZ()+0.5);
 			Hologram chest = HologramsAPI.createHologram(plugin, holo);
 			chest.appendTextLine(m.c(name));
 			holos.add(chest);
 
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 20, 0.25, 1.75, 0.5);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 65, 0.25, 1.5, 1.75);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 110, 0.25, 0, 2.0);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 155, 0.25, -1.5, 1.75);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 200, 0.25, -1.75, 0.5);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 245, 0.25, -1.5, -0.75);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 290, 0.25, 0, -1.0);
-			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 335, 0.25, 1.5, -0.75);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 20, 0.25, 2.5, 0.5);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 65, 0.25, 2.25, 1.75);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 110, 0.25, 0.75, 2.0);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 155, 0.25, -0.75, 1.75);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 200, 0.25, -1.0, 0.5);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 245, 0.25, -0.75, -0.75);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 290, 0.25, 0.75, -1.0);
+			startAnimation(plugin, crate, loc, stands, items, item, holos, p, 335, 0.25, 2.25, -0.75);
 		}
 		finishOpen(plugin, block, p, stands, items, item, holos, 420);
 

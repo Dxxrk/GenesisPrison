@@ -2,6 +2,7 @@ package me.dxrk.Tokens;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -76,7 +77,21 @@ public class TokensCMD implements CommandExecutor, Listener {
             int amount = Integer.parseInt(Amount);
             this.tokens.addTokens(reciever, amount);
           } 
-        } 
+        }
+        if(args[0].equalsIgnoreCase("Random")){
+          Player reciever = Bukkit.getServer().getPlayer(args[1]);
+          if (!reciever.isOnline()) {
+            sender.sendMessage(ChatColor.RED + args[1] + " is not online!");
+            return false;
+          }
+          if (isInt(args[2]) && isInt(args[3])) {
+            Random r = new Random();
+            int min = Integer.parseInt(args[2]);
+            int max = Integer.parseInt(args[3]);
+            int tokens = r.nextInt(max - min)+ min;
+            this.tokens.addTokens(reciever, tokens);
+          }
+        }
       } else {
         Player p = (Player)sender;
         String s = ChatColor.GRAY + "-- (" + ChatColor.AQUA + "+" + ChatColor.GRAY + ") -- (" + ChatColor.LIGHT_PURPLE + "+" + ChatColor.GRAY + ") -- (" + ChatColor.AQUA + "Tokens" + ChatColor.GRAY + ") -- (" + ChatColor.LIGHT_PURPLE + "+" + ChatColor.GRAY + ") -- (" + ChatColor.AQUA + "+" + ChatColor.GRAY + ") --";

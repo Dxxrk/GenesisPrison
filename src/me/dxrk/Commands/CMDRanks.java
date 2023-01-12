@@ -59,9 +59,9 @@ public class CMDRanks implements Listener, CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         if(label.equalsIgnoreCase("giverank")){
-            if(args.length == 2){
+            if(args.length == 3){
                 Player p = Bukkit.getPlayer(args[0]);
-                giveRank(p, args[1]);
+                giveRank(p, args[1]+" "+args[2]);
             }
         }
 
@@ -78,7 +78,7 @@ public class CMDRanks implements Listener, CommandExecutor {
         if(p.getItemInHand().getType().equals(Material.NETHER_STAR)) {
             if(p.getItemInHand().hasItemMeta()) {
                 if(e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "manuaddsub "+p.getName()+" "+ ChatColor.stripColor(p.getItemInHand().getItemMeta().getDisplayName()));
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "manuaddsub "+p.getName()+" "+ ChatColor.stripColor(p.getItemInHand().getItemMeta().getDisplayName().split(" ")[0]));
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l"+p.getName()+ " &f&lHas redeemed "+p.getItemInHand().getItemMeta().getDisplayName()+" Rank");
                     if(p.getItemInHand().getAmount() == 1){
                         p.setItemInHand(null);

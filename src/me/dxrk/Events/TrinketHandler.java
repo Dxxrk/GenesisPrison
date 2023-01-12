@@ -79,6 +79,21 @@ public class TrinketHandler implements Listener, CommandExecutor{
 						 }
 						 
 					 }
+					 if(args.length == 3){
+						 int i = Integer.parseInt(args[2]);
+						 Player p = Bukkit.getPlayer(args[0]);
+						 if(args[1].equalsIgnoreCase("Common")) {
+							 p.getInventory().addItem(commonTrinket(i));
+						 } else if(args[1].equalsIgnoreCase("Rare")) {
+							 p.getInventory().addItem(rareTrinket(i));
+						 } else if(args[1].equalsIgnoreCase("Epic")) {
+							 p.getInventory().addItem(epicTrinket(i));
+						 } else if(args[1].equalsIgnoreCase("Legendary")) {
+							 p.getInventory().addItem(legTrinket(i));
+						 } else if(args[1].equalsIgnoreCase("Heroic")) {
+							 p.getInventory().addItem(herTrinket(i));
+						 }
+					 }
 				}
 			}
 		if(label.equalsIgnoreCase("trinket") || label.equalsIgnoreCase("trinkets") ) {

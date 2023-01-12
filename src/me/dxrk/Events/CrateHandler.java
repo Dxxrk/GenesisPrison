@@ -1,22 +1,10 @@
 package me.dxrk.Events;
 
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
-import java.util.UUID;
-
+import me.dxrk.Main.Main;
+import me.dxrk.Main.SettingsManager;
+import me.dxrk.Tokens.Tokens;
 import mkremins.fanciful.FancyMessage;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,12 +21,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import me.dxrk.Main.Main;
-import me.dxrk.Main.SettingsManager;
-import me.dxrk.Tokens.Tokens;
+import java.text.NumberFormat;
+import java.util.*;
 
 public class CrateHandler implements Listener, CommandExecutor {
   public SettingsManager settings = SettingsManager.getInstance();
@@ -86,7 +72,7 @@ public class CrateHandler implements Listener, CommandExecutor {
     ArrayList<Location> locations = new ArrayList<>();
     for (String s : this.cr.getKeys(false)) {
       if (!s.contains(".")) {
-        Location loc = new Location(Bukkit.getWorld(this.cr.getString(String.valueOf(s) + ".Location.World")), this.cr.getInt(String.valueOf(s) + ".Location.X"), this.cr.getInt(String.valueOf(s) + ".Location.Y"), this.cr.getInt(String.valueOf(s) + ".Location.Z"));
+        Location loc = new Location(Bukkit.getWorld(this.cr.getString(s + ".Location.World")), this.cr.getInt(s + ".Location.X"), this.cr.getInt(s + ".Location.Y"), this.cr.getInt(s + ".Location.Z"));
         locations.add(loc);
       } 
     } 
@@ -104,25 +90,25 @@ public class CrateHandler implements Listener, CommandExecutor {
       if (loc.getWorld().getName().equals(w) && loc.getBlockX() == x && loc.getBlockY() == y && loc.getBlockZ() == z)
         is = true; 
     } 
-    return is;
+    return !is;
   }
   
   public String getCrate(Block b) {
     Location loc = b.getLocation();
     for (String s : this.cr.getKeys(true)) {
-      if (!s.contains(".") && this.cr.getInt(String.valueOf(s) + ".Location.X") == loc.getBlockX() && 
-        this.cr.getInt(String.valueOf(s) + ".Location.Y") == loc.getBlockY() && this.cr.getInt(String.valueOf(s) + ".Location.Z") == loc.getBlockZ() && 
-        this.cr.getString(String.valueOf(s) + ".Location.World").equalsIgnoreCase(b.getLocation().getWorld().getName()))
+      if (!s.contains(".") && this.cr.getInt(s + ".Location.X") == loc.getBlockX() && 
+        this.cr.getInt(s + ".Location.Y") == loc.getBlockY() && this.cr.getInt(s + ".Location.Z") == loc.getBlockZ() && 
+        this.cr.getString(s + ".Location.World").equalsIgnoreCase(b.getLocation().getWorld().getName()))
         return s; 
     } 
     return null;
   }
   
   public ItemStack getKey(String key, int amt) {
-    ItemStack keyy = new ItemStack(Material.getMaterial(this.cr.getInt(String.valueOf(key) + ".Key.ID")), amt);
+    ItemStack keyy = new ItemStack(Material.getMaterial(this.cr.getInt(key + ".Key.ID")), amt);
     ItemMeta am = keyy.getItemMeta();
-    am.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.cr.getString(String.valueOf(key) + ".Key.Name")));
-    am.setLore(Arrays.asList(new String[] { ChatColor.translateAlternateColorCodes('&', this.cr.getString(String.valueOf(key) + ".Key.Lore")) }));
+    am.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.cr.getString(key + ".Key.Name")));
+    am.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', this.cr.getString(key + ".Key.Lore"))));
     keyy.setItemMeta(am);
     return keyy;
   }
@@ -134,26 +120,19 @@ public class CrateHandler implements Listener, CommandExecutor {
       return false; 
     if (!a.getItemMeta().hasDisplayName())
       return false; 
-    if (!c(this.cr.getString(String.valueOf(s) + ".Key.Name")).equals(a.getItemMeta().getDisplayName()))
+    if (!c(this.cr.getString(s + ".Key.Name")).equals(a.getItemMeta().getDisplayName()))
       return false; 
-    if (!c(this.cr.getString(String.valueOf(s) + ".Key.Lore")).equals(a.getItemMeta().getLore().get(0)))
-      return false; 
-    if (this.cr.getInt(String.valueOf(s) + ".Key.ID") != a.getTypeId())
-      return false; 
-    return true;
+    if (!c(this.cr.getString(s + ".Key.Lore")).equals(a.getItemMeta().getLore().get(0)))
+      return false;
+    return this.cr.getInt(s + ".Key.ID") == a.getTypeId();
   }
   
   public int getRows(String s) {
-    return this.cr.getInt(String.valueOf(s) + ".Rows");
+    return this.cr.getInt(s + ".Rows");
   }
   
   public ItemStack spacer() {
-    ItemStack a = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)10);
-    ItemMeta am = a.getItemMeta();
-    am.setDisplayName(c("&9Genesis&5Crates"));
-    am.addEnchant(Enchantment.DURABILITY, 0, false);
-    a.setItemMeta(am);
-    a.removeEnchantment(Enchantment.DURABILITY);
+    ItemStack a = new ItemStack(Material.AIR);
     return a;
   }
   
@@ -161,11 +140,9 @@ public class CrateHandler implements Listener, CommandExecutor {
     String slot = "";
     for (String s : getRewards(crate)) {
       ItemStack x = loadItem(crate, "." + s);
-      boolean same = true;
-      if (x.getAmount() != item.getAmount())
-        same = false; 
-      if (x.getType() != item.getType())
-        same = false; 
+      boolean same = x.getAmount() == item.getAmount();
+        if (x.getType() != item.getType())
+            same = false;
       if (!x.getItemMeta().getDisplayName().equals(item.getItemMeta().getDisplayName()))
         same = false; 
       if (same)
@@ -175,21 +152,19 @@ public class CrateHandler implements Listener, CommandExecutor {
   }
   
   public boolean slotHasCommands(String crate, String s) {
-    if (this.cr.get(String.valueOf(crate) + "." + s + ".Command") != null)
-      return true; 
-    return false;
+      return this.cr.get(crate + "." + s + ".Command") != null;
   }
   
   public List<String> getCommands(String crate, String s) {
-    return this.cr.getStringList(String.valueOf(crate) + "." + s + ".Command");
+    return this.cr.getStringList(crate + "." + s + ".Command");
   }
   
   public void loadCrate(Player p, String s) {
     if (!s.contains(".")) {
       Inventory inv = Bukkit.createInventory(null, getRows(s) * 9, c("&c" + s + " Crate"));
       for (int i = 0; i < inv.getSize(); i++) {
-        if (this.cr.get(String.valueOf(s) + ".Slot" + i + ".ItemID") != null) {
-          inv.setItem(i, loadItem(s, String.valueOf(".Slot" + i)));
+        if (this.cr.get(s + ".Slot" + i + ".ItemID") != null) {
+          inv.setItem(i, loadItem(s, ".Slot" + i));
         } else {
           inv.setItem(i, spacer());
         } 
@@ -208,7 +183,7 @@ public class CrateHandler implements Listener, CommandExecutor {
             if (CrateHandler.this.slotHasCommands(crate, slot)) {
               for (String ss : CrateHandler.this.getCommands(crate, slot)) {
                 ss = ss.replaceAll("%PLAYER%", p.getName());
-                Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), ss);
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
               } 
             } else {
             	if(inv.getItem(13).getType() == Material.DIAMOND_PICKAXE) {
@@ -217,9 +192,9 @@ public class CrateHandler implements Listener, CommandExecutor {
             	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
             	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             	    hand.setItemMeta(am);
-            	    p.getInventory().addItem(new ItemStack[] { hand });
+            	    p.getInventory().addItem(hand);
             	} else {
-              p.getInventory().addItem(new ItemStack[] { inv.getItem(13).clone() });
+              p.getInventory().addItem(inv.getItem(13).clone());
             	}
             } 
           } else {
@@ -263,10 +238,10 @@ public class CrateHandler implements Listener, CommandExecutor {
   
   public int getValueInt(String s) {
       StringBuilder lvl = new StringBuilder();
-      s = ChatColor.stripColor((String)s);
+      s = ChatColor.stripColor(s);
       char[] arrayOfChar = s.toCharArray();
       int i = arrayOfChar.length;
-      for (int b = 0; b < i; b = (int)((byte)(b + 1))) {
+      for (int b = 0; b < i; b = (byte)(b + 1)) {
           char c = arrayOfChar[b];
           if (!this.isInt(c)) continue;
           lvl.append(c);
@@ -299,10 +274,10 @@ public class CrateHandler implements Listener, CommandExecutor {
   }
   public double getValuedbl(String s) {
       StringBuilder lvl = new StringBuilder();
-      s = ChatColor.stripColor((String)s);
+      s = ChatColor.stripColor(s);
       char[] arrayOfChar = s.toCharArray();
       int i = arrayOfChar.length;
-      for (int b = 0; b < i; b = (int)((byte)(b + 1))) {
+      for (int b = 0; b < i; b = (byte)(b + 1)) {
           char c = arrayOfChar[b];
           if (!this.isDbl(c)) continue;
           lvl.append(c);
@@ -346,7 +321,7 @@ public class CrateHandler implements Listener, CommandExecutor {
     if (slotHasCommands(crate, slot)) {
       for (String ss : getCommands(crate, slot)) {
         ss = ss.replaceAll("%PLAYER%", p.getName());
-        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), ss);
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
       } 
     } else {
     	if(won.getType() == Material.DIAMOND_PICKAXE) {
@@ -355,30 +330,30 @@ public class CrateHandler implements Listener, CommandExecutor {
     	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
     	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
     	    hand.setItemMeta(am);
-    	    p.getInventory().addItem(new ItemStack[] { hand });
+    	    p.getInventory().addItem(hand);
     	} else {
-      p.getInventory().addItem(new ItemStack[] { won });
+      p.getInventory().addItem(won);
     	}
     	p.updateInventory();
     } 
   }
   
   public String formatKey(String s) {
-    if (s.equalsIgnoreCase("vote") || s.equalsIgnoreCase("vote"))
+    if (s.equalsIgnoreCase("vote"))
       return "Vote"; 
-    if (s.equalsIgnoreCase("midas"))
+    if (s.equalsIgnoreCase("alpha"))
       return "Midas"; 
-    if (s.equalsIgnoreCase("poseidon"))
+    if (s.equalsIgnoreCase("beta"))
       return "Poseidon"; 
-    if (s.equalsIgnoreCase("hades"))
+    if (s.equalsIgnoreCase("omega"))
       return "Hades"; 
-    if (s.equalsIgnoreCase("oblivion"))
+    if (s.equalsIgnoreCase("seasonal"))
       return "Oblivion"; 
-    if (s.equalsIgnoreCase("polis"))
+    if (s.equalsIgnoreCase("token"))
       return "Polis"; 
-    if (s.equalsIgnoreCase("olympus"))
+    if (s.equalsIgnoreCase("rank"))
       return "Olympus"; 
-    if (s.equalsIgnoreCase("prestige"))
+    if (s.equalsIgnoreCase("community"))
         return "Prestige";
     return "Error";
   }
@@ -388,8 +363,8 @@ public class CrateHandler implements Listener, CommandExecutor {
     List<String> items = new ArrayList<>();
     Inventory inv = Bukkit.createInventory(null, getRows(s) * 9, "test");
     for (int i = 0; i < inv.getSize(); i++) {
-      if (this.cr.get(String.valueOf(s) + ".Slot" + i + ".Name") != null) {
-      for (int xi = 0; xi < this.cr.getInt(String.valueOf(s) + ".Slot" + i + ".Chance"); xi++) {
+      if (this.cr.get(s + ".Slot" + i + ".Name") != null) {
+      for (int xi = 0; xi < this.cr.getInt(s + ".Slot" + i + ".Chance"); xi++) {
                items.add("Slot" + i);
       }
     } 
@@ -406,8 +381,8 @@ public class CrateHandler implements Listener, CommandExecutor {
 	  List<String> items = new ArrayList<>();
 	    Inventory inv = Bukkit.createInventory(null, getRows(s) * 9, "test");
 	    for (int i = 0; i < inv.getSize(); i++) {
-	      if (this.cr.get(String.valueOf(s) + ".Slot" + i + ".Name") != null) {
-	      for (int xi = 0; xi < this.cr.getInt(String.valueOf(s) + ".Slot" + i + ".Chance"); xi++) {
+	      if (this.cr.get(s + ".Slot" + i + ".Name") != null) {
+	      for (int xi = 0; xi < this.cr.getInt(s + ".Slot" + i + ".Chance"); xi++) {
 	               items.add("Slot" + i);
 	      }
 	    } 
@@ -417,22 +392,22 @@ public class CrateHandler implements Listener, CommandExecutor {
   
   @SuppressWarnings("deprecation")
 public ItemStack loadItem(String s, String slot) {
-    String name = this.cr.getString(String.valueOf(s) + slot + ".Name");
+    String name = this.cr.getString(s + slot + ".Name");
     int amt = 1;
-    if (this.cr.getInt(String.valueOf(s) + slot + ".Amount") > 0)
-      amt = this.cr.getInt(String.valueOf(s) + slot + ".Amount"); 
+    if (this.cr.getInt(s + slot + ".Amount") > 0)
+      amt = this.cr.getInt(s + slot + ".Amount"); 
     int id = 1;
-    if (this.cr.getInt(String.valueOf(s) + slot + ".ItemID") > 0)
-      id = this.cr.getInt(String.valueOf(s) + slot + ".ItemID"); 
+    if (this.cr.getInt(s + slot + ".ItemID") > 0)
+      id = this.cr.getInt(s + slot + ".ItemID"); 
     int sh = 0;
-    if (this.cr.get(String.valueOf(s) + slot + ".Short") != null)
-      sh = this.cr.getInt(String.valueOf(s) + slot + ".Short"); 
+    if (this.cr.get(s + slot + ".Short") != null)
+      sh = this.cr.getInt(s + slot + ".Short"); 
     List<String> lore = null;
-    if (this.cr.getStringList(String.valueOf(s) + slot + ".Lore") != null)
-      lore = this.cr.getStringList(String.valueOf(s) + slot + ".Lore"); 
+    if (this.cr.getStringList(s + slot + ".Lore") != null)
+      lore = this.cr.getStringList(s + slot + ".Lore"); 
     List<String> ench = null;
-    if (this.cr.getStringList(String.valueOf(s) + slot + ".Enchantments") != null)
-      ench = this.cr.getStringList(String.valueOf(s) + slot + ".Enchantments"); 
+    if (this.cr.getStringList(s + slot + ".Enchantments") != null)
+      ench = this.cr.getStringList(s + slot + ".Enchantments"); 
     ItemStack item = new ItemStack(id, amt, (short)sh);
     ItemMeta am = item.getItemMeta();
     am.setDisplayName(c(name));
@@ -453,25 +428,25 @@ public ItemStack loadItem(String s, String slot) {
   }
   public static String format(double amt) {
 	    if (amt >= 1.0E15D)
-	      return String.format("%.1f Quad", new Object[] { Double.valueOf(amt / 1.0E15D) }); 
+	      return String.format("%.1f Quad", amt / 1.0E15D);
 	    if (amt >= 1.0E12D)
-	      return String.format("%.1f Tril", new Object[] { Double.valueOf(amt / 1.0E12D) }); 
+	      return String.format("%.1f Tril", amt / 1.0E12D);
 	    if (amt >= 1.0E9D)
-	      return String.format("%.1f Bil", new Object[] { Double.valueOf(amt / 1.0E9D) }); 
+	      return String.format("%.1f Bil", amt / 1.0E9D);
 	    if (amt >= 1000000.0D)
-	      return String.format("%.1f Mil", new Object[] { Double.valueOf(amt / 1000000.0D) }); 
+	      return String.format("%.1f Mil", amt / 1000000.0D);
 	    return NumberFormat.getNumberInstance(Locale.US).format(amt);
 	  }
   @EventHandler
   public void onInt(PlayerInteractEvent e) {
     if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
-      if (!isCrate(e.getClickedBlock()))
+      if (isCrate(e.getClickedBlock()))
         return; 
       e.setCancelled(true);
       Player p = e.getPlayer();
       loadCrate(p, getCrate(e.getClickedBlock()));
     } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-      if (!isCrate(e.getClickedBlock()))
+      if (isCrate(e.getClickedBlock()))
         return; 
       e.setCancelled(true);
       if (isKey(e.getPlayer().getItemInHand(), getCrate(e.getClickedBlock()))) {
@@ -487,8 +462,8 @@ public ItemStack loadItem(String s, String slot) {
           	  double multi = 0;
           	  int tokens = 0;
           	  double money = 0;
-          	  ArrayList<String> rw = new ArrayList<String>();
-          	  ArrayList<String> rww = new ArrayList<String>();
+          	  ArrayList<String> rw = new ArrayList<>();
+          	  ArrayList<String> rww = new ArrayList<>();
           	int i;
       	  for (i = 0; i < key.getAmount(); i++) {
       		ItemStack won = loadItem(getCrate(e.getClickedBlock()), "." + getRandom(getCrate(e.getClickedBlock())));
@@ -524,7 +499,7 @@ public ItemStack loadItem(String s, String slot) {
     	    if (slotHasCommands(getCrate(e.getClickedBlock()), slot)) {
     	      for (String ss : getCommands(getCrate(e.getClickedBlock()), slot)) {
     	        ss = ss.replaceAll("%PLAYER%", p.getName());
-    	        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), ss);
+    	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
     	      } 
     	    } else {
     	    	if(won.getType() == Material.DIAMOND_PICKAXE) {
@@ -533,16 +508,16 @@ public ItemStack loadItem(String s, String slot) {
     	    	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
     	    	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
     	    	    hand.setItemMeta(am);
-    	    	    p.getInventory().addItem(new ItemStack[] { hand });
+    	    	    p.getInventory().addItem(hand);
     	    	} else {
-    	      p.getInventory().addItem(new ItemStack[] { won });
+    	      p.getInventory().addItem(won);
     	    	}
     	    	p.updateInventory();
     	    }
     	    p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
-	    	double percents = 0.0;
+	    	double percents;
 	        p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
-	        percents = (Double.valueOf(Main.econ.getBalance((OfflinePlayer)p) / RankupHandler.getInstance().rankPrice(p)).doubleValue()*100);
+	        percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
 	        double dmultiply = percents*10.0;
 	        double dRound = Math.round(dmultiply) /10.0;
 	        if(RankupHandler.getInstance().getRank(p) == 100) {
@@ -559,26 +534,21 @@ public ItemStack loadItem(String s, String slot) {
 	        p.getScoreboard().getTeam("tokens").setSuffix(c("&e"+Main.formatAmt(Tokens.getInstance().getTokens(p))));
       	  }
       	  this.settings.savePlayerData();
-      	ArrayList<String> rw2 = new ArrayList<String>();
-      	 // String[] rewards = {c("&7&lMulti: "+multi+"x"), c("&7&lTokens: "+tokens), c("&7&lMoney: "+Main.formatAmt(money)), c("&7Other:")};
+                // String[] rewards = {c("&7&lMulti: "+multi+"x"), c("&7&lTokens: "+tokens), c("&7&lMoney: "+Main.formatAmt(money)), c("&7Other:")};
       	
       	rw.add(c("&f&lMulti &8| &b"+multi+"x"));
      	rw.add(c("&f&lTokens &8| &b"+tokens));
      	rw.add(c("&f&lMoney &8| &b"+Main.formatAmt(money)));
-      	for(int x = 0; x < rw.size(); x++) {
-      		p.sendMessage(c(rw.get(x)));
-      	}
-      	
-      	 rw2.addAll(rww);
+                for (String s : rw) {
+                    p.sendMessage(c(s));
+                }
+
+                ArrayList<String> rw2 = new ArrayList<>(rww);
       	  
       	  FancyMessage reward = new FancyMessage("");
       	  reward.then(c("&f&lOther &8| &b(Hover)")).tooltip(rw2);
       	  reward.send(p);
-      	  multi = 0;
-      	  tokens = 0;
-      	  money = 0;
-                	
-              }
+            }
           
         } else {
         	if (p.getItemInHand().getAmount() == 1) {
@@ -598,14 +568,14 @@ public ItemStack loadItem(String s, String slot) {
   
   
   
-  public void openall(Player p, int midas, int poseidon, int hades, int polis, int oblivion, int olympus, int prestige, int vote) {
+  public void openall(Player p, int alpha, int beta, int omega, int token, int seasonal, int rank, int community, int vote) {
 	  double multi = 0;
   	  int tokens = 0;
   	  double money = 0;
-  	  ArrayList<String> rw = new ArrayList<String>();
-  	  ArrayList<String> rww = new ArrayList<String>();
+  	  ArrayList<String> rw = new ArrayList<>();
+  	  ArrayList<String> rww = new ArrayList<>();
   	int i;
-	  for (i = 0; i < midas; i++) {
+	  for (i = 0; i < alpha; i++) {
 		ItemStack won = loadItem("Midas", "." + getRandom("Midas"));
     String slot = checkForSlot(won, "Midas");
     String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
@@ -639,7 +609,7 @@ public ItemStack loadItem(String s, String slot) {
     if (slotHasCommands("Midas", slot)) {
       for (String ss : getCommands("Midas", slot)) {
         ss = ss.replaceAll("%PLAYER%", p.getName());
-        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), ss);
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
       } 
     } else {
     	if(won.getType() == Material.DIAMOND_PICKAXE) {
@@ -648,15 +618,15 @@ public ItemStack loadItem(String s, String slot) {
     	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
     	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
     	    hand.setItemMeta(am);
-    	    p.getInventory().addItem(new ItemStack[] { hand });
+    	    p.getInventory().addItem(hand);
     	} else {
-      p.getInventory().addItem(new ItemStack[] { won });
+      p.getInventory().addItem(won);
     	}
     	p.updateInventory();
     }
    
 	  }
-	  for (i = 0; i < poseidon; i++) {
+	  for (i = 0; i < beta; i++) {
 			ItemStack won = loadItem("Poseidon", "." + getRandom("Poseidon"));
 	    String slot = checkForSlot(won, "Poseidon");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
@@ -690,7 +660,7 @@ public ItemStack loadItem(String s, String slot) {
 	    if (slotHasCommands("Poseidon", slot)) {
 	      for (String ss : getCommands("Poseidon", slot)) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
-	        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), ss);
+	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
 	    } else {
 	    	if(won.getType() == Material.DIAMOND_PICKAXE) {
@@ -699,15 +669,15 @@ public ItemStack loadItem(String s, String slot) {
 	    	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
 	    	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 	    	    hand.setItemMeta(am);
-	    	    p.getInventory().addItem(new ItemStack[] { hand });
+	    	    p.getInventory().addItem(hand);
 	    	} else {
-	      p.getInventory().addItem(new ItemStack[] { won });
+	      p.getInventory().addItem(won);
 	    	}
 	    	p.updateInventory();
 	    }
 	   
 		  }
-	  for (i = 0; i < hades; i++) {
+	  for (i = 0; i < omega; i++) {
 			ItemStack won = loadItem("Hades", "." + getRandom("Hades"));
 	    String slot = checkForSlot(won, "Hades");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
@@ -741,7 +711,7 @@ public ItemStack loadItem(String s, String slot) {
 	    if (slotHasCommands("Hades", slot)) {
 	      for (String ss : getCommands("Hades", slot)) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
-	        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), ss);
+	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
 	    } else {
 	    	if(won.getType() == Material.DIAMOND_PICKAXE) {
@@ -750,15 +720,15 @@ public ItemStack loadItem(String s, String slot) {
 	    	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
 	    	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 	    	    hand.setItemMeta(am);
-	    	    p.getInventory().addItem(new ItemStack[] { hand });
+	    	    p.getInventory().addItem(hand);
 	    	} else {
-	      p.getInventory().addItem(new ItemStack[] { won });
+	      p.getInventory().addItem(won);
 	    	}
 	    	p.updateInventory();
 	    }
 	   
 		  }
-	  for (i = 0; i < polis; i++) {
+	  for (i = 0; i < token; i++) {
 			ItemStack won = loadItem("Polis", "." + getRandom("Polis"));
 	    String slot = checkForSlot(won, "Polis");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
@@ -792,7 +762,7 @@ public ItemStack loadItem(String s, String slot) {
 	    if (slotHasCommands("Polis", slot)) {
 	      for (String ss : getCommands("Polis", slot)) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
-	        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), ss);
+	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
 	    } else {
 	    	if(won.getType() == Material.DIAMOND_PICKAXE) {
@@ -801,15 +771,15 @@ public ItemStack loadItem(String s, String slot) {
 	    	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
 	    	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 	    	    hand.setItemMeta(am);
-	    	    p.getInventory().addItem(new ItemStack[] { hand });
+	    	    p.getInventory().addItem(hand);
 	    	} else {
-	      p.getInventory().addItem(new ItemStack[] { won });
+	      p.getInventory().addItem(won);
 	    	}
 	    	p.updateInventory();
 	    }
 	   
 		  }
-	  for (i = 0; i < oblivion; i++) {
+	  for (i = 0; i < seasonal; i++) {
 			ItemStack won = loadItem("Oblivion", "." + getRandom("Oblivion"));
 	    String slot = checkForSlot(won, "Oblivion");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
@@ -843,7 +813,7 @@ public ItemStack loadItem(String s, String slot) {
 	    if (slotHasCommands("Oblivion", slot)) {
 	      for (String ss : getCommands("Oblivion", slot)) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
-	        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), ss);
+	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
 	    } else {
 	    	if(won.getType() == Material.DIAMOND_PICKAXE) {
@@ -852,15 +822,15 @@ public ItemStack loadItem(String s, String slot) {
 	    	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
 	    	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 	    	    hand.setItemMeta(am);
-	    	    p.getInventory().addItem(new ItemStack[] { hand });
+	    	    p.getInventory().addItem(hand);
 	    	} else {
-	      p.getInventory().addItem(new ItemStack[] { won });
+	      p.getInventory().addItem(won);
 	    	}
 	    	p.updateInventory();
 	    }
 	   
 		  }
-	  for (i = 0; i < olympus; i++) {
+	  for (i = 0; i < rank; i++) {
 			ItemStack won = loadItem("Olympus", "." + getRandom("Olympus"));
 	    String slot = checkForSlot(won, "Olympus");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
@@ -894,7 +864,7 @@ public ItemStack loadItem(String s, String slot) {
 	    if (slotHasCommands("Olympus", slot)) {
 	      for (String ss : getCommands("Olympus", slot)) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
-	        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), ss);
+	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
 	    } else {
 	    	if(won.getType() == Material.DIAMOND_PICKAXE) {
@@ -903,15 +873,15 @@ public ItemStack loadItem(String s, String slot) {
 	    	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
 	    	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 	    	    hand.setItemMeta(am);
-	    	    p.getInventory().addItem(new ItemStack[] { hand });
+	    	    p.getInventory().addItem(hand);
 	    	} else {
-	      p.getInventory().addItem(new ItemStack[] { won });
+	      p.getInventory().addItem(won);
 	    	}
 	    	p.updateInventory();
 	    }
 	   
 		  }
-	  for (i = 0; i < prestige; i++) {
+	  for (i = 0; i < community; i++) {
 			ItemStack won = loadItem("Prestige", "." + getRandom("Prestige"));
 	    String slot = checkForSlot(won, "Prestige");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
@@ -945,7 +915,7 @@ public ItemStack loadItem(String s, String slot) {
 	    if (slotHasCommands("Prestige", slot)) {
 	      for (String ss : getCommands("Prestige", slot)) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
-	        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), ss);
+	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
 	    } else {
 	    	if(won.getType() == Material.DIAMOND_PICKAXE) {
@@ -954,9 +924,9 @@ public ItemStack loadItem(String s, String slot) {
 	    	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
 	    	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 	    	    hand.setItemMeta(am);
-	    	    p.getInventory().addItem(new ItemStack[] { hand });
+	    	    p.getInventory().addItem(hand);
 	    	} else {
-	      p.getInventory().addItem(new ItemStack[] { won });
+	      p.getInventory().addItem(won);
 	    	}
 	    	p.updateInventory();
 	    }
@@ -996,7 +966,7 @@ public ItemStack loadItem(String s, String slot) {
 	    if (slotHasCommands("Vote", slot)) {
 	      for (String ss : getCommands("Vote", slot)) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
-	        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), ss);
+	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
 	    } else {
 	    	if(won.getType() == Material.DIAMOND_PICKAXE) {
@@ -1005,39 +975,35 @@ public ItemStack loadItem(String s, String slot) {
 	    	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
 	    	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 	    	    hand.setItemMeta(am);
-	    	    p.getInventory().addItem(new ItemStack[] { hand });
+	    	    p.getInventory().addItem(hand);
 	    	} else {
-	      p.getInventory().addItem(new ItemStack[] { won });
+	      p.getInventory().addItem(won);
 	    	}
 	    	p.updateInventory();
 	    }
 	   
 		  }
 	  this.settings.savePlayerData();
-	ArrayList<String> rw2 = new ArrayList<String>();
-	 // String[] rewards = {c("&7&lMulti: "+multi+"x"), c("&7&lTokens: "+tokens), c("&7&lMoney: "+Main.formatAmt(money)), c("&7Other:")};
+      // String[] rewards = {c("&7&lMulti: "+multi+"x"), c("&7&lTokens: "+tokens), c("&7&lMoney: "+Main.formatAmt(money)), c("&7Other:")};
 	if(multi >0)
-	rw.add(c("&f&lMulti &8| &b"+multi+"x"));
+	    rw.add(c("&f&lMulti &8| &b"+multi+"x"));
 	if(tokens > 0)
-	rw.add(c("&f&lTokens &8| &b"+tokens));
+	    rw.add(c("&f&lTokens &8| &b"+tokens));
 	if(money >0)
-	rw.add(c("&f&lMoney &8| &b$"+Main.formatAmt(money)));
+	    rw.add(c("&f&lMoney &8| &b$"+Main.formatAmt(money)));
 	if(rw.size() >0) {
-		for(int x = 0; x < rw.size(); x++) {
-			p.sendMessage(c(rw.get(x)));
-		}
+        for (String s : rw) {
+            p.sendMessage(c(s));
+        }
 	}
-	
-	 rw2.addAll(rww);
+
+      ArrayList<String> rw2 = new ArrayList<>(rww);
 	  
 	  FancyMessage reward = new FancyMessage("");
 	  reward.then(c("&f&lOther &8| &b(Hover)")).tooltip(rw2);
 	  if(rw2.size() >0) {
 	  reward.send(p);
 	  }
-	  multi = 0;
-	  tokens = 0;
-	  money = 0;
   }
   
   @EventHandler
@@ -1051,19 +1017,19 @@ public ItemStack loadItem(String s, String slot) {
 		  if(args.length == 1) {
 			  Player p = (Player)sender;
 			  String crate = args[0];
-			  if(crate.equalsIgnoreCase("midas"))  {
+			  if(crate.equalsIgnoreCase("alpha"))  {
 				  loadCrate(p, "Midas");
-			  } else if(crate.equalsIgnoreCase("poseidon"))  {
+			  } else if(crate.equalsIgnoreCase("beta"))  {
 				  loadCrate(p, "Poseidon");
-			  } else if(crate.equalsIgnoreCase("hades"))  {
+			  } else if(crate.equalsIgnoreCase("omega"))  {
 				  loadCrate(p, "Hades");
-			  } else if(crate.equalsIgnoreCase("polis"))  {
+			  } else if(crate.equalsIgnoreCase("token"))  {
 				  loadCrate(p, "Polis");
-			  } else if(crate.equalsIgnoreCase("oblivion"))  {
+			  } else if(crate.equalsIgnoreCase("seasonal"))  {
 				  loadCrate(p, "Oblivion");
-			  } else if(crate.equalsIgnoreCase("olympus"))  {
+			  } else if(crate.equalsIgnoreCase("rank"))  {
 				  loadCrate(p, "Olympus");
-			  } else if(crate.equalsIgnoreCase("prestige"))  {
+			  } else if(crate.equalsIgnoreCase("community"))  {
 				  loadCrate(p, "Prestige");
 			  } else if(crate.equalsIgnoreCase("vote"))  {
 				  loadCrate(p, "Vote");
@@ -1078,30 +1044,30 @@ public ItemStack loadItem(String s, String slot) {
 		  Player p = (Player)sender;
 		  if(p.hasPermission("command.openall")) {
 		  String uuid = p.getUniqueId().toString();
-		  int midas = this.settings.getLocksmith().getInt(String.valueOf(uuid) + ".midas");
-		    int poseidon = this.settings.getLocksmith().getInt(String.valueOf(uuid) + ".poseidon");
-		    int hades = this.settings.getLocksmith().getInt(String.valueOf(uuid) + ".hades");
-		    int polis = this.settings.getLocksmith().getInt(String.valueOf(uuid) + ".polis");
-		    int vote = this.settings.getLocksmith().getInt(String.valueOf(uuid) + ".vote");
-		    int prestige = this.settings.getLocksmith().getInt(String.valueOf(uuid) + ".prestige");
-		    int oblivion = this.settings.getLocksmith().getInt(String.valueOf(uuid) + ".oblivion");
-		    int olympus = this.settings.getLocksmith().getInt(String.valueOf(uuid) + ".olympus");
-		    openall(p, midas, poseidon, hades, polis, oblivion, olympus, prestige, vote);
-		    LocksmithHandler.getInstance().takeKey(p, "Midas", midas);
-		    LocksmithHandler.getInstance().takeKey(p, "Poseidon", poseidon);
-		    LocksmithHandler.getInstance().takeKey(p, "Hades", hades);
-		    LocksmithHandler.getInstance().takeKey(p, "Polis", polis);
-		    LocksmithHandler.getInstance().takeKey(p, "Oblivion", oblivion);
-		    LocksmithHandler.getInstance().takeKey(p, "Olympus", olympus);
+		  int alpha = this.settings.getLocksmith().getInt(uuid + ".alpha");
+		    int beta = this.settings.getLocksmith().getInt(uuid + ".beta");
+		    int omega = this.settings.getLocksmith().getInt(uuid + ".omega");
+		    int token = this.settings.getLocksmith().getInt(uuid + ".token");
+		    int vote = this.settings.getLocksmith().getInt(uuid + ".vote");
+		    int seasonal = this.settings.getLocksmith().getInt(uuid + ".seasonal");
+		    int community = this.settings.getLocksmith().getInt(uuid + ".community");
+		    int rank = this.settings.getLocksmith().getInt(uuid + ".rank");
+		    openall(p, alpha, beta, omega, token, seasonal, rank, community, vote);
+		    LocksmithHandler.getInstance().takeKey(p, "Alpha", alpha);
+		    LocksmithHandler.getInstance().takeKey(p, "Beta", beta);
+		    LocksmithHandler.getInstance().takeKey(p, "Omega", omega);
+		    LocksmithHandler.getInstance().takeKey(p, "Token", token);
+		    LocksmithHandler.getInstance().takeKey(p, "Seasonal", seasonal);
+		    LocksmithHandler.getInstance().takeKey(p, "Rank", rank);
 		    LocksmithHandler.getInstance().takeKey(p, "Vote", vote);
-		    LocksmithHandler.getInstance().takeKey(p, "Prestige", prestige);
+		    LocksmithHandler.getInstance().takeKey(p, "Community", community);
 		  } else {
 			  p.sendMessage(c("&f&lCrates &8| &bYou must be rank Ares+ to use /openall"));
 		  }
 		  p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
-			double percents = 0.0;
+			double percents;
 		    p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
-		    percents = (Double.valueOf(Main.econ.getBalance((OfflinePlayer)p) / RankupHandler.getInstance().rankPrice(p)).doubleValue()*100);
+		    percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
 		    double dmultiply = percents*10.0;
 		    double dRound = Math.round(dmultiply) /10.0;
 		    if(RankupHandler.getInstance().getRank(p) == 100) {
@@ -1122,10 +1088,10 @@ public ItemStack loadItem(String s, String slot) {
 	  
     if (label.equalsIgnoreCase("cratekey"))
       if (args.length == 0) {
-        String keys = "";
+        StringBuilder keys = new StringBuilder();
         for (String s : this.cr.getKeys(false)) {
           if (!s.contains("."))
-            keys = String.valueOf(keys) + s + " "; 
+            keys.append(s).append(" ");
         } 
         if (!sender.hasPermission("cratekey.give")) {
           sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou do not have permission to use this command!"));
@@ -1133,7 +1099,7 @@ public ItemStack loadItem(String s, String slot) {
         } 
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&m-----------------------------------------------------"));
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cPlease choose a key from the list below."));
-        sender.sendMessage(String.valueOf(ChatColor.translateAlternateColorCodes('&', "&7")) + keys.trim());
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7") + keys.toString().trim());
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&m-----------------------------------------------------"));
       } else {
         if (args.length == 1) {
@@ -1143,7 +1109,7 @@ public ItemStack loadItem(String s, String slot) {
               p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cThat key does not exist."));
               return false;
             } 
-            p.getInventory().addItem(new ItemStack[] { getKey(formatKey(args[0]), 1) });
+            p.getInventory().addItem(getKey(formatKey(args[0]), 1));
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lCrates &8| &b+" + formatKey(args[0]) + " &bKey!"));
             return true;
           } 
@@ -1151,7 +1117,7 @@ public ItemStack loadItem(String s, String slot) {
           return false;
         } 
         if (args.length == 2) {
-          if (Bukkit.getPlayer(args[1]) == null) {
+          if (Bukkit.getPlayer(args[0]) == null) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cThat player is not online!"));
             return false;
           } 
@@ -1159,19 +1125,34 @@ public ItemStack loadItem(String s, String slot) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou do not have permission to give other players keys!"));
             return false;
           } 
-          Player p = Bukkit.getPlayer(args[1]);
+          Player p = Bukkit.getPlayer(args[0]);
           //p.getInventory().addItem(new ItemStack[] { getKey(formatKey(args[0]), 1) });
-          LocksmithHandler.getInstance().addKey(p, formatKey(args[0]), 1);
+          LocksmithHandler.getInstance().addKey(p, formatKey(args[1]), 1);
          
-        } else {
-          String keys = "";
+        }
+        if(args.length == 3){
+            int i = Integer.parseInt(args[2]);
+            if (Bukkit.getPlayer(args[0]) == null) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cThat player is not online!"));
+                return false;
+            }
+            if (!sender.hasPermission("cratekey.give.other")) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou do not have permission to give other players keys!"));
+                return false;
+            }
+            Player p = Bukkit.getPlayer(args[0]);
+            LocksmithHandler.getInstance().addKey(p, formatKey(args[1]), i);
+        }
+
+        else {
+          StringBuilder keys = new StringBuilder();
           for (String s : this.cr.getKeys(false)) {
             if (!s.contains("."))
-              keys = String.valueOf(keys) + s + " "; 
+              keys.append(s).append(" ");
           } 
           sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&m-----------------------------------------------------"));
           sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cPlease choose a key from the list below."));
-          sender.sendMessage(String.valueOf(ChatColor.translateAlternateColorCodes('&', "&7")) + keys.trim());
+          sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7") + keys.toString().trim());
           sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&m-----------------------------------------------------"));
         } 
       }  
