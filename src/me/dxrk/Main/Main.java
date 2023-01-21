@@ -132,6 +132,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("resetallmines").setExecutor(new PickaxeLevel());
     //getCommand("laser").setExecutor(new PickaxeLevel());
     getCommand("motdchange").setExecutor(this);
+    getCommand("workmode").setExecutor(this);
     getCommand("prestige").setExecutor(new PrestigeHandler());
     getCommand("giveenchant").setExecutor(new DonorItems());
     getCommand("activeboost").setExecutor(new BoostsHandler());
@@ -182,6 +183,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     getCommand("givecrate").setExecutor(new MysteryBoxHandler());
     getCommand("givexp").setExecutor(new MysteryBoxHandler());
     getCommand("giverank").setExecutor(new CMDRanks());
+    getCommand("removemine").setExecutor(new MineHandler());
     registerEvents(this, new Listener[] { new CMDRanks() });
     registerEvents(this, new Listener[] { new CMDVoteShop() });
     registerEvents(this, new Listener[] { new TokensCMD() });
@@ -219,6 +221,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     registerEvents(this, new Listener[] { new PrestigeHandler() });
     registerEvents(this, new Listener[] { new PickaxeSkillTree() });
     registerEvents(this, new Listener[] { this});
+    // For when sale is active, use this || Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "motdchange sale 50");
 
     
 
@@ -370,7 +373,7 @@ new BukkitRunnable() {
 	    {
 	        public void run()
 	        {
-	            
+
 	           Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "restart");
 	        }
 	    }, 4);
@@ -388,19 +391,33 @@ new BukkitRunnable() {
   }
   
   
-  public boolean motd = false;
+  private String motd = c("&3&lSeason 3!   &c&lGenesis &b&lPrison!   &e&l[1.8.x-1.19.x]\n                        &c&l>> &a&lJoin Now! &c&l<<");
+  private String savemotd = "";
   
   @Override
 	public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
 	  
 	  if(label.equalsIgnoreCase("motdchange")) {
-		  if(args[0].equalsIgnoreCase("closed")) {
-			  motd = false;
-		  }
-		  if(args[0].equalsIgnoreCase("closed")) {
-			  motd = true;
-		  }
+          if(!cs.hasPermission("rank.owner")) return false;
+		  if(args.length == 2) {
+              if(args[0].equalsIgnoreCase("sale")) {
+
+                 motd = c("&3&lSeason 3!   &c&lGenesis &b&lPrison!   &e&l[1.8.x-1.19.x]\n                    &c&l>> &a&l"+args[1]+"% Sale Now! &c&l<<");
+              }
+          }
 	  }
+      if(label.equalsIgnoreCase("workmode")) {
+          if(!cs.hasPermission("rank.owner")) return false;
+          if(args.length == 1){
+              if(args[0].equalsIgnoreCase("enable")){                             //&4&lMaintenance Mode
+                  savemotd = motd;
+                  motd = c("                        &c&lGenesis &b&lPrison!\n                   &4&lMaintenance Mode");
+              }
+              if(args[0].equalsIgnoreCase("disable")){
+                  motd = savemotd;
+              }
+          }
+      }
 	  
 	  
 	  
@@ -409,14 +426,14 @@ new BukkitRunnable() {
   
   @EventHandler
   public void motd(ServerListPingEvent e) {
-	  e.setMotd(c("                        &9&lGenesis &b&lNetwork!\n               &d&lPrison Season 2 Out Now!"));
+	  e.setMotd(motd);
   }
   
   
   @EventHandler
   public void onJoin(PlayerJoinEvent e) {
 	  if(!e.getPlayer().hasPlayedBefore()) {
-		  Bukkit.broadcastMessage(c("&dWelcome &f&l"+e.getPlayer().getName()+"&d to &9&lGenesis &b&lPrison!"));
+		  Bukkit.broadcastMessage(c("&dWelcome &f&l"+e.getPlayer().getName()+"&d to &c&lGenesis &b&lPrison!"));
 	  }
   }
  

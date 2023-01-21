@@ -174,10 +174,10 @@ public class KeysHandler implements Listener {
         if(kf >60 && kf <=80) {
             KeyFinderMSG(p, "Token", "&e&l", "", 2);
         }
-        if(kf >80 && kf <=90) {
+        if(kf >80 && kf <=85) {
             KeyFinderMSG(p, "Seasonal", "&4&l&ki&f&l", "&4&l&ki&r", 2);
         }
-        if(kf >90) {
+        if(kf >85) {
             KeyFinderMSG(p, "Community", "&5&l", "", 2);
         }
 	}
@@ -194,10 +194,10 @@ public class KeysHandler implements Listener {
         if(kf >60 && kf <=80) {
             KeyFinderMSG(p, "Token", "&e&l", "", 1);
         }
-        if(kf >80 && kf <=90) {
+        if(kf >80 && kf <=85) {
             KeyFinderMSG(p, "Seasonal", "&4&l&ki&f&l", "&4&l&ki&r", 1);
         }
-        if(kf >90) {
+        if(kf >85) {
             KeyFinderMSG(p, "Community", "&5&l", "", 1);
         }
     }
@@ -238,12 +238,13 @@ public class KeysHandler implements Listener {
 		Random r = new Random();
 		int rint = r.nextInt(150);
 		int fmin = 7500;
-		int fmax = 40000;
+		int fmax = 25000;
 		int tokens = r.nextInt(fmax - fmin)+ fmin;
 		if(rint == 1) {
-			Tokens.getInstance().addTokens(p, (tokens+1)*tf*multiply);
+            int tgive = (int) ((tokens+1)*tf*multiply);
+			Tokens.getInstance().addTokens(p, tgive);
 			if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Tokens-Messages") == true) {
-				p.sendMessage(m.c("&f&lTokens &8| &b+"+((tokens+1)*tf*multiply)));
+				p.sendMessage(m.c("&f&lTokens &8| &b+"+tgive));
 			}
 		}
 	}
@@ -261,7 +262,8 @@ public class KeysHandler implements Listener {
     if (!i.hasItemMeta())
       return; 
     if (!i.getItemMeta().hasLore())
-      return; 
+      return;
+    if(!p.getWorld().getName().equals(p.getName()+"sWorld")) return;
     WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
     ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
     if (!set.allows(DefaultFlag.LIGHTER))

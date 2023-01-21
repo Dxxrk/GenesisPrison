@@ -105,15 +105,15 @@ public class CMDOptions implements Listener, CommandExecutor{
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Autosell", false);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Backpack-Warnings", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Tokens-Messages", true);
-			this.settings.getOptions().set(p.getUniqueId().toString()+".Discovery-Messages", true);
-			this.settings.getOptions().set(p.getUniqueId().toString()+".Encounter-Messages", true);
+			this.settings.getOptions().set(p.getUniqueId().toString()+".Dust Finder-Messages", true);
+			this.settings.getOptions().set(p.getUniqueId().toString()+".Key Finder-Messages", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Explosion-Messages", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Wave-Messages", true);
-			this.settings.getOptions().set(p.getUniqueId().toString()+".Vaporize-Messages", true);
-			this.settings.getOptions().set(p.getUniqueId().toString()+".TokenFinder-Messages", true);
+			this.settings.getOptions().set(p.getUniqueId().toString()+".Nuke-Messages", true);
+			this.settings.getOptions().set(p.getUniqueId().toString()+".Token Finder-Messages", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Stake-Messages", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Research-Messages", true);
-			this.settings.getOptions().set(p.getUniqueId().toString()+".RuneParty-Messages", true);
+			this.settings.getOptions().set(p.getUniqueId().toString()+".Rune Party-Messages", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Booster-Messages", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Junkpile-Messages", true);
 		}

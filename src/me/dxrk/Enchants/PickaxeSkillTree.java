@@ -292,7 +292,7 @@ public class PickaxeSkillTree implements Listener {
 
     //Each Skill path is able to summon server-wide events from their respective tree.
     public static void openZeus(Player p){
-        Inventory zeus = Bukkit.createInventory(null, 54, m.c("&e&lZeus Skill Tree"));
+        Inventory zeus = Bukkit.createInventory(null, 54, m.c("&e&lZeus Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+" Skill Points"));
         for(int i = 0; i < 54; i++){
             zeus.setItem(i, Spacer());
         }
@@ -322,7 +322,7 @@ public class PickaxeSkillTree implements Listener {
         zeus.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
         zeus.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
         //Level ups / abilities
-        zeus.setItem(18, skillItem(p, "Unlocked Zeus", m.c("&7Chose the Zeus path. Unlocks Thunder and Lightning Events."), 0));
+        zeus.setItem(18, skillItem(p, "Unlocked Zeus", m.c("&7Chose the Zeus path. Unlocks Thunderstorm and Lightning Events."), 0));
         zeus.setItem(22, skillItem(p, "Zeus (Level 2)", m.c("&7Upgrades Zeus Events."), 0));
         zeus.setItem(8, skillItem(p, "Zeus (Level 3)", m.c("&7Upgrades Zeus Events."), 0));
         zeus.setItem(45, skillItem(p, "Zeus (Level 4)", m.c("&7Upgrades Zeus Events."), 0));
@@ -331,7 +331,7 @@ public class PickaxeSkillTree implements Listener {
     }
 
     public static void openPoseidon(Player p){
-        Inventory poseidon = Bukkit.createInventory(null, 54, m.c("&9&lPoseidon Skill Tree"));
+        Inventory poseidon = Bukkit.createInventory(null, 54, m.c("&9&lPoseidon Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+" Skill Points"));
         for(int i = 0; i < 54; i++){
             poseidon.setItem(i, Spacer());
         }
@@ -362,7 +362,7 @@ public class PickaxeSkillTree implements Listener {
         poseidon.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
         poseidon.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
         //Level ups / abilities
-        poseidon.setItem(18, skillItem(p, "Unlocked Poseidon", m.c("&7Chose the Poseidon path. Unlocks Twister and Tsunami Events."), 0));
+        poseidon.setItem(18, skillItem(p, "Unlocked Poseidon", m.c("&7Chose the Poseidon path. Unlocks Tsunami and Typhoon Events."), 0));
         poseidon.setItem(22, skillItem(p, "Poseidon (Level 2)", m.c("&7Upgrades Poseidon Events."), 0));
         poseidon.setItem(8, skillItem(p, "Poseidon (Level 3)", m.c("&7Upgrades Poseidon Events."), 0));
         poseidon.setItem(45, skillItem(p, "Poseidon (Level 4)", m.c("&7Upgrades Poseidon Events."), 0));
@@ -371,7 +371,7 @@ public class PickaxeSkillTree implements Listener {
     }
 
     public static void openHades(Player p){
-        Inventory hades = Bukkit.createInventory(null, 54, m.c("&4&lHades Skill Tree"));
+        Inventory hades = Bukkit.createInventory(null, 54, m.c("&4&lHades Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+" Skill Points"));
         for(int i = 0; i < 54; i++){
             hades.setItem(i, Spacer());
         }
@@ -402,7 +402,7 @@ public class PickaxeSkillTree implements Listener {
         hades.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
         hades.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
         //Level ups / abilities
-        hades.setItem(18, skillItem(p, "Unlocked Hades", m.c("&7Chose the Hades path. Unlocks Meteor and Scorched Earth Events."), 0));
+        hades.setItem(18, skillItem(p, "Unlocked Hades", m.c("&7Chose the Hades path. Unlocks Meteor Shower and Scorched Earth Events."), 0));
         hades.setItem(22, skillItem(p, "Hades (Level 2)", m.c("&7Upgrades Hades Events."), 0));
         hades.setItem(8, skillItem(p, "Hades (Level 3)", m.c("&7Upgrades Hades Events."), 0));
         hades.setItem(45, skillItem(p, "Hades (Level 4)", m.c("&7Upgrades Hades Events."), 0));
@@ -411,7 +411,7 @@ public class PickaxeSkillTree implements Listener {
     }
 
     public static void openAres(Player p){
-        Inventory ares = Bukkit.createInventory(null,54, m.c("&2&lAres Skill Tree"));
+        Inventory ares = Bukkit.createInventory(null,54, m.c("&2&lAres Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+" Skill Points"));
         for(int i = 0; i < 54; i++){
             ares.setItem(i, Spacer());
         }
@@ -451,7 +451,7 @@ public class PickaxeSkillTree implements Listener {
     }
 
     public static void openAphrodite(Player p){
-        Inventory aphrodite = Bukkit.createInventory(null, 54, m.c("&d&lAphrodite Skill Tree"));
+        Inventory aphrodite = Bukkit.createInventory(null, 54, m.c("&d&lAphrodite Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+" Skill Points"));
         for(int i = 0; i < 54; i++){
             aphrodite.setItem(i, Spacer());
         }
@@ -482,7 +482,7 @@ public class PickaxeSkillTree implements Listener {
         aphrodite.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
         aphrodite.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
         //Level ups / abilities
-        aphrodite.setItem(18, skillItem(p, "Unlocked Aphrodite", m.c("&7Chose the aphrodite path. Unlocks God's Grace and Cease Fire Events."), 0));
+        aphrodite.setItem(18, skillItem(p, "Unlocked Aphrodite", m.c("&7Chose the aphrodite path. Unlocks Allure and Strong Desire Events."), 0));
         aphrodite.setItem(22, skillItem(p, "Aphrodite (Level 2)", m.c("&7Upgrades Aphrodite Events."), 0));
         aphrodite.setItem(8, skillItem(p, "Aphrodite (Level 3)", m.c("&7Upgrades Aphrodite Events."), 0));
         aphrodite.setItem(45, skillItem(p, "Aphrodite (Level 4)", m.c("&7Upgrades Aphrodite Events."), 0));
@@ -567,7 +567,7 @@ public class PickaxeSkillTree implements Listener {
                 selectPath(p, "Ares", "&2");
             }
         }
-        if(e.getInventory().getName().equals(m.c("&e&lZeus Skill Tree"))){
+        if(e.getInventory().getName().equals(m.c("&e&lZeus Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+"Skill Points"))){
             e.setCancelled(true);
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
@@ -605,14 +605,16 @@ public class PickaxeSkillTree implements Listener {
                         line = i;
                     }
                 }
-                lore.set(line, m.c("&cSkill: &fZeus (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+                lore.set(line, m.c("&cSkill: &eZeus (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+                p.setItemInHand(pitem);
+
 
             }
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
             settings.savePlayerData();
             openZeus(p);
         }
-        if(e.getClickedInventory().getName().equals(m.c("&9&lPoseidon Skill Tree"))){
+        if(e.getClickedInventory().getName().equals(m.c("&9&lPoseidon Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+"Skill Points"))){
             e.setCancelled(true);
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
@@ -650,13 +652,14 @@ public class PickaxeSkillTree implements Listener {
                     }
                 }
                 lore.set(line, m.c("&cSkill: &9Poseidon (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+                p.setItemInHand(pitem);
 
             }
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
             settings.savePlayerData();
             openPoseidon(p);
         }
-        if(e.getClickedInventory().getName().equals(m.c("&4&lHades Skill Tree"))){
+        if(e.getClickedInventory().getName().equals(m.c("&4&lHades Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+"Skill Points"))){
             e.setCancelled(true);
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
@@ -694,13 +697,14 @@ public class PickaxeSkillTree implements Listener {
                     }
                 }
                 lore.set(line, m.c("&cSkill: &4Hades (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+                p.setItemInHand(pitem);
 
             }
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
             settings.savePlayerData();
             openHades(p);
         }
-        if(e.getClickedInventory().getName().equals(m.c("&d&lAphrodite Skill Tree"))){
+        if(e.getClickedInventory().getName().equals(m.c("&d&lAphrodite Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+"Skill Points"))){
             e.setCancelled(true);
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
@@ -738,13 +742,14 @@ public class PickaxeSkillTree implements Listener {
                     }
                 }
                 lore.set(line, m.c("&cSkill: &dAphrodite (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+                p.setItemInHand(pitem);
 
             }
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
             settings.savePlayerData();
             openAphrodite(p);
         }
-        if(e.getClickedInventory().getName().equals(m.c("&2&lAres Skill Tree"))){
+        if(e.getClickedInventory().getName().equals(m.c("&2&lAres Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+"Skill Points"))){
             e.setCancelled(true);
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
@@ -782,6 +787,7 @@ public class PickaxeSkillTree implements Listener {
                     }
                 }
                 lore.set(line, m.c("&cSkill: &2Ares (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+                p.setItemInHand(pitem);
 
             }
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);

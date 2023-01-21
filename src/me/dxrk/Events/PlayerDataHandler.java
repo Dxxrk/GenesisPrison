@@ -29,7 +29,11 @@ public class PlayerDataHandler implements Listener {
     if (this.pl.get(uuid + ".Name") == null) {
       this.pl.set(uuid + ".Name", name);
       this.settings.savePlayerData();
-    } 
+    }
+    if (this.pl.get(uuid + ".HasMine") == null) {
+      this.pl.set(uuid + ".HasMine", false);
+      this.settings.savePlayerData();
+    }
     if (this.pl.get(uuid + ".KeysFound") == null) {
       this.pl.set(uuid + ".KeysFound", 0);
       this.settings.savePlayerData();

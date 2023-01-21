@@ -118,7 +118,8 @@ public class Enchants implements Listener{
 		    if (!p.getItemInHand().hasItemMeta())
 		      return; 
 		    if (!p.getItemInHand().getItemMeta().hasLore())
-		      return; 
+		      return;
+			if(!p.getWorld().getName().equals(p.getName()+"sWorld")) return;
 		    if(EnchantMethods.set(b).allows(DefaultFlag.LIGHTER)) {
 		    	EnchantMethods.getInstance().Wave(p, b);
 		    	EnchantMethods.getInstance().Explosion(p, b);

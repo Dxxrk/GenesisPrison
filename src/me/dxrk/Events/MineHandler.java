@@ -2,12 +2,12 @@ package me.dxrk.Events;
 
 import com.github.yannicklamprecht.worldborder.api.BorderAPI;
 import com.github.yannicklamprecht.worldborder.api.WorldBorderApi;
-import com.intellectualcrafters.plot.object.PlotPlayer;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.DefaultDomain;
+import com.sk89q.worldguard.protection.GlobalRegionManager;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.RegionGroup;
 import com.sk89q.worldguard.protection.flags.StateFlag;
@@ -16,6 +16,7 @@ import com.sk89q.worldguard.protection.regions.GlobalProtectedRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Events.ResetHandler.ResetReason;
+import me.dxrk.Main.SettingsManager;
 import me.jet315.prisonmines.mine.Mine;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -27,13 +28,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 public class MineHandler implements Listener, CommandExecutor{
 	
@@ -62,6 +60,8 @@ public class MineHandler implements Listener, CommandExecutor{
 
 	
 	private ArrayList<Player> list = new ArrayList<>();
+
+	SettingsManager settings = SettingsManager.getInstance();
 	
 	
 	/*
@@ -71,6 +71,114 @@ public class MineHandler implements Listener, CommandExecutor{
 	public Material mineBlock(Player p){
 		Material mat = Material.COBBLESTONE;
 		//Find players prestige/rank
+
+		int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
+
+		if(prestiges >= 1750){
+			mat = Material.ENDER_STONE;
+		}
+		else if(prestiges >=1500){
+			mat = Material.PRISMARINE;
+		}
+		else if(prestiges >=1400){
+			mat = Material.QUARTZ_BLOCK;
+		}
+		else if(prestiges >=1300) {
+			mat = Material.QUARTZ_ORE;
+		}
+		else if(prestiges >=1200) {
+			mat = Material.NETHER_BRICK;
+		}
+		else if(p.hasPermission("rank.genesis")){
+			mat = Material.NETHER_BRICK;
+		}
+		else if(prestiges >=1100) {
+			mat = Material.NETHERRACK;
+		}
+		else if(prestiges >=1025) {
+			mat = Material.EMERALD_BLOCK;
+		}
+		else if(prestiges >=950) {
+			mat = Material.EMERALD_ORE;
+		}
+		else if(p.hasPermission("rank.olympian")) {
+			mat = Material.EMERALD_ORE;
+		}
+		else if(prestiges >=875) {
+			mat = Material.DIAMOND_BLOCK;
+		}
+		else if(prestiges >=800) {
+			mat = Material.DIAMOND_ORE;
+		}
+		else if(prestiges >=725) {
+			mat = Material.LAPIS_BLOCK;
+		}
+		else if(p.hasPermission("rank.god")) {
+			mat = Material.LAPIS_BLOCK;
+		}
+		else if(prestiges >=650) {
+			mat = Material.LAPIS_ORE;
+		}
+		else if(prestiges >=575) {
+			mat = Material.REDSTONE_BLOCK;
+		}
+		else if(prestiges >=500) {
+			mat = Material.REDSTONE_ORE;
+		}
+		else if(p.hasPermission("rank.titan")) {
+			mat = Material.REDSTONE_ORE;
+		}
+		else if(prestiges >=450) {
+			mat = Material.GOLD_BLOCK;
+		}
+		else if(prestiges >=400) {
+			mat = Material.GOLD_ORE;
+		}
+		else if(p.hasPermission("rank.demi-god")) {
+			mat = Material.GOLD_ORE;
+		}
+		else if(prestiges >=350) {
+			mat = Material.IRON_BLOCK;
+		}
+		else if(prestiges >=300) {
+			mat = Material.IRON_ORE;
+		}
+		else if(prestiges >=250) {
+			mat = Material.COAL_BLOCK;
+		}
+		else if(p.hasPermission("rank.hero")) {
+			mat = Material.COAL_BLOCK;
+		}
+		else if(prestiges >=200) {
+			mat = Material.COAL_ORE;
+		}
+		else if(prestiges >=150) {
+			mat = Material.BRICK;
+		}
+		else if(p.hasPermission("rank.mvp")) {
+			mat = Material.BRICK;
+		}
+		else if(prestiges >=125) {
+			mat = Material.HARD_CLAY;
+		}
+		else if(prestiges >=100) {
+			mat = Material.SANDSTONE;
+		}
+		else if(p.hasPermission("rank.vip")) {
+			mat = Material.SANDSTONE;
+		}
+		else if(prestiges >=75) {
+			mat = Material.SMOOTH_BRICK;
+		}
+		else if(prestiges >=50) {
+			mat = Material.STONE;
+		}
+		else if(p.hasPermission("rank.donator")) {
+			mat = Material.STONE;
+		}
+		else if(prestiges >=25) {
+			mat = Material.MOSSY_COBBLESTONE;
+		}
 
 
 
@@ -97,7 +205,15 @@ public class MineHandler implements Listener, CommandExecutor{
 			if(!player.hasPermission("staff.removemine")) return false;
 			if(args.length == 1) {
 				OfflinePlayer p = Bukkit.getOfflinePlayer(args[0]);
-				//Add options to remove mine
+				Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
+				m.delete();
+				MultiverseCore core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
+				MVWorldManager wm = core.getMVWorldManager();
+				wm.unloadWorld(p.getName()+"sWorld");
+				wm.deleteWorld(p.getName()+"sWorld");
+				settings.getPlayerData().set(p.getUniqueId().toString()+".HasMine", false);
+
+
 			}
 		}
 		return false;
@@ -123,26 +239,25 @@ public class MineHandler implements Listener, CommandExecutor{
 
 		//Setting up the world
 		wm.cloneWorld("Dxrk", p.getName()+"sWorld");
+		wm.getMVWorld(p.getName()+"sWorld").setAlias(p.getName()+"sWorld");
 
-		Location pworld = new Location(Bukkit.getWorld(p.getName()+"sWorld"), -2.5, 65, 0.5);
+		Location pworld = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 0.5, 113, 0.5, -90, 0);
 
 		WorldBorder wb = Bukkit.getWorld(p.getName()+"sWorld").getWorldBorder();
-		wb.setCenter(-3, 22);
+		wb.setCenter(0, 0);
 		wb.setSize(250);
 
 		p.teleport(pworld);
 
-		Location ploc = p.getLocation();
-
-		Location point1 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 13, 64, 6);
-		Location point2 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), -19, 1, 38);
+		Location point1 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 9, 111, 34);
+		Location point2 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 49, 74, -34);
 
 
 		//Creating the actual mine
 		ResetHandler.api.createMine(p.getUniqueId().toString(), point1, point2);
 		Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
 
-		RegionManager regions = Objects.requireNonNull(getWorldGuard()).getRegionManager(p.getWorld());
+		RegionManager regions = getWorldGuard().getRegionManager(Bukkit.getWorld(p.getName() + "sWorld"));
 		if(regions.hasRegion(p.getUniqueId().toString())) {
 			return;
 		}
@@ -151,30 +266,18 @@ public class MineHandler implements Listener, CommandExecutor{
 		m.getResetManager().setMineResetTime(999999);
 		m.getResetManager().setPercentageReset(20);
 		m.getMineRegion().setBlocksMinedInRegion(0);
+		m.getBlockManager().modifyBlockChanceInRegion(m.getBlockManager().getRandomBlockFromMine(), 0.0F);
+		m.getBlockManager().addBlockToMineRegion(new ItemStack(mineBlock(p)), 100.0F);
 		m.save();
 		ResetHandler.resetMineFull(m, ResetReason.NORMAL, mineBlock(p).getId());
 
-
-		ProtectedRegion region = new ProtectedCuboidRegion(p.getUniqueId().toString(),
-				new BlockVector(point1.getX(), point1.getY(), point1.getZ()),
-				new BlockVector(point2.getX(), point2.getY(), point2.getZ()));
 		if(regions.hasRegion(p.getUniqueId().toString())) {
 			regions.removeRegion(p.getUniqueId().toString());
 		}
-
-		//Create region that allows building within limits.
-		ProtectedRegion global = new GlobalProtectedRegion("global");
-		global.setFlag(DefaultFlag.BLOCK_PLACE, StateFlag.State.ALLOW);
-		global.setFlag(DefaultFlag.BLOCK_BREAK, StateFlag.State.ALLOW);
-		global.setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
-		region.setFlag(DefaultFlag.LIGHTER, StateFlag.State.DENY);
-		region.setFlag(DefaultFlag.USE, StateFlag.State.ALLOW);
-		region.setFlag(DefaultFlag.INTERACT, StateFlag.State.ALLOW);
-		region.setFlag(DefaultFlag.OTHER_EXPLOSION, StateFlag.State.DENY);
-
-		regions.addRegion(global);
-
 		//Create Mine region that allows the enchants to work only inside the mine
+		ProtectedRegion region = new ProtectedCuboidRegion(p.getUniqueId().toString(),
+				new BlockVector(point1.getX(), point1.getY(), point1.getZ()),
+				new BlockVector(point2.getX(), point2.getY(), point2.getZ()));
 		region.setFlag(DefaultFlag.LIGHTER, StateFlag.State.ALLOW);
 		region.setFlag(DefaultFlag.BLOCK_PLACE, StateFlag.State.DENY);
 		region.setFlag(DefaultFlag.BLOCK_BREAK.getRegionGroupFlag(), RegionGroup.MEMBERS);
@@ -183,9 +286,29 @@ public class MineHandler implements Listener, CommandExecutor{
 		region.setFlag(DefaultFlag.INTERACT, StateFlag.State.ALLOW);
 		DefaultDomain members = region.getMembers();
 		members.addPlayer(p.getUniqueId());
+		region.setPriority(2);
 		regions.addRegion(region);
 
-		p.sendMessage(c("&7&oMine Generated."));
+		Location g1 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 66, 181, -74);
+		Location g2 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), -14, 69, 74);
+
+		//Create region that allows building within limits.
+		ProtectedRegion outside = new ProtectedCuboidRegion("outside",
+				new BlockVector(g1.getX(), g1.getY(), g1.getZ()),
+				new BlockVector(g2.getX(), g2.getY(), g2.getZ()));
+		outside.setFlag(DefaultFlag.BLOCK_PLACE, StateFlag.State.DENY);
+		outside.setFlag(DefaultFlag.BLOCK_BREAK, StateFlag.State.DENY);
+		outside.setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
+		outside.setFlag(DefaultFlag.LIGHTER, StateFlag.State.DENY);
+		outside.setFlag(DefaultFlag.USE, StateFlag.State.ALLOW);
+		outside.setFlag(DefaultFlag.INTERACT, StateFlag.State.ALLOW);
+		outside.setFlag(DefaultFlag.OTHER_EXPLOSION, StateFlag.State.DENY);
+		outside.setPriority(1);
+
+		regions.addRegion(outside);
+		settings.getPlayerData().set(p.getUniqueId().toString()+".HasMine", true);
+
+		p.sendMessage(c("&7&oMine Generation Complete."));
 
 	}
 
@@ -193,16 +316,16 @@ public class MineHandler implements Listener, CommandExecutor{
 	/*
 		UPDATING THE MINE
 	 */
-	
-	public void updateMine(Player p, String rank, int prestige){
-		if(rank == null && prestige ==0) return;
-
-		if(rank == null && prestige >0) {
-			//go through prestige mine blocks
-		}
-		if(rank != null && prestige == 0){
-			//go through rank mine blocks
-		}
+	@SuppressWarnings("deprecation")
+	public void updateMine(Player p){
+		Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
+		m.getBlockManager().modifyBlockChanceInRegion(m.getBlockManager().getRandomBlockFromMine(), 0.0F);
+		m.getBlockManager().addBlockToMineRegion(new ItemStack(mineBlock(p)), 100.0F);
+		m.getResetManager().setMineResetTime(999999);
+		m.getResetManager().setPercentageReset(20);
+		m.getMineRegion().setBlocksMinedInRegion(0);
+		m.save();
+		ResetHandler.resetMineFull(m, ResetReason.NORMAL, mineBlock(p).getId());
 
 	}
 

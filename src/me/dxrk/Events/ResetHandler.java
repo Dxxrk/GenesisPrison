@@ -29,7 +29,7 @@ public class ResetHandler {
 				if(mine.isLocationInRegion(pp.getLocation())) {
 					pp.teleport(mine.getSpawnLocation());
 					if(reason == ResetReason.NUKE) {
-						pp.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cMine is being Vaporized you have been escorted to a safe place.")); 
+						pp.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cMine is being Nuked you have been escorted to a safe place."));
 					}
 				}
 			}

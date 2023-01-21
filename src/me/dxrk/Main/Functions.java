@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
@@ -23,6 +24,9 @@ public class Functions implements Listener{
 
 	public static double XPEnchant(Player p){
 		double xp = 1;
+		if(p.getItemInHand() == null) return 1;
+		if(p.getItemInHand().getType().equals(Material.AIR)) return 1;
+		if(!p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)) return 1;
 
 		for (String s : p.getItemInHand().getItemMeta().getLore()) {
 			if(ChatColor.stripColor(s).toLowerCase().contains("xp finder")) {

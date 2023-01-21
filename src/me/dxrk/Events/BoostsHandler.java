@@ -439,13 +439,13 @@ public class BoostsHandler implements Listener, CommandExecutor{
 					double amp = Double.parseDouble(args[2]);
 					int dur = Integer.parseInt(args[3]);
 					
-					boostsinv.get(p).add(BoostSell("&f&l"+amp+"x Sell Boost", "&d"+timeFormat(dur)));
+					boostsinv.get(p).add(BoostSell("&b"+amp+"x Sell Boost", "&d"+timeFormat(dur)));
 				
 				}
 				if(args[0].equalsIgnoreCase("XP")) {
 					int amp = Integer.parseInt(args[2]);
 					int dur = Integer.parseInt(args[3]);
-					boostsinv.get(p).add(BoostXP("&f&l"+amp+"x XP Boost", "&d"+timeFormat(dur)));
+					boostsinv.get(p).add(BoostXP("&a"+amp+"x XP Boost", "&d"+timeFormat(dur)));
 				
 				}
 			}

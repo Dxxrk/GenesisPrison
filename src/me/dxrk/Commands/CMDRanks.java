@@ -79,7 +79,7 @@ public class CMDRanks implements Listener, CommandExecutor {
             if(p.getItemInHand().hasItemMeta()) {
                 if(e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "manuaddsub "+p.getName()+" "+ ChatColor.stripColor(p.getItemInHand().getItemMeta().getDisplayName().split(" ")[0]));
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l"+p.getName()+ " &f&lHas redeemed "+p.getItemInHand().getItemMeta().getDisplayName()+" Rank");
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l"+p.getName()+ " &f&lHas redeemed "+p.getItemInHand().getItemMeta().getDisplayName());
                     if(p.getItemInHand().getAmount() == 1){
                         p.setItemInHand(null);
                     } else {

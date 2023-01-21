@@ -342,19 +342,19 @@ public class CrateHandler implements Listener, CommandExecutor {
     if (s.equalsIgnoreCase("vote"))
       return "Vote"; 
     if (s.equalsIgnoreCase("alpha"))
-      return "Midas"; 
+      return "Alpha"; 
     if (s.equalsIgnoreCase("beta"))
-      return "Poseidon"; 
+      return "Beta"; 
     if (s.equalsIgnoreCase("omega"))
-      return "Hades"; 
+      return "Omega"; 
     if (s.equalsIgnoreCase("seasonal"))
-      return "Oblivion"; 
+      return "Seasonal"; 
     if (s.equalsIgnoreCase("token"))
-      return "Polis"; 
+      return "Token"; 
     if (s.equalsIgnoreCase("rank"))
-      return "Olympus"; 
+      return "Rank"; 
     if (s.equalsIgnoreCase("community"))
-        return "Prestige";
+        return "Community";
     return "Error";
   }
   
@@ -576,8 +576,8 @@ public ItemStack loadItem(String s, String slot) {
   	  ArrayList<String> rww = new ArrayList<>();
   	int i;
 	  for (i = 0; i < alpha; i++) {
-		ItemStack won = loadItem("Midas", "." + getRandom("Midas"));
-    String slot = checkForSlot(won, "Midas");
+		ItemStack won = loadItem("Alpha", "." + getRandom("Alpha"));
+    String slot = checkForSlot(won, "Alpha");
     String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
     
     int crates = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".CratesOpened");
@@ -606,8 +606,8 @@ public ItemStack loadItem(String s, String slot) {
     
     
     
-    if (slotHasCommands("Midas", slot)) {
-      for (String ss : getCommands("Midas", slot)) {
+    if (slotHasCommands("Alpha", slot)) {
+      for (String ss : getCommands("Alpha", slot)) {
         ss = ss.replaceAll("%PLAYER%", p.getName());
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
       } 
@@ -627,8 +627,8 @@ public ItemStack loadItem(String s, String slot) {
    
 	  }
 	  for (i = 0; i < beta; i++) {
-			ItemStack won = loadItem("Poseidon", "." + getRandom("Poseidon"));
-	    String slot = checkForSlot(won, "Poseidon");
+			ItemStack won = loadItem("Beta", "." + getRandom("Beta"));
+	    String slot = checkForSlot(won, "Beta");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
 	    
 	    int crates = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".CratesOpened");
@@ -657,8 +657,8 @@ public ItemStack loadItem(String s, String slot) {
 	    
 	    
 	    
-	    if (slotHasCommands("Poseidon", slot)) {
-	      for (String ss : getCommands("Poseidon", slot)) {
+	    if (slotHasCommands("Beta", slot)) {
+	      for (String ss : getCommands("Beta", slot)) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
 	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
@@ -678,8 +678,8 @@ public ItemStack loadItem(String s, String slot) {
 	   
 		  }
 	  for (i = 0; i < omega; i++) {
-			ItemStack won = loadItem("Hades", "." + getRandom("Hades"));
-	    String slot = checkForSlot(won, "Hades");
+			ItemStack won = loadItem("Omega", "." + getRandom("Omega"));
+	    String slot = checkForSlot(won, "Omega");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
 	    
 	    int crates = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".CratesOpened");
@@ -708,8 +708,8 @@ public ItemStack loadItem(String s, String slot) {
 	    
 	    
 	    
-	    if (slotHasCommands("Hades", slot)) {
-	      for (String ss : getCommands("Hades", slot)) {
+	    if (slotHasCommands("Omega", slot)) {
+	      for (String ss : getCommands("Omega", slot)) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
 	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
@@ -729,8 +729,8 @@ public ItemStack loadItem(String s, String slot) {
 	   
 		  }
 	  for (i = 0; i < token; i++) {
-			ItemStack won = loadItem("Polis", "." + getRandom("Polis"));
-	    String slot = checkForSlot(won, "Polis");
+			ItemStack won = loadItem("Token", "." + getRandom("Token"));
+	    String slot = checkForSlot(won, "Token");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
 	    
 	    int crates = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".CratesOpened");
@@ -759,8 +759,8 @@ public ItemStack loadItem(String s, String slot) {
 	    
 	    
 	    
-	    if (slotHasCommands("Polis", slot)) {
-	      for (String ss : getCommands("Polis", slot)) {
+	    if (slotHasCommands("Token", slot)) {
+	      for (String ss : getCommands("Token", slot)) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
 	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
@@ -780,8 +780,8 @@ public ItemStack loadItem(String s, String slot) {
 	   
 		  }
 	  for (i = 0; i < seasonal; i++) {
-			ItemStack won = loadItem("Oblivion", "." + getRandom("Oblivion"));
-	    String slot = checkForSlot(won, "Oblivion");
+			ItemStack won = loadItem("Seasonal", "." + getRandom("Seasonal"));
+	    String slot = checkForSlot(won, "Seasonal");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
 	    
 	    int crates = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".CratesOpened");
@@ -810,8 +810,8 @@ public ItemStack loadItem(String s, String slot) {
 	    
 	    
 	    
-	    if (slotHasCommands("Oblivion", slot)) {
-	      for (String ss : getCommands("Oblivion", slot)) {
+	    if (slotHasCommands("Seasonal", slot)) {
+	      for (String ss : getCommands("Seasonal", slot)) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
 	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
@@ -831,8 +831,8 @@ public ItemStack loadItem(String s, String slot) {
 	   
 		  }
 	  for (i = 0; i < rank; i++) {
-			ItemStack won = loadItem("Olympus", "." + getRandom("Olympus"));
-	    String slot = checkForSlot(won, "Olympus");
+			ItemStack won = loadItem("Rank", "." + getRandom("Rank"));
+	    String slot = checkForSlot(won, "Rank");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
 	    
 	    int crates = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".CratesOpened");
@@ -861,8 +861,8 @@ public ItemStack loadItem(String s, String slot) {
 	    
 	    
 	    
-	    if (slotHasCommands("Olympus", slot)) {
-	      for (String ss : getCommands("Olympus", slot)) {
+	    if (slotHasCommands("Rank", slot)) {
+	      for (String ss : getCommands("Rank", slot)) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
 	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
@@ -882,8 +882,8 @@ public ItemStack loadItem(String s, String slot) {
 	   
 		  }
 	  for (i = 0; i < community; i++) {
-			ItemStack won = loadItem("Prestige", "." + getRandom("Prestige"));
-	    String slot = checkForSlot(won, "Prestige");
+			ItemStack won = loadItem("Community", "." + getRandom("Community"));
+	    String slot = checkForSlot(won, "Community");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
 	    
 	    int crates = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".CratesOpened");
@@ -912,8 +912,8 @@ public ItemStack loadItem(String s, String slot) {
 	    
 	    
 	    
-	    if (slotHasCommands("Prestige", slot)) {
-	      for (String ss : getCommands("Prestige", slot)) {
+	    if (slotHasCommands("Community", slot)) {
+	      for (String ss : getCommands("Community", slot)) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
 	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
@@ -1018,19 +1018,19 @@ public ItemStack loadItem(String s, String slot) {
 			  Player p = (Player)sender;
 			  String crate = args[0];
 			  if(crate.equalsIgnoreCase("alpha"))  {
-				  loadCrate(p, "Midas");
+				  loadCrate(p, "Alpha");
 			  } else if(crate.equalsIgnoreCase("beta"))  {
-				  loadCrate(p, "Poseidon");
+				  loadCrate(p, "Beta");
 			  } else if(crate.equalsIgnoreCase("omega"))  {
-				  loadCrate(p, "Hades");
+				  loadCrate(p, "Omega");
 			  } else if(crate.equalsIgnoreCase("token"))  {
-				  loadCrate(p, "Polis");
+				  loadCrate(p, "Token");
 			  } else if(crate.equalsIgnoreCase("seasonal"))  {
-				  loadCrate(p, "Oblivion");
+				  loadCrate(p, "Seasonal");
 			  } else if(crate.equalsIgnoreCase("rank"))  {
-				  loadCrate(p, "Olympus");
+				  loadCrate(p, "Rank");
 			  } else if(crate.equalsIgnoreCase("community"))  {
-				  loadCrate(p, "Prestige");
+				  loadCrate(p, "Community");
 			  } else if(crate.equalsIgnoreCase("vote"))  {
 				  loadCrate(p, "Vote");
 			  } else {

@@ -87,7 +87,7 @@ public class CMDTags implements Listener, CommandExecutor {
       x++;
       if (page == 1) {
         ItemStack item = new ItemStack(Material.PAPER, 1);
-        List<String> lore = new ArrayList<String>();
+        List<String> lore = new ArrayList<>();
         if (!p.hasPermission("Tag." + s) && !p.hasPermission("tags.*") && !p.hasPermission("tag.*")) {
           item.setType(Material.BARRIER);
           lore.add(ChatColor.GRAY + "This tag is locked!");
@@ -98,13 +98,13 @@ public class CMDTags implements Listener, CommandExecutor {
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.settings.getTags().getString(s)));
         im.setLore(lore);
         item.setItemMeta(im);
-        i.addItem(new ItemStack[] { item });
+        i.addItem(item);
         continue;
       } 
       if (page == 2) {
         if (x > 35) {
           ItemStack item = new ItemStack(Material.PAPER, 1);
-          List<String> lore = new ArrayList<String>();
+          List<String> lore = new ArrayList<>();
           if (!p.hasPermission("Tag." + s) && !p.hasPermission("tags.*") && !p.hasPermission("tag.*")) {
             item.setType(Material.BARRIER);
             lore.add(ChatColor.GRAY + "This tag is locked!");
@@ -115,14 +115,14 @@ public class CMDTags implements Listener, CommandExecutor {
           im.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.settings.getTags().getString(s)));
           im.setLore(lore);
           item.setItemMeta(im);
-          i.addItem(new ItemStack[] { item });
+          i.addItem(item);
         } 
         continue;
       } 
       if (page == 3 && 
         x > 71) {
         ItemStack item = new ItemStack(Material.PAPER, 1);
-        List<String> lore = new ArrayList<String>();
+        List<String> lore = new ArrayList<>();
         if (!p.hasPermission("Tag." + s) && !p.hasPermission("tags.*") && !p.hasPermission("tag.*")) {
           item.setType(Material.BARRIER);
           lore.add(ChatColor.GRAY + "This tag is locked!");
@@ -133,7 +133,7 @@ public class CMDTags implements Listener, CommandExecutor {
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&', this.settings.getTags().getString(s)));
         im.setLore(lore);
         item.setItemMeta(im);
-        i.addItem(new ItemStack[] { item });
+        i.addItem(item);
       } 
     } 
   }
@@ -170,20 +170,17 @@ public class CMDTags implements Listener, CommandExecutor {
       if (e.getCurrentItem() == null)
         return; 
       if (e.getCurrentItem().getType().equals(Material.PAPER)) {
-        this.settings.getData().set(String.valueOf(p.getUniqueId().toString()) + ".Tag", e.getCurrentItem().getItemMeta().getDisplayName());
+        this.settings.getData().set(p.getUniqueId().toString() + ".Tag", e.getCurrentItem().getItemMeta().getDisplayName());
         this.settings.saveData();
         p.sendMessage(ChatColor.GRAY + "Tag set to " + ChatColor.translateAlternateColorCodes('&', e.getCurrentItem().getItemMeta().getDisplayName()));
-        return;
-      } 
+      }
     } 
   }
   
   Random r = new Random();
   
   public String randomTagName() {
-    List<String> names = new ArrayList<String>();
-    for (String s : this.settings.getTags().getKeys(false))
-      names.add(s); 
+    List<String> names = new ArrayList<>(this.settings.getTags().getKeys(false));
     return names.get(this.r.nextInt(names.size()));
   }
   
@@ -197,7 +194,7 @@ public class CMDTags implements Listener, CommandExecutor {
       } else if (args.length == 1) {
         Player p = (Player)sender;
         if (args[0].equalsIgnoreCase("off")) {
-          this.settings.getData().set(String.valueOf(p.getUniqueId().toString()) + ".Tag", "");
+          this.settings.getData().set(p.getUniqueId().toString() + ".Tag", "");
           this.settings.saveData();
           p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Your tag has been removed!"));
           return true;
@@ -209,23 +206,25 @@ public class CMDTags implements Listener, CommandExecutor {
           sender.sendMessage(ChatColor.GOLD + "Player not found!");
           return false;
         } 
-        if (args[1].toLowerCase().equals("random")) {
+        if (args[1].equalsIgnoreCase("random")) {
           String tag = randomTagName();
-          Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), "manuaddp " + give.getName() + " " + "Tag." + tag);
-          give.sendMessage(ChatColor.GOLD + "You have been given the " + ChatColor.translateAlternateColorCodes('&', String.valueOf(this.settings.getTags().getString(tag)) + " &6tag!"));
+          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "manuaddp " + give.getName() + " " + "Tag." + tag);
+          give.sendMessage(ChatColor.GOLD + "You have been given the " + ChatColor.translateAlternateColorCodes('&', this.settings.getTags().getString(tag) + " &6tag!"));
         } else {
           String tag = args[1];
           boolean real = false;
           for (String s : this.settings.getTags().getKeys(false)) {
-            if (s.toLowerCase().equals(tag.toLowerCase()))
-              real = true; 
+            if (s.equalsIgnoreCase(tag)) {
+              real = true;
+              break;
+            }
           } 
           if (!real) {
             give.sendMessage(ChatColor.GOLD + "Tag not found!");
             return false;
           } 
-          Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), "manuaddp " + give.getName() + " Tag." + tag);
-          give.sendMessage(ChatColor.GOLD + "You have been given the " + ChatColor.translateAlternateColorCodes('&', String.valueOf(this.settings.getTags().getString(tag)) + " &6tag!"));
+          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "manuaddp " + give.getName() + " Tag." + tag);
+          give.sendMessage(ChatColor.GOLD + "You have been given the " + ChatColor.translateAlternateColorCodes('&', this.settings.getTags().getString(tag) + " &6tag!"));
         } 
       }  
     return false;

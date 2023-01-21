@@ -137,6 +137,9 @@ implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
+        if(p.getItemInHand() == null) return;
+        if(!p.getItemInHand().hasItemMeta()) return;
+        if(!p.getItemInHand().getItemMeta().hasLore()) return;
         double xpToAdd = Functions.xpBoost(p) * Functions.XPEnchant(p) * BoostsHandler.xp;
 
         addXP(p, xpToAdd);

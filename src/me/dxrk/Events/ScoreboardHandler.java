@@ -3,6 +3,7 @@ package me.dxrk.Events;
 import com.connorlinfoot.titleapi.TitleAPI;
 import com.earth2me.essentials.Essentials;
 import me.dxrk.Commands.CMDVanish;
+import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Tokens.Tokens;
@@ -527,7 +528,7 @@ public class ScoreboardHandler implements Listener{
 	            Scoreboard NewBoard = scoreboardManager.getNewScoreboard();
 	            Objective obj = NewBoard.registerNewObjective("Test", "Dummy");
 		        obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-		        obj.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "Genesis" + ChatColor.GRAY + "⤲"+ ChatColor.AQUA + ""+ChatColor.BOLD+ "Prison");
+		        obj.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Genesis" + ChatColor.GRAY + "⤲"+ ChatColor.AQUA + ""+ChatColor.BOLD+ "Prison");
 		        
 		        
 		        Team stLine = NewBoard.registerNewTeam("1stLine");
@@ -539,7 +540,7 @@ public class ScoreboardHandler implements Listener{
 				//Player
 				Team player = NewBoard.registerNewTeam("Player");
 				player.addEntry(ChatColor.RED+""+ChatColor.BLACK);
-				player.setPrefix(c("&9&lPlayer:"));
+				player.setPrefix(c("&f&lPlayer:"));
 				obj.getScore(ChatColor.RED+""+ChatColor.BLACK).setScore(14);
 		        
 		        //DonorRank
@@ -583,7 +584,7 @@ public class ScoreboardHandler implements Listener{
 				//Pickaxe
 				Team Pickaxe = NewBoard.registerNewTeam("Pickaxe");
 				Pickaxe.addEntry(ChatColor.GOLD+""+ChatColor.GRAY);
-				Pickaxe.setPrefix(c("&9&lPickaxe:"));
+				Pickaxe.setPrefix(c("&f&lPickaxe:"));
 				obj.getScore(ChatColor.GOLD+""+ChatColor.GRAY).setScore(5);
 				//PickLevel
 				Team pickLevel = NewBoard.registerNewTeam("PickLevel");
@@ -729,13 +730,39 @@ public class ScoreboardHandler implements Listener{
 					
 					if(titlechanged == false) {
 						//Add keys, stock market, event, and websites into tablist
-					
-						TitleAPI.sendTabTitle(p, c("&9&lGenesis&b&lMC\n&aConnected to: &9Prison\n\n&dPlayers Online: &c"+getPlayersOnline()+"\n&7Ping: &a"+ping+"\n"+tps+"\n\n&8&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"),
-								c("&7&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n&6Boosts\n"+ BoostsHandler.sname+"&7/"+ BoostsHandler.xname+"\n"+ BoostsHandler.stimeLeft+"&7/"+ BoostsHandler.xtimeLeft+"\n\n"+store));
+
+						TitleAPI.sendTabTitle(p,
+								//Header
+								c("&c&lGenesis&b&lMC" +
+										"\n&bConnected to: &cPrison" +
+										"\n\n&dPlayers Online: &c"+getPlayersOnline()+"" +
+										"\n&7Ping: &a"+ping+"" +
+										"\n"+tps+"" +
+										"\n\n&8&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"),
+								//Footer
+								c("&7&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" +
+										"\n\n&eActive Events: &e"+ SkillsEventsListener.events +
+										"\n\n&6Boosts" +
+										"\n"+ BoostsHandler.sname+"&7/"+ BoostsHandler.xname+"" +
+										"\n"+ BoostsHandler.stimeLeft+"&7/"+ BoostsHandler.xtimeLeft+"" +
+										"\n\n"+store));
 					titlechanged = true;
 					} else {
-						TitleAPI.sendTabTitle(p, c("&9&lGenesis&b&lMC\n&aConnected to: &9Prison\n\n&dPlayers Online: &c"+getPlayersOnline()+"\n&7Ping: &a"+ping+"\n"+tps+"\n\n&7&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"),
-								c("&8&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n&6Boosts\n"+ BoostsHandler.sname+"&7/"+ BoostsHandler.xname+"\n"+ BoostsHandler.stimeLeft+"&7/"+ BoostsHandler.xtimeLeft+"\n\n"+store));
+						TitleAPI.sendTabTitle(p,
+								//Header
+								c("&c&lGenesis&b&lMC" +
+										"\n&bConnected to: &cPrison" +
+										"\n\n&dPlayers Online: &c"+getPlayersOnline()+"" +
+										"\n&7Ping: &a"+ping+"" +
+										"\n"+tps+"" +
+										"\n\n&7&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"),
+								//Footer
+								c("&8&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" +
+										"\n\n&eActive Events: &e"+ SkillsEventsListener.events +
+										"\n\n&6Boosts" +
+										"\n"+ BoostsHandler.sname+"&7/"+ BoostsHandler.xname+"" +
+										"\n"+ BoostsHandler.stimeLeft+"&7/"+ BoostsHandler.xtimeLeft+"" +
+										"\n\n"+store));
 						titlechanged = false;
 					}
 					if(!p.isOnline()) {
