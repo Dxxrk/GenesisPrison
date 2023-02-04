@@ -75,6 +75,22 @@ public class Functions implements Listener{
 
 		return xp;
 	}
+	public static double tokenBoost(Player p) {
+		double xp = 1;
+		if(!p.getItemInHand().hasItemMeta()) return 1;
+		for (String s : p.getItemInHand().getItemMeta().getLore()) {
+			if(ChatColor.stripColor(s).toLowerCase().contains("token trinket")) {
+
+				String[] n = ChatColor.stripColor(s).split("%");
+				String[] num = n[0].split(" ");
+				double x = Double.parseDouble(num[4])/100;
+
+				xp += x;
+			}
+		}
+
+		return xp;
+	}
 
 	
 	public static double luckBoost(Player p) {
@@ -131,10 +147,9 @@ public class Functions implements Listener{
 		int level;
 
 		for (String s : p.getItemInHand().getItemMeta().getLore()) {
-			if(ChatColor.stripColor(s).contains("Trinket")) continue;
-			if (ChatColor.stripColor(s).contains("Lucky")) {
+			if (ChatColor.stripColor(s).contains("Karma")) {
 				level = m.getBlocks(s);
-				return 1+(level*0.00035);
+				return 1+(level*0.0001);
 			}
 		}
 		return 1;
@@ -179,37 +194,7 @@ public class Functions implements Listener{
 		}
 	}
 	
-	public static String prestige(Player p) { // remove in chat
-		String prestige = "";
-		
-		for(int i = 1; i <101; i++) {
-			if(p.hasPermission("prestige."+i)) {
-				if(i<11) {
-					prestige = m.c("&b&lP"+i+"&8-&3");
-				} else if(i<21) {
-					prestige = m.c("&9&lT"+(i-10)+"&8-&b");
-				} else if(i<31) {
-					prestige = m.c("&2&lS"+(i-20)+"&8-&a");
-				} else if(i<41) {
-					prestige = m.c("&5&lA"+(i-30)+"&8-&d");
-				} else if(i<51) {
-					prestige = m.c("&4&lC"+(i-40)+"&8-&e");
-				} else if(i<61) {
-					prestige = m.c("&d&lL"+(i-50)+"&8-&5");
-				} else if(i<71) {
-					prestige = m.c("&3&lF"+(i-60)+"&8-&b");
-				} else if(i<81) {
-					prestige = m.c("&e&lM"+(i-70)+"&8-&c");
-				} else if(i<91) {
-					prestige = m.c("&c&lE"+(i-80)+"&8-&6");
-				} else {
-					prestige = m.c("&6&lO"+(i-90)+"&8-&f");
-				}
-				
-			}
-		}
-	    return prestige;
-	}
+
 	
 	public static String pres(Player p) {
 		String prestige = "";

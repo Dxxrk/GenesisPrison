@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import me.dxrk.Main.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -62,6 +63,19 @@ public class TokensCMD implements CommandExecutor, Listener {
         }
       return 36 - i;
   }
+  Methods m = Methods.getInstance();
+
+  public ItemStack tokenVoucher(double tokens) {
+    ItemStack t = new ItemStack(Material.MAGMA_CREAM);
+    ItemMeta tm = t.getItemMeta();
+    tm.setDisplayName(m.c("&eToken Voucher"));
+    List<String> lore = new ArrayList<>();
+    lore.add(m.c("&7Tokens: &e⛀"+tokens));
+    tm.setLore(lore);
+    t.setItemMeta(tm);
+    return t;
+  }
+
   
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     if (cmd.getName().equalsIgnoreCase("Tokens") || cmd.getName().equalsIgnoreCase("Token"))
@@ -115,56 +129,20 @@ public class TokensCMD implements CommandExecutor, Listener {
               p.sendMessage(ChatColor.AQUA + "/Enchanter" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Buy Custom me.dxrk.Enchants!");
               p.sendMessage(s);
           } else if (args[0].equalsIgnoreCase("Balance") || args[0].equalsIgnoreCase("Bal")) {
-            prefixMsg(p, "&e" + ((int)this.tokens.getTokens(p)) + "⛀");
-          } else if (args[0].equalsIgnoreCase("AddCommand")) {
-            String page = args[1];
-            int slot = Integer.parseInt(args[2]);
-            StringBuilder sb = new StringBuilder();
-            for (int x = 3; x < args.length; x++)
-              sb.append(args[x]).append(" ");
-            List<String> commands = new ArrayList<>();
-            if (this.tokens.settings.getTokenShop().contains(page + "." + slot + ".command"))
-              commands = this.tokens.settings.getTokenShop().getStringList(page + "." + slot + ".command");
-            commands.add(sb.toString());
-            this.tokens.settings.getTokenShop().set(page + "." + slot + ".command", commands);
-            this.tokens.settings.saveTokenShop();
-          } else if (args[0].equalsIgnoreCase("EditShop")) {
-            if (!p.hasPermission("Tokens.EditShop")) {
-            	return false;
-            }
-              if (args.length != 2) {
-                p.sendMessage(ChatColor.RED + "Please pick which shop you want to edit!");
-                StringBuilder sb = new StringBuilder();
-                for (String ss : this.settings.getTokenShop().getKeys(false))
-                  sb.append(ChatColor.GOLD).append(ss).append(", ");
-                p.sendMessage(sb.toString());
-              } else {
-                this.tokens.loadEditableShop(p, args[1]);
-              }
+            prefixMsg(p, "&e⛀" + ((int)this.tokens.getTokens(p)));
           } else if (args[0].equalsIgnoreCase("WithDraw")) {
-            if (args.length != 2)
-              return false; 
-            if (isInt(args[1])) {
-              double bal = this.tokens.getTokens(p);
-              int i = Integer.parseInt(args[1]);
-              if (bal >= i) {
-                ItemStack token = new ItemStack(Material.PRISMARINE_CRYSTALS, i);
-                ItemMeta MS8 = token.getItemMeta();
-                MS8.setDisplayName(ChatColor.AQUA + "Token");
-                token.setItemMeta(MS8);
-                if(token.getAmount() > getEmptySlots(p)) {
-                	p.sendMessage(ChatColor.RED+"You cannot hold that many tokens!");
-                	return false;
-                }
-                p.getInventory().addItem(token);
-                p.updateInventory();
-                this.tokens.takeTokens(p, i);
-              } else {
-                prefixMsg(p, "&7You do not have enough tokens");
-              } 
-            } else {
-              prefixMsg(p, "&7That is not a valid number!");
-            } 
+            if (args.length != 2) return false;
+
+            double tokens = this.tokens.getTokens(p);
+            double amount = Double.parseDouble(args[1]);
+            if(amount > tokens) {
+              p.sendMessage(m.c("&cError: Not Enough Tokens"));
+              return false;
+            }
+            this.tokens.takeTokens(p, amount);
+            p.getInventory().addItem(tokenVoucher(amount));
+
+
           } else if (args[0].equalsIgnoreCase("Send")) {
             if (args.length >= 2) {
               Player reciever = Bukkit.getServer().getPlayer(args[1]);
@@ -209,7 +187,7 @@ public class TokensCMD implements CommandExecutor, Listener {
               p.sendMessage(ChatColor.RED + "No perm");
             } 
           } else if (args[0].equalsIgnoreCase("Shop")) {
-            this.tokens.openEtShop(p);
+            //this.tokens.openEtShop(p);
           } else {
             prefixMsg(p, "&7Command not found");
           } 

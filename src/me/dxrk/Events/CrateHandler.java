@@ -317,7 +317,8 @@ public class CrateHandler implements Listener, CommandExecutor {
   public void openSneakingCrate(String crate, Player p) {
     ItemStack won = loadItem(crate, "." + getRandom(crate));
     String slot = checkForSlot(won, crate);
-    p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lCrates &8| " + won.getItemMeta().getDisplayName()));
+    if(!ChatColor.stripColor(won.getItemMeta().getDisplayName()).contains("Tokens"))
+        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lCrates &8| " + won.getItemMeta().getDisplayName()));
     if (slotHasCommands(crate, slot)) {
       for (String ss : getCommands(crate, slot)) {
         ss = ss.replaceAll("%PLAYER%", p.getName());
@@ -439,33 +440,33 @@ public ItemStack loadItem(String s, String slot) {
 	  }
   @EventHandler
   public void onInt(PlayerInteractEvent e) {
+      Player p = e.getPlayer();
+      String uuid = p.getUniqueId().toString();
     if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
       if (isCrate(e.getClickedBlock()))
         return; 
       e.setCancelled(true);
-      Player p = e.getPlayer();
+
       loadCrate(p, getCrate(e.getClickedBlock()));
     } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
       if (isCrate(e.getClickedBlock()))
         return; 
       e.setCancelled(true);
-      if (isKey(e.getPlayer().getItemInHand(), getCrate(e.getClickedBlock()))) {
-        Player p = e.getPlayer();
-        
+      if (this.settings.getLocksmith().getInt(uuid + "."+getCrate(e.getClickedBlock()).toLowerCase()) >0) {
+          int keys = this.settings.getLocksmith().getInt(uuid + "."+getCrate(e.getClickedBlock()).toLowerCase());
+
         if (p.isSneaking()) {
-        	if (p.getItemInHand().getAmount() == 1) {
-                p.setItemInHand(null);
+        	if (keys == 1) {
+                LocksmithHandler.getInstance().takeKey(p, getCrate(e.getClickedBlock()), 1);
                 openSneakingCrate(getCrate(e.getClickedBlock()), p);
               } else {
-            	  ItemStack key = p.getItemInHand().clone();
-                p.setItemInHand(null);
+                LocksmithHandler.getInstance().takeKey(p, getCrate(e.getClickedBlock()), keys);
           	  double multi = 0;
           	  int tokens = 0;
-          	  double money = 0;
           	  ArrayList<String> rw = new ArrayList<>();
           	  ArrayList<String> rww = new ArrayList<>();
           	int i;
-      	  for (i = 0; i < key.getAmount(); i++) {
+      	  for (i = 0; i < keys; i++) {
       		ItemStack won = loadItem(getCrate(e.getClickedBlock()), "." + getRandom(getCrate(e.getClickedBlock())));
     	    String slot = checkForSlot(won, getCrate(e.getClickedBlock()));
     	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
@@ -483,14 +484,7 @@ public ItemStack loadItem(String s, String slot) {
     	    	double mm = Double.parseDouble(nn[0]);
     	    	
     	    	multi += mm;
-    	    }else if(name.contains("%")) {
-
-                int percent = getValueInt(name);
-                double per = ((double)percent)/100;
-    	    	double m = RankupHandler.getInstance().rankPrice(p) * per;
-    	    	money += m;
-    	    	
-    	    } else {
+    	    }else {
     	    	rww.add(c(won.getItemMeta().getDisplayName()));
     	    }
     	    
@@ -535,13 +529,7 @@ public ItemStack loadItem(String s, String slot) {
       	  }
       	  this.settings.savePlayerData();
                 // String[] rewards = {c("&7&lMulti: "+multi+"x"), c("&7&lTokens: "+tokens), c("&7&lMoney: "+Main.formatAmt(money)), c("&7Other:")};
-      	
-      	rw.add(c("&f&lMulti &8| &b"+multi+"x"));
-     	rw.add(c("&f&lTokens &8| &b"+tokens));
-     	rw.add(c("&f&lMoney &8| &b"+Main.formatAmt(money)));
-                for (String s : rw) {
-                    p.sendMessage(c(s));
-                }
+
 
                 ArrayList<String> rw2 = new ArrayList<>(rww);
       	  
@@ -551,18 +539,16 @@ public ItemStack loadItem(String s, String slot) {
             }
           
         } else {
-        	if (p.getItemInHand().getAmount() == 1) {
-                p.setItemInHand(null);
+        	if (keys == 1) {
+                LocksmithHandler.getInstance().takeKey(p, getCrate(e.getClickedBlock()), 1);
               } else {
-                ItemStack key = p.getItemInHand().clone();
-                key.setAmount(key.getAmount() - 1);
-                p.setItemInHand(key);
+                LocksmithHandler.getInstance().takeKey(p, getCrate(e.getClickedBlock()), 1);
               }
           openSneakingCrate(getCrate(e.getClickedBlock()), p);
         } 
       } else {
-        e.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lCrates &8| &bYou must be holding a &4" + getCrate(e.getClickedBlock()) + " &bKey."));
-      } 
+        e.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lCrates &8| &bYou do not have a &4" + getCrate(e.getClickedBlock()) + " &bKey."));
+      }
     } 
   }
   
@@ -571,7 +557,6 @@ public ItemStack loadItem(String s, String slot) {
   public void openall(Player p, int alpha, int beta, int omega, int token, int seasonal, int rank, int community, int vote) {
 	  double multi = 0;
   	  int tokens = 0;
-  	  double money = 0;
   	  ArrayList<String> rw = new ArrayList<>();
   	  ArrayList<String> rww = new ArrayList<>();
   	int i;
@@ -593,13 +578,6 @@ public ItemStack loadItem(String s, String slot) {
     	double mm = Double.parseDouble(nn[0]);
     	
     	multi += mm;
-    }else if(name.contains("%")) {
-
-        int percent = getValueInt(name);
-        double per = ((double)percent)/100;
-        double m = RankupHandler.getInstance().rankPrice(p) * per;
-        money += m;
-
     } else {
     	rww.add(c(won.getItemMeta().getDisplayName()));
     }
@@ -644,14 +622,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    }else if(name.contains("%")) {
-
-            int percent = getValueInt(name);
-            double per = ((double)percent)/100;
-            double m = RankupHandler.getInstance().rankPrice(p) * per;
-            money += m;
-
-        } else {
+	    } else {
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -695,14 +666,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    }else if(name.contains("%")) {
-
-            int percent = getValueInt(name);
-            double per = ((double)percent)/100;
-            double m = RankupHandler.getInstance().rankPrice(p) * per;
-            money += m;
-
-        } else {
+	    } else {
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -746,14 +710,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    }else if(name.contains("%")) {
-
-            int percent = getValueInt(name);
-            double per = ((double)percent)/100;
-            double m = RankupHandler.getInstance().rankPrice(p) * per;
-            money += m;
-
-        } else {
+	    } else {
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -797,14 +754,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    }else if(name.contains("%")) {
-
-            int percent = getValueInt(name);
-            double per = ((double)percent)/100;
-            double m = RankupHandler.getInstance().rankPrice(p) * per;
-            money += m;
-
-        } else {
+	    } else {
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -848,14 +798,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    }else if(name.contains("%")) {
-
-            int percent = getValueInt(name);
-            double per = ((double)percent)/100;
-            double m = RankupHandler.getInstance().rankPrice(p) * per;
-            money += m;
-
-        } else {
+	    } else {
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -899,14 +842,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    }else if(name.contains("%")) {
-
-            int percent = getValueInt(name);
-            double per = ((double)percent)/100;
-            double m = RankupHandler.getInstance().rankPrice(p) * per;
-            money += m;
-
-        } else {
+	    } else {
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -950,14 +886,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    }else if(name.contains("%")) {
-
-            int percent = getValueInt(name);
-            double per = ((double)percent)/100;
-            double m = RankupHandler.getInstance().rankPrice(p) * per;
-            money += m;
-
-        } else {
+	    } else {
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -985,17 +914,7 @@ public ItemStack loadItem(String s, String slot) {
 		  }
 	  this.settings.savePlayerData();
       // String[] rewards = {c("&7&lMulti: "+multi+"x"), c("&7&lTokens: "+tokens), c("&7&lMoney: "+Main.formatAmt(money)), c("&7Other:")};
-	if(multi >0)
-	    rw.add(c("&f&lMulti &8| &b"+multi+"x"));
-	if(tokens > 0)
-	    rw.add(c("&f&lTokens &8| &b"+tokens));
-	if(money >0)
-	    rw.add(c("&f&lMoney &8| &b$"+Main.formatAmt(money)));
-	if(rw.size() >0) {
-        for (String s : rw) {
-            p.sendMessage(c(s));
-        }
-	}
+
 
       ArrayList<String> rw2 = new ArrayList<>(rww);
 	  
@@ -1062,7 +981,7 @@ public ItemStack loadItem(String s, String slot) {
 		    LocksmithHandler.getInstance().takeKey(p, "Vote", vote);
 		    LocksmithHandler.getInstance().takeKey(p, "Community", community);
 		  } else {
-			  p.sendMessage(c("&f&lCrates &8| &bYou must be rank Ares+ to use /openall"));
+			  p.sendMessage(c("&f&lCrates &8| &bYou must be rank Hero+ to use /openall"));
 		  }
 		  p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
 			double percents;
@@ -1108,9 +1027,9 @@ public ItemStack loadItem(String s, String slot) {
             if (formatKey(args[0]).equalsIgnoreCase("error")) {
               p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cThat key does not exist."));
               return false;
-            } 
-            p.getInventory().addItem(getKey(formatKey(args[0]), 1));
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lCrates &8| &b+" + formatKey(args[0]) + " &bKey!"));
+            }
+              LocksmithHandler.getInstance().addKey(p, formatKey(args[0]), 1);
+            //p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lCrates &8| &b+1 " + formatKey(args[0]) + " &bKey!"));
             return true;
           } 
           p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou do not have permission to use this command."));
@@ -1128,6 +1047,8 @@ public ItemStack loadItem(String s, String slot) {
           Player p = Bukkit.getPlayer(args[0]);
           //p.getInventory().addItem(new ItemStack[] { getKey(formatKey(args[0]), 1) });
           LocksmithHandler.getInstance().addKey(p, formatKey(args[1]), 1);
+            //p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lCrates &8| &b+1 " + formatKey(args[1]) + " &bKey!"));
+          return false;
          
         }
         if(args.length == 3){
@@ -1142,6 +1063,8 @@ public ItemStack loadItem(String s, String slot) {
             }
             Player p = Bukkit.getPlayer(args[0]);
             LocksmithHandler.getInstance().addKey(p, formatKey(args[1]), i);
+            //p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lCrates &8| &b+"+i +" "+ formatKey(args[1]) + " &bKey!"));
+            return false;
         }
 
         else {

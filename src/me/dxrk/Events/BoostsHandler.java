@@ -94,7 +94,7 @@ public class BoostsHandler implements Listener, CommandExecutor{
 			ItemStack item = new ItemStack(Material.POTION, 1, (short) 8260);
 			ItemMeta im = item.getItemMeta();
 			im.addItemFlags(ItemFlag.values());
-			im.setDisplayName(c("&f&l" + split[3] + "x Sell Boost"));
+			im.setDisplayName(c("&f&l" + split[3] + "x Currency Boost"));
 			List<String> lore = new ArrayList<>();
 			lore.add(c("&dActivated By: &f" + split[2]));
 			lore.add(c("&d" + timeFormat(Integer.parseInt(split[4]))));
@@ -308,13 +308,13 @@ public class BoostsHandler implements Listener, CommandExecutor{
 					
 					settings.saveboosts();
 					
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l"+ args[1]+" &dhas activated a "+amp+"x Sell Boost!");
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l"+ args[1]+" &dhas activated a "+amp+"x Currency Boost!");
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &7Length: &b"+timeFormat(dur));
 					
 					TextChannel channel = jdaHandler.jda.getTextChannelById("1003031504278016051");
 
 					EmbedBuilder b = new EmbedBuilder();
-					b.setTitle("__"+args[1]+" Activated a Sell Boost__");
+					b.setTitle("__"+args[1]+" Activated a Currency Boost__");
 					b.addField("Multiplier: "+amp+"x", "Length: "+timeFormat(dur), false);
 					b.setColor(Color.BLUE);
 
@@ -325,7 +325,7 @@ public class BoostsHandler implements Listener, CommandExecutor{
 					
 					Bukkit.getScheduler().scheduleSyncDelayedTask(Main.plugin, () -> {
 						if(sactive == true) {
-							Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &f&l"+args[1]+"'s &d&l"+amp+"x Sell Boost has ended!");
+							Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &f&l"+args[1]+"'s &d&l"+amp+"x Currency Boost has ended!");
 							}
 						sactive = false;
 						sname = c("&a$&f1.0x");
@@ -439,7 +439,7 @@ public class BoostsHandler implements Listener, CommandExecutor{
 					double amp = Double.parseDouble(args[2]);
 					int dur = Integer.parseInt(args[3]);
 					
-					boostsinv.get(p).add(BoostSell("&b"+amp+"x Sell Boost", "&d"+timeFormat(dur)));
+					boostsinv.get(p).add(BoostSell("&b"+amp+"x Currency Boost", "&d"+timeFormat(dur)));
 				
 				}
 				if(args[0].equalsIgnoreCase("XP")) {

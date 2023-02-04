@@ -1,6 +1,7 @@
 package me.dxrk.Vote;
 
-import me.dxrk.Main.Main;
+import com.antarescraft.kloudy.signguilib.SignGUI;
+import com.antarescraft.kloudy.signguilib.SignGUIUpdateEvent;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import net.buycraft.plugin.client.ApiException;
@@ -49,17 +50,18 @@ public class CMDVoteShop implements Listener, CommandExecutor{
 	
 	
 	public void openVS(Player p) {
-		Inventory voteshop = Bukkit.createInventory(null, InventoryType.HOPPER, m.c("&d&lVote Shop: &b" + getVotePoints(p)));
+		double amount = getCoupons(p)*0.05;
+		Inventory voteshop = Bukkit.createInventory(null, InventoryType.HOPPER, m.c("&d&lCoupons: &a$" + amount));
 
-		double amount = getVotePoints(p)*0.05;
+
 		NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
 		String coupon = formatter.format(amount);
 		ItemStack item = new ItemStack(Material.PAPER);
 		ItemMeta im = item.getItemMeta();
-		im.setDisplayName(m.c("&7Withdraw up to &b$"+coupon+"&7."));
+		im.setDisplayName(m.c("&7Withdraw up to &b"+coupon+"&7."));
 		List<String> lore = new ArrayList<>();
 		lore.add(m.c("&7&oClick to withdraw"));
-		lore.add(m.c("&7&oEnter the amount you want to withdraw and hit Esc."));
+		lore.add(m.c("&7&oEnter the amount you want to withdraw and hit Done."));
 		im.setLore(lore);
 		item.setItemMeta(im);
 		voteshop.setItem(2, item);
@@ -70,7 +72,7 @@ public class CMDVoteShop implements Listener, CommandExecutor{
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if(cmd.getName().equalsIgnoreCase("voteshop")) {
+		if(cmd.getName().equalsIgnoreCase("coupon") || cmd.getName().equalsIgnoreCase("coupons")) {
 			openVS((Player)sender);
 			
 		}
@@ -78,7 +80,7 @@ public class CMDVoteShop implements Listener, CommandExecutor{
 			if(args.length == 2) {
 				Player p = Bukkit.getPlayer(args[0]);
 				int points = Integer.parseInt(args[1]);
-				addVotePoint(p, points);
+				addCoupon(p, points);
 			}
 		}
 
@@ -131,42 +133,62 @@ public class CMDVoteShop implements Listener, CommandExecutor{
 		  if (e.getClickedInventory() == null)
 		      return; 
 		    if (e.getClickedInventory().getName() == null)
-		      return; 
-		    
-		    if(e.getClickedInventory().getName().equals(m.c("&d&lVote Shop: &b" + getVotePoints(p)))) {
+		      return;
+		  double amount = getCoupons(p)*0.05;
+		    if(e.getClickedInventory().getName().equals(m.c("&d&lCoupons: &a$" + amount))) {
 		    	e.setCancelled(true);
 				if(e.getSlot() == 2){
-					if(getVotePoints(p) <=0) return;
-					Main.getSignGUI().open(p, new String[] { "", "-------", "-----", "---" }, (player, lines) -> {
-						double amount = Double.parseDouble(lines[0]);
-						BuycraftUtil.createCoupon(player, amount);
-					});
+					if(getCoupons(p) <=0) return;
+					String[] text = new String[] {"", "Enter the Amount", "You want to", "Withdraw"};
+					SignGUI.openSignEditor(p, text);
 				}
 
 		    	
 		    }
 	  }
+
+	  @EventHandler
+	  public void signUpdate(SignGUIUpdateEvent e) throws IOException, ApiException {
+		  Player p = e.getPlayer();
+		  if(e.getSignText()[0].equals(m.c("&lEnter"))){
+			  String l = e.getSignText()[0];
+			  l = l.replaceAll("\"", "");
+			  if(l.equals("") || l.equals(" ")) return;
+
+			  double amount = Double.parseDouble(l);
+			  if(amount > getCoupons(p)){
+				  p.sendMessage(m.c("&cError: You do not have enough."));
+				  return;
+			  }
+			  BuycraftUtil.createCoupon(p, amount);
+			  removeCoupons(p, amount);
+			  settings.saveVote();
+		  }
+	  }
 	  
 	  
-	  public static void addVotePoint(Player p, int points) {
-		  int vps = settings.getVote().getInt(p.getUniqueId().toString() + ".Votepoints");
-		  int newvps = vps + points;
+	  public static void addCoupon(Player p, double coupon) {
+		  double vps = settings.getVote().getDouble(p.getUniqueId().toString() + ".Coupons");
+		  double newvps = vps + coupon;
 		  
-		  settings.getVote().set(p.getUniqueId().toString() + ".Votepoints", newvps);
+		  settings.getVote().set(p.getUniqueId().toString() + ".Coupons", newvps);
 		  settings.saveVote();
 	  }
 	  
-	  public int getVotePoints(Player p) {
+	  public double getCoupons(Player p) {
 		  if(!settings.getVote().contains(p.getUniqueId().toString())) 
 			  return 0;
+		  double coupons = settings.getVote().getDouble(p.getUniqueId().toString() + ".Coupons");
+		  double dround = coupons*10.0;
+		  double drounded = Math.round(dround) /10.0;
 		  
-		  return settings.getVote().getInt(p.getUniqueId().toString() + ".Votepoints");
+		  return coupons;
 	  }
-	  public void removeVotePoints(Player p, int i) {
-		  int vps = settings.getVote().getInt(p.getUniqueId().toString() + ".Votepoints");
-		  int newvps = vps - i;
+	  public void removeCoupons(Player p, double i) {
+		  double vps = settings.getVote().getInt(p.getUniqueId().toString() + ".Coupons");
+		  double newvps = vps - i;
 		  
-		  settings.getVote().set(p.getUniqueId().toString() + ".Votepoints", newvps);
+		  settings.getVote().set(p.getUniqueId().toString() + ".Coupons", newvps);
 		  settings.saveVote();
 	  }
 	  

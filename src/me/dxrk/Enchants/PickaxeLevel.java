@@ -65,7 +65,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 	  }
 
 
-	public int getBlocks(String s) {
+	public int getInt(String s) {
         StringBuilder lvl = new StringBuilder();
         s = ChatColor.stripColor(s);
         char[] arrayOfChar = s.toCharArray();
@@ -148,12 +148,10 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 
 
 	public ItemStack Spacer() {
-	    ItemStack i = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)8);
+	    ItemStack i = new ItemStack(Material.IRON_FENCE);
 	    ItemMeta im = i.getItemMeta();
-	    im.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&9Genesis"));
-	    im.addEnchant(Enchantment.DURABILITY, 0, false);
+	    im.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&lGenesis &b&lPrison"));
 	    i.setItemMeta(im);
-	    i.removeEnchantment(Enchantment.DURABILITY);
 	    return i;
 	  }
 	
@@ -168,7 +166,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
   	    	String s = p.getItemInHand().getItemMeta().getLore().get(x);
   	    	if (ChatColor.stripColor(s).contains(enchantName)) {
-  	    		enchantLevel = getBlocks(p.getItemInHand().getItemMeta().getLore().get(x));
+  	    		enchantLevel = getInt(p.getItemInHand().getItemMeta().getLore().get(x));
   	    	}
   	    }
 		double price;
@@ -220,7 +218,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		Inventory enchantmenu = Bukkit.createInventory(null, 54, c("&d&lPurchase Enchants!"));
 
 
-		setEnchantItem("Lucky", Material.RABBIT_FOOT, c("&bUpgrade Lucky"), c("&7Boosts the chance of other enchants to proc."), 4000, enchantmenu, 13, p, 70);
+		setEnchantItem("Karma", Material.RABBIT_FOOT, c("&bUpgrade Karma"), c("&7Boosts the chance of other enchants to proc."), 4000, enchantmenu, 13, p, 70);
 		setEnchantItem("Booster", Material.POTION, c("&bUpgrade Booster"), c("&7Chance to find low timed boosts."), 5000, enchantmenu, 20, p, 50);
 		setEnchantItem("Key Party", Material.EYE_OF_ENDER, c("&bUpgrade Key Party"), c("&7Chance to give everyone online a key."), 3500, enchantmenu, 39, p, 35);
 		setEnchantItem("Multiply", Material.EMERALD, c("&bUpgrade Multiply"), c("&7Chance to double the effectiveness of all currencies for 10s."), 10000, enchantmenu, 23, p, 75);
@@ -262,16 +260,13 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		skills.setItemMeta(sm);
 		enchantmenu.setItem(46, skills);
 
-		ItemStack spacer = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)0);
-		ItemMeta spm = spacer.getItemMeta();
-		spm.setDisplayName(" ");
-		spacer.setItemMeta(spm);
-		enchantmenu.setItem(45, spacer);
-		enchantmenu.setItem(47, spacer);
-		enchantmenu.setItem(48, spacer);
-		enchantmenu.setItem(50, spacer);
-		enchantmenu.setItem(51, spacer);
-		enchantmenu.setItem(53, spacer);
+
+		enchantmenu.setItem(45, Spacer());
+		enchantmenu.setItem(47, Spacer());
+		enchantmenu.setItem(48, Spacer());
+		enchantmenu.setItem(50, Spacer());
+		enchantmenu.setItem(51, Spacer());
+		enchantmenu.setItem(53, Spacer());
 
 		
 	  p.openInventory(enchantmenu);
@@ -302,7 +297,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		list.add("Nuke");
 		list.add("Explosion");
 		list.add("Fortuity");
-		list.add("Lucky");
+		list.add("Karma");
 		list.add("Booster");
 		list.add("Research");
 		list.add("Multiply");
@@ -413,7 +408,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 					i = 1000;
 					break;
 				}
-				i = 1000+(1000 * (level * 0.0015)); // 18 Million Level 5,000 MAX
+				i = 1000+(1000 * (level * 0.0015)); // 23.7 Million Level 5,000 MAX
 
 				break;
 			case "Dust Finder":
@@ -442,10 +437,10 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 				break;
 			case "Token Finder":
 				if(level == 0) {
-					i = 500;
+					i = 1000;
 					break;
 				}
-				i = 500+(500 * (level * 0.02)); // 31 Million Level 2,500 MAX
+				i = 1000+(1000 * (level * 0.015)); // 70 Million Level 2,500 MAX
 
 				break;
 			case "Charity":
@@ -544,7 +539,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 				i = 10000+(10000*(level*0.1)); // 1.12 Billion Level 1,500 MAX
 
 				break;
-			case "Lucky":
+			case "Karma":
 				if(level == 0) {
 					i = 4000;
 					break;
@@ -573,7 +568,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 			case "Key Finder":
 			case "Dust Finder":
 			case "Prestige Finder":
-			case "Lucky":
+			case "Karma":
 				i = 5000;
 
 				break;
@@ -587,6 +582,10 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 
 				break;
 			case "Token Finder":
+			case "Research":
+				i = 3000;
+
+				break;
 			case "Booster":
 				i = 2500;
 
@@ -602,10 +601,6 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 
 				break;
 
-			case "Research":
-				i = 3000;
-
-				break;
 			case "Greed":
 				i = 100;
 
@@ -682,7 +677,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 						line = z;
 				}
 				for(int x = 0; x < num; x++){
-					int level = getBlocks(lore.get(line));
+					int level = getInt(lore.get(line));
 					int plus = level + 1;
 					int price = (int) enchantPrice(Enchant, level);
 					if(Tokens.getInstance().getTokens(p) >= price){
@@ -727,9 +722,9 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 					if(ChatColor.stripColor(s).contains(Enchant))
 						line = z;
 				}
-				int l = getBlocks(lore.get(line));
+				int l = getInt(lore.get(line));
 				for(int x = 0; x < (maxLevel(Enchant)-l); x++){
-					int level = getBlocks(lore.get(line));
+					int level = getInt(lore.get(line));
 					int plus = level + 1;
 					int price = (int) enchantPrice(Enchant, level);
 					if(Tokens.getInstance().getTokens(p) >= price){

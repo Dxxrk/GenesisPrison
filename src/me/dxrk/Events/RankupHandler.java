@@ -99,15 +99,102 @@ public class RankupHandler implements Listener, CommandExecutor{
         return (getRank(p)+1);
     
   }
+
+  public double priceJumpP(Player p){
+	  int prestiges = settings.getPlayerData().getInt(p.getUniqueId()+".Prestiges");
+	  if(prestiges >= 1500) {
+		  return 15;
+	  }
+	  else if(prestiges >= 1000){
+		  return 10;
+	  }
+	  else if(prestiges >=500){
+		  return 5;
+	  }
+	  else if(prestiges >= 250){
+		  return 2.5;
+	  }
+
+
+	  return 1;
+  }
+	public double priceJumpR(Player p){
+		int ranks = getRank(p);
+
+		if(ranks >= 20000){
+			return 100;
+		}
+		else if(ranks >= 18000) {
+			return 90;
+		}
+		else if(ranks >= 16000) {
+			return 80;
+		}
+		else if(ranks >= 14000) {
+			return 70;
+		}
+		else if(ranks >= 12000) {
+			return 60;
+		}
+		else if(ranks >= 10000) {
+			return 50;
+		}
+		else if(ranks >= 8000) {
+			return 40;
+		}
+		else if(ranks >= 7000) {
+			return 35;
+		}
+		else if(ranks >= 6000) {
+			return 30;
+		}
+		else if(ranks >= 5250) {
+			return 26.25;
+		}
+		else if(ranks >= 4500) {
+			return 22.5;
+		}
+		else if(ranks >= 3750) {
+			return 18.75;
+		}
+		else if(ranks >= 3000) {
+			return 15;
+		}
+		else if(ranks >= 2500) {
+			return 12.5;
+		}
+		else if(ranks >= 2000) {
+			return 10;
+		}
+		else if(ranks >= 1500) {
+			return 7.5;
+		}
+		else if(ranks >= 1000){
+			return 5;
+		}
+		else if(ranks >=500){
+			return 2.5;
+		}
+		else if(ranks >= 250){
+			return 1.25;
+		}
+
+
+		return 1;
+	}
+
   
   public double rankPrice(Player p) {
 	  int timespres = settings.getPlayerData().getInt(p.getUniqueId().toString()+".TimesPrestiged");
-	  if(timespres == 0){
-		  timespres = 1;
+	  double multi;
+	  if(timespres == 0) {
+		  multi = 1;
+	  } else {
+		  multi = timespres*1.75;
 	  }
-	  double multi = timespres*1.5;
+
 	  int rank = getRank(p);
-	  double price = (1e12+(1e12*((rank-1)*1.2)))*multi;
+	  double price = (1e12+(1e12*((rank-1)*1.3)))*multi*priceJumpP(p)*priceJumpR(p);
 	  if(rank == 1){
 		  price = 1e12;
 	  }

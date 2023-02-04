@@ -111,6 +111,14 @@ FileConfiguration PlayerData;
   FileConfiguration discord;
 
   File discordfile;
+
+  FileConfiguration auctionhouse;
+
+  File ahfile;
+
+  FileConfiguration gangs;
+
+  File gangfile;
   
   
   
@@ -134,7 +142,22 @@ FileConfiguration PlayerData;
     this.boostfile = new File(p.getDataFolder(), "boost.yml");
     this.dailyfile = new File(p.getDataFolder(), "daily.yml");
     this.discordfile = new File(p.getDataFolder(), "discord.yml");
+    this.ahfile = new File(p.getDataFolder(), "auctionhouse.yml");
+    this.gangfile = new File(p.getDataFolder(), "gangs.yml");
 
+    if (!this.gangfile.exists())
+      try {
+        this.gangfile.createNewFile();
+      } catch (IOException e) {
+        Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create gangs.yml");
+      }
+
+    if (!this.ahfile.exists())
+      try {
+        this.ahfile.createNewFile();
+      } catch (IOException e) {
+        Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create auctionhouse.yml");
+      }
 
     if (!this.discordfile.exists())
       try {
@@ -228,7 +251,7 @@ FileConfiguration PlayerData;
       } catch (IOException e) {
         Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create playerdata.yml!");
       }  
-    this.PlayerData = (FileConfiguration)YamlConfiguration.loadConfiguration(this.PDfile);
+    this.PlayerData = YamlConfiguration.loadConfiguration(this.PDfile);
     
     this.BPfile = new File(p.getDataFolder(), "backpacks.yml");
     if (!this.BPfile.exists())
@@ -237,7 +260,7 @@ FileConfiguration PlayerData;
       } catch (IOException e) {
         Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create backpacks.yml!");
       }  
-    this.backpacks = (FileConfiguration)YamlConfiguration.loadConfiguration(this.BPfile);
+    this.backpacks = YamlConfiguration.loadConfiguration(this.BPfile);
     this.Cfile = new File(p.getDataFolder(), "crates.yml");
     if (!this.Cfile.exists())
       try {
@@ -245,7 +268,7 @@ FileConfiguration PlayerData;
       } catch (IOException e) {
         Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create crates.yml!");
       }  
-    this.crates = (FileConfiguration)YamlConfiguration.loadConfiguration(this.Cfile);
+    this.crates = YamlConfiguration.loadConfiguration(this.Cfile);
     this.SPfile = new File(p.getDataFolder(), "sellprices.yml");
     if (!this.SPfile.exists())
       try {
@@ -253,7 +276,7 @@ FileConfiguration PlayerData;
       } catch (IOException e) {
         Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create sellprices.yml!");
       }  
-    this.sellPrices = (FileConfiguration)YamlConfiguration.loadConfiguration(this.SPfile);
+    this.sellPrices = YamlConfiguration.loadConfiguration(this.SPfile);
     this.RPfile = new File(p.getDataFolder(), "rankupprices.yml");
     if (!this.RPfile.exists())
       try {
@@ -261,7 +284,7 @@ FileConfiguration PlayerData;
       } catch (IOException e) {
         Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create rankupprices.yml!");
       }  
-    this.RankupPrices = (FileConfiguration)YamlConfiguration.loadConfiguration(this.RPfile);
+    this.RankupPrices = YamlConfiguration.loadConfiguration(this.RPfile);
     this.OPfile = new File(p.getDataFolder(), "options.yml");
     if (!this.OPfile.exists())
       try {
@@ -269,7 +292,7 @@ FileConfiguration PlayerData;
       } catch (IOException e) {
         Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create options.yml!");
       }  
-    this.Options = (FileConfiguration)YamlConfiguration.loadConfiguration(this.OPfile);
+    this.Options = YamlConfiguration.loadConfiguration(this.OPfile);
     this.DFile = new File(p.getDataFolder(), "deaths.yml");
     if (!this.DFile.exists())
       try {
@@ -277,7 +300,7 @@ FileConfiguration PlayerData;
       } catch (IOException e) {
         Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create Deaths.yml!");
       }  
-    this.deaths = (FileConfiguration)YamlConfiguration.loadConfiguration(this.DFile);
+    this.deaths = YamlConfiguration.loadConfiguration(this.DFile);
     this.lsfile = new File(p.getDataFolder(), "locksmith.yml");
     if (!this.lsfile.exists())
       try {
@@ -285,7 +308,7 @@ FileConfiguration PlayerData;
       } catch (IOException e) {
         Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create Locksmith.yml");
       }  
-    this.ls = (FileConfiguration)YamlConfiguration.loadConfiguration(this.lsfile);
+    this.ls = YamlConfiguration.loadConfiguration(this.lsfile);
     
     this.mfile = new File(p.getDataFolder(), "multi.yml");
     if (!this.mfile.exists())
@@ -294,7 +317,7 @@ FileConfiguration PlayerData;
       } catch (IOException e) {
         Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create multi.yml");
       }
-    this.multi = (FileConfiguration)YamlConfiguration.loadConfiguration(this.mfile);
+    this.multi = YamlConfiguration.loadConfiguration(this.mfile);
     
     this.bpsizefile = new File(p.getDataFolder(), "bpsize.yml");
     if (!this.bpsizefile.exists())
@@ -303,24 +326,32 @@ FileConfiguration PlayerData;
       } catch (IOException e) {
         Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create bpsize.yml");
       }
-    this.bpsize = (FileConfiguration)YamlConfiguration.loadConfiguration(this.bpsizefile);
+    this.bpsize = YamlConfiguration.loadConfiguration(this.bpsizefile);
     
     
-    this.tag = (FileConfiguration)YamlConfiguration.loadConfiguration(this.tagfile);
-    this.perks = (FileConfiguration)YamlConfiguration.loadConfiguration(this.perksfile);
-    this.tokenshop = (FileConfiguration)YamlConfiguration.loadConfiguration(this.tsfile);
-    this.etshop = (FileConfiguration)YamlConfiguration.loadConfiguration(this.etfile);
-    this.youtube = (FileConfiguration)YamlConfiguration.loadConfiguration(this.ytfile);
-    this.vote = (FileConfiguration)YamlConfiguration.loadConfiguration(this.votefile);
-    this.data = (FileConfiguration)YamlConfiguration.loadConfiguration(this.dfile);
-    this.color = (FileConfiguration)YamlConfiguration.loadConfiguration(this.colorfile);
-    this.coinflip = (FileConfiguration)YamlConfiguration.loadConfiguration(this.coinfile);
-    this.blocks = (FileConfiguration)YamlConfiguration.loadConfiguration(this.bfile);
-    this.boost = (FileConfiguration)YamlConfiguration.loadConfiguration(this.boostfile);
-    this.daily = (FileConfiguration)YamlConfiguration.loadConfiguration(this.dailyfile);
-    this.discord = (FileConfiguration)YamlConfiguration.loadConfiguration(this.discordfile);
+    this.tag = YamlConfiguration.loadConfiguration(this.tagfile);
+    this.perks = YamlConfiguration.loadConfiguration(this.perksfile);
+    this.tokenshop = YamlConfiguration.loadConfiguration(this.tsfile);
+    this.etshop = YamlConfiguration.loadConfiguration(this.etfile);
+    this.youtube = YamlConfiguration.loadConfiguration(this.ytfile);
+    this.vote = YamlConfiguration.loadConfiguration(this.votefile);
+    this.data = YamlConfiguration.loadConfiguration(this.dfile);
+    this.color = YamlConfiguration.loadConfiguration(this.colorfile);
+    this.coinflip = YamlConfiguration.loadConfiguration(this.coinfile);
+    this.blocks = YamlConfiguration.loadConfiguration(this.bfile);
+    this.boost = YamlConfiguration.loadConfiguration(this.boostfile);
+    this.daily = YamlConfiguration.loadConfiguration(this.dailyfile);
+    this.discord = YamlConfiguration.loadConfiguration(this.discordfile);
+    this.auctionhouse = YamlConfiguration.loadConfiguration(this.ahfile);
+    this.gangs = YamlConfiguration.loadConfiguration(this.gangfile);
   }
 
+  public FileConfiguration getGangs() {
+    return this.gangs;
+  }
+  public FileConfiguration getAH() {
+    return this.auctionhouse;
+  }
   public FileConfiguration getDiscord() {
       return this.discord;
   }
@@ -422,6 +453,22 @@ FileConfiguration PlayerData;
     return this.youtube;
   }
 
+
+  public void saveGangs() {
+    try {
+      this.gangs.save(this.gangfile);
+    } catch (IOException e) {
+      Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not save gangs.yml!");
+    }
+  }
+
+  public void saveAH() {
+    try {
+      this.auctionhouse.save(this.ahfile);
+    } catch (IOException e) {
+      Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not save auctionhouse.yml!");
+    }
+  }
 
   public void saveDiscord() {
     try {
@@ -626,10 +673,7 @@ public void saveMultiplier() {
 	    } 
 	  }
   
-  
-  public void reloadData() {
-    this.data = (FileConfiguration)YamlConfiguration.loadConfiguration(this.dfile);
-  }
+
   
   public PluginDescriptionFile getDesc() {
     return this.p.getDescription();

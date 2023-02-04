@@ -39,7 +39,7 @@ public class Tokens {
   public double getTokens(Player p) {
     if (!this.settings.getET().contains(p.getUniqueId().toString()))
       return 0; 
-    return this.settings.getET().getInt(p.getUniqueId().toString());
+    return this.settings.getET().getDouble(p.getUniqueId().toString());
   }
   
   public void setTokens(Player p, double tokens) {

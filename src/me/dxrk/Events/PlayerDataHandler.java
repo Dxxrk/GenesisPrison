@@ -92,5 +92,21 @@ public class PlayerDataHandler implements Listener {
       this.pl.set(uuid+".PickaxeSkillsUnlocked", skills);
       this.settings.savePlayerData();
     }
+    if (this.pl.get(uuid + ".Gems") == null) {
+      this.pl.set(uuid + ".Gems", 0);
+      this.settings.savePlayerData();
+    }
+    if (this.pl.get(uuid + ".Gang") == null) {
+      this.pl.set(uuid + ".Gang", "");
+      this.settings.savePlayerData();
+    }
+    if (this.settings.getVote().get(uuid + ".Votes") == null) {
+      this.settings.getVote().set(uuid + ".Votes", 0);
+      this.settings.savePlayerData();
+    }
+    if (this.settings.getVote().get(uuid + ".Votes") == null) {
+      this.settings.getVote().set(uuid + ".Votepoints", 0);
+      this.settings.savePlayerData();
+    }
   }
 }

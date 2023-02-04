@@ -1,5 +1,6 @@
 package me.dxrk.Commands;
 
+import me.dxrk.Events.MineHandler;
 import me.dxrk.Main.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -86,6 +87,7 @@ public class CMDRanks implements Listener, CommandExecutor {
                         int amount = p.getItemInHand().getAmount();
                         p.getItemInHand().setAmount(amount-1);
                     }
+                    MineHandler.getInstance().updateMine(p);
 
                 }
             }

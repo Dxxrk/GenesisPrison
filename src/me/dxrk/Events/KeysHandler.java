@@ -4,9 +4,11 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
@@ -62,10 +64,10 @@ public class KeysHandler implements Listener {
 	  String s;
 	  
     s = ChatColor.translateAlternateColorCodes('&', 
-        "&f&lEncounter &8| &b+"+amt+" " + color + key + color2 + " &bKey");
+        "&f&lKey Finder &8| &b+"+amt+" " + color + key + color2 + " &bKey");
 	  
 
-    	if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Encounter-Messages") == true) {
+    	if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Key-Finder-Messages") == true) {
     		p.sendMessage(s);
     	}
       addKey(p, key, 1);
@@ -77,32 +79,32 @@ public class KeysHandler implements Listener {
 	  switch (dust) {
 		  case "Common":
 			  p.getInventory().addItem(TrinketHandler.getInstance().commonDust());
-			  if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Discovery-Messages") == true) {
-				  p.sendMessage(m.c("&f&lDiscovery &8| &b+1 Common Trinket Dust"));
+			  if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Dust-Finder-Messages") == true) {
+				  p.sendMessage(m.c("&f&lDust Finder &8| &b+1 Common Trinket Dust"));
 			  }
 			  break;
 		  case "Rare":
 			  p.getInventory().addItem(TrinketHandler.getInstance().rareDust());
-			  if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Discovery-Messages") == true) {
-				  p.sendMessage(m.c("&f&lDiscovery &8| &9+1 Rare Trinket Dust"));
+			  if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Dust-Finder-Messages") == true) {
+				  p.sendMessage(m.c("&f&lDust Finder &8| &9+1 Rare Trinket Dust"));
 			  }
 			  break;
 		  case "Epic":
 			  p.getInventory().addItem(TrinketHandler.getInstance().epicDust());
-			  if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Discovery-Messages") == true) {
-				  p.sendMessage(m.c("&f&lDiscovery &8| &5+1 Epic Trinket Dust"));
+			  if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Dust-Finder-Messages") == true) {
+				  p.sendMessage(m.c("&f&lDust Finder &8| &5+1 Epic Trinket Dust"));
 			  }
 			  break;
 		  case "Legendary":
 			  p.getInventory().addItem(TrinketHandler.getInstance().legDust());
-			  if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Discovery-Messages") == true) {
-				  p.sendMessage(m.c("&f&lDiscovery &8| &6+1 Legendary Trinket Dust"));
+			  if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Dust-Finder-Messages") == true) {
+				  p.sendMessage(m.c("&f&lDust Finder &8| &6+1 Legendary Trinket Dust"));
 			  }
 			  break;
 		  case "Heroic":
 			  p.getInventory().addItem(TrinketHandler.getInstance().herDust());
-			  if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Discovery-Messages") == true) {
-				  p.sendMessage(m.c("&f&lDiscovery &8| &4+1 Heroic Trinket Dust"));
+			  if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Dust-Finder-Messages") == true) {
+				  p.sendMessage(m.c("&f&lDust Finder &8| &4+1 Heroic Trinket Dust"));
 			  }
 			  break;
 	  }
@@ -117,11 +119,17 @@ public class KeysHandler implements Listener {
   public void dustFinder(Player p, String s) {
 	  int level = m.getBlocks(s);
 	  int chance;
+      double lucky = Functions.Lucky(p);
+      double luck = Functions.luckBoost(p);
+      double skill = SkillsEventsListener.getSkillsBoostLuck(p);
 	  if(level == 0) return;
 	  if(level == 1) {
-		  chance = 1350;
+		  chance = (int) (1675*lucky*luck*skill);
 	  } else {
-		  chance = 1350 - (7*level);
+		  chance = (int) ((1675 - (0.125*level))*lucky*luck*skill);
+          if(chance < 200){
+              chance = 200;
+          }
 	  }
 
 	  if (ChatColor.stripColor(s).contains("Dust Finder")) {
@@ -160,6 +168,8 @@ public class KeysHandler implements Listener {
 			  chance += m.getBlocks(s);
 		  }
 	  }
+      double event = SkillsEventsListener.getEventKeyFortune();
+      chance += event;
     int kf = this.r.nextInt(100);
     if(chance > 0 && kf <= chance) {
         if(kf <=20){
@@ -207,11 +217,17 @@ public class KeysHandler implements Listener {
 
 	  int level = m.getBlocks(s);
 	  int chance;
+      double lucky = Functions.Lucky(p);
+      double luck = Functions.luckBoost(p);
+      double skill = SkillsEventsListener.getSkillsBoostLuck(p);
 	  if(level == 0) return;
 	  if(level == 1) {
-		  chance = 1350;
+		  chance = (int) (850*lucky*luck*skill);
 	  } else {
-		  chance = 1350 - (7*level);
+          chance = (int) ((850 - (0.07*level))*lucky*luck*skill);
+          if(chance < 200){
+              chance = 200;
+          }
 	  }
 	  
     if (ChatColor.stripColor(s).contains("Key Finder")) {
@@ -220,8 +236,13 @@ public class KeysHandler implements Listener {
     }
   }
 
+  private HashMap<Player, Integer> tokensmap = new HashMap<>();
 
 
+    public int getPrestiges(Player p){
+        int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
+        return prestiges;
+    }
 	public void findTokens(Player p) {
 		List<String> lore = p.getItemInHand().getItemMeta().getLore();
 		double tf = 1;
@@ -229,24 +250,23 @@ public class KeysHandler implements Listener {
 		for (x = 0; x < lore.size(); x++) {
 			String s = lore.get(x);
 			if (ChatColor.stripColor(s).contains("Token Finder")) {
-				tf = m.getBlocks(ChatColor.stripColor(s))*0.0048;
+				tf = m.getBlocks(ChatColor.stripColor(s))*0.004;
 			}
 		}
 		double multiply = 1;
+        double skill = SkillsEventsListener.getSkillsBoostToken(p);
+        double event = SkillsEventsListener.getEventToken();
+        double tboost = Functions.tokenBoost(p);
+        double prestige = getPrestiges(p)*0.045;
+        if(prestige < 1){
+            prestige = 1;
+        }
 		if(Functions.multiply.contains(p)) multiply = 2;
 
-		Random r = new Random();
-		int rint = r.nextInt(150);
-		int fmin = 7500;
-		int fmax = 25000;
-		int tokens = r.nextInt(fmax - fmin)+ fmin;
-		if(rint == 1) {
-            int tgive = (int) ((tokens+1)*tf*multiply);
+		int tokens = 15;
+
+            int tgive = (int) (tokens*tf*multiply*skill*event*tboost*prestige);
 			Tokens.getInstance().addTokens(p, tgive);
-			if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Tokens-Messages") == true) {
-				p.sendMessage(m.c("&f&lTokens &8| &b+"+tgive));
-			}
-		}
 	}
   
   

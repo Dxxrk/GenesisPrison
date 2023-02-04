@@ -25,11 +25,11 @@ import java.util.List;
 public class PrestigeHandler implements Listener, CommandExecutor {
 
     Methods m = Methods.getInstance();
-    SettingsManager settings = SettingsManager.getInstance();
-    public FileConfiguration pl = this.settings.getPlayerData();
+    static SettingsManager settings = SettingsManager.getInstance();
+    public static FileConfiguration pl = settings.getPlayerData();
 
-    private ItemStack prestigeItem(Material mat, short sh, List<String> lore, String name) {
-        ItemStack item = new ItemStack(mat, 1, sh);
+    private ItemStack prestigeItem(List<String> lore, String name) {
+        ItemStack item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 5);
         ItemMeta im = item.getItemMeta();
         im.setDisplayName(name);
         im.setLore(lore);
@@ -48,11 +48,11 @@ public class PrestigeHandler implements Listener, CommandExecutor {
 
         if(label.equalsIgnoreCase("prestige")){
             int prestiges;
-            int times = this.pl.getInt(p.getUniqueId().toString()+".TimesPrestiged");
+            int times = pl.getInt(p.getUniqueId().toString()+".TimesPrestiged");
             int rank = RankupHandler.getInstance().getRank(p);
-            double divisor = 5 * (1.5*times);
+            double divisor = 7.5 * (1.5*times);
             if(times ==0) {
-                prestiges = rank/5;
+                prestiges = (int) (rank/7.5);
             } else {
                 prestiges = (int) Math.round(rank / divisor);
             }
@@ -76,7 +76,7 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         lore.add(m.c("&aPrestiging now will give you &b"+prestiges+" &aprestiges."));
 
 
-        prestige.setItem(2, prestigeItem(Material.STAINED_GLASS_PANE, (short) 5, lore, m.c("&6&lCLICK TO PRESTIGE!")));
+        prestige.setItem(2, prestigeItem(lore, m.c("&6&lCLICK TO PRESTIGE!")));
         prestige.setItem(0, PickaxeLevel.getInstance().Spacer());
         prestige.setItem(1, PickaxeLevel.getInstance().Spacer());
         prestige.setItem(3, PickaxeLevel.getInstance().Spacer());
@@ -139,38 +139,39 @@ public class PrestigeHandler implements Listener, CommandExecutor {
     }
 
 
-    //Every 5 ranks or levels you can prestige +1
-    //Every time you prestige the next time you do it, it will go to every 7.5 ranks or levels
-    //Increases 1.5x each time you prestige
-    //Ranking up will also get 1.5x harder each time you prestige
-
-
-
 
 
 
     public void prestige(Player p) {
         String uuid = p.getUniqueId().toString();
-        int timesprestied = this.pl.getInt(uuid+".TimesPrestiged");
+        int timesprestied = pl.getInt(uuid+".TimesPrestiged");
 
 
         //Adding Prestiges(boost) and resetting rank
         int rank = RankupHandler.getInstance().getRank(p);
-        double divisor = 5 * (1.5*timesprestied);
-        int prestiges = this.pl.getInt(uuid+".Prestiges");
+        double divisor = 7.5 * (1.5*timesprestied);
+        int prestiges = pl.getInt(uuid+".Prestiges");
         int pr;
         if(timesprestied ==0) {
-            pr = rank /5;
+            pr = (int) (rank /7.5);
         } else {
             pr = (int) Math.round(rank / divisor);
         }
-        this.pl.set(uuid+".Prestiges", prestiges+pr);
+        pl.set(uuid+".Prestiges", prestiges+pr);
         RankupHandler.getInstance().setRank(p, 1);
-        this.pl.set(uuid+".TimesPrestiged", timesprestied+1);
+        pl.set(uuid+".TimesPrestiged", timesprestied+1);
         settings.savePlayerData();
-        TitleAPI.sendTitle(p, 2, 40, 2, m.c("&9&lPrestiged!"), m.c("&b&lPrestiges Gained: +"+pr));
+        TitleAPI.sendTitle(p, 2, 40, 2, m.c("&c&lPrestiged!"), m.c("&b&lPrestiges Gained: +"+pr));
+        MineHandler.getInstance().updateMine(p);
 
 
+    }
+
+    public static void addPrestiges(Player p, int amt) {
+        String uuid = p.getUniqueId().toString();
+        int prestiges = pl.getInt(uuid+".Prestiges");
+        pl.set(uuid+".Prestiges", prestiges+amt);
+        settings.savePlayerData();
     }
 
 

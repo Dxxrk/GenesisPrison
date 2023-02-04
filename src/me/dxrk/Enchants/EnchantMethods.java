@@ -278,13 +278,14 @@ public class EnchantMethods {
 				}
 			}
 			double fortuity = Functions.Foruity(p);
+			double skill = SkillsEventsListener.getSkillsBoostFortune(p);
 			int line = 0;
 			for(int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++){
 				if(org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")){
 					line = x;
 				}
 			}
-			int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity /
+			int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity*skill /
 					(3.5));
 
 			double levelcap = level/10;
@@ -294,9 +295,9 @@ public class EnchantMethods {
 			}
 
 
-			sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks* (fortune)*levelcap))));
+			sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((2/blocks* (fortune)*levelcap))));
 
-			SellHandler.getInstance().sellEnchant(p, sellblocks, "Laser");
+
 
 			List<String> lore = p.getItemInHand().getItemMeta().getLore();
 			double tf = 1;
@@ -304,14 +305,22 @@ public class EnchantMethods {
 			for (x = 0; x < lore.size(); x++) {
 				String s = lore.get(x);
 				if (org.bukkit.ChatColor.stripColor(s).contains("Token Finder")) {
-					tf = getBlocks(ChatColor.stripColor(s))*0.0048;
+					tf = getBlocks(ChatColor.stripColor(s))*0.004;
 				}
 			}
 			double multiply = 1;
+			double skill1 = SkillsEventsListener.getSkillsBoostToken(p);
+			double event = SkillsEventsListener.getEventToken();
+			double prestige = SellHandler.getInstance().getPrestiges(p)*0.045;
+			double miningboost = BoostsHandler.sell;
+			if(prestige < 1){
+				prestige = 1;
+			}
 			if(Functions.multiply.contains(p)) multiply = 2;
 
-
-			Tokens.getInstance().addTokens(p, 15*blocks*tf*multiply);
+			int tokens = (int) (12*blocks*tf*multiply*skill1*event*prestige*miningboost);
+			Tokens.getInstance().addTokens(p, tokens);
+			SellHandler.getInstance().sellEnchant(p, sellblocks, "Laser", tokens);
 
 
 		}
@@ -321,6 +330,7 @@ public class EnchantMethods {
 
 		double lucky = Functions.Lucky(p);
 		double luck = Functions.luckBoost(p);
+		double skill = SkillsEventsListener.getSkillsBoostLuck(p);
 
 		int level = 0;
 		int chance;
@@ -333,9 +343,12 @@ public class EnchantMethods {
 
 		if(level == 0) return;
 		if(level == 1) {
-			chance = (int) (2450 / lucky / luck);
+			chance = (int) (2850 * lucky * luck*skill);
 		} else {
-			chance = (int) ((2450 - (1.6*level))/lucky / luck);
+			chance = (int) ((2850 - (1.6*level*lucky * luck * skill)));
+			if(chance < 600){
+				chance = 600;
+			}
 		}
 		int i = r.nextInt(chance);
 		if(laser.contains(p)){
@@ -353,7 +366,7 @@ public class EnchantMethods {
 					laser.remove(p);
 					p.sendMessage(c("&f&lLaser &8| &bDeactivated!"));
 				}
-			}.runTaskLater(Main.plugin, 20*3L);
+			}.runTaskLater(Main.plugin, 20*7L);
 
 		}
 
@@ -382,13 +395,15 @@ public class EnchantMethods {
 				}
 			}
 			double fortuity = Functions.Foruity(p);
+				double skill = SkillsEventsListener.getSkillsBoostFortune(p);
+				double event = SkillsEventsListener.getEventFortune();
 				int line = 0;
 				for(int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++){
 					if(org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")){
 						line = x;
 					}
 				}
-				int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity /
+				int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity*skill*event /
 						(8.6));
 
 				double levelcap = level/10;
@@ -398,9 +413,9 @@ public class EnchantMethods {
 				}
 
 		    
-		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks* (fortune)*levelcap))));
+		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks/4* (fortune)*levelcap))));
 		    
-		    SellHandler.getInstance().sellEnchant(p, sellblocks, "Wave");
+
 
 				List<String> lore = p.getItemInHand().getItemMeta().getLore();
 				double tf = 1;
@@ -408,15 +423,24 @@ public class EnchantMethods {
 				for (x = 0; x < lore.size(); x++) {
 					String s = lore.get(x);
 					if (org.bukkit.ChatColor.stripColor(s).contains("Token Finder")) {
-						tf = getBlocks(ChatColor.stripColor(s))*0.0048;
+						tf = getBlocks(ChatColor.stripColor(s))*0.004;
 					}
 				}
 
 				double multiply = 1;
 				if(Functions.multiply.contains(p)) multiply = 2;
+				double skill1 = SkillsEventsListener.getSkillsBoostToken(p);
+				double event1 = SkillsEventsListener.getEventToken();
+				double prestige = SellHandler.getInstance().getPrestiges(p)*0.045;
+				double miningboost = BoostsHandler.sell;
+				if(prestige < 1){
+					prestige = 1;
+				}
 
 
-				Tokens.getInstance().addTokens(p, 15*blocks*tf*multiply);
+				int tokens = (int) (5.5*blocks*tf*multiply*skill1*event*prestige*miningboost);
+				Tokens.getInstance().addTokens(p, tokens);
+				SellHandler.getInstance().sellEnchant(p, sellblocks, "Wave", tokens);
 					
 				
 			}
@@ -427,9 +451,10 @@ public class EnchantMethods {
 		  
 		  double lucky = Functions.Lucky(p);
 		  double luck = Functions.luckBoost(p);
+		  double skill = SkillsEventsListener.getSkillsBoostLuck(p);
 	    	
 	    	int level = 0;
-	    	int chance = 2450;
+	    	int chance;
 			for (String s : p.getItemInHand().getItemMeta().getLore()) {
 				
 				      if (ChatColor.stripColor(s).contains("Wave")) {
@@ -439,9 +464,12 @@ public class EnchantMethods {
 				  
 			      if(level == 0) return;
 				  if(level == 1) {
-					  chance = (int) (2450 / lucky / luck);
+					  chance = (int) (2750 * lucky * luck*skill);
 				  } else {
-					  chance = (int) ((2450 - (1.75*level))/lucky / luck);
+					  chance = (int) ((2750 - (1.15*level*lucky * luck * skill)));
+					  if(chance < 300){
+						  chance = 300;
+					  }
 				  }
 		    	  int i = r.nextInt(chance);
 		    	   
@@ -479,13 +507,15 @@ public class EnchantMethods {
 
 				
 				double fortuity = Functions.Foruity(p);
+				double skill = SkillsEventsListener.getSkillsBoostFortune(p);
+				double event = SkillsEventsListener.getEventFortune();
 				int line = 0;
 				for(int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++){
 					if(org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")){
 						line = x;
 					}
 				}
-				int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity /
+				int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity*skill*event /
 						(8.6));
 
 				double levelcap = level/10;
@@ -501,7 +531,7 @@ public class EnchantMethods {
 			    
 			    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks* (fortune))*levelcap)));
 
-				SellHandler.getInstance().sellEnchant(p, sellblocks, "Explosion");
+
 
 				List<String> lore = p.getItemInHand().getItemMeta().getLore();
 				double tf = 1;
@@ -509,16 +539,24 @@ public class EnchantMethods {
 				for (x = 0; x < lore.size(); x++) {
 					String s = lore.get(x);
 					if (org.bukkit.ChatColor.stripColor(s).contains("Token Finder")) {
-						tf = getBlocks(ChatColor.stripColor(s))*0.0048;
+						tf = getBlocks(ChatColor.stripColor(s))*0.004;
 					}
 				}
 
 				double multiply = 1;
+				double skill1 = SkillsEventsListener.getSkillsBoostToken(p);
+				double event1 = SkillsEventsListener.getEventToken();
 				if(Functions.multiply.contains(p)) multiply = 2;
+				double prestige = SellHandler.getInstance().getPrestiges(p)*0.045;
+				double miningboost = BoostsHandler.sell;
+				if(prestige < 1){
+					prestige = 1;
+				}
 
 
-				Tokens.getInstance().addTokens(p, 15*blocks*tf*multiply);
-
+				int tokens = (int) (9*blocks*tf*multiply*skill1*event*prestige*miningboost);
+				Tokens.getInstance().addTokens(p, tokens);
+				SellHandler.getInstance().sellEnchant(p, sellblocks, "Explosion", tokens);
 
 			}
 			
@@ -531,6 +569,7 @@ public class EnchantMethods {
 		  
 		  double lucky = Functions.Lucky(p);
 		  double luck = Functions.luckBoost(p);
+		  double skill = SkillsEventsListener.getSkillsBoostLuck(p);
 	    	
 	    	int level = 0;
 	    	int chance = 1750;
@@ -543,9 +582,12 @@ public class EnchantMethods {
 				  
 			      if(level == 0) return;
 				  if(level == 1) {
-					  chance = (int) (1750 / lucky / luck);
+					  chance = (int) (1750 * lucky * luck*skill);
 				  } else {
-					  chance = (int) ((1750 - (1.25*level))/lucky / luck);
+					  chance = (int) ((1750 - (0.75*level*lucky * luck * skill)));
+					  if(chance < 150){
+						  chance = 150;
+					  }
 				  }
 		    	  int i = r.nextInt(chance);
 		    	   
@@ -560,9 +602,15 @@ public class EnchantMethods {
 	 
 	  
 	  public void roundRank(Player p) {
-		 RankupHandler.getInstance().upRank(p);
+		Random r = new Random();
+		  int tmin = 1;
+		  int tmax = 5;
+		  int ranks = r.nextInt(tmax - tmin)+ tmin;
+		  for(int i = 0; i < ranks; i++) {
+			  RankupHandler.getInstance().upRank(p);
+		  }
 		 if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Research-Messages") == true) {
-			 p.sendMessage(c("&f&lResearch &8| &b+1 Rankup"));
+			 p.sendMessage(c("&f&lResearch &8| &b+"+ranks+ " Levels"));
 		 }
 			    
 		  
@@ -573,6 +621,7 @@ public class EnchantMethods {
 		  
 		  double lucky = Functions.Lucky(p);
 		  double luck = Functions.luckBoost(p);
+		  double skill = SkillsEventsListener.getSkillsBoostLuck(p);
 	    	
 		  int level = 0;
 	    	int chance = 4500;
@@ -585,9 +634,12 @@ public class EnchantMethods {
 				  
 				  if(level == 0) return;
 				  if(level == 1) {
-					  chance = (int) (4500 / lucky / luck);
+					  chance = (int) (3300 * lucky * luck*skill);
 				  } else {
-					  chance = (int) ((4500 - (1.167*level))/lucky / luck);
+					  chance = (int) ((3300 - (0.5*level*lucky * luck * skill)));
+					  if(chance < 400){
+						  chance = 400;
+					  }
 				  }
 		    	  int i = r.nextInt(chance);
 		    	   
@@ -621,13 +673,15 @@ public class EnchantMethods {
 
 			
 			double fortuity = Functions.Foruity(p);
+				double skill = SkillsEventsListener.getSkillsBoostFortune(p);
+				double event = SkillsEventsListener.getEventFortune();
 				int line = 0;
 				for(int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++){
 					if(org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")){
 						line = x;
 					}
 				}
-				int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity /
+				int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity*skill*event /
 						(8.6));
 
 				double levelcap = level/10;
@@ -637,9 +691,9 @@ public class EnchantMethods {
 				}
 		
 
-		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((amountblocks/95* (fortune*fortuity)*levelcap))));
+		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((amountblocks/8* (fortune*fortuity)*levelcap))));
 
-				SellHandler.getInstance().sellEnchant(p, sellblocks, "Nuke");
+
 
 				List<String> lore = p.getItemInHand().getItemMeta().getLore();
 				double tf = 1;
@@ -647,16 +701,24 @@ public class EnchantMethods {
 				for (x = 0; x < lore.size(); x++) {
 					String s = lore.get(x);
 					if (org.bukkit.ChatColor.stripColor(s).contains("Token Finder")) {
-						tf = getBlocks(ChatColor.stripColor(s))*0.0048;
+						tf = getBlocks(ChatColor.stripColor(s))*0.004;
 					}
 				}
 
 				double multiply = 1;
+				double skill1 = SkillsEventsListener.getSkillsBoostToken(p);
+				double event1 = SkillsEventsListener.getEventToken();
 				if(Functions.multiply.contains(p)) multiply = 2;
+				double prestige = SellHandler.getInstance().getPrestiges(p)*0.045;
+				double miningboost = BoostsHandler.sell;
+				if(prestige < 1){
+					prestige = 1;
+				}
 
 
-				Tokens.getInstance().addTokens(p, 15*amountblocks*tf*multiply);
-					
+				int tokens = (int) (amountblocks*tf*multiply*skill1*event*prestige*miningboost);
+				Tokens.getInstance().addTokens(p, tokens);
+				SellHandler.getInstance().sellEnchant(p, sellblocks, "Nuke", tokens);
 				}
 	  }
 			
@@ -668,6 +730,7 @@ public class EnchantMethods {
 		  
 		  double lucky = Functions.Lucky(p);
 		  double luck = Functions.luckBoost(p);
+		  double skill = SkillsEventsListener.getSkillsBoostLuck(p);
 	    	
 		  int level = 0;
 	    	int chance = 25000;
@@ -680,9 +743,12 @@ public class EnchantMethods {
 				  
 			      if(level == 0) return;
 				  if(level == 1) {
-					  chance = (int) (25000 / lucky / luck);
+					  chance = (int) (23000 * lucky * luck*skill);
 				  } else {
-					  chance = (int) ((25000 - (39*level))/lucky / luck);
+					  chance = (int) ((23000 - (20*level*lucky * luck * skill)));
+					  if(chance < 2000){
+						  chance = 2000;
+					  }
 				  }
 		    	  int i = r.nextInt(chance);
 		    	   
@@ -697,8 +763,8 @@ public class EnchantMethods {
 	  public void RandomItem(Player p) {
 		 Random r = new Random();
 
-		 int fmin = 100;
-		 int fmax = 2000;
+		 int fmin = 1000;
+		 int fmax = 5000;
 		 int xp = r.nextInt(fmax - fmin)+ fmin;
 		 
 		 
@@ -714,9 +780,8 @@ public class EnchantMethods {
 			 if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Junkpile-Messages") == true) {
 			 p.sendMessage(c("&f&lJunkpile &8| &b+"+xp+" XP"));
 			 }
-			 double x = PickXPHandler.getInstance().getXP(p);
 
-			 settings.getPlayerData().set(p.getUniqueId().toString()+".PickXP", (xp+x));
+			 PickXPHandler.getInstance().addXP(p, xp);
 			 settings.savePlayerData();
 		 } else if(rr >=40 && rr <60) {
 			 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "multi add "+ p.getName() +" "+multi);
@@ -725,15 +790,19 @@ public class EnchantMethods {
 			 }
 		 } else if(rr >=60 && rr <70) {
 			 RankupHandler.getInstance().upRank(p);
+			 RankupHandler.getInstance().upRank(p);
+			 RankupHandler.getInstance().upRank(p);
+			 RankupHandler.getInstance().upRank(p);
+			 RankupHandler.getInstance().upRank(p);
 			 if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Junkpile-Messages") == true) {
-			 p.sendMessage(c("&f&lJunkpile &8| &b+1 Rankup"));
+			 p.sendMessage(c("&f&lJunkpile &8| &b+5 Levels"));
 			 }
-		 } else if(rr >=70 && rr <90) {
-			 CMDVoteShop.addVotePoint(p, 1);
+		 } else if(rr >=70 && rr <75) {
+			 CMDVoteShop.addCoupon(p, 1);
 			 if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Junkpile-Messages") == true) {
-			 p.sendMessage(c("&f&lJunkpile &8| &b+1 Vote Point"));
+			 p.sendMessage(c("&f&lJunkpile &8| &b+$0.05 Coupon"));
 			 }
-		 }	else if(rr >=90) {
+		 }	else if(rr >=75) {
 				int rint = r.nextInt(4);
 				if(rint == 0){
 					p.getInventory().addItem(TrinketHandler.getInstance().commonDust());
@@ -763,6 +832,7 @@ public class EnchantMethods {
 		  
 		  double lucky = Functions.Lucky(p);
 		  double luck = Functions.luckBoost(p);
+		  double skill = SkillsEventsListener.getSkillsBoostLuck(p);
 	    	
 		  int level = 0;
 	    	int chance = 3500;
@@ -775,9 +845,12 @@ public class EnchantMethods {
 				  
 				  if(level == 0) return;
 				  if(level == 1) {
-					  chance = (int) (3500 / lucky / luck);
+					  chance = (int) (3900 * lucky * luck*skill);
 				  } else {
-					  chance = (int) ((3500 - (1*level))/lucky / luck);
+					  chance = (int) ((3900 - (0.8*level*lucky * luck * skill)));
+					  if(chance < 500){
+						  chance = 500;
+					  }
 				  }
 		    	  int i = r.nextInt(chance);
 		    	   
@@ -787,44 +860,44 @@ public class EnchantMethods {
 		    	  }
 	  }
 
-	public void RuneParty(Player p) {
+	public void KeyParty(Player p) {
 		Random r = new Random();
 		int i = r.nextInt(8);
 
 		if(i == 0 || i ==1) {
 			for(Player pp : Bukkit.getOnlinePlayers()) {
-				if(this.settings.getOptions().getBoolean(pp.getUniqueId().toString()+".RuneParty-Messages") == true) {
-					pp.sendMessage(Methods.getInstance().c("&f&lRuneParty &8| &bFrom &d"+p.getName()+" &b+1 &e&lMidas &bRune!"));
+				if(this.settings.getOptions().getBoolean(pp.getUniqueId().toString()+".Key-Party-Messages") == true) {
+					pp.sendMessage(Methods.getInstance().c("&f&lKey Party &8| &bFrom &d"+p.getName()+" &b+1 &7&lAlpha &7Key!"));
 				}
-				KeysHandler.getInstance().addKey(pp, "Midas", 1);
+				KeysHandler.getInstance().addKey(pp, "Alpha", 1);
 			}
 		} else if(i == 2 || i == 3) {
 			for(Player pp : Bukkit.getOnlinePlayers()) {
-				if(this.settings.getOptions().getBoolean(pp.getUniqueId().toString()+".RuneParty-Messages") == true) {
-					pp.sendMessage(Methods.getInstance().c("&f&lRuneParty &8| &bFrom &d"+p.getName()+" &b+1 &9&lPoseidon &bRune!"));
+				if(this.settings.getOptions().getBoolean(pp.getUniqueId().toString()+".Key-Party-Messages") == true) {
+					pp.sendMessage(Methods.getInstance().c("&f&lKey Party &8| &bFrom &d"+p.getName()+" &b+1 &c&lBeta &7Key!"));
 				}
-				KeysHandler.getInstance().addKey(pp, "Poseidon", 1);
+				KeysHandler.getInstance().addKey(pp, "Beta", 1);
 			}
 		}else if(i == 4 || i==5) {
 			for(Player pp : Bukkit.getOnlinePlayers()) {
-				if(this.settings.getOptions().getBoolean(pp.getUniqueId().toString()+".RuneParty-Messages") == true) {
-					pp.sendMessage(Methods.getInstance().c("&f&lRuneParty &8| &bFrom &d"+p.getName()+" &b+1 &4&lHades &bRune!"));
+				if(this.settings.getOptions().getBoolean(pp.getUniqueId().toString()+".Key-Party-Messages") == true) {
+					pp.sendMessage(Methods.getInstance().c("&f&lKey Party &8| &bFrom &d"+p.getName()+" &b+1 &e&lToken &7Key!"));
 				}
-				KeysHandler.getInstance().addKey(pp, "Hades", 1);
+				KeysHandler.getInstance().addKey(pp, "Token", 1);
 			}
 		}else if(i == 6 || i==7) {
 			for(Player pp : Bukkit.getOnlinePlayers()) {
-				if(this.settings.getOptions().getBoolean(pp.getUniqueId().toString()+".RuneParty-Messages") == true) {
-					pp.sendMessage(Methods.getInstance().c("&f&lRuneParty &8| &bFrom &d"+p.getName()+" &b+1 &f&lPolis &bRune!"));
+				if(this.settings.getOptions().getBoolean(pp.getUniqueId().toString()+".Key-Party-Messages") == true) {
+					pp.sendMessage(Methods.getInstance().c("&f&lKey Party &8| &bFrom &d"+p.getName()+" &b+1 &4&lOmega &7Key!"));
 				}
-				KeysHandler.getInstance().addKey(pp, "Polis", 1);
+				KeysHandler.getInstance().addKey(pp, "Omega", 1);
 			}
 		}else if(i ==8) {
 			for(Player pp : Bukkit.getOnlinePlayers()) {
-				if(this.settings.getOptions().getBoolean(pp.getUniqueId().toString()+".RuneParty-Messages") == true) {
-					pp.sendMessage(Methods.getInstance().c("&f&lRuneParty &8| &bFrom &d"+p.getName()+" &b+1 &c&lOblivion &bRune!"));
+				if(this.settings.getOptions().getBoolean(pp.getUniqueId().toString()+".Key-Party-Messages") == true) {
+					pp.sendMessage(Methods.getInstance().c("&f&lKey Party &8| &bFrom &d"+p.getName()+" &b+1 &c&l&ki&d&lSeasonal&c&l&ki&r &7Key!"));
 				}
-				KeysHandler.getInstance().addKey(pp, "Oblivion", 1);
+				KeysHandler.getInstance().addKey(pp, "Seasonal", 1);
 			}
 		}
 
@@ -837,6 +910,7 @@ public class EnchantMethods {
 
 			double lucky = Functions.Lucky(p);
 			double luck = Functions.luckBoost(p);
+			double skill = SkillsEventsListener.getSkillsBoostLuck(p);
 
 			int level = 0;
 			int chance = 3000;
@@ -849,14 +923,17 @@ public class EnchantMethods {
 
 			if(level == 0) return;
 			if(level == 1) {
-				chance = (int) (3000 / lucky / luck);
+				chance = (int) (3000 * lucky * luck*skill);
 			} else {
-				chance = (int) ((3000 - (2*level))/lucky / luck);
+				chance = (int) ((3000 - (level*lucky * luck * skill)));
+				if(chance < 400){
+					chance = 400;
+				}
 			}
 			int i = r.nextInt(chance);
 
 			if(i == 1) {
-				RuneParty(p);
+				KeyParty(p);
 
 			}
 
@@ -870,12 +947,12 @@ public class EnchantMethods {
 		if(i == 0) {
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveboost sell "+p.getName()+" 2.5 300");
 			if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Booster-Messages") == true) {
-				p.sendMessage(Methods.getInstance().c("&f&lBooster &8| &b+5 minute 2.5x Sell Boost!"));
+				p.sendMessage(Methods.getInstance().c("&f&lBooster &8| &b+5 minute 2.5x Currency Boost!"));
 			}
 		} else if(i == 1) {
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveboost sell "+p.getName()+" 2.5 600");
 			if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Booster-Messages") == true) {
-				p.sendMessage(Methods.getInstance().c("&f&lBooster &8| &b+10 minute 2.5x Sell Boost!"));
+				p.sendMessage(Methods.getInstance().c("&f&lBooster &8| &b+10 minute 2.5x Currency Boost!"));
 			}
 		}else if(i == 2) {
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveboost xp "+p.getName()+" 2 300");
@@ -885,12 +962,12 @@ public class EnchantMethods {
 		}else if(i == 3) {
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveboost sell "+p.getName()+" 3.0 300");
 			if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Booster-Messages") == true) {
-				p.sendMessage(Methods.getInstance().c("&f&lBooster &8| &b+5 minute 3.0x Sell Boost!"));
+				p.sendMessage(Methods.getInstance().c("&f&lBooster &8| &b+5 minute 3.0x Currency Boost!"));
 			}
 		}else if(i == 4) {
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveboost sell "+p.getName()+" 3.0 600");
 			if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Booster-Messages") == true) {
-				p.sendMessage(Methods.getInstance().c("&f&lBooster &8| &b+10 minute 3.0x Sell Boost!"));
+				p.sendMessage(Methods.getInstance().c("&f&lBooster &8| &b+10 minute 3.0x Currency Boost!"));
 			}
 		}else if(i == 5) {
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveboost xp "+p.getName()+" 2 600");
@@ -906,6 +983,7 @@ public class EnchantMethods {
 
 		double lucky = Functions.Lucky(p);
 		double luck = Functions.luckBoost(p);
+		double skill = SkillsEventsListener.getSkillsBoostLuck(p);
 
 		int level = 0;
 		int chance = 4500;
@@ -918,9 +996,12 @@ public class EnchantMethods {
 
 		if(level == 0) return;
 		if(level == 1) {
-			chance = (int) (4500 / lucky / luck);
+			chance = (int) (4500 * lucky * luck*skill);
 		} else {
-			chance = (int) ((4500 - (1.1*level))/lucky / luck);
+			chance = (int) ((4500 - (0.75*level*lucky * luck * skill)));
+			if(chance < 550){
+				chance = 550;
+			}
 		}
 		int i = r.nextInt(chance);
 
@@ -937,20 +1018,23 @@ public class EnchantMethods {
 		Random r = new Random();
 		int rint = r.nextInt(4);
 		if(rint == 0){
-			prestige = (int) (1*(level/16.67));
+			prestige = (int) (1*(level/1000));
 		}
 		else if(rint == 1){
-			prestige = (int) (2*(level/16.67));
+			prestige = (int) (2*(level/1000));
 		}
 		else if(rint == 2){
-			prestige = (int) (3*(level/16.67));
+			prestige = (int) (3*(level/1000));
 		}
 		else if(rint == 3){
-			prestige = (int) (4*(level/16.67));
+			prestige = (int) (4*(level/1000));
+		}
+		if(prestige < 1){
+			prestige = 1;
 		}
 
 
-		PickXPHandler.getInstance().addXP(p, prestige);
+		PrestigeHandler.addPrestiges(p, prestige);
 		p.sendMessage(m.c("&f&lPrestige Finder &8| &b+&e"+prestige+" &bPrestiges."));
 	}
 
@@ -960,6 +1044,7 @@ public class EnchantMethods {
 
 		double lucky = Functions.Lucky(p);
 		double luck = Functions.luckBoost(p);
+		double skill = SkillsEventsListener.getSkillsBoostLuck(p);
 
 		int level = 0;
 		int chance = 4500;
@@ -972,9 +1057,12 @@ public class EnchantMethods {
 
 		if(level == 0) return;
 		if(level == 1) {
-			chance = (int) (4500 / lucky / luck);
+			chance = (int) (4500 * lucky * luck*skill);
 		} else {
-			chance = (int) ((4500 - (0.75*level))/lucky / luck);
+			chance = (int) ((4500 - (0.3*level*lucky * luck * skill)));
+			if(chance < 600){
+				chance = 600;
+			}
 		}
 		int i = r.nextInt(chance);
 

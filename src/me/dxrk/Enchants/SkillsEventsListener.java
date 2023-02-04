@@ -1,8 +1,10 @@
 package me.dxrk.Enchants;
 
+import com.sun.corba.se.impl.oa.toa.TransientObjectManager;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Vote.CMDVoteShop;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,11 +18,115 @@ import java.util.Random;
 
 public class SkillsEventsListener implements Listener {
 
-    SettingsManager settings = SettingsManager.getInstance();
+    static SettingsManager settings = SettingsManager.getInstance();
     Methods m = Methods.getInstance();
 
     public static String events = "";
     public static List<String> activeEvents = new ArrayList<>();
+
+    public static double getEventXP(){
+        double amt = 1;
+        for(String s : activeEvents){
+            if(s.equals("Allure") || s.equals("Strong Desire")){
+                amt+=0.5;
+            }
+        }
+
+
+        return amt;
+    }
+    public static double getEventFortune(){
+        double amt = 1;
+        for(String s : activeEvents){
+            if(s.equals("Typhoon") || s.equals("Tsunami")){
+                amt+=0.1;
+            }
+        }
+
+
+        return amt;
+    }
+    public static double getEventKeyFortune(){
+        double amt = 0;
+        for(String s : activeEvents){
+            if(s.equals("Thunderstorm") || s.equals("Ligntning Strike")) {
+                amt+=15;
+            }
+        }
+        return amt;
+    }
+    public static double getEventToken(){
+        double amt = 1;
+        for(String s : activeEvents){
+            if(s.equals("War Torn") || s.equals("BloodShed")){
+                amt+=0.25;
+            }
+        }
+        return amt;
+    }
+    public static double getEventMulti(){
+        double amt = 0;
+        for(String s : activeEvents){
+            if(s.equals("Scorched Earth") || s.equals("Meteor Shower")){
+                amt+=10;
+            }
+        }
+
+
+        return amt;
+    }
+
+
+    public static double getSkillsBoostToken(Player p){
+        double amt = 1.0;
+        List<String> skills = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
+        for(String s : skills){
+            if(s.contains("Token")){
+                amt+=0.05;
+            }
+        }
+
+
+        return amt;
+    }
+    public static double getSkillsBoostFortune(Player p){
+        double amt = 1.0;
+        List<String> skills = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
+        for(String s : skills){
+            if(s.contains("Fortune")) {
+                amt+=0.05;
+            }
+        }
+
+
+        return amt;
+    }
+    public static double getSkillsBoostLuck(Player p){
+        double amt = 1.0;
+        List<String> skills = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
+        for(String s : skills) {
+            if(s.contains("Luck")) {
+                amt+=0.05;
+            }
+        }
+
+
+        return amt;
+    }
+    public void couponBreak(Player p) {
+        List<String> skills = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
+        Random r = new Random();
+        for(String s : skills) {
+            if(s.contains("Coupon")) {
+                double min = 0.01;
+                double max = 0.10;
+                double coupon = Math.round((min + (max - min) * r.nextDouble())*10)/10.0;
+                if(r.nextInt(3500) == 1) {
+                    CMDVoteShop.addCoupon(p, coupon);
+                }
+            }
+        }
+    }
 
 
 
@@ -38,6 +144,7 @@ public class SkillsEventsListener implements Listener {
             return;
         }
         activeEvents.add(event);
+        updateEvent();
 
 
 
@@ -45,6 +152,7 @@ public class SkillsEventsListener implements Listener {
 
     public void deactiveEvent(String event){
         activeEvents.remove(event);
+        updateEvent();
 
     }
 
@@ -63,6 +171,7 @@ public class SkillsEventsListener implements Listener {
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         Random r = new Random();
+        couponBreak(p);
         //Zeus
         if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Zeus")) {
             int skill = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillLevel");
@@ -73,13 +182,13 @@ public class SkillsEventsListener implements Listener {
                 }
                 int ii = r.nextInt(2);
                 if(ii == 0){
-                    if(activeEvents.contains("Lightning")) return;
-                    activateEvent("Lightning");
-                    Bukkit.broadcastMessage(m.c("&f&l"+p.getName()+" &3has activated the &e&lLightning &3Event!"));
+                    if(activeEvents.contains("Lightning Strike")) return;
+                    activateEvent("Lightning Strike");
+                    Bukkit.broadcastMessage(m.c("&f&l"+p.getName()+" &3has activated the &e&lLightning Strike &3Event!"));
                     new BukkitRunnable() {
                         public void run() {
-                            deactiveEvent("Lightning");
-                            Bukkit.broadcastMessage(m.c("&e&lLightning &3Event has ended."));
+                            deactiveEvent("Lightning Strike");
+                            Bukkit.broadcastMessage(m.c("&e&lLightning Strike &3Event has ended."));
                         }
                     }.runTaskLater(Main.plugin, 20*1800L);
                 }

@@ -75,7 +75,7 @@ implements Listener {
             return 2500;
         }
 
-        needed =2500+(2500*((pick+1)*0.8));
+        needed =2500+(2500*((pick+1)*0.65));
 
 
 
@@ -140,6 +140,7 @@ implements Listener {
         if(p.getItemInHand() == null) return;
         if(!p.getItemInHand().hasItemMeta()) return;
         if(!p.getItemInHand().getItemMeta().hasLore()) return;
+        if(!p.getWorld().getName().equals(p.getName()+"sWorld")) return;
         double xpToAdd = Functions.xpBoost(p) * Functions.XPEnchant(p) * BoostsHandler.xp;
 
         addXP(p, xpToAdd);

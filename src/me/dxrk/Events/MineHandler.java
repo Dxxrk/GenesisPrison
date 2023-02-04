@@ -7,12 +7,9 @@ import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.DefaultDomain;
-import com.sk89q.worldguard.protection.GlobalRegionManager;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.flags.RegionGroup;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.GlobalProtectedRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Events.ResetHandler.ResetReason;
@@ -31,7 +28,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class MineHandler implements Listener, CommandExecutor{
 	
@@ -212,8 +208,12 @@ public class MineHandler implements Listener, CommandExecutor{
 				wm.unloadWorld(p.getName()+"sWorld");
 				wm.deleteWorld(p.getName()+"sWorld");
 				settings.getPlayerData().set(p.getUniqueId().toString()+".HasMine", false);
-
-
+			}
+		}
+		if(label.equalsIgnoreCase("updatemine")) {
+			if(args.length == 1){
+				Player p = Bukkit.getPlayer(args[0]);
+				updateMine(p);
 			}
 		}
 		return false;
@@ -250,7 +250,7 @@ public class MineHandler implements Listener, CommandExecutor{
 		p.teleport(pworld);
 
 		Location point1 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 9, 111, 34);
-		Location point2 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 49, 74, -34);
+		Location point2 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 49, 79, -34);
 
 
 		//Creating the actual mine
@@ -280,7 +280,7 @@ public class MineHandler implements Listener, CommandExecutor{
 				new BlockVector(point2.getX(), point2.getY(), point2.getZ()));
 		region.setFlag(DefaultFlag.LIGHTER, StateFlag.State.ALLOW);
 		region.setFlag(DefaultFlag.BLOCK_PLACE, StateFlag.State.DENY);
-		region.setFlag(DefaultFlag.BLOCK_BREAK.getRegionGroupFlag(), RegionGroup.MEMBERS);
+		region.setFlag(DefaultFlag.BLOCK_BREAK, StateFlag.State.ALLOW);
 		region.setFlag(DefaultFlag.OTHER_EXPLOSION, StateFlag.State.ALLOW);
 		region.setFlag(DefaultFlag.USE, StateFlag.State.ALLOW);
 		region.setFlag(DefaultFlag.INTERACT, StateFlag.State.ALLOW);
@@ -297,6 +297,8 @@ public class MineHandler implements Listener, CommandExecutor{
 				new BlockVector(g1.getX(), g1.getY(), g1.getZ()),
 				new BlockVector(g2.getX(), g2.getY(), g2.getZ()));
 		outside.setFlag(DefaultFlag.BLOCK_PLACE, StateFlag.State.DENY);
+		outside.setFlag(DefaultFlag.FALL_DAMAGE, StateFlag.State.DENY);
+		outside.setFlag(DefaultFlag.FEED_AMOUNT, 100);
 		outside.setFlag(DefaultFlag.BLOCK_BREAK, StateFlag.State.DENY);
 		outside.setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
 		outside.setFlag(DefaultFlag.LIGHTER, StateFlag.State.DENY);

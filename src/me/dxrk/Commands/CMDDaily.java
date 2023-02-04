@@ -1,5 +1,10 @@
 package me.dxrk.Commands;
 
+import me.dxrk.Events.LocksmithHandler;
+import me.dxrk.Events.PickXPHandler;
+import me.dxrk.Main.Methods;
+import me.dxrk.Main.SettingsManager;
+import me.dxrk.Tokens.Tokens;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -14,15 +19,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import me.dxrk.Events.LocksmithHandler;
-import me.dxrk.Events.PickXPHandler;
-import me.dxrk.Main.Methods;
-import me.dxrk.Main.SettingsManager;
-import me.dxrk.Tokens.Tokens;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class CMDDaily implements Listener, CommandExecutor{
 	
@@ -42,62 +42,55 @@ public class CMDDaily implements Listener, CommandExecutor{
 		ItemStack i = new ItemStack(Material.CHEST);
 		ItemMeta im = i.getItemMeta();
 		im.setDisplayName(name);
-		List<String> loree = new ArrayList<String>();
+		List<String> loree = new ArrayList<>();
 		if(lore.equals(m.c("&7Click to Claim!"))){
 			loree.add("");
 			loree.add(m.c("&7Rewards:"));
 		}
-		if(name.equals(m.c("&cCavalry Reward!"))){
-			loree.add(m.c("&6&lPickaxe XP Voucher 1500"));
+		if(name.equals(m.c("&b&lDonator Reward!"))){
+			loree.add(m.c("&e3x &e&lToken &7Key"));
 		}
-		else if(name.equals(m.c("&eHoplite Reward!"))){
-			loree.add(m.c("&6&lPickaxe XP Voucher 2000"));
-			loree.add(m.c("&4&lHades Rune +1"));
+		else if(name.equals(m.c("&a&lVIP Reward!"))){
+			loree.add(m.c("&e3x &e&lToken &7Key"));
+			loree.add(m.c("&e5x &7&lAlpha &7Key"));
 		}
-		else if(name.equals(m.c("&9Captain Reward!"))){
-			loree.add(m.c("&f&lPolis Rune +1"));
-			loree.add(m.c("&e&lTokens +1000"));
+		else if(name.equals(m.c("&6&lMVP Reward!"))){
+			loree.add(m.c("&e5x &c&lBeta &7Key"));
+			loree.add(m.c("&e&lTokens +100,000"));
 		}
-		else if(name.equals(m.c("&6Colonel Reward!"))){
+		else if(name.equals(m.c("&c&lHero Reward!"))){
 			loree.add(m.c("&bCommon Trnket Dust +1"));
 			loree.add(m.c("&9Rare Trinket Dust +1"));
 			loree.add(m.c("&5Epic Trinket Dust +1"));
 			loree.add(m.c("&6Legendary Trinket Dust +1"));
 		}
-		else if(name.equals(m.c("&c&lAres Reward!"))){
-			loree.add(m.c("&6&lPickaxe XP Voucher 2500"));
-			loree.add(m.c("&f&lPolis Rune +2"));
+		else if(name.equals(m.c("&c5&lDemi-God Reward!"))){
+			loree.add(m.c("&e1x &5&lCommunity &7Key"));
+			loree.add(m.c("&e2x &4&lOmega &7Key"));
 		}
-		else if(name.equals(m.c("&a&lHermes Reward!"))){
-			loree.add(m.c("&e&lTokens +1500"));
-			loree.add(m.c("&4&lHades Rune +2"));
-			loree.add(m.c("&f&lPolis Rune +2"));
+		else if(name.equals(m.c("&3&lTitan Reward!"))){
+			loree.add(m.c("&e&lTokens +150,000"));
+			loree.add(m.c("&e2x &4&lOmega &7Key"));
+			loree.add(m.c("&e1x &4&l&ki&f&lSeasonal&4&l&ki&r &7Key"));
 		}
-		else if(name.equals(m.c("&6&lApollo Reward!"))){
-			loree.add(m.c("&e&lTokens +1500"));
-			loree.add(m.c("&e&lMidas Rune +5"));
-			loree.add(m.c("&9&lPoseidon Rune +5"));
+		else if(name.equals(m.c("&d&lGod Reward!"))){
+			loree.add(m.c("&e5x &e&lToken &7Key"));
+			loree.add(m.c("&b10000 XP"));
 		}
-		else if(name.equals(m.c("&8&lKronos Reward!"))){
-			loree.add(m.c("&6&lPickaxe XP Voucher 3000"));
-			loree.add(m.c("&4&lOblivion Rune +1"));
+		else if(name.equals(m.c("&e&lOlympian Reward!"))){
+			loree.add(m.c("&e5x &4&lOmega &7Key"));
+			loree.add(m.c("&e2x &5&lCommunity &7Key"));
 		}
-		else if(name.equals(m.c("&f&lZeus Reward!"))){
-			loree.add(m.c("&e&lTokens +2500"));
-			loree.add(m.c("&6&lPickaxe XP Voucher 5000"));
-			loree.add(m.c("&e&lMidas Rune +2"));
-			loree.add(m.c("&9&lPoseidon Rune +2"));
-			loree.add(m.c("&4&lHades Rune +2"));
-			loree.add(m.c("&f&lPolis Rune +2"));
-			loree.add(m.c("&4&lOblivion Rune +2"));
+		else if(name.equals(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lReward!"))){
+			loree.add(m.c("&e&lTokens +250,000"));
 		}
-		else if(name.equals(m.c("&6Free Daily Reward!"))){
-			loree.add(m.c("&e&lMidas Rune +1"));
-			loree.add(m.c("&9&lPoseidon Rune +1"));
-			loree.add(m.c("&4&lHades Rune +1"));
-			loree.add(m.c("&f&lPolis Rune +1"));
-			loree.add(m.c("&6&lPickaxe XP Voucher 1000"));
-			loree.add(m.c("&e&lTokens +500"));
+		else if(name.equals(m.c("&7Free Daily Reward!"))){
+			loree.add(m.c("&e&lTokens +50,000"));
+			loree.add(m.c("&e1x &e&lToken &7Key"));
+			loree.add(m.c("&e1x &7&lAlpha &7Key"));
+			loree.add(m.c("&e1x &c&lBeta &7Key"));
+			loree.add(m.c("&e1x &4&lOmega &7Key"));
+			loree.add(m.c("&&f&l1% Chance for &3&lRank &7Key."));
 		}
 		loree.add("");
 		loree.add(lore);
@@ -119,15 +112,15 @@ public class CMDDaily implements Listener, CommandExecutor{
 	
 	public void openRank(Player p) {
 		Inventory inv = Bukkit.createInventory(null, 27, m.c("&e&lDaily Rank Rewards:"));
-		inv.setItem(0, rewardChest(m.c("&cCavalry Reward!"), m.c("&7Click to Claim!")));
-		inv.setItem(10, rewardChest(m.c("&eHoplite Reward!"), m.c("&7Click to Claim!")));
-		inv.setItem(20, rewardChest(m.c("&9Captain Reward!"), m.c("&7Click to Claim!")));
-		inv.setItem(12, rewardChest(m.c("&6Colonel Reward!"), m.c("&7Click to Claim!")));
-		inv.setItem(4, rewardChest(m.c("&c&lAres Reward!"), m.c("&7Click to Claim!")));
-		inv.setItem(14, rewardChest(m.c("&a&lHermes Reward!"), m.c("&7Click to Claim!")));
-		inv.setItem(24, rewardChest(m.c("&6&lApollo Reward!"), m.c("&7Click to Claim!")));
-		inv.setItem(16, rewardChest(m.c("&8&lKronos Reward!"), m.c("&7Click to Claim!")));
-		inv.setItem(8, rewardChest(m.c("&f&lZeus Reward!"), m.c("&7Click to Claim!")));
+		inv.setItem(0, rewardChest(m.c("&b&lDonator Reward!"), m.c("&7Click to Claim!")));
+		inv.setItem(10, rewardChest(m.c("&a&lVIP Reward!"), m.c("&7Click to Claim!")));
+		inv.setItem(20, rewardChest(m.c("&6&lMVP Reward!"), m.c("&7Click to Claim!")));
+		inv.setItem(12, rewardChest(m.c("&c&lHero Reward!"), m.c("&7Click to Claim!")));
+		inv.setItem(4, rewardChest(m.c("&5&lDemi-God Reward!"), m.c("&7Click to Claim!")));
+		inv.setItem(14, rewardChest(m.c("&3&lTitan Reward!"), m.c("&7Click to Claim!")));
+		inv.setItem(24, rewardChest(m.c("&d&lGod Reward!"), m.c("&7Click to Claim!")));
+		inv.setItem(16, rewardChest(m.c("&e&lOlympian Reward!"), m.c("&7Click to Claim!")));
+		inv.setItem(8, rewardChest(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &7Reward!"), m.c("&7Click to Claim!")));
 		p.openInventory(inv);
 	}
 	
@@ -153,70 +146,72 @@ public class CMDDaily implements Listener, CommandExecutor{
 	
 	public void giveRewards(Player p, String rank) {
 		if(rank.equals("free")) {
-			LocksmithHandler.getInstance().addKey(p, "Midas", 1);
-			LocksmithHandler.getInstance().addKey(p, "Poseidon", 1);
-			LocksmithHandler.getInstance().addKey(p, "Hades", 1);
-			LocksmithHandler.getInstance().addKey(p, "Polis", 1);
-			Tokens.getInstance().addTokens(p, 500);
+			Random r = new Random();
+			if(r.nextInt(100) == 1){
+				LocksmithHandler.getInstance().addKey(p, "Rank", 1);
+				p.sendMessage(m.c("&f&l You won the &3&lRank &7Key! &f&lCongratulations!"));
+			}
+			LocksmithHandler.getInstance().addKey(p, "Token", 1);
+			LocksmithHandler.getInstance().addKey(p, "Alpha", 1);
+			LocksmithHandler.getInstance().addKey(p, "Beta", 1);
+			LocksmithHandler.getInstance().addKey(p, "Omega", 1);
+			Tokens.getInstance().addTokens(p, 50000);
 			this.settings.getDaily().set(p.getUniqueId().toString()+".FreeReward", getTodayDate());
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily Claimed!"));
 		}
-		if(rank.equals("cavalry")) {
-
-			this.settings.getDaily().set(p.getUniqueId().toString()+".CavalryReward", getTodayDate());
-			p.sendMessage(m.c("&f&lRewards &8| &bDaily &cCavalry &bClaimed!"));
+		if(rank.equals("donator")) {
+			LocksmithHandler.getInstance().addKey(p, "Token", 3);
+			this.settings.getDaily().set(p.getUniqueId().toString()+".DonatorReward", getTodayDate());
+			p.sendMessage(m.c("&f&lRewards &8| &bDaily &b&lDonator &bClaimed!"));
 		}
-		if(rank.equals("hoplite")) {
-			LocksmithHandler.getInstance().addKey(p, "Hades", 1);
-			this.settings.getDaily().set(p.getUniqueId().toString()+".HopliteReward", getTodayDate());
-			p.sendMessage(m.c("&f&lRewards &8| &bDaily &eHoplite &bClaimed!"));		}
-		if(rank.equals("captain")) {
-			Tokens.getInstance().addTokens(p, 1000);
-			LocksmithHandler.getInstance().addKey(p, "Polis", 1);
-			this.settings.getDaily().set(p.getUniqueId().toString()+".CaptainReward", getTodayDate());
-			p.sendMessage(m.c("&f&lRewards &8| &bDaily &9Captain &bClaimed!"));
+		if(rank.equals("vip")) {
+			LocksmithHandler.getInstance().addKey(p, "Token", 3);
+			LocksmithHandler.getInstance().addKey(p, "Alpha", 5);
+			this.settings.getDaily().set(p.getUniqueId().toString()+".VIPReward", getTodayDate());
+			p.sendMessage(m.c("&f&lRewards &8| &bDaily &a&lVIP &bClaimed!"));		}
+		if(rank.equals("mvp")) {
+			Tokens.getInstance().addTokens(p, 100000);
+			LocksmithHandler.getInstance().addKey(p, "Beta", 5);
+			this.settings.getDaily().set(p.getUniqueId().toString()+".MVPReward", getTodayDate());
+			p.sendMessage(m.c("&f&lRewards &8| &bDaily &6&lMVP &bClaimed!"));
 		}
-		if(rank.equals("colonel")) {
+		if(rank.equals("hero")) {
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givedust "+p.getName()+" common");
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givedust "+p.getName()+" rare");
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givedust "+p.getName()+" epic");
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givedust "+p.getName()+" legendary");
-			this.settings.getDaily().set(p.getUniqueId().toString()+".ColonelReward", getTodayDate());
-			p.sendMessage(m.c("&f&lRewards &8| &bDaily &6Colonel &bClaimed!"));
+			this.settings.getDaily().set(p.getUniqueId().toString()+".HeroReward", getTodayDate());
+			p.sendMessage(m.c("&f&lRewards &8| &bDaily &c&lHero &bClaimed!"));
 		}
-		if(rank.equals("ares")) {
-			LocksmithHandler.getInstance().addKey(p, "Polis", 2);
-			this.settings.getDaily().set(p.getUniqueId().toString()+".AresReward", getTodayDate());
-			p.sendMessage(m.c("&f&lRewards &8| &bDaily &c&lAres &bClaimed!"));
+		if(rank.equals("demi-god")) {
+			LocksmithHandler.getInstance().addKey(p, "Community", 1);
+			LocksmithHandler.getInstance().addKey(p, "Omega", 2);
+			this.settings.getDaily().set(p.getUniqueId().toString()+".Demi-GodReward", getTodayDate());
+			p.sendMessage(m.c("&f&lRewards &8| &bDaily &5&lDemi-God &bClaimed!"));
 		}
-		if(rank.equals("hermes")) {
-			Tokens.getInstance().addTokens(p, 1500);
-			LocksmithHandler.getInstance().addKey(p, "Hades", 2);
-			LocksmithHandler.getInstance().addKey(p, "Polis", 2);
-			this.settings.getDaily().set(p.getUniqueId().toString()+".HermesReward", getTodayDate());
-			p.sendMessage(m.c("&f&lRewards &8| &bDaily &a&lHermes &bClaimed!"));
+		if(rank.equals("titan")) {
+			Tokens.getInstance().addTokens(p, 150000);
+			LocksmithHandler.getInstance().addKey(p, "Omega", 2);
+			LocksmithHandler.getInstance().addKey(p, "Seasonal", 1);
+			this.settings.getDaily().set(p.getUniqueId().toString()+".TitanReward", getTodayDate());
+			p.sendMessage(m.c("&f&lRewards &8| &bDaily &3&lTitan &bClaimed!"));
 		}
-		if(rank.equals("apollo")) {
-			Tokens.getInstance().addTokens(p, 1500);
-			LocksmithHandler.getInstance().addKey(p, "Midas", 5);
-			LocksmithHandler.getInstance().addKey(p, "Poseidon", 5);
-			this.settings.getDaily().set(p.getUniqueId().toString()+".ApolloReward", getTodayDate());
-			p.sendMessage(m.c("&f&lRewards &8| &bDaily &6&lApollo &bClaimed!"));
+		if(rank.equals("god")) {
+			PickXPHandler.getInstance().addXP(p, 10000);
+			LocksmithHandler.getInstance().addKey(p, "Token", 5);
+			this.settings.getDaily().set(p.getUniqueId().toString()+".GodReward", getTodayDate());
+			p.sendMessage(m.c("&f&lRewards &8| &bDaily &d&lGod &bClaimed!"));
 		}
-		if(rank.equals("kronos")) {
-			LocksmithHandler.getInstance().addKey(p, "Oblivion", 1);
-			this.settings.getDaily().set(p.getUniqueId().toString()+".KronosReward", getTodayDate());
-			p.sendMessage(m.c("&f&lRewards &8| &bDaily &8&lKronos &bClaimed!"));
+		if(rank.equals("olympian")) {
+			LocksmithHandler.getInstance().addKey(p, "Omega", 5);
+			LocksmithHandler.getInstance().addKey(p, "Community", 2);
+			this.settings.getDaily().set(p.getUniqueId().toString()+".OlympianReward", getTodayDate());
+			p.sendMessage(m.c("&f&lRewards &8| &bDaily &e&lOlympian &bClaimed!"));
 		}
-		if(rank.equals("zeus")) {
-			Tokens.getInstance().addTokens(p, 2500);
-			LocksmithHandler.getInstance().addKey(p, "Midas", 2);
-			LocksmithHandler.getInstance().addKey(p, "Poseidon", 2);
-			LocksmithHandler.getInstance().addKey(p, "Hades", 2);
-			LocksmithHandler.getInstance().addKey(p, "Polis", 2);
-			LocksmithHandler.getInstance().addKey(p, "Oblivion", 2);
-			this.settings.getDaily().set(p.getUniqueId().toString()+".ZeusReward", getTodayDate());
-			p.sendMessage(m.c("&f&lRewards &8| &bDaily &f&lZeus &bClaimed!"));
+		if(rank.equals("genesis")) {
+			Tokens.getInstance().addTokens(p, 250000);
+			this.settings.getDaily().set(p.getUniqueId().toString()+".GenesisReward", getTodayDate());
+			p.sendMessage(m.c("&f&lRewards &8| &bDaily &4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &bClaimed!"));
 		}
 	}
 	
@@ -226,15 +221,15 @@ public class CMDDaily implements Listener, CommandExecutor{
 		Player p = e.getPlayer();
 		if(!settings.getDaily().contains(p.getUniqueId().toString())) {
 			settings.getDaily().set(p.getUniqueId().toString()+".FreeReward", "");
-			settings.getDaily().set(p.getUniqueId().toString()+".CavalryReward", "");
-			settings.getDaily().set(p.getUniqueId().toString()+".HopliteReward", "");
-			settings.getDaily().set(p.getUniqueId().toString()+".CaptainReward", "");
-			settings.getDaily().set(p.getUniqueId().toString()+".ColonelReward", "");
-			settings.getDaily().set(p.getUniqueId().toString()+".AresReward", "");
-			settings.getDaily().set(p.getUniqueId().toString()+".HermesReward", "");
-			settings.getDaily().set(p.getUniqueId().toString()+".ApolloReward", "");
-			settings.getDaily().set(p.getUniqueId().toString()+".KronosReward", "");
-			settings.getDaily().set(p.getUniqueId().toString()+".ZeusReward", "");
+			settings.getDaily().set(p.getUniqueId().toString()+".DonatorReward", "");
+			settings.getDaily().set(p.getUniqueId().toString()+".VIPReward", "");
+			settings.getDaily().set(p.getUniqueId().toString()+".MVPReward", "");
+			settings.getDaily().set(p.getUniqueId().toString()+".HeroReward", "");
+			settings.getDaily().set(p.getUniqueId().toString()+".Demi-GodReward", "");
+			settings.getDaily().set(p.getUniqueId().toString()+".TitanReward", "");
+			settings.getDaily().set(p.getUniqueId().toString()+".GodReward", "");
+			settings.getDaily().set(p.getUniqueId().toString()+".OlympianReward", "");
+			settings.getDaily().set(p.getUniqueId().toString()+".GenesisReward", "");
 		}
 		settings.saveDaily();
 	}
@@ -269,111 +264,111 @@ public class CMDDaily implements Listener, CommandExecutor{
 		    	e.setCancelled(true);
 		    	
 		    	if(e.getSlot() == 0) {
-					if(!p.hasPermission("rank.cavalry")) {
+					if(!p.hasPermission("rank.donator")) {
 						p.sendMessage(m.c("&cNo Permission!"));
 						return;
 					}
-		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".CavalryReward").equals(getTodayDate())) {
+		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".DonatorReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
 		    		} else {
-		    			giveRewards(p, "cavalry");
+		    			giveRewards(p, "donator");
 		    		}
 		    	}
 		    	if(e.getSlot() == 10) {
-					if(!p.hasPermission("rank.hoplite")) {
+					if(!p.hasPermission("rank.vip")) {
 						p.sendMessage(m.c("&cNo Permission!"));
 						return;
 					}
-		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".HopliteReward").equals(getTodayDate())) {
+		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".VIPReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
 		    		} else {
-		    			giveRewards(p, "hoplite");
+		    			giveRewards(p, "vip");
 		    		}
 		    	}
 		    	if(e.getSlot() == 20) {
-					if(!p.hasPermission("rank.captain")) {
+					if(!p.hasPermission("rank.mvp")) {
 						p.sendMessage(m.c("&cNo Permission!"));
 						return;
 					}
-		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".CaptainReward").equals(getTodayDate())) {
+		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".MVPReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
 		    		} else {
-		    			giveRewards(p, "captain");
+		    			giveRewards(p, "mvp");
 		    		}
 		    	}
 		    	if(e.getSlot() == 12) {
-					if(!p.hasPermission("rank.colonel")) {
+					if(!p.hasPermission("rank.hero")) {
 						p.sendMessage(m.c("&cNo Permission!"));
 						return;
 					}
-		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".ColonelReward").equals(getTodayDate())) {
+		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".HeroReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
 		    		} else {
-		    			giveRewards(p, "colonel");
+		    			giveRewards(p, "hero");
 		    		}
 		    	}
 		    	if(e.getSlot() == 4) {
-					if(!p.hasPermission("rank.ares")) {
+					if(!p.hasPermission("rank.demi-god")) {
 						p.sendMessage(m.c("&cNo Permission!"));
 						return;
 					}
-		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".AresReward").equals(getTodayDate())) {
+		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".Demi-GodReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
 		    		} else {
-		    			giveRewards(p, "ares");
+		    			giveRewards(p, "demi-god");
 		    		}
 		    	}
 		    	if(e.getSlot() == 14) {
-					if(!p.hasPermission("rank.hermes")) {
+					if(!p.hasPermission("rank.titan")) {
 						p.sendMessage(m.c("&cNo Permission!"));
 						return;
 					}
-		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".HermesReward").equals(getTodayDate())) {
+		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".TitanReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
 		    		} else {
-		    			giveRewards(p, "hermes");
+		    			giveRewards(p, "titan");
 		    		}
 		    	}
 		    	if(e.getSlot() == 24) {
-					if(!p.hasPermission("rank.apollo")) {
+					if(!p.hasPermission("rank.god")) {
 						p.sendMessage(m.c("&cNo Permission!"));
 						return;
 					}
-		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".ApolloReward").equals(getTodayDate())) {
+		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".GodReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
 		    		} else {
-		    			giveRewards(p, "apollo");
+		    			giveRewards(p, "god");
 		    		}
 		    	}
 		    	if(e.getSlot() == 16) {
-					if(!p.hasPermission("rank.kronos")) {
+					if(!p.hasPermission("rank.olympian")) {
 						p.sendMessage(m.c("&cNo Permission!"));
 						return;
 					}
-		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".KronosReward").equals(getTodayDate())) {
+		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".OlympianReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
 		    		} else {
-		    			giveRewards(p, "kronos");
+		    			giveRewards(p, "olympian");
 		    		}
 		    	}
 		    	if(e.getSlot() == 8) {
-					if(!p.hasPermission("rank.zeus")) {
+					if(!p.hasPermission("rank.genesis")) {
 						p.sendMessage(m.c("&cNo Permission!"));
 						return;
 					}
-		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".ZeusReward").equals(getTodayDate())) {
+		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".GenesisReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
 		    		} else {
-		    			giveRewards(p, "zeus");
+		    			giveRewards(p, "genesis");
 		    		}
 		    	}
 		    	settings.saveDaily();

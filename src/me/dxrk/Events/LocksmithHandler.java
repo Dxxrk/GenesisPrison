@@ -156,8 +156,8 @@ public class LocksmithHandler implements Listener, CommandExecutor {
     inv.setItem(3, item("Token", token));
     inv.setItem(4, mid);
     inv.setItem(5, item("Vote", vote));
-    inv.setItem(6, item("Seasonal", seasonal));
-    inv.setItem(7, item("Community", community));
+    inv.setItem(6, item("Community", community));
+    inv.setItem(7, item("Seasonal", seasonal));
     inv.setItem(8, item("Rank", rank));
     p.openInventory(inv);
   }

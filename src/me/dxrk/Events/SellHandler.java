@@ -3,7 +3,7 @@ package me.dxrk.Events;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import me.dxrk.Enchants.EnchantMethods;
+import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Events.ResetHandler.ResetReason;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.Main;
@@ -151,13 +151,14 @@ public class SellHandler implements Listener, CommandExecutor {
 
 	private static Methods m = Methods.getInstance();
 
-  public void sellEnchant(Player p, List<ItemStack> items, String enchantName) {
+  public void sellEnchant(Player p, List<ItemStack> items, String enchantName, double tokens) {
 	    double total = 0.0D;
 	    int amountotal = 0;
 	    double greed = Functions.greed(p);
 	    double sell = Functions.sellBoost(p);
 	    double miningboost = BoostsHandler.sell;
 	    double multi = SellHandler.getInstance().getMulti(p);
+	  double event = SkillsEventsListener.getEventMulti();
 		double prestige = getPrestiges(p)*0.02;
 		double multiply = 1;
 		if(prestige < 1){
@@ -174,15 +175,15 @@ public class SellHandler implements Listener, CommandExecutor {
 	  	    	double price = Methods.getBlockSellPrice("A", i.getTypeId());
 
 
-	  	    	total += price * (multi+greed) * sell * miningboost*prestige*multiply;
+	  	    	total += price * (multi+greed+event) * sell * miningboost*prestige*multiply;
 
 	  	        amountotal += i.getAmount();
 
 	  	      }
 	  	    }
 	    p.updateInventory();
-	    if(SettingsManager.getInstance().getOptions().getBoolean(p.getUniqueId().toString()+"."+enchantName+"-Messages") == true) {
-	    	p.sendMessage(c("&f&l"+enchantName+" &8| &b+$"+format(total*amountotal)));
+	    if(SettingsManager.getInstance().getOptions().getBoolean(p.getUniqueId().toString()+"."+enchantName.replace(" ", "-")+"-Messages") == true) {
+	    	p.sendMessage(c("&f&l"+enchantName+" &8| &b+$"+format(total*amountotal)+" &7& &e⛀"+format(tokens)));
 	    }
 
 	    Main.econ.depositPlayer(p, total*amountotal);
@@ -197,6 +198,7 @@ public class SellHandler implements Listener, CommandExecutor {
 	  double sell = Functions.sellBoost(p);
 	  double miningboost = BoostsHandler.sell;
 	  double multi = SellHandler.getInstance().getMulti(p);
+	  double event = SkillsEventsListener.getEventFortune();
 	  double prestige = getPrestiges(p)*0.02;
 	  double multiply = 1;
 	  if(prestige < 1){
@@ -213,7 +215,7 @@ public class SellHandler implements Listener, CommandExecutor {
 			  double price = Methods.getBlockSellPrice("A", i.getTypeId());
 
 
-			  total += price * (multi+greed) * sell * miningboost*prestige*multiply;
+			  total += price * (multi+greed+event) * sell * miningboost*prestige*multiply;
 
 			  amountotal += i.getAmount();
 
@@ -312,6 +314,8 @@ public class SellHandler implements Listener, CommandExecutor {
     }
 
     double fortuity = Functions.Foruity(p);
+	  double skill = SkillsEventsListener.getSkillsBoostFortune(p);
+	  double event1 = SkillsEventsListener.getEventFortune();
     
     
     
@@ -325,7 +329,7 @@ public class SellHandler implements Listener, CommandExecutor {
 				  line = x;
 			  }
 		  }
-          int fortune = (int) (getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity /
+          int fortune = (int) (getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity*skill*event1 /
             (3.5));
 
           

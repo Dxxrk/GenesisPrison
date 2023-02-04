@@ -1,21 +1,15 @@
 package me.dxrk.Events;
 
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
-
-import me.dxrk.Main.Functions;
-import me.dxrk.gangs.GangCommand;
-import me.dxrk.gangs.Methods;
+import me.dxrk.Commands.CMDAc;
+import me.dxrk.Gangs.CMDGang;
+import me.dxrk.Gangs.Gangs;
+import me.dxrk.Main.Main;
+import me.dxrk.Main.SettingsManager;
+import me.dxrk.Tokens.Tokens;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,15 +23,14 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import me.dxrk.Commands.CMDAc;
-import me.dxrk.Main.Main;
-import me.dxrk.Main.SettingsManager;
-import me.dxrk.Tokens.Tokens;
+import java.text.NumberFormat;
+import java.util.*;
 
 public class ChatHandler implements Listener, CommandExecutor {
   static ChatHandler instance = new ChatHandler();
@@ -47,10 +40,10 @@ public class ChatHandler implements Listener, CommandExecutor {
   }
   
   SettingsManager settings = SettingsManager.getInstance();
+  Gangs gang = Gangs.getInstance();
   
   public static boolean isMuted = false;
-  
-  Methods gang = Methods.getInstance();
+
   
   SellHandler sell = SellHandler.getInstance();
   
@@ -61,45 +54,46 @@ public class ChatHandler implements Listener, CommandExecutor {
   }
   
   public boolean getOption(Player p, String s) {
-    if (!this.settings.getData().contains(String.valueOf(String.valueOf(p.getUniqueId().toString())) + ".Chat." + s)) {
-      this.settings.getData().set(String.valueOf(String.valueOf(p.getUniqueId().toString())) + ".Chat." + s, Integer.valueOf(0));
+    if (!this.settings.getData().contains(p.getUniqueId().toString() + ".Chat." + s)) {
+      this.settings.getData().set(p.getUniqueId().toString() + ".Chat." + s, 0);
       this.settings.saveData();
-    } 
-    if (this.settings.getData().getInt(String.valueOf(String.valueOf(p.getUniqueId().toString())) + ".Chat." + s) == 0)
-      return true; 
-    return false;
+    }
+    return this.settings.getData().getInt(p.getUniqueId().toString() + ".Chat." + s) == 0;
   }
   
   public String getChatColor(Player p) {
-    String s = this.settings.getcolor().getString(String.valueOf(String.valueOf(p.getName())) + ".Color");
+    String s = this.settings.getcolor().getString(p.getName() + ".Color");
     return s;
   }
   
   public void openColorInv(Player p) {
     Inventory i = Bukkit.createInventory(null, 18, ChatColor.AQUA + "Chat Color");
-    i.setItem(2, glassSlide(9, "&bAqua"));
-    i.setItem(3, glassSlide(0, "&7White"));
-    i.setItem(4, glassSlide(4, "&eYellow"));
-    i.setItem(5, glassSlide(11, "&9Blue"));
-    i.setItem(6, glassSlide(13, "&2Green"));
-    i.setItem(7, glassSlide(10, "&5Purple"));
-    i.setItem(10, Default());
-    i.setItem(11, glassSlide(1, "&6Colonel"));
-    i.setItem(12, glassSlide(14, "&cAres"));
-    i.setItem(13, glassSlide(5, "&aHermes"));
-    i.setItem(14, glassSlide(1, "&6A&ep&6o&el&6l&eo"));
-    i.setItem(15, glassSlide(15, "&8K&7r&8o&7n&8o&7s"));
-    i.setItem(16, glassSlide(8, "&fZ&7e&fu&7s"));
+    i.setItem(0, dye(12, "&bLight Blue"));
+    i.setItem(1, dye(15, "&fWhite"));
+    i.setItem(2, dye(11, "&eYellow"));
+    i.setItem(3, dye(4, "&9Blue"));
+    i.setItem(4, dye(2, "&2Green"));
+    i.setItem(5, dye(5, "&5Purple"));
+    i.setItem(6, dye(14, "&6Gold"));
+    i.setItem(7, dye(1, "&cRed"));
+    i.setItem(8, dye(10, "&aLime"));
+
+    ItemStack bar = new ItemStack(Material.BARRIER);
+    ItemMeta bm = bar.getItemMeta();
+    bm.setDisplayName(c("&cRemove color"));
+    bar.setItemMeta(bm);
+
+    i.setItem(13, bar);
     p.openInventory(i);
   }
   
   public void setChatColor(Player p, String color) {
-    this.settings.getcolor().set(String.valueOf(String.valueOf(p.getName())) + ".Color", color);
+    this.settings.getcolor().set(p.getName() + ".Color", color);
     this.settings.savecolorFile();
   }
   
-  private ItemStack glassSlide(int color, String name) {
-    ItemStack i = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)color);
+  private ItemStack dye(int color, String name) {
+    ItemStack i = new ItemStack(Material.INK_SACK, 1, (short)color);
     ItemMeta im = i.getItemMeta();
     im.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
     i.setItemMeta(im);
@@ -119,163 +113,142 @@ public class ChatHandler implements Listener, CommandExecutor {
     if (e.getInventory().getName().equals(ChatColor.AQUA + "Chat Color")) {
       e.setCancelled(true);
       Player p = (Player)e.getWhoClicked();
-      if (e.getRawSlot() == 10)
+      if (e.getRawSlot() == 13)
         setChatColor(p, null); 
-      if (e.getRawSlot() == 2)
-        setChatColor(p, "Aqua"); 
-      if (e.getRawSlot() == 3) {
+      if (e.getRawSlot() == 0)
+        setChatColor(p, "LightBlue");
+      if (e.getRawSlot() == 1) {
         if (!p.hasPermission("ChatColor.White")) {
           p.sendMessage(ChatColor.RED + "You do not have this chat color.");
           return;
         } 
         setChatColor(p, "White");
       } 
-      if (e.getRawSlot() == 4) {
+      if (e.getRawSlot() == 2) {
         if (!p.hasPermission("ChatColor.Yellow")) {
           p.sendMessage(ChatColor.RED + "You do not have this chat color.");
           return;
         } 
         setChatColor(p, "Yellow");
       } 
-      if (e.getRawSlot() == 5) {
+      if (e.getRawSlot() == 3) {
         if (!p.hasPermission("ChatColor.Blue")) {
           p.sendMessage(ChatColor.RED + "You do not have this chat color.");
           return;
         } 
         setChatColor(p, "Blue");
       } 
-      if (e.getRawSlot() == 6) {
+      if (e.getRawSlot() == 4) {
         if (!p.hasPermission("ChatColor.green")) {
           p.sendMessage(ChatColor.RED + "You do not have this chat color.");
           return;
         } 
         setChatColor(p, "Green");
       }
-      if (e.getRawSlot() == 7) {
+      if (e.getRawSlot() == 5) {
           if (!p.hasPermission("ChatColor.Purple")) {
             p.sendMessage(ChatColor.RED + "You do not have this chat color.");
             return;
           } 
           setChatColor(p, "Purple");
         }
-      if (e.getRawSlot() == 11) {
-        if (!p.hasPermission("Rank.Colonel")) {
+      if (e.getRawSlot() == 6) {
+        if (!p.hasPermission("ChatColor.Gold")) {
           p.sendMessage(ChatColor.RED + "You do not have this chat color.");
           return;
         } 
-        setChatColor(p, "Colonel");
+        setChatColor(p, "Gold");
       } 
-      if (e.getRawSlot() == 12) {
-        if (!p.hasPermission("Rank.Ares")) {
+      if (e.getRawSlot() == 7) {
+        if (!p.hasPermission("ChatColor.Red")) {
           p.sendMessage(ChatColor.RED + "You do not have this chat color.");
           return;
         } 
-        setChatColor(p, "Ares");
+        setChatColor(p, "Red");
       } 
-      if (e.getRawSlot() == 13) {
-        if (!p.hasPermission("Rank.Hermes")) {
+      if (e.getRawSlot() == 8) {
+        if (!p.hasPermission("ChatColor.Lime")) {
           p.sendMessage(ChatColor.RED + "You do not have this chat color.");
           return;
         } 
-        setChatColor(p, "Hermes");
-      } 
-      if (e.getRawSlot() == 14) {
-        if (!p.hasPermission("Rank.Apollo")) {
-          p.sendMessage(ChatColor.RED + "You do not have this chat color.");
-          return;
-        } 
-        setChatColor(p, "Apollo");
-      } 
-      if (e.getRawSlot() == 15) {
-        if (!p.hasPermission("Rank.Kronos")) {
-          p.sendMessage(ChatColor.RED + "You do not have this chat color.");
-          return;
-        } 
-        setChatColor(p, "Kronos");
-      } 
-      if (e.getRawSlot() == 16) {
-        if (!p.hasPermission("Rank.Zeus")) {
-          p.sendMessage(ChatColor.RED + "You do not have this chat color.");
-          return;
-        } 
-        setChatColor(p, "Zeus");
-      } 
+        setChatColor(p, "Lime");
+      }
       p.closeInventory();
       p.sendMessage(ChatColor.GREEN + "Chat color changed.");
-    } 
+    }
   }
   
   public String rainbowText(String s) {
-    String result = "";
+    StringBuilder result = new StringBuilder();
     int i = 0;
     byte b;
     int j;
     char[] arrayOfChar;
     for (j = (arrayOfChar = s.toCharArray()).length, b = 0; b < j; ) {
-      Character c = Character.valueOf(arrayOfChar[b]);
-      if (Character.isSpaceChar(c.charValue())) {
-        result = String.valueOf(String.valueOf(result)) + c;
+      char c = arrayOfChar[b];
+      if (Character.isSpaceChar(c)) {
+        result.append(c);
       } else if (i == 0) {
-        result = String.valueOf(String.valueOf(result)) + "&a&l" + c;
+        result.append("&a&l").append(c);
         i = 1;
       } else if (i == 1) {
-        result = String.valueOf(String.valueOf(result)) + "&b&l" + c;
+        result.append("&b&l").append(c);
         i = 2;
       } else if (i == 2) {
-        result = String.valueOf(String.valueOf(result)) + "&c&l" + c;
+        result.append("&c&l").append(c);
         i = 3;
       } else if (i == 3) {
-        result = String.valueOf(String.valueOf(result)) + "&d&l" + c;
+        result.append("&d&l").append(c);
         i = 4;
       } else if (i == 4) {
-        result = String.valueOf(String.valueOf(result)) + "&e&l" + c;
+        result.append("&e&l").append(c);
         i = 5;
       } else {
-        result = String.valueOf(String.valueOf(result)) + "&f&l" + c;
+        result.append("&f&l").append(c);
         i = 0;
       } 
       b = (byte)(b + 1);
     } 
-    return ChatColor.translateAlternateColorCodes('&', result);
+    return ChatColor.translateAlternateColorCodes('&', result.toString());
   }
   
   public String headmodText(String s) {
-    String result = "";
+    StringBuilder result = new StringBuilder();
     int i = 0;
     byte b;
     int j;
     char[] arrayOfChar;
     for (j = (arrayOfChar = s.toCharArray()).length, b = 0; b < j; ) {
-      Character c = Character.valueOf(arrayOfChar[b]);
-      if (Character.isSpaceChar(c.charValue())) {
-        result = String.valueOf(String.valueOf(result)) + c;
+      char c = arrayOfChar[b];
+      if (Character.isSpaceChar(c)) {
+        result.append(c);
       } else if (i == 0) {
-        result = String.valueOf(String.valueOf(result)) + "&a" + c;
+        result.append("&a").append(c);
         i = 1;
       } else if (i == 1) {
-        result = String.valueOf(String.valueOf(result)) + "&c" + c;
+        result.append("&c").append(c);
         i = 2;
       } else if (i == 2) {
-        result = String.valueOf(String.valueOf(result)) + "&e" + c;
+        result.append("&e").append(c);
         i = 3;
       } else if (i == 3) {
-        result = String.valueOf(String.valueOf(result)) + "&b" + c;
+        result.append("&b").append(c);
         i = 4;
       } else {
-        result = String.valueOf(String.valueOf(result)) + "&d" + c;
+        result.append("&d").append(c);
         i = 0;
       } 
       b = (byte)(b + 1);
     } 
-    return ChatColor.translateAlternateColorCodes('&', result);
+    return ChatColor.translateAlternateColorCodes('&', result.toString());
   }
   
   public void switchOption(Player p, String s) {
     if (getOption(p, s)) {
-      this.settings.getData().set(String.valueOf(String.valueOf(p.getUniqueId().toString())) + ".Chat." + s, Integer.valueOf(1));
+      this.settings.getData().set(p.getUniqueId().toString() + ".Chat." + s, 1);
       this.settings.saveData();
     } else {
-      this.settings.getData().set(String.valueOf(String.valueOf(p.getUniqueId().toString())) + ".Chat." + s, Integer.valueOf(0));
+      this.settings.getData().set(p.getUniqueId().toString() + ".Chat." + s, 0);
       this.settings.saveData();
     } 
   }
@@ -356,8 +329,8 @@ public class ChatHandler implements Listener, CommandExecutor {
       char[] arrayOfChar;
       for (j = (arrayOfChar = s.toCharArray()).length, b = 0; b < j; ) {
         char ss = arrayOfChar[b];
-        int col = Integer.parseInt((new StringBuilder(String.valueOf(ss))).toString());
-        String str = (new StringBuilder(String.valueOf(ss))).toString();
+        int col = Integer.parseInt(String.valueOf(ss));
+        String str = String.valueOf(ss);
         if (col == 0)
           str = "a"; 
         if (col == 8)
@@ -368,12 +341,12 @@ public class ChatHandler implements Listener, CommandExecutor {
           str = "d"; 
         if (col == 7)
           str = "e"; 
-        sb.append("&" + str + "&l" + ss);
+        sb.append("&").append(str).append("&l").append(ss);
         b = (byte)(b + 1);
       } 
       return sb.toString();
     } 
-    String color = (new StringBuilder(String.valueOf(i))).toString();
+    String color = String.valueOf(i);
     if (i == 0)
       color = "a"; 
     if (i == 8)
@@ -401,62 +374,62 @@ public class ChatHandler implements Listener, CommandExecutor {
       rank = ChatColor.translateAlternateColorCodes('&', "&2&l&k;&a&lBuilder&2&l&k;&r ");
     } else if (p.hasPermission("Rank.Helper")) {
       rank = ChatColor.translateAlternateColorCodes('&', "&6&l&k;&e&lHelper&6&l&k;&r ");
-    } else if (p.hasPermission("Rank.Zeus")) {
-      rank = ChatColor.translateAlternateColorCodes('&', "&7&l&ki&e&l⚡&7&l&ki&f&lZeus&7&l&ki&e&l⚡&7&l&ki&r ");
-    } else if (p.hasPermission("Rank.Kronos")) {
-      rank = ChatColor.translateAlternateColorCodes('&', "&f&l&kii&8&lKronos&f&l&kii&r ");
-    } else if (p.hasPermission("Rank.Apollo")) {
-      rank = ChatColor.translateAlternateColorCodes('&', "&c&l&kii&6&lApollo&c&l&kii&r ");
-    } else if (p.hasPermission("Rank.Hermes")) {
-      rank = ChatColor.translateAlternateColorCodes('&', "&b&l&ki&a&lHermes&b&l&ki&r ");
-    } else if (p.hasPermission("Rank.Ares")) {
-      rank = ChatColor.translateAlternateColorCodes('&', "&a&l&ki&c&lAres&a&l&ki&r ");
-    } else if (p.hasPermission("Rank.Colonel")) {
-      rank = ChatColor.translateAlternateColorCodes('&', "&8&k&l:&6Colonel&8&k&l:&r ");
-    } else if (p.hasPermission("Rank.Captian")) {
-      rank = ChatColor.translateAlternateColorCodes('&', "&8&k&l:&9Captain&8&k&l:&r ");
-    } else if (p.hasPermission("Rank.Hoplite")) {
-      rank = ChatColor.translateAlternateColorCodes('&', "&8&k&l:&eHoplite&8&k&l:&r ");
-    } else if (p.hasPermission("Rank.Cavalry")) {
-      rank = ChatColor.translateAlternateColorCodes('&', "&8&k&l:&cCavalry&8&k&l:&r ");
+    } else if (p.hasPermission("Rank.genesis")) {
+      rank = ChatColor.translateAlternateColorCodes('&', "&f&ki&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls&f&ki&r ");
+    } else if (p.hasPermission("Rank.olympian")) {
+      rank = ChatColor.translateAlternateColorCodes('&', "&6&ki&e&lOlympian&6&ki&r ");
+    } else if (p.hasPermission("Rank.god")) {
+      rank = ChatColor.translateAlternateColorCodes('&', "&d&lGod ");
+    } else if (p.hasPermission("Rank.titan")) {
+      rank = ChatColor.translateAlternateColorCodes('&', "&3&lTitan ");
+    } else if (p.hasPermission("Rank.demi-god")) {
+      rank = ChatColor.translateAlternateColorCodes('&', "&5&lDemi-God ");
+    } else if (p.hasPermission("Rank.hero")) {
+      rank = ChatColor.translateAlternateColorCodes('&', "&c&lHero ");
+    } else if (p.hasPermission("Rank.mvp")) {
+      rank = ChatColor.translateAlternateColorCodes('&', "&6&lMVP ");
+    } else if (p.hasPermission("Rank.vip")) {
+      rank = ChatColor.translateAlternateColorCodes('&', "&a&lVIP ");
+    } else if (p.hasPermission("Rank.donator")) {
+      rank = ChatColor.translateAlternateColorCodes('&', "&b&lDonator ");
     }
     return rank;
   }
   
   public static String format(double amt) {
     if (amt >= 1.0E15D)
-      return String.format("%.1f Quad", new Object[] { Double.valueOf(amt / 1.0E15D) }); 
+      return String.format("%.1f Quad", amt / 1.0E15D);
     if (amt >= 1.0E12D)
-      return String.format("%.1f Tril", new Object[] { Double.valueOf(amt / 1.0E12D) }); 
+      return String.format("%.1f Tril", amt / 1.0E12D);
     if (amt >= 1.0E9D)
-      return String.format("%.1f Bil", new Object[] { Double.valueOf(amt / 1.0E9D) }); 
+      return String.format("%.1f Bil", amt / 1.0E9D);
     if (amt >= 1000000.0D)
-      return String.format("%.1f Mil", new Object[] { Double.valueOf(amt / 1000000.0D) }); 
+      return String.format("%.1f Mil", amt / 1000000.0D);
     return NumberFormat.getNumberInstance(Locale.US).format(amt);
   }
   
   public ItemStack getHover(Player p) {
     ItemStack i = new ItemStack(Material.PAPER, 1);
     ItemMeta im = i.getItemMeta();
-    im.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fReal Name &7" + p.getName()));
+    im.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fName &7" + p.getName()));
     List<String> lore = new ArrayList<>();
-     lore.add(Functions.pres(p));
-    lore.add(ChatColor.translateAlternateColorCodes('&', "&fPrison Level &7" + RankupHandler.getInstance().getRank(p)));
+     lore.add(c("&fPrestiges &7"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges")));
+    lore.add(ChatColor.translateAlternateColorCodes('&', "&fLevel &7» " + RankupHandler.getInstance().getRank(p)));
     if (prefix(p) != null) {
-      lore.add(ChatColor.translateAlternateColorCodes('&', "&fDonor Rank &7" + prefix(p)));
+      lore.add(ChatColor.translateAlternateColorCodes('&', "&fRank &7» " + prefix(p)));
     } else {
-      lore.add(ChatColor.translateAlternateColorCodes('&', "&fDonor Rank &7"));
+      lore.add(ChatColor.translateAlternateColorCodes('&', "&fRank &7» "));
     } 
     if (this.gang.getGang(p) != null) {
-      lore.add(ChatColor.translateAlternateColorCodes('&', "&fGang &7&8[" + this.gang.getGang(p) + "&8] &7(&b" + this.gang.getTag(this.gang.getGang(p)) + "&7)"));
+      lore.add(ChatColor.translateAlternateColorCodes('&', "&fGang &7» "));
     } else {
-      lore.add(ChatColor.translateAlternateColorCodes('&', "&fGang &7"));
+      lore.add(ChatColor.translateAlternateColorCodes('&', "&fGang &7» "));
     } 
-    lore.add(ChatColor.translateAlternateColorCodes('&', "&fBalance &7&8[&a" + format(Main.econ.getBalance((OfflinePlayer)p)) + "&8] "));
-    lore.add(ChatColor.translateAlternateColorCodes('&', "&fTokens &7&8[&b" + Tokens.getInstance().getTokens(p) + "&8] "));
-    lore.add(ChatColor.translateAlternateColorCodes('&', "&fBlocks Mined: &7» &8[&b" + this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".BlocksBroken") + "&8] "));
+    lore.add(ChatColor.translateAlternateColorCodes('&', "&fBalance &7» &a$" + format(Main.econ.getBalance(p))));
+    lore.add(ChatColor.translateAlternateColorCodes('&', "&fTokens &7» &e⛀" + Main.formatAmt(Tokens.getInstance().getTokens(p))));
+    lore.add(ChatColor.translateAlternateColorCodes('&', "&fBlocks Mined &7» &b" + this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".BlocksBroken")));
     lore.add("");
-    lore.add(ChatColor.translateAlternateColorCodes('&', "&7Click to visit plot"));
+    lore.add(ChatColor.translateAlternateColorCodes('&', "&7Click to visit mine"));
     im.setLore(lore);
     i.setItemMeta(im);
     return i;
@@ -511,6 +484,17 @@ public class ChatHandler implements Listener, CommandExecutor {
       return ChatColor.GRAY; 
     return ChatColor.WHITE;
   }
+
+
+  @EventHandler
+  public void onJoin(PlayerJoinEvent e){
+    Player p = e.getPlayer();
+    if (p.hasPermission("rank.helper")) {
+      e.setJoinMessage(ChatColor.translateAlternateColorCodes('&', "&7<&b+&7> &e&l" + p.getName()));
+    } else {
+      e.setJoinMessage(ChatColor.translateAlternateColorCodes('&', "&7<&b+&7> &b" + p.getName()));
+    }
+  }
   
   @EventHandler
   public void onLeave(PlayerQuitEvent e) {
@@ -522,65 +506,7 @@ public class ChatHandler implements Listener, CommandExecutor {
     } 
   }
   
-  @EventHandler
-  public void onDeath(PlayerDeathEvent e ) {
-	  
-	  Player killer = e.getEntity().getKiller();
-	  Player killed = e.getEntity();
-	  
-	  if(!(e.getEntity().getKiller() instanceof Player)) return;
-	  
-	  EntityDamageEvent ede = killed.getLastDamageCause();
-	  FancyMessage chatFormat = new FancyMessage("");
-	  String gangtagkiller = null;
-	  String gangtagkilled = null;
-	  
-	  if(this.gang.getGang(killer) == null) {
-	    	gangtagkiller = "";
-	    } else {
-	    	gangtagkiller = this.gang.getTag(this.gang.getGang(killer));
-	    }
-	  if(this.gang.getGang(killed) == null) {
-	    	gangtagkilled = "";
-	    } else {
-	    	gangtagkilled = this.gang.getTag(this.gang.getGang(killed));
-	    }
-	  
-	  DamageCause dc = ede.getCause();
-	  
-	  if(dc == DamageCause.FALL) {
-		  
-		  chatFormat.then((ChatColor.translateAlternateColorCodes('&', this.settings.getcolor().getString(String.valueOf(killed.getName()) + ".Nickname")) + "&7has fallen to death!"));
-	  }
-	  
-	  if(killer.getItemInHand() != null && killer.getItemInHand().getType() != Material.AIR) {
-		  if(this.gang.getGang(killer) != null && this.gang.getGang(killed) == null) {
-			   
-			  
-			  chatFormat.then((ChatColor.translateAlternateColorCodes('&', "&c"+ killed.getName() +
-					  " &7was killed by &f&l[" + gangtagkiller+"] &c" + killer.getName() + " &7Using &7[" + killer.getItemInHand().getItemMeta().getDisplayName() + "&7]")));
-			  } else if(this.gang.getGang(killed) != null && this.gang.getGang(killer) == null) {
-				  chatFormat.itemTooltip(killer.getItemInHand());
-				  chatFormat.then((ChatColor.translateAlternateColorCodes('&', "&f&l[" + gangtagkilled+"] &c" + killed.getName() +
-						  " &7was killed by &c" + killer.getName() + " &7Using &7[" + killer.getItemInHand().getItemMeta().getDisplayName() + "&7]")));
-			  } else if(this.gang.getGang(killed) == null && this.gang.getGang(killer) == null) {
-				  
-				  chatFormat.then((ChatColor.translateAlternateColorCodes('&', "&c"+ killed.getName() +
-						  " &7was killed by &c" +  killer.getName() + " &7Using &7[" + killer.getItemInHand().getItemMeta().getDisplayName() + "&7]")));
-			  } else {
-				  
-				  chatFormat.then((ChatColor.translateAlternateColorCodes('&', "&f&l[" + gangtagkilled+"] &c" + killed.getName() +
-						  " &7was killed by &f&l[" + gangtagkiller+"] &c" + killer.getName() + " &7Using &7[" + killer.getItemInHand().getItemMeta().getDisplayName() + "&7]")));
-			  }
-		  chatFormat.itemTooltip(killer.getItemInHand());
-	  } else {
-	  
-	  chatFormat.then((ChatColor.translateAlternateColorCodes('&', "&c" + killed.getName() + " &7was given the hands by &c" + killer.getName())));
-	  }
-	  
-	  
-	  chatFormat.send(Bukkit.getOnlinePlayers());
-  }
+
   
   @EventHandler
   public void NameHover(AsyncPlayerChatEvent event) {
@@ -599,51 +525,51 @@ public class ChatHandler implements Listener, CommandExecutor {
         if (event.getMessage().contains("@" + pp.getName()))
           pp.playSound(pp.getLocation(), Sound.CLICK, 1.0F, 1.0F); 
       }  
-    if (!p.hasPermission("rank.hoplite"))
+    if (!p.hasPermission("rank.vip"))
       if (this.waiting.containsKey(event.getPlayer())) {
-        long time = ((Long)this.waiting.get(event.getPlayer())).longValue();
+        long time = this.waiting.get(event.getPlayer());
         long currentime = (new Date()).getTime();
         long ms = 1000L;
         if (currentime > time + ms) {
           this.waiting.remove(event.getPlayer());
-          this.waiting.put(event.getPlayer(), Long.valueOf((new Date()).getTime()));
+          this.waiting.put(event.getPlayer(), (new Date()).getTime());
         } else {
           long msrem = time + ms - currentime;
-          String cooldownmsg = ChatColor.translateAlternateColorCodes('&', "&7Please wait &c" + String.valueOf(msrem) + " ms &7till you send another message.");
-          String donormsg = ChatColor.translateAlternateColorCodes('&', "&Hoplite Rank &7and higher can bypass this wait.");
+          String cooldownmsg = ChatColor.translateAlternateColorCodes('&', "&7Please wait &c" + msrem + " ms &7till you send another message.");
+          String donormsg = ChatColor.translateAlternateColorCodes('&', "&aVIP Rank &7and higher can bypass this wait.");
           event.getPlayer().sendMessage(cooldownmsg);
           event.getPlayer().sendMessage(donormsg);
           event.setCancelled(true);
           return;
         } 
       } else {
-        this.waiting.put(event.getPlayer(), Long.valueOf((new Date()).getTime()));
+        this.waiting.put(event.getPlayer(), (new Date()).getTime());
       }  
     event.setCancelled(true);
-    String pgang = Functions.prestige(p);
+    String prestige = c("&8[&a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges")+"&8] ");
     
-    String rank = ChatColor.translateAlternateColorCodes('&', "" + RankupHandler.getInstance().getRank(p) + " ");
+    String rank = ChatColor.translateAlternateColorCodes('&', "&8[&b" + RankupHandler.getInstance().getRank(p) + "&8] ");
     if (p.hasPermission("Chat.RankOff")) {
       rank = ""; 
-      pgang = "";
+      prestige = "";
     }
     String prefix = prefix(p);
-    if (this.settings.getcolor().getString(String.valueOf(String.valueOf(p.getName())) + ".Nickname") == null) {
-      name = ChatColor.BLUE + p.getName();
+    if (this.settings.getcolor().getString(p.getName() + ".Nickname") == null) {
+      name = ChatColor.GRAY + p.getName();
     } else {
-      name = ChatColor.translateAlternateColorCodes('&', this.settings.getcolor().getString(String.valueOf(String.valueOf(p.getName())) + ".Nickname"));
+      name = ChatColor.translateAlternateColorCodes('&', this.settings.getcolor().getString(p.getName() + ".Nickname"));
     } 
     String suffix = null;
-    if (this.settings.getData().contains(String.valueOf(String.valueOf(p.getUniqueId().toString())) + ".Tag"))
-      suffix = ChatColor.translateAlternateColorCodes('&', this.settings.getData().getString(String.valueOf(String.valueOf(p.getUniqueId().toString())) + ".Tag")); 
+    if (this.settings.getData().contains(p.getUniqueId().toString() + ".Tag"))
+      suffix = ChatColor.translateAlternateColorCodes('&', this.settings.getData().getString(p.getUniqueId().toString() + ".Tag"));
     String msg = event.getMessage();
     int caps = 0;
     byte b;
     int i;
     char[] arrayOfChar;
     for (i = (arrayOfChar = msg.toCharArray()).length, b = 0; b < i; ) {
-      Character c = Character.valueOf(arrayOfChar[b]);
-      if (Character.isUpperCase(c.charValue()))
+      char c = arrayOfChar[b];
+      if (Character.isUpperCase(c))
         caps++; 
       b = (byte)(b + 1);
     } 
@@ -655,16 +581,15 @@ public class ChatHandler implements Listener, CommandExecutor {
     for (Player ps : event.getRecipients()) {
       FancyMessage chatFormat = new FancyMessage("");
       StringBuilder firstpart = new StringBuilder();
-      if (pgang != null && 
-        getOption(ps, "Prestige"))
-        firstpart.append(pgang); 
+      if (getOption(ps, "Level"))
+        firstpart.append(prestige);
       if (getOption(ps, "Level"))
         firstpart.append(rank); 
       if (prefix(p) != null && 
         getOption(ps, "Donor"))
         firstpart.append(prefix); 
       if (!getOption(ps, "Nickname")) {
-        firstpart.append(ChatColor.GRAY + p.getName());
+        firstpart.append(ChatColor.GRAY).append(p.getName());
       } else {
         firstpart.append(name);
       } 
@@ -672,7 +597,7 @@ public class ChatHandler implements Listener, CommandExecutor {
         getOption(ps, "Tag"))
         firstpart.append(suffix); 
       String First = firstpart.toString();
-      chatFormat.then(First).itemTooltip(getHover(p)).suggest("/plot h " + p.getName());
+      chatFormat.then(First).itemTooltip(getHover(p)).suggest("/mine visit " + p.getName());
       chatFormat.then(ChatColor.translateAlternateColorCodes('&', " &8» "));
       
       if (ChatColor.stripColor(s).toLowerCase().contains("[item]") && p.getItemInHand() != null && p.getItemInHand().getType() != Material.AIR) {
@@ -699,14 +624,14 @@ public class ChatHandler implements Listener, CommandExecutor {
             for (j = (arrayOfChar1 = s.replace("[item]", "").toCharArray()).length, b1 = 0; b1 < j; ) {
               char ss = arrayOfChar1[b1];
               if (!w) {
-                sb.append(ChatColor.GOLD +""+ ss);
+                sb.append(ChatColor.GOLD + "").append(ss);
                 w = true;
               } else {
-                sb.append(ChatColor.YELLOW +""+ ss);
+                sb.append(ChatColor.YELLOW + "").append(ss);
                 w = false;
-              } 
+              }
               b1 = (byte)(b1 + 1);
-            } 
+            }
             chatFormat.then(sb.toString());
           } else if (getChatColor(p).equals("Kronos")) {
             boolean w = false;
@@ -717,14 +642,14 @@ public class ChatHandler implements Listener, CommandExecutor {
             for (j = (arrayOfChar1 = s.replace("[item]", "").toCharArray()).length, b1 = 0; b1 < j; ) {
               char ss = arrayOfChar1[b1];
               if (!w) {
-                sb.append(ChatColor.DARK_GRAY +""+ ss);
+                sb.append(ChatColor.DARK_GRAY + "").append(ss);
                 w = true;
               } else {
-                sb.append(ChatColor.GRAY +""+ ss);
+                sb.append(ChatColor.GRAY + "").append(ss);
                 w = false;
-              } 
+              }
               b1 = (byte)(b1 + 1);
-            } 
+            }
             chatFormat.then(sb.toString());
           } else if (getChatColor(p).equals("Zeus")) {
             boolean w = false;
@@ -735,14 +660,14 @@ public class ChatHandler implements Listener, CommandExecutor {
             for (j = (arrayOfChar1 = s.replace("[item]", "").toCharArray()).length, b1 = 0; b1 < j; ) {
               char ss = arrayOfChar1[b1];
               if (!w) {
-                sb.append(ChatColor.WHITE +""+ ss);
+                sb.append(ChatColor.WHITE + "").append(ss);
                 w = true;
               } else {
-                sb.append(ChatColor.GRAY +""+ ss);
+                sb.append(ChatColor.GRAY + "").append(ss);
                 w = false;
-              } 
+              }
               b1 = (byte)(b1 + 1);
-            } 
+            }
             chatFormat.then(sb.toString());
           } else {
         	  boolean w = false;
@@ -752,13 +677,8 @@ public class ChatHandler implements Listener, CommandExecutor {
               char[] arrayOfChar1;
               for (k = (arrayOfChar1 = s.replace("[item]", "").toCharArray()).length, b1 = 0; b1 < k; ) {
                 char ss = arrayOfChar1[b1];
-                if (!w) {
-                  sb.append(ChatColor.translateAlternateColorCodes('&', ss+""));
-                  w = true;
-                } else {
-                  sb.append(ChatColor.translateAlternateColorCodes('&', ss+""));
-                  w = false;
-                } 
+                sb.append(ChatColor.translateAlternateColorCodes('&', ss+""));
+                w = !w;
                 b1 = (byte)(b1 + 1);
               }
               chatFormat.then(sb.toString());
@@ -770,9 +690,9 @@ public class ChatHandler implements Listener, CommandExecutor {
           char[] arrayOfChar1;
           for (j = (arrayOfChar1 = s.replace("[item]", "").toCharArray()).length, b1 = 0; b1 < j; ) {
             char ss = arrayOfChar1[b1];
-            sb.append(ChatColor.WHITE +""+ ChatColor.BOLD + ss);
+            sb.append(ChatColor.WHITE + "" + ChatColor.BOLD).append(ss);
             b1 = (byte)(b1 + 1);
-          } 
+          }
           chatFormat.then(sb.toString());
         } else if (p.hasPermission("chat.admin")) {
           boolean w = false;
@@ -782,15 +702,10 @@ public class ChatHandler implements Listener, CommandExecutor {
           char[] arrayOfChar1;
           for (k = (arrayOfChar1 = s.replace("[item]", "").toCharArray()).length, b1 = 0; b1 < k; ) {
             char ss = arrayOfChar1[b1];
-            if (!w) {
-              sb.append(ChatColor.RED +""+ ChatColor.BOLD + ss);
-              w = true;
-            } else {
-              sb.append(ChatColor.RED +""+ ChatColor.BOLD + ss);
-              w = false;
-            } 
+            sb.append(ChatColor.RED + "" + ChatColor.BOLD).append(ss);
+            w = !w;
             b1 = (byte)(b1 + 1);
-          } 
+          }
           chatFormat.then(sb.toString());
         } else if (p.hasPermission("chat.Manager")) {
           boolean w = false;
@@ -800,13 +715,8 @@ public class ChatHandler implements Listener, CommandExecutor {
           char[] arrayOfChar1;
           for (k = (arrayOfChar1 = s.replace("[item]", "").toCharArray()).length, b1 = 0; b1 < k; ) {
             char ss = arrayOfChar1[b1];
-            if (!w) {
-              sb.append(ChatColor.LIGHT_PURPLE +""+ ChatColor.BOLD + ss);
-              w = true;
-            } else {
-              sb.append(ChatColor.LIGHT_PURPLE +""+ ChatColor.BOLD + ss);
-              w = false;
-            } 
+            sb.append(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD).append(ss);
+            w = !w;
             b1 = (byte)(b1 + 1);
           }
           chatFormat.then(sb.toString());
@@ -818,27 +728,26 @@ public class ChatHandler implements Listener, CommandExecutor {
             char[] arrayOfChar1;
             for (k = (arrayOfChar1 = s.replace("[item]", "").toCharArray()).length, b1 = 0; b1 < k; ) {
               char ss = arrayOfChar1[b1];
+              sb.append(ChatColor.translateAlternateColorCodes('&', ss+""));
               if (!w) {
-                sb.append(ChatColor.translateAlternateColorCodes('&', ss+""));
                 w = true;
               } else {
-                sb.append(ChatColor.translateAlternateColorCodes('&', ss+""));
                 w = false;
-              } 
+              }
               b1 = (byte)(b1 + 1);
             }
             chatFormat.then(sb.toString());
-        } 
+        }
         if (p.hasPermission("Rank.Owner")) {
           chatFormat.color(ChatColor.DARK_RED);
         } else if (p.getName().equalsIgnoreCase("BakonStirp")) {
           chatFormat.color(ChatColor.DARK_PURPLE);
         } else if (p.hasPermission("Rank.Admin")) {
-          chatFormat.color(ChatColor.RED).style(new ChatColor[] { ChatColor.BOLD });
+          chatFormat.color(ChatColor.RED).style(ChatColor.BOLD);
         } else if (p.hasPermission("Rank.MOD")) {
-          chatFormat.color(ChatColor.AQUA).style(new ChatColor[] { ChatColor.BOLD });
+          chatFormat.color(ChatColor.AQUA).style(ChatColor.BOLD);
         } else if (p.hasPermission("Rank.Helper")) {
-          chatFormat.color(ChatColor.YELLOW).style(new ChatColor[] { ChatColor.BOLD });
+          chatFormat.color(ChatColor.YELLOW).style(ChatColor.BOLD);
         } else if (getChatColor(p) == null || getChatColor(p).equals("Aqua")) {
           chatFormat.color(ChatColor.AQUA);
         } else if (getChatColor(p).equalsIgnoreCase("White")) {
@@ -851,17 +760,17 @@ public class ChatHandler implements Listener, CommandExecutor {
           chatFormat.color(ChatColor.DARK_GREEN);
         } else if (getChatColor(p).equalsIgnoreCase("Purple")) {
           chatFormat.color(ChatColor.DARK_PURPLE);
-        }else if (getChatColor(p).equalsIgnoreCase("Colonel")) {
+        }else if (getChatColor(p).equalsIgnoreCase("Gold")) {
           chatFormat.color(ChatColor.GOLD);
-        } else if (getChatColor(p).equalsIgnoreCase("Ares")) {
+        } else if (getChatColor(p).equalsIgnoreCase("Red")) {
           chatFormat.color(ChatColor.RED);
-        } else if (getChatColor(p).equalsIgnoreCase("Hermes")) {
+        } else if (getChatColor(p).equalsIgnoreCase("Lime")) {
           chatFormat.color(ChatColor.GREEN);
         } 
         
       }
     	  if(!CMDAc.ac.contains(p)) {
-    		  if(!GangCommand.gc.contains(p)) {
+    		  if(!CMDGang.gangchat.contains(p)) {
     			  chatFormat.send(ps);
     			  if(cchat == false) {
     			  chatFormat.send(Bukkit.getConsoleSender());
@@ -871,7 +780,7 @@ public class ChatHandler implements Listener, CommandExecutor {
     		  String gangg = gang.getGang(p);
     		  
     			  if(gang.getGang(ps).equals(gang.getGang(p))) {
-    			  ps.sendMessage(c("&b"+gang.getGangName(gangg)+"&7 x &b"+p.getName()+" &7"+msg));
+    			  ps.sendMessage(c("&b"+gang.getGang(p)+"&7 x &b"+p.getName()+" &7"+msg));
     			  }
 				
     	  }

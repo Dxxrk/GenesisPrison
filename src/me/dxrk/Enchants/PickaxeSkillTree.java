@@ -322,7 +322,7 @@ public class PickaxeSkillTree implements Listener {
         zeus.setItem(24, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
         zeus.setItem(25, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 40));
         //Level ups / abilities
-        zeus.setItem(18, skillItem(p, "Unlocked Zeus", m.c("&7Chose the Zeus path. Unlocks Thunderstorm and Lightning Events."), 0));
+        zeus.setItem(18, skillItem(p, "Unlocked Zeus", m.c("&7Chose the Zeus path. Unlocks Thunderstorm and Lightning Strike Events."), 0));
         zeus.setItem(22, skillItem(p, "Zeus (Level 2)", m.c("&7Upgrades Zeus Events."), 0));
         zeus.setItem(8, skillItem(p, "Zeus (Level 3)", m.c("&7Upgrades Zeus Events."), 0));
         zeus.setItem(45, skillItem(p, "Zeus (Level 4)", m.c("&7Upgrades Zeus Events."), 0));
@@ -337,11 +337,10 @@ public class PickaxeSkillTree implements Listener {
         }
         //Token Bonus
         poseidon.setItem(19, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 5% token bonus."), 1));
-        poseidon.setItem(13, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 5));
-        poseidon.setItem(3, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 9));
-        poseidon.setItem(7, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 13));
-        poseidon.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 17));
-        poseidon.setItem(41, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 5% token bonus."), 21));
+        poseidon.setItem(13, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 6));
+        poseidon.setItem(3, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 11));
+        poseidon.setItem(7, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 16));
+        poseidon.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 21));
         poseidon.setItem(47, skillItem(p, "Token Bonus (Level 7)", m.c("&7Each of these skills gives an additional 5% token bonus."), 25));
         //Luck Boost
         poseidon.setItem(20, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 1));
@@ -377,11 +376,10 @@ public class PickaxeSkillTree implements Listener {
         }
         //Token Bonus
         hades.setItem(19, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 5% token bonus."), 1));
-        hades.setItem(13, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 5));
-        hades.setItem(3, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 9));
-        hades.setItem(7, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 13));
-        hades.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 17));
-        hades.setItem(41, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 5% token bonus."), 21));
+        hades.setItem(13, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 6));
+        hades.setItem(3, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 11));
+        hades.setItem(7, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 16));
+        hades.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 21));
         hades.setItem(47, skillItem(p, "Token Bonus (Level 7)", m.c("&7Each of these skills gives an additional 5% token bonus."), 25));
         //Luck Boost
         hades.setItem(20, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 1));
@@ -417,11 +415,10 @@ public class PickaxeSkillTree implements Listener {
         }
         //Token Bonus
         ares.setItem(19, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 5% token bonus."), 1));
-        ares.setItem(13, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 5));
-        ares.setItem(3, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 9));
-        ares.setItem(7, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 13));
-        ares.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 17));
-        ares.setItem(41, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 5% token bonus."), 21));
+        ares.setItem(13, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 6));
+        ares.setItem(3, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 11));
+        ares.setItem(7, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 16));
+        ares.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 21));
         ares.setItem(47, skillItem(p, "Token Bonus (Level 7)", m.c("&7Each of these skills gives an additional 5% token bonus."), 25));
         //Luck Boost
         ares.setItem(20, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 1));
@@ -457,11 +454,10 @@ public class PickaxeSkillTree implements Listener {
         }
         //Token Bonus
         aphrodite.setItem(19, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 5% token bonus."), 1));
-        aphrodite.setItem(13, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 5));
-        aphrodite.setItem(3, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 9));
-        aphrodite.setItem(7, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 13));
-        aphrodite.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 17));
-        aphrodite.setItem(41, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 5% token bonus."), 21));
+        aphrodite.setItem(13, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 6));
+        aphrodite.setItem(3, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 11));
+        aphrodite.setItem(7, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 16));
+        aphrodite.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 21));
         aphrodite.setItem(47, skillItem(p, "Token Bonus (Level 7)", m.c("&7Each of these skills gives an additional 5% token bonus."), 25));
         //Luck Boost
         aphrodite.setItem(20, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 1));
@@ -513,6 +509,10 @@ public class PickaxeSkillTree implements Listener {
             }
         }
         lore.set(line, m.c("&cSkill: "+color+path +" (Level 1)"));
+        pm.setLore(PickaxeLevel.getInstance().Lore(lore, p));
+        pitem.setItemMeta(pm);
+        p.setItemInHand(pitem);
+        p.updateInventory();
         settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skills);
         settings.savePlayerData();
 
@@ -567,12 +567,12 @@ public class PickaxeSkillTree implements Listener {
                 selectPath(p, "Ares", "&2");
             }
         }
-        if(e.getInventory().getName().equals(m.c("&e&lZeus Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+"Skill Points"))){
+        if(e.getInventory().getName().equals(m.c("&e&lZeus Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+" Skill Points"))){
             e.setCancelled(true);
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
 
-            int price = PickaxeLevel.getInstance().getBlocks(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
+            int price = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
             int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
             String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
             List<String> skillsUnlocked = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
@@ -605,7 +605,10 @@ public class PickaxeSkillTree implements Listener {
                         line = i;
                     }
                 }
-                lore.set(line, m.c("&cSkill: &eZeus (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+                lore.set(line, m.c("&cSkill: &eZeus (Level "+PickaxeLevel.getInstance().getInt(skill)+")"));
+                pm.setLore(PickaxeLevel.getInstance().Lore(lore, p));
+                pitem.setItemMeta(pm);
+                p.updateInventory();
                 p.setItemInHand(pitem);
 
 
@@ -614,12 +617,12 @@ public class PickaxeSkillTree implements Listener {
             settings.savePlayerData();
             openZeus(p);
         }
-        if(e.getClickedInventory().getName().equals(m.c("&9&lPoseidon Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+"Skill Points"))){
+        if(e.getClickedInventory().getName().equals(m.c("&9&lPoseidon Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+" Skill Points"))){
             e.setCancelled(true);
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
 
-            int price = PickaxeLevel.getInstance().getBlocks(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
+            int price = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
             int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
             String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
             List<String> skillsUnlocked = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
@@ -651,7 +654,10 @@ public class PickaxeSkillTree implements Listener {
                         line = i;
                     }
                 }
-                lore.set(line, m.c("&cSkill: &9Poseidon (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+                lore.set(line, m.c("&cSkill: &9Poseidon (Level "+PickaxeLevel.getInstance().getInt(skill)+")"));
+                pm.setLore(PickaxeLevel.getInstance().Lore(lore, p));
+                pitem.setItemMeta(pm);
+                p.updateInventory();
                 p.setItemInHand(pitem);
 
             }
@@ -659,12 +665,12 @@ public class PickaxeSkillTree implements Listener {
             settings.savePlayerData();
             openPoseidon(p);
         }
-        if(e.getClickedInventory().getName().equals(m.c("&4&lHades Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+"Skill Points"))){
+        if(e.getClickedInventory().getName().equals(m.c("&4&lHades Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+" Skill Points"))){
             e.setCancelled(true);
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
 
-            int price = PickaxeLevel.getInstance().getBlocks(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
+            int price = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
             int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
             String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
             List<String> skillsUnlocked = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
@@ -696,7 +702,10 @@ public class PickaxeSkillTree implements Listener {
                         line = i;
                     }
                 }
-                lore.set(line, m.c("&cSkill: &4Hades (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+                lore.set(line, m.c("&cSkill: &4Hades (Level "+PickaxeLevel.getInstance().getInt(skill)+")"));
+                pm.setLore(PickaxeLevel.getInstance().Lore(lore, p));
+                pitem.setItemMeta(pm);
+                p.updateInventory();
                 p.setItemInHand(pitem);
 
             }
@@ -704,12 +713,12 @@ public class PickaxeSkillTree implements Listener {
             settings.savePlayerData();
             openHades(p);
         }
-        if(e.getClickedInventory().getName().equals(m.c("&d&lAphrodite Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+"Skill Points"))){
+        if(e.getClickedInventory().getName().equals(m.c("&d&lAphrodite Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+" Skill Points"))){
             e.setCancelled(true);
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
 
-            int price = PickaxeLevel.getInstance().getBlocks(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
+            int price = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
             int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
             String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
             List<String> skillsUnlocked = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
@@ -741,7 +750,10 @@ public class PickaxeSkillTree implements Listener {
                         line = i;
                     }
                 }
-                lore.set(line, m.c("&cSkill: &dAphrodite (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+                lore.set(line, m.c("&cSkill: &dAphrodite (Level "+PickaxeLevel.getInstance().getInt(skill)+")"));
+                pm.setLore(PickaxeLevel.getInstance().Lore(lore, p));
+                pitem.setItemMeta(pm);
+                p.updateInventory();
                 p.setItemInHand(pitem);
 
             }
@@ -749,12 +761,12 @@ public class PickaxeSkillTree implements Listener {
             settings.savePlayerData();
             openAphrodite(p);
         }
-        if(e.getClickedInventory().getName().equals(m.c("&2&lAres Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+"Skill Points"))){
+        if(e.getClickedInventory().getName().equals(m.c("&2&lAres Skill Tree: &a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+" Skill Points"))){
             e.setCancelled(true);
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
 
-            int price = PickaxeLevel.getInstance().getBlocks(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
+            int price = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
             int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
             String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
             List<String> skillsUnlocked = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
@@ -786,7 +798,10 @@ public class PickaxeSkillTree implements Listener {
                         line = i;
                     }
                 }
-                lore.set(line, m.c("&cSkill: &2Ares (Level "+PickaxeLevel.getInstance().getBlocks(skill)+")"));
+                lore.set(line, m.c("&cSkill: &2Ares (Level "+PickaxeLevel.getInstance().getInt(skill)+")"));
+                pm.setLore(PickaxeLevel.getInstance().Lore(lore, p));
+                pitem.setItemMeta(pm);
+                p.updateInventory();
                 p.setItemInHand(pitem);
 
             }

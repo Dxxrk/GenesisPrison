@@ -4,6 +4,9 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
+import net.minecraft.server.v1_8_R3.BlockPosition;
+import net.minecraft.server.v1_8_R3.Blocks;
+import net.minecraft.server.v1_8_R3.PacketPlayOutBlockAction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,6 +18,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -24,9 +28,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.EnderChest;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.EulerAngle;
 import xyz.xenondevs.particle.ParticleBuilder;
 import xyz.xenondevs.particle.ParticleEffect;
 
@@ -41,14 +45,14 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
 
 
-	public void spawnItem(ItemStack i, Location loc){
+	public void spawnItem(ItemStack i, Location loc) {
 		Item item = loc.getWorld().dropItem(loc, i);
 		final ArmorStand stand = loc.getWorld().spawn(loc, ArmorStand.class);
 		stand.setPassenger(item);
 	}
 
 	@EventHandler
-	public void armorstand(PlayerArmorStandManipulateEvent e){
+	public void armorstand(PlayerArmorStandManipulateEvent e) {
 		if(!e.getPlayer().isOp())
 			e.setCancelled(true);
 	}
@@ -101,16 +105,18 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 		Player p = e.getPlayer();
 		
 			if(!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
+			if(p.getItemInHand() == null) return;
 			if(!p.getItemInHand().hasItemMeta()) return;
 			if(!p.getItemInHand().getItemMeta().hasDisplayName()) return;
 			if(!p.getItemInHand().getItemMeta().hasLore()) return;
+
 
 
 			Location loc = e.getClickedBlock().getLocation();
 			List<ArmorStand> stands = new ArrayList<>();
 
 
-		if(p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&f&l&k[&7&l*&f&l&k]&r &9&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r")) && p.getItemInHand().getType().equals(Material.CHEST)) {
+		if(p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&f&l&k[&7&l*&f&l&k]&r &9&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r")) && p.getItemInHand().getType().equals(Material.ENDER_CHEST)) {
 			e.setCancelled(true);
 			p.updateInventory();
 			displayRewards(Main.getInstance(), "genesis", "&f&l&k[&7&l*&f&l&k]&r &9&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r", loc, stands, p);
@@ -120,9 +126,9 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 			} else {
 				p.setItemInHand(null);
 			}
-
+			return;
 		}
-		if(p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&c&lContraband Crate")) && p.getItemInHand().getType().equals(Material.CHEST)) {
+		if(p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&c&lContraband Crate")) && p.getItemInHand().getType().equals(Material.ENDER_CHEST)) {
 			e.setCancelled(true);
 			p.updateInventory();
 			displayRewards(Main.getInstance(), "contraband", "&c&lContraband Crate", loc, stands, p);
@@ -253,11 +259,12 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
 		public static Yaw getYaw(Player p) {
 			float yaw = p.getLocation().getYaw();
-			if (yaw > 135 || yaw < -135) {
-				return Yaw.NORTH;
-			} else if (yaw < -45) {
+			yaw = (yaw % 360 + 360) % 360; // true modulo, as javas modulo is weird for negative values
+			if (yaw > 225 && yaw <315) {
 				return Yaw.EAST;
-			} else if (yaw > 45) {
+			}else if (yaw > 135 && yaw < 225) {
+				return Yaw.NORTH;
+			}else if (yaw > 45 && yaw < 135) {
 				return Yaw.WEST;
 			} else {
 				return Yaw.SOUTH;
@@ -270,16 +277,12 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 		Location block = new Location(loc.getWorld(), loc.getX(), loc.getY() +3, loc.getZ());
 
 
-		block.getWorld().getBlockAt(block).setType(Material.CHEST);
-
-		m.playChestAction((Chest) block.getWorld().getBlockAt(block).getState(), true, p);
-		Block b = block.getWorld().getBlockAt(block);
+		block.getWorld().getBlockAt(block).setType(Material.ENDER_CHEST);
+		m.changeChestState(block, true);
+		Block b =  block.getWorld().getBlockAt(block);
 		BlockState state = b.getState();
 
-		double rotation = p.getLocation().getYaw() - 180;
-		if (rotation < 0) {
-			rotation += 360.0;
-		}
+
 
 		//FACE WEST == 45 - 135
 		//FACE EAST == 225 - 315
@@ -289,22 +292,22 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
 
 		if (Yaw.getYaw(p).equals(Yaw.NORTH)) {
-			org.bukkit.material.Chest c = new org.bukkit.material.Chest(BlockFace.SOUTH);
+			org.bukkit.material.EnderChest c = new org.bukkit.material.EnderChest(BlockFace.SOUTH);
 			state.setData(c);
 			state.update();
 		}
 		if (Yaw.getYaw(p).equals(Yaw.EAST)) {
-			org.bukkit.material.Chest c = new org.bukkit.material.Chest(BlockFace.WEST);
+			org.bukkit.material.EnderChest c = new org.bukkit.material.EnderChest(BlockFace.WEST);
 			state.setData(c);
 			state.update();
 		}
 		if (Yaw.getYaw(p).equals(Yaw.SOUTH)) {
-			org.bukkit.material.Chest c = new org.bukkit.material.Chest(BlockFace.NORTH);
+			org.bukkit.material.EnderChest c = new org.bukkit.material.EnderChest(BlockFace.NORTH);
 			state.setData(c);
 			state.update();
 		}
 		if (Yaw.getYaw(p).equals(Yaw.WEST)) {
-			org.bukkit.material.Chest c = new org.bukkit.material.Chest(BlockFace.EAST);
+			org.bukkit.material.EnderChest c = new org.bukkit.material.EnderChest(BlockFace.EAST);
 			state.setData(c);
 			state.update();
 		}

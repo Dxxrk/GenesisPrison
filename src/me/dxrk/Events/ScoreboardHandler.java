@@ -166,39 +166,39 @@ public class ScoreboardHandler implements Listener{
 
 		            	Scoreboard NewBoard = p.getScoreboard();
 		            	NewBoard.getTeam("donor").setPrefix(c("&7Rank: "));
-		      	        	if (p.getName().equalsIgnoreCase("Dxrk")) {
+				if (p.getName().equalsIgnoreCase("Dxrk")) {
 
-		      	            NewBoard.getTeam("donor").setSuffix(c("&d&lOwner"));
-		      	            } else if (p.getName().equalsIgnoreCase("BakonStrip") || p.getName().equalsIgnoreCase("32j")) {
-		      	            	NewBoard.getTeam("donor").setSuffix(c("&5&lManager"));
-		      	            } else if (p.hasPermission("rank.builder")) {
-		      	            	NewBoard.getTeam("donor").setSuffix(c("&a&lBuilder"));
-		      	            } else if (p.hasPermission("rank.mod")) {
-		      	            	NewBoard.getTeam("donor").setSuffix(c("&9&lMod"));
-		      	            } else if (p.hasPermission("rank.zeus")) {
-		      	            	NewBoard.getTeam("donor").setSuffix(c("&f&lZeus"));
-		      	            } else if (p.hasPermission("rank.kronos")) {
-		      	            	NewBoard.getTeam("donor").setSuffix(c("&8&lKronos"));
-		      	            } else if (p.hasPermission("rank.apollo")) {
-		      	            	NewBoard.getTeam("donor").setSuffix(c("&6&lApollo"));
-		      	            } else if (p.hasPermission("rank.hermes")) {
-		      	            	NewBoard.getTeam("donor").setSuffix(c("&a&lHermes"));
-		      	            } else if (p.hasPermission("rank.ares")) {
-		      	            	NewBoard.getTeam("donor").setSuffix(c("&c&lAres"));
-		      	            } else if (p.hasPermission("rank.colonel")) {
-		      	            	NewBoard.getTeam("donor").setSuffix(c("&6Colonel"));
-		      	            } else if (p.hasPermission("rank.captain")) {
-		      	            	NewBoard.getTeam("donor").setSuffix(c("&9Captain"));
-		      	            } else if (p.hasPermission("rank.hoplite")) {
-		      	            	NewBoard.getTeam("donor").setSuffix(c("&eHoplite"));
-		      	            } else if (p.hasPermission("rank.cavalry")) {
-		      	            	NewBoard.getTeam("donor").setSuffix(c("&cCavalry"));
-		      	            } else if (p.hasPermission("rank.citizen")) {
-		      	            	NewBoard.getTeam("donor").setSuffix(c("&7Member"));
-		      	            }
+					NewBoard.getTeam("donor").setSuffix(c("&d&lOwner"));
+				} else if (p.getName().equalsIgnoreCase("BakonStrip") || p.getName().equalsIgnoreCase("32j")) {
+					NewBoard.getTeam("donor").setSuffix(c("&5&lManager"));
+				} else if (p.hasPermission("rank.builder")) {
+					NewBoard.getTeam("donor").setSuffix(c("&a&lBuilder"));
+				} else if (p.hasPermission("rank.mod")) {
+					NewBoard.getTeam("donor").setSuffix(c("&9&lMod"));
+				} else if (p.hasPermission("rank.genesis")) {
+					NewBoard.getTeam("donor").setSuffix(c("&c&lGenesis"));
+				} else if (p.hasPermission("rank.olympian")) {
+					NewBoard.getTeam("donor").setSuffix(c("&e&lOlympian"));
+				} else if (p.hasPermission("rank.god")) {
+					NewBoard.getTeam("donor").setSuffix(c("&d&lGod"));
+				} else if (p.hasPermission("rank.titan")) {
+					NewBoard.getTeam("donor").setSuffix(c("&3&lTitan"));
+				} else if (p.hasPermission("rank.demi-god")) {
+					NewBoard.getTeam("donor").setSuffix(c("&5&lDemi-God"));
+				} else if (p.hasPermission("rank.hero")) {
+					NewBoard.getTeam("donor").setSuffix(c("&c&lHero"));
+				} else if (p.hasPermission("rank.mvp")) {
+					NewBoard.getTeam("donor").setSuffix(c("&6&lMVP"));
+				} else if (p.hasPermission("rank.vip")) {
+					NewBoard.getTeam("donor").setSuffix(c("&a&lVIP"));
+				} else if (p.hasPermission("rank.donator")) {
+					NewBoard.getTeam("donor").setSuffix(c("&b&lDonator"));
+				} else if (p.hasPermission("rank.default")) {
+					NewBoard.getTeam("donor").setSuffix(c("&7Member"));
+				}
 
 
-		        	        //Prestige
+				//Prestige
 		      	        	NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
 							  //set suffix here
 							int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
@@ -249,10 +249,10 @@ public class ScoreboardHandler implements Listener{
 							NewBoard.getTeam("multi").setSuffix(c("&b"+SellHandler.getInstance().getMulti(p)));
 
 
-		        	        //vote
-		        	        int servervotes = settings.getVote().getInt("ServerVotes");
-		        	        NewBoard.getTeam("vote").setPrefix(c("&dVoteParty: "));
-		        	        NewBoard.getTeam("vote").setSuffix(c("&b"+(30-servervotes)+"/30"));
+		        	        //gems
+		        	        int gems = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Gems");
+		        	        NewBoard.getTeam("gems").setPrefix(c("&7Gems: "));
+		        	        NewBoard.getTeam("gems").setSuffix(c("&a"+gems));
 
 
 
@@ -266,11 +266,10 @@ public class ScoreboardHandler implements Listener{
 
 		        		            	Team team = NewBoard.getTeam("a"+name(pp));
 		        		            	if(isAFK(pp)) {
-		        		            		team.setPrefix(prefix(pp)+c("&8"));
+											team.setPrefix(prefix(pp)+c("&d&lOwner &8"));
 		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&f&l"));
+		        		            	team.setPrefix(prefix(pp)+c("&d&lOwner &f&l"));
 		        		            	}
-		        		            	team.setSuffix(c(" &d&lOwner"));
 		        		            	team.addPlayer(pp);
 
 
@@ -283,11 +282,12 @@ public class ScoreboardHandler implements Listener{
 		        		            	Team team = NewBoard.getTeam("f"+name(pp));
 
 		        		            	if(isAFK(pp)) {
-		        		            		team.setPrefix(prefix(pp)+c("&8"));
+		        		            		team.setPrefix(prefix(pp)+c("&f&lGenesis &8"));
+											pp.setPlayerListName(c("&f&ki&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls&f&ki&r &8"+pp.getName()));
 		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&7"));
+		        		            	team.setPrefix(prefix(pp)+c("&f&lGenesis &7"));
+											pp.setPlayerListName(c("&f&ki&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls&f&ki&r &7"+pp.getName()));
 		        		            	}
-		        		            	team.setSuffix(c(" &e⚡&f&lZeus&e⚡"));
 		        		            	team.addPlayer(pp);
 
 
@@ -298,11 +298,13 @@ public class ScoreboardHandler implements Listener{
 		        		            	if(NewBoard.getTeam("b"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("b"+name(pp));
 
-		        		            	Team team = NewBoard.getTeam("b"+name(pp));
-
-		        		            	team.setPrefix(prefix(pp)+c("&d&l"));
-		        		            	team.setSuffix(c(" &5&lManager"));
-		        		            	team.addPlayer(pp);
+									 Team team = NewBoard.getTeam("b"+name(pp));
+									 if(isAFK(pp)) {
+										 team.setPrefix(prefix(pp)+c("&5&lManager &8"));
+									 }else {
+										 team.setPrefix(prefix(pp)+c("&5&lManager &f&l"));
+									 }
+									 team.addPlayer(pp);
 
 
 
@@ -313,11 +315,10 @@ public class ScoreboardHandler implements Listener{
 		        		            	Team team = NewBoard.getTeam("c"+name(pp));
 
 		        		            	if(isAFK(pp)) {
-		        		            		team.setPrefix(prefix(pp)+c("&8"));
+		        		            		team.setPrefix(prefix(pp)+c("&4&lAdmin &8"));
 		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&f&l"));
+		        		            	team.setPrefix(prefix(pp)+c("&4&lAdmin &f&l"));
 		        		            	}
-		        		            	team.setSuffix(c(" &4&lAdmin"));
 		        		            	team.addPlayer(pp);
 
 
@@ -329,11 +330,10 @@ public class ScoreboardHandler implements Listener{
 		        		            	Team team = NewBoard.getTeam("e"+name(pp));
 
 		        		            	if(isAFK(pp)) {
-		        		            		team.setPrefix(prefix(pp)+c("&8"));
+		        		            		team.setPrefix(prefix(pp)+c("&a&lBuilder &8"));
 		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&2&l"));
+		        		            	team.setPrefix(prefix(pp)+c("&a&lBuilder &2&l"));
 		        		            	}
-		        		            	team.setSuffix(c(" &a&lBuilder"));
 		        		            	team.addPlayer(pp);
 
 
@@ -346,153 +346,147 @@ public class ScoreboardHandler implements Listener{
 		        		            	Team team = NewBoard.getTeam("d"+name(pp));
 
 		        		            	if(isAFK(pp)) {
-		        		            		team.setPrefix(prefix(pp)+c("&8"));
+		        		            		team.setPrefix(prefix(pp)+c("&9&lMod &8"));
 		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&b&l"));
+		        		            	team.setPrefix(prefix(pp)+c("&9&lMod &b&l"));
 		        		            	}
-		        		            	team.setSuffix(c(" &9&lMod"));
 		        		            	team.addPlayer(pp);
 
 
-		        		            }  else if (pp.hasPermission("rank.zeus")) {
+		        		            }  else if (pp.hasPermission("rank.genesis")) {
 		        		            	if(NewBoard.getTeam("f"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("f"+name(pp));
 
 		        		            	Team team = NewBoard.getTeam("f"+name(pp));
 
-		        		            	if(isAFK(pp)) {
-		        		            		team.setPrefix(prefix(pp)+c("&8"));
-		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&7"));
-		        		            	}
-		        		            	team.setSuffix(c(" &e⚡&f&lZeus&e⚡"));
+									 if(isAFK(pp)) {
+										 team.setPrefix(prefix(pp)+c("&f&lGenesis &8"));
+										 pp.setPlayerListName(c("&f&ki&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls&f&ki&r &8"+pp.getName()));
+									 }else {
+										 team.setPrefix(prefix(pp)+c("&f&lGenesis &7"));
+										 pp.setPlayerListName(c("&f&ki&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls&f&ki&r &7"+pp.getName()));
+									 }
 		        		            	team.addPlayer(pp);
 
 		        		            	//&7&l&ki&e&l⚡&7&l&ki&f&lZeus&7&l&ki&e&l⚡&7&l&ki&r
 
-		        		            } else if (pp.hasPermission("rank.kronos")) {
+		        		            } else if (pp.hasPermission("rank.olympian")) {
 		        		            	if(NewBoard.getTeam("g"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("g"+name(pp));
 
 		        		            	Team team = NewBoard.getTeam("g"+name(pp));
 
 		        		            	if(isAFK(pp)) {
-		        		            		team.setPrefix(prefix(pp)+c("&8"));
+		        		            		team.setPrefix(prefix(pp)+c("&e&lOlympian &8"));
+											pp.setPlayerListName(c("&6&ki&e&lOlympian&6&ki&r &8"+pp.getName()));
 		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&f"));
+		        		            		team.setPrefix(prefix(pp)+c("&e&lOlympian &7"));
+											pp.setPlayerListName(c("&6&ki&e&lOlympian&6&ki&r &7"+pp.getName()));
 		        		            	}
-		        		            	team.setSuffix(c(" &8&lKronos"));
 		        		            	team.addPlayer(pp);
 
 		        		            	//&f&l&ki&8&lK&0&lr&8&lo&0&ln&8&lo&0&ls&f&l&ki&r
 
-		        		            } else if (pp.hasPermission("rank.apollo")) {
+		        		            } else if (pp.hasPermission("rank.god")) {
 		        		            	if(NewBoard.getTeam("h"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("h"+name(pp));
 
 		        		            	Team team = NewBoard.getTeam("h"+name(pp));
 
 		        		            	if(isAFK(pp)) {
-		        		            		team.setPrefix(prefix(pp)+c("&8"));
+		        		            		team.setPrefix(prefix(pp)+c("&d&lGod &8"));
 		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&e"));
+		        		            	team.setPrefix(prefix(pp)+c("&d&lGod &7"));
 		        		            	}
-		        		            	team.setSuffix(c(" &6&lApollo"));
 		        		            	team.addPlayer(pp);
 
 
-		        		            } else if (pp.hasPermission("rank.hermes")) {
+		        		            } else if (pp.hasPermission("rank.titan")) {
 		        		            	if(NewBoard.getTeam("i"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("i"+name(pp));
 
 		        		            	Team team = NewBoard.getTeam("i"+name(pp));
 
 		        		            	if(isAFK(pp)) {
-		        		            		team.setPrefix(prefix(pp)+c("&8"));
+		        		            		team.setPrefix(prefix(pp)+c("&3&lTitan &8"));
 		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&a"));
+		        		            	team.setPrefix(prefix(pp)+c("&3&lTitan &7"));
 		        		            	}
-		        		            	team.setSuffix(c(" &a&lHermes"));
 		        		            	team.addPlayer(pp);
 
 
 
-		        		            } else if (pp.hasPermission("rank.ares")) {
+		        		            } else if (pp.hasPermission("rank.demi-god")) {
 		        		            	if(NewBoard.getTeam("j"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("j"+name(pp));
 
 		        		            	Team team = NewBoard.getTeam("j"+name(pp));
 
 		        		            	if(isAFK(pp)) {
-		        		            		team.setPrefix(prefix(pp)+c("&8"));
+		        		            		team.setPrefix(prefix(pp)+c("&5&lDemi-God &8"));
 		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&c"));
+		        		            	team.setPrefix(prefix(pp)+c("&5&lDemi-God &7"));
 		        		            	}
-		        		            	team.setSuffix(c(" &c&lAres"));
 		        		            	team.addPlayer(pp);
 
 
 
-		        		            } else if (pp.hasPermission("rank.Colonel")) {
+		        		            } else if (pp.hasPermission("rank.hero")) {
 		        		            	if(NewBoard.getTeam("k"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("k"+name(pp));
 
 		        		            	Team team = NewBoard.getTeam("k"+name(pp));
 
 		        		            	if(isAFK(pp)) {
-		        		            		team.setPrefix(prefix(pp)+c("&8"));
+		        		            		team.setPrefix(prefix(pp)+c("&c&lHero &8"));
 		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&b"));
+		        		            	team.setPrefix(prefix(pp)+c("&c&lHero &7"));
 		        		            	}
-		        		            	team.setSuffix(c(" &6Colonel"));
 		        		            	team.addPlayer(pp);
 
 
 
-		        		            } else if (pp.hasPermission("rank.captain")) {
+		        		            } else if (pp.hasPermission("rank.mvp")) {
 		        		            	if(NewBoard.getTeam("l"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("l"+name(pp));
 
 		        		            	Team team = NewBoard.getTeam("l"+name(pp));
 
 		        		            	if(isAFK(pp)) {
-		        		            		team.setPrefix(prefix(pp)+c("&8"));
+		        		            		team.setPrefix(prefix(pp)+c("&6&lMVP &8"));
 		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&b"));
+		        		            	team.setPrefix(prefix(pp)+c("&6&lMVP &7"));
 		        		            	}
-		        		            	team.setSuffix(c(" &9Captain"));
 		        		            	team.addPlayer(pp);
 
 
 
-		        		            } else if (pp.hasPermission("rank.hoplite")) {
+		        		            } else if (pp.hasPermission("rank.vip")) {
 		        		            	if(NewBoard.getTeam("m"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("m"+name(pp));
 
 		        		            	Team team = NewBoard.getTeam("m"+name(pp));
 
 		        		            	if(isAFK(pp)) {
-		        		            		team.setPrefix(prefix(pp)+c("&8"));
+		        		            		team.setPrefix(prefix(pp)+c("&a&lVIP &8"));
 		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&b"));
+		        		            	team.setPrefix(prefix(pp)+c("&a&lVIP &7"));
 		        		            	}
-		        		            	team.setSuffix(c(" &eHoplite"));
 		        		            	team.addPlayer(pp);
 
 
 
-		        		            } else if (pp.hasPermission("rank.cavalry")) {
+		        		            } else if (pp.hasPermission("rank.donator")) {
 		        		            	if(NewBoard.getTeam("n"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("n"+name(pp));
 
 		        		            	Team team = NewBoard.getTeam("n"+name(pp));
 
 		        		            	if(isAFK(pp)) {
-		        		            		team.setPrefix(prefix(pp)+c("&8"));
+		        		            		team.setPrefix(prefix(pp)+c("&b&lDonator &8"));
 		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&b"));
+		        		            	team.setPrefix(prefix(pp)+c("&b&lDonator &7"));
 		        		            	}
-		        		            	team.setSuffix(c(" &cCavalry"));
 		        		            	team.addPlayer(pp);
 
 
@@ -506,9 +500,8 @@ public class ScoreboardHandler implements Listener{
 		        		            	if(isAFK(pp)) {
 		        		            		team.setPrefix(prefix(pp)+c("&8"));
 		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&b"));
+		        		            	team.setPrefix(prefix(pp)+c("&7"));
 		        		            	}
-		        		            	team.setSuffix(c(""));
 		        		            	team.addPlayer(pp);
 
 
@@ -574,36 +567,36 @@ public class ScoreboardHandler implements Listener{
 		        //Multi
 		        Team multi = NewBoard.registerNewTeam("multi");
 		        multi.addEntry(ChatColor.DARK_RED+"");
-		        obj.getScore(ChatColor.DARK_RED+"").setScore(7);
+		        obj.getScore(ChatColor.DARK_RED+"").setScore(6);
 		        //3rdLine
 		        Team rdLine = NewBoard.registerNewTeam("3rdLine");
 		        rdLine.addEntry(ChatColor.GREEN+"");
 		        rdLine.setPrefix(c(""));
 			    rdLine.setSuffix(c(""));
-		        obj.getScore(ChatColor.GREEN+"").setScore(6);
+		        obj.getScore(ChatColor.GREEN+"").setScore(5);
 				//Pickaxe
 				Team Pickaxe = NewBoard.registerNewTeam("Pickaxe");
 				Pickaxe.addEntry(ChatColor.GOLD+""+ChatColor.GRAY);
 				Pickaxe.setPrefix(c("&f&lPickaxe:"));
-				obj.getScore(ChatColor.GOLD+""+ChatColor.GRAY).setScore(5);
+				obj.getScore(ChatColor.GOLD+""+ChatColor.GRAY).setScore(4);
 				//PickLevel
 				Team pickLevel = NewBoard.registerNewTeam("PickLevel");
 				pickLevel.addEntry(ChatColor.DARK_AQUA+""+ChatColor.DARK_PURPLE);
-				obj.getScore(ChatColor.DARK_AQUA+""+ChatColor.DARK_PURPLE).setScore(4);
+				obj.getScore(ChatColor.DARK_AQUA+""+ChatColor.DARK_PURPLE).setScore(3);
 				//XP
 				Team xp = NewBoard.registerNewTeam("xp");
 				xp.addEntry(ChatColor.AQUA+"");
-				obj.getScore(ChatColor.AQUA+"").setScore(3);
+				obj.getScore(ChatColor.AQUA+"").setScore(2);
 				//Server
 				Team Server = NewBoard.registerNewTeam("Server");
 				Server.addEntry(ChatColor.LIGHT_PURPLE+""+ChatColor.DARK_RED);
 				Server.setPrefix(c(""));
 				Server.setSuffix(c(""));
-				obj.getScore(ChatColor.LIGHT_PURPLE+""+ChatColor.DARK_RED).setScore(2);
+				obj.getScore(ChatColor.LIGHT_PURPLE+""+ChatColor.DARK_RED).setScore(1);
 		        //vote
-		        Team vote = NewBoard.registerNewTeam("vote");
+		        Team vote = NewBoard.registerNewTeam("gems");
 		        vote.addEntry(ChatColor.DARK_PURPLE+"");
-		        obj.getScore(ChatColor.DARK_PURPLE+"").setScore(1);
+		        obj.getScore(ChatColor.DARK_PURPLE+"").setScore(7);
 
 		        
 		        
@@ -630,25 +623,25 @@ public class ScoreboardHandler implements Listener{
 	            	NewBoard.getTeam("donor").setSuffix(c("&a&lBuilder"));
 	            } else if (p.hasPermission("rank.mod")) {
 	            	NewBoard.getTeam("donor").setSuffix(c("&9&lMod"));
-	            } else if (p.hasPermission("rank.zeus")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&f&lZeus"));
-	            } else if (p.hasPermission("rank.kronos")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&8&lKronos"));
-	            } else if (p.hasPermission("rank.apollo")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&6&lApollo"));
-	            } else if (p.hasPermission("rank.hermes")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&a&lHermes"));
-	            } else if (p.hasPermission("rank.ares")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&c&lAres"));
-	            } else if (p.hasPermission("rank.colonel")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&6Colonel"));
-	            } else if (p.hasPermission("rank.captain")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&9Captain"));
-	            } else if (p.hasPermission("rank.hoplite")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&eHoplite"));
-	            } else if (p.hasPermission("rank.cavalry")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&cCavalry"));
-	            } else if (p.hasPermission("rank.citizen")) {
+	            } else if (p.hasPermission("rank.genesis")) {
+	            	NewBoard.getTeam("donor").setSuffix(c("&c&lGenesis"));
+	            } else if (p.hasPermission("rank.olympian")) {
+	            	NewBoard.getTeam("donor").setSuffix(c("&e&lOlympian"));
+	            } else if (p.hasPermission("rank.god")) {
+	            	NewBoard.getTeam("donor").setSuffix(c("&d&lGod"));
+	            } else if (p.hasPermission("rank.titan")) {
+	            	NewBoard.getTeam("donor").setSuffix(c("&3&lTitan"));
+	            } else if (p.hasPermission("rank.demi-god")) {
+	            	NewBoard.getTeam("donor").setSuffix(c("&5&lDemi-God"));
+	            } else if (p.hasPermission("rank.hero")) {
+	            	NewBoard.getTeam("donor").setSuffix(c("&c&lHero"));
+	            } else if (p.hasPermission("rank.mvp")) {
+	            	NewBoard.getTeam("donor").setSuffix(c("&6&lMVP"));
+	            } else if (p.hasPermission("rank.vip")) {
+	            	NewBoard.getTeam("donor").setSuffix(c("&a&lVIP"));
+	            } else if (p.hasPermission("rank.donator")) {
+	            	NewBoard.getTeam("donor").setSuffix(c("&b&lDonator"));
+	            } else if (p.hasPermission("rank.default")) {
 	            	NewBoard.getTeam("donor").setSuffix(c("&7Member"));
 	            } 
     	
@@ -691,12 +684,12 @@ public class ScoreboardHandler implements Listener{
 	        //multi
 	        NewBoard.getTeam("multi").setPrefix(c("&7Multi: "));
 			NewBoard.getTeam("multi").setSuffix(c("&b"+SellHandler.getInstance().getMulti(p)));
-	        
 
-	        //vote
-	        int servervotes = settings.getVote().getInt("ServerVotes");
-	        NewBoard.getTeam("vote").setPrefix(c("&dVoteParty: "));
-	        NewBoard.getTeam("vote").setSuffix(c("&b"+(30-servervotes)+"/30"));
+			//gems
+			int gems = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Gems");
+			NewBoard.getTeam("gems").setPrefix(c("&7Gems: "));
+			NewBoard.getTeam("gems").setSuffix(c("&a"+gems));
+
 			//PickLevel
 			NewBoard.getTeam("PickLevel").setPrefix(c("&7Level: "));
 			NewBoard.getTeam("PickLevel").setSuffix(c("&b"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickLevel")));
@@ -727,9 +720,20 @@ public class ScoreboardHandler implements Listener{
 					}
 	    			
 	    			int ping = getPing(p);
+					String uuid = p.getUniqueId().toString();
+					int servervotes = settings.getVote().getInt("ServerVotes");
+					int alpha = settings.getLocksmith().getInt(uuid + ".alpha");
+					int beta = settings.getLocksmith().getInt(uuid + ".beta");
+					int omega = settings.getLocksmith().getInt(uuid + ".omega");
+					int token = settings.getLocksmith().getInt(uuid + ".token");
+					int vote = settings.getLocksmith().getInt(uuid + ".vote");
+					int seasonal = settings.getLocksmith().getInt(uuid + ".seasonal");
+					int community = settings.getLocksmith().getInt(uuid + ".community");
+					int rank = settings.getLocksmith().getInt(uuid + ".rank");
 					
 					if(titlechanged == false) {
 						//Add keys, stock market, event, and websites into tablist
+
 
 						TitleAPI.sendTabTitle(p,
 								//Header
@@ -738,9 +742,11 @@ public class ScoreboardHandler implements Listener{
 										"\n\n&dPlayers Online: &c"+getPlayersOnline()+"" +
 										"\n&7Ping: &a"+ping+"" +
 										"\n"+tps+"" +
+										"\n&dVoteParty: &b"+(30-servervotes)+"/30"+
 										"\n\n&8&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"),
 								//Footer
 								c("&7&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" +
+										"\n&f"+vote+"&b/&7"+alpha+"&b/&c"+beta+"&b/&4"+omega+"&b/&e"+token+"&b/&5"+community+"&b/&4&ki&f"+seasonal+"&4&ki&b/&3"+rank+
 										"\n\n&eActive Events: &e"+ SkillsEventsListener.events +
 										"\n\n&6Boosts" +
 										"\n"+ BoostsHandler.sname+"&7/"+ BoostsHandler.xname+"" +
@@ -755,9 +761,11 @@ public class ScoreboardHandler implements Listener{
 										"\n\n&dPlayers Online: &c"+getPlayersOnline()+"" +
 										"\n&7Ping: &a"+ping+"" +
 										"\n"+tps+"" +
+										"\n&dVoteParty: &b"+(30-servervotes)+"/30"+
 										"\n\n&7&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"),
 								//Footer
 								c("&8&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" +
+										"\n&f"+vote+"&b/&7"+alpha+"&b/&c"+beta+"&b/&4"+omega+"&b/&e"+token+"&b/&5"+community+"&b/&4&ki&f"+seasonal+"&4&ki&b/&3"+rank+
 										"\n\n&eActive Events: &e"+ SkillsEventsListener.events +
 										"\n\n&6Boosts" +
 										"\n"+ BoostsHandler.sname+"&7/"+ BoostsHandler.xname+"" +

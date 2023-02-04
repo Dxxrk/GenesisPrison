@@ -7,14 +7,13 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.logging.Level;
 
-import net.minecraft.server.v1_8_R3.BlockPosition;
-import net.minecraft.server.v1_8_R3.TileEntityChest;
-import net.minecraft.server.v1_8_R3.World;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.util.CraftMagicNumbers;
 import org.bukkit.inventory.ItemStack;
 
 
@@ -30,7 +29,6 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.plugin.Plugin;
 
 public class Methods {
@@ -46,30 +44,22 @@ public class Methods {
 	  }
 
 
-    public void playChestAction(Chest chest, boolean open, Player p) {
+
+
+
+    public void playChestAction(Chest chest, boolean open) {
         Location location = chest.getLocation();
         World world = ((CraftWorld) location.getWorld()).getHandle();
         BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
-
-        double rotation = p.getLocation().getYaw() - 180;
-        if (rotation < 0) {
-            rotation += 360.0;
-        }
-        if (0 <= rotation && rotation < 90.5) {
-            position.south();
-
-        }
-        if (90.5 <= rotation && rotation < 180.5) {
-            position.west();
-        }
-        if (180.5 <= rotation && rotation < 270.5) {
-            position.north();
-        }
-        if (270.5 <= rotation && rotation <= 360) {
-            position.east();
-        }
-        TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
+        TileEntityEnderChest tileChest = (TileEntityEnderChest) world.getTileEntity(position);
         world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
+    }
+
+    //@SuppressWarnings("deprecation")
+    public void changeChestState(Location loc, boolean open) {
+        int data = (open) ? 1 : 0;
+
+        ((CraftWorld) loc.getWorld()).getHandle().playBlockAction(new BlockPosition(loc.getX(), loc.getY(), loc.getZ()), CraftMagicNumbers.getBlock(loc.getWorld().getBlockAt(loc)), 1, data);
     }
 
 

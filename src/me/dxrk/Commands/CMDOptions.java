@@ -58,20 +58,18 @@ public class CMDOptions implements Listener, CommandExecutor{
 			ops.setItem(i, Spacer());
 		}
 		ops.setItem(1, option(p, "Autorankup"));
-		ops.setItem(2, option(p, "Autosell"));
-		ops.setItem(3, option(p, "Backpack-Warnings"));
-		ops.setItem(4, option(p, "Tokens-Messages"));
-		ops.setItem(5, option(p, "Discovery-Messages"));
-		ops.setItem(6, option(p, "Encounter-Messages"));
-		ops.setItem(7, option(p, "Explosion-Messages"));
-		ops.setItem(10, option(p, "Wave-Messages"));
-		ops.setItem(11, option(p, "Vaporize-Messages"));
-		ops.setItem(12, option(p, "TokenFinder-Messages"));
-		ops.setItem(13, option(p, "Stake-Messages"));
-		ops.setItem(14, option(p, "Research-Messages"));
-		ops.setItem(15, option(p, "RuneParty-Messages"));
-		ops.setItem(16, option(p, "Booster-Messages"));
-		ops.setItem(22, option(p, "Junkpile-Messages"));
+		ops.setItem(2, option(p, "Tokens-Messages"));
+		ops.setItem(3, option(p, "Dust-Finder-Messages"));
+		ops.setItem(4, option(p, "Key-Finder-Messages"));
+		ops.setItem(5, option(p, "Explosion-Messages"));
+		ops.setItem(6, option(p, "Wave-Messages"));
+		ops.setItem(7, option(p, "Nuke-Messages"));
+		ops.setItem(11, option(p, "Research-Messages"));
+		ops.setItem(12, option(p, "Key-Party-Messages"));
+		ops.setItem(13, option(p, "Booster-Messages"));
+		ops.setItem(14, option(p, "Junkpile-Messages"));
+		ops.setItem(15, option(p, "Laser-Messages"));
+		ops.setItem(16, option(p, "Prestige-Finder-Messages"));
 		p.openInventory(ops);
 	}
 	
@@ -88,12 +86,10 @@ public class CMDOptions implements Listener, CommandExecutor{
 		return false;
 	}
 	public ItemStack Spacer() {
-	    ItemStack i = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)8);
+	    ItemStack i = new ItemStack(Material.IRON_FENCE);
 	    ItemMeta im = i.getItemMeta();
-	    im.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&9Genesis"));
-	    im.addEnchant(Enchantment.DURABILITY, 0, false);
+	    im.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&lGenesis &b&lPrison"));
 	    i.setItemMeta(im);
-	    i.removeEnchantment(Enchantment.DURABILITY);
 	    return i;
 	  }
 	
@@ -102,20 +98,18 @@ public class CMDOptions implements Listener, CommandExecutor{
 		Player p = e.getPlayer();
 		if(!p.hasPlayedBefore()) {
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Autorankup", false);
-			this.settings.getOptions().set(p.getUniqueId().toString()+".Autosell", false);
-			this.settings.getOptions().set(p.getUniqueId().toString()+".Backpack-Warnings", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Tokens-Messages", true);
-			this.settings.getOptions().set(p.getUniqueId().toString()+".Dust Finder-Messages", true);
-			this.settings.getOptions().set(p.getUniqueId().toString()+".Key Finder-Messages", true);
+			this.settings.getOptions().set(p.getUniqueId().toString()+".Dust-Finder-Messages", true);
+			this.settings.getOptions().set(p.getUniqueId().toString()+".Key-Finder-Messages", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Explosion-Messages", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Wave-Messages", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Nuke-Messages", true);
-			this.settings.getOptions().set(p.getUniqueId().toString()+".Token Finder-Messages", true);
-			this.settings.getOptions().set(p.getUniqueId().toString()+".Stake-Messages", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Research-Messages", true);
-			this.settings.getOptions().set(p.getUniqueId().toString()+".Rune Party-Messages", true);
+			this.settings.getOptions().set(p.getUniqueId().toString()+".Key-Party-Messages", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Booster-Messages", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Junkpile-Messages", true);
+			this.settings.getOptions().set(p.getUniqueId().toString()+".Laser-Messages", true);
+			this.settings.getOptions().set(p.getUniqueId().toString()+".Prestige-Finder-Messages", true);
 		}
 	}
 	
