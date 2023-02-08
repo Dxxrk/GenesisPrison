@@ -3,7 +3,6 @@ package me.dxrk.Gangs;
 
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
-import me.dxrk.Tokens.Tokens;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -23,6 +22,13 @@ public class Gangs implements Listener {
     public String getGang(OfflinePlayer p){
         return settings.getPlayerData().getString(p.getUniqueId().toString()+".Gang");
     }
+    public int getGangLevel(String gang) {
+        return settings.getGangs().getInt(gang+".Level");
+    }
+    public double getGangBlocks(String gang) {
+        return settings.getGangs().getDouble(gang+".BlocksBroken");
+    }
+
     public boolean hasGang(OfflinePlayer p) {
         return !settings.getPlayerData().getString(p.getUniqueId().toString() + ".Gang").equals("");
     }
@@ -30,7 +36,8 @@ public class Gangs implements Listener {
     public void createGang(Player p, String name) {
         settings.getGangs().set(name+".Owner", p.getUniqueId().toString());
         settings.getGangs().set(name+".Level", 0);
-        settings.getGangs().set(name+".GangTokens", 0.0);
+        settings.getGangs().set(name+".BlocksBroken", 0);
+        settings.getGangs().set(name+".MaxMembers", 4);
         List<String> members = new ArrayList<>();
         settings.getGangs().set(name+".Members", members);
         List<String> perks = new ArrayList<>();
@@ -45,16 +52,16 @@ public class Gangs implements Listener {
         members.add(p.getUniqueId().toString());
         settings.getGangs().set(name+".Members", members);
         settings.saveGangs();
-        settings.getPlayerData().set(p.getUniqueId().toString(), name);
+        settings.getPlayerData().set(p.getUniqueId().toString()+".Gang", name);
         settings.savePlayerData();
     }
 
-    public void removeMember(Player p, String name) {
+    public void removeMember(OfflinePlayer p, String name) {
         List<String> members = settings.getGangs().getStringList(name+".Members");
         members.remove(p.getUniqueId().toString());
         settings.getGangs().set(name+".Members", members);
         settings.saveGangs();
-        settings.getPlayerData().set(p.getUniqueId().toString(), "");
+        settings.getPlayerData().set(p.getUniqueId().toString()+".Gang", "");
         settings.savePlayerData();
     }
 

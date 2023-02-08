@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import me.dxrk.Events.*;
+import me.dxrk.Gangs.CMDGang;
+import me.dxrk.Gangs.Gangs;
 import me.dxrk.Tokens.Tokens;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -295,7 +297,7 @@ public class EnchantMethods {
 			}
 
 
-			sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((2/blocks* (fortune)*levelcap))));
+			sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks/8* (fortune)*levelcap))));
 
 
 
@@ -305,7 +307,7 @@ public class EnchantMethods {
 			for (x = 0; x < lore.size(); x++) {
 				String s = lore.get(x);
 				if (org.bukkit.ChatColor.stripColor(s).contains("Token Finder")) {
-					tf = getBlocks(ChatColor.stripColor(s))*0.004;
+					tf = getBlocks(ChatColor.stripColor(s))*0.0035;
 				}
 			}
 			double multiply = 1;
@@ -313,12 +315,14 @@ public class EnchantMethods {
 			double event = SkillsEventsListener.getEventToken();
 			double prestige = SellHandler.getInstance().getPrestiges(p)*0.045;
 			double miningboost = BoostsHandler.sell;
+			String gang = Gangs.getInstance().getGang(p);
+			double unity = CMDGang.getInstance().getUnityLevel(gang);
 			if(prestige < 1){
 				prestige = 1;
 			}
 			if(Functions.multiply.contains(p)) multiply = 2;
 
-			int tokens = (int) (12*blocks*tf*multiply*skill1*event*prestige*miningboost);
+			int tokens = (int) (11*blocks*tf*multiply*skill1*event*prestige*miningboost*unity);
 			Tokens.getInstance().addTokens(p, tokens);
 			SellHandler.getInstance().sellEnchant(p, sellblocks, "Laser", tokens);
 
@@ -366,7 +370,7 @@ public class EnchantMethods {
 					laser.remove(p);
 					p.sendMessage(c("&f&lLaser &8| &bDeactivated!"));
 				}
-			}.runTaskLater(Main.plugin, 20*7L);
+			}.runTaskLater(Main.plugin, 20*5L);
 
 		}
 
@@ -413,7 +417,7 @@ public class EnchantMethods {
 				}
 
 		    
-		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks/4* (fortune)*levelcap))));
+		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks/8* (fortune)*levelcap))));
 		    
 
 
@@ -423,7 +427,7 @@ public class EnchantMethods {
 				for (x = 0; x < lore.size(); x++) {
 					String s = lore.get(x);
 					if (org.bukkit.ChatColor.stripColor(s).contains("Token Finder")) {
-						tf = getBlocks(ChatColor.stripColor(s))*0.004;
+						tf = getBlocks(ChatColor.stripColor(s))*0.0035;
 					}
 				}
 
@@ -433,12 +437,14 @@ public class EnchantMethods {
 				double event1 = SkillsEventsListener.getEventToken();
 				double prestige = SellHandler.getInstance().getPrestiges(p)*0.045;
 				double miningboost = BoostsHandler.sell;
+				String gang = Gangs.getInstance().getGang(p);
+				double unity = CMDGang.getInstance().getUnityLevel(gang);
 				if(prestige < 1){
 					prestige = 1;
 				}
 
 
-				int tokens = (int) (5.5*blocks*tf*multiply*skill1*event*prestige*miningboost);
+				int tokens = (int) (5.25*blocks*tf*multiply*skill1*event*prestige*miningboost*unity);
 				Tokens.getInstance().addTokens(p, tokens);
 				SellHandler.getInstance().sellEnchant(p, sellblocks, "Wave", tokens);
 					
@@ -464,15 +470,14 @@ public class EnchantMethods {
 				  
 			      if(level == 0) return;
 				  if(level == 1) {
-					  chance = (int) (2750 * lucky * luck*skill);
+					  chance = (int) (2500 * lucky * luck*skill);
 				  } else {
-					  chance = (int) ((2750 - (1.15*level*lucky * luck * skill)));
+					  chance = (int) ((2500 - (1.15*level*lucky * luck * skill)));
 					  if(chance < 300){
 						  chance = 300;
 					  }
 				  }
-		    	  int i = r.nextInt(chance);
-		    	   
+		    	  int i = r.nextInt(chance);					  
 		    	  if(i == 1) {
 		    		  Wave(p, b, level);
 		    	  
@@ -539,7 +544,7 @@ public class EnchantMethods {
 				for (x = 0; x < lore.size(); x++) {
 					String s = lore.get(x);
 					if (org.bukkit.ChatColor.stripColor(s).contains("Token Finder")) {
-						tf = getBlocks(ChatColor.stripColor(s))*0.004;
+						tf = getBlocks(ChatColor.stripColor(s))*0.0035;
 					}
 				}
 
@@ -549,12 +554,14 @@ public class EnchantMethods {
 				if(Functions.multiply.contains(p)) multiply = 2;
 				double prestige = SellHandler.getInstance().getPrestiges(p)*0.045;
 				double miningboost = BoostsHandler.sell;
+				String gang = Gangs.getInstance().getGang(p);
+				double unity = CMDGang.getInstance().getUnityLevel(gang);
 				if(prestige < 1){
 					prestige = 1;
 				}
 
 
-				int tokens = (int) (9*blocks*tf*multiply*skill1*event*prestige*miningboost);
+				int tokens = (int) (8*blocks*tf*multiply*skill1*event*prestige*miningboost*unity);
 				Tokens.getInstance().addTokens(p, tokens);
 				SellHandler.getInstance().sellEnchant(p, sellblocks, "Explosion", tokens);
 
@@ -582,9 +589,9 @@ public class EnchantMethods {
 				  
 			      if(level == 0) return;
 				  if(level == 1) {
-					  chance = (int) (1750 * lucky * luck*skill);
+					  chance = (int) (1350 * lucky * luck*skill);
 				  } else {
-					  chance = (int) ((1750 - (0.75*level*lucky * luck * skill)));
+					  chance = (int) ((1350 - (0.75*level*lucky * luck * skill)));
 					  if(chance < 150){
 						  chance = 150;
 					  }
@@ -604,7 +611,7 @@ public class EnchantMethods {
 	  public void roundRank(Player p) {
 		Random r = new Random();
 		  int tmin = 1;
-		  int tmax = 5;
+		  int tmax = 25;
 		  int ranks = r.nextInt(tmax - tmin)+ tmin;
 		  for(int i = 0; i < ranks; i++) {
 			  RankupHandler.getInstance().upRank(p);
@@ -701,7 +708,7 @@ public class EnchantMethods {
 				for (x = 0; x < lore.size(); x++) {
 					String s = lore.get(x);
 					if (org.bukkit.ChatColor.stripColor(s).contains("Token Finder")) {
-						tf = getBlocks(ChatColor.stripColor(s))*0.004;
+						tf = getBlocks(ChatColor.stripColor(s))*0.0035;
 					}
 				}
 
@@ -711,12 +718,14 @@ public class EnchantMethods {
 				if(Functions.multiply.contains(p)) multiply = 2;
 				double prestige = SellHandler.getInstance().getPrestiges(p)*0.045;
 				double miningboost = BoostsHandler.sell;
+				String gang = Gangs.getInstance().getGang(p);
+				double unity = CMDGang.getInstance().getUnityLevel(gang);
 				if(prestige < 1){
 					prestige = 1;
 				}
 
 
-				int tokens = (int) (amountblocks*tf*multiply*skill1*event*prestige*miningboost);
+				int tokens = (int) (amountblocks*tf*multiply*skill1*event*prestige*miningboost*unity);
 				Tokens.getInstance().addTokens(p, tokens);
 				SellHandler.getInstance().sellEnchant(p, sellblocks, "Nuke", tokens);
 				}
@@ -794,8 +803,13 @@ public class EnchantMethods {
 			 RankupHandler.getInstance().upRank(p);
 			 RankupHandler.getInstance().upRank(p);
 			 RankupHandler.getInstance().upRank(p);
+			 RankupHandler.getInstance().upRank(p);
+			 RankupHandler.getInstance().upRank(p);
+			 RankupHandler.getInstance().upRank(p);
+			 RankupHandler.getInstance().upRank(p);
+			 RankupHandler.getInstance().upRank(p);
 			 if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Junkpile-Messages") == true) {
-			 p.sendMessage(c("&f&lJunkpile &8| &b+5 Levels"));
+			 p.sendMessage(c("&f&lJunkpile &8| &b+10 Levels"));
 			 }
 		 } else if(rr >=70 && rr <75) {
 			 CMDVoteShop.addCoupon(p, 1);

@@ -26,13 +26,14 @@ public class Functions implements Listener{
 		double xp = 1;
 		if(p.getItemInHand() == null) return 1;
 		if(p.getItemInHand().getType().equals(Material.AIR)) return 1;
-		if(!p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)) return 1;
+		if(!p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE) && !p.getItemInHand().getType().equals(Material.IRON_PICKAXE) && !p.getItemInHand().getType().equals(Material.GOLD_PICKAXE)
+		&& !p.getItemInHand().getType().equals(Material.STONE_PICKAXE) && !p.getItemInHand().getType().equals(Material.WOOD_PICKAXE)) return 1;
 
 		for (String s : p.getItemInHand().getItemMeta().getLore()) {
 			if(ChatColor.stripColor(s).toLowerCase().contains("xp finder")) {
 
 				String[] n = ChatColor.stripColor(s).split(" ");
-				double x = Double.parseDouble(n[2])/100;
+				double x = Double.parseDouble(n[2])/400;
 
 				xp += x;
 			}

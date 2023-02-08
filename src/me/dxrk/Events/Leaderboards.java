@@ -180,15 +180,15 @@ public class Leaderboards implements Listener, CommandExecutor{
 		ItemMeta gm = gangs.getItemMeta();
 		gm.setDisplayName(m.c("&bHighest Gang Level:"));
 		if(gangstop.size() >= 1)
-			lore.add(m.c("&7#1 &c"+gangstop.get(0).getValue()+": &b"+settings.getGangs().getString(gangstop.get(0).getValue()+".Level")));
+			lore.add(m.c("&7#1 &c"+gangstop.get(0).getValue()+": &b"+settings.getGangs().getString(gangstop.get(0).getValue()+".BlocksBroken")));
 		if(gangstop.size() >= 2)
-			lore.add(m.c("&7#2 &c"+gangstop.get(1).getValue()+": &b"+settings.getGangs().getString(gangstop.get(1).getValue()+".Level")));
+			lore.add(m.c("&7#2 &c"+gangstop.get(1).getValue()+": &b"+settings.getGangs().getString(gangstop.get(1).getValue()+".BlocksBroken")));
 		if(gangstop.size() >= 3)
-			lore.add(m.c("&7#3 &c"+gangstop.get(2).getValue()+": &b"+settings.getGangs().getString(gangstop.get(2).getValue()+".Level")));
+			lore.add(m.c("&7#3 &c"+gangstop.get(2).getValue()+": &b"+settings.getGangs().getString(gangstop.get(2).getValue()+".BlocksBroken")));
 		if(gangstop.size() >= 4)
-			lore.add(m.c("&7#4 &c"+gangstop.get(3).getValue()+": &b"+settings.getGangs().getString(gangstop.get(3).getValue()+".Level")));
+			lore.add(m.c("&7#4 &c"+gangstop.get(3).getValue()+": &b"+settings.getGangs().getString(gangstop.get(3).getValue()+".BlocksBroken")));
 		if(gangstop.size() >= 5)
-			lore.add(m.c("&7#5 &c"+gangstop.get(4).getValue()+": &b"+settings.getGangs().getString(gangstop.get(4).getValue()+".Level")));
+			lore.add(m.c("&7#5 &c"+gangstop.get(4).getValue()+": &b"+settings.getGangs().getString(gangstop.get(4).getValue()+".BlocksBroken")));
 		int g = 0;
 		for(int i = 0; i < gangstop.size(); i++) {
 			if(settings.getGangs().getStringList(gangstop.get(i).getValue()+".Members").contains(p.getUniqueId().toString()) || settings.getGangs().getString(gangstop.get(i).getValue()+".Owner").equals(p.getUniqueId().toString()))	{
@@ -196,7 +196,7 @@ public class Leaderboards implements Listener, CommandExecutor{
 			}
 		}
 		if(gangstop.size() > g+1)
-			lore.add(m.c("&cYour Rank: #"+(g+1)+" With &b"+settings.getGangs().getString(gangstop.get(g).getValue()+".Level")));
+			lore.add(m.c("&cYour Rank: #"+(g+1)+" With &b"+settings.getGangs().getString(gangstop.get(g).getValue()+".BlocksBroken")));
 		else {
 			lore.add(m.c("&cYour Rank: #N/A With &bN/A"));
 		}
@@ -238,6 +238,7 @@ public class Leaderboards implements Listener, CommandExecutor{
 			if(uuid.equals("7dd67277-1c1a-42e7-98ac-aa64eb122ec8")) continue;
 			if(uuid.equals("c32dfc2e-6780-4dbb-9baf-9ca671fbd35f")) continue;
 			if(uuid.equals("6a137295-d6e3-4a4d-b4e8-9d09898f9057")) continue;
+			if(uuid.equals("8ae918d9-21ad-4184-a26e-abcf8d0ac6d9")) continue;
 			int prestige = settings.getPlayerData().getInt(uuid+".Prestiges")*50000;
 			int rank = settings.getRankupPrices().getInt(uuid);
 			int total = prestige+rank;
@@ -251,6 +252,7 @@ public class Leaderboards implements Listener, CommandExecutor{
 		for(String uuid : settings.getPlayerData().getKeys(false)) {
 			if(uuid.equals("7dd67277-1c1a-42e7-98ac-aa64eb122ec8")) continue;
 			if(uuid.equals("c32dfc2e-6780-4dbb-9baf-9ca671fbd35f")) continue;
+			if(uuid.equals("8ae918d9-21ad-4184-a26e-abcf8d0ac6d9")) continue;
 			int blocks = settings.getPlayerData().getInt(uuid+".BlocksBroken");
 		    orderblocks.put(blocks, uuid);
 		}
@@ -260,6 +262,7 @@ public class Leaderboards implements Listener, CommandExecutor{
 		for(String uuid : settings.getPlayerData().getKeys(false)) {
 			if(uuid.equals("7dd67277-1c1a-42e7-98ac-aa64eb122ec8")) continue;
 			if(uuid.equals("c32dfc2e-6780-4dbb-9baf-9ca671fbd35f")) continue;
+			if(uuid.equals("8ae918d9-21ad-4184-a26e-abcf8d0ac6d9")) continue;
 			int time = settings.getPlayerData().getInt(uuid+".TimePlayed");
 		    ordertime.put(time, uuid);
 		}
@@ -271,6 +274,7 @@ public class Leaderboards implements Listener, CommandExecutor{
 				for(Player p : Bukkit.getOnlinePlayers()) {
 					if(p.getName().equals("Dxrk")) continue;
 					if(p.getName().equals("32j")) continue;
+					if(p.getName().equals("Drinkk")) continue;
 				if(!p.isOnline()) continue;
 				if(ess.getUser(p) != null && ess.getUser(p).isAfk()) continue;
 				

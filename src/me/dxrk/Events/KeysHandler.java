@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Random;
 
 import me.dxrk.Enchants.SkillsEventsListener;
+import me.dxrk.Gangs.CMDGang;
+import me.dxrk.Gangs.Gangs;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
@@ -124,9 +126,9 @@ public class KeysHandler implements Listener {
       double skill = SkillsEventsListener.getSkillsBoostLuck(p);
 	  if(level == 0) return;
 	  if(level == 1) {
-		  chance = (int) (1675*lucky*luck*skill);
+		  chance = (int) (1375*lucky*luck*skill);
 	  } else {
-		  chance = (int) ((1675 - (0.125*level))*lucky*luck*skill);
+		  chance = (int) ((1375 - (0.125*level))*lucky*luck*skill);
           if(chance < 200){
               chance = 200;
           }
@@ -250,7 +252,7 @@ public class KeysHandler implements Listener {
 		for (x = 0; x < lore.size(); x++) {
 			String s = lore.get(x);
 			if (ChatColor.stripColor(s).contains("Token Finder")) {
-				tf = m.getBlocks(ChatColor.stripColor(s))*0.004;
+				tf = m.getBlocks(ChatColor.stripColor(s))*0.0035;
 			}
 		}
 		double multiply = 1;
@@ -258,15 +260,22 @@ public class KeysHandler implements Listener {
         double event = SkillsEventsListener.getEventToken();
         double tboost = Functions.tokenBoost(p);
         double prestige = getPrestiges(p)*0.045;
+        double miningboost = BoostsHandler.sell;
+        String gang = Gangs.getInstance().getGang(p);
+        double unity = CMDGang.getInstance().getUnityLevel(gang);
         if(prestige < 1){
             prestige = 1;
         }
 		if(Functions.multiply.contains(p)) multiply = 2;
 
-		int tokens = 15;
+		int tokens = 10;
 
-            int tgive = (int) (tokens*tf*multiply*skill*event*tboost*prestige);
+            int tgive = (int) (tokens*tf*multiply*skill*event*tboost*prestige*unity*miningboost);
 			Tokens.getInstance().addTokens(p, tgive);
+        if(CMDGang.harmony.contains(gang)) {
+            double htokens = CMDGang.harmonyTokens.get(gang);
+            CMDGang.harmonyTokens.put(Gangs.getInstance().getGang(p), htokens+tgive);
+        }
 	}
   
   

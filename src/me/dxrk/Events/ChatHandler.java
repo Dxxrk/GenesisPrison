@@ -780,7 +780,7 @@ public class ChatHandler implements Listener, CommandExecutor {
     		  String gangg = gang.getGang(p);
     		  
     			  if(gang.getGang(ps).equals(gang.getGang(p))) {
-    			  ps.sendMessage(c("&b"+gang.getGang(p)+"&7 x &b"+p.getName()+" &7"+msg));
+    			  ps.sendMessage(c("&a"+gang.getGang(p)+"&7 x &b"+p.getName()+" &7"+msg));
     			  }
 				
     	  }

@@ -61,7 +61,7 @@ public class CrateFunctions {
         lore.add(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank"));
         lore.add(m.c(" "));
         lore.add(m.c("&6&l&m--&6&lItems&m--"));
-        lore.add(m.c("&51-5x Epic Trinkets"));
+        lore.add(m.c("&51-3x Epic Trinkets"));
         lore.add(m.c("&61-3x Legendary Trinkets"));
         lore.add(m.c(" "));
         lore.add(m.c("&f&l&m--&f&lTroll&m--"));
@@ -101,15 +101,15 @@ public class CrateFunctions {
         lore.add(m.c("&3&lTitan Rank"));
         lore.add(m.c(" "));
         lore.add(m.c("&6&l&m--&6&lItems&m--"));
-        lore.add(m.c("&b1-3x Rare Trinkets"));
-        lore.add(m.c("&51x Epic Trinkets"));
+        lore.add(m.c("&b1-3x Common Trinkets"));
+        lore.add(m.c("&91x Rare Trinkets"));
         lore.add(m.c(" "));
         lore.add(m.c("&d&l&m--&5&lMisc.&m--"));
         lore.add(m.c("&dItem Rename"));
         lore.add(m.c("&d1.5x Currency Boost"));
         lore.add(m.c("&d2x XP Boost"));
         lore.add(m.c("&d2x Currency Boost"));
-        lore.add(m.c("&d2.5-3.5 Multi"));
+        lore.add(m.c("&d1.5-2.5 Multi"));
         gm.setLore(lore);
         gcrate.setItemMeta(gm);
 
@@ -124,8 +124,8 @@ public class CrateFunctions {
             int ri = r.nextInt(200);
 
             if(ri <= 40){
-                int tmin = 5000000;
-                int tmax = 15000000;
+                int tmin = 3000000;
+                int tmax = 10000000;
                 int tokens = r.nextInt(tmax - tmin)+ tmin;
                 rm.setDisplayName(m.c("&b"+ Main.formatAmt(tokens)+" Tokens"));
                 reward.setType(Material.PRISMARINE_CRYSTALS);
@@ -141,8 +141,8 @@ public class CrateFunctions {
                 reward.setType(Material.TRIPWIRE_HOOK);
                 List<String> lore = new ArrayList<>();
                 String key = ChatColor.stripColor(rm.getDisplayName()).split(" ")[1];
-                if(key.contains("Seasonal")){
-                    lore.add("cratekey %PLAYER% seasonal" + keys);
+                if(key.contains("Seasonal")) {
+                    lore.add("cratekey %PLAYER% seasonal " + keys);
                 } else {
                     lore.add("cratekey %PLAYER% " + key + " " + keys);
                 }
@@ -198,7 +198,7 @@ public class CrateFunctions {
                         ItemStack sellBoost = new ItemStack(Material.POTION, 1, (short)8260);
                         ItemMeta sm = sellBoost.getItemMeta();
                         sm.setDisplayName(m.c("&f&l3x Currency Boost"));
-                        lore.add("giveboost sell %PLAYER% 3 7200");
+                        lore.add("giveboost sell %PLAYER% 3 1800");
                         sm.setLore(lore);
                         sellBoost.setItemMeta(sm);
                         lore.clear();
@@ -207,7 +207,7 @@ public class CrateFunctions {
                         ItemStack sellBoost1 = new ItemStack(Material.POTION, 1, (short)8260);
                         ItemMeta sm1 = sellBoost1.getItemMeta();
                         sm1.setDisplayName(m.c("&f&l2x Currency Boost"));
-                        lore.add("giveboost sell %PLAYER% 2 7200");
+                        lore.add("giveboost sell %PLAYER% 2 3600");
                         sm1.setLore(lore);
                         sellBoost1.setItemMeta(sm1);
                         lore.clear();
@@ -215,7 +215,7 @@ public class CrateFunctions {
                     case 2:
                         reward.setType(Material.EXP_BOTTLE);
                         rm.setDisplayName(m.c("&f&l2x XP Boost"));
-                        lore.add("giveboost xp %PLAYER% 2 7200");
+                        lore.add("giveboost xp %PLAYER% 2 3600");
                         rm.setLore(lore);
                         lore.clear();
                     case 3:
@@ -271,7 +271,7 @@ public class CrateFunctions {
                 List<String> lore = new ArrayList<>();
                 String key = ChatColor.stripColor(rm.getDisplayName()).split(" ")[1];
                 if(key.contains("Seasonal")){
-                    lore.add("cratekey %PLAYER% seasonal" + keys);
+                    lore.add("cratekey %PLAYER% seasonal " + keys);
                 } else {
                     lore.add("cratekey %PLAYER% " + key + " " + keys);
                 }
@@ -288,18 +288,18 @@ public class CrateFunctions {
                 int tmin = 1;
                 int tmax = 3;
                 int trinkets = r.nextInt(tmax - tmin)+ tmin;
-                rm.setDisplayName(m.c("&e"+trinkets+"x &bRare Trinket"));
+                rm.setDisplayName(m.c("&e"+trinkets+"x &bCommon Trinket"));
                 reward.setType(Material.GOLD_NUGGET);
                 List<String> lore = new ArrayList<>();
-                lore.add("givetrinket %PLAYER% rare "+trinkets);
+                lore.add("givetrinket %PLAYER% common "+trinkets);
                 rm.setLore(lore);
             }
             if(ri > 71 && ri <=81) {
 
-                rm.setDisplayName(m.c("&e1x &5Epic Trinket"));
+                rm.setDisplayName(m.c("&e1x &9Rare Trinket"));
                 reward.setType(Material.GOLD_NUGGET);
                 List<String> lore = new ArrayList<>();
-                lore.add("givetrinket %PLAYER% epic 1");
+                lore.add("givetrinket %PLAYER% rare 1");
                 rm.setLore(lore);
             }
             if(ri > 81 && ri <=85){
@@ -331,7 +331,7 @@ public class CrateFunctions {
                     case 0:
                         ItemStack sellBoost = new ItemStack(Material.POTION, 1, (short)8260);
                         ItemMeta sm = sellBoost.getItemMeta();
-                        sm.setDisplayName(m.c("&f&l3x Currency Boost"));
+                        sm.setDisplayName(m.c("&f&l1.5x Currency Boost"));
                         lore.add("giveboost sell %PLAYER% 1.5 1800");
                         sm.setLore(lore);
                         sellBoost.setItemMeta(sm);
@@ -359,8 +359,8 @@ public class CrateFunctions {
                         rm.setLore(lore);
                         lore.clear();
                     case 4:
-                        double min = 2.5;
-                        double max = 3.5;
+                        double min = 1.5;
+                        double max = 2.5;
                         double multi = Math.round((min + (max - min) * r.nextDouble())*10)/10.0;
                         reward.setType(Material.EMERALD);
                         rm.setDisplayName(m.c("&a"+multi+" Multi"));

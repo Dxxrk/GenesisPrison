@@ -114,6 +114,9 @@ public class RankupHandler implements Listener, CommandExecutor{
 	  else if(prestiges >= 250){
 		  return 2.5;
 	  }
+	  else if(prestiges >= 100){
+		  return 1.75;
+	  }
 
 
 	  return 1;
@@ -176,7 +179,7 @@ public class RankupHandler implements Listener, CommandExecutor{
 			return 2.5;
 		}
 		else if(ranks >= 250){
-			return 1.25;
+			return 1.75;
 		}
 
 
@@ -194,7 +197,7 @@ public class RankupHandler implements Listener, CommandExecutor{
 	  }
 
 	  int rank = getRank(p);
-	  double price = (1e12+(1e12*((rank-1)*1.3)))*multi*priceJumpP(p)*priceJumpR(p);
+	  double price = (1.1e12+(1.1e12*((rank-1)*1.5)))*multi*priceJumpP(p)*priceJumpR(p);
 	  if(rank == 1){
 		  price = 1e12;
 	  }

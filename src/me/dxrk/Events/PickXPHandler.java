@@ -68,18 +68,8 @@ implements Listener {
 
 
     public double calculateXPNeeded(Player p, int pick) {
-        double needed;
 
-
-        if(pick == 1){
-            return 2500;
-        }
-
-        needed =2500+(2500*((pick+1)*0.65));
-
-
-
-        return needed;
+        return 2500+(2500*(pick*0.72));
     }
 
 

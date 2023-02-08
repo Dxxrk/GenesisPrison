@@ -498,6 +498,7 @@ new BukkitRunnable() {
   public void onDisable() {
 	  
 	  settings.saveVote();
+      settings.saveGangs();
 	  
 	  if(settings.getBoost().getDouble("ActiveSell.Amp") != 0.0D) {
 	  this.settings.getBoost().set("TimeLeftSell", BoostsHandler.selltime);

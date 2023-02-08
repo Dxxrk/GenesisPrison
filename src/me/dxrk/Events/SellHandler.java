@@ -5,6 +5,8 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Events.ResetHandler.ResetReason;
+import me.dxrk.Gangs.CMDGang;
+import me.dxrk.Gangs.Gangs;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
@@ -152,6 +154,7 @@ public class SellHandler implements Listener, CommandExecutor {
 	private static Methods m = Methods.getInstance();
 
   public void sellEnchant(Player p, List<ItemStack> items, String enchantName, double tokens) {
+	  String gang = Gangs.getInstance().getGang(p);
 	    double total = 0.0D;
 	    int amountotal = 0;
 	    double greed = Functions.greed(p);
@@ -160,6 +163,7 @@ public class SellHandler implements Listener, CommandExecutor {
 	    double multi = SellHandler.getInstance().getMulti(p);
 	  double event = SkillsEventsListener.getEventMulti();
 		double prestige = getPrestiges(p)*0.02;
+		double unity = CMDGang.getInstance().getUnityLevel(gang);
 		double multiply = 1;
 		if(prestige < 1){
 			prestige = 1;
@@ -175,7 +179,7 @@ public class SellHandler implements Listener, CommandExecutor {
 	  	    	double price = Methods.getBlockSellPrice("A", i.getTypeId());
 
 
-	  	    	total += price * (multi+greed+event) * sell * miningboost*prestige*multiply;
+	  	    	total += price * (multi+greed+event) * sell * miningboost*prestige*multiply*unity;
 
 	  	        amountotal += i.getAmount();
 
@@ -187,11 +191,18 @@ public class SellHandler implements Listener, CommandExecutor {
 	    }
 
 	    Main.econ.depositPlayer(p, total*amountotal);
+		if(CMDGang.harmony.contains(gang)) {
+			double htokens = CMDGang.harmonyTokens.get(gang);
+			CMDGang.harmonyTokens.put(Gangs.getInstance().getGang(p), htokens+tokens);
+			double hmoney = CMDGang.harmonyMoney.get(gang);
+			CMDGang.harmonyMoney.put(gang, hmoney+(total*amountotal));
+		}
 	  }
 
 
 
   public void sell(Player p, List<ItemStack> items) {
+	  String gang = Gangs.getInstance().getGang(p);
 	  double total = 0.0D;
 	  int amountotal = 0;
 	  double greed = Functions.greed(p);
@@ -226,6 +237,10 @@ public class SellHandler implements Listener, CommandExecutor {
 
 
 	  Main.econ.depositPlayer(p, total*amountotal);
+	  if(CMDGang.harmony.contains(gang)) {
+		  double hmoney = CMDGang.harmonyMoney.get(gang);
+		  CMDGang.harmonyMoney.put(gang, hmoney+(total*amountotal));
+	  }
 	  double percents;
 	  p.getScoreboard().getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
 	  percents = Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) * 100.0D;
@@ -324,8 +339,8 @@ public class SellHandler implements Listener, CommandExecutor {
       if (p.getItemInHand() != null) {
 
 		  int line = 0;
-		  for(int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++){
-			  if(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")){
+		  for(int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
+			  if(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
 				  line = x;
 			  }
 		  }

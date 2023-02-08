@@ -578,7 +578,7 @@ public ItemStack loadItem(String s, String slot) {
     	double mm = Double.parseDouble(nn[0]);
     	
     	multi += mm;
-    } else {
+    } else if(name.contains("Key")){
     	rww.add(c(won.getItemMeta().getDisplayName()));
     }
     
@@ -622,7 +622,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    } else {
+	    } else if(name.contains("Key")){
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -666,7 +666,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    } else {
+	    } else if(name.contains("Key")){
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -710,7 +710,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    } else {
+	    } else if(name.contains("Key")){
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -754,7 +754,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    } else {
+	    } else if(name.contains("Key")){
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -798,7 +798,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    } else {
+	    } else if(name.contains("Key")){
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -842,7 +842,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    } else {
+	    } else if(name.contains("Key")){
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -886,7 +886,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    } else {
+	    } else if(name.contains("Key")){
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -919,7 +919,7 @@ public ItemStack loadItem(String s, String slot) {
       ArrayList<String> rw2 = new ArrayList<>(rww);
 	  
 	  FancyMessage reward = new FancyMessage("");
-	  reward.then(c("&f&lOther &8| &b(Hover)")).tooltip(rw2);
+	  reward.then(c("&f&lRewards &8| &b(Hover)")).tooltip(rw2);
 	  if(rw2.size() >0) {
 	  reward.send(p);
 	  }
