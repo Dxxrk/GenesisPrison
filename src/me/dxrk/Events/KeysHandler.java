@@ -268,9 +268,9 @@ public class KeysHandler implements Listener {
         }
 		if(Functions.multiply.contains(p)) multiply = 2;
 
-		int tokens = 10;
+		int tokens = 12;
 
-            int tgive = (int) (tokens*tf*multiply*skill*event*tboost*prestige*unity*miningboost);
+            int tgive = (int) ((tokens*tf)*multiply*skill*event*tboost*prestige*unity*miningboost);
 			Tokens.getInstance().addTokens(p, tgive);
         if(CMDGang.harmony.contains(gang)) {
             double htokens = CMDGang.harmonyTokens.get(gang);

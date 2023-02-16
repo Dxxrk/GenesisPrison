@@ -108,5 +108,9 @@ public class PlayerDataHandler implements Listener {
       this.settings.getVote().set(uuid + ".Votepoints", 0);
       this.settings.savePlayerData();
     }
+    if (this.settings.getVote().get(uuid + ".NitroBoosting") == null) {
+      this.settings.getVote().set(uuid + ".NitroBoosting", false);
+      this.settings.savePlayerData();
+    }
   }
 }

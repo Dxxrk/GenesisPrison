@@ -71,8 +71,10 @@ public class MinePouchHandler implements Listener, CommandExecutor {
         int chance = (int) (5000 - ((prestiges-75)*0.75));
         boolean inInv = false;
         for(ItemStack i : p.getInventory().getContents()) {
-            if(i.getItemMeta().getDisplayName().equals(m.c("&eMine Pouch"))) {
-                inInv = true;
+            if(i != null && i.hasItemMeta() && i.getItemMeta().hasLore()) {
+                if (i.getItemMeta().getDisplayName().equals(m.c("&eMine Pouch"))) {
+                    inInv = true;
+                }
             }
         }
         if(prestiges >=100 && r.nextInt(chance) <1 && inInv == false){
@@ -163,7 +165,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
         lore.add(m.c("&a&lRewards:"));
         lore.add(m.c(" "));
         lore.add(m.c("&e&l&m--&e&lTokens&m--"));
-        lore.add(m.c("&e⛀5,000,000-15,000,000"));
+        lore.add(m.c("&e⛀3,000,000-10,000,000"));
         lore.add(m.c(" "));
         lore.add(m.c("&c&l&m--&c&lKeys&m--"));
         lore.add(m.c("&c1-10x Random Keys"));
@@ -174,8 +176,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
         lore.add(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank"));
         lore.add(m.c(" "));
         lore.add(m.c("&6&l&m--&6&lItems&m--"));
-        lore.add(m.c("&51-5x Epic Trinkets"));
-        lore.add(m.c("&61-3x Legendary Trinkets"));
+        lore.add(m.c("&51-3x Epic Trinkets"));
+        lore.add(m.c("&61x Legendary Trinkets"));
         lore.add(m.c(" "));
         lore.add(m.c("&f&l&m--&f&lTroll&m--"));
         lore.add(m.c("&fMjölnir"));
@@ -196,7 +198,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
         ArrayList<String> lore = new ArrayList<>();
         ItemStack trinket = new ItemStack(Material.GOLD_NUGGET, amount);
         ItemMeta dm = trinket.getItemMeta();
-        dm.setDisplayName(m.c("&9Rare Trinket &a 35,000 Gems"));
+        dm.setDisplayName(m.c("&5Epic Trinket &a 75,000 Gems"));
         lore.add(m.c("&7&oRight Click to unveil"));
         dm.setLore(lore);
         trinket.setItemMeta(dm);
@@ -252,8 +254,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
             }
             int gems = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Gems");
             if(e.getSlot() == 2) {
-                if(gems > 20000){
-                    removeGems(p, 10000);
+                if(gems >= 50000){
+                    removeGems(p, 50000);
                     p.getInventory().addItem(TrinketHandler.getInstance().epicTrinket(1));
                 }
                 else {
@@ -262,8 +264,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 }
             }
             if(e.getSlot() == 6) {
-                if(gems > 30000){
-                    removeGems(p, 15000);
+                if(gems >= 75000){
+                    removeGems(p, 75000);
                     p.getInventory().addItem(TrinketHandler.getInstance().legTrinket(1));
                     p.updateInventory();
                 }
@@ -273,8 +275,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 }
             }
             if(e.getSlot() == 13) {
-                if(gems > 100000){
-                    removeGems(p, 100000);
+                if(gems >= 250000){
+                    removeGems(p, 250000);
                     p.getInventory().addItem(CrateFunctions.GenesisCrate());
                     p.updateInventory();
                 }
@@ -284,7 +286,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 }
             }
             if(e.getSlot() == 20) {
-                if(gems > 250000){
+                if(gems >= 250000){
                     removeGems(p, 250000);
                     LocksmithHandler.getInstance().addKey(p, "rank", 1);
                 }
@@ -293,8 +295,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                     p.closeInventory();
                 }
             }
-            if(e.getSlot() == 25) {
-                if(gems > 400000){
+            if(e.getSlot() == 24) {
+                if(gems >= 400000){
                     removeGems(p, 400000);
                     LocksmithHandler.getInstance().addKey(p, "rank", 3);
                 }

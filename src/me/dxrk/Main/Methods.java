@@ -1,35 +1,33 @@
 package me.dxrk.Main;
 
+import net.ess3.nms.refl.ReflUtil;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.minecraft.server.v1_8_R3.BlockPosition;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import net.minecraft.server.v1_8_R3.TileEntityEnderChest;
+import net.minecraft.server.v1_8_R3.World;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Chest;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R3.util.CraftMagicNumbers;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+
 import java.lang.reflect.Method;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.logging.Level;
-
-import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.block.Chest;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.util.CraftMagicNumbers;
-import org.bukkit.inventory.ItemStack;
-
-
-
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
-import org.bukkit.entity.Player;
-
-import net.ess3.nms.refl.ReflUtil;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.plugin.Plugin;
 
 public class Methods {
   public static Methods instance = new Methods();
@@ -119,14 +117,14 @@ public class Methods {
   public String convertItemStackToJson(ItemStack itemStack) {
     Object itemAsJsonObject;
     Class<?> craftItemStackClazz = ReflUtil.getOBCClass("inventory.CraftItemStack");
-    Method asNMSCopyMethod = ReflUtil.getMethodCached(craftItemStackClazz, "asNMSCopy", new Class[] { ItemStack.class });
+    Method asNMSCopyMethod = ReflUtil.getMethodCached(craftItemStackClazz, "asNMSCopy", ItemStack.class);
     Class<?> nmsItemStackClazz = ReflUtil.getNMSClass("ItemStack");
     Class<?> nbtTagCompoundClazz = ReflUtil.getNMSClass("NBTTagCompound");
-    Method saveNmsItemStackMethod = ReflUtil.getMethodCached(nmsItemStackClazz, "save", new Class[] { nbtTagCompoundClazz });
+    Method saveNmsItemStackMethod = ReflUtil.getMethodCached(nmsItemStackClazz, "save", nbtTagCompoundClazz);
     try {
       Object nmsNbtTagCompoundObj = nbtTagCompoundClazz.newInstance();
-      Object nmsItemStackObj = asNMSCopyMethod.invoke(null, new Object[] { itemStack });
-      itemAsJsonObject = saveNmsItemStackMethod.invoke(nmsItemStackObj, new Object[] { nmsNbtTagCompoundObj });
+      Object nmsItemStackObj = asNMSCopyMethod.invoke(null, itemStack);
+      itemAsJsonObject = saveNmsItemStackMethod.invoke(nmsItemStackObj, nmsNbtTagCompoundObj);
     } catch (Throwable t) {
       Bukkit.getLogger().log(Level.SEVERE, "failed to serialize itemstack to nms item", t);
       return null;
@@ -141,7 +139,7 @@ public class Methods {
     OfflinePlayer[] arrayOfOfflinePlayer;
     for (i = (arrayOfOfflinePlayer = Bukkit.getOfflinePlayers()).length, b1 = 0; b1 < i; ) {
       OfflinePlayer p = arrayOfOfflinePlayer[b1];
-      if (settings.getPlayerData().getBoolean(String.valueOf(p.getUniqueId().toString()) + ".Beta"))
+      if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Beta"))
         b.add(p); 
       b1++;
     } 
@@ -151,13 +149,13 @@ public class Methods {
   public String convertItemStackToJsonRegular(ItemStack itemStack) {
     net.minecraft.server.v1_8_R3.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
     NBTTagCompound compound = new NBTTagCompound();
-    compound = nmsItemStack.save(compound);
-    return compound.toString();
+      nmsItemStack.save(compound);
+      return compound.toString();
   }
   
   public TextComponent itemHover(String chat, ItemStack item) {
     TextComponent test = new TextComponent(ChatColor.translateAlternateColorCodes('&', chat));
-    BaseComponent[] hoverEventComponents = { (BaseComponent)new TextComponent(convertItemStackToJson(new ItemStack(Material.DIAMOND, 1))) };
+    BaseComponent[] hoverEventComponents = {new TextComponent(convertItemStackToJson(new ItemStack(Material.DIAMOND, 1)))};
     test.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, hoverEventComponents));
     return test;
   }
@@ -165,10 +163,10 @@ public class Methods {
   
   public int getBlocks(String s) {
       StringBuilder lvl = new StringBuilder();
-      s = ChatColor.stripColor((String)s);
+      s = ChatColor.stripColor(s);
       char[] arrayOfChar = s.toCharArray();
       int i = arrayOfChar.length;
-      for (int b = 0; b < i; b = (int)((byte)(b + 1))) {
+      for (int b = 0; b < i; b = (byte)(b + 1)) {
           char c = arrayOfChar[b];
           if (!this.isInt(c)) continue;
           lvl.append(c);
@@ -219,23 +217,76 @@ public class Methods {
   public boolean isInteger(String s) {
     return isInteger(s, 10);
   }
-  
-  public double round(double value, int places) {
-    if (places < 0)
-      throw new IllegalArgumentException(); 
-    long factor = (long)Math.pow(10.0D, places);
-    value *= factor;
-    long tmp = Math.round(value);
-    return tmp / factor;
+
+
+
+  @SuppressWarnings("deprecation")
+  public static double getSellPrice(ItemStack i) {
+        int shmulti = 1000000*i.getData().getData();
+        if(i.getTypeId() == 4)
+            return 1000000+shmulti;
+        else if(i.getTypeId() == 48)
+            return 2000000+shmulti;
+        else if(i.getTypeId() == 1)
+            return 3000000+shmulti;
+        else if(i.getTypeId() == 98)
+            return 10000000+shmulti;
+        else if(i.getTypeId() == 24)
+            return 14000000+shmulti;
+        else if(i.getTypeId() == 179)
+            return 17000000+shmulti;
+        else if(i.getTypeId() == 172)
+            return 20000000+shmulti;
+        else if(i.getTypeId() == 159)
+            return 21000000+shmulti;
+        else if(i.getTypeId() == 45)
+            return 37000000+shmulti;
+        else if(i.getTypeId() == 16)
+            return 38000000+shmulti;
+        else if(i.getTypeId() == 173)
+            return 39000000+shmulti;
+        else if(i.getTypeId() == 15)
+            return 40000000+shmulti;
+        else if(i.getTypeId() == 42)
+            return 41000000+shmulti;
+        else if(i.getTypeId() == 14)
+            return 42000000+shmulti;
+        else if(i.getTypeId() == 41)
+            return 43000000+shmulti;
+        else if(i.getTypeId() == 73)
+            return 44000000+shmulti;
+        else if(i.getTypeId() == 152)
+            return 45000000+shmulti;
+        else if(i.getTypeId() == 21)
+            return 46000000+shmulti;
+        else if(i.getTypeId() == 22)
+            return 47000000+shmulti;
+        else if(i.getTypeId() == 56)
+            return 48000000+shmulti;
+        else if(i.getTypeId() == 57)
+            return 49000000+shmulti;
+        else if(i.getTypeId() == 129)
+            return 50000000+shmulti;
+        else if(i.getTypeId() == 133)
+            return 51000000+shmulti;
+        else if(i.getTypeId() == 87)
+            return 52000000+shmulti;
+        else if(i.getTypeId() == 112)
+            return 53000000+shmulti;
+        else if(i.getTypeId() == 153)
+            return 54000000+shmulti;
+        else if(i.getTypeId() == 155)
+            return 55000000+shmulti;
+        else if(i.getTypeId() == 168)
+            return 58000000+shmulti;
+        else if(i.getTypeId() == 121)
+            return 61000000+shmulti;
+        else if(i.getTypeId() == 49)
+            return 62000000+shmulti;
+        return 1;
   }
-  
-  public static double getBlockSellPrice(String rank, int block) {
-    FileConfiguration f = settings.getSellPrices();
-    if (f.getInt(String.valueOf(rank) + "." + block) < 1)
-      return -1.0D;
-    
-    return f.getInt(String.valueOf(rank) + "." + block);
-  }
+
+
   
   public static String getSellRank(Player p) {
     return "A";
@@ -244,11 +295,11 @@ public class Methods {
   
   public String format(double amt) {
     if (amt >= 1.0E12D)
-      return String.format("%.1f Tril", new Object[] { Double.valueOf(amt / 1.0E12D) }); 
+      return String.format("%.1f Tril", amt / 1.0E12D);
     if (amt >= 1.0E9D)
-      return String.format("%.1f Bil", new Object[] { Double.valueOf(amt / 1.0E9D) }); 
+      return String.format("%.1f Bil", amt / 1.0E9D);
     if (amt >= 1000000.0D)
-      return String.format("%.1f Mil", new Object[] { Double.valueOf(amt / 1000000.0D) }); 
+      return String.format("%.1f Mil", amt / 1000000.0D);
     return NumberFormat.getNumberInstance(Locale.US).format(amt);
   }
   
@@ -256,15 +307,15 @@ public class Methods {
     if (amt <= 0.0D)
       return String.valueOf(0);
     if(amt >= 1.0E18D)
-    	return String.format("%.1f Quint", new Object[] { Double.valueOf(amt / 1.0E18D) }); 
+    	return String.format("%.1f Quint", amt / 1.0E18D);
     if(amt >= 1.0E15D)
-    	return String.format("%.1f Quad", new Object[] { Double.valueOf(amt / 1.0E15D) }); 
+    	return String.format("%.1f Quad", amt / 1.0E15D);
     if (amt >= 1.0E12D)
-      return String.format("%.1f Tril", new Object[] { Double.valueOf(amt / 1.0E12D) }); 
+      return String.format("%.1f Tril", amt / 1.0E12D);
     if (amt >= 1.0E9D)
-      return String.format("%.1f Bil", new Object[] { Double.valueOf(amt / 1.0E9D) }); 
+      return String.format("%.1f Bil", amt / 1.0E9D);
     if (amt >= 1000000.0D)
-      return String.format("%.1f Mil", new Object[] { Double.valueOf(amt / 1000000.0D) }); 
+      return String.format("%.1f Mil", amt / 1000000.0D);
     return NumberFormat.getNumberInstance(Locale.US).format(amt);
   }
 }

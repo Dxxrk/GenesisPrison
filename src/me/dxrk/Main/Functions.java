@@ -33,7 +33,7 @@ public class Functions implements Listener{
 			if(ChatColor.stripColor(s).toLowerCase().contains("xp finder")) {
 
 				String[] n = ChatColor.stripColor(s).split(" ");
-				double x = Double.parseDouble(n[2])/400;
+				double x = Double.parseDouble(n[2])/500;
 
 				xp += x;
 			}

@@ -64,7 +64,7 @@ public class CMDDaily implements Listener, CommandExecutor{
 			loree.add(m.c("&5Epic Trinket Dust +1"));
 			loree.add(m.c("&6Legendary Trinket Dust +1"));
 		}
-		else if(name.equals(m.c("&c5&lDemi-God Reward!"))){
+		else if(name.equals(m.c("5&lDemi-God Reward!"))){
 			loree.add(m.c("&e1x &5&lCommunity &7Key"));
 			loree.add(m.c("&e2x &4&lOmega &7Key"));
 		}
@@ -90,7 +90,7 @@ public class CMDDaily implements Listener, CommandExecutor{
 			loree.add(m.c("&e1x &7&lAlpha &7Key"));
 			loree.add(m.c("&e1x &c&lBeta &7Key"));
 			loree.add(m.c("&e1x &4&lOmega &7Key"));
-			loree.add(m.c("&&f&l1% Chance for &3&lRank &7Key."));
+			loree.add(m.c("&f&l1% Chance for &3&lRank &7Key."));
 		}
 		loree.add("");
 		loree.add(lore);
@@ -104,7 +104,7 @@ public class CMDDaily implements Listener, CommandExecutor{
 	
 	public void openDaily(Player p) {
 		Inventory inv = Bukkit.createInventory(null, 9, m.c("&e&lDaily Rewards:"));
-		inv.setItem(3, rewardChest(m.c("&6Free Daily Reward!"), m.c("&7Click to Claim!")));
+		inv.setItem(3, rewardChest(m.c("&7Free Daily Reward!"), m.c("&7Click to Claim!")));
 		inv.setItem(5, rewardChest(m.c("&6&lRank Rewards"), m.c("&7Click to Open!")));
 		p.openInventory(inv);
 		
@@ -120,7 +120,7 @@ public class CMDDaily implements Listener, CommandExecutor{
 		inv.setItem(14, rewardChest(m.c("&3&lTitan Reward!"), m.c("&7Click to Claim!")));
 		inv.setItem(24, rewardChest(m.c("&d&lGod Reward!"), m.c("&7Click to Claim!")));
 		inv.setItem(16, rewardChest(m.c("&e&lOlympian Reward!"), m.c("&7Click to Claim!")));
-		inv.setItem(8, rewardChest(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &7Reward!"), m.c("&7Click to Claim!")));
+		inv.setItem(8, rewardChest(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lReward!"), m.c("&7Click to Claim!")));
 		p.openInventory(inv);
 	}
 	

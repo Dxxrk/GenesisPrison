@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import me.dxrk.Events.SellHandler;
 import me.dxrk.Main.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -108,28 +109,22 @@ public class TokensCMD implements CommandExecutor, Listener {
         }
       } else {
         Player p = (Player)sender;
-        String s = ChatColor.GRAY + "-- (" + ChatColor.AQUA + "+" + ChatColor.GRAY + ") -- (" + ChatColor.LIGHT_PURPLE + "+" + ChatColor.GRAY + ") -- (" + ChatColor.AQUA + "Tokens" + ChatColor.GRAY + ") -- (" + ChatColor.LIGHT_PURPLE + "+" + ChatColor.GRAY + ") -- (" + ChatColor.AQUA + "+" + ChatColor.GRAY + ") --";
+        String s = m.c("&b&m---&c&lTokens&b&m---");
         if (args.length == 0) {
           p.sendMessage(s);
-          p.sendMessage(ChatColor.AQUA + "/Tokens Balance" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Displays your Epsilon token balance");
-          p.sendMessage(ChatColor.AQUA + "/Tokens Send (Player) (Amount)" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Send someone tokens");
-          p.sendMessage(ChatColor.AQUA + "/Tokens Withdraw" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Turn tokens to virtual items for shops!");
-          p.sendMessage(ChatColor.AQUA + "/Tokens Buy" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Buy some more tokens!");
-          p.sendMessage(ChatColor.AQUA + "/Tokens Shop" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Spend your tokens");
-          p.sendMessage(ChatColor.AQUA + "/Enchanter" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Buy Custom me.dxrk.Enchants!");
+          p.sendMessage(ChatColor.AQUA + "/Tokens Balance" + ChatColor.GRAY + " - " + ChatColor.RED + "Displays your token balance");
+          p.sendMessage(ChatColor.AQUA + "/Tokens Send (Player) (Amount)" + ChatColor.GRAY + " - " + ChatColor.RED + "Send someone tokens");
+          p.sendMessage(ChatColor.AQUA + "/Tokens Withdraw" + ChatColor.GRAY + " - " + ChatColor.RED + "Withdraw your tokens to sell or trade!");
           p.sendMessage(s);
         } else {
           if (args[0].equalsIgnoreCase("Help")) {
         	  p.sendMessage(s);
-              p.sendMessage(ChatColor.AQUA + "/Tokens Balance" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Displays your Epsilon token balance");
-              p.sendMessage(ChatColor.AQUA + "/Tokens Send (Player) (Amount)" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Send someone tokens");
-              p.sendMessage(ChatColor.AQUA + "/Tokens Withdraw" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Turn tokens to virtual items for shops!");
-              p.sendMessage(ChatColor.AQUA + "/Tokens Buy" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Buy some more tokens!");
-              p.sendMessage(ChatColor.AQUA + "/Tokens Shop" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Spend your tokens");
-              p.sendMessage(ChatColor.AQUA + "/Enchanter" + ChatColor.GRAY + " - " + ChatColor.DARK_AQUA + "Buy Custom me.dxrk.Enchants!");
+              p.sendMessage(ChatColor.AQUA + "/Tokens Balance" + ChatColor.GRAY + " - " + ChatColor.RED + "Displays your token balance");
+              p.sendMessage(ChatColor.AQUA + "/Tokens Send (Player) (Amount)" + ChatColor.GRAY + " - " + ChatColor.RED + "Send someone tokens");
+              p.sendMessage(ChatColor.AQUA + "/Tokens Withdraw" + ChatColor.GRAY + " - " + ChatColor.RED + "Withdraw your tokens to sell or trade!");
               p.sendMessage(s);
           } else if (args[0].equalsIgnoreCase("Balance") || args[0].equalsIgnoreCase("Bal")) {
-            prefixMsg(p, "&e⛀" + ((int)this.tokens.getTokens(p)));
+            prefixMsg(p, "&e⛀" + this.tokens.getTokens(p));
           } else if (args[0].equalsIgnoreCase("WithDraw")) {
             if (args.length != 2) return false;
 
@@ -154,7 +149,7 @@ public class TokensCMD implements CommandExecutor, Listener {
                 p.sendMessage(ChatColor.RED + "Hey! You can not send yourself tokens!");
                 return false;
               }
-              if (isInt(args[2])) {
+              if (SellHandler.getInstance().isDbl(args[2])) {
                 String Amount = args[2].replace("-", "");
                 int amount = Integer.parseInt(Amount);
                 double PlayerAmount = this.tokens.getTokens(p);
@@ -176,7 +171,7 @@ public class TokensCMD implements CommandExecutor, Listener {
                 p.sendMessage(ChatColor.RED + args[1] + " is not online!");
                 return false;
               } 
-              if (isInt(args[2])) {
+              if (SellHandler.getInstance().isDbl(args[2])) {
                 String Amount = args[2];
                 int amount = Integer.parseInt(Amount);
                 this.tokens.addTokens(p, amount);
@@ -186,8 +181,10 @@ public class TokensCMD implements CommandExecutor, Listener {
             } else {
               p.sendMessage(ChatColor.RED + "No perm");
             } 
-          } else if (args[0].equalsIgnoreCase("Shop")) {
-            //this.tokens.openEtShop(p);
+          } else if (args[0].equalsIgnoreCase("take")) {
+            if(!p.hasPermission("rank.owner")) return false;
+            Player player = Bukkit.getPlayer(args[1]);
+            tokens.takeTokens(player, Double.parseDouble(args[2]));
           } else {
             prefixMsg(p, "&7Command not found");
           } 

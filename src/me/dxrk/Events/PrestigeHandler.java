@@ -50,9 +50,9 @@ public class PrestigeHandler implements Listener, CommandExecutor {
             int prestiges;
             int times = pl.getInt(p.getUniqueId().toString()+".TimesPrestiged");
             int rank = RankupHandler.getInstance().getRank(p);
-            double divisor = 7.5 * (1.5*times);
+            double divisor = 5 * (0.75*times);
             if(times ==0) {
-                prestiges = (int) (rank/7.5);
+                prestiges = rank/5;
             } else {
                 prestiges = (int) Math.round(rank / divisor);
             }
@@ -149,11 +149,11 @@ public class PrestigeHandler implements Listener, CommandExecutor {
 
         //Adding Prestiges(boost) and resetting rank
         int rank = RankupHandler.getInstance().getRank(p);
-        double divisor = 7.5 * (0.75*timesprestied);
+        double divisor = 5 * (0.75*timesprestied);
         int prestiges = pl.getInt(uuid+".Prestiges");
         int pr;
         if(timesprestied ==0) {
-            pr = (int) (rank /7.5);
+            pr = rank /5;
         } else {
             pr = (int) Math.round(rank / divisor);
         }

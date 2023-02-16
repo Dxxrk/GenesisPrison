@@ -238,10 +238,16 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
       // For when sale is active, use this ||
       Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "workmode enable");
 
-    
 
-      JDAEvents.getInstance().serverLink();
 
+
+      new BukkitRunnable() {
+
+          @Override
+          public void run() {
+              JDAEvents.getInstance().serverLink();
+          }
+      }.runTaskTimer(this, 0L, 20*60L);
 
     
     new BukkitRunnable() {
@@ -250,51 +256,34 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
 		public void run() {
 			for(Player p : Bukkit.getOnlinePlayers()) {
 			ScoreboardHandler.updateSB(p);
-			
 			if (!p.isOnline()) {
 			     cancel();
 			 }
 			}
-			
-			
- 
-
 		}
-
  }.runTaskTimer(this, 0L, 20*2L);
 
       new BukkitRunnable() {
-
           @Override
           public void run() {
               for(Player p : Bukkit.getOnlinePlayers()) {
                  if(RankupHandler.aru.contains(p)){
                      RankupHandler.getInstance().MaxRankup(p);
                  }
-
                   if (!p.isOnline()) {
                       cancel();
                   }
               }
-
-
-
-
           }
-
       }.runTaskTimer(this, 0L, 1L);
  
 
 
 new BukkitRunnable() {
-
 	@Override
 	public void run() {
 		Leaderboards.addTimePlayed();
-
-
 	}
-
 }.runTaskTimer(this, 0L, 20L);
  
     

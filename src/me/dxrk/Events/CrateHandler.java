@@ -554,11 +554,18 @@ public ItemStack loadItem(String s, String slot) {
   
   
   
-  public void openall(Player p, int alpha, int beta, int omega, int token, int seasonal, int rank, int community, int vote) {
+  public void openall(Player p, int alpha, int beta, int omega, int token, int seasonal, int rank, int community, int vote, List<String> rw) {
+      LocksmithHandler.getInstance().takeKey(p, "Alpha", alpha);
+      LocksmithHandler.getInstance().takeKey(p, "Beta", beta);
+      LocksmithHandler.getInstance().takeKey(p, "Omega", omega);
+      LocksmithHandler.getInstance().takeKey(p, "Token", token);
+      LocksmithHandler.getInstance().takeKey(p, "Seasonal", seasonal);
+      LocksmithHandler.getInstance().takeKey(p, "Rank", rank);
+      LocksmithHandler.getInstance().takeKey(p, "Vote", vote);
+      LocksmithHandler.getInstance().takeKey(p, "Community", community);
 	  double multi = 0;
   	  int tokens = 0;
-  	  ArrayList<String> rw = new ArrayList<>();
-  	  ArrayList<String> rww = new ArrayList<>();
+  	  List<String> rww = rw;
   	int i;
 	  for (i = 0; i < alpha; i++) {
 		ItemStack won = loadItem("Alpha", "." + getRandom("Alpha"));
@@ -578,7 +585,7 @@ public ItemStack loadItem(String s, String slot) {
     	double mm = Double.parseDouble(nn[0]);
     	
     	multi += mm;
-    } else if(name.contains("Key")){
+    } else if(!name.contains("Key")){
     	rww.add(c(won.getItemMeta().getDisplayName()));
     }
     
@@ -622,7 +629,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    } else if(name.contains("Key")){
+	    } else if(!name.contains("Key")){
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -633,19 +640,7 @@ public ItemStack loadItem(String s, String slot) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
 	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
-	    } else {
-	    	if(won.getType() == Material.DIAMOND_PICKAXE) {
-	    		ItemStack hand = won.clone();
-	    		ItemMeta am = hand.getItemMeta();
-	    	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
-	    	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-	    	    hand.setItemMeta(am);
-	    	    p.getInventory().addItem(hand);
-	    	} else {
-	      p.getInventory().addItem(won);
-	    	}
-	    	p.updateInventory();
-	    }
+	    } 
 	   
 		  }
 	  for (i = 0; i < omega; i++) {
@@ -666,7 +661,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    } else if(name.contains("Key")){
+	    } else if(!name.contains("Key")){
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -677,19 +672,7 @@ public ItemStack loadItem(String s, String slot) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
 	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
-	    } else {
-	    	if(won.getType() == Material.DIAMOND_PICKAXE) {
-	    		ItemStack hand = won.clone();
-	    		ItemMeta am = hand.getItemMeta();
-	    	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
-	    	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-	    	    hand.setItemMeta(am);
-	    	    p.getInventory().addItem(hand);
-	    	} else {
-	      p.getInventory().addItem(won);
-	    	}
-	    	p.updateInventory();
-	    }
+	    } 
 	   
 		  }
 	  for (i = 0; i < token; i++) {
@@ -710,7 +693,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    } else if(name.contains("Key")){
+	    } else if(!name.contains("Key")){
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -721,19 +704,7 @@ public ItemStack loadItem(String s, String slot) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
 	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
-	    } else {
-	    	if(won.getType() == Material.DIAMOND_PICKAXE) {
-	    		ItemStack hand = won.clone();
-	    		ItemMeta am = hand.getItemMeta();
-	    	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
-	    	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-	    	    hand.setItemMeta(am);
-	    	    p.getInventory().addItem(hand);
-	    	} else {
-	      p.getInventory().addItem(won);
-	    	}
-	    	p.updateInventory();
-	    }
+	    } 
 	   
 		  }
 	  for (i = 0; i < seasonal; i++) {
@@ -754,7 +725,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    } else if(name.contains("Key")){
+	    } else if(!name.contains("Key")){
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -765,19 +736,7 @@ public ItemStack loadItem(String s, String slot) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
 	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
-	    } else {
-	    	if(won.getType() == Material.DIAMOND_PICKAXE) {
-	    		ItemStack hand = won.clone();
-	    		ItemMeta am = hand.getItemMeta();
-	    	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
-	    	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-	    	    hand.setItemMeta(am);
-	    	    p.getInventory().addItem(hand);
-	    	} else {
-	      p.getInventory().addItem(won);
-	    	}
-	    	p.updateInventory();
-	    }
+	    } 
 	   
 		  }
 	  for (i = 0; i < rank; i++) {
@@ -798,7 +757,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    } else if(name.contains("Key")){
+	    } else if(!name.contains("Key")){
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -809,19 +768,7 @@ public ItemStack loadItem(String s, String slot) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
 	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
-	    } else {
-	    	if(won.getType() == Material.DIAMOND_PICKAXE) {
-	    		ItemStack hand = won.clone();
-	    		ItemMeta am = hand.getItemMeta();
-	    	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
-	    	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-	    	    hand.setItemMeta(am);
-	    	    p.getInventory().addItem(hand);
-	    	} else {
-	      p.getInventory().addItem(won);
-	    	}
-	    	p.updateInventory();
-	    }
+	    } 
 	   
 		  }
 	  for (i = 0; i < community; i++) {
@@ -842,7 +789,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    } else if(name.contains("Key")){
+	    } else if(!name.contains("Key")){
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -853,19 +800,7 @@ public ItemStack loadItem(String s, String slot) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
 	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
-	    } else {
-	    	if(won.getType() == Material.DIAMOND_PICKAXE) {
-	    		ItemStack hand = won.clone();
-	    		ItemMeta am = hand.getItemMeta();
-	    	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
-	    	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-	    	    hand.setItemMeta(am);
-	    	    p.getInventory().addItem(hand);
-	    	} else {
-	      p.getInventory().addItem(won);
-	    	}
-	    	p.updateInventory();
-	    }
+	    } 
 	   
 		  }
 	  for (i = 0; i < vote; i++) {
@@ -886,7 +821,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	double mm = Double.parseDouble(nn[0]);
 	    	
 	    	multi += mm;
-	    } else if(name.contains("Key")){
+	    } else if(!name.contains("Key")){
 	    	rww.add(c(won.getItemMeta().getDisplayName()));
 	    }
 	    
@@ -897,30 +832,31 @@ public ItemStack loadItem(String s, String slot) {
 	        ss = ss.replaceAll("%PLAYER%", p.getName());
 	        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ss);
 	      } 
-	    } else {
-	    	if(won.getType() == Material.DIAMOND_PICKAXE) {
-	    		ItemStack hand = won.clone();
-	    		ItemMeta am = hand.getItemMeta();
-	    	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
-	    	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-	    	    hand.setItemMeta(am);
-	    	    p.getInventory().addItem(hand);
-	    	} else {
-	      p.getInventory().addItem(won);
-	    	}
-	    	p.updateInventory();
 	    }
 	   
 		  }
+
 	  this.settings.savePlayerData();
-      // String[] rewards = {c("&7&lMulti: "+multi+"x"), c("&7&lTokens: "+tokens), c("&7&lMoney: "+Main.formatAmt(money)), c("&7Other:")};
+      if(LocksmithHandler.getInstance().hasKeys(p)) {
+          String uuid = p.getUniqueId().toString();
+          int a = this.settings.getLocksmith().getInt(uuid + ".alpha");
+          int b = this.settings.getLocksmith().getInt(uuid + ".beta");
+          int o = this.settings.getLocksmith().getInt(uuid + ".omega");
+          int t = this.settings.getLocksmith().getInt(uuid + ".token");
+          int v = this.settings.getLocksmith().getInt(uuid + ".vote");
+          int s = this.settings.getLocksmith().getInt(uuid + ".seasonal");
+          int c = this.settings.getLocksmith().getInt(uuid + ".community");
+          int r = this.settings.getLocksmith().getInt(uuid + ".rank");
+          openall(p, a, b, o, t, s, r, c, v, rww);
+          return;
+      }
 
 
-      ArrayList<String> rw2 = new ArrayList<>(rww);
+
 	  
 	  FancyMessage reward = new FancyMessage("");
-	  reward.then(c("&f&lRewards &8| &b(Hover)")).tooltip(rw2);
-	  if(rw2.size() >0) {
+	  reward.then(c("&f&lRewards &8| &b(Hover)")).tooltip(rww);
+	  if(rww.size() >0) {
 	  reward.send(p);
 	  }
   }
@@ -971,15 +907,8 @@ public ItemStack loadItem(String s, String slot) {
 		    int seasonal = this.settings.getLocksmith().getInt(uuid + ".seasonal");
 		    int community = this.settings.getLocksmith().getInt(uuid + ".community");
 		    int rank = this.settings.getLocksmith().getInt(uuid + ".rank");
-		    openall(p, alpha, beta, omega, token, seasonal, rank, community, vote);
-		    LocksmithHandler.getInstance().takeKey(p, "Alpha", alpha);
-		    LocksmithHandler.getInstance().takeKey(p, "Beta", beta);
-		    LocksmithHandler.getInstance().takeKey(p, "Omega", omega);
-		    LocksmithHandler.getInstance().takeKey(p, "Token", token);
-		    LocksmithHandler.getInstance().takeKey(p, "Seasonal", seasonal);
-		    LocksmithHandler.getInstance().takeKey(p, "Rank", rank);
-		    LocksmithHandler.getInstance().takeKey(p, "Vote", vote);
-		    LocksmithHandler.getInstance().takeKey(p, "Community", community);
+            List<String> rw = new ArrayList<>();
+		    openall(p, alpha, beta, omega, token, seasonal, rank, community, vote, rw);
 		  } else {
 			  p.sendMessage(c("&f&lCrates &8| &bYou must be rank Hero+ to use /openall"));
 		  }

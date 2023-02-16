@@ -218,24 +218,24 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 		Inventory enchantmenu = Bukkit.createInventory(null, 54, c("&d&lPurchase Enchants!"));
 
 
-		setEnchantItem("Karma", Material.RABBIT_FOOT, c("&bUpgrade Karma"), c("&7Boosts the chance of other enchants to proc."), 4000, enchantmenu, 13, p, 80);
-		setEnchantItem("Booster", Material.POTION, c("&bUpgrade Booster"), c("&7Chance to find low timed boosts."), 5000, enchantmenu, 20, p, 65);
-		setEnchantItem("Key Party", Material.EYE_OF_ENDER, c("&bUpgrade Key Party"), c("&7Chance to give everyone online a key."), 3500, enchantmenu, 39, p, 50);
-		setEnchantItem("Multiply", Material.EMERALD, c("&bUpgrade Multiply"), c("&7Chance to double the effectiveness of all currencies for 10s."), 10000, enchantmenu, 23, p, 115);
-		setEnchantItem("Fortuity", Material.GOLD_INGOT, c("&bUpgrade Fortuity"), c("&7Boosts the effectiveness of Fortune."), 7500, enchantmenu, 41, p, 100);
-		setEnchantItem("Dust Finder", Material.SUGAR, c("&bUpgrade Dust Finder"), c("&7Chance to find Trinket dust."), 1000, enchantmenu, 14, p, 15);
+		setEnchantItem("Karma", Material.RABBIT_FOOT, c("&bUpgrade Karma"), c("&7Boosts the chance of other enchants to proc."), 9000, enchantmenu, 13, p, 150);
+		setEnchantItem("Booster", Material.POTION, c("&bUpgrade Booster"), c("&7Chance to find low timed boosts."), 8000, enchantmenu, 20, p, 100);
+		setEnchantItem("Key Party", Material.EYE_OF_ENDER, c("&bUpgrade Key Party"), c("&7Chance to give everyone online a key."), 6000, enchantmenu, 39, p, 75);
+		setEnchantItem("Multiply", Material.EMERALD, c("&bUpgrade Multiply"), c("&7Chance to double the effectiveness of all currencies for 10s."), 10000, enchantmenu, 23, p, 200);
+		setEnchantItem("Fortuity", Material.GOLD_INGOT, c("&bUpgrade Fortuity"), c("&7Boosts the effectiveness of Fortune."), 9750, enchantmenu, 41, p, 175);
+		setEnchantItem("Dust Finder", Material.SUGAR, c("&bUpgrade Dust Finder"), c("&7Chance to find Trinket dust."), 2500, enchantmenu, 14, p, 15);
 		setEnchantItem("Key Finder", Material.TRIPWIRE_HOOK, c("&bUpgrade Key Finder"), c("&7Chance to find a Key."), 1000, enchantmenu, 4, p, 1);
-		setEnchantItem("Wave", Material.GOLD_PLATE, c("&bUpgrade Wave"), c("&7Chance to break an entire layer of the mine."), 5000, enchantmenu, 32, p, 25);
-		setEnchantItem("Explosion", Material.FIREBALL, c("&bUpgrade Explosion"), c("&7Chance to explode a large hole in the mine(5x5x5)."), 2500, enchantmenu, 30, p, 1);
-		setEnchantItem("Greed", Material.DIAMOND, c("&bUpgrade Greed"), c("&7Increases selling price for blocks."), 5000, enchantmenu, 29, p, 40);
-		setEnchantItem("Research", Material.REDSTONE, c("&bUpgrade Research"), c("&7Chance to grant you one level instantly."), 3000, enchantmenu, 40, p, 35);
-		setEnchantItem("Token Finder", Material.PRISMARINE_CRYSTALS, c("&bUpgrade Token Finder"), c("&7Increase the amount of tokens randomly found."), 500, enchantmenu, 12, p, 1);
-		setEnchantItem("Nuke", Material.TNT, c("&bUpgrade Nuke"), c("&7Low Chance to break the entire mine."), 10000,  enchantmenu, 31, p, 125);
-		setEnchantItem("Junkpile", Material.BUCKET, c("&bUpgrade Junkpile"), c("&7Chance to find random items while mining."), 2500, enchantmenu, 33, p, 60);
+		setEnchantItem("Wave", Material.GOLD_PLATE, c("&bUpgrade Wave"), c("&7Chance to break an entire layer of the mine."), 4500, enchantmenu, 32, p, 40);
+		setEnchantItem("Explosion", Material.FIREBALL, c("&bUpgrade Explosion"), c("&7Chance to explode a large hole in the mine(5x5x5)."), 2500, enchantmenu, 30, p, 10);
+		setEnchantItem("Greed", Material.DIAMOND, c("&bUpgrade Greed"), c("&7Increases selling price for blocks."), 5000, enchantmenu, 29, p, 60);
+		setEnchantItem("Research", Material.REDSTONE, c("&bUpgrade Research"), c("&7Chance to grant you one level instantly."), 4000, enchantmenu, 40, p, 50);
+		setEnchantItem("Token Finder", Material.PRISMARINE_CRYSTALS, c("&bUpgrade Token Finder"), c("&7Increase the amount of tokens randomly found."), 1000, enchantmenu, 12, p, 1);
+		setEnchantItem("Nuke", Material.TNT, c("&bUpgrade Nuke"), c("&7Low Chance to break the entire mine."), 20000,  enchantmenu, 31, p, 220);
+		setEnchantItem("Junkpile", Material.BUCKET, c("&bUpgrade Junkpile"), c("&7Chance to find random items while mining."), 7500, enchantmenu, 33, p, 85);
 		setEnchantItem("Fortune", Material.NETHER_STAR, c("&bUpgrade Fortune"), c("&7Increases amount of blocks you sell."), 100, enchantmenu, 21, p, 1);
-		setEnchantItem("Prestige Finder", Material.BEACON, c("&bUpgrade Prestige Finder"), c("&7Chance to randomly gain some prestiges"), 2500, enchantmenu, 22, p, 20);
-		setEnchantItem("XP Finder", Material.EXP_BOTTLE, c("&bUpgrade XP Finder"), c("&7Increases the amount of XP found while mining."), 1000, enchantmenu, 24, p, 10);
-		setEnchantItem("Laser", Material.BLAZE_ROD, c("&bUpgrade Laser"), c("&7Chance to summon a laser to obliterate blocks in its path."), 8500, enchantmenu, 49, p, 125);
+		setEnchantItem("Prestige Finder", Material.BEACON, c("&bUpgrade Prestige Finder"), c("&7Chance to randomly gain some prestiges"), 3500, enchantmenu, 22, p, 30);
+		setEnchantItem("XP Finder", Material.EXP_BOTTLE, c("&bUpgrade XP Finder"), c("&7Increases the amount of XP found while mining."), 3000, enchantmenu, 24, p, 25);
+		setEnchantItem("Laser", Material.BLAZE_ROD, c("&bUpgrade Laser"), c("&7Chance to summon a laser to obliterate blocks in its path."), 15000, enchantmenu, 49, p, 210);
 		
 		
 		ItemStack trinkets = new ItemStack(Material.GOLD_NUGGET);
@@ -408,15 +408,15 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 					i = 1000;
 					break;
 				}
-				i = 1000+(1000 * (level * 0.0021)); // 31 Million Level 5,000 MAX
+				i = 1000+(1000*(level*0.0036)); // 50 Million Level 5,000 MAX
 
 				break;
 			case "Dust Finder":
 				if(level == 0) {
-					i = 1000;
+					i = 2500;
 					break;
 				}
-				i = 1000+(1000*(level*0.0036)); // 50 Million Level 5,000 MAX
+				i = 2500+(2500*(level*0.002)); // 75 Million Level 5,000 MAX
 
 				break;
 			case "Fortune":
@@ -429,10 +429,10 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 				break;
 			case "Wave":
 				if(level == 0) {
-					i = 5000;
+					i = 4500;
 					break;
 				}
-				i = 5000+(5000 * (level * 0.028)); // 75 Million Level 1,000 MAX
+				i = 4500+(4500 * (level * 0.09141)); // 225 Million Level 1,000 MAX
 
 				break;
 			case "Token Finder":
@@ -440,7 +440,7 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 					i = 1000;
 					break;
 				}
-				i = 1000+(1000 * (level * 0.0183)); // 85 Million Level 3,000 MAX
+				i = 1000+(1000 * (level * 0.01822)); // 85 Million Level 3,000 MAX
 
 				break;
 			case "Charity":
@@ -453,10 +453,10 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 				break;
 			case "Nuke":
 				if(level == 0) {
-					i = 10000;
+					i = 20000;
 					break;
 				}
-				i = 10000+(10000*(level*1.19760479049)); // 1.5 Billion Level 500 MAX
+				i = 20000+(20000*(level*0.6)); // 1.5 Billion Level 500 MAX
 
 				break;
 			case "Explosion":
@@ -464,15 +464,15 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 					i = 2500;
 					break;
 				}
-				i = 2500+(2500*(level*0.0382)); // 50 Million Level 1,000 MAX
+				i = 2500+(2500*(level*0.038)); // 50 Million Level 1,000 MAX
 
 				break;
 			case "Research":
 				if(level == 0) {
-					i = 3000;
+					i = 4000;
 					break;
 				}
-				i = 3000+(3000*(level*0.01)); // 143 Million Level 3,000 MAX
+				i = 4000+(4000*(level*0.0077)); // 150 Million Level 3,000 MAX
 
 				break;
 			case "Greed":
@@ -480,55 +480,55 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 					i = 5000;
 					break;
 				}
-				i = 5000+(5000*(level*10)); // 252 Million Level 100 MAX
+				i = 5000+(5000*(level*7.05)); // 252 Million Level 100 MAX
 
 				break;
 			case "Junkpile":
 				if(level == 0) {
-					i = 2500;
+					i = 7500;
 					break;
 				}
-				i = 2500+(2500*(level*0.02)); // 100 Million Level 2,000 MAX
+				i = 7500+(7500*(level*0.02)); // 315 Million Level 2,000 MAX
 
 				break;
 			case "Key Party":
 				if(level == 0) {
-					i = 3500;
+					i = 6000;
 					break;
 				}
-				i = 3500+(3500*(level*0.035)); // 61 Million Level 1,000 MAX
+				i = 6000+(6000*(level*0.076)); // 234 Million Level 1,000 MAX
 
 				break;
 			case "Prestige Finder":
 				if(level == 0) {
-					i = 2500;
+					i = 3500;
 					break;
 				}
-				i = 2500+(2500*(level*0.005)); // 156 Million Level 5,000 MAX
+				i = 3500+(3500*(level*0.0046)); // 219 Million Level 5,000 MAX
 
 				break;
 			case "XP Finder":
 				if(level == 0) {
-					i = 1000;
+					i = 3000;
 					break;
 				}
-				i = 1000+(1000*(level*0.005)); // 250 Million Level 10,000 MAX
+				i = 3000+(3000*(level*0.0023)); // 180 Million Level 10,000 MAX
 
 				break;
 			case "Fortuity":
 				if(level == 0) {
-					i = 7500;
+					i = 9750;
 					break;
 				}
-				i = 7500+(7500*(level*0.1)); // 375 Million Level 1,000 MAX
+				i = 9750+(9750*(level*0.1315)); // 650 Million Level 1,000 MAX
 
 				break;
 			case "Booster":
 				if(level == 0) {
-					i = 5000;
+					i = 8000;
 					break;
 				}
-				i = 5000+(5000*(level*0.017)); // 265 Million Level 2,500 MAX
+				i = 8000+(8000*(level*0.013)); // 345 Million Level 2,500 MAX
 
 				break;
 			case "Multiply":
@@ -536,23 +536,23 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 					i = 10000;
 					break;
 				}
-				i = 10000+(10000*(level*0.1)); // 1.12 Billion Level 1,500 MAX
+				i = 10000+(10000*(level*0.0743)); // 850 Million Level 1,500 MAX
 
 				break;
 			case "Karma":
 				if(level == 0) {
-					i = 4000;
+					i = 9000;
 					break;
 				}
-				i = 4000+(4000*(level*0.0023)); // 115 Million Level 5,000 MAX
+				i = 9000+(9000*(level*0.00405)); // 500 Million Level 5,000 MAX
 
 				break;
 			case "Laser":
 				if(level == 0) {
-					i = 8500;
+					i = 15000;
 					break;
 				}
-				i = 8500+(8500*(level*0.4)); // 957 Million Level 750 MAX
+				i = 15000+(15000*(level*0.2347)); // 1 Billion Level 750 MAX
 
 				break;
 

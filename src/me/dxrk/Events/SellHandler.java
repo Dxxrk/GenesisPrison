@@ -176,7 +176,7 @@ public class SellHandler implements Listener, CommandExecutor {
 
 
 				//Change this config file to look a lot nicer + add different block prices
-	  	    	double price = Methods.getBlockSellPrice("A", i.getTypeId());
+	  	    	double price = Methods.getSellPrice(i);
 
 
 	  	    	total += price * (multi+greed+event) * sell * miningboost*prestige*multiply*unity;
@@ -223,7 +223,7 @@ public class SellHandler implements Listener, CommandExecutor {
 
 
 			  //Change this config file to look a lot nicer + add different block prices
-			  double price = Methods.getBlockSellPrice("A", i.getTypeId());
+			  double price = Methods.getSellPrice(i);
 
 
 			  total += price * (multi+greed+event) * sell * miningboost*prestige*multiply;
@@ -388,7 +388,8 @@ public class SellHandler implements Listener, CommandExecutor {
 					 p.sendMessage(c("&c/resetmine(/rm) is on cooldown."));
 				 } else {
 					 ResetHandler.resetMine(mine, ResetReason.NORMAL);
-					 p.teleport(mine.getSpawnLocation());
+					 if(mine.isLocationInRegion(p.getLocation()))
+					 	p.teleport(mine.getSpawnLocation());
 					 reset.add(p.getUniqueId().toString());
 				 }
 				 new BukkitRunnable() {

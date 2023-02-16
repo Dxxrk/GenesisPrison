@@ -62,7 +62,7 @@ public class CrateFunctions {
         lore.add(m.c(" "));
         lore.add(m.c("&6&l&m--&6&lItems&m--"));
         lore.add(m.c("&51-3x Epic Trinkets"));
-        lore.add(m.c("&61-3x Legendary Trinkets"));
+        lore.add(m.c("&61x Legendary Trinkets"));
         lore.add(m.c(" "));
         lore.add(m.c("&f&l&m--&f&lTroll&m--"));
         lore.add(m.c("&fMjölnir"));
@@ -156,18 +156,15 @@ public class CrateFunctions {
                 rm.setLore(lore);
             }
             if(ri > 100 && ri <=125){
-                int tmin = 1;
-                int tmax = 3;
-                int trinkets = r.nextInt(tmax - tmin)+ tmin;
-                rm.setDisplayName(m.c("&e"+trinkets+"x &6Legendary Trinket"));
+                rm.setDisplayName(m.c("&e1x &6Legendary Trinket"));
                 reward.setType(Material.GOLD_NUGGET);
                 List<String> lore = new ArrayList<>();
-                lore.add("givetrinket %PLAYER% legendary "+trinkets);
+                lore.add("givetrinket %PLAYER% legendary "+1);
                 rm.setLore(lore);
             }
             if(ri > 125 && ri <=150) {
                 int tmin = 1;
-                int tmax = 5;
+                int tmax = 3;
                 int trinkets = r.nextInt(tmax - tmin)+ tmin;
                 rm.setDisplayName(m.c("&e"+trinkets+"x &5Epic Trinket"));
                 reward.setType(Material.GOLD_NUGGET);

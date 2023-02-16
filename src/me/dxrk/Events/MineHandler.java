@@ -28,6 +28,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MineHandler implements Listener, CommandExecutor{
 	
@@ -63,6 +64,84 @@ public class MineHandler implements Listener, CommandExecutor{
 	/*
 		Finding a players Mine Block when first creating.
 	 */
+
+
+	//Create a list that adds different materials
+	// You then use the list to grab materials +-1 from the initial mineblock | i.e if the block is moss stone, you would also get cobblestone and stone in your mine
+	// So on and so forth with every single block up until you get to prestige 2000, which is 40 different initial mine blocks
+	// This also means changing the blocks that the donator ranks get to be more precise and balanced and not as grindy to reach the next block.
+
+	private List<ItemStack> mineBlocks() {
+		List<ItemStack> mineblocks = new ArrayList<>();
+		mineblocks.add(new ItemStack(Material.COBBLESTONE));
+		mineblocks.add(new ItemStack(Material.MOSSY_COBBLESTONE));
+		mineblocks.add(new ItemStack(Material.STONE, 1, (short)0));
+		mineblocks.add(new ItemStack(Material.STONE, 1, (short)1));
+		mineblocks.add(new ItemStack(Material.STONE, 1, (short)2));
+		mineblocks.add(new ItemStack(Material.STONE, 1, (short)3));
+		mineblocks.add(new ItemStack(Material.STONE, 1, (short)4));
+		mineblocks.add(new ItemStack(Material.STONE, 1, (short)5));
+		mineblocks.add(new ItemStack(Material.STONE, 1, (short)6));
+		mineblocks.add(new ItemStack(Material.SMOOTH_BRICK, 1, (short)0));
+		mineblocks.add(new ItemStack(Material.SMOOTH_BRICK, 1, (short)1));
+		mineblocks.add(new ItemStack(Material.SMOOTH_BRICK, 1, (short)2));
+		mineblocks.add(new ItemStack(Material.SMOOTH_BRICK, 1, (short)3));
+		mineblocks.add(new ItemStack(Material.SMOOTH_BRICK, 1, (short)0));
+		mineblocks.add(new ItemStack(Material.SANDSTONE, 1, (short)0));
+		mineblocks.add(new ItemStack(Material.SANDSTONE, 1, (short)1));
+		mineblocks.add(new ItemStack(Material.SANDSTONE, 1, (short)2));
+		mineblocks.add(new ItemStack(Material.RED_SANDSTONE, 1, (short)0));
+		mineblocks.add(new ItemStack(Material.RED_SANDSTONE, 1, (short)1));
+		mineblocks.add(new ItemStack(Material.RED_SANDSTONE, 1, (short)2));
+		mineblocks.add(new ItemStack(Material.HARD_CLAY));
+		mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short)0));
+		mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short)1));
+		mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short)2));
+		mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short)3));
+		mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short)4));
+		mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short)5));
+		mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short)6));
+		mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short)7));
+		mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short)8));
+		mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short)9));
+		mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short)10));
+		mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short)11));
+		mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short)12));
+		mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short)13));
+		mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short)14));
+		mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short)15));
+		mineblocks.add(new ItemStack(Material.BRICK));
+		mineblocks.add(new ItemStack(Material.COAL_ORE));
+		mineblocks.add(new ItemStack(Material.COAL_BLOCK));
+		mineblocks.add(new ItemStack(Material.IRON_ORE));
+		mineblocks.add(new ItemStack(Material.IRON_BLOCK));
+		mineblocks.add(new ItemStack(Material.GOLD_ORE));
+		mineblocks.add(new ItemStack(Material.GOLD_BLOCK));
+		mineblocks.add(new ItemStack(Material.REDSTONE_ORE));
+		mineblocks.add(new ItemStack(Material.REDSTONE_BLOCK));
+		mineblocks.add(new ItemStack(Material.LAPIS_ORE));
+		mineblocks.add(new ItemStack(Material.LAPIS_BLOCK));
+		mineblocks.add(new ItemStack(Material.DIAMOND_ORE));
+		mineblocks.add(new ItemStack(Material.DIAMOND_BLOCK));
+		mineblocks.add(new ItemStack(Material.EMERALD_ORE));
+		mineblocks.add(new ItemStack(Material.EMERALD_BLOCK));
+		mineblocks.add(new ItemStack(Material.NETHERRACK));
+		mineblocks.add(new ItemStack(Material.NETHER_BRICK));
+		mineblocks.add(new ItemStack(Material.QUARTZ_ORE));
+		mineblocks.add(new ItemStack(Material.QUARTZ_BLOCK, 1, (short)0));
+		mineblocks.add(new ItemStack(Material.QUARTZ_BLOCK, 1, (short)1));
+		mineblocks.add(new ItemStack(Material.QUARTZ_BLOCK, 1, (short)2));
+		mineblocks.add(new ItemStack(Material.PRISMARINE, 1, (short)0));
+		mineblocks.add(new ItemStack(Material.PRISMARINE, 1, (short)1));
+		mineblocks.add(new ItemStack(Material.PRISMARINE, 1, (short)2));
+		mineblocks.add(new ItemStack(Material.ENDER_STONE));
+		mineblocks.add(new ItemStack(Material.OBSIDIAN));
+		return mineblocks;
+	}
+
+	public void changeMineBlock(Player p) {
+
+	}
 
 	public Material mineBlock(Player p){
 		Material mat = Material.COBBLESTONE;

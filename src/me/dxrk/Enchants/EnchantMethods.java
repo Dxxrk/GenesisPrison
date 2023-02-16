@@ -322,7 +322,7 @@ public class EnchantMethods {
 			}
 			if(Functions.multiply.contains(p)) multiply = 2;
 
-			int tokens = (int) (11*blocks*tf*multiply*skill1*event*prestige*miningboost*unity);
+			int tokens = (int) (2*blocks*tf*multiply*skill1*event*prestige*miningboost*unity);
 			Tokens.getInstance().addTokens(p, tokens);
 			SellHandler.getInstance().sellEnchant(p, sellblocks, "Laser", tokens);
 
@@ -444,7 +444,7 @@ public class EnchantMethods {
 				}
 
 
-				int tokens = (int) (5.25*blocks*tf*multiply*skill1*event*prestige*miningboost*unity);
+				int tokens = (int) (2*blocks*tf*multiply*skill1*event*prestige*miningboost*unity);
 				Tokens.getInstance().addTokens(p, tokens);
 				SellHandler.getInstance().sellEnchant(p, sellblocks, "Wave", tokens);
 					
@@ -470,9 +470,9 @@ public class EnchantMethods {
 				  
 			      if(level == 0) return;
 				  if(level == 1) {
-					  chance = (int) (2500 * lucky * luck*skill);
+					  chance = (int) (2000 * lucky * luck*skill);
 				  } else {
-					  chance = (int) ((2500 - (1.15*level*lucky * luck * skill)));
+					  chance = (int) ((2000 - (1.15*level*lucky * luck * skill)));
 					  if(chance < 300){
 						  chance = 300;
 					  }
@@ -561,7 +561,7 @@ public class EnchantMethods {
 				}
 
 
-				int tokens = (int) (8*blocks*tf*multiply*skill1*event*prestige*miningboost*unity);
+				int tokens = (int) (2*blocks*tf*multiply*skill1*event*prestige*miningboost*unity);
 				Tokens.getInstance().addTokens(p, tokens);
 				SellHandler.getInstance().sellEnchant(p, sellblocks, "Explosion", tokens);
 

@@ -39,6 +39,17 @@ public class LocksmithHandler implements Listener, CommandExecutor {
     
     return true;
   }
+
+  public boolean hasKeys(Player p) {
+    if(settings.getLocksmith().getInt(p.getUniqueId().toString()+".vote") >0) return true;
+    else if(settings.getLocksmith().getInt(p.getUniqueId().toString()+".alpha") >0) return true;
+    else if(settings.getLocksmith().getInt(p.getUniqueId().toString()+".beta") >0) return true;
+    else if(settings.getLocksmith().getInt(p.getUniqueId().toString()+".omega") >0) return true;
+    else if(settings.getLocksmith().getInt(p.getUniqueId().toString()+".token") >0) return true;
+    else if(settings.getLocksmith().getInt(p.getUniqueId().toString()+".seasonal") >0) return true;
+    else if(settings.getLocksmith().getInt(p.getUniqueId().toString()+".community") >0) return true;
+    else return settings.getLocksmith().getInt(p.getUniqueId().toString() + ".rank") > 0;
+  }
   
   public void addKey(Player p, String key, int amt) {
 	  int keysfound = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".KeysFound");

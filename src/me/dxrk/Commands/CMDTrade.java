@@ -227,7 +227,6 @@ public class CMDTrade implements Listener, CommandExecutor {
             }
             if(args.length == 2) {
                 if(args[0].equalsIgnoreCase("decline")) {
-                    String code = generateCode();
                     Player player1 = Bukkit.getPlayer(args[1]);
                     if(waitingTrade.contains(player1) && waitingTrade.contains(p)) {
                         waitingTrade.remove(player1);

@@ -8,7 +8,6 @@ import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.requests.restaction.CacheRestAction;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -35,7 +34,6 @@ public class JDAEvents extends ListenerAdapter implements Listener, CommandExecu
 
 	public HashMap<UUID, String>uuidIdMap = jdaHandler.uuidIdMap;
 	public HashMap<UUID, String>uuidCodeMap = jdaHandler.uuidCodeMap;
-
 	private ArrayList<User> ulist = new ArrayList<>();
 
 
@@ -47,35 +45,38 @@ public class JDAEvents extends ListenerAdapter implements Listener, CommandExecu
 			public void run(){
 				for(Player p : Bukkit.getOnlinePlayers()) {
 					if(settings.getDiscord().contains(p.getUniqueId().toString())) {
-						String discordid = (String) settings.getDiscord().get(p.getUniqueId().toString());
+						String discordid = settings.getDiscord().getString(p.getUniqueId().toString());
 						jdaHandler.jda.retrieveUserById(discordid).queue(user -> {
-							if(p.hasPermission("rank.zeus")){
-								Role zeus = jdaHandler.jda.getRolesByName("Zeus", false).get(0);
-								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, zeus).queue();
-							} else if(p.hasPermission("rank.kronos")){
-								Role kronos = jdaHandler.jda.getRolesByName("Kronos", false).get(0);
-								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, kronos).queue();
-							} else if(p.hasPermission("rank.apollo")){
-								Role apollo = jdaHandler.jda.getRolesByName("Apollo", false).get(0);
-								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, apollo).queue();
-							} else if(p.hasPermission("rank.hermes")){
-								Role hermes = jdaHandler.jda.getRolesByName("Hermes", false).get(0);
-								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, hermes).queue();
-							} else if(p.hasPermission("rank.ares")){
-								Role ares = jdaHandler.jda.getRolesByName("Ares", false).get(0);
-								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, ares).queue();
-							} else if(p.hasPermission("rank.colonel")){
-								Role colonel = jdaHandler.jda.getRolesByName("Colonel", false).get(0);
-								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, colonel).queue();
-							} else if(p.hasPermission("rank.captain")){
-								Role captain = jdaHandler.jda.getRolesByName("Captain", false).get(0);
-								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, captain).queue();
-							} else if(p.hasPermission("rank.hoplite")){
-								Role hoplite = jdaHandler.jda.getRolesByName("Hoplite", false).get(0);
-								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, hoplite).queue();
-							} else if(p.hasPermission("rank.cavalry")){
-								Role cavalry = jdaHandler.jda.getRolesByName("Cavalry", false).get(0);
-								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, cavalry).queue();
+							if(p.hasPermission("rank.genesis")){
+								Role genesis = jdaHandler.jda.getRolesByName("Genesis", false).get(0);
+								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, genesis).queue();
+							} else if(p.hasPermission("rank.olympian")){
+								Role olympian = jdaHandler.jda.getRolesByName("Olympian", false).get(0);
+								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, olympian).queue();
+							} else if(p.hasPermission("rank.god")){
+								Role god = jdaHandler.jda.getRolesByName("God", false).get(0);
+								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, god).queue();
+							} else if(p.hasPermission("rank.titan")){
+								Role titan = jdaHandler.jda.getRolesByName("Titan", false).get(0);
+								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, titan).queue();
+							} else if(p.hasPermission("rank.demi-god")){
+								Role demigod = jdaHandler.jda.getRolesByName("Demi-God", false).get(0);
+								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, demigod).queue();
+							} else if(p.hasPermission("rank.hero")){
+								Role hero = jdaHandler.jda.getRolesByName("Hero", false).get(0);
+								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, hero).queue();
+							} else if(p.hasPermission("rank.mvp")){
+								Role mvp = jdaHandler.jda.getRolesByName("MVP", false).get(0);
+								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, mvp).queue();
+							} else if(p.hasPermission("rank.vip")){
+								Role vip = jdaHandler.jda.getRolesByName("VIP", false).get(0);
+								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, vip).queue();
+							} else if(p.hasPermission("rank.donator")){
+								Role donator = jdaHandler.jda.getRolesByName("Donator", false).get(0);
+								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, donator).queue();
+							}
+							if(Objects.requireNonNull(jdaHandler.jda.getGuilds().get(0).getMember(user)).isBoosting())  {
+								settings.getPlayerData().set(p.getUniqueId().toString()+".NitroBoosting", true);
 							}
 						});
 					}
@@ -86,8 +87,13 @@ public class JDAEvents extends ListenerAdapter implements Listener, CommandExecu
 
 	}
 
-
-
+	private Random r = new Random();
+	private String generateCode() {
+		char[] cs = new char[7];
+		for (int i = 0; i < cs.length; i++)
+			cs[i] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".charAt(r.nextInt("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".length()));
+		return new String(cs);
+	}
 
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {
@@ -106,17 +112,15 @@ public class JDAEvents extends ListenerAdapter implements Listener, CommandExecu
 				}
 
 				if(!Bukkit.getOnlinePlayers().contains(p)) {
-					channel.sendMessage("That Player is not Online. Did you type the Name right? (Case Sensitive)") /* => RestAction<Message> */
+					channel.sendMessage("That Player is not Online. Did you type the Name right?") /* => RestAction<Message> */
 							.queue();
 							return;
 				}
 
-						String randomcode = new Random().nextInt(800000) + 200000 + "AA"; //6581446AA
+						String randomcode = generateCode();
 						uuidCodeMap.put(p.getUniqueId(), randomcode);
 						uuidIdMap.put(p.getUniqueId(), user.getId());
 						channel.sendMessage("Type '/discord link " + randomcode + "' to link your account").queue();
-						channel.sendMessage(uuidIdMap.keySet().toString()).queue();
-						channel.sendMessage(uuidIdMap.get(p.getUniqueId())).queue();
 
 
 
@@ -134,6 +138,7 @@ public class JDAEvents extends ListenerAdapter implements Listener, CommandExecu
 	public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
 		if(event.getMessageId().equals("1003041933561692201")){
 			User user = event.getUser();
+			assert user != null;
 			if(uuidIdMap.containsValue(user.getId())){
 				user.openPrivateChannel().flatMap(channel -> channel.sendMessage("You already have a code Generated.")).queue();
 				return;
@@ -187,7 +192,7 @@ public class JDAEvents extends ListenerAdapter implements Listener, CommandExecu
 								if (u == null) {
 									uuidIdMap.remove(p.getUniqueId());
 									uuidCodeMap.remove(p.getUniqueId());
-									p.sendMessage(m.c("You appreared to have left the Discord.."));
+									p.sendMessage(m.c("You apprear to have left the Discord.."));
 									return;
 								}
 
@@ -196,13 +201,18 @@ public class JDAEvents extends ListenerAdapter implements Listener, CommandExecu
 								p.sendMessage(m.c("&bYour account has been linked successfully to "+u.getName()+"#"+u.getDiscriminator()));
 								u.openPrivateChannel().flatMap(channel -> channel.sendMessage("Account Successfully Linked with "+p.getName())).queue();
 
-
+								Objects.requireNonNull(jdaHandler.jda.getGuilds().get(0).getMember(u)).modifyNickname(p.getName()).queue();
 								settings.getDiscord().set(p.getUniqueId().toString(), uuidIdMap.get(p.getUniqueId()));
 								settings.getDiscord().set(uuidIdMap.get(p.getUniqueId()), p.getName());
 								settings.saveDiscord();
+								serverLink();
+								int i = r.nextInt(2);
+								if(i == 0)
+									Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveboost sell "+p.getName()+" 2.0 300");
+								else Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveboost xp "+p.getName()+" 2.0 300");
 								uuidIdMap.remove(p.getUniqueId());
 								uuidCodeMap.remove(p.getUniqueId());
-
+								ulist.remove(u);
 							});
 
 
