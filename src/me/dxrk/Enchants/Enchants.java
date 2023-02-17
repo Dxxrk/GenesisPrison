@@ -1,6 +1,12 @@
 package me.dxrk.Enchants;
 
-import java.util.List;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import me.dxrk.Events.MineHandler;
+import me.dxrk.Events.ResetHandler;
+import me.dxrk.Events.ResetHandler.ResetReason;
+import me.dxrk.Main.SettingsManager;
+import me.jet315.prisonmines.mine.Mine;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,18 +16,13 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-
-import me.dxrk.Events.ResetHandler;
-import me.dxrk.Events.ResetHandler.ResetReason;
-import me.jet315.prisonmines.mine.Mine;
-import net.md_5.bungee.api.ChatColor;
+import java.util.List;
 
 public class Enchants implements Listener{
 	static String c(String s) {
 	    return ChatColor.translateAlternateColorCodes('&', s);
 	  }
-	
+	SettingsManager settings = SettingsManager.getInstance();
 	
 	 static Enchants instance = new Enchants();
 	  
@@ -74,10 +75,10 @@ public class Enchants implements Listener{
 		  
 		  public int getFortune(String s) {
 		        StringBuilder lvl = new StringBuilder();
-		        s = ChatColor.stripColor((String)s);
+		        s = ChatColor.stripColor(s);
 		        char[] arrayOfChar = s.toCharArray();
 		        int i = arrayOfChar.length;
-		        for (int b = 0; b < i; b = (int)((byte)(b + 1))) {
+		        for (int b = 0; b < i; b = (byte)(b + 1)) {
 		            char c = arrayOfChar[b];
 		            if (!this.isInt(c)) continue;
 		            lvl.append(c);
@@ -89,11 +90,11 @@ public class Enchants implements Listener{
 		    }
 		  
 		  public void addFortune(Player p, ItemStack ii, int loree) {
-		        int blockss = this.getFortune((String)ii.getItemMeta().getLore().get(loree));
+		        int blockss = this.getFortune(ii.getItemMeta().getLore().get(loree));
 		        ItemStack i = ii.clone();
 		        ItemMeta im = i.getItemMeta();
 		        List<String> lore = im.getLore();
-		        lore.set(loree, (Object)ChatColor.GRAY + "Fortune " + (Object)ChatColor.GRAY + (blockss + 1));
+		        lore.set(loree, ChatColor.GRAY + "Fortune " + ChatColor.GRAY + (blockss + 1));
 		        im.setLore(lore);
 		        i.setItemMeta(im);
 		        p.setItemInHand(i);
@@ -140,7 +141,8 @@ public class Enchants implements Listener{
 
 				assert m != null;
 				if(m.getMineRegion().getBlocksLeftPercentage() < 50F) {
-					ResetHandler.resetMine(m, ResetReason.PERCENTAGE);
+					int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
+					ResetHandler.resetMine(m, ResetReason.PERCENTAGE, MineHandler.Blocks(prestiges/50));
 				}
 		    	
 		    		

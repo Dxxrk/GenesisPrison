@@ -2,12 +2,9 @@ package me.dxrk.Events;
 
 import me.dxrk.Main.Main;
 import me.dxrk.Main.MultiBlockChanger;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import me.jet315.prisonmines.JetsPrisonMines;
@@ -15,12 +12,18 @@ import me.jet315.prisonmines.JetsPrisonMinesAPI;
 import me.jet315.prisonmines.mine.Mine;
 import me.jet315.prisonmines.mine.location.MineRegion;
 
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
+import static me.dxrk.Events.PrestigeHandler.settings;
+
 public class ResetHandler {
 
 	private static JetsPrisonMines jpm = (JetsPrisonMines) Bukkit.getPluginManager().getPlugin("JetsPrisonMines");
 	public static JetsPrisonMinesAPI api = jpm.getAPI();
 
-	public static void resetMine(Mine mine, ResetReason reason) {
+	public static void resetMine(Mine mine, ResetReason reason, List<ItemStack> blocks) {
 		World world = mine.getMineRegion().getWorld();
 		MultiBlockChanger mm = new MultiBlockChanger(world);
 		mm.setMaxChanges(25000);
@@ -36,11 +39,16 @@ public class ResetHandler {
 		}
 
 		
-		
+		int block = 0;
 		for(Location bloc : mine.getMineRegion().getLocationOfBlocksInMine()) {
 			if(bloc.getWorld().getBlockAt(bloc).getType() == Material.AIR) {
-				mm.addBlockChanges(bloc, mine.getBlockManager().getRandomBlockFromMine().getType(), (byte)0);
+				mm.addBlockChanges(bloc, blocks.get(block).getType(), blocks.get(block).getData().getData());
 			}
+			block++;
+			if(block == 3){
+				block = 0;
+			}
+
 		}
 
 		
@@ -54,7 +62,7 @@ public class ResetHandler {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static void resetMineFull(Mine mine, ResetReason reason, int id) {
+	public static void resetMineFull(Mine mine, ResetReason reason, List<ItemStack> blocks) {
 		World world = mine.getSpawnLocation().getWorld();
 		MultiBlockChanger mm = new MultiBlockChanger(world);
 		mm.setMaxChanges(25000);
@@ -68,13 +76,11 @@ public class ResetHandler {
 				}
 			}
 		}
-		
-		
+
+		Random r = new Random();
 		for(Location bloc : mine.getMineRegion().getLocationOfBlocksInMine()) {
-			
-				mm.addBlockChanges(bloc, Material.getMaterial(id), (byte)0);
-				
-			
+			int block = r.nextInt(3);
+			mm.addBlockChanges(bloc, blocks.get(block).getType(), blocks.get(block).getData().getData());
 		}
 
 		
@@ -86,43 +92,7 @@ public class ResetHandler {
 		mine.getMineRegion().setBlocksMinedInRegion(0);
 	}
 
-	public static void resetAllMines() {
-		for(Mine m : api.getMines()) {
-			resetMine(m, ResetReason.ALL);
-		}
-	}
 
-	public static void autoResetMines() {
-		new BukkitRunnable() {
-			int i = 1;
-			public void run() {
-				Bukkit.broadcastMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "Resetting mines...");
-				for(Mine mine : api.getMines()) {
-					mine.getResetManager().setMineResetTime(999999999);
-					MineRegion mr = mine.getMineRegion();
-					if(mr.getBlocksMinedInRegion() > (mr.getTotalBlocksInRegion()/10)) {
-						resetMineLater(mine, i, ResetReason.INTERVAL);
-						i++;
-					}
-				}
-			}
-		}.runTaskTimerAsynchronously(Main.plugin, 600*20, 600*20);
-	}
-
-	public static void resetMineLater(Mine mine, int seconds, ResetReason reason) {
-		new BukkitRunnable() {
-			public void run() {
-				resetMine(mine, ResetReason.INTERVAL);
-			}
-		}.runTaskLaterAsynchronously(Main.plugin, seconds*2);
-	}
-
-	public static void checkMineForReset(Mine mine, ResetReason reason) {
-		if(mine.getMineRegion().getBlocksMinedPercentage() > 60) {
-			resetMine(mine, reason);
-		}
-	}
-	
 	public enum ResetReason {
 		NORMAL,
 		INTERVAL,

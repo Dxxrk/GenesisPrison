@@ -23,7 +23,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -58,7 +57,7 @@ public class MineHandler implements Listener, CommandExecutor{
 	
 	private ArrayList<Player> list = new ArrayList<>();
 
-	SettingsManager settings = SettingsManager.getInstance();
+	static SettingsManager settings = SettingsManager.getInstance();
 	
 	
 	/*
@@ -71,9 +70,9 @@ public class MineHandler implements Listener, CommandExecutor{
 	// So on and so forth with every single block up until you get to prestige 2000, which is 40 different initial mine blocks
 	// This also means changing the blocks that the donator ranks get to be more precise and balanced and not as grindy to reach the next block.
 
-	private List<ItemStack> mineBlocks() {
+	private static List<ItemStack> mineBlocks() {
 		List<ItemStack> mineblocks = new ArrayList<>();
-		mineblocks.add(new ItemStack(Material.COBBLESTONE));
+		mineblocks.add(new ItemStack(Material.COBBLESTONE)); //0
 		mineblocks.add(new ItemStack(Material.MOSSY_COBBLESTONE));
 		mineblocks.add(new ItemStack(Material.STONE, 1, (short)0));
 		mineblocks.add(new ItemStack(Material.STONE, 1, (short)1));
@@ -139,137 +138,47 @@ public class MineHandler implements Listener, CommandExecutor{
 		return mineblocks;
 	}
 
-	public void changeMineBlock(Player p) {
+	public static List<ItemStack> Blocks(int start) {
+		List<ItemStack> blocks = new ArrayList<>();
+		if(start == 0) {
+			blocks.add(mineBlocks().get(0));
+			blocks.add(mineBlocks().get(0));
+			blocks.add(mineBlocks().get(0));
+		}
+		else if(start >= 62) {
+			blocks.add(mineBlocks().get(62));
+			blocks.add(mineBlocks().get(62));
+			blocks.add(mineBlocks().get(62));
+		}
+		else {
+			blocks.add(mineBlocks().get(start-1));
+			blocks.add(mineBlocks().get(start));
+			blocks.add(mineBlocks().get(start+1));
+		}
+		return blocks;
+	}
+	@SuppressWarnings("deprecation")
+	public void updateMine(Player p, int prestiges){
+		int start = prestiges/50;
+		List<ItemStack> blocks = Blocks(start);
+		Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
+		m.getBlockManager().modifyBlockChanceInRegion(m.getBlockManager().getRandomBlockFromMine(), 0.0F);
+		if(start == 0) {
+			m.getBlockManager().addBlockToMineRegion(new ItemStack(Material.COBBLESTONE), 100.0F);
+		} else {
+			m.getBlockManager().addBlockToMineRegion(blocks.get(0), 33.0F);
+			m.getBlockManager().addBlockToMineRegion(blocks.get(1), 33.0F);
+			m.getBlockManager().addBlockToMineRegion(blocks.get(2), 34.0F);
+		}
+		m.getResetManager().setMineResetTime(999999);
+		m.getResetManager().setPercentageReset(20);
+		m.getMineRegion().setBlocksMinedInRegion(0);
+		m.save();
+		ResetHandler.resetMineFull(m, ResetReason.NORMAL, blocks);
 
 	}
 
-	public Material mineBlock(Player p){
-		Material mat = Material.COBBLESTONE;
-		//Find players prestige/rank
 
-		int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
-
-		if(prestiges >= 1750){
-			mat = Material.ENDER_STONE;
-		}
-		else if(prestiges >=1500){
-			mat = Material.PRISMARINE;
-		}
-		else if(prestiges >=1400){
-			mat = Material.QUARTZ_BLOCK;
-		}
-		else if(prestiges >=1300) {
-			mat = Material.QUARTZ_ORE;
-		}
-		else if(prestiges >=1200) {
-			mat = Material.NETHER_BRICK;
-		}
-		else if(p.hasPermission("rank.genesis")){
-			mat = Material.NETHER_BRICK;
-		}
-		else if(prestiges >=1100) {
-			mat = Material.NETHERRACK;
-		}
-		else if(prestiges >=1025) {
-			mat = Material.EMERALD_BLOCK;
-		}
-		else if(prestiges >=950) {
-			mat = Material.EMERALD_ORE;
-		}
-		else if(p.hasPermission("rank.olympian")) {
-			mat = Material.EMERALD_ORE;
-		}
-		else if(prestiges >=875) {
-			mat = Material.DIAMOND_BLOCK;
-		}
-		else if(prestiges >=800) {
-			mat = Material.DIAMOND_ORE;
-		}
-		else if(prestiges >=725) {
-			mat = Material.LAPIS_BLOCK;
-		}
-		else if(p.hasPermission("rank.god")) {
-			mat = Material.LAPIS_BLOCK;
-		}
-		else if(prestiges >=650) {
-			mat = Material.LAPIS_ORE;
-		}
-		else if(prestiges >=575) {
-			mat = Material.REDSTONE_BLOCK;
-		}
-		else if(prestiges >=500) {
-			mat = Material.REDSTONE_ORE;
-		}
-		else if(p.hasPermission("rank.titan")) {
-			mat = Material.REDSTONE_ORE;
-		}
-		else if(prestiges >=450) {
-			mat = Material.GOLD_BLOCK;
-		}
-		else if(prestiges >=400) {
-			mat = Material.GOLD_ORE;
-		}
-		else if(p.hasPermission("rank.demi-god")) {
-			mat = Material.GOLD_ORE;
-		}
-		else if(prestiges >=350) {
-			mat = Material.IRON_BLOCK;
-		}
-		else if(prestiges >=300) {
-			mat = Material.IRON_ORE;
-		}
-		else if(prestiges >=250) {
-			mat = Material.COAL_BLOCK;
-		}
-		else if(p.hasPermission("rank.hero")) {
-			mat = Material.COAL_BLOCK;
-		}
-		else if(prestiges >=200) {
-			mat = Material.COAL_ORE;
-		}
-		else if(prestiges >=150) {
-			mat = Material.BRICK;
-		}
-		else if(p.hasPermission("rank.mvp")) {
-			mat = Material.BRICK;
-		}
-		else if(prestiges >=125) {
-			mat = Material.HARD_CLAY;
-		}
-		else if(prestiges >=100) {
-			mat = Material.SANDSTONE;
-		}
-		else if(p.hasPermission("rank.vip")) {
-			mat = Material.SANDSTONE;
-		}
-		else if(prestiges >=75) {
-			mat = Material.SMOOTH_BRICK;
-		}
-		else if(prestiges >=50) {
-			mat = Material.STONE;
-		}
-		else if(p.hasPermission("rank.donator")) {
-			mat = Material.STONE;
-		}
-		else if(prestiges >=25) {
-			mat = Material.MOSSY_COBBLESTONE;
-		}
-
-
-
-		return mat;
-	}
-	
-	
-	
-
-	
-
-	
-	@EventHandler
-	public void onJoin(PlayerJoinEvent e) {
-		Player p = e.getPlayer();
-	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -292,7 +201,8 @@ public class MineHandler implements Listener, CommandExecutor{
 		if(label.equalsIgnoreCase("updatemine")) {
 			if(args.length == 1){
 				Player p = Bukkit.getPlayer(args[0]);
-				updateMine(p);
+				int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
+				updateMine(p, prestiges);
 			}
 		}
 		return false;
@@ -346,9 +256,9 @@ public class MineHandler implements Listener, CommandExecutor{
 		m.getResetManager().setPercentageReset(20);
 		m.getMineRegion().setBlocksMinedInRegion(0);
 		m.getBlockManager().modifyBlockChanceInRegion(m.getBlockManager().getRandomBlockFromMine(), 0.0F);
-		m.getBlockManager().addBlockToMineRegion(new ItemStack(mineBlock(p)), 100.0F);
+		m.getBlockManager().addBlockToMineRegion(new ItemStack(Material.COBBLESTONE), 100.0F);
 		m.save();
-		ResetHandler.resetMineFull(m, ResetReason.NORMAL, mineBlock(p).getId());
+		ResetHandler.resetMineFull(m, ResetReason.NORMAL, Blocks(0));
 
 		if(regions.hasRegion(p.getUniqueId().toString())) {
 			regions.removeRegion(p.getUniqueId().toString());
@@ -397,18 +307,7 @@ public class MineHandler implements Listener, CommandExecutor{
 	/*
 		UPDATING THE MINE
 	 */
-	@SuppressWarnings("deprecation")
-	public void updateMine(Player p){
-		Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
-		m.getBlockManager().modifyBlockChanceInRegion(m.getBlockManager().getRandomBlockFromMine(), 0.0F);
-		m.getBlockManager().addBlockToMineRegion(new ItemStack(mineBlock(p)), 100.0F);
-		m.getResetManager().setMineResetTime(999999);
-		m.getResetManager().setPercentageReset(20);
-		m.getMineRegion().setBlocksMinedInRegion(0);
-		m.save();
-		ResetHandler.resetMineFull(m, ResetReason.NORMAL, mineBlock(p).getId());
 
-	}
 
 	
 	

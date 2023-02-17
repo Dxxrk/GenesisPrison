@@ -3,6 +3,7 @@ package me.dxrk.Enchants;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import me.dxrk.Events.*;
 import me.dxrk.Gangs.CMDGang;
@@ -29,7 +30,6 @@ import me.dxrk.Main.SettingsManager;
 import me.dxrk.Events.ResetHandler.ResetReason;
 
 import me.jet315.prisonmines.mine.Mine;
-
 public class EnchantMethods {
 	
 	static EnchantMethods instance = new EnchantMethods();
@@ -669,12 +669,11 @@ public class EnchantMethods {
 				int mined = m.getMineRegion().getBlocksMinedInRegion();
 				int total = m.getMineRegion().getTotalBlocksInRegion();
 				amountblocks = total - mined;
-				
-				
-					
-				
-	        	  
-	        	  ResetHandler.resetMine(m, ResetReason.NUKE);
+
+
+
+				int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
+	        	  ResetHandler.resetMine(m, ResetReason.NUKE, MineHandler.Blocks(prestiges/50));
 
 
 

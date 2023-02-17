@@ -2,6 +2,7 @@ package me.dxrk.Commands;
 
 import me.dxrk.Events.MineHandler;
 import me.dxrk.Main.Methods;
+import me.dxrk.Main.SettingsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,10 +19,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-
 public class CMDRanks implements Listener, CommandExecutor {
     static Methods m = Methods.getInstance();
-
+    SettingsManager settings  = SettingsManager.getInstance();
 
 
     /*
@@ -87,7 +87,8 @@ public class CMDRanks implements Listener, CommandExecutor {
                         int amount = p.getItemInHand().getAmount();
                         p.getItemInHand().setAmount(amount-1);
                     }
-                    MineHandler.getInstance().updateMine(p);
+                    int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
+                    MineHandler.getInstance().updateMine(p, prestiges);
 
                 }
             }

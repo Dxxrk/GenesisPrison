@@ -132,15 +132,6 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 			 p.updateInventory();
 		}
 		}
-		if(label.equalsIgnoreCase("resetallmines")) {
-			
-			if(sender instanceof Player) {
-				Player p = (Player)sender;
-				if(p.hasPermission("rank.owner")) {
-			ResetHandler.resetAllMines();
-				}
-			}
-		}
 
 
 		return false;

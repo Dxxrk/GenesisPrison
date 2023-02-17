@@ -16,6 +16,7 @@ import me.jet315.prisonmines.mine.Mine;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,10 +31,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+
+import static me.dxrk.Events.PrestigeHandler.settings;
 
 @SuppressWarnings("deprecation")
 public class SellHandler implements Listener, CommandExecutor {
@@ -387,7 +387,8 @@ public class SellHandler implements Listener, CommandExecutor {
 				 if(reset.contains(p.getUniqueId().toString())) {
 					 p.sendMessage(c("&c/resetmine(/rm) is on cooldown."));
 				 } else {
-					 ResetHandler.resetMine(mine, ResetReason.NORMAL);
+					 int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
+					 ResetHandler.resetMine(mine, ResetReason.NORMAL, MineHandler.Blocks(prestiges/50));
 					 if(mine.isLocationInRegion(p.getLocation()))
 					 	p.teleport(mine.getSpawnLocation());
 					 reset.add(p.getUniqueId().toString());
@@ -487,12 +488,6 @@ public class SellHandler implements Listener, CommandExecutor {
     		}
     		
     	}
-     if(cmd.getName().equalsIgnoreCase("forcereset")) {
-    	 if(cs.hasPermission("rank.owner")) {
-    	 ResetHandler.resetAllMines();
-    	 }
-     }
-    
     return false;
   }
 }

@@ -235,7 +235,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
       registerEvents(this, new Listener[] { new PickaxeSkillTree() });
       registerEvents(this, new Listener[] { this});
       // For when sale is active, use this || Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "motdchange sale 50");
-      // For when sale is active, use this ||
+      // For when maintenance active, use this ||
       Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "workmode enable");
 
 
@@ -465,17 +465,21 @@ new BukkitRunnable() {
 	  
   public static String formatAmt(double amt) {
 	    if (amt <= 0.0D)
-	      return String.valueOf(0); 
+	      return String.valueOf(0);
+      if (amt >= 1.0E24D)
+          return String.format("%.1f S", amt / 1.0E18D);
+      if (amt >= 1.0E21D)
+          return String.format("%.1f s", amt / 1.0E18D);
 	    if (amt >= 1.0E18D)
-	        return String.format("%.1f Quint", amt / 1.0E18D);
+	        return String.format("%.1f Q", amt / 1.0E18D);
 	    if(amt >= 1.0E15D)
-	    	return String.format("%.1f Quad", amt / 1.0E15D);
+	    	return String.format("%.1f q", amt / 1.0E15D);
 	    if (amt >= 1.0E12D)
-	      return String.format("%.1f Tril", amt / 1.0E12D);
+	      return String.format("%.1f T", amt / 1.0E12D);
 	    if (amt >= 1.0E9D)
-	      return String.format("%.1f Bil", amt / 1.0E9D);
+	      return String.format("%.1f B", amt / 1.0E9D);
 	    if (amt >= 1000000.0D)
-	      return String.format("%.1f Mil", amt / 1000000.0D);
+	      return String.format("%.1f M", amt / 1000000.0D);
 	    return NumberFormat.getNumberInstance(Locale.US).format(amt);
 	  }
   

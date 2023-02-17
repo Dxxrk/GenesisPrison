@@ -162,7 +162,7 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         pl.set(uuid+".TimesPrestiged", timesprestied+1);
         settings.savePlayerData();
         TitleAPI.sendTitle(p, 2, 40, 2, m.c("&c&lPrestiged!"), m.c("&b&lPrestiges Gained: +"+pr));
-        MineHandler.getInstance().updateMine(p);
+        MineHandler.getInstance().updateMine(p, (prestiges+pr));
 
 
     }
