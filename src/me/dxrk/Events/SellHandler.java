@@ -73,11 +73,7 @@ public class SellHandler implements Listener, CommandExecutor {
 
   
   
-  
-  public static int getBPEmptySlots(Player p) {
-	  SettingsManager.getInstance().getbpSize();
-        return SettingsManager.getInstance().getbpSize().getInt(p.getUniqueId().toString())*9;
-  }
+
   
   
   
@@ -91,26 +87,6 @@ public class SellHandler implements Listener, CommandExecutor {
       }
       double dround = d*10.0;
 	  double drounded = Math.round(dround) /10.0;
-	  if(p.hasPermission("rank.zeus")) {
-		  drounded += 10;
-	  } else if(p.hasPermission("rank.kronos")) {
-		  drounded += 9;
-	  } else if(p.hasPermission("rank.apollo")) {
-		  drounded += 8;
-	  } else if(p.hasPermission("rank.hermes")) {
-		  drounded += 7;
-	  } else if(p.hasPermission("rank.ares")) {
-		  drounded += 6;
-	  } else if(p.hasPermission("rank.colonel")) {
-		  drounded += 5;
-	  } else if(p.hasPermission("rank.captain")) {
-		  drounded += 4;
-	  } else if(p.hasPermission("rank.hoplite")) {
-		  drounded += 3;
-	  } else if(p.hasPermission("rank.cavalry")) {
-		  drounded += 2;
-	  }
-	  
 	  return drounded;
   }
 

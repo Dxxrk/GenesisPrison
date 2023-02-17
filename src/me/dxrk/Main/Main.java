@@ -523,6 +523,7 @@ new BukkitRunnable() {
 	out.writeUTF("Connect");
 	out.writeUTF("Lobby");
 	} catch (IOException eee) {
+        System.out.println(eee.getMessage());
 	}
 	p.sendPluginMessage(this, "BungeeCord", b.toByteArray());
     }

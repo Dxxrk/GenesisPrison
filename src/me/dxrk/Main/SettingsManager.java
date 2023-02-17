@@ -75,14 +75,7 @@ FileConfiguration PlayerData;
   FileConfiguration Options;
   
   File OPfile;
-  
-  FileConfiguration sellPrices;
-  
-  File SPfile;
-  
-  FileConfiguration backpacks;
-  
-  File BPfile;
+
   
   FileConfiguration crates;
   
@@ -253,14 +246,7 @@ FileConfiguration PlayerData;
       }  
     this.PlayerData = YamlConfiguration.loadConfiguration(this.PDfile);
     
-    this.BPfile = new File(p.getDataFolder(), "backpacks.yml");
-    if (!this.BPfile.exists())
-      try {
-        this.BPfile.createNewFile();
-      } catch (IOException e) {
-        Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create backpacks.yml!");
-      }  
-    this.backpacks = YamlConfiguration.loadConfiguration(this.BPfile);
+
     this.Cfile = new File(p.getDataFolder(), "crates.yml");
     if (!this.Cfile.exists())
       try {
@@ -268,15 +254,7 @@ FileConfiguration PlayerData;
       } catch (IOException e) {
         Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create crates.yml!");
       }  
-    this.crates = YamlConfiguration.loadConfiguration(this.Cfile);
-    this.SPfile = new File(p.getDataFolder(), "sellprices.yml");
-    if (!this.SPfile.exists())
-      try {
-        this.SPfile.createNewFile();
-      } catch (IOException e) {
-        Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not create sellprices.yml!");
-      }  
-    this.sellPrices = YamlConfiguration.loadConfiguration(this.SPfile);
+
     this.RPfile = new File(p.getDataFolder(), "rankupprices.yml");
     if (!this.RPfile.exists())
       try {
@@ -369,15 +347,7 @@ FileConfiguration PlayerData;
     return this.PlayerData;
   }
   
- 
-  
-  public FileConfiguration getBackPacks() {
-    return this.backpacks;
-  }
-  
-  public FileConfiguration getSellPrices() {
-    return this.sellPrices;
-  }
+
   
   public FileConfiguration getRankupPrices() {
     return this.RankupPrices;
@@ -616,13 +586,6 @@ public void saveCrates() {
   } 
 }
 
-public void saveBackPacks() {
-  try {
-    this.backpacks.save(this.BPfile);
-  } catch (IOException e) {
-    Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not save backpacks.yml!");
-  } 
-}
 
 public void saveRankupPrices() {
   try {
@@ -632,13 +595,6 @@ public void saveRankupPrices() {
   } 
 }
 
-public void saveSellPrices() {
-  try {
-    this.sellPrices.save(this.SPfile);
-  } catch (IOException e) {
-    Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not save sellprices.yml!");
-  } 
-}
 
 public void saveOptions() {
   try {
