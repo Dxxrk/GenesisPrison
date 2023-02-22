@@ -334,13 +334,11 @@ public void orderTop() {
     int servervotes = this.settings.getVote().getInt("ServerVotes");
     this.settings.getVote().set("ServerVotes", servervotes - 1);
     assert p != null;
-    int votepoints = this.settings.getVote().getInt(p.getUniqueId().toString() + ".Votepoints");
     int totalvotes = this.settings.getVote().getInt(p.getUniqueId().toString() + ".Votes");
-    int newvps = votepoints +1;
     int newtotalvotes = totalvotes + 1;
     long time = (new Date()).getTime() + 86400000L;
     this.settings.getVote().set(p.getUniqueId().toString() + ".Votes", newtotalvotes);
-    this.settings.getVote().set(p.getUniqueId().toString() + ".Votepoints", newvps);
+    CMDVoteShop.addCoupon(p, 0.05);
     this.settings.getVote().set(p.getUniqueId().toString() + "." + v.getServiceName(), time);
     this.settings.saveVote();
     Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "et add " + p.getName() + " 10000");

@@ -211,37 +211,7 @@ public class ChatHandler implements Listener, CommandExecutor {
     } 
     return ChatColor.translateAlternateColorCodes('&', result.toString());
   }
-  
-  public String headmodText(String s) {
-    StringBuilder result = new StringBuilder();
-    int i = 0;
-    byte b;
-    int j;
-    char[] arrayOfChar;
-    for (j = (arrayOfChar = s.toCharArray()).length, b = 0; b < j; ) {
-      char c = arrayOfChar[b];
-      if (Character.isSpaceChar(c)) {
-        result.append(c);
-      } else if (i == 0) {
-        result.append("&a").append(c);
-        i = 1;
-      } else if (i == 1) {
-        result.append("&c").append(c);
-        i = 2;
-      } else if (i == 2) {
-        result.append("&e").append(c);
-        i = 3;
-      } else if (i == 3) {
-        result.append("&b").append(c);
-        i = 4;
-      } else {
-        result.append("&d").append(c);
-        i = 0;
-      } 
-      b = (byte)(b + 1);
-    } 
-    return ChatColor.translateAlternateColorCodes('&', result.toString());
-  }
+
   
   public void switchOption(Player p, String s) {
     if (getOption(p, s)) {
@@ -252,24 +222,7 @@ public class ChatHandler implements Listener, CommandExecutor {
       this.settings.saveData();
     } 
   }
-  
-  public ChatColor randomColor() {
-    Random r = new Random();
-    int color = r.nextInt(6);
-    switch (color) {
-      case 0:
-        return ChatColor.AQUA;
-      case 1:
-        return ChatColor.GREEN;
-      case 2:
-        return ChatColor.LIGHT_PURPLE;
-      case 3:
-        return ChatColor.YELLOW;
-      case 4:
-        return ChatColor.RED;
-    } 
-    return ChatColor.WHITE;
-  }
+
   
   public ItemStack optionItem(String name, boolean on) {
     ItemStack i = new ItemStack(Material.INK_SACK, 1);
@@ -427,7 +380,7 @@ public class ChatHandler implements Listener, CommandExecutor {
     } 
     lore.add(ChatColor.translateAlternateColorCodes('&', "&fBalance &7» &a$" + format(Main.econ.getBalance(p))));
     lore.add(ChatColor.translateAlternateColorCodes('&', "&fTokens &7» &e⛀" + Main.formatAmt(Tokens.getInstance().getTokens(p))));
-    lore.add(ChatColor.translateAlternateColorCodes('&', "&fBlocks Mined &7» &b" + this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".BlocksBroken")));
+    lore.add(ChatColor.translateAlternateColorCodes('&', "&fBlocks Mined &7» &b" + BlocksHandler.blocks.get(p)));
     lore.add("");
     lore.add(ChatColor.translateAlternateColorCodes('&', "&7Click to visit mine"));
     im.setLore(lore);
@@ -463,27 +416,7 @@ public class ChatHandler implements Listener, CommandExecutor {
   
   static Random r = new Random();
   
-  public static ChatColor rainbowColor() {
-    int x = r.nextInt(5);
-    if (x == 0)
-      return ChatColor.AQUA; 
-    if (x == 1)
-      return ChatColor.GREEN; 
-    if (x == 2)
-      return ChatColor.RED; 
-    if (x == 3)
-      return ChatColor.YELLOW; 
-    return ChatColor.WHITE;
-  }
-  
-  public ChatColor adminColor() {
-    int x = r.nextInt(3);
-    if (x == 0)
-      return ChatColor.DARK_RED; 
-    if (x == 1)
-      return ChatColor.GRAY; 
-    return ChatColor.WHITE;
-  }
+
 
 
   @EventHandler

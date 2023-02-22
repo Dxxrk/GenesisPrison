@@ -38,15 +38,12 @@ public class ResetHandler {
 			}
 		}
 
-		
-		int block = 0;
+
+		Random r = new Random();
 		for(Location bloc : mine.getMineRegion().getLocationOfBlocksInMine()) {
 			if(bloc.getWorld().getBlockAt(bloc).getType() == Material.AIR) {
+				int block = r.nextInt(3);
 				mm.addBlockChanges(bloc, blocks.get(block).getType(), blocks.get(block).getData().getData());
-			}
-			block++;
-			if(block == 3){
-				block = 0;
 			}
 
 		}

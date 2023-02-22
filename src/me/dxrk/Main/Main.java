@@ -467,19 +467,19 @@ new BukkitRunnable() {
 	    if (amt <= 0.0D)
 	      return String.valueOf(0);
       if (amt >= 1.0E24D)
-          return String.format("%.1f S", amt / 1.0E18D);
+          return String.format("%.1fS", amt / 1.0E18D);
       if (amt >= 1.0E21D)
-          return String.format("%.1f s", amt / 1.0E18D);
+          return String.format("%.1fs", amt / 1.0E18D);
 	    if (amt >= 1.0E18D)
-	        return String.format("%.1f Q", amt / 1.0E18D);
+	        return String.format("%.1fQ", amt / 1.0E18D);
 	    if(amt >= 1.0E15D)
-	    	return String.format("%.1f q", amt / 1.0E15D);
+	    	return String.format("%.1fq", amt / 1.0E15D);
 	    if (amt >= 1.0E12D)
-	      return String.format("%.1f T", amt / 1.0E12D);
+	      return String.format("%.1fT", amt / 1.0E12D);
 	    if (amt >= 1.0E9D)
-	      return String.format("%.1f B", amt / 1.0E9D);
+	      return String.format("%.1fB", amt / 1.0E9D);
 	    if (amt >= 1000000.0D)
-	      return String.format("%.1f M", amt / 1000000.0D);
+	      return String.format("%.1fM", amt / 1000000.0D);
 	    return NumberFormat.getNumberInstance(Locale.US).format(amt);
 	  }
   

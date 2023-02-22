@@ -289,12 +289,14 @@ public class SellHandler implements Listener, CommandExecutor {
   
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onBlockBreak(BlockBreakEvent event) {
-	  
     Player p = event.getPlayer();
+	  if(!p.getWorld().getName().equals(p.getName()+"sWorld")) {
+		  event.setCancelled(true);
+		  return;
+	  }
     WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
     ApplicableRegionSet set = wg.getRegionManager(p.getWorld())
       .getApplicableRegions(event.getBlock().getLocation());
-	  if(!p.getWorld().getName().equals(p.getName()+"sWorld")) return;
     if (!set.allows(DefaultFlag.LIGHTER)) {
       if (p.isOp() && p.getItemInHand() != null && 
         p.getItemInHand().getType() == Material.DIAMOND_PICKAXE || p.getItemInHand().getType() == Material.WOOD_PICKAXE

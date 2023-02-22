@@ -102,14 +102,18 @@ public class PlayerDataHandler implements Listener {
     }
     if (this.settings.getVote().get(uuid + ".Votes") == null) {
       this.settings.getVote().set(uuid + ".Votes", 0);
+      this.settings.saveVote();
+    }
+    if (this.settings.getVote().get(uuid + ".Coupons") == null) {
+      this.settings.getVote().set(uuid + ".Coupons", 0);
+      this.settings.saveVote();
+    }
+    if (this.pl.get(uuid + ".NitroBoosting") == null) {
+      this.pl.set(uuid + ".NitroBoosting", false);
       this.settings.savePlayerData();
     }
-    if (this.settings.getVote().get(uuid + ".Votes") == null) {
-      this.settings.getVote().set(uuid + ".Votepoints", 0);
-      this.settings.savePlayerData();
-    }
-    if (this.settings.getVote().get(uuid + ".NitroBoosting") == null) {
-      this.settings.getVote().set(uuid + ".NitroBoosting", false);
+    if (this.pl.get(uuid + ".MoneyMade") == null) {
+      this.pl.set(uuid + ".MoneyMade", 0);
       this.settings.savePlayerData();
     }
   }

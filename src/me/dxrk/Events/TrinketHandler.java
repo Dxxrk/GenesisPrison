@@ -460,8 +460,6 @@ public class TrinketHandler implements Listener, CommandExecutor{
 	
 	@EventHandler
 	public void afterCraft(PrepareItemCraftEvent e) {
-		if(e.getView().getType().equals(InventoryType.WORKBENCH) || e.getView().getType().equals(InventoryType.PLAYER)) {
-			
 			if(e.getRecipe().getResult().equals(rareDust())) {
 				ItemStack[] items = e.getInventory().getMatrix();
 				String common = m.c("&bCommon Trinket");
@@ -470,25 +468,25 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				String legendary = m.c("&6Legendary Trinket");
 				String heroic = m.c("&4Heroic Trinket");
 				for(int i = 0; i < 9; i++) {
-					if(items[i].hasItemMeta()) {
+					if(!items[i].getType().equals(Material.AIR) && items[i].hasItemMeta()) {
 						String[] name = ChatColor.stripColor(items[i].getItemMeta().getDisplayName()).split(" ");
-						if(items[i].getItemMeta().getDisplayName().equals(common) ||(name.length ==3  && name[0].equals("Common") && name[2].equals("Trinket")) ) {
+						if(items[i].getItemMeta().getDisplayName().equals(common)) {
 							e.getInventory().setResult(rareDust());
 							break;
 						}
-						else if(items[i].getItemMeta().getDisplayName().equals(rare) ||(name.length ==3  && name[0].equals("Rare") && name[2].equals("Trinket"))) {
+						else if(items[i].getItemMeta().getDisplayName().equals(rare)) {
 							e.getInventory().setResult(epicDust());
 							break;
 						}
-						else if(items[i].getItemMeta().getDisplayName().equals(epic) ||(name.length ==3  && name[0].equals("Epic") && name[2].equals("Trinket"))) {
+						else if(items[i].getItemMeta().getDisplayName().equals(epic)) {
 							e.getInventory().setResult(legDust());
 							break;
 						}
-						else if(items[i].getItemMeta().getDisplayName().equals(legendary) ||(name.length ==3  && name[0].equals("Legendary") && name[2].equals("Trinket"))) {
+						else if(items[i].getItemMeta().getDisplayName().equals(legendary)) {
 							e.getInventory().setResult(herDust());
 							break;
 						}
-						else if(items[i].getItemMeta().getDisplayName().equals(heroic) ||(name.length ==3  && name[0].equals("Heroic") && name[2].equals("Trinket"))) {
+						else if(items[i].getItemMeta().getDisplayName().equals(heroic)) {
 							e.getInventory().setResult(null);
 							break;
 						} else {
@@ -610,8 +608,6 @@ public class TrinketHandler implements Listener, CommandExecutor{
 			}
 			 
 		}
-		
-	}
 
 	
 	public void openTrinket(Player p, int rarity) {
@@ -620,6 +616,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 		
 		if(rarity == 1) {
 			int rint = r.nextInt(5);
+			System.out.println("Random: "+rint);
 			if(rint == 0) {
 				int min = 3;
 				int max = 10;
@@ -682,8 +679,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
-				
-				
+
 				p.getInventory().addItem(trinket);
 			} else {
 				int min = 5;
@@ -698,6 +694,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				tm.setLore(lore);
 				trinket.setItemMeta(tm);
 				lore.clear();
+				p.getInventory().addItem(trinket);
 			}
 			
 			

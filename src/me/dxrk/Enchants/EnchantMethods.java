@@ -290,14 +290,14 @@ public class EnchantMethods {
 			int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity*skill /
 					(3.5));
 
-			double levelcap = level/10;
+			double levelcap = level/75;
 
 			if(levelcap <1){
 				levelcap = 1;
 			}
 
 
-			sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks/8* (fortune)*levelcap))));
+			sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks* (fortune)*levelcap))));
 
 
 
@@ -410,14 +410,14 @@ public class EnchantMethods {
 				int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity*skill*event /
 						(8.6));
 
-				double levelcap = level/10;
+				double levelcap = level/100;
 
 				if(levelcap <1){
 					levelcap = 1;
 				}
 
 		    
-		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks/8* (fortune)*levelcap))));
+		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks* (fortune)*levelcap))));
 		    
 
 
@@ -523,7 +523,7 @@ public class EnchantMethods {
 				int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity*skill*event /
 						(8.6));
 
-				double levelcap = level/10;
+				double levelcap = level/100;
 
 				if(levelcap <1){
 					levelcap = 1;
@@ -690,7 +690,7 @@ public class EnchantMethods {
 				int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity*skill*event /
 						(8.6));
 
-				double levelcap = level/10;
+				double levelcap = level/50;
 
 				if(levelcap <1){
 					levelcap = 1;

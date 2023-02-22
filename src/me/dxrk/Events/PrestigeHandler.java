@@ -149,10 +149,10 @@ public class PrestigeHandler implements Listener, CommandExecutor {
 
         //Adding Prestiges(boost) and resetting rank
         int rank = RankupHandler.getInstance().getRank(p);
-        double divisor = 5 * (0.75*timesprestied);
+        double divisor = 5 * (0.5*timesprestied);
         int prestiges = pl.getInt(uuid+".Prestiges");
         int pr;
-        if(timesprestied ==0) {
+        if(timesprestied <2) {
             pr = rank /5;
         } else {
             pr = (int) Math.round(rank / divisor);

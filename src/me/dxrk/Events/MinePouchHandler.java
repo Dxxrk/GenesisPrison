@@ -68,7 +68,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
     public void givePouch(Player p) {
         Random r = new Random();
         int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
-        int chance = (int) (5000 - ((prestiges-75)*0.75));
+        int chance = 5000;
         boolean inInv = false;
         for(ItemStack i : p.getInventory().getContents()) {
             if(i != null && i.hasItemMeta() && i.getItemMeta().hasLore()) {

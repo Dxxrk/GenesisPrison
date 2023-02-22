@@ -321,7 +321,7 @@ public class BoostsHandler implements Listener, CommandExecutor{
 					assert channel != null;
 					channel.sendMessageEmbeds(b.build()).queue();
 					
-					sname = c("&a$&d"+amp+"x");
+					sname = c("&a$&a"+amp+"x");
 					
 					Bukkit.getScheduler().scheduleSyncDelayedTask(Main.plugin, () -> {
 						if(sactive == true) {

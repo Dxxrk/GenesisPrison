@@ -99,27 +99,6 @@ public class RankupHandler implements Listener, CommandExecutor{
     
   }
 
-  public double priceJumpP(Player p){
-	  int prestiges = settings.getPlayerData().getInt(p.getUniqueId()+".Prestiges");
-	  if(prestiges >= 1500) {
-		  return 15;
-	  }
-	  else if(prestiges >= 1000){
-		  return 10;
-	  }
-	  else if(prestiges >=500){
-		  return 5;
-	  }
-	  else if(prestiges >= 250){
-		  return 2.5;
-	  }
-	  else if(prestiges >= 100){
-		  return 1.75;
-	  }
-
-
-	  return 1;
-  }
 	public double priceJumpR(Player p){
 		int ranks = getRank(p);
 
@@ -187,18 +166,11 @@ public class RankupHandler implements Listener, CommandExecutor{
 
   
   public double rankPrice(Player p) {
-	  int timespres = settings.getPlayerData().getInt(p.getUniqueId().toString()+".TimesPrestiged");
-	  double multi;
-	  if(timespres == 0) {
-		  multi = 1;
-	  } else {
-		  multi = timespres*1.75;
-	  }
 
 	  int rank = getRank(p);
-	  double price = (1.1e12+(1.1e12*((rank-1)*1.5)))*multi*priceJumpP(p)*priceJumpR(p);
-	  if(rank == 1){
-		  price = 1e12;
+	  double price = (8e11+(8e11*(rank*1.75)))*priceJumpR(p);
+	  if(rank == 1) {
+		  price = 8e11;
 	  }
 
     return price;

@@ -1,5 +1,6 @@
 package me.dxrk.Commands;
 
+import me.dxrk.Events.BlocksHandler;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import org.bukkit.Bukkit;
@@ -128,7 +129,7 @@ public class CMDStats implements Listener, CommandExecutor {
 
         ItemStack blocks = new ItemStack(Material.DIAMOND_ORE);
         ItemMeta bm = blocks.getItemMeta();
-        bm.setDisplayName(m.c("&7Blocks Broken: &b"+settings.getPlayerData().getInt(uuid+".BlocksBroken")));
+        bm.setDisplayName(m.c("&7Blocks Broken: &b"+ BlocksHandler.blocks.get(p)));
         blocks.setItemMeta(bm);
         stats.setItem(39, blocks);
 
