@@ -32,8 +32,7 @@ public class CMDHelp implements Listener, CommandExecutor {
         lore.add(m.c("&7Each Player gets their own personal mine."));
         lore.add(m.c("&7Use '/mine' to create your mine."));
         lore.add(m.c("&7Use '/mine visit <Player>' to visit another players mine."));
-        lore.add(m.c("&7You will get a new block after a certain amount of prestiges."));
-        lore.add(m.c("&7You can view these blocks in '/mine' as well."));
+        lore.add(m.c("&7You will get new blocks in your mine every 16 levels."));
         mm.setLore(lore);
         mine.setItemMeta(mm);
         help.setItem(2, mine);
@@ -75,7 +74,7 @@ public class CMDHelp implements Listener, CommandExecutor {
         ItemMeta gm = gems.getItemMeta();
         gm.setDisplayName(m.c("&aGems:"));
         lore.add(m.c("&7Gems are acquired from Gem Pouches."));
-        lore.add(m.c("&7Players have a chance to receive Gem Pouches randomly after they obtain 100 prestiges."));
+        lore.add(m.c("&7Players have a chance to receive Gem Pouches randomly."));
         lore.add(m.c("&7When you have a Gem Pouch, every block you break is +1 gem into the pouch."));
         lore.add(m.c("&7You can right click the pouch to receive all the gems it contains."));
         lore.add(m.c("&7You can use '/gem withdraw' to withdraw gems to sell or trade."));

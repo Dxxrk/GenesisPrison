@@ -34,7 +34,7 @@ public class KeysHandler implements Listener {
     return instance;
   }
   
-  private Methods m = Methods.getInstance();
+  private static Methods m = Methods.getInstance();
   
   
   public void addKey(Player p, String key, int amt) {
@@ -72,7 +72,7 @@ public class KeysHandler implements Listener {
     	if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Key-Finder-Messages") == true) {
     		p.sendMessage(s);
     	}
-      addKey(p, key, 1);
+      addKey(p, key, amt);
     int keysfound = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".KeysFound");
 	  this.settings.getPlayerData().set(p.getUniqueId().toString()+".KeysFound", (keysfound+1));
   }
@@ -245,33 +245,37 @@ public class KeysHandler implements Listener {
         int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
         return prestiges;
     }
-	public void findTokens(Player p) {
-		List<String> lore = p.getItemInHand().getItemMeta().getLore();
-		double tf = 1;
-		int x;
-		for (x = 0; x < lore.size(); x++) {
-			String s = lore.get(x);
-			if (ChatColor.stripColor(s).contains("Token Finder")) {
-				tf = m.getBlocks(ChatColor.stripColor(s))*0.0035;
-			}
-		}
-		double multiply = 1;
+
+    public static int tokensPerBlock(Player p) {
+        List<String> lore = p.getItemInHand().getItemMeta().getLore();
+        double tf = 1;
+        int x;
+        for (x = 0; x < lore.size(); x++) {
+            String s = lore.get(x);
+            if (ChatColor.stripColor(s).contains("Token Finder")) {
+                tf += m.getBlocks(ChatColor.stripColor(s))*0.0025;
+            }
+        }
+        double multiply = 1;
         double skill = SkillsEventsListener.getSkillsBoostToken(p);
         double event = SkillsEventsListener.getEventToken();
         double tboost = Functions.tokenBoost(p);
-        double prestige = getPrestiges(p)*0.045;
         double miningboost = BoostsHandler.sell;
         String gang = Gangs.getInstance().getGang(p);
         double unity = CMDGang.getInstance().getUnityLevel(gang);
-        if(prestige < 1){
-            prestige = 1;
-        }
-		if(Functions.multiply.contains(p)) multiply = 2;
 
-		int tokens = 12;
+        if(Functions.multiply.contains(p)) multiply = 2;
 
-            int tgive = (int) ((tokens*tf)*multiply*skill*event*tboost*prestige*unity*miningboost);
-			Tokens.getInstance().addTokens(p, tgive);
+        int tokens = 15;
+
+        int tgive = (int) ((tokens*tf)*multiply*skill*event*tboost*unity*miningboost);
+        return tgive;
+    }
+
+	public void findTokens(Player p) {
+        String gang = Gangs.getInstance().getGang(p);
+        int tgive = tokensPerBlock(p);
+        Tokens.getInstance().addTokens(p, tgive);
         if(CMDGang.harmony.contains(gang)) {
             double htokens = CMDGang.harmonyTokens.get(gang);
             CMDGang.harmonyTokens.put(Gangs.getInstance().getGang(p), htokens+tgive);

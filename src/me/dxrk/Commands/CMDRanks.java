@@ -87,9 +87,6 @@ public class CMDRanks implements Listener, CommandExecutor {
                         int amount = p.getItemInHand().getAmount();
                         p.getItemInHand().setAmount(amount-1);
                     }
-                    int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
-                    MineHandler.getInstance().updateMine(p, prestiges);
-
                 }
             }
         }

@@ -85,6 +85,7 @@ public class RankupHandler implements Listener, CommandExecutor{
 	    this.settings.saveRankupPrices();
 	    
 	    p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
+
   }
   
   public void setRank(Player p, int i) {
@@ -92,6 +93,11 @@ public class RankupHandler implements Listener, CommandExecutor{
 	  this.settings.saveRankupPrices();
 	  p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
   }
+
+	public int getPrestiges(Player p){
+		int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
+		return prestiges;
+	}
   
   public int nextRank(Player p) {
    
@@ -102,59 +108,14 @@ public class RankupHandler implements Listener, CommandExecutor{
 	public double priceJumpR(Player p){
 		int ranks = getRank(p);
 
-		if(ranks >= 20000){
-			return 100;
-		}
-		else if(ranks >= 18000) {
-			return 90;
-		}
-		else if(ranks >= 16000) {
-			return 80;
-		}
-		else if(ranks >= 14000) {
-			return 70;
-		}
-		else if(ranks >= 12000) {
-			return 60;
-		}
-		else if(ranks >= 10000) {
-			return 50;
-		}
-		else if(ranks >= 8000) {
-			return 40;
-		}
-		else if(ranks >= 7000) {
-			return 35;
-		}
-		else if(ranks >= 6000) {
-			return 30;
-		}
-		else if(ranks >= 5250) {
-			return 26.25;
-		}
-		else if(ranks >= 4500) {
-			return 22.5;
-		}
-		else if(ranks >= 3750) {
-			return 18.75;
-		}
-		else if(ranks >= 3000) {
-			return 15;
-		}
-		else if(ranks >= 2500) {
-			return 12.5;
-		}
-		else if(ranks >= 2000) {
+		if(ranks >= 1000){
 			return 10;
 		}
-		else if(ranks >= 1500) {
-			return 7.5;
-		}
-		else if(ranks >= 1000){
-			return 5;
+		else if(ranks >= 750) {
+			return 5.25;
 		}
 		else if(ranks >=500){
-			return 2.5;
+			return 3.5;
 		}
 		else if(ranks >= 250){
 			return 1.75;
@@ -168,9 +129,13 @@ public class RankupHandler implements Listener, CommandExecutor{
   public double rankPrice(Player p) {
 
 	  int rank = getRank(p);
-	  double price = (8e11+(8e11*(rank*1.75)))*priceJumpR(p);
+	  double prestiges = getPrestiges(p)*2.0;
+	  if(prestiges <1){
+		  prestiges = 1;
+	  }
+	  double price = (1.5e12+(1.5e12*(rank*1.75)))*priceJumpR(p)*prestiges;
 	  if(rank == 1) {
-		  price = 8e11;
+		  price = 1.5e12 *prestiges;
 	  }
 
     return price;
@@ -184,7 +149,9 @@ public class RankupHandler implements Listener, CommandExecutor{
     } 
     Main.econ.withdrawPlayer(p, rankPrice(p));
     upRank(p);
-    p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
+	if(getRank(p) %16 == 0)
+		MineHandler.getInstance().updateMine(p, getRank(p));
+    p.getScoreboard().getTeam("prank").setSuffix(c("&b" + getRank(p)));
 	double percents;
     p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
     percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
@@ -206,15 +173,16 @@ public class RankupHandler implements Listener, CommandExecutor{
 	      return;
 	    } 
 	  while(Main.econ.getBalance(p) > rankPrice(p)) {
-
 		  Main.econ.withdrawPlayer(p, rankPrice(p));
-		    upRank(p);
-		    p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
-	    	double percents;
-	        p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
-	        percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
-	        double dmultiply = percents*10.0;
-	        double dRound = Math.round(dmultiply) /10.0;
+		  upRank(p);
+		  if(getRank(p) %16 == 0)
+			  MineHandler.getInstance().updateMine(p, getRank(p));
+		  p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
+		  double percents;
+		  p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
+		  percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
+		  double dmultiply = percents*10.0;
+		  double dRound = Math.round(dmultiply) /10.0;
 
 	        
 
@@ -224,6 +192,7 @@ public class RankupHandler implements Listener, CommandExecutor{
 	        		p.getScoreboard().getTeam("percent").setSuffix(c("&c")+(dRound)+"%");
 	        }
 	  }
+
   }
   
   

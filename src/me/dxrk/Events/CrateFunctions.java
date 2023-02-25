@@ -38,6 +38,25 @@ public class CrateFunctions {
         return "";
 
     }
+    public static String randomKey2() {
+        Random r = new Random();
+        int ri = r.nextInt(5);
+        switch(ri){
+            case 0:
+                return m.c("&7&lAlpha &7Key");
+            case 1:
+                return m.c("&c&lBeta &7Key");
+            case 2:
+                return m.c("&4&lOmega &7Key");
+            case 3:
+                return m.c("&e&lToken &7Key");
+            case 4:
+                return m.c("&5&lCommunity &7Key");
+        }
+
+        return "";
+
+    }
 
 
     public static ItemStack GenesisCrate() {
@@ -263,7 +282,7 @@ public class CrateFunctions {
                 int tmin = 1;
                 int tmax = 5;
                 int keys = r.nextInt(tmax - tmin)+ tmin;
-                rm.setDisplayName(m.c("&e"+keys+"x ")+randomKey());
+                rm.setDisplayName(m.c("&e"+keys+"x ")+randomKey2());
                 reward.setType(Material.TRIPWIRE_HOOK);
                 List<String> lore = new ArrayList<>();
                 String key = ChatColor.stripColor(rm.getDisplayName()).split(" ")[1];

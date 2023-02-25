@@ -2,6 +2,7 @@ package me.dxrk.Enchants;
 
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import me.dxrk.Events.MineHandler;
+import me.dxrk.Events.RankupHandler;
 import me.dxrk.Events.ResetHandler;
 import me.dxrk.Events.ResetHandler.ResetReason;
 import me.dxrk.Main.SettingsManager;
@@ -144,8 +145,8 @@ public class Enchants implements Listener{
 
 				assert m != null;
 				if(m.getMineRegion().getBlocksLeftPercentage() < 50F) {
-					int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
-					ResetHandler.resetMine(m, ResetReason.PERCENTAGE, MineHandler.Blocks(prestiges/50));
+					int rank = RankupHandler.instance.getRank(p);
+					ResetHandler.resetMine(m, ResetReason.PERCENTAGE, MineHandler.Blocks(rank/16));
 				}
 		    	
 		    		

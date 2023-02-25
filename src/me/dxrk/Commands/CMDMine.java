@@ -109,7 +109,7 @@ public class CMDMine implements CommandExecutor, Listener {
 
 			ItemStack mineBlocks = new ItemStack(Material.IRON_FENCE);
 			ItemMeta mm = mineBlocks.getItemMeta();
-			mm.setDisplayName(c("&aView the various mine blocks."));
+			mm.setDisplayName(c("&aNew Bloksevery 16 Levels!"));
 			mineBlocks.setItemMeta(mm);
 			mineMenu.setItem(6, mineBlocks);
 
@@ -182,9 +182,6 @@ public class CMDMine implements CommandExecutor, Listener {
 					Location pworld = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 0.5, 113, 0.5, -90, 0);
 					p.teleport(pworld);
 				}
-			}
-			if(e.getSlot() == 6) {
-				openMineBlockInv(p);
 			}
 		}
 	  if(e.getInventory().getName().equals(c("&c&lMine Blocks"))) {

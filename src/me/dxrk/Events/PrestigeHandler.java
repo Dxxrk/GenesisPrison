@@ -47,19 +47,10 @@ public class PrestigeHandler implements Listener, CommandExecutor {
 
 
         if(label.equalsIgnoreCase("prestige")){
-            int prestiges;
-            int times = pl.getInt(p.getUniqueId().toString()+".TimesPrestiged");
-            int rank = RankupHandler.getInstance().getRank(p);
-            double divisor = 5 * (0.75*times);
-            if(times ==0) {
-                prestiges = rank/5;
-            } else {
-                prestiges = (int) Math.round(rank / divisor);
-            }
-
-            openInv(p, prestiges, times);
-
-
+            if(RankupHandler.getInstance().getRank(p) >=1000)
+                openInv(p);
+            else
+                p.sendMessage(m.c("&cMust be level 1000 or higher."));
         }
 
 
@@ -68,13 +59,13 @@ public class PrestigeHandler implements Listener, CommandExecutor {
     }
 
 
-    public void openInv(Player p, int prestiges, int times) {
-        Inventory prestige = Bukkit.createInventory(null, InventoryType.HOPPER, m.c("&cPrestige: You have prestiged &a"+times+" &ctimes."));
+    public void openInv(Player p) {
+        Inventory prestige = Bukkit.createInventory(null, InventoryType.HOPPER, m.c("&cPrestige: "));
         List<String> lore = new ArrayList<>();
         lore.add(m.c("&cWarning: This will reset your rank to 1!!"));
         lore.add(m.c(" "));
-        lore.add(m.c("&aPrestiging now will give you &b"+prestiges+" &aprestiges."));
-
+        lore.add(m.c("&7Prestiging gives a 50% increase to sell prices."));
+        lore.add(m.c("&7Will also make levelling up considerably harder."));
 
         prestige.setItem(2, prestigeItem(lore, m.c("&6&lCLICK TO PRESTIGE!")));
         prestige.setItem(0, PickaxeLevel.getInstance().Spacer());
@@ -144,25 +135,14 @@ public class PrestigeHandler implements Listener, CommandExecutor {
 
     public void prestige(Player p) {
         String uuid = p.getUniqueId().toString();
-        int timesprestied = pl.getInt(uuid+".TimesPrestiged");
 
-
-        //Adding Prestiges(boost) and resetting rank
-        int rank = RankupHandler.getInstance().getRank(p);
-        double divisor = 5 * (0.5*timesprestied);
+        //Adding Prestige and resetting rank
         int prestiges = pl.getInt(uuid+".Prestiges");
-        int pr;
-        if(timesprestied <2) {
-            pr = rank /5;
-        } else {
-            pr = (int) Math.round(rank / divisor);
-        }
-        pl.set(uuid+".Prestiges", prestiges+pr);
+        pl.set(uuid+".Prestiges", (prestiges+1));
         RankupHandler.getInstance().setRank(p, 1);
-        pl.set(uuid+".TimesPrestiged", timesprestied+1);
         settings.savePlayerData();
-        TitleAPI.sendTitle(p, 2, 40, 2, m.c("&c&lPrestiged!"), m.c("&b&lPrestiges Gained: +"+pr));
-        MineHandler.getInstance().updateMine(p, (prestiges+pr));
+        TitleAPI.sendTitle(p, 2, 40, 2, m.c("&c&lPrestiged!"), m.c("&b&lPrestige +1"));
+        MineHandler.getInstance().updateMine(p, 1);
     }
 
     public static void addPrestiges(Player p, int amt) {

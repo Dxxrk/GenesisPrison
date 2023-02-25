@@ -136,9 +136,12 @@ public class SellHandler implements Listener, CommandExecutor {
 	    double greed = Functions.greed(p);
 	    double sell = Functions.sellBoost(p);
 	    double miningboost = BoostsHandler.sell;
-	    double multi = SellHandler.getInstance().getMulti(p);
+	    double multi = SellHandler.getInstance().getMulti(p)/2.5;
+		if(multi <1) {
+			multi = 1;
+		}
 	  double event = SkillsEventsListener.getEventMulti();
-		double prestige = getPrestiges(p)*0.02;
+		double prestige = getPrestiges(p)*1.5;
 		double unity = CMDGang.getInstance().getUnityLevel(gang);
 		double multiply = 1;
 		if(prestige < 1){
@@ -184,7 +187,10 @@ public class SellHandler implements Listener, CommandExecutor {
 	  double greed = Functions.greed(p);
 	  double sell = Functions.sellBoost(p);
 	  double miningboost = BoostsHandler.sell;
-	  double multi = SellHandler.getInstance().getMulti(p);
+	  double multi = SellHandler.getInstance().getMulti(p)/2.5;
+	  if(multi <1) {
+		  multi = 1;
+	  }
 	  double event = SkillsEventsListener.getEventFortune();
 	  double prestige = getPrestiges(p)*0.02;
 	  double multiply = 1;
@@ -365,8 +371,8 @@ public class SellHandler implements Listener, CommandExecutor {
 				 if(reset.contains(p.getUniqueId().toString())) {
 					 p.sendMessage(c("&c/resetmine(/rm) is on cooldown."));
 				 } else {
-					 int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
-					 ResetHandler.resetMine(mine, ResetReason.NORMAL, MineHandler.Blocks(prestiges/50));
+					 int rank = RankupHandler.getInstance().getRank(p);
+					 ResetHandler.resetMine(mine, ResetReason.NORMAL, MineHandler.Blocks(rank/16));
 					 if(mine.isLocationInRegion(p.getLocation()))
 					 	p.teleport(mine.getSpawnLocation());
 					 reset.add(p.getUniqueId().toString());
@@ -432,9 +438,7 @@ public class SellHandler implements Listener, CommandExecutor {
     	               double amnt = Double.parseDouble(Amount);
     	               double d = this.settings.getMultiplier().getDouble(reciever.getUniqueId().toString());
     	               double newMulti = d+amnt;
-    	               if(newMulti > Functions.multiCap(reciever)) {
-    	            	   newMulti = Functions.multiCap(reciever);
-    	               }
+
     	               
     	               this.settings.getMultiplier().set(reciever.getUniqueId().toString(), newMulti);
     	               this.settings.saveMultiplier();

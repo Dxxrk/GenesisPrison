@@ -34,7 +34,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
     public ItemStack minePouch() {
         ItemStack pouch = new ItemStack(Material.INK_SACK);
         ItemMeta pm = pouch.getItemMeta();
-        pm.setDisplayName(m.c("&eMine Pouch"));
+        pm.setDisplayName(m.c("&eGem Pouch"));
         List<String> lore = new ArrayList<>();
         lore.add(m.c("&aGems: 0"));
         pm.setLore(lore);
@@ -72,12 +72,12 @@ public class MinePouchHandler implements Listener, CommandExecutor {
         boolean inInv = false;
         for(ItemStack i : p.getInventory().getContents()) {
             if(i != null && i.hasItemMeta() && i.getItemMeta().hasLore()) {
-                if (i.getItemMeta().getDisplayName().equals(m.c("&eMine Pouch"))) {
+                if (i.getItemMeta().getDisplayName().equals(m.c("&eGem Pouch"))) {
                     inInv = true;
                 }
             }
         }
-        if(prestiges >=100 && r.nextInt(chance) <1 && inInv == false){
+        if(r.nextInt(chance) <1 && inInv == false){
             p.getInventory().addItem(minePouch());
         }
     }
@@ -91,7 +91,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 if(!p.getInventory().getItem(x).hasItemMeta()) continue;
                 if(!p.getInventory().getItem(x).getItemMeta().hasLore()) continue;
                 ItemStack item = p.getInventory().getItem(x).clone();
-                if(item.getType().equals(Material.INK_SACK) && item.getItemMeta().getDisplayName().equals(m.c("&eMine Pouch"))){
+                if(item.getType().equals(Material.INK_SACK) && item.getItemMeta().getDisplayName().equals(m.c("&eGem Pouch"))){
                     ItemMeta im = item.getItemMeta();
                     List<String> lore = im.getLore();
                     int gems = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(lore.get(0)));
@@ -124,7 +124,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
 
         if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             ItemStack item = p.getItemInHand();
-            if (item.getType().equals(Material.INK_SACK) && item.getItemMeta().getDisplayName().equals(m.c("&eMine Pouch"))) {
+            if (item.getType().equals(Material.INK_SACK) && item.getItemMeta().getDisplayName().equals(m.c("&eGem Pouch"))) {
                 int gems = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(item.getItemMeta().getLore().get(0)));
                 addGems(p, (int) (gems*gem));
                 if (p.getItemInHand().getAmount() > 1) {
@@ -143,7 +143,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 }
             }
             if (item.getType().equals(Material.MAGMA_CREAM) && item.getItemMeta().getDisplayName().equals(m.c("&eToken Voucher"))) {
-                double tokens = CrateHandler.getInstance().getValuedbl(ChatColor.stripColor(item.getItemMeta().getLore().get(0)));
+                String s = ChatColor.stripColor(item.getItemMeta().getLore().get(0)).split(" ")[1];
+                double tokens = Double.parseDouble(s);
                 Tokens.getInstance().addTokens(p, tokens);
                 if (p.getItemInHand().getAmount() > 1) {
                     p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);

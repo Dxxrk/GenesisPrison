@@ -98,7 +98,8 @@ public class TrinketHandler implements Listener, CommandExecutor{
 			}
 		if(label.equalsIgnoreCase("trinket") || label.equalsIgnoreCase("trinkets") ) {
 			Player p = (Player) sender;
-			if(p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)) {
+			if(p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE) || p.getItemInHand().getType().equals(Material.IRON_PICKAXE) || p.getItemInHand().getType().equals(Material.GOLD_PICKAXE)
+			|| p.getItemInHand().getType().equals(Material.STONE_PICKAXE) || p.getItemInHand().getType().equals(Material.WOOD_PICKAXE)) {
 				openTrinkets(p);
 			} else {
 				p.sendMessage(m.c("&f&lTrinkets &8| &7Please hold your pickaxe!"));

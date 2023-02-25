@@ -158,8 +158,8 @@ public class MineHandler implements Listener, CommandExecutor{
 		return blocks;
 	}
 	@SuppressWarnings("deprecation")
-	public void updateMine(Player p, int prestiges){
-		int start = prestiges/50;
+	public void updateMine(Player p, int rank){
+		int start = rank/16;
 		List<ItemStack> blocks = Blocks(start);
 		Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
 		m.getBlockManager().modifyBlockChanceInRegion(m.getBlockManager().getRandomBlockFromMine(), 0.0F);
@@ -201,8 +201,7 @@ public class MineHandler implements Listener, CommandExecutor{
 		if(label.equalsIgnoreCase("updatemine")) {
 			if(args.length == 1){
 				Player p = Bukkit.getPlayer(args[0]);
-				int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
-				updateMine(p, prestiges);
+				updateMine(p, RankupHandler.instance.getRank(p));
 			}
 		}
 		return false;

@@ -222,88 +222,72 @@ public class Methods {
 
   @SuppressWarnings("deprecation")
   public static double getSellPrice(ItemStack i) {
-        int shmulti = 1000000*i.getData().getData();
+        int shmulti = 500000*i.getData().getData();
         if(i.getTypeId() == 4)
             return 1000000+shmulti;
         else if(i.getTypeId() == 48)
-            return 2000000+shmulti;
+            return 1500000+shmulti;
         else if(i.getTypeId() == 1)
-            return 3000000+shmulti;
+            return 2000000+shmulti; // 7
         else if(i.getTypeId() == 98)
-            return 10000000+shmulti;
+            return 5500000+shmulti; // 4
         else if(i.getTypeId() == 24)
-            return 14000000+shmulti;
+            return 7500000+shmulti; //3
         else if(i.getTypeId() == 179)
-            return 17000000+shmulti;
+            return 9500000+shmulti; // 3
         else if(i.getTypeId() == 172)
-            return 20000000+shmulti;
+            return 10000000+shmulti;
         else if(i.getTypeId() == 159)
-            return 21000000+shmulti;
+            return 10500000+shmulti; // 16
         else if(i.getTypeId() == 45)
-            return 37000000+shmulti;
+            return 18500000+shmulti;
         else if(i.getTypeId() == 16)
-            return 38000000+shmulti;
+            return 19000000+shmulti;
         else if(i.getTypeId() == 173)
-            return 39000000+shmulti;
+            return 19500000+shmulti;
         else if(i.getTypeId() == 15)
-            return 40000000+shmulti;
+            return 20000000+shmulti;
         else if(i.getTypeId() == 42)
-            return 41000000+shmulti;
+            return 21000000+shmulti;
         else if(i.getTypeId() == 14)
-            return 42000000+shmulti;
+            return 22000000+shmulti;
         else if(i.getTypeId() == 41)
-            return 43000000+shmulti;
+            return 23000000+shmulti;
         else if(i.getTypeId() == 73)
-            return 44000000+shmulti;
+            return 24000000+shmulti;
         else if(i.getTypeId() == 152)
-            return 45000000+shmulti;
+            return 25000000+shmulti;
         else if(i.getTypeId() == 21)
-            return 46000000+shmulti;
+            return 26000000+shmulti;
         else if(i.getTypeId() == 22)
-            return 47000000+shmulti;
+            return 27000000+shmulti;
         else if(i.getTypeId() == 56)
-            return 48000000+shmulti;
+            return 28000000+shmulti;
         else if(i.getTypeId() == 57)
-            return 49000000+shmulti;
+            return 28500000+shmulti;
         else if(i.getTypeId() == 129)
-            return 50000000+shmulti;
+            return 29000000+shmulti;
         else if(i.getTypeId() == 133)
-            return 51000000+shmulti;
+            return 29500000+shmulti;
         else if(i.getTypeId() == 87)
-            return 52000000+shmulti;
+            return 30000000+shmulti;
         else if(i.getTypeId() == 112)
-            return 53000000+shmulti;
+            return 31000000+shmulti;
         else if(i.getTypeId() == 153)
-            return 54000000+shmulti;
+            return 32000000+shmulti;
         else if(i.getTypeId() == 155)
-            return 55000000+shmulti;
+            return 32500000+shmulti; // 3
         else if(i.getTypeId() == 168)
-            return 58000000+shmulti;
+            return 34500000+shmulti; // 3
         else if(i.getTypeId() == 121)
-            return 61000000+shmulti;
+            return 37500000+shmulti;
         else if(i.getTypeId() == 49)
-            return 62000000+shmulti;
+            return 38000000+shmulti;
         return 1;
   }
 
 
-  
-  public static String getSellRank(Player p) {
-    return "A";
-    
-  }
-  
-  public String format(double amt) {
-    if (amt >= 1.0E12D)
-      return String.format("%.1f Tril", amt / 1.0E12D);
-    if (amt >= 1.0E9D)
-      return String.format("%.1f Bil", amt / 1.0E9D);
-    if (amt >= 1000000.0D)
-      return String.format("%.1f Mil", amt / 1000000.0D);
-    return NumberFormat.getNumberInstance(Locale.US).format(amt);
-  }
-  
-  public static String formatAmt(double amt) {
+    public static String formatAmt(double amt) {
     if (amt <= 0.0D)
       return String.valueOf(0);
     if(amt >= 1.0E18D)
