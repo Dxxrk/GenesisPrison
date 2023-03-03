@@ -1,5 +1,6 @@
 package me.dxrk.Vote;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -12,6 +13,7 @@ import java.util.UUID;
 
 import me.dxrk.Events.LocksmithHandler;
 import me.dxrk.Main.Main;
+import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import mkremins.fanciful.FancyMessage;
 import net.citizensnpcs.api.CitizensAPI;
@@ -37,6 +39,9 @@ import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.model.VotifierEvent;
 
 public class CMDVote implements Listener, CommandExecutor {
+
+  Methods m = Methods.getInstance();
+
   public void openVotingInv(Player p) {
     Inventory i = Bukkit.createInventory(null, InventoryType.HOPPER, ChatColor.AQUA + "Vote!");
     i.setItem(0, voteItem(p, "Mc-lists"));
@@ -324,13 +329,17 @@ public void orderTop() {
     LocksmithHandler.getInstance().addKey(p, "community", 1);
     }
   }
+
+  private String getTodayDate() {
+    LocalDate time = java.time.LocalDate.now();
+
+    return time.toString();
+  }
   
   @EventHandler
   public void onPlayerVote(VotifierEvent e) {
     Vote v = e.getVote();
     Player p = Bukkit.getServer().getPlayer(v.getUsername());
-    if (p == null)
-      Bukkit.broadcastMessage(e.getVote().getServiceName() + " " + e.getVote().getTimeStamp());
     int servervotes = this.settings.getVote().getInt("ServerVotes");
     this.settings.getVote().set("ServerVotes", servervotes - 1);
     assert p != null;
@@ -341,9 +350,11 @@ public void orderTop() {
     CMDVoteShop.addCoupon(p, 0.05);
     this.settings.getVote().set(p.getUniqueId().toString() + "." + v.getServiceName(), time);
     this.settings.saveVote();
-    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "et add " + p.getName() + " 10000");
-    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "cratekey vote " + p.getName());
+    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "tokens add " + p.getName() + " 50000");
+    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "cratekey " + p.getName()+" vote");
+    this.settings.getVote().set(p.getUniqueId().toString()+".HasVoted", getTodayDate());
     this.settings.saveVote();
+    p.sendMessage(m.c("&f&lVote &8| &b+1 Vote Key &e+⛀50,000"));
     if (servervotes < 2) {
       this.settings.getVote().set("ServerVotes", 30);
       this.settings.saveVote();

@@ -26,7 +26,7 @@ public class CMDRanks implements Listener, CommandExecutor {
 
     /*
     Ranks List:
-    Donator
+    Sponsor
     VIP
     MVP
     Hero

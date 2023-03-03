@@ -253,7 +253,7 @@ public class KeysHandler implements Listener {
         for (x = 0; x < lore.size(); x++) {
             String s = lore.get(x);
             if (ChatColor.stripColor(s).contains("Token Finder")) {
-                tf += m.getBlocks(ChatColor.stripColor(s))*0.0025;
+                tf += m.getBlocks(ChatColor.stripColor(s))*0.0035;
             }
         }
         double multiply = 1;
@@ -266,7 +266,7 @@ public class KeysHandler implements Listener {
 
         if(Functions.multiply.contains(p)) multiply = 2;
 
-        int tokens = 15;
+        int tokens = 20;
 
         int tgive = (int) ((tokens*tf)*multiply*skill*event*tboost*unity*miningboost);
         return tgive;

@@ -47,7 +47,7 @@ public class CMDDaily implements Listener, CommandExecutor{
 			loree.add("");
 			loree.add(m.c("&7Rewards:"));
 		}
-		if(name.equals(m.c("&b&lDonator Reward!"))){
+		if(name.equals(m.c("&b&lSponsor Reward!"))){
 			loree.add(m.c("&e3x &e&lToken &7Key"));
 		}
 		else if(name.equals(m.c("&a&lVIP Reward!"))){
@@ -64,7 +64,7 @@ public class CMDDaily implements Listener, CommandExecutor{
 			loree.add(m.c("&5Epic Trinket Dust +1"));
 			loree.add(m.c("&6Legendary Trinket Dust +1"));
 		}
-		else if(name.equals(m.c("5&lDemi-God Reward!"))){
+		else if(name.equals(m.c("&5&lDemi-God Reward!"))){
 			loree.add(m.c("&e1x &5&lCommunity &7Key"));
 			loree.add(m.c("&e2x &4&lOmega &7Key"));
 		}
@@ -112,7 +112,7 @@ public class CMDDaily implements Listener, CommandExecutor{
 	
 	public void openRank(Player p) {
 		Inventory inv = Bukkit.createInventory(null, 27, m.c("&e&lDaily Rank Rewards:"));
-		inv.setItem(0, rewardChest(m.c("&b&lDonator Reward!"), m.c("&7Click to Claim!")));
+		inv.setItem(0, rewardChest(m.c("&b&lSponsor Reward!"), m.c("&7Click to Claim!")));
 		inv.setItem(10, rewardChest(m.c("&a&lVIP Reward!"), m.c("&7Click to Claim!")));
 		inv.setItem(20, rewardChest(m.c("&6&lMVP Reward!"), m.c("&7Click to Claim!")));
 		inv.setItem(12, rewardChest(m.c("&c&lHero Reward!"), m.c("&7Click to Claim!")));
@@ -159,10 +159,10 @@ public class CMDDaily implements Listener, CommandExecutor{
 			this.settings.getDaily().set(p.getUniqueId().toString()+".FreeReward", getTodayDate());
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily Claimed!"));
 		}
-		if(rank.equals("donator")) {
+		if(rank.equals("sponsor")) {
 			LocksmithHandler.getInstance().addKey(p, "Token", 3);
-			this.settings.getDaily().set(p.getUniqueId().toString()+".DonatorReward", getTodayDate());
-			p.sendMessage(m.c("&f&lRewards &8| &bDaily &b&lDonator &bClaimed!"));
+			this.settings.getDaily().set(p.getUniqueId().toString()+".SponsorReward", getTodayDate());
+			p.sendMessage(m.c("&f&lRewards &8| &bDaily &b&lSponsor &bClaimed!"));
 		}
 		if(rank.equals("vip")) {
 			LocksmithHandler.getInstance().addKey(p, "Token", 3);
@@ -221,7 +221,7 @@ public class CMDDaily implements Listener, CommandExecutor{
 		Player p = e.getPlayer();
 		if(!settings.getDaily().contains(p.getUniqueId().toString())) {
 			settings.getDaily().set(p.getUniqueId().toString()+".FreeReward", "");
-			settings.getDaily().set(p.getUniqueId().toString()+".DonatorReward", "");
+			settings.getDaily().set(p.getUniqueId().toString()+".SponsorReward", "");
 			settings.getDaily().set(p.getUniqueId().toString()+".VIPReward", "");
 			settings.getDaily().set(p.getUniqueId().toString()+".MVPReward", "");
 			settings.getDaily().set(p.getUniqueId().toString()+".HeroReward", "");
@@ -264,15 +264,15 @@ public class CMDDaily implements Listener, CommandExecutor{
 		    	e.setCancelled(true);
 		    	
 		    	if(e.getSlot() == 0) {
-					if(!p.hasPermission("rank.donator")) {
+					if(!p.hasPermission("rank.sponsor")) {
 						p.sendMessage(m.c("&cNo Permission!"));
 						return;
 					}
-		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".DonatorReward").equals(getTodayDate())) {
+		    		if(this.settings.getDaily().get(p.getUniqueId().toString()+".SponsorReward").equals(getTodayDate())) {
 		    			p.sendMessage(m.c("&cAlready Claimed Today!"));
 		    			return;
 		    		} else {
-		    			giveRewards(p, "donator");
+		    			giveRewards(p, "sponsor");
 		    		}
 		    	}
 		    	if(e.getSlot() == 10) {

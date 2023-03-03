@@ -4,9 +4,7 @@
       <root url="jar://$USER_HOME$/asdfasdf/ActionBarAPI-1.5.4.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/Citizens-2.0.28-b2329.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/Discord Bot API V 5.3.jar!/" />
-      <root url="jar://$USER_HOME$/asdfasdf/EssentialsX-2.19.4.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/FastAsyncWorldEdit-bukkit-21.03.26-b67f782-1287-22.3.10.jar!/" />
-      <root url="jar://$USER_HOME$/asdfasdf/GenesisEnchants.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/GroupManager.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/HolographicDisplays.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/JetsPrisonMines-4.2.2.jar!/" />
@@ -14,12 +12,13 @@
       <root url="jar://$USER_HOME$/asdfasdf/patched_1.8.8.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/ProtocolLib.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/TitleAPI-1.8.1.jar!/" />
-      <root url="jar://$USER_HOME$/asdfasdf/Vault.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/WorldEdit.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/worldguard-6.2.jar!/" />
       <root url="jar://$USER_HOME$/Desktop/genesis/Multiverse-Core-2.5.0.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/BuycraftXv11.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/SignGUI.jar!/" />
+      <root url="jar://$USER_HOME$/asdfasdf/EssentialsX-2.19.7.jar!/" />
+      <root url="jar://$USER_HOME$/asdfasdf/Vault.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

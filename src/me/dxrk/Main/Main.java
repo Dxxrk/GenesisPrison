@@ -190,6 +190,8 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
       getCommand("lbs").setExecutor(new Leaderboards());
       getCommand("trade").setExecutor(new CMDTrade());
       getCommand("gang").setExecutor(new CMDGang());
+      getCommand("genesis").setExecutor(new CMDOptions());
+      registerEvents(this, new Listener[] { new ReminderHandler() });
       registerEvents(this, new Listener[] { new CMDGang() });
       registerEvents(this, new Listener[] { new CMDTrade() });
       registerEvents(this, new Listener[] { new Leaderboards() });

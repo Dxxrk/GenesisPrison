@@ -45,11 +45,12 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 	  public SettingsManager settings = SettingsManager.getInstance();
 	
 	public ItemStack spacer() {
-	    ItemStack a = new ItemStack(Material.DIAMOND_PICKAXE, 1, (short)0);
+	    ItemStack a = new ItemStack(Material.WOOD_PICKAXE, 1, (short)0);
 	    ItemMeta am = a.getItemMeta();
 		List<String> lore = new ArrayList<>();
 	    am.setDisplayName(c("&cTest Pickaxe"));
 	    am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
+		am.addEnchant(Enchantment.DURABILITY, 32000, true);
 	    am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		lore.add(c("&b&m-<>-&aEnchants&b&m-<>- "));
 		lore.add(c("&cFortune &e10"));

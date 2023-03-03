@@ -18,6 +18,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -81,6 +83,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
             p.getInventory().addItem(minePouch());
         }
     }
+
 
 
     @EventHandler
@@ -159,7 +162,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
     public ItemStack GenesisCrate() {
         ItemStack gcrate = new ItemStack(Material.ENDER_CHEST);
         ItemMeta gm = gcrate.getItemMeta();
-        gm.setDisplayName(m.c("&f&l&k[&7&l*&f&l&k]&r &9&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r &a250,000 gems"));
+        gm.setDisplayName(m.c("&f&l&k[&7&l*&f&l&k]&r &9&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r &a150,000 gems"));
         List<String> lore = new ArrayList<>();
         lore.add(m.c("&7Upon placing this item, you will recieve 8 random items"));
         lore.add(m.c("&7From the list below, all rewards are randomly selected."));
@@ -199,7 +202,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
         ArrayList<String> lore = new ArrayList<>();
         ItemStack trinket = new ItemStack(Material.GOLD_NUGGET, amount);
         ItemMeta dm = trinket.getItemMeta();
-        dm.setDisplayName(m.c("&5Epic Trinket &a 75,000 Gems"));
+        dm.setDisplayName(m.c("&5Epic Trinket &a 40,000 Gems"));
         lore.add(m.c("&7&oRight Click to unveil"));
         dm.setLore(lore);
         trinket.setItemMeta(dm);
@@ -209,7 +212,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
         ArrayList<String> lore = new ArrayList<>();
         ItemStack trinket = new ItemStack(Material.GOLD_NUGGET, amount);
         ItemMeta dm = trinket.getItemMeta();
-        dm.setDisplayName(m.c("&9Rare Trinket &a 50,000 Gems"));
+        dm.setDisplayName(m.c("&9Rare Trinket &a 25,000 Gems"));
         lore.add(m.c("&7&oRight Click to unveil"));
         dm.setLore(lore);
         trinket.setItemMeta(dm);
@@ -228,7 +231,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
 
         ItemStack rank = new ItemStack(Material.TRIPWIRE_HOOK);
         ItemMeta rm = rank.getItemMeta();
-        rm.setDisplayName(m.c("&3&lRank &7Key &a250,000 Gems"));
+        rm.setDisplayName(m.c("&3&lRank &7Key &a200,000 Gems"));
         List<String> lore = new ArrayList<>();
         lore.add(m.c("&cRight Click &7the &3&lRank &7Crate"));
         rm.setLore(lore);
@@ -247,6 +250,16 @@ public class MinePouchHandler implements Listener, CommandExecutor {
     public void onInv(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         if(e.getClickedInventory() == null) return;
+        if(e.getCurrentItem() != null && e.getCurrentItem().hasItemMeta() && e.getCurrentItem().getItemMeta().getDisplayName().equals(m.c("&eGem Pouch")) && !e.getClickedInventory().equals(p.getInventory())) {
+            for(ItemStack i : p.getInventory().getContents()) {
+                if(i != null && i.hasItemMeta()) {
+                    if(i.getItemMeta().getDisplayName().equals(m.c("&eGem Pouch"))) {
+                        e.setCancelled(true);
+                        return;
+                    }
+                }
+            }
+        }
         if(e.getInventory().getName().equals(m.c("&a&lGem Shop"))){
             e.setCancelled(true);
             if(e.getClickedInventory().equals(p.getInventory())) {
@@ -255,9 +268,9 @@ public class MinePouchHandler implements Listener, CommandExecutor {
             }
             int gems = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Gems");
             if(e.getSlot() == 2) {
-                if(gems >= 50000){
-                    removeGems(p, 50000);
-                    p.getInventory().addItem(TrinketHandler.getInstance().epicTrinket(1));
+                if(gems >= 25000){
+                    removeGems(p, 25000);
+                    p.getInventory().addItem(TrinketHandler.getInstance().rareTrinket(1));
                 }
                 else {
                     p.sendMessage(m.c("&cError: Not Enough Gems"));
@@ -265,9 +278,9 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 }
             }
             if(e.getSlot() == 6) {
-                if(gems >= 75000){
-                    removeGems(p, 75000);
-                    p.getInventory().addItem(TrinketHandler.getInstance().legTrinket(1));
+                if(gems >= 40000){
+                    removeGems(p, 40000);
+                    p.getInventory().addItem(TrinketHandler.getInstance().epicTrinket(1));
                     p.updateInventory();
                 }
                 else {
@@ -276,8 +289,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 }
             }
             if(e.getSlot() == 13) {
-                if(gems >= 250000){
-                    removeGems(p, 250000);
+                if(gems >= 150000){
+                    removeGems(p, 150000);
                     p.getInventory().addItem(CrateFunctions.GenesisCrate());
                     p.updateInventory();
                 }
@@ -287,8 +300,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 }
             }
             if(e.getSlot() == 20) {
-                if(gems >= 250000){
-                    removeGems(p, 250000);
+                if(gems >= 200000){
+                    removeGems(p, 200000);
                     LocksmithHandler.getInstance().addKey(p, "rank", 1);
                 }
                 else {

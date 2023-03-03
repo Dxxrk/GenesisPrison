@@ -4,9 +4,6 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
-import net.minecraft.server.v1_8_R3.BlockPosition;
-import net.minecraft.server.v1_8_R3.Blocks;
-import net.minecraft.server.v1_8_R3.PacketPlayOutBlockAction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,11 +11,9 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -28,13 +23,13 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.EnderChest;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.xenondevs.particle.ParticleBuilder;
 import xyz.xenondevs.particle.ParticleEffect;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -42,7 +37,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
 	Methods m = Methods.getInstance();
 
-
+	public static HashMap<Player, List<Location>> placed = new HashMap<>();
 
 
 	public void spawnItem(ItemStack i, Location loc) {
@@ -70,6 +65,10 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 				}
 				if(args[1].equalsIgnoreCase("contraband")){
 					p.getInventory().addItem(CrateFunctions.ContrabandCrate());
+					p.updateInventory();
+				}
+				if(args[1].equalsIgnoreCase("march")){
+					p.getInventory().addItem(CrateFunctions.MarchCrate());
 					p.updateInventory();
 				}
 			}
@@ -110,15 +109,25 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 			if(!p.getItemInHand().getItemMeta().hasDisplayName()) return;
 			if(!p.getItemInHand().getItemMeta().hasLore()) return;
 
-
-
 			Location loc = e.getClickedBlock().getLocation();
 			List<ArmorStand> stands = new ArrayList<>();
 
 
 		if(p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&f&l&k[&7&l*&f&l&k]&r &9&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r")) && p.getItemInHand().getType().equals(Material.ENDER_CHEST)) {
 			e.setCancelled(true);
-			p.updateInventory();
+			if(placed.get(p) == null) {
+				List<Location> place = new ArrayList<>();
+				place.add(loc);
+				placed.put(p, place);
+			} else {
+				List<Location> place = placed.get(p);
+				if(place.contains(loc)) {
+					return;
+				}
+				else {
+					placed.get(p).add(loc);
+				}
+			}
 			displayRewards(Main.getInstance(), "genesis", "&f&l&k[&7&l*&f&l&k]&r &9&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r", loc, stands, p);
 			if(p.getItemInHand().getAmount() > 1){
 				int i = p.getItemInHand().getAmount();
@@ -126,11 +135,26 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 			} else {
 				p.setItemInHand(null);
 			}
+			p.updateInventory();
 			return;
 		}
 		if(p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&c&lContraband Crate")) && p.getItemInHand().getType().equals(Material.ENDER_CHEST)) {
 			e.setCancelled(true);
-			p.updateInventory();
+			Location l = new Location(Bukkit.getWorld("world_the_end"), 28, 58, -14);
+			if(loc.equals(l)) return;
+			if(placed.get(p) == null) {
+				List<Location> place = new ArrayList<>();
+				place.add(loc);
+				placed.put(p, place);
+			} else {
+				List<Location> place = placed.get(p);
+				if(place.contains(loc)) {
+					return;
+				}
+				else {
+					placed.get(p).add(loc);
+				}
+			}
 			displayRewards(Main.getInstance(), "contraband", "&c&lContraband Crate", loc, stands, p);
 			if(p.getItemInHand().getAmount() > 1){
 				int i = p.getItemInHand().getAmount();
@@ -138,6 +162,32 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 			} else {
 				p.setItemInHand(null);
 			}
+			p.updateInventory();
+			return;
+		}
+		if(p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&f&l&k[&7&l*&f&l&k]&r &a&lMarch Crate &f&l&k[&7&l*&f&l&k]&r")) && p.getItemInHand().getType().equals(Material.ENDER_CHEST)) {
+			e.setCancelled(true);
+			if(placed.get(p) == null) {
+				List<Location> place = new ArrayList<>();
+				place.add(loc);
+				placed.put(p, place);
+			} else {
+				List<Location> place = placed.get(p);
+				if(place.contains(loc)) {
+					return;
+				}
+				else {
+					placed.get(p).add(loc);
+				}
+			}
+			displayRewards(Main.getInstance(), "march", "&f&l&k[&7&l*&f&l&k]&r &a&lMarch Crate &f&l&k[&7&l*&f&l&k]&r", loc, stands, p);
+			if(p.getItemInHand().getAmount() > 1){
+				int i = p.getItemInHand().getAmount();
+				p.getItemInHand().setAmount(i-1);
+			} else {
+				p.setItemInHand(null);
+			}
+			p.updateInventory();
 
 		}
 		
@@ -388,6 +438,10 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 						p.getInventory().addItem(item);
 						p.updateInventory();
 					}
+				}
+				if(placed.get(p) != null) {
+					Location block = new Location(loc.getWorld(), loc.getX(), loc.getY() - 3, loc.getZ());
+					placed.get(p).remove(block);
 				}
 			}
 		}.runTaskLater(plugin, time);

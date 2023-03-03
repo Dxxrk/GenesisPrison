@@ -58,15 +58,15 @@ public class SellHandler implements Listener, CommandExecutor {
   
   public static String format(double amt) {
 	  if (amt >= 1.0E18D)
-	      return String.format("%.1f Quint", amt / 1.0E18D); 
+	      return String.format("%.1f Quint", amt / 1.0E18D);
     if (amt >= 1.0E15D)
-      return String.format("%.1f Quad", amt / 1.0E15D); 
+      return String.format("%.1f Quad", amt / 1.0E15D);
     if (amt >= 1.0E12D)
-      return String.format("%.1f Tril", amt / 1.0E12D); 
+      return String.format("%.1f Tril", amt / 1.0E12D);
     if (amt >= 1.0E9D)
-      return String.format("%.1f Bil", amt / 1.0E9D); 
+      return String.format("%.1f Bil", amt / 1.0E9D);
     if (amt >= 1000000.0D)
-      return String.format("%.1f Mil", amt / 1000000.0D); 
+      return String.format("%.1f Mil", amt / 1000000.0D);
     return NumberFormat.getNumberInstance(Locale.US).format(amt);
   }
   
@@ -136,7 +136,7 @@ public class SellHandler implements Listener, CommandExecutor {
 	    double greed = Functions.greed(p);
 	    double sell = Functions.sellBoost(p);
 	    double miningboost = BoostsHandler.sell;
-	    double multi = SellHandler.getInstance().getMulti(p)/2.5;
+	    double multi = SellHandler.getInstance().getMulti(p)/1.25;
 		if(multi <1) {
 			multi = 1;
 		}
@@ -187,12 +187,12 @@ public class SellHandler implements Listener, CommandExecutor {
 	  double greed = Functions.greed(p);
 	  double sell = Functions.sellBoost(p);
 	  double miningboost = BoostsHandler.sell;
-	  double multi = SellHandler.getInstance().getMulti(p)/2.5;
+	  double multi = SellHandler.getInstance().getMulti(p)/1.25;
 	  if(multi <1) {
 		  multi = 1;
 	  }
 	  double event = SkillsEventsListener.getEventFortune();
-	  double prestige = getPrestiges(p)*0.02;
+	  double prestige = getPrestiges(p)*1.5;
 	  double multiply = 1;
 	  if(prestige < 1){
 		  prestige = 1;
@@ -204,7 +204,6 @@ public class SellHandler implements Listener, CommandExecutor {
 		  if (i != null) {
 
 
-			  //Change this config file to look a lot nicer + add different block prices
 			  double price = Methods.getSellPrice(i);
 
 
@@ -296,14 +295,12 @@ public class SellHandler implements Listener, CommandExecutor {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onBlockBreak(BlockBreakEvent event) {
     Player p = event.getPlayer();
-	  if(!p.getWorld().getName().equals(p.getName()+"sWorld")) {
-		  event.setCancelled(true);
-		  return;
-	  }
+
     WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
     ApplicableRegionSet set = wg.getRegionManager(p.getWorld())
       .getApplicableRegions(event.getBlock().getLocation());
     if (!set.allows(DefaultFlag.LIGHTER)) {
+
       if (p.isOp() && p.getItemInHand() != null && 
         p.getItemInHand().getType() == Material.DIAMOND_PICKAXE || p.getItemInHand().getType() == Material.WOOD_PICKAXE
 	  || p.getItemInHand().getType() == Material.STONE_PICKAXE || p.getItemInHand().getType() == Material.GOLD_PICKAXE
@@ -315,34 +312,37 @@ public class SellHandler implements Listener, CommandExecutor {
     double fortuity = Functions.Foruity(p);
 	  double skill = SkillsEventsListener.getSkillsBoostFortune(p);
 	  double event1 = SkillsEventsListener.getEventFortune();
+
+
+
     
-    
-    
-    
-    if (!event.isCancelled())
-      if (p.getItemInHand() != null) {
+    if (!event.isCancelled()) {
+		if (p.getItemInHand() != null) {
+			if(!p.getWorld().getName().equals(p.getName()+"sWorld")) {
+				event.setCancelled(true);
+				return;
+			}
 
-		  int line = 0;
-		  for(int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
-			  if(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
-				  line = x;
-			  }
-		  }
-          int fortune = (int) (getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity*skill*event1 /
-            (3.5));
-
-          
+			int line = 0;
+			for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
+				if (ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
+					line = x;
+				}
+			}
+			int fortune = (int) (getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event1 /
+					(3.0));
 
 
-		  ArrayList<ItemStack> sellblocks = new ArrayList<>();
+			ArrayList<ItemStack> sellblocks = new ArrayList<>();
 
-		  sellblocks.add(new ItemStack(event.getBlock().getType(), fortune));
-		  event.getBlock().setType(Material.AIR);
-		  event.setCancelled(true);
+			sellblocks.add(new ItemStack(event.getBlock().getType(), fortune));
+			event.getBlock().setType(Material.AIR);
+			event.setCancelled(true);
 
-		  sell(p, sellblocks);
+			sell(p, sellblocks);
 
-      }
+		}
+	}
   }
   
 

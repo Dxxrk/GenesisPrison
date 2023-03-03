@@ -133,8 +133,8 @@ public class MineHandler implements Listener, CommandExecutor{
 		mineblocks.add(new ItemStack(Material.PRISMARINE, 1, (short)0));
 		mineblocks.add(new ItemStack(Material.PRISMARINE, 1, (short)1));
 		mineblocks.add(new ItemStack(Material.PRISMARINE, 1, (short)2));
-		mineblocks.add(new ItemStack(Material.ENDER_STONE));
 		mineblocks.add(new ItemStack(Material.OBSIDIAN));
+		mineblocks.add(new ItemStack(Material.ENDER_STONE));
 		return mineblocks;
 	}
 

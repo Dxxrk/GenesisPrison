@@ -71,9 +71,9 @@ public class JDAEvents extends ListenerAdapter implements Listener, CommandExecu
 							} else if(p.hasPermission("rank.vip")){
 								Role vip = jdaHandler.jda.getRolesByName("VIP", false).get(0);
 								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, vip).queue();
-							} else if(p.hasPermission("rank.donator")){
-								Role donator = jdaHandler.jda.getRolesByName("Donator", false).get(0);
-								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, donator).queue();
+							} else if(p.hasPermission("rank.sponsor")){
+								Role sponsor = jdaHandler.jda.getRolesByName("Sponsor", false).get(0);
+								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, sponsor).queue();
 							}
 							if(Objects.requireNonNull(jdaHandler.jda.getGuilds().get(0).getMember(user)).isBoosting())  {
 								settings.getPlayerData().set(p.getUniqueId().toString()+".NitroBoosting", true);

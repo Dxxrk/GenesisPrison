@@ -2,6 +2,7 @@ package me.dxrk.Events;
 
 import com.connorlinfoot.titleapi.TitleAPI;
 import com.earth2me.essentials.Essentials;
+import me.dxrk.Commands.CMDOptions;
 import me.dxrk.Commands.CMDVanish;
 import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Main.Main;
@@ -191,8 +192,8 @@ public class ScoreboardHandler implements Listener{
 					NewBoard.getTeam("donor").setSuffix(c("&6&lMVP"));
 				} else if (p.hasPermission("rank.vip")) {
 					NewBoard.getTeam("donor").setSuffix(c("&a&lVIP"));
-				} else if (p.hasPermission("rank.donator")) {
-					NewBoard.getTeam("donor").setSuffix(c("&b&lDonator"));
+				} else if (p.hasPermission("rank.sponsor")) {
+					NewBoard.getTeam("donor").setSuffix(c("&b&lSponsor"));
 				} else if (p.hasPermission("rank.default")) {
 					NewBoard.getTeam("donor").setSuffix(c("&7Member"));
 				}
@@ -238,6 +239,8 @@ public class ScoreboardHandler implements Listener{
 							double xp = (PickXPHandler.getInstance().calculateXPNeeded(p,PickXPHandler.getInstance().getLevel(p))-PickXPHandler.getInstance().getXP(p));
 							double xmultiply = xp * 10.0;
 							int xround = (int) (Math.round(xmultiply) / 10.0);
+							if(xround <0)
+								xround = 0;
 							NewBoard.getTeam("xp").setSuffix(c("&b"+xround));
 
 							NewBoard.getTeam("PickLevel").setPrefix(c("&7Level: "));
@@ -285,18 +288,14 @@ public class ScoreboardHandler implements Listener{
 
 		        		            	Team team = NewBoard.getTeam("f"+name(pp));
 
-		        		            	if(isAFK(pp)) {
-		        		            		team.setPrefix(prefix(pp)+c("&f&lGenesis &8"));
-											pp.setPlayerListName(c(prefix+"&f&ki&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls&f&ki&r &8"+pp.getName()));
-		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&f&lGenesis &7"));
-											pp.setPlayerListName(c(prefix+"&f&ki&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls&f&ki&r &7"+pp.getName()));
-		        		            	}
-		        		            	team.addPlayer(pp);
-
-
-
-
+									 if(isAFK(pp)) {
+										 team.setPrefix(prefix(pp)+c("&f&lGenesis &8"));
+										 pp.setPlayerListName(c(prefix+CMDOptions.TagColor(settings.getOptions().getString(p.getUniqueId().toString()+".GenesisColor"))+" &8"+pp.getName()));
+									 }else {
+										 team.setPrefix(prefix(pp)+c("&f&lGenesis &7"));
+										 pp.setPlayerListName(c(prefix+CMDOptions.TagColor(settings.getOptions().getString(p.getUniqueId().toString()+".GenesisColor"))+" &7"+pp.getName()));
+									 }
+									 team.addPlayer(pp);
 
 		        		            } else if (pp.getName().equalsIgnoreCase("32j")) {
 		        		            	if(NewBoard.getTeam("b"+name(pp)) == null)
@@ -373,10 +372,10 @@ public class ScoreboardHandler implements Listener{
 
 									 if(isAFK(pp)) {
 										 team.setPrefix(prefix(pp)+c("&f&lGenesis &8"));
-										 pp.setPlayerListName(c(prefix+"&f&ki&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls&f&ki&r &8"+pp.getName()));
+										 pp.setPlayerListName(c(prefix+CMDOptions.TagColor(settings.getOptions().getString(p.getUniqueId().toString()+".GenesisColor"))+" &8"+pp.getName()));
 									 }else {
 										 team.setPrefix(prefix(pp)+c("&f&lGenesis &7"));
-										 pp.setPlayerListName(c(prefix+"&f&ki&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls&f&ki&r &7"+pp.getName()));
+										 pp.setPlayerListName(c(prefix+CMDOptions.TagColor(settings.getOptions().getString(p.getUniqueId().toString()+".GenesisColor"))+" &7"+pp.getName()));
 									 }
 		        		            	team.addPlayer(pp);
 
@@ -500,18 +499,18 @@ public class ScoreboardHandler implements Listener{
 
 
 
-		        		            } else if (pp.hasPermission("rank.donator")) {
+		        		            } else if (pp.hasPermission("rank.sponsor")) {
 		        		            	if(NewBoard.getTeam("n"+name(pp)) == null)
 		        		            		NewBoard.registerNewTeam("n"+name(pp));
 
 		        		            	Team team = NewBoard.getTeam("n"+name(pp));
 
 		        		            	if(isAFK(pp)) {
-		        		            		team.setPrefix(prefix(pp)+c("&b&lDonator &8"));
-											pp.setPlayerListName(c(prefix+"&b&lDonator &8"+pp.getName()));
+		        		            		team.setPrefix(prefix(pp)+c("&b&lSponsor &8"));
+											pp.setPlayerListName(c(prefix+"&b&lSponsor &8"+pp.getName()));
 		        		            	}else {
-		        		            	team.setPrefix(prefix(pp)+c("&b&lDonator &7"));
-											pp.setPlayerListName(c(prefix+"&b&lDonator &7"+pp.getName()));
+		        		            	team.setPrefix(prefix(pp)+c("&b&lSponsor &7"));
+											pp.setPlayerListName(c(prefix+"&b&lSponsor &7"+pp.getName()));
 		        		            	}
 		        		            	team.addPlayer(pp);
 
@@ -667,8 +666,8 @@ public class ScoreboardHandler implements Listener{
 	            	NewBoard.getTeam("donor").setSuffix(c("&6&lMVP"));
 	            } else if (p.hasPermission("rank.vip")) {
 	            	NewBoard.getTeam("donor").setSuffix(c("&a&lVIP"));
-	            } else if (p.hasPermission("rank.donator")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&b&lDonator"));
+	            } else if (p.hasPermission("rank.sponsor")) {
+	            	NewBoard.getTeam("donor").setSuffix(c("&b&lSponsor"));
 	            } else if (p.hasPermission("rank.default")) {
 	            	NewBoard.getTeam("donor").setSuffix(c("&7Member"));
 	            } 

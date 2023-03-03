@@ -109,7 +109,7 @@ public class RankupHandler implements Listener, CommandExecutor{
 		int ranks = getRank(p);
 
 		if(ranks >= 1000){
-			return 10;
+			return 15;
 		}
 		else if(ranks >= 750) {
 			return 5.25;
@@ -133,9 +133,9 @@ public class RankupHandler implements Listener, CommandExecutor{
 	  if(prestiges <1){
 		  prestiges = 1;
 	  }
-	  double price = (1.5e12+(1.5e12*(rank*1.75)))*priceJumpR(p)*prestiges;
+	  double price = (1.25e12+(1.25e12*(rank*1.75)))*priceJumpR(p)*prestiges;
 	  if(rank == 1) {
-		  price = 1.5e12 *prestiges;
+		  price = 1.25e12 *prestiges;
 	  }
 
     return price;
@@ -149,7 +149,7 @@ public class RankupHandler implements Listener, CommandExecutor{
     } 
     Main.econ.withdrawPlayer(p, rankPrice(p));
     upRank(p);
-	if(getRank(p) %16 == 0)
+	if((getRank(p) %16 == 0) && getRank(p) <1000)
 		MineHandler.getInstance().updateMine(p, getRank(p));
     p.getScoreboard().getTeam("prank").setSuffix(c("&b" + getRank(p)));
 	double percents;
@@ -175,7 +175,7 @@ public class RankupHandler implements Listener, CommandExecutor{
 	  while(Main.econ.getBalance(p) > rankPrice(p)) {
 		  Main.econ.withdrawPlayer(p, rankPrice(p));
 		  upRank(p);
-		  if(getRank(p) %16 == 0)
+		  if((getRank(p) %16 == 0) && getRank(p) <1000)
 			  MineHandler.getInstance().updateMine(p, getRank(p));
 		  p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
 		  double percents;

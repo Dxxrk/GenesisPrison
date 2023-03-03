@@ -1053,40 +1053,40 @@ public class TrinketHandler implements Listener, CommandExecutor{
 		if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			int amount = p.getItemInHand().getAmount();
 			if(p.getItemInHand().equals(commonTrinket(amount))) {
+				if(amount == 1) {
+					p.setItemInHand(null);
+				} else {
+					p.getItemInHand().setAmount(amount-1);
+				}
 				openTrinket(p, 1);
-				if(amount == 1) {
-					p.setItemInHand(null);
-				} else {
-					p.getItemInHand().setAmount(amount-1);
-				}
 			} else if(p.getItemInHand().equals(rareTrinket(amount))) {
+				if(amount == 1) {
+					p.setItemInHand(null);
+				} else {
+					p.getItemInHand().setAmount(amount-1);
+				}
 				openTrinket(p, 2);
-				if(amount == 1) {
-					p.setItemInHand(null);
-				} else {
-					p.getItemInHand().setAmount(amount-1);
-				}
 			} else if(p.getItemInHand().equals(epicTrinket(amount))) {
+				if(amount == 1) {
+					p.setItemInHand(null);
+				} else {
+					p.getItemInHand().setAmount(amount-1);
+				}
 				openTrinket(p, 3);
-				if(amount == 1) {
-					p.setItemInHand(null);
-				} else {
-					p.getItemInHand().setAmount(amount-1);
-				}
 			} else if(p.getItemInHand().equals(legTrinket(amount))) {
+				if(amount == 1) {
+					p.setItemInHand(null);
+				} else {
+					p.getItemInHand().setAmount(amount-1);
+				}
 				openTrinket(p, 4);
-				if(amount == 1) {
-					p.setItemInHand(null);
-				} else {
-					p.getItemInHand().setAmount(amount-1);
-				}
 			} else if(p.getItemInHand().equals(herTrinket(amount))) {
-				openTrinket(p, 5);
 				if(amount == 1) {
 					p.setItemInHand(null);
 				} else {
 					p.getItemInHand().setAmount(amount-1);
 				}
+				openTrinket(p, 5);
 			}
 		}
 			

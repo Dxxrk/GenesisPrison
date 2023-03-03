@@ -1,25 +1,20 @@
 package me.dxrk.Events;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import mkremins.fanciful.FancyMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import me.dxrk.Main.Main;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KitAndWarp implements Listener {
 
   public static List<String> getDonorKits() {
     List<String> kits = new ArrayList<>();
-    kits.add("Donator");
-    kits.add("VIP");
-    kits.add("MVP");
-    kits.add("Hero");
     kits.add("Demi-God");
     kits.add("Titan");
     kits.add("God");
@@ -81,32 +76,62 @@ public class KitAndWarp implements Listener {
       } 
       donorkits.send(p);
     }
+    else if ((first.equalsIgnoreCase("/kit") || first.equalsIgnoreCase("/kits")) && second != null) {
+      if(second.equalsIgnoreCase("godkeys")){
+        if(p.hasPermission("rank.god")) {
+          LocksmithHandler.getInstance().addKey(p, "token", 11);
+          LocksmithHandler.getInstance().addKey(p, "omega", 11);
+          LocksmithHandler.getInstance().addKey(p, "beta", 11);
+          LocksmithHandler.getInstance().addKey(p, "alpha", 11);
+          LocksmithHandler.getInstance().addKey(p, "community", 6);
+        }
+      }
+      if(second.equalsIgnoreCase("olympiankeys")){
+        if(p.hasPermission("rank.olympian")) {
+          LocksmithHandler.getInstance().addKey(p, "token", 13);
+          LocksmithHandler.getInstance().addKey(p, "omega", 13);
+          LocksmithHandler.getInstance().addKey(p, "beta", 13);
+          LocksmithHandler.getInstance().addKey(p, "alpha", 13);
+          LocksmithHandler.getInstance().addKey(p, "community", 8);
+        }
+      }
+      if(second.equalsIgnoreCase("genesiskeys")){
+        if(p.hasPermission("rank.genesis")) {
+          LocksmithHandler.getInstance().addKey(p, "token", 15);
+          LocksmithHandler.getInstance().addKey(p, "omega", 15);
+          LocksmithHandler.getInstance().addKey(p, "beta", 15);
+          LocksmithHandler.getInstance().addKey(p, "alpha", 15);
+          LocksmithHandler.getInstance().addKey(p, "community", 10);
+        }
+      }
+      if(second.equalsIgnoreCase("god")) {
+        if(p.hasPermission("rank.god")) {
+          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate "+p.getName()+" contraband");
+        }
+      }
+      if(second.equalsIgnoreCase("olympian")) {
+        if(p.hasPermission("rank.olympian")) {
+          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate "+p.getName()+" contraband");
+          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate "+p.getName()+" contraband");
+        }
+      }
+      if(second.equalsIgnoreCase("genesis")) {
+        if(p.hasPermission("rank.genesis")) {
+          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate "+p.getName()+" contraband");
+          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate "+p.getName()+" genesis");
+        }
+      }
+    }
     if ((first.equalsIgnoreCase("/warp") || first.equalsIgnoreCase("/warps")) &&
       second == null) {
       e.setCancelled(true);
-      List<String> mines = new ArrayList<>();
-      List<String> nonmines = new ArrayList<>();
-      for (String s : Main.ess.getWarps().getList()) {
-        if (s.length() == 1) {
-          mines.add(s);
-        }
-      }
+
       FancyMessage minewarps = new FancyMessage("");
       p.sendMessage(ChatColor.AQUA +""+ ChatColor.BOLD + "Mine Warps:");
-      for (String s : mines) {
-        if (p.hasPermission("Essentials.warps." + s)) {
-          minewarps.then(s).tooltip(ChatColor.GRAY + "Click to warp!").command("/p auto").color(ChatColor.DARK_AQUA).then("").color(ChatColor.GRAY);
-          continue;
-        } 
-        minewarps.then(s).tooltip(ChatColor.RED + "You can not warp here!").command("/p auto").color(ChatColor.RED).then("").color(ChatColor.GRAY);
-      } 
+
       for (String s : getRankedMines()) {
-        if (p.hasPermission("Essentials.warps." + s)) {
-          minewarps.then(s).tooltip(ChatColor.GRAY + "Click to warp!").command("/warp " + s).color(ChatColor.DARK_AQUA).then("").color(ChatColor.GRAY);
-          continue;
-        } 
-        minewarps.then(s).tooltip(ChatColor.RED + "You can not warp here!").command("/warp " + s).color(ChatColor.RED).then("").color(ChatColor.GRAY);
-      } 
+          minewarps.then(s).tooltip(ChatColor.GRAY + "Click to warp!").command("/mine tp").color(ChatColor.DARK_AQUA).then("").color(ChatColor.GRAY);
+      }
       minewarps.send(p);
       p.sendMessage(ChatColor.AQUA +""+ ChatColor.BOLD + "Other Warps:");
       FancyMessage otherwarps = new FancyMessage("");

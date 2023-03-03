@@ -1,6 +1,5 @@
 package me.dxrk.Enchants;
 
-import com.sun.corba.se.impl.oa.toa.TransientObjectManager;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;

@@ -359,6 +359,9 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                 if(args[0].equalsIgnoreCase("sell")) {
                     p.sendMessage(m.c("&f&lAuctionHouse &8| &7/ah sell <amount> <price>"));
                 }
+                if(args[0].equalsIgnoreCase("help")) {
+                    p.sendMessage(m.c("&f&lAuctionHouse &8| &7/ah sell <amount> <price>"));
+                }
             }
             if(args.length == 2){
                 if(args[0].equalsIgnoreCase("sell")) {
@@ -374,6 +377,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                         p.sendMessage(m.c("&cError: You cannot sell your pickaxe"));
                         return false;
                     }
+                    if(p.getItemInHand() == null || p.getItemInHand().getType().equals(Material.AIR)) return false;
                     int pamt = p.getItemInHand().getAmount();
                     if(pamt < amt){
                         p.sendMessage(m.c("&cError: You do not have enough of that item."));

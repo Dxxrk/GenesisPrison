@@ -19,24 +19,25 @@ public class CrateFunctions {
 
     public static String randomKey() {
         Random r = new Random();
-        int ri = r.nextInt(6);
-        switch(ri){
-            case 0:
-                return m.c("&7&lAlpha &7Key");
-            case 1:
-                return m.c("&c&lBeta &7Key");
-            case 2:
-                return m.c("&4&lOmega &7Key");
-            case 3:
-                return m.c("&e&lToken &7Key");
-            case 4:
-                return m.c("&4&l&ki&f&lSeasonal&4&l&ki&r &7Key");
-            case 5:
-                return m.c("&5&lCommunity &7Key");
+        int ri = r.nextInt(125);
+        if(ri <=25) {
+            return m.c("&7&lAlpha &7Key");
         }
-
-        return "";
-
+        else if(ri <=50) {
+            return m.c("&c&lBeta &7Key");
+        }
+        else if(ri <= 75) {
+            return m.c("&4&lOmega &7Key");
+        }
+        else if(ri <=100) {
+            return m.c("&e&lToken &7Key");
+        }
+        else if(ri <=105) {
+            return m.c("&4&l&ki&f&lSeasonal&4&l&ki&r &7Key");
+        }
+        else {
+            return m.c("&5&lCommunity &7Key");
+        }
     }
     public static String randomKey2() {
         Random r = new Random();
@@ -69,27 +70,54 @@ public class CrateFunctions {
         lore.add(m.c("&a&lRewards:"));
         lore.add(m.c(" "));
         lore.add(m.c("&e&l&m--&e&lTokens&m--"));
-        lore.add(m.c("&e⛀3,000,000-10,000,000"));
+        lore.add(m.c("&e⛀2,000,000-5,000,000"));
         lore.add(m.c(" "));
         lore.add(m.c("&c&l&m--&c&lKeys&m--"));
         lore.add(m.c("&c1-10x Random Keys"));
         lore.add(m.c("&c3x Rank Keys"));
         lore.add(m.c(" "));
         lore.add(m.c("&5&l&m--&5&lRanks&m--"));
-        lore.add(m.c("&e&lOlympian Rank"));
         lore.add(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank"));
         lore.add(m.c(" "));
         lore.add(m.c("&6&l&m--&6&lItems&m--"));
         lore.add(m.c("&51-3x Epic Trinkets"));
         lore.add(m.c("&61x Legendary Trinkets"));
         lore.add(m.c(" "));
-        lore.add(m.c("&f&l&m--&f&lTroll&m--"));
-        lore.add(m.c("&fMjölnir"));
-        lore.add(m.c("&fPack-a-Punch"));
-        lore.add(m.c("&fFree Lunch :)"));
-        lore.add(m.c(" "));
         lore.add(m.c("&d&l&m--&5&lMisc.&m--"));
         lore.add(m.c("&dItem Rename"));
+        lore.add(m.c("&d3x Currency Boost"));
+        lore.add(m.c("&d2x XP Boost"));
+        lore.add(m.c("&d2x Currency Boost"));
+        gm.setLore(lore);
+        gcrate.setItemMeta(gm);
+
+        return gcrate;
+    }
+    public static ItemStack MarchCrate() {
+        ItemStack gcrate = new ItemStack(Material.ENDER_CHEST);
+        ItemMeta gm = gcrate.getItemMeta();
+        gm.setDisplayName(m.c("&f&l&k[&7&l*&f&l&k]&r &a&lMarch Crate &f&l&k[&7&l*&f&l&k]&r"));
+        List<String> lore = new ArrayList<>();
+        lore.add(m.c("&7Upon placing this item, you will recieve 8 random items"));
+        lore.add(m.c("&7From the list below, all rewards are randomly selected."));
+        lore.add(m.c("&a&lRewards:"));
+        lore.add(m.c(" "));
+        lore.add(m.c("&e&l&m--&e&lTokens&m--"));
+        lore.add(m.c("&e⛀5,000,000-10,000,000"));
+        lore.add(m.c(" "));
+        lore.add(m.c("&c&l&m--&c&lKeys&m--"));
+        lore.add(m.c("&c1-20x Random Keys"));
+        lore.add(m.c("&c3x Rank Keys"));
+        lore.add(m.c(" "));
+        lore.add(m.c("&5&l&m--&5&lRanks&m--"));
+        lore.add(m.c("&d&lGod Rank"));
+        lore.add(m.c("&e&lOlympian Rank"));
+        lore.add(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank"));
+        lore.add(m.c(" "));
+        lore.add(m.c("&6&l&m--&6&lItems&m--"));
+        lore.add(m.c("&61-3x Legendary Trinkets"));
+        lore.add(m.c(" "));
+        lore.add(m.c("&d&l&m--&5&lMisc.&m--"));
         lore.add(m.c("&d3x Currency Boost"));
         lore.add(m.c("&d2x XP Boost"));
         lore.add(m.c("&d2x Currency Boost"));
@@ -108,16 +136,16 @@ public class CrateFunctions {
         lore.add(m.c("&a&lRewards:"));
         lore.add(m.c(" "));
         lore.add(m.c("&e&l&m--&e&lTokens&m--"));
-        lore.add(m.c("&e⛀500,000-2,000,000"));
+        lore.add(m.c("&e⛀500,000-1,000,000"));
         lore.add(m.c(" "));
         lore.add(m.c("&c&l&m--&c&lKeys&m--"));
         lore.add(m.c("&c1-5x Random Keys"));
         lore.add(m.c("&c1x Rank Keys"));
         lore.add(m.c(" "));
         lore.add(m.c("&5&l&m--&5&lRanks&m--"));
+        lore.add(m.c("&a&lVIP Rank"));
+        lore.add(m.c("&6&lMVP Rank"));
         lore.add(m.c("&c&lHero Rank"));
-        lore.add(m.c("&5&lDemi-God Rank"));
-        lore.add(m.c("&3&lTitan Rank"));
         lore.add(m.c(" "));
         lore.add(m.c("&6&l&m--&6&lItems&m--"));
         lore.add(m.c("&b1-3x Common Trinkets"));
@@ -138,12 +166,12 @@ public class CrateFunctions {
     public static ItemStack Reward(String crate){
         ItemStack reward = new ItemStack(Material.PAPER);
         ItemMeta rm = reward.getItemMeta();
-        if(crate.equals("genesis")){
+        if(crate.equals("march")){
             Random r = new Random();
-            int ri = r.nextInt(200);
+            int ri = r.nextInt(600);
 
-            if(ri <= 40){
-                int tmin = 3000000;
+            if(ri <= 150){
+                int tmin = 5000000;
                 int tmax = 10000000;
                 int tokens = r.nextInt(tmax - tmin)+ tmin;
                 rm.setDisplayName(m.c("&b"+ Main.formatAmt(tokens)+" Tokens"));
@@ -152,7 +180,109 @@ public class CrateFunctions {
                 lore.add("tokens add %PLAYER% "+tokens);
                 rm.setLore(lore);
             }
-            if(ri > 40 && ri <= 95){
+            if(ri > 150 && ri <= 350){
+                int tmin = 1;
+                int tmax = 20;
+                int keys = r.nextInt(tmax - tmin)+ tmin;
+                rm.setDisplayName(m.c("&e"+keys+"x ")+randomKey());
+                reward.setType(Material.TRIPWIRE_HOOK);
+                List<String> lore = new ArrayList<>();
+                String key = ChatColor.stripColor(rm.getDisplayName()).split(" ")[1];
+                if(key.contains("Seasonal")) {
+                    lore.add("cratekey %PLAYER% seasonal " + keys);
+                } else {
+                    lore.add("cratekey %PLAYER% " + key + " " + keys);
+                }
+                rm.setLore(lore);
+            }
+            if(ri > 350 && ri <=370) {
+                rm.setDisplayName(m.c("&e3x &3&lRank &7Key"));
+                reward.setType(Material.TRIPWIRE_HOOK);
+                List<String> lore = new ArrayList<>();
+                lore.add("cratekey %PLAYER% rank 3");
+                rm.setLore(lore);
+            }
+            if(ri > 370 && ri <=500) {
+                int tmin = 1;
+                int tmax = 3;
+                int trinkets = r.nextInt(tmax - tmin)+ tmin;
+                rm.setDisplayName(m.c("&e"+trinkets+"x &6Legendary Trinket"));
+                reward.setType(Material.GOLD_NUGGET);
+                List<String> lore = new ArrayList<>();
+                lore.add("givetrinket %PLAYER% legendary "+trinkets);
+                rm.setLore(lore);
+            }
+            if(ri > 500 && ri <=503){
+                rm.setDisplayName(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank"));
+                reward.setType(Material.NETHER_STAR);
+                List<String> lore = new ArrayList<>();
+                lore.add("giverank %PLAYER% &4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank");
+                rm.setLore(lore);
+            }
+            if(ri > 503 && ri <=509){
+                rm.setDisplayName(m.c("&e&lOlympian Rank"));
+                reward.setType(Material.NETHER_STAR);
+                List<String> lore = new ArrayList<>();
+                lore.add("giverank %PLAYER% &e&lOlympian Rank");
+                rm.setLore(lore);
+            }
+            if(ri > 509 && ri <=521){
+                rm.setDisplayName(m.c("&d&lGod Rank"));
+                reward.setType(Material.NETHER_STAR);
+                List<String> lore = new ArrayList<>();
+                lore.add("giverank %PLAYER% &d&lGod Rank");
+                rm.setLore(lore);
+            }
+            if(ri > 514) {
+                Random misc = new Random();
+                int misci = misc.nextInt(3);
+                List<String> lore = new ArrayList<>();
+                switch(misci){
+                    case 0:
+                        ItemStack sellBoost = new ItemStack(Material.POTION, 1, (short)8260);
+                        ItemMeta sm = sellBoost.getItemMeta();
+                        sm.setDisplayName(m.c("&f&l3x Currency Boost"));
+                        lore.add("giveboost sell %PLAYER% 3 600");
+                        sm.setLore(lore);
+                        sellBoost.setItemMeta(sm);
+                        lore.clear();
+                        return sellBoost;
+                    case 1:
+                        ItemStack sellBoost1 = new ItemStack(Material.POTION, 1, (short)8260);
+                        ItemMeta sm1 = sellBoost1.getItemMeta();
+                        sm1.setDisplayName(m.c("&f&l2x Currency Boost"));
+                        lore.add("giveboost sell %PLAYER% 2 1200");
+                        sm1.setLore(lore);
+                        sellBoost1.setItemMeta(sm1);
+                        lore.clear();
+                        return sellBoost1;
+                    case 2:
+                        reward.setType(Material.EXP_BOTTLE);
+                        rm.setDisplayName(m.c("&f&l2x XP Boost"));
+                        lore.add("giveboost xp %PLAYER% 2 1800");
+                        rm.setLore(lore);
+                        lore.clear();
+
+
+                }
+            }
+
+        }
+        if(crate.equals("genesis")){
+            Random r = new Random();
+            int ri = r.nextInt(600);
+
+            if(ri <= 125){
+                int tmin = 2000000;
+                int tmax = 5000000;
+                int tokens = r.nextInt(tmax - tmin)+ tmin;
+                rm.setDisplayName(m.c("&b"+ Main.formatAmt(tokens)+" Tokens"));
+                reward.setType(Material.PRISMARINE_CRYSTALS);
+                List<String> lore = new ArrayList<>();
+                lore.add("tokens add %PLAYER% "+tokens);
+                rm.setLore(lore);
+            }
+            if(ri > 125 && ri <= 300){
                 int tmin = 1;
                 int tmax = 10;
                 int keys = r.nextInt(tmax - tmin)+ tmin;
@@ -167,21 +297,21 @@ public class CrateFunctions {
                 }
                 rm.setLore(lore);
             }
-            if(ri > 95 && ri <=100) {
+            if(ri > 300 && ri <=305) {
                 rm.setDisplayName(m.c("&e3x &3&lRank &7Key"));
                 reward.setType(Material.TRIPWIRE_HOOK);
                 List<String> lore = new ArrayList<>();
                 lore.add("cratekey %PLAYER% rank 3");
                 rm.setLore(lore);
             }
-            if(ri > 100 && ri <=125){
+            if(ri > 305 && ri <=400){
                 rm.setDisplayName(m.c("&e1x &6Legendary Trinket"));
                 reward.setType(Material.GOLD_NUGGET);
                 List<String> lore = new ArrayList<>();
-                lore.add("givetrinket %PLAYER% legendary "+1);
+                lore.add("givetrinket %PLAYER% legendary 1");
                 rm.setLore(lore);
             }
-            if(ri > 125 && ri <=150) {
+            if(ri > 400 && ri <=525) {
                 int tmin = 1;
                 int tmax = 3;
                 int trinkets = r.nextInt(tmax - tmin)+ tmin;
@@ -191,21 +321,14 @@ public class CrateFunctions {
                 lore.add("givetrinket %PLAYER% epic "+trinkets);
                 rm.setLore(lore);
             }
-            if(ri > 150 && ri <=160){
-                rm.setDisplayName(m.c("&e&lOlympian Rank"));
-                reward.setType(Material.NETHER_STAR);
-                List<String> lore = new ArrayList<>();
-                lore.add("giverank %PLAYER% &e&lOlympian Rank");
-                rm.setLore(lore);
-            }
-            if(ri == 161){
+            if(ri > 525 && ri <=527){
                 rm.setDisplayName(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank"));
                 reward.setType(Material.NETHER_STAR);
                 List<String> lore = new ArrayList<>();
                 lore.add("giverank %PLAYER% &4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank");
                 rm.setLore(lore);
             }
-            if(ri > 161 && ri <=190) {
+            if(ri > 527) {
                 Random misc = new Random();
                 int misci = misc.nextInt(4);
                 List<String> lore = new ArrayList<>();
@@ -214,7 +337,7 @@ public class CrateFunctions {
                         ItemStack sellBoost = new ItemStack(Material.POTION, 1, (short)8260);
                         ItemMeta sm = sellBoost.getItemMeta();
                         sm.setDisplayName(m.c("&f&l3x Currency Boost"));
-                        lore.add("giveboost sell %PLAYER% 3 1800");
+                        lore.add("giveboost sell %PLAYER% 3 300");
                         sm.setLore(lore);
                         sellBoost.setItemMeta(sm);
                         lore.clear();
@@ -223,7 +346,7 @@ public class CrateFunctions {
                         ItemStack sellBoost1 = new ItemStack(Material.POTION, 1, (short)8260);
                         ItemMeta sm1 = sellBoost1.getItemMeta();
                         sm1.setDisplayName(m.c("&f&l2x Currency Boost"));
-                        lore.add("giveboost sell %PLAYER% 2 3600");
+                        lore.add("giveboost sell %PLAYER% 2 600");
                         sm1.setLore(lore);
                         sellBoost1.setItemMeta(sm1);
                         lore.clear();
@@ -231,7 +354,7 @@ public class CrateFunctions {
                     case 2:
                         reward.setType(Material.EXP_BOTTLE);
                         rm.setDisplayName(m.c("&f&l2x XP Boost"));
-                        lore.add("giveboost xp %PLAYER% 2 3600");
+                        lore.add("giveboost xp %PLAYER% 2 900");
                         rm.setLore(lore);
                         lore.clear();
                     case 3:
@@ -244,24 +367,6 @@ public class CrateFunctions {
 
                 }
             }
-            if(ri > 190) {
-                Random misc = new Random();
-                int misci = misc.nextInt(3);
-                List<String> lore = new ArrayList<>();
-                switch(misci){
-                    case 0:
-                        reward.setType(Material.MUSHROOM_SOUP);
-                        rm.setDisplayName(m.c("&2Free Lunch :)"));
-                    case 1:
-                        reward.setType(Material.IRON_AXE);
-                        rm.setDisplayName(m.c("&e&l&ki&7&lMjölnir&e&l&ki&r"));
-                        reward.addEnchantment(Enchantment.DURABILITY, 3);
-                    case 2:
-                        reward.setType(Material.DISPENSER);
-                        rm.setDisplayName(m.c("&5&lPack-a-Punch"));
-                        reward.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 5);
-                }
-            }
 
         }
         if(crate.equals("contraband")) {
@@ -270,7 +375,7 @@ public class CrateFunctions {
 
             if(ri <= 30){
                 int tmin = 500000;
-                int tmax = 2000000;
+                int tmax = 1000000;
                 int tokens = r.nextInt(tmax - tmin)+ tmin;
                 rm.setDisplayName(m.c("&b"+ Main.formatAmt(tokens)+" Tokens"));
                 reward.setType(Material.PRISMARINE_CRYSTALS);
@@ -348,7 +453,7 @@ public class CrateFunctions {
                         ItemStack sellBoost = new ItemStack(Material.POTION, 1, (short)8260);
                         ItemMeta sm = sellBoost.getItemMeta();
                         sm.setDisplayName(m.c("&f&l1.5x Currency Boost"));
-                        lore.add("giveboost sell %PLAYER% 1.5 1800");
+                        lore.add("giveboost sell %PLAYER% 1.5 600");
                         sm.setLore(lore);
                         sellBoost.setItemMeta(sm);
                         lore.clear();
@@ -357,7 +462,7 @@ public class CrateFunctions {
                         ItemStack sellBoost1 = new ItemStack(Material.POTION, 1, (short)8260);
                         ItemMeta sm1 = sellBoost1.getItemMeta();
                         sm1.setDisplayName(m.c("&f&l2x Currency Boost"));
-                        lore.add("giveboost sell %PLAYER% 2 900");
+                        lore.add("giveboost sell %PLAYER% 2 300");
                         sm1.setLore(lore);
                         sellBoost1.setItemMeta(sm1);
                         lore.clear();
@@ -365,7 +470,7 @@ public class CrateFunctions {
                     case 2:
                         reward.setType(Material.EXP_BOTTLE);
                         rm.setDisplayName(m.c("&f&l2x XP Boost"));
-                        lore.add("giveboost xp %PLAYER% 2 1200");
+                        lore.add("giveboost xp %PLAYER% 2 300");
                         rm.setLore(lore);
                         lore.clear();
                     case 3:

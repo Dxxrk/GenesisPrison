@@ -12,11 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class Functions implements Listener{
-	
-	public static int multiCap(Player p) {
-		
-		return 300;
-	}
+
 	static Methods m = Methods.getInstance();
 
 	public static List<Player> multiply = new ArrayList<>();
@@ -33,7 +29,7 @@ public class Functions implements Listener{
 			if(ChatColor.stripColor(s).toLowerCase().contains("xp finder")) {
 
 				String[] n = ChatColor.stripColor(s).split(" ");
-				double x = Double.parseDouble(n[2])/500;
+				double x = Double.parseDouble(n[2])/1111.1111;
 
 				xp += x;
 			}

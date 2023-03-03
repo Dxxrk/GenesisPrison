@@ -23,15 +23,15 @@ import me.dxrk.Main.SettingsManager;
 public class CMDNickname implements CommandExecutor, Listener {
   SettingsManager settings = SettingsManager.getInstance();
   
-  public HashMap<Player, String> edit = new HashMap<Player, String>();
+  public HashMap<Player, String> edit = new HashMap<>();
   
-  public HashMap<Player, String> currentletter = new HashMap<Player, String>();
+  public HashMap<Player, String> currentletter = new HashMap<>();
   
-  public HashMap<Player, List<String>> editlist = new HashMap<Player, List<String>>();
+  public HashMap<Player, List<String>> editlist = new HashMap<>();
   
-  public HashMap<Player, Integer> currentnumber = new HashMap<Player, Integer>();
+  public HashMap<Player, Integer> currentnumber = new HashMap<>();
   
-  public HashMap<Player, Integer> max = new HashMap<Player, Integer>();
+  public HashMap<Player, Integer> max = new HashMap<>();
   
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     if (!(sender instanceof Player))
@@ -48,22 +48,22 @@ public class CMDNickname implements CommandExecutor, Listener {
         openEditInv(p, String.valueOf(c));
       } else if (args.length == 1) {
         String newNick = args[0];
-        if (!p.hasPermission("rank.hermes")) {
+        if (!p.hasPermission("rank.Titan")) {
           p.sendMessage(ChatColor.RED + "You do not have permission for this! Use /Nickname");
           return false;
         } 
         if ((newNick.contains("&k") || newNick.contains("&K")) && 
-          !p.hasPermission("rank.zeus")) {
+          !p.hasPermission("rank.Genesis")) {
           p.sendMessage(ChatColor.RED + "Only Zeus Rank can have magic in nicknames");
           return false;
         } 
         if ((newNick.contains("&l") || newNick.contains("&L")) && 
-          !p.hasPermission("rank.kronos")) {
+          !p.hasPermission("rank.Olympian")) {
           p.sendMessage(ChatColor.RED + "Only Kronos+ rank can have bold in nicknames");
           return false;
         } 
         if ((newNick.contains("&o") || newNick.contains("&O")) && 
-          !p.hasPermission("rank.apollo")) {
+          !p.hasPermission("rank.God")) {
           p.sendMessage(ChatColor.RED + "Only Apollo+ rank can have italic in nicknames");
           return false;
         } 
@@ -71,7 +71,7 @@ public class CMDNickname implements CommandExecutor, Listener {
           p.sendMessage(ChatColor.RED + "Nickname too long!");
           return false;
         } 
-        this.settings.getcolor().set(String.valueOf(p.getName()) + ".Nickname", args[0]);
+        this.settings.getcolor().set(p.getName() + ".Nickname", args[0]);
         this.settings.savecolorFile();
         p.sendMessage(ChatColor.translateAlternateColorCodes('&', "Nickname set to: " + args[0]));
       } else {
@@ -87,15 +87,15 @@ public class CMDNickname implements CommandExecutor, Listener {
       return; 
     Player p = (Player)e.getWhoClicked();
     if (this.max.get(p) == null) {
-      List<String> titleindiv = new ArrayList<String>();
-      for (int x = 0; x < p.getName().toString().length(); x++) {
-        char letter = p.getName().toString().charAt(x);
+      List<String> titleindiv = new ArrayList<>();
+      for (int x = 0; x < p.getName().length(); x++) {
+        char letter = p.getName().charAt(x);
         String letter1 = String.valueOf(letter);
         titleindiv.add(letter1);
       } 
       this.currentletter.put(p, titleindiv.get(0));
-      this.max.put(p, Integer.valueOf(titleindiv.size()));
-      this.currentnumber.put(p, Integer.valueOf(0));
+      this.max.put(p, titleindiv.size());
+      this.currentnumber.put(p, 0);
       this.editlist.put(p, titleindiv);
       this.edit.put(p, "&9");
     } 
@@ -105,68 +105,68 @@ public class CMDNickname implements CommandExecutor, Listener {
       if (!p.hasPermission("rank.Hoplite")) {
         try {
           e.getCurrentItem().setType(Material.BARRIER);
-        } catch (Exception exception) {}
+        } catch (Exception ignored) {}
         p.sendMessage(ChatColor.RED + "Hoplite and higher, sorry.");
         return;
       } 
       String s = this.edit.get(p);
       if (slot == 0)
-        s = String.valueOf(s) + "&1"; 
+        s = s + "&1"; 
       if (slot == 1)
-        s = String.valueOf(s) + "&2"; 
+        s = s + "&2"; 
       if (slot == 2)
-        s = String.valueOf(s) + "&3"; 
+        s = s + "&3"; 
       if (slot == 3)
-        s = String.valueOf(s) + "&4"; 
+        s = s + "&4"; 
       if (slot == 4)
-        s = String.valueOf(s) + "&5"; 
+        s = s + "&5"; 
       if (slot == 5)
-        s = String.valueOf(s) + "&6"; 
+        s = s + "&6"; 
       if (slot == 6)
-        s = String.valueOf(s) + "&7"; 
+        s = s + "&7"; 
       if (slot == 7)
-        s = String.valueOf(s) + "&8"; 
+        s = s + "&8"; 
       if (slot == 8)
-        s = String.valueOf(s) + "&9"; 
+        s = s + "&9"; 
       if (slot == 18)
-        s = String.valueOf(s) + "&a"; 
+        s = s + "&a"; 
       if (slot == 19)
-        s = String.valueOf(s) + "&b"; 
+        s = s + "&b"; 
       if (slot == 20)
-        s = String.valueOf(s) + "&c"; 
+        s = s + "&c"; 
       if (slot == 21)
-        s = String.valueOf(s) + "&d"; 
+        s = s + "&d"; 
       if (slot == 22)
-        s = String.valueOf(s) + "&e"; 
+        s = s + "&e"; 
       if (slot == 23)
-        s = String.valueOf(s) + "&f"; 
+        s = s + "&f"; 
       if (slot == 36)
-        if (p.hasPermission("rank.Ares")) {
-          s = String.valueOf(s) + "&l";
+        if (p.hasPermission("rank.Demi-God")) {
+          s = s + "&l";
         } else {
           e.getCurrentItem().setType(Material.BARRIER);
-          p.sendMessage(ChatColor.RED + "Ares and higher!");
+          p.sendMessage(ChatColor.RED + "Demi-God and higher!");
         }  
       if (slot == 37)
-        if (p.hasPermission("rank.Captain")) {
-          s = String.valueOf(s) + "&n";
+        if (p.hasPermission("rank.mvp")) {
+          s = s + "&n";
         } else {
           e.getCurrentItem().setType(Material.BARRIER);
-          p.sendMessage(ChatColor.RED + "Captain and higher!");
+          p.sendMessage(ChatColor.RED + "MVP and higher!");
         }  
       if (slot == 38)
-        if (p.hasPermission("rank.Captain")) {
-          s = String.valueOf(s) + "&m";
+        if (p.hasPermission("rank.vip")) {
+          s = s + "&m";
         } else {
           e.getCurrentItem().setType(Material.BARRIER);
-          p.sendMessage(ChatColor.RED + "Captain and higher!");
+          p.sendMessage(ChatColor.RED + "VIP and higher!");
         }  
       if (slot == 39)
-        if (p.hasPermission("rank.Colonel")) {
-          s = String.valueOf(s) + "&o";
+        if (p.hasPermission("rank.hero")) {
+          s = s + "&o";
         } else {
           e.getCurrentItem().setType(Material.BARRIER);
-          p.sendMessage(ChatColor.RED + "Colonel and higher!");
+          p.sendMessage(ChatColor.RED + "Hero and higher!");
         }  
       this.edit.put(p, s);
       return;
@@ -174,18 +174,18 @@ public class CMDNickname implements CommandExecutor, Listener {
     if (slot == 44) {
       String s = this.edit.get(p);
       List<String> list = this.editlist.get(p);
-      String letter = String.valueOf(p.getName().charAt(((Integer)this.currentnumber.get(p)).intValue()));
-      s = String.valueOf(s) + letter;
+      String letter = String.valueOf(p.getName().charAt(this.currentnumber.get(p)));
+      s = s + letter;
       this.edit.put(p, s);
-      int current = ((Integer)this.currentnumber.get(p)).intValue();
-      this.currentnumber.put(p, Integer.valueOf(current + 1));
-      if (((Integer)this.currentnumber.get(p)).intValue() >= ((Integer)this.max.get(p)).intValue()) {
-        this.settings.getcolor().set(String.valueOf(p.getName()) + ".Nickname", String.valueOf(this.edit.get(p)));
+      int current = this.currentnumber.get(p);
+      this.currentnumber.put(p, current + 1);
+      if (this.currentnumber.get(p) >= this.max.get(p)) {
+        this.settings.getcolor().set(p.getName() + ".Nickname", String.valueOf(this.edit.get(p)));
         p.sendMessage(ChatColor.GREEN + "Nickname Updated");
         this.settings.savecolorFile();
         p.closeInventory();
         this.edit.remove(p);
-        this.currentletter.remove(p.getName());
+        this.currentletter.remove(p);
         this.max.remove(p);
         this.currentnumber.remove(p);
         this.editlist.remove(p);

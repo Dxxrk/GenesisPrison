@@ -102,6 +102,7 @@ public class CMDHelp implements Listener, CommandExecutor {
         lore.add(m.c("&7/Boost - View boost queue or activate one of your own. Active boosts are shown in TAB."));
         lore.add(m.c("&7/leaderboard(/lb) - View the leaderboards for various categories."));
         lore.add(m.c("&7/Trade - Trade with another Player."));
+        lore.add(m.c("&7/AH - Open the Action House"));
         com.setLore(lore);
         commands.setItemMeta(com);
         help.setItem(22, commands);

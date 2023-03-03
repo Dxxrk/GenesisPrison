@@ -63,8 +63,8 @@ public class CMDStats implements Listener, CommandExecutor {
         else if(p.hasPermission("rank.VIP")){
             return m.c("&a&lVIP");
         }
-        else if(p.hasPermission("rank.Donator")){
-            return m.c("&b&lDonator");
+        else if(p.hasPermission("rank.sponsor")){
+            return m.c("&b&lSponsor");
         }
 
         return "";
@@ -129,7 +129,9 @@ public class CMDStats implements Listener, CommandExecutor {
 
         ItemStack blocks = new ItemStack(Material.DIAMOND_ORE);
         ItemMeta bm = blocks.getItemMeta();
-        bm.setDisplayName(m.c("&7Blocks Broken: &b"+ BlocksHandler.blocks.get(p)));
+        if(p.isOnline())
+            bm.setDisplayName(m.c("&7Blocks Broken: &b"+ BlocksHandler.blocks.get(p)));
+        else bm.setDisplayName(m.c("&7Blocks Broken: &b"+settings.getPlayerData().get(uuid+".BlocksBroken")));
         blocks.setItemMeta(bm);
         stats.setItem(39, blocks);
 

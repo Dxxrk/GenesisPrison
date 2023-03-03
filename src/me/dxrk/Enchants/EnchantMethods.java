@@ -8,6 +8,7 @@ import java.util.UUID;
 import me.dxrk.Events.*;
 import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Gangs.Gangs;
+import me.dxrk.Main.*;
 import me.dxrk.Tokens.Tokens;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -23,10 +24,6 @@ import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 
 import me.dxrk.Vote.CMDVoteShop;
-import me.dxrk.Main.Functions;
-import me.dxrk.Main.Main;
-import me.dxrk.Main.Methods;
-import me.dxrk.Main.SettingsManager;
 import me.dxrk.Events.ResetHandler.ResetReason;
 
 import me.jet315.prisonmines.mine.Mine;
@@ -274,7 +271,7 @@ public class EnchantMethods {
 				if (set(b1).allows(DefaultFlag.LIGHTER)) {
 					m.removeBlockFromRegion(b1);
 					if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-						b1.setType(Material.AIR);
+						BlockChanger.setSectionBlockAsynchronously(b1.getLocation(), new ItemStack(Material.AIR), false);
 						blocks = blocks + 1;
 					}
 				}
@@ -297,12 +294,12 @@ public class EnchantMethods {
 			}
 
 
-			sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks* (fortune)*levelcap))));
+			sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks/2.25* (fortune)*levelcap))));
 
 
 
 
-			int tokens = KeysHandler.tokensPerBlock(p)*blocks;
+			int tokens = (int) (KeysHandler.tokensPerBlock(p)*blocks*levelcap);
 			Tokens.getInstance().addTokens(p, tokens);
 			SellHandler.getInstance().sellEnchant(p, sellblocks, "Laser", tokens);
 
@@ -350,7 +347,7 @@ public class EnchantMethods {
 					laser.remove(p);
 					p.sendMessage(c("&f&lLaser &8| &bDeactivated!"));
 				}
-			}.runTaskLater(Main.plugin, 20*5L);
+			}.runTaskLater(Main.plugin, (long) (20*3.5));
 
 		}
 
@@ -373,7 +370,7 @@ public class EnchantMethods {
 				if (set(b1).allows(DefaultFlag.LIGHTER)) {
 					m.removeBlockFromRegion(b1);
 					if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-						b1.setType(Material.AIR);
+						BlockChanger.setSectionBlockAsynchronously(b1.getLocation(), new ItemStack(Material.AIR), false);
 						blocks = blocks + 1;
 					}
 				}
@@ -390,18 +387,18 @@ public class EnchantMethods {
 				int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity*skill*event /
 						(10));
 
-				double levelcap = level/150;
+				double levelcap = level/200;
 
 				if(levelcap <1){
 					levelcap = 1;
 				}
 
 		    
-		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks* (fortune)*levelcap))));
+		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks/1.55* (fortune)*levelcap))));
 
 
 
-				int tokens = KeysHandler.tokensPerBlock(p)*blocks;
+				int tokens = (int) (KeysHandler.tokensPerBlock(p)*blocks*levelcap);
 				Tokens.getInstance().addTokens(p, tokens);
 				SellHandler.getInstance().sellEnchant(p, sellblocks, "Wave", tokens);
 					
@@ -455,10 +452,8 @@ public class EnchantMethods {
 			for(Mine m : ResetHandler.api.getMinesByBlock(b)) {
 				for (Block b1 : blocksFromTwoPoints(min, max, p.getWorld())) {
 			      if (set(b1).allows(DefaultFlag.LIGHTER)) {
-			    	  
-			           
 			    	  if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-			              b1.setType(Material.AIR); 
+						  BlockChanger.setSectionBlockAsynchronously(b1.getLocation(), new ItemStack(Material.AIR), false);
 			              blocks = blocks+1;
 			    	  }
 			            for (Mine mine : ResetHandler.api.getMineManager().getMinesByBlock(b1))
@@ -495,9 +490,9 @@ public class EnchantMethods {
 
 
 
-				int tokens = KeysHandler.tokensPerBlock(p)*blocks;
+				int tokens = (int) (KeysHandler.tokensPerBlock(p)*blocks*levelcap*2);
 				Tokens.getInstance().addTokens(p, tokens);
-				SellHandler.getInstance().sellEnchant(p, sellblocks, "Explosion", tokens*2);
+				SellHandler.getInstance().sellEnchant(p, sellblocks, "Explosion", tokens);
 
 			}
 			
@@ -545,10 +540,12 @@ public class EnchantMethods {
 	  public void roundRank(Player p) {
 		Random r = new Random();
 		  int tmin = 1;
-		  int tmax = 25;
+		  int tmax = 5;
 		  int ranks = r.nextInt(tmax - tmin)+ tmin;
 		  for(int i = 0; i < ranks; i++) {
 			  RankupHandler.getInstance().upRank(p);
+			  if((RankupHandler.getInstance().getRank(p) %16 == 0) && RankupHandler.getInstance().getRank(p) <1000)
+				  MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
 		  }
 		 if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Research-Messages") == true) {
 			 p.sendMessage(c("&f&lResearch &8| &b+"+ranks+ " Levels"));
@@ -567,7 +564,6 @@ public class EnchantMethods {
 		  int level = 0;
 	    	int chance = 4500;
 			for (String s : p.getItemInHand().getItemMeta().getLore()) {
-				
 				      if (ChatColor.stripColor(s).contains("Research")) {
 				    	  level = m.getBlocks(s);
 				      }
@@ -631,11 +627,11 @@ public class EnchantMethods {
 				}
 		
 
-		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((amountblocks/8* (fortune*fortuity)*levelcap))));
+		    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((amountblocks/6* (fortune*fortuity)*levelcap))));
 
 
 
-				int tokens = KeysHandler.tokensPerBlock(p)*amountblocks;
+				int tokens = (int) (KeysHandler.tokensPerBlock(p)*amountblocks*levelcap/6);
 				Tokens.getInstance().addTokens(p, tokens);
 				SellHandler.getInstance().sellEnchant(p, sellblocks, "Nuke", tokens);
 				}

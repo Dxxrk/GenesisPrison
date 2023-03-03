@@ -279,9 +279,9 @@ public class Methods {
             return 32500000+shmulti; // 3
         else if(i.getTypeId() == 168)
             return 34500000+shmulti; // 3
-        else if(i.getTypeId() == 121)
-            return 37500000+shmulti;
         else if(i.getTypeId() == 49)
+            return 37500000+shmulti;
+        else if(i.getTypeId() == 121)
             return 38000000+shmulti;
         return 1;
   }

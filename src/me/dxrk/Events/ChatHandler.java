@@ -1,6 +1,7 @@
 package me.dxrk.Events;
 
 import me.dxrk.Commands.CMDAc;
+import me.dxrk.Commands.CMDOptions;
 import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Gangs.Gangs;
 import me.dxrk.Main.Main;
@@ -16,10 +17,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -328,7 +327,7 @@ public class ChatHandler implements Listener, CommandExecutor {
     } else if (p.hasPermission("Rank.Helper")) {
       rank = ChatColor.translateAlternateColorCodes('&', "&6&l&k;&e&lHelper&6&l&k;&r ");
     } else if (p.hasPermission("Rank.genesis")) {
-      rank = ChatColor.translateAlternateColorCodes('&', "&f&ki&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls&f&ki&r ");
+      rank = CMDOptions.TagColor(settings.getOptions().getString(p.getUniqueId().toString()+".GenesisColor"))+" ";
     } else if (p.hasPermission("Rank.olympian")) {
       rank = ChatColor.translateAlternateColorCodes('&', "&6&ki&e&lOlympian&6&ki&r ");
     } else if (p.hasPermission("Rank.god")) {
@@ -343,8 +342,8 @@ public class ChatHandler implements Listener, CommandExecutor {
       rank = ChatColor.translateAlternateColorCodes('&', "&6&lMVP ");
     } else if (p.hasPermission("Rank.vip")) {
       rank = ChatColor.translateAlternateColorCodes('&', "&a&lVIP ");
-    } else if (p.hasPermission("Rank.donator")) {
-      rank = ChatColor.translateAlternateColorCodes('&', "&b&lDonator ");
+    } else if (p.hasPermission("Rank.sponsor")) {
+      rank = ChatColor.translateAlternateColorCodes('&', "&b&lSponsor ");
     }
     return rank;
   }
@@ -419,7 +418,7 @@ public class ChatHandler implements Listener, CommandExecutor {
 
 
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.HIGHEST)
   public void onJoin(PlayerJoinEvent e){
     Player p = e.getPlayer();
     if (p.hasPermission("rank.helper")) {
@@ -503,14 +502,14 @@ public class ChatHandler implements Listener, CommandExecutor {
     for (i = (arrayOfChar = msg.toCharArray()).length, b = 0; b < i; ) {
       char c = arrayOfChar[b];
       if (Character.isUpperCase(c))
-        caps++; 
+        caps++;
       b = (byte)(b + 1);
-    } 
-    if (caps > 5 && !p.isOp()) {
+    }
+    if (caps > 200 && !p.isOp()) {
       s = event.getMessage().toLowerCase();
     } else {
       s = event.getMessage();
-    } 
+    }
     for (Player ps : event.getRecipients()) {
       FancyMessage chatFormat = new FancyMessage("");
       StringBuilder firstpart = new StringBuilder();
@@ -530,7 +529,7 @@ public class ChatHandler implements Listener, CommandExecutor {
         getOption(ps, "Tag"))
         firstpart.append(suffix); 
       String First = firstpart.toString();
-      chatFormat.then(First).itemTooltip(getHover(p)).suggest("/mine visit " + p.getName());
+      chatFormat.then(First).itemTooltip(getHover(p)).command("/stats "+p.getName());
       chatFormat.then(ChatColor.translateAlternateColorCodes('&', " &8» "));
       
       if (ChatColor.stripColor(s).toLowerCase().contains("[item]") && p.getItemInHand() != null && p.getItemInHand().getType() != Material.AIR) {
@@ -557,10 +556,10 @@ public class ChatHandler implements Listener, CommandExecutor {
             for (j = (arrayOfChar1 = s.replace("[item]", "").toCharArray()).length, b1 = 0; b1 < j; ) {
               char ss = arrayOfChar1[b1];
               if (!w) {
-                sb.append(ChatColor.GOLD + "").append(ss);
+                sb.append(ChatColor.GOLD).append(ss);
                 w = true;
               } else {
-                sb.append(ChatColor.YELLOW + "").append(ss);
+                sb.append(ChatColor.YELLOW).append(ss);
                 w = false;
               }
               b1 = (byte)(b1 + 1);
@@ -575,10 +574,10 @@ public class ChatHandler implements Listener, CommandExecutor {
             for (j = (arrayOfChar1 = s.replace("[item]", "").toCharArray()).length, b1 = 0; b1 < j; ) {
               char ss = arrayOfChar1[b1];
               if (!w) {
-                sb.append(ChatColor.DARK_GRAY + "").append(ss);
+                sb.append(ChatColor.DARK_GRAY).append(ss);
                 w = true;
               } else {
-                sb.append(ChatColor.GRAY + "").append(ss);
+                sb.append(ChatColor.GRAY).append(ss);
                 w = false;
               }
               b1 = (byte)(b1 + 1);
@@ -593,10 +592,10 @@ public class ChatHandler implements Listener, CommandExecutor {
             for (j = (arrayOfChar1 = s.replace("[item]", "").toCharArray()).length, b1 = 0; b1 < j; ) {
               char ss = arrayOfChar1[b1];
               if (!w) {
-                sb.append(ChatColor.WHITE + "").append(ss);
+                sb.append(ChatColor.WHITE).append(ss);
                 w = true;
               } else {
-                sb.append(ChatColor.GRAY + "").append(ss);
+                sb.append(ChatColor.GRAY).append(ss);
                 w = false;
               }
               b1 = (byte)(b1 + 1);
@@ -623,7 +622,7 @@ public class ChatHandler implements Listener, CommandExecutor {
           char[] arrayOfChar1;
           for (j = (arrayOfChar1 = s.replace("[item]", "").toCharArray()).length, b1 = 0; b1 < j; ) {
             char ss = arrayOfChar1[b1];
-            sb.append(ChatColor.WHITE + "" + ChatColor.BOLD).append(ss);
+            sb.append(ChatColor.WHITE +""+ ChatColor.BOLD).append(ss);
             b1 = (byte)(b1 + 1);
           }
           chatFormat.then(sb.toString());
@@ -635,7 +634,7 @@ public class ChatHandler implements Listener, CommandExecutor {
           char[] arrayOfChar1;
           for (k = (arrayOfChar1 = s.replace("[item]", "").toCharArray()).length, b1 = 0; b1 < k; ) {
             char ss = arrayOfChar1[b1];
-            sb.append(ChatColor.RED + "" + ChatColor.BOLD).append(ss);
+            sb.append(ChatColor.RED +""+ ChatColor.BOLD).append(ss);
             w = !w;
             b1 = (byte)(b1 + 1);
           }
@@ -648,7 +647,7 @@ public class ChatHandler implements Listener, CommandExecutor {
           char[] arrayOfChar1;
           for (k = (arrayOfChar1 = s.replace("[item]", "").toCharArray()).length, b1 = 0; b1 < k; ) {
             char ss = arrayOfChar1[b1];
-            sb.append(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD).append(ss);
+            sb.append(ChatColor.LIGHT_PURPLE +""+ ChatColor.BOLD).append(ss);
             w = !w;
             b1 = (byte)(b1 + 1);
           }

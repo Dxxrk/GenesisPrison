@@ -28,16 +28,22 @@ public class BuycraftUtil implements Listener, CommandExecutor{
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(label.equalsIgnoreCase("buymsg")) {
-			if(args.length == 3) {
+			if(args.length >= 3) {
 				String name = args[0];
 				String price = args[1];
 				String pkgName = args[2];
-				if(pkgName.equals("Zeus")) {
-					pkgName = m.c("&e&l⚡&f&lZeus&e&l⚡");
+				if(pkgName.equals("Genesis")) {
+					pkgName = m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank");
+				}
+				StringBuilder s = new StringBuilder();
+				for(int i = 0; i <args.length; i++) {
+					if(i >=3) {
+						s.append(args[i]).append(" ");
+					}
 				}
 				
 				Bukkit.broadcastMessage(m.c("&9&m-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"));
-				Bukkit.broadcastMessage(m.c("&f&l"+name+" &bHas Purchased &6"+pkgName+"&b."));
+				Bukkit.broadcastMessage(m.c("&f&l"+name+" &bHas Purchased &6"+pkgName+" "+s+"&b."));
 				Bukkit.broadcastMessage(m.c("&ePrice: &e$"+price));
 				Bukkit.broadcastMessage(m.c("&9&m-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"));
 				

@@ -109,7 +109,7 @@ public class CMDMine implements CommandExecutor, Listener {
 
 			ItemStack mineBlocks = new ItemStack(Material.IRON_FENCE);
 			ItemMeta mm = mineBlocks.getItemMeta();
-			mm.setDisplayName(c("&aNew Bloksevery 16 Levels!"));
+			mm.setDisplayName(c("&aNew Blocks every 16 Levels!"));
 			mineBlocks.setItemMeta(mm);
 			mineMenu.setItem(6, mineBlocks);
 

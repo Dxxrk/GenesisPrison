@@ -72,10 +72,14 @@ public class BlocksHandler implements CommandExecutor, Listener {
     WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
     ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
     if (!set.allows(DefaultFlag.LIGHTER))
-      return; 
+      return;
+    if(!p.getWorld().getName().equals(p.getName()+"sWorld")) {
+      e.setCancelled(true);
+      return;
+    }
     if (!blocks.containsKey(p))
-      blocks.put(p, Integer.valueOf(this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".BlocksBroken"))); 
-    blocks.put(p, Integer.valueOf(((Integer)blocks.get(p)).intValue() + 1));
+      blocks.put(p, this.settings.getPlayerData().getInt(p.getUniqueId().toString() + ".BlocksBroken"));
+    blocks.put(p, blocks.get(p) + 1);
   }
   
   @EventHandler
@@ -94,7 +98,7 @@ public class BlocksHandler implements CommandExecutor, Listener {
         return false; 
       Player p = (Player)sender;
       if (!blocks.containsKey(p))
-        blocks.put(p, Integer.valueOf(this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".BlocksBroken"))); 
+        blocks.put(p, this.settings.getPlayerData().getInt(p.getUniqueId().toString() + ".BlocksBroken"));
       p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b[&dBlocks&b] &bYou've broken &d&n" + blocks.get(p) + "&b blocks!"));
     } 
     return false;
