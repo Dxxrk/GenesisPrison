@@ -111,6 +111,7 @@ public class BuycraftUtil implements Listener, CommandExecutor{
 
 	}
 
+
 	public static Coupon coupon(String code, Coupon.Discount discount, Coupon.Expire expire, Date date){
 		Coupon coupon = Coupon.builder()
 				.code(code)
@@ -158,9 +159,9 @@ public class BuycraftUtil implements Listener, CommandExecutor{
 			HashMap<String, Double> coupons = new HashMap<>();
 			coupons.put("01c9f21b9a274976b2a2188cd16e8958", 851.0);
 			coupons.put("0c8adfa9c066448e912409b98a812894", 22.75);
-			coupons.put("180e14a3aaf74ad683f96f7bbfd22da8", 3.25);
-			coupons.put("1ad0b0314fa042f0b4872e6d8473aa1d", 3.75);
-			coupons.put("1af3317cef9f465f8456c73433037b94", 0.38);
+			coupons.put("180e14a3aaf74ad683f96f7bbfd22da8", 4.00);
+			coupons.put("1ad0b0314fa042f0b4872e6d8473aa1d", 5.75);
+			coupons.put("1af3317cef9f465f8456c73433037b94", 4.00);
 			coupons.put("249c034473b6404b9c2681cf03bbe076", 18.75);
 			coupons.put("274813ee5bae446a935f7b587d623f91", 35.44);
 			coupons.put("2d60d0648d8944279b392778ecc37c0b", 10.0);
@@ -170,7 +171,7 @@ public class BuycraftUtil implements Listener, CommandExecutor{
 			coupons.put("49d279e33105461bb2f92ee1d41ccc36", 117.97);
 			coupons.put("4b6a3f3060324ee9883f2df00a6e4128", 10.0);
 			coupons.put("4e752e446d924e22a3b7e4777fae8e22", 13.50);
-			coupons.put("4f06f93c4aab41689cf74db1c4ef1bff", 6.25);
+			coupons.put("4f06f93c4aab41689cf74db1c4ef1bff", 9.25);
 			coupons.put("59cb9636583e4172b798661d11f90890", 40.0);
 			coupons.put("5a89208dd2d941628a82638d780009c8", 7.50);
 			coupons.put("5be9757eb8914b409182b90f5f9fb642", 52.36);
@@ -178,17 +179,17 @@ public class BuycraftUtil implements Listener, CommandExecutor{
 			coupons.put("6b2b99bb316e4429a493a25eb530b3e6", 15.0);
 			coupons.put("7151e2dd0cee4964ac3c0d1ccc5ac1e7", 9.68);
 			coupons.put("74fad5f6452a47d5871c38b68324f684", 13.0);
-			coupons.put("76906bcbdab8427288fffabfdb61b414", 2.50);
+			coupons.put("76906bcbdab8427288fffabfdb61b414", 4.00);
 			coupons.put("7e418df678fa4be8b999c38d99db4add", 47.50);
 			coupons.put("8352889c8e664562b86fa0e6f3277427", 5.0);
 			coupons.put("8bed6e7412cb4c51920ab0ee4c3e6d18", 100.0);
-			coupons.put("9495592a6d014671a388ffb3aa9189f3", 1.75);
+			coupons.put("9495592a6d014671a388ffb3aa9189f3", 4.00);
 			coupons.put("9eb5568b968f47fe93903e62b45bd927", 55.25);
 			coupons.put("a3d4d99f24724158994a2afc5ce538b1", 60.0);
 			coupons.put("a7df727a08a94c86aa0e5ff0883dcd4d", 12.0);
 			coupons.put("a9f4eba08c1d4535a0f69ea0f820e073", 21.75);
 			coupons.put("aaa3e34cab284a239d319700cb196081", 47.50);
-			coupons.put("b1f45c78e4f14fdf99d92a5151537f7b", 2.50);
+			coupons.put("b1f45c78e4f14fdf99d92a5151537f7b", 4.00);
 			coupons.put("c80937f6dd2a4f65abc3a695c3dba88a", 289.08);
 			coupons.put("c973f2cc24fc4c4dac792eaaf035eb15", 98.0);
 			coupons.put("ca84314cf3e84866a86d861a83ee400b", 155.0);
@@ -197,8 +198,8 @@ public class BuycraftUtil implements Listener, CommandExecutor{
 			coupons.put("d4e7577743d74fdfbf5bcb182ac3d3b0", 21.25);
 			coupons.put("dce072a18cd14c45bf5faaad4c98bd44", 7.50);
 			coupons.put("e04268be8db04d84936ae4dae70ad15d", 132.0);
-			coupons.put("f0916a631d8148cfb72ff9360731c726", 44.0);
-			coupons.put("f273132d7665451f8de878f68814ccac", 20.0);
+			coupons.put("f0916a631d8148cfb72ff9360731c726", 150.0);
+			coupons.put("f273132d7665451f8de878f68814ccac", 170.0);
 			coupons.put("fc6ede47eb554bb89afdc562906d421b", 50.0);
 			coupons.put("febf70d52d7a466a93d41ebca2043801", 17.5);
 			return coupons;
@@ -223,8 +224,8 @@ public class BuycraftUtil implements Listener, CommandExecutor{
 		Coupon coupon = coupon(randomcode, discount, expire, date);
 
 		buycraft.createCoupon(coupon);
-		TextComponent msg = new TextComponent(m.c("&bYour coupon code for &a$"+amount+" &b is &6"+p.getUniqueId().toString().replace("-", "")+" (&7Click to Copy)"));
-		msg.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, p.getUniqueId().toString().replace("-", "")));
+		TextComponent msg = new TextComponent(m.c("&bYour coupon code for &a$"+amount+" &b is &6"+randomcode+" (&7Click to Copy)"));
+		msg.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, randomcode));
 		p.sendMessage(msg);
 		p.sendMessage(m.c("&cYou can only use this command once! Do not lose the code!"));
 

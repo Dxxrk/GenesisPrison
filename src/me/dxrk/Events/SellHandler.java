@@ -7,19 +7,17 @@ import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Events.ResetHandler.ResetReason;
 import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Gangs.Gangs;
-import me.dxrk.Main.Functions;
-import me.dxrk.Main.Main;
-import me.dxrk.Main.Methods;
-import me.dxrk.Main.SettingsManager;
+import me.dxrk.Main.*;
 import me.dxrk.Tokens.Tokens;
 import me.jet315.prisonmines.mine.Mine;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -31,9 +29,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.NumberFormat;
-import java.util.*;
-
-import static me.dxrk.Events.PrestigeHandler.settings;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 @SuppressWarnings("deprecation")
 public class SellHandler implements Listener, CommandExecutor {
@@ -136,12 +135,12 @@ public class SellHandler implements Listener, CommandExecutor {
 	    double greed = Functions.greed(p);
 	    double sell = Functions.sellBoost(p);
 	    double miningboost = BoostsHandler.sell;
-	    double multi = SellHandler.getInstance().getMulti(p)/1.25;
+	    double multi = SellHandler.getInstance().getMulti(p)/1.75;
 		if(multi <1) {
 			multi = 1;
 		}
 	  double event = SkillsEventsListener.getEventMulti();
-		double prestige = getPrestiges(p)*1.5;
+		double prestige = getPrestiges(p)*1.25;
 		double unity = CMDGang.getInstance().getUnityLevel(gang);
 		double multiply = 1;
 		if(prestige < 1){
@@ -187,12 +186,12 @@ public class SellHandler implements Listener, CommandExecutor {
 	  double greed = Functions.greed(p);
 	  double sell = Functions.sellBoost(p);
 	  double miningboost = BoostsHandler.sell;
-	  double multi = SellHandler.getInstance().getMulti(p)/1.25;
+	  double multi = SellHandler.getInstance().getMulti(p)/1.75;
 	  if(multi <1) {
 		  multi = 1;
 	  }
 	  double event = SkillsEventsListener.getEventFortune();
-	  double prestige = getPrestiges(p)*1.5;
+	  double prestige = getPrestiges(p)*1.25;
 	  double multiply = 1;
 	  if(prestige < 1){
 		  prestige = 1;
@@ -366,26 +365,37 @@ public class SellHandler implements Listener, CommandExecutor {
 	  if(cmd.getName().equalsIgnoreCase("resetmine") || cmd.getName().equalsIgnoreCase("rm")) {
 		  if (cs instanceof Player) {
 			  Player p = (Player)cs;
-			  if(p.hasPermission("mines.resetmine")) {
-				 Mine mine = ResetHandler.api.getMineByName(p.getUniqueId().toString());
-				 if(reset.contains(p.getUniqueId().toString())) {
-					 p.sendMessage(c("&c/resetmine(/rm) is on cooldown."));
-				 } else {
-					 int rank = RankupHandler.getInstance().getRank(p);
-					 ResetHandler.resetMine(mine, ResetReason.NORMAL, MineHandler.Blocks(rank/16));
-					 if(mine.isLocationInRegion(p.getLocation()))
-					 	p.teleport(mine.getSpawnLocation());
-					 reset.add(p.getUniqueId().toString());
-				 }
-				 new BukkitRunnable() {
 
-					@Override
-					public void run() {
-						reset.remove(p.getUniqueId().toString());
-						
-					}
-					 
-				 }.runTaskLater(Main.plugin, 20*60);
+			  if(args.length == 0) {
+				  if (p.hasPermission("mines.resetmine")) {
+					  Mine mine = ResetHandler.api.getMineByName(p.getUniqueId().toString());
+					  if (reset.contains(p.getUniqueId().toString())) {
+						  p.sendMessage(c("&c/resetmine(/rm) is on cooldown."));
+					  } else {
+						  int rank = RankupHandler.getInstance().getRank(p);
+						  ResetHandler.resetMine(p, mine, ResetReason.NORMAL, MineHandler.Blocks(rank / 16));
+						  if (mine.isLocationInRegion(p.getLocation()))
+							  p.teleport(mine.getSpawnLocation());
+						  if (!p.isOp())
+							  reset.add(p.getUniqueId().toString());
+					  }
+					  new BukkitRunnable() {
+
+						  @Override
+						  public void run() {
+							  reset.remove(p.getUniqueId().toString());
+
+						  }
+
+					  }.runTaskLater(Main.plugin, 20 * 60);
+				  }
+			  } else {
+				  if (args[0].equalsIgnoreCase("testblock") && p.isOp()) {
+					  Location l1 = new Location(p.getLocation().getWorld(), p.getLocation().getX() + 3, p.getLocation().getY() - 3, p.getLocation().getZ() + 3);
+					  Location l2 = new Location(p.getLocation().getWorld(), p.getLocation().getX() - 3, p.getLocation().getY() - 6, p.getLocation().getZ() - 3);
+					  BlockChanger.setSectionCuboidAsynchronously(l1, l2, new ItemStack(Material.COBBLESTONE));
+					  return false;
+				  }
 			  }
 		  }
 	  }

@@ -27,7 +27,7 @@ public class SkillsEventsListener implements Listener {
         double amt = 1;
         for(String s : activeEvents){
             if(s.equals("Allure") || s.equals("Strong Desire")){
-                amt+=0.5;
+                amt+=0.25;
             }
         }
 
@@ -48,8 +48,8 @@ public class SkillsEventsListener implements Listener {
     public static double getEventKeyFortune(){
         double amt = 0;
         for(String s : activeEvents){
-            if(s.equals("Thunderstorm") || s.equals("Ligntning Strike")) {
-                amt+=15;
+            if(s.equals("Thunderstorm") || s.equals("ThunderBolt")) {
+                amt+=25;
             }
         }
         return amt;
@@ -57,7 +57,10 @@ public class SkillsEventsListener implements Listener {
     public static double getEventToken(){
         double amt = 1;
         for(String s : activeEvents){
-            if(s.equals("War Torn") || s.equals("BloodShed")){
+            if(s.equals("War Torn")){
+                amt+=0.25;
+            }
+            if(s.equals("Bloodshed")) {
                 amt+=0.25;
             }
         }
@@ -67,7 +70,7 @@ public class SkillsEventsListener implements Listener {
         double amt = 0;
         for(String s : activeEvents){
             if(s.equals("Scorched Earth") || s.equals("Meteor Shower")){
-                amt+=10;
+                amt+=50;
             }
         }
 
@@ -115,14 +118,19 @@ public class SkillsEventsListener implements Listener {
     public void couponBreak(Player p) {
         List<String> skills = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
         Random r = new Random();
+        int level = 0;
         for(String s : skills) {
             if(s.contains("Coupon")) {
-                double min = 0.01;
-                double max = 0.10;
-                double coupon = Math.round((min + (max - min) * r.nextDouble())*10)/10.0;
-                if(r.nextInt(3500) == 1) {
-                    CMDVoteShop.addCoupon(p, coupon);
-                }
+                level = level+20;
+            }
+        }
+        if(level >0) {
+            double min = 0.01;
+            double max = 0.10;
+            double coupon = Math.round((min + (max - min) * r.nextDouble()) * 100) / 100.0;
+            if (r.nextInt(15000 - (level * 30)) == 1) {
+                CMDVoteShop.addCoupon(p, coupon);
+                p.sendMessage(m.c("&f&lCoupon Finder &8| &b+$" + coupon));
             }
         }
     }
@@ -144,15 +152,11 @@ public class SkillsEventsListener implements Listener {
         }
         activeEvents.add(event);
         updateEvent();
-
-
-
     }
 
     public void deactiveEvent(String event){
         activeEvents.remove(event);
         updateEvent();
-
     }
 
     public void eventBreak(Player p, String event){
@@ -181,15 +185,15 @@ public class SkillsEventsListener implements Listener {
                 }
                 int ii = r.nextInt(2);
                 if(ii == 0){
-                    if(activeEvents.contains("Lightning Strike")) return;
-                    activateEvent("Lightning Strike");
-                    Bukkit.broadcastMessage(m.c("&f&l"+p.getName()+" &3has activated the &e&lLightning Strike &3Event!"));
+                    if(activeEvents.contains("ThunderBolt")) return;
+                    activateEvent("ThunderBolt");
+                    Bukkit.broadcastMessage(m.c("&f&l"+p.getName()+" &3has activated the &e&lThunderBolt &3Event!"));
                     new BukkitRunnable() {
                         public void run() {
-                            deactiveEvent("Lightning Strike");
-                            Bukkit.broadcastMessage(m.c("&e&lLightning Strike &3Event has ended."));
+                            deactiveEvent("ThunderBolt");
+                            Bukkit.broadcastMessage(m.c("&e&lThunderBolt &3Event has ended."));
                         }
-                    }.runTaskLater(Main.plugin, 20*1800L);
+                    }.runTaskLater(Main.plugin, 20*900L);
                 }
                 if(ii == 1) {
                     if(activeEvents.contains("Thunderstorm")) return;
@@ -200,7 +204,7 @@ public class SkillsEventsListener implements Listener {
                             deactiveEvent("Thunderstorm");
                             Bukkit.broadcastMessage(m.c("&e&lThunderStorm &3Event has ended."));
                         }
-                    }.runTaskLater(Main.plugin, 20*1800L);
+                    }.runTaskLater(Main.plugin, 20*900L);
                 }
             }
         }
@@ -219,10 +223,10 @@ public class SkillsEventsListener implements Listener {
                     Bukkit.broadcastMessage(m.c("&f&l"+p.getName()+" &3has activated the &b&lTyphoon &3Event!"));
                     new BukkitRunnable() {
                         public void run() {
-                            deactiveEvent("Tsunami");
+                            deactiveEvent("Typhoon");
                             Bukkit.broadcastMessage(m.c("&b&lTyphoon &3Event has ended."));
                         }
-                    }.runTaskLater(Main.plugin, 20*1800L);
+                    }.runTaskLater(Main.plugin, 20*900L);
                 }
                 if(ii == 1) {
                     if(activeEvents.contains("Tsunami")) return;
@@ -233,7 +237,7 @@ public class SkillsEventsListener implements Listener {
                             deactiveEvent("Tsunami");
                             Bukkit.broadcastMessage(m.c("&b&lTsunami &3Event has ended."));
                         }
-                    }.runTaskLater(Main.plugin, 20*1800L);
+                    }.runTaskLater(Main.plugin, 20*900L);
                 }
             }
         }
@@ -255,7 +259,7 @@ public class SkillsEventsListener implements Listener {
                             deactiveEvent("Meteor Shower");
                             Bukkit.broadcastMessage(m.c("&4&lMeteor Shower &3Event has ended."));
                         }
-                    }.runTaskLater(Main.plugin, 20*1800L);
+                    }.runTaskLater(Main.plugin, 20*900L);
                 }
                 if(ii == 1) {
                     if(activeEvents.contains("Scorched Earth")) return;
@@ -266,7 +270,7 @@ public class SkillsEventsListener implements Listener {
                             deactiveEvent("Scorched Earth");
                             Bukkit.broadcastMessage(m.c("&4&lScorched Earth &3Event has ended."));
                         }
-                    }.runTaskLater(Main.plugin, 20*1800L);
+                    }.runTaskLater(Main.plugin, 20*900L);
                 }
             }
         }
@@ -288,7 +292,7 @@ public class SkillsEventsListener implements Listener {
                             deactiveEvent("War Torn");
                             Bukkit.broadcastMessage(m.c("&c&lWar Torn &3Event has ended."));
                         }
-                    }.runTaskLater(Main.plugin, 20*1800L);
+                    }.runTaskLater(Main.plugin, 20*900L);
                 }
                 if(ii == 1) {
                     if(activeEvents.contains("Bloodshed")) return;
@@ -299,7 +303,7 @@ public class SkillsEventsListener implements Listener {
                             deactiveEvent("Bloodshed");
                             Bukkit.broadcastMessage(m.c("&c&lBloodshed &3Event has ended."));
                         }
-                    }.runTaskLater(Main.plugin, 20*1800L);
+                    }.runTaskLater(Main.plugin, 20*900L);
                 }
             }
         }
@@ -321,7 +325,7 @@ public class SkillsEventsListener implements Listener {
                             deactiveEvent("Allure");
                             Bukkit.broadcastMessage(m.c("&d&lAllure &3Event has ended."));
                         }
-                    }.runTaskLater(Main.plugin, 20*1800L);
+                    }.runTaskLater(Main.plugin, 20*900L);
                 }
                 if(ii == 1) {
                     if(activeEvents.contains("Strong Desire")) return;
@@ -332,7 +336,7 @@ public class SkillsEventsListener implements Listener {
                             deactiveEvent("Strong Desire");
                             Bukkit.broadcastMessage(m.c("&d&lStrong Desire &3Event has ended."));
                         }
-                    }.runTaskLater(Main.plugin, 20*1800L);
+                    }.runTaskLater(Main.plugin, 20*900L);
                 }
             }
         }

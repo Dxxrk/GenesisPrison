@@ -3,6 +3,7 @@ package me.dxrk.Commands;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,6 +24,7 @@ public class CMDItemEdits implements CommandExecutor {
       if (!(sender instanceof Player))
         return false; 
       Player p = (Player)sender;
+      if(p.getItemInHand().getType().equals(Material.NETHER_STAR)) return false;
       if (!p.hasPermission("command.rename")) {
         p.sendMessage(c("&c&ki&bExistor&c&ki&r &aNo permission."));
         return false;

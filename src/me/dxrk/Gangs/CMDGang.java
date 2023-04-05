@@ -1,6 +1,7 @@
 package me.dxrk.Gangs;
 
 import me.dxrk.Enchants.PickaxeLevel;
+import me.dxrk.Events.ScoreboardHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
@@ -234,7 +235,7 @@ public class CMDGang implements Listener, CommandExecutor {
             if(s.equals("Harmony Level 3")) {
                 harmony +=0.5;
             }
-            if(s.equals("Harmony Level 3")) {
+            if(s.equals("Harmony Level 5")) {
                 harmony +=1.5;
             }
         }
@@ -243,14 +244,14 @@ public class CMDGang implements Listener, CommandExecutor {
 
     public void harmony(String gang) {
         Random r = new Random();
-        int ri = r.nextInt(5000/getHarmonyLevel(gang));
+        int ri = r.nextInt(15000/getHarmonyLevel(gang));
         if(ri == 1) {
             if(harmony.contains(gang)) return;
             harmony.add(gang);
             harmonyTokens.put(gang, 0.0);
             harmonyMoney.put(gang, 0.0);
             for(Player p : Bukkit.getOnlinePlayers()) {
-                if(g.getGang(p).equals(gang)) {
+                if(g.getGang(p).equals(gang) && !ScoreboardHandler.isAFK(p)) {
                     p.sendMessage(m.c("&f&lGangs &8| &bHarmony is active."));
                 }
             }
@@ -261,20 +262,20 @@ public class CMDGang implements Listener, CommandExecutor {
                     List<String> members = settings.getGangs().getStringList(gang+".Members");
                     int membersOnline = 0;
                     for(Player p : Bukkit.getOnlinePlayers()) {
-                        if(g.getGang(p).equals(gang) && members.contains(p.getUniqueId().toString())) {
+                        if(g.getGang(p).equals(gang) && !ScoreboardHandler.isAFK(p)) {
                             membersOnline +=1;
                         }
                     }
                     harmony.remove(gang);
                     double tokens = harmonyTokens.get(gang);
-                    double tdistribute = (tokens/5)*getHarmony(gang);
+                    double tdistribute = (tokens/3)*getHarmony(gang);
                     double toPlayert = Math.round(tdistribute/membersOnline);
 
                     double money = harmonyMoney.get(gang);
-                    double mdistribute = (money/5)*getHarmony(gang);
+                    double mdistribute = (money/10)*getHarmony(gang);
                     double toPlayerm = Math.round(mdistribute/membersOnline);
                     for(Player p : Bukkit.getOnlinePlayers()) {
-                        if(g.getGang(p).equals(gang) && members.contains(p.getUniqueId().toString())) {
+                        if(g.getGang(p).equals(gang) && !ScoreboardHandler.isAFK(p)) {
                             p.sendMessage(m.c("&f&lGangs &8| &bFrom Harmony: &e⛀"+toPlayert+ " &a$"+toPlayerm));
                             Main.econ.depositPlayer(p, toPlayerm);
                             Tokens.getInstance().addTokens(p, toPlayert);
@@ -283,7 +284,7 @@ public class CMDGang implements Listener, CommandExecutor {
                     harmonyTokens.remove(gang);
                     harmonyMoney.remove(gang);
                 }
-            }.runTaskLater(Main.plugin, 20*30L);
+            }.runTaskLater(Main.plugin, 20*15L);
         }
     }
 
@@ -304,7 +305,7 @@ public class CMDGang implements Listener, CommandExecutor {
 
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if(cmd.getName().equalsIgnoreCase("gang")) {
+        if(cmd.getName().equalsIgnoreCase("gang") || cmd.getName().equalsIgnoreCase("g")) {
             Player p = (Player)sender;
             if(args.length == 0) {
                 if(g.hasGang(p)) {
@@ -343,6 +344,10 @@ public class CMDGang implements Listener, CommandExecutor {
                     return false;
                 }
                 Player invite = Bukkit.getPlayer(args[1]);
+                if(g.hasGang(invite)) {
+                    p.sendMessage(m.c("&f&lGangs &8| &bPlayer is already in a gang."));
+                    return false;
+                }
                 if(invited.get(g.getGang(p)) == null) {
                     List<Player> invitee = new ArrayList<>();
                     invitee.add(invite);
@@ -374,6 +379,7 @@ public class CMDGang implements Listener, CommandExecutor {
                 }
                 if(g.hasGang(p)) {
                     p.sendMessage(m.c("&f&lGangs &8| &bYou are already in a gang."));
+                    return false;
                 }
                 if(invited.get(gang).contains(p)) {
                     List<String> members = settings.getGangs().getStringList(gang+".Members");
@@ -429,6 +435,13 @@ public class CMDGang implements Listener, CommandExecutor {
                 }
                 openGangShop(p);
             }
+            if(args.length == 1 && args[0].equalsIgnoreCase("info")){
+                if(g.hasGang(p)) {
+                    sendGang(p, p);
+                } else {
+                    p.sendMessage(m.c("&f&lGangs &8| &bPlease Specify a gang."));
+                }
+            }
             if(args.length == 2 && args[0].equalsIgnoreCase("info")) {
                 for(String name : settings.getGangs().getKeys(false)) {
                     if(name.compareToIgnoreCase(args[1]) == 0) {
@@ -460,16 +473,24 @@ public class CMDGang implements Listener, CommandExecutor {
                     return false;
                 }
                 List<String> members = settings.getGangs().getStringList(gang+".Members");
-                for(String s: members) {
+                String uuid = null;
+                for(String s : settings.getPlayerData().getKeys(false)) {
                     OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(s));
                     if(args[1].equalsIgnoreCase(player.getName())) {
-                        members.remove(s);
-                        settings.getPlayerData().set(s+".Gang", "");
-                        settings.savePlayerData();
+                        uuid = s;
                     }
                 }
-                settings.getGangs().set(gang+".Members", members);
-                settings.saveGangs();
+                if(uuid != null && members.contains(uuid)) {
+                    members.remove(uuid);
+                    settings.getPlayerData().set(uuid + ".Gang", "");
+                    settings.savePlayerData();
+                    settings.getGangs().set(gang + ".Members", members);
+                    settings.saveGangs();
+                    OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
+                    p.sendMessage(m.c("&f&lGangs &8| &b"+player.getName()+" has been kicked."));
+                } else {
+                    p.sendMessage(m.c("&f&lGangs &8| &bCould not find that player."));
+                }
             }
             if(args.length == 2 && args[0].equalsIgnoreCase("setowner")) {
                 if(!g.hasGang(p)) return false;
@@ -517,6 +538,7 @@ public class CMDGang implements Listener, CommandExecutor {
                 }
                 if(gangchat.contains(p)) {
                     gangchat.remove(p);
+                    p.sendMessage(m.c("&f&lGangs &8| &bLeft Gang Chat."));
                     return false;
                 }
                 gangchat.add(p);

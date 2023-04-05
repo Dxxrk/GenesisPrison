@@ -379,7 +379,7 @@ public class ChatHandler implements Listener, CommandExecutor {
     } 
     lore.add(ChatColor.translateAlternateColorCodes('&', "&fBalance &7» &a$" + format(Main.econ.getBalance(p))));
     lore.add(ChatColor.translateAlternateColorCodes('&', "&fTokens &7» &e⛀" + Main.formatAmt(Tokens.getInstance().getTokens(p))));
-    lore.add(ChatColor.translateAlternateColorCodes('&', "&fBlocks Mined &7» &b" + BlocksHandler.blocks.get(p)));
+    lore.add(ChatColor.translateAlternateColorCodes('&', "&fBlocks Mined &7» &b" + this.settings.getPlayerData().getInt(p.getUniqueId().toString() + ".BlocksBroken")));
     lore.add("");
     lore.add(ChatColor.translateAlternateColorCodes('&', "&7Click to visit mine"));
     im.setLore(lore);

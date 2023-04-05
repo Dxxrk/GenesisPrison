@@ -66,8 +66,8 @@ public class Tokens {
       sender.sendMessage(this.prefix + "You do not have enough tokens!");
       return;
     } 
-    sender.sendMessage(this.prefix + "&7You have sent &b" + reciever.getName() + " &e" + tokens + "⛀");
-    reciever.sendMessage(this.prefix +"&b"+ sender.getName() + "&7 has sent you &e" + tokens + "⛀");
+    sender.sendMessage(this.prefix + m.c("&7You have sent &b" + reciever.getName() + " &e" + tokens + "⛀"));
+    reciever.sendMessage(this.prefix +m.c("&b"+ sender.getName() + "&7 has sent you &e" + tokens + "⛀"));
     addTokens(reciever, tokens);
     takeTokens(sender, tokens);
   }

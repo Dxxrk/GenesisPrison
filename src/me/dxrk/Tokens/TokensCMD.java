@@ -130,7 +130,7 @@ public class TokensCMD implements CommandExecutor, Listener {
 
             double tokens = this.tokens.getTokens(p);
             double amount = Double.parseDouble(args[1]);
-            if(amount > tokens) {
+            if(amount > tokens || amount < 0) {
               p.sendMessage(m.c("&cError: Not Enough Tokens"));
               return false;
             }

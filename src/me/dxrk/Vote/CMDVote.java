@@ -12,6 +12,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import me.dxrk.Events.LocksmithHandler;
+import me.dxrk.Events.ScoreboardHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
@@ -320,13 +321,19 @@ public void orderTop() {
   public void voteParty() {
     if (rewards.size() == 0)
       loadChests();
-    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "activeboost Sell VoteParty 2.0 900");
+    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "activeboost Sell VoteParty 3.0 900");
     for(Player p : Bukkit.getOnlinePlayers()){
+      if(ScoreboardHandler.isAFK(p)) continue;
     LocksmithHandler.getInstance().addKey(p, "alpha", 1);
     LocksmithHandler.getInstance().addKey(p, "beta", 1);
     LocksmithHandler.getInstance().addKey(p, "omega", 1);
     LocksmithHandler.getInstance().addKey(p, "seasonal", 1);
     LocksmithHandler.getInstance().addKey(p, "community", 1);
+      p.sendMessage(m.c("&f&lVoteParty &8| &b+1 Alpha Key"));
+      p.sendMessage(m.c("&f&lVoteParty &8| &b+1 Beta Key"));
+      p.sendMessage(m.c("&f&lVoteParty &8| &b+1 Omega Key"));
+      p.sendMessage(m.c("&f&lVoteParty &8| &b+1 Seasonal Key"));
+      p.sendMessage(m.c("&f&lVoteParty &8| &b+1 Community Key"));
     }
   }
 

@@ -20,7 +20,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class BlocksHandler implements CommandExecutor, Listener {
   public static HashMap<Player, Integer> blocks = new HashMap<Player, Integer>();
-  
+
   SettingsManager settings = SettingsManager.getInstance();
   
   static BlocksHandler instance = new BlocksHandler();
@@ -57,8 +57,7 @@ public class BlocksHandler implements CommandExecutor, Listener {
 	    } 
 	  }
   
-  
-  
+
   
   
   @SuppressWarnings("deprecation")
@@ -77,19 +76,17 @@ public class BlocksHandler implements CommandExecutor, Listener {
       e.setCancelled(true);
       return;
     }
-    if (!blocks.containsKey(p))
-      blocks.put(p, this.settings.getPlayerData().getInt(p.getUniqueId().toString() + ".BlocksBroken"));
-    blocks.put(p, blocks.get(p) + 1);
+    int blocksbroken = this.settings.getPlayerData().getInt(p.getUniqueId().toString() + ".BlocksBroken");
+    this.settings.getPlayerData().set(p.getUniqueId().toString()+".BlocksBroken", blocksbroken+1);
   }
   
   @EventHandler
   public void onLeave(PlayerQuitEvent e) {
     Player p = e.getPlayer();
-    if (blocks.containsKey(p)) {
-      this.settings.getPlayerData().set(p.getUniqueId().toString()+".BlocksBroken", blocks.get(p));
       blocks.remove(p);
       this.settings.saveBlocks();
-    } 
+      this.settings.savePlayerData();
+
   }
   
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -97,9 +94,8 @@ public class BlocksHandler implements CommandExecutor, Listener {
       if (!(sender instanceof Player))
         return false; 
       Player p = (Player)sender;
-      if (!blocks.containsKey(p))
-        blocks.put(p, this.settings.getPlayerData().getInt(p.getUniqueId().toString() + ".BlocksBroken"));
-      p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b[&dBlocks&b] &bYou've broken &d&n" + blocks.get(p) + "&b blocks!"));
+      int blocksbroken = this.settings.getPlayerData().getInt(p.getUniqueId().toString() + ".BlocksBroken");
+      p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b[&dBlocks&b] &bYou've broken &d&n" + blocksbroken + "&b blocks!"));
     } 
     return false;
   }

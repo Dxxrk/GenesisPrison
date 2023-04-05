@@ -178,7 +178,7 @@ public class Leaderboards implements Listener, CommandExecutor{
 		OfflinePlayer p4 = getOfflinePlayer(settings.getGangs().getString(gangstop.get(0).getValue()+".Owner"));
 		ItemStack gangs = Head(p4);
 		ItemMeta gm = gangs.getItemMeta();
-		gm.setDisplayName(m.c("&bHighest Gang Level:"));
+		gm.setDisplayName(m.c("&bHighest Gang:"));
 		if(gangstop.size() >= 1)
 			lore.add(m.c("&7#1 &c"+gangstop.get(0).getValue()+": &b"+settings.getGangs().getString(gangstop.get(0).getValue()+".BlocksBroken")));
 		if(gangstop.size() >= 2)
@@ -228,7 +228,7 @@ public class Leaderboards implements Listener, CommandExecutor{
 	public static void orderGangs() {
 		ordergang.clear();
 		for (String gangname : settings.getGangs().getKeys(false)) {
-			int ganglevel = settings.getGangs().getInt(gangname+".Level");
+			int ganglevel = settings.getGangs().getInt(gangname+".BlocksBroken");
 			ordergang.put(ganglevel, gangname);
 		}
 	}

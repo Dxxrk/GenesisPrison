@@ -86,7 +86,7 @@ public class CMDHelp implements Listener, CommandExecutor {
         ItemMeta tm = tokens.getItemMeta();
         tm.setDisplayName(m.c("&e&lTokens"));
         lore.add(m.c("&7Tokens are the primary currency used to upgrade enchants."));
-        lore.add(m.c("&7They are also used in selling/buying items in '/ah'"));
+        //lore.add(m.c("&7They are also used in selling/buying items in '/ah'"));
         lore.add(m.c("&7They can be withdrawn using '/tokens withdraw'"));
         lore.add(m.c("&7Use '/tokens send' to send another player tokens."));
         tm.setLore(lore);
@@ -101,8 +101,9 @@ public class CMDHelp implements Listener, CommandExecutor {
         lore.add(m.c("&7/kits - View the kits you have access to."));
         lore.add(m.c("&7/Boost - View boost queue or activate one of your own. Active boosts are shown in TAB."));
         lore.add(m.c("&7/leaderboard(/lb) - View the leaderboards for various categories."));
+        lore.add(m.c("&7/Stats | /Stats <Name> - View your, or another player's statistics."));
         lore.add(m.c("&7/Trade - Trade with another Player."));
-        lore.add(m.c("&7/AH - Open the Action House"));
+        //lore.add(m.c("&7/AH - Open the Action House."));
         com.setLore(lore);
         commands.setItemMeta(com);
         help.setItem(22, commands);
@@ -138,6 +139,17 @@ public class CMDHelp implements Listener, CommandExecutor {
 
         if(cmd.getName().equalsIgnoreCase("help")) {
             Player p = (Player) sender;
+            if(args.length == 1) {
+                if(args[0].equalsIgnoreCase("redeem")) {
+                    p.sendMessage(m.c("&a- &e/Redeem &bcan be used to reclaim the money you previously spent on the store."));
+                    p.sendMessage(m.c("&a- &bThis comes in the form of a Coupon."));
+                    p.sendMessage(m.c("&a- &bBecause the store has changed so much we figured this would make the most sense."));
+                    p.sendMessage(m.c("&a- &bA Coupon, by nature works via discounting the items in your cart by the amount of the coupon. This means that it is a &4&lSINGLE USE &bcode."));
+                    p.sendMessage(m.c("&a- &bIf you run into a scenario where you want to purchase several items but are missing &4&lUP TO $5&b, "));
+                    p.sendMessage(m.c("&bPlease make a ticket in the discord and we will simply disregard the extra cost, manually run the commands, and void the coupon."));
+                    return false;
+                }
+            }
             openHelp(p);
         }
 

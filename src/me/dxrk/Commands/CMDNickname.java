@@ -102,11 +102,11 @@ public class CMDNickname implements CommandExecutor, Listener {
     int slot = e.getSlot();
     e.setCancelled(true);
     if (slot < 43) {
-      if (!p.hasPermission("rank.Hoplite")) {
+      if (!p.hasPermission("rank.vip")) {
         try {
           e.getCurrentItem().setType(Material.BARRIER);
         } catch (Exception ignored) {}
-        p.sendMessage(ChatColor.RED + "Hoplite and higher, sorry.");
+        p.sendMessage(ChatColor.GREEN + "VIP and higher, sorry.");
         return;
       } 
       String s = this.edit.get(p);

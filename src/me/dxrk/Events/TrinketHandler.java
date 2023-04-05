@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -390,7 +391,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 	}
 
 	@EventHandler
-	public void onInvClick(InventoryClickEvent e){
+	public void onInvClick(InventoryClickEvent e) {
 		Player p = (Player) e.getWhoClicked();
 
 		if (e.getClickedInventory() == null)
@@ -469,7 +470,7 @@ public class TrinketHandler implements Listener, CommandExecutor{
 				String legendary = m.c("&6Legendary Trinket");
 				String heroic = m.c("&4Heroic Trinket");
 				for(int i = 0; i < 9; i++) {
-					if(!items[i].getType().equals(Material.AIR) && items[i].hasItemMeta()) {
+					if(items[i] != null && !items[i].getType().equals(Material.AIR) && items[i].hasItemMeta()) {
 						String[] name = ChatColor.stripColor(items[i].getItemMeta().getDisplayName()).split(" ");
 						if(items[i].getItemMeta().getDisplayName().equals(common)) {
 							e.getInventory().setResult(rareDust());
@@ -498,7 +499,9 @@ public class TrinketHandler implements Listener, CommandExecutor{
 					}
 				}
 			}
-			
+			if(e.getRecipe().getResult().equals(new ItemStack(Material.GOLD_INGOT))) {
+				e.getInventory().setResult(new ItemStack(Material.AIR));
+			}
 			
 			
 			if(e.getRecipe().getResult().equals(commonTrinket(1))) {
@@ -617,7 +620,6 @@ public class TrinketHandler implements Listener, CommandExecutor{
 		
 		if(rarity == 1) {
 			int rint = r.nextInt(5);
-			System.out.println("Random: "+rint);
 			if(rint == 0) {
 				int min = 3;
 				int max = 10;

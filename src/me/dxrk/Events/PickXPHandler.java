@@ -1,19 +1,28 @@
 package me.dxrk.Events;
 
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.managers.RegionManager;
 import me.dxrk.Enchants.PickaxeLevel;
+import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.List;
+import java.util.Random;
 
 public class PickXPHandler
 implements Listener {
@@ -46,7 +55,6 @@ implements Listener {
         double xp = getXP(p);
 
         settings.getPlayerData().set(p.getUniqueId().toString()+".PickXP", (xp+add));
-        settings.savePlayerData();
     }
 
     public void levelUp(Player p) {
@@ -68,7 +76,7 @@ implements Listener {
 
 
     public double calculateXPNeeded(Player p, int pick) {
-        return 2500+(2500*(pick*0.25));
+        return 2750+(2750*(pick*0.3));
     }
 
 
@@ -123,6 +131,21 @@ implements Listener {
     }
 
 
+    private WorldGuardPlugin getWorldGuard() {
+        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+
+        if (!(plugin instanceof WorldGuardPlugin)) {
+            return null;
+        }
+
+        return (WorldGuardPlugin) plugin;
+    }
+    public static ApplicableRegionSet set(Block b) {
+        WorldGuardPlugin worldGuard = WorldGuardPlugin.inst();
+        RegionManager regionManager = worldGuard.getRegionManager(b.getWorld());
+        return regionManager.getApplicableRegions(b.getLocation());
+    }
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
@@ -130,9 +153,18 @@ implements Listener {
         if(!p.getItemInHand().hasItemMeta()) return;
         if(!p.getItemInHand().getItemMeta().hasLore()) return;
         if(!p.getWorld().getName().equals(p.getName()+"sWorld")) return;
-        double xpToAdd = Functions.xpBoost(p) * Functions.XPEnchant(p) * BoostsHandler.xp;
-
-        addXP(p, xpToAdd);
+        if(!set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;
+        Random r = new Random();
+        int fmin = 1;
+        int fmax = 4;
+        int xp = r.nextInt(fmax - fmin)+ fmin;
+        double xpToAdd =xp*Functions.xpBoost(p) * Functions.XPEnchant(p) * BoostsHandler.xp* SkillsEventsListener.getEventXP();
+        double xpToAdd2 =Functions.xpBoost(p) * Functions.XPEnchant(p) * BoostsHandler.xp * SkillsEventsListener.getEventXP();
+        if(getLevel(p) <16)
+            addXP(p, xpToAdd);
+        else {
+            addXP(p, xpToAdd2);
+        }
 
         if(canLevelUp(p)) levelUp(p);
 

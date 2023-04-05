@@ -67,7 +67,6 @@ public class RankupHandler implements Listener, CommandExecutor{
   }
   public int getRank(Player p) {
 	  int i = this.settings.getRankupPrices().getInt(p.getUniqueId().toString());
-	  
 	  if(i == 0) {
 		  return 1;
 	  }
@@ -78,11 +77,15 @@ public class RankupHandler implements Listener, CommandExecutor{
   
   
   public void upRank(Player p) {
+	  if(nextRank(p) == 1000 && getPrestiges(p) == 100) {
+		  this.settings.getRankupPrices().set(p.getUniqueId().toString(), 1);
+		  this.settings.getPlayerData().set(p.getUniqueId().toString()+".Ethereal", true);
+		  return;
+	  }
 
 	    
 	  int i = this.settings.getRankupPrices().getInt(p.getUniqueId().toString());
 	    this.settings.getRankupPrices().set(p.getUniqueId().toString(), i + 1);
-	    this.settings.saveRankupPrices();
 	    
 	    p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
 
@@ -109,17 +112,54 @@ public class RankupHandler implements Listener, CommandExecutor{
 		int ranks = getRank(p);
 
 		if(ranks >= 1000){
-			return 15;
+			return 25;
 		}
 		else if(ranks >= 750) {
-			return 5.25;
+			return 12;
 		}
 		else if(ranks >=500){
-			return 3.5;
+			return 8;
 		}
 		else if(ranks >= 250){
-			return 1.75;
+			return 4;
 		}
+
+
+		return 1;
+	}
+	public double priceJumpP(Player p) {
+	  int prestiges = getPrestiges(p);
+
+	  if(prestiges >= 100) {
+		  return 50;
+	  }
+	  else if(prestiges >=90) {
+		  return 36;
+	  }
+	  else if(prestiges >=80) {
+		  return 32;
+	  }
+	  else if(prestiges >=70) {
+		  return 28;
+	  }
+	  else if(prestiges >=60) {
+		  return 24;
+	  }
+	  else if(prestiges >=50) {
+		  return 20;
+	  }
+	  else if(prestiges >=40) {
+		  return 8;
+	  }
+	  else if(prestiges >=30) {
+		  return 6;
+	  }
+	  else if(prestiges >=20) {
+		  return 4;
+	  }
+	  else if(prestiges >=10) {
+		  return 2;
+	  }
 
 
 		return 1;
@@ -127,21 +167,51 @@ public class RankupHandler implements Listener, CommandExecutor{
 
   
   public double rankPrice(Player p) {
-
 	  int rank = getRank(p);
-	  double prestiges = getPrestiges(p)*2.0;
-	  if(prestiges <1){
+
+	  if(this.settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
+			double start = 7.523828125E20D*1000;
+			double price = start*(rank*1.75);
+
+			return price;
+	  }
+
+	  double prestiges = getPrestiges(p)*2.75;
+	  if(prestiges <1) {
 		  prestiges = 1;
 	  }
-	  double price = (1.25e12+(1.25e12*(rank*1.75)))*priceJumpR(p)*prestiges;
-	  if(rank == 1) {
-		  price = 1.25e12 *prestiges;
-	  }
+	  double price = (1.25e12*(rank*1.75))*priceJumpR(p)*prestiges*priceJumpP(p);
 
     return price;
   }
   
   public void rankup(Player p) {
+	  if(this.settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
+		  if (Main.econ.getBalance(p) < rankPrice(p)) {
+			  p.sendMessage(c("&f&lLevel &8| &7You need &a$"+Methods.formatAmt(rankPrice(p) - Main.econ.getBalance(p))+" &7to rankup."));
+			  return;
+		  }
+		  Main.econ.withdrawPlayer(p, rankPrice(p));
+		  upRank(p);
+		  if((getRank(p) %16 == 0) && getRank(p) <1000)
+			  MineHandler.getInstance().updateMine(p, getRank(p));
+		  p.getScoreboard().getTeam("prank").setSuffix(c("&b" + getRank(p)));
+		  double percents;
+		  p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
+		  percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
+		  double dmultiply = percents*10.0;
+		  double dRound = Math.round(dmultiply) /10.0;
+
+
+
+		  if(dRound>=100.0) {
+			  p.getScoreboard().getTeam("percent").setSuffix(c("&c/rankup"));
+		  } else {
+			  p.getScoreboard().getTeam("percent").setSuffix(c("&c")+(dRound)+"%");
+		  }
+		  return;
+	  }
+
 
     if (Main.econ.getBalance(p) < rankPrice(p)) {
       p.sendMessage(c("&f&lLevel &8| &7You need &a$"+Methods.formatAmt(rankPrice(p) - Main.econ.getBalance(p))+" &7to rankup."));
@@ -177,21 +247,23 @@ public class RankupHandler implements Listener, CommandExecutor{
 		  upRank(p);
 		  if((getRank(p) %16 == 0) && getRank(p) <1000)
 			  MineHandler.getInstance().updateMine(p, getRank(p));
-		  p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
-		  double percents;
-		  p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
-		  percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
-		  double dmultiply = percents*10.0;
-		  double dRound = Math.round(dmultiply) /10.0;
 
-	        
-
-	        	if(dRound>=100.0) {
-	        		p.getScoreboard().getTeam("percent").setSuffix(c("&c/rankup"));
-	        	} else {
-	        		p.getScoreboard().getTeam("percent").setSuffix(c("&c")+(dRound)+"%");
-	        }
 	  }
+	  p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
+	  double percents;
+	  p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
+	  percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
+	  double dmultiply = percents*10.0;
+	  double dRound = Math.round(dmultiply) /10.0;
+
+
+
+	  if(dRound>=100.0) {
+		  p.getScoreboard().getTeam("percent").setSuffix(c("&c/rankup"));
+	  } else {
+		  p.getScoreboard().getTeam("percent").setSuffix(c("&c")+(dRound)+"%");
+	  }
+	  this.settings.saveRankupPrices();
 
   }
   

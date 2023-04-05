@@ -19,10 +19,15 @@ import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -174,7 +179,7 @@ public class MineHandler implements Listener, CommandExecutor{
 		m.getResetManager().setPercentageReset(20);
 		m.getMineRegion().setBlocksMinedInRegion(0);
 		m.save();
-		ResetHandler.resetMineFull(m, ResetReason.NORMAL, blocks);
+		ResetHandler.resetMineFull(p, m, ResetReason.NORMAL, blocks);
 
 	}
 
@@ -191,10 +196,6 @@ public class MineHandler implements Listener, CommandExecutor{
 				OfflinePlayer p = Bukkit.getOfflinePlayer(args[0]);
 				Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
 				m.delete();
-				MultiverseCore core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
-				MVWorldManager wm = core.getMVWorldManager();
-				wm.unloadWorld(p.getName()+"sWorld");
-				wm.deleteWorld(p.getName()+"sWorld");
 				settings.getPlayerData().set(p.getUniqueId().toString()+".HasMine", false);
 			}
 		}
@@ -209,33 +210,45 @@ public class MineHandler implements Listener, CommandExecutor{
 	
 	@EventHandler
 	public void drop(PlayerDropItemEvent e) {
-		if(e.getItemDrop().getItemStack().getType().equals(Material.DIAMOND_PICKAXE)) {
+		if(e.getItemDrop().getItemStack().getType().equals(Material.DIAMOND_PICKAXE) || e.getItemDrop().getItemStack().getType().equals(Material.WOOD_PICKAXE) ||
+				e.getItemDrop().getItemStack().getType().equals(Material.STONE_PICKAXE) || e.getItemDrop().getItemStack().getType().equals(Material.IRON_PICKAXE) ||
+				e.getItemDrop().getItemStack().getType().equals(Material.GOLD_PICKAXE)) {
 			e.setCancelled(true);
 			e.getPlayer().sendMessage(c("&cYou cannot drop your pickaxe!"));
 		}
 	}
-	
+
+	@EventHandler
+	public void onEntityDamage(EntityDamageEvent event){
+		Entity ent = event.getEntity();
+		if(ent instanceof Player) {
+			Player player = (Player) ent;
+			if (event.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION)){
+				event.setCancelled(true);
+			}
+		}
+	}
+
 
 	/*
 		CREATING THE MINE
 	 */
 	@SuppressWarnings("deprecation")
 	public void CreateMine(Player p){
-		MultiverseCore core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
-		MVWorldManager wm = core.getMVWorldManager();
-
 
 		//Setting up the world
-		wm.cloneWorld("Dxrk", p.getName()+"sWorld");
-		wm.getMVWorld(p.getName()+"sWorld").setAlias(p.getName()+"sWorld");
+		MultiverseCore core = (MultiverseCore)Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
+		MVWorldManager wm = core.getMVWorldManager();
+		wm.cloneWorld("Dxrk", p.getName() + "sWorld");
+		wm.getMVWorld(p.getName() + "sWorld").setAlias(p.getName() + "sWorld");
 
 		Location pworld = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 0.5, 113, 0.5, -90, 0);
 
 		WorldBorder wb = Bukkit.getWorld(p.getName()+"sWorld").getWorldBorder();
 		wb.setCenter(0, 0);
 		wb.setSize(250);
-
 		p.teleport(pworld);
+		Bukkit.getWorld(p.getName()+"sWorld").save();
 
 		Location point1 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 9, 111, 34);
 		Location point2 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 49, 79, -34);
@@ -245,10 +258,7 @@ public class MineHandler implements Listener, CommandExecutor{
 		ResetHandler.api.createMine(p.getUniqueId().toString(), point1, point2);
 		Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
 
-		RegionManager regions = getWorldGuard().getRegionManager(Bukkit.getWorld(p.getName() + "sWorld"));
-		if(regions.hasRegion(p.getUniqueId().toString())) {
-			return;
-		}
+
 
 		m.setSpawnLocation(pworld);
 		m.getResetManager().setMineResetTime(999999);
@@ -256,50 +266,52 @@ public class MineHandler implements Listener, CommandExecutor{
 		m.getMineRegion().setBlocksMinedInRegion(0);
 		m.getBlockManager().modifyBlockChanceInRegion(m.getBlockManager().getRandomBlockFromMine(), 0.0F);
 		m.getBlockManager().addBlockToMineRegion(new ItemStack(Material.COBBLESTONE), 100.0F);
+		m.getMineRegion().setTotalBlocksInRegion(93357);
 		m.save();
-		ResetHandler.resetMineFull(m, ResetReason.NORMAL, Blocks(0));
 
-		if(regions.hasRegion(p.getUniqueId().toString())) {
-			regions.removeRegion(p.getUniqueId().toString());
+		RegionManager regions = getWorldGuard().getRegionManager(Bukkit.getWorld(p.getName() + "sWorld"));
+		if(!regions.hasRegion(p.getUniqueId().toString())) {
+
+
+			if (regions.hasRegion(p.getUniqueId().toString())) {
+				regions.removeRegion(p.getUniqueId().toString());
+			}
+			//Create Mine region that allows the enchants to work only inside the mine
+			ProtectedRegion region = new ProtectedCuboidRegion(p.getUniqueId().toString(),
+					new BlockVector(point1.getX(), point1.getY(), point1.getZ()),
+					new BlockVector(point2.getX(), point2.getY(), point2.getZ()));
+			region.setFlag(DefaultFlag.LIGHTER, StateFlag.State.ALLOW);
+			region.setFlag(DefaultFlag.BLOCK_PLACE, StateFlag.State.DENY);
+			region.setFlag(DefaultFlag.BLOCK_BREAK, StateFlag.State.ALLOW);
+			region.setFlag(DefaultFlag.OTHER_EXPLOSION, StateFlag.State.ALLOW);
+			region.setFlag(DefaultFlag.USE, StateFlag.State.ALLOW);
+			region.setFlag(DefaultFlag.INTERACT, StateFlag.State.ALLOW);
+			DefaultDomain members = region.getMembers();
+			members.addPlayer(p.getUniqueId());
+			region.setPriority(2);
+			regions.addRegion(region);
+
+			Location g1 = new Location(Bukkit.getWorld(p.getName() + "sWorld"), 66, 181, -74);
+			Location g2 = new Location(Bukkit.getWorld(p.getName() + "sWorld"), -14, 69, 74);
+
+			//Create region that allows building within limits.
+			ProtectedRegion outside = new ProtectedCuboidRegion("outside",
+					new BlockVector(g1.getX(), g1.getY(), g1.getZ()),
+					new BlockVector(g2.getX(), g2.getY(), g2.getZ()));
+			outside.setFlag(DefaultFlag.BLOCK_PLACE, StateFlag.State.DENY);
+			outside.setFlag(DefaultFlag.FALL_DAMAGE, StateFlag.State.DENY);
+			outside.setFlag(DefaultFlag.FEED_AMOUNT, 100);
+			outside.setFlag(DefaultFlag.BLOCK_BREAK, StateFlag.State.DENY);
+			outside.setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
+			outside.setFlag(DefaultFlag.LIGHTER, StateFlag.State.DENY);
+			outside.setFlag(DefaultFlag.USE, StateFlag.State.ALLOW);
+			outside.setFlag(DefaultFlag.INTERACT, StateFlag.State.ALLOW);
+			outside.setFlag(DefaultFlag.OTHER_EXPLOSION, StateFlag.State.DENY);
+			outside.setPriority(1);
+
+			regions.addRegion(outside);
 		}
-		//Create Mine region that allows the enchants to work only inside the mine
-		ProtectedRegion region = new ProtectedCuboidRegion(p.getUniqueId().toString(),
-				new BlockVector(point1.getX(), point1.getY(), point1.getZ()),
-				new BlockVector(point2.getX(), point2.getY(), point2.getZ()));
-		region.setFlag(DefaultFlag.LIGHTER, StateFlag.State.ALLOW);
-		region.setFlag(DefaultFlag.BLOCK_PLACE, StateFlag.State.DENY);
-		region.setFlag(DefaultFlag.BLOCK_BREAK, StateFlag.State.ALLOW);
-		region.setFlag(DefaultFlag.OTHER_EXPLOSION, StateFlag.State.ALLOW);
-		region.setFlag(DefaultFlag.USE, StateFlag.State.ALLOW);
-		region.setFlag(DefaultFlag.INTERACT, StateFlag.State.ALLOW);
-		DefaultDomain members = region.getMembers();
-		members.addPlayer(p.getUniqueId());
-		region.setPriority(2);
-		regions.addRegion(region);
-
-		Location g1 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 66, 181, -74);
-		Location g2 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), -14, 69, 74);
-
-		//Create region that allows building within limits.
-		ProtectedRegion outside = new ProtectedCuboidRegion("outside",
-				new BlockVector(g1.getX(), g1.getY(), g1.getZ()),
-				new BlockVector(g2.getX(), g2.getY(), g2.getZ()));
-		outside.setFlag(DefaultFlag.BLOCK_PLACE, StateFlag.State.DENY);
-		outside.setFlag(DefaultFlag.FALL_DAMAGE, StateFlag.State.DENY);
-		outside.setFlag(DefaultFlag.FEED_AMOUNT, 100);
-		outside.setFlag(DefaultFlag.BLOCK_BREAK, StateFlag.State.DENY);
-		outside.setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
-		outside.setFlag(DefaultFlag.LIGHTER, StateFlag.State.DENY);
-		outside.setFlag(DefaultFlag.USE, StateFlag.State.ALLOW);
-		outside.setFlag(DefaultFlag.INTERACT, StateFlag.State.ALLOW);
-		outside.setFlag(DefaultFlag.OTHER_EXPLOSION, StateFlag.State.DENY);
-		outside.setPriority(1);
-
-		regions.addRegion(outside);
 		settings.getPlayerData().set(p.getUniqueId().toString()+".HasMine", true);
-
-		p.sendMessage(c("&7&oMine Generation Complete."));
-
 	}
 
 

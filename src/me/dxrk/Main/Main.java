@@ -1,5 +1,6 @@
 package me.dxrk.Main;
 
+import com.onarandombox.MultiverseCore.MultiverseCore;
 import me.dxrk.Enchants.Enchants;
 import com.earth2me.essentials.Essentials;
 import me.dxrk.Commands.*;
@@ -108,7 +109,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
       getCommand("Tags").setExecutor(new CMDTags());
       getCommand("rewards").setExecutor(new CMDVote());
       getCommand("Say").setExecutor(new CMDSay());
-      getCommand("CoinFlip").setExecutor(new CMDCoinflip());
+      //getCommand("CoinFlip").setExecutor(new CMDCoinflip());
       getCommand("Tokens").setExecutor(new TokensCMD());
       getCommand("Token").setExecutor(new TokensCMD());
       getCommand("nick").setExecutor(new CMDNickname());
@@ -179,7 +180,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
       getCommand("updatemine").setExecutor(new MineHandler());
       getCommand("redeem").setExecutor(new BuycraftUtil());
       getCommand("stats").setExecutor(new CMDStats());
-      getCommand("ah").setExecutor(new AuctionHouseHandler());
+      //getCommand("ah").setExecutor(new AuctionHouseHandler());
       getCommand("auctionhouse").setExecutor(new AuctionHouseHandler());
       getCommand("gems").setExecutor(new MinePouchHandler());
       getCommand("gem").setExecutor(new MinePouchHandler());
@@ -190,7 +191,9 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
       getCommand("lbs").setExecutor(new Leaderboards());
       getCommand("trade").setExecutor(new CMDTrade());
       getCommand("gang").setExecutor(new CMDGang());
+      getCommand("g").setExecutor(new CMDGang());
       getCommand("genesis").setExecutor(new CMDOptions());
+      registerEvents(this, new Listener[] { new SkillsEventsListener() });
       registerEvents(this, new Listener[] { new ReminderHandler() });
       registerEvents(this, new Listener[] { new CMDGang() });
       registerEvents(this, new Listener[] { new CMDTrade() });
@@ -238,10 +241,56 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
       registerEvents(this, new Listener[] { this});
       // For when sale is active, use this || Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "motdchange sale 50");
       // For when maintenance active, use this ||
-      Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "workmode enable");
+      //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "workmode enable");
 
 
-
+    new BukkitRunnable() {
+        @Override
+        public void run(){
+            for(String s : settings.getPlayerData().getKeys(false)){
+                if(!(settings.getPlayerData().getInt(s+".KitDemiGodKeys") == 0)) {
+                    int countdown = settings.getPlayerData().getInt(s+".KitDemiGodKeys");
+                    int replace = countdown-1;
+                    settings.getPlayerData().set(s+".KitDemiGodKeys", replace);
+                }
+                if(!(settings.getPlayerData().getInt(s+".KitTitanKeys") == 0)) {
+                    int countdown = settings.getPlayerData().getInt(s+".KitTitanKeys");
+                    int replace = countdown-1;
+                    settings.getPlayerData().set(s+".KitTitanKeys", replace);
+                }
+                if(!(settings.getPlayerData().getInt(s+".KitGodKeys") == 0)) {
+                    int countdown = settings.getPlayerData().getInt(s+".KitGodKeys");
+                    int replace = countdown-1;
+                    settings.getPlayerData().set(s+".KitGodKeys", replace);
+                }
+                if(!(settings.getPlayerData().getInt(s+".KitOlympianKeys") == 0)) {
+                    int countdown = settings.getPlayerData().getInt(s+".KitOlympianKeys");
+                    int replace = countdown-1;
+                    settings.getPlayerData().set(s+".KitOlympianKeys", replace);
+                }
+                if(!(settings.getPlayerData().getInt(s+".KitGenesisKeys") == 0)) {
+                    int countdown = settings.getPlayerData().getInt(s+".KitGenesisKeys");
+                    int replace = countdown-1;
+                    settings.getPlayerData().set(s+".KitGenesisKeys", replace);
+                }
+                if(!(settings.getPlayerData().getInt(s+".KitGod") == 0)) {
+                    int countdown = settings.getPlayerData().getInt(s+".KitGod");
+                    int replace = countdown-1;
+                    settings.getPlayerData().set(s+".KitGod", replace);
+                }
+                if(!(settings.getPlayerData().getInt(s+".KitOlympian") == 0)) {
+                    int countdown = settings.getPlayerData().getInt(s+".KitOlympian");
+                    int replace = countdown-1;
+                    settings.getPlayerData().set(s+".KitOlympian", replace);
+                }
+                if(!(settings.getPlayerData().getInt(s+".KitGenesis") == 0)) {
+                    int countdown = settings.getPlayerData().getInt(s+".KitGenesis");
+                    int replace = countdown-1;
+                    settings.getPlayerData().set(s+".KitGenesis", replace);
+                }
+            }
+        }
+    }.runTaskTimer(this, 0, 20L);
 
       new BukkitRunnable() {
 
@@ -277,7 +326,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
                   }
               }
           }
-      }.runTaskTimer(this, 0L, 1L);
+      }.runTaskTimer(this, 0L, 20L);
  
 
 
@@ -443,6 +492,7 @@ new BukkitRunnable() {
               settings.getPlayerData().set(p.getUniqueId().toString()+".Pickaxe", pickaxe);
           }
       }
+      settings.savePlayerData();
   }
 
   @EventHandler
@@ -458,7 +508,7 @@ new BukkitRunnable() {
               savePickaxe(e.getPlayer());
               settings.savePlayerData();
           }
-      }.runTaskTimer(this, 0L, 20*300L);
+      }.runTaskTimer(this, 0L, 20*120L);
 
 
 
@@ -468,10 +518,10 @@ new BukkitRunnable() {
   public static String formatAmt(double amt) {
 	    if (amt <= 0.0D)
 	      return String.valueOf(0);
-      if (amt >= 1.0E24D)
-          return String.format("%.1fS", amt / 1.0E18D);
-      if (amt >= 1.0E21D)
-          return String.format("%.1fs", amt / 1.0E18D);
+        if (amt >= 1.0E24D)
+          return String.format("%.1fS", amt / 1.0E24D);
+        if (amt >= 1.0E21D)
+          return String.format("%.1fs", amt / 1.0E21D);
 	    if (amt >= 1.0E18D)
 	        return String.format("%.1fQ", amt / 1.0E18D);
 	    if(amt >= 1.0E15D)
@@ -512,6 +562,7 @@ new BukkitRunnable() {
 	  
 	  this.settings.getVote().set("VoteShopLog", CMDVoteShop.votelog);
 	  this.settings.saveVote();
+      this.settings.savePlayerData();
 	  
 	  
 	  

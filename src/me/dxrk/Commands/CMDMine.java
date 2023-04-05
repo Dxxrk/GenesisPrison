@@ -103,7 +103,7 @@ public class CMDMine implements CommandExecutor, Listener {
 
 	  		ItemStack teleport = new ItemStack(Material.GRASS);
 	  		ItemMeta tm = teleport.getItemMeta();
-	  		tm.setDisplayName(c("&cTeleport to your mine!"));
+	  		tm.setDisplayName(c("&cTeleport to your mine! (/mine home|tp)"));
 	  		teleport.setItemMeta(tm);
 	  		mineMenu.setItem(4, teleport);
 
@@ -125,7 +125,7 @@ public class CMDMine implements CommandExecutor, Listener {
     	}
 		if(args.length == 1) {
 			Player p = (Player)sender;
-			if(args[0].equalsIgnoreCase("teleport") || args[0].equalsIgnoreCase("tp")) {
+			if(args[0].equalsIgnoreCase("teleport") || args[0].equalsIgnoreCase("tp") || args[0].equalsIgnoreCase("home")) {
 				if(Bukkit.getWorlds().contains(Bukkit.getWorld(p.getName() + "sWorld"))) {
 					Location pworld = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 0.5, 113, 0.5, -90, 0);
 					p.teleport(pworld);

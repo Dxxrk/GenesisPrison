@@ -67,8 +67,8 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 					p.getInventory().addItem(CrateFunctions.ContrabandCrate());
 					p.updateInventory();
 				}
-				if(args[1].equalsIgnoreCase("march")){
-					p.getInventory().addItem(CrateFunctions.MarchCrate());
+				if(args[1].equalsIgnoreCase("april")){
+					p.getInventory().addItem(CrateFunctions.AprilCrate());
 					p.updateInventory();
 				}
 			}
@@ -165,7 +165,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 			p.updateInventory();
 			return;
 		}
-		if(p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&f&l&k[&7&l*&f&l&k]&r &a&lMarch Crate &f&l&k[&7&l*&f&l&k]&r")) && p.getItemInHand().getType().equals(Material.ENDER_CHEST)) {
+		if(p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&f&l&k[&7&l*&f&l&k]&r &b&lApril Crate &f&l&k[&7&l*&f&l&k]&r")) && p.getItemInHand().getType().equals(Material.ENDER_CHEST)) {
 			e.setCancelled(true);
 			if(placed.get(p) == null) {
 				List<Location> place = new ArrayList<>();
@@ -180,7 +180,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 					placed.get(p).add(loc);
 				}
 			}
-			displayRewards(Main.getInstance(), "march", "&f&l&k[&7&l*&f&l&k]&r &a&lMarch Crate &f&l&k[&7&l*&f&l&k]&r", loc, stands, p);
+			displayRewards(Main.getInstance(), "april", "&f&l&k[&7&l*&f&l&k]&r &b&lApril Crate &f&l&k[&7&l*&f&l&k]&r", loc, stands, p);
 			if(p.getItemInHand().getAmount() > 1){
 				int i = p.getItemInHand().getAmount();
 				p.getItemInHand().setAmount(i-1);

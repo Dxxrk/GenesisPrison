@@ -438,6 +438,15 @@ public ItemStack loadItem(String s, String slot) {
 	      return String.format("%.1f Mil", amt / 1000000.0D);
 	    return NumberFormat.getNumberInstance(Locale.US).format(amt);
 	  }
+
+      private int randomTokensClick(String crate) {
+        if(crate.equals("Alpha")) return randomTokens(25000, 100000);
+        if(crate.equals("Beta")) return randomTokens(30000, 125000);
+        if(crate.equals("Omega")) return randomTokens(45000, 150000);
+        if(crate.equals("Token")) return randomTokens(75000, 300000);
+        if(crate.equals("Vote")) return randomTokens(100000, 500000);
+        return 0;
+      }
   @EventHandler
   public void onInt(PlayerInteractEvent e) {
       Player p = e.getPlayer();
@@ -457,12 +466,17 @@ public ItemStack loadItem(String s, String slot) {
 
         if (p.isSneaking()) {
         	if (keys == 1) {
-                LocksmithHandler.getInstance().takeKey(p, getCrate(e.getClickedBlock()), 1);
+                takeKey(p, getCrate(e.getClickedBlock()), 1);
                 openSneakingCrate(getCrate(e.getClickedBlock()), p);
               } else {
-                LocksmithHandler.getInstance().takeKey(p, getCrate(e.getClickedBlock()), keys);
+                takeKey(p, getCrate(e.getClickedBlock()), keys);
           	  double multi = 0;
           	  int tokens = 0;
+              int token = 0;
+              int alpha = 0;
+              int beta = 0;
+              int omega = 0;
+
           	  ArrayList<String> rw = new ArrayList<>();
           	  ArrayList<String> rww = new ArrayList<>();
           	int i;
@@ -475,16 +489,32 @@ public ItemStack loadItem(String s, String slot) {
     	    this.settings.getPlayerData().set(p.getUniqueId().toString()+".CratesOpened", crates+1);
     	     
     	    if(name.contains("Tokens")) {
-    	    	tokens += getValueInt(name);
+                int tgive = randomTokensClick(getCrate(e.getClickedBlock()));
+                tokens += tgive;
+                continue;
     	    	
     	    } else if(name.contains("Multi")) {
     	    	
     	    	String[] nn = name.split(" ");
     	    	
-    	    	double mm = Double.parseDouble(nn[0]);
+    	    	double mm = Double.parseDouble(nn[1]);
     	    	
     	    	multi += mm;
-    	    }else {
+    	    } else if(name.contains("Key")) {
+                if(name.contains("Token Key")) {
+                    token++;
+                }
+                if(name.contains("Alpha Key")) {
+                    alpha++;
+                }
+                if(name.contains("Beta Key")) {
+                    beta++;
+                }
+                if(name.contains("Omega Key")) {
+                    omega++;
+                }
+
+            } else {
     	    	rww.add(c(won.getItemMeta().getDisplayName()));
     	    }
     	    
@@ -527,44 +557,82 @@ public ItemStack loadItem(String s, String slot) {
 	        }
 	        p.getScoreboard().getTeam("tokens").setSuffix(c("&e"+Main.formatAmt(Tokens.getInstance().getTokens(p))));
       	  }
-      	  this.settings.savePlayerData();
                 // String[] rewards = {c("&7&lMulti: "+multi+"x"), c("&7&lTokens: "+tokens), c("&7&lMoney: "+Main.formatAmt(money)), c("&7Other:")};
-
-
+                if(token > 0)
+                    rww.add(c("&e"+token+"x &e&lToken &7Key"));
+                if(alpha > 0)
+                    rww.add(c("&e"+alpha+"x &7&lAlpha &7Key"));
+                if(beta > 0)
+                    rww.add(c("&e"+beta+"x &c&lBeta &7Key"));
+                if(omega > 0)
+                    rww.add(c("&e"+omega+"x &4&lOmega &7Key"));
                 ArrayList<String> rw2 = new ArrayList<>(rww);
       	  
       	  FancyMessage reward = new FancyMessage("");
-      	  reward.then(c("&f&lOther &8| &b(Hover)")).tooltip(rw2);
+      	  reward.then(c("&f&lRewards &8| &b(Hover)")).tooltip(rw2);
       	  reward.send(p);
+            if(tokens >0) {
+                p.sendMessage(c("&e+⛀" + Main.formatAmt(tokens)));
+                Tokens.getInstance().addTokens(p, tokens);
+            }
+            if(multi > 0)
+                p.sendMessage(c("&a+"+multi+" Multi"));
             }
           
         } else {
         	if (keys == 1) {
-                LocksmithHandler.getInstance().takeKey(p, getCrate(e.getClickedBlock()), 1);
+                takeKey(p, getCrate(e.getClickedBlock()), 1);
               } else {
-                LocksmithHandler.getInstance().takeKey(p, getCrate(e.getClickedBlock()), 1);
+                takeKey(p, getCrate(e.getClickedBlock()), 1);
               }
           openSneakingCrate(getCrate(e.getClickedBlock()), p);
-        } 
+        }
+        settings.saveLocksmith();
       } else {
         e.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lCrates &8| &bYou do not have a &4" + getCrate(e.getClickedBlock()) + " &bKey."));
       }
     } 
   }
+
+  private int randomTokens(int min, int max) {
+      Random r = new Random();
+      int tokens = r.nextInt(max - min)+ min;
+
+      return tokens;
+  }
+
+    public void addKey(Player p, String key, int amt) {
+        int keysfound = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".KeysFound");
+        this.settings.getPlayerData().set(p.getUniqueId().toString()+".KeysFound", keysfound+amt);
+        int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + key.toLowerCase());
+        key = key.toLowerCase();
+        if (this.settings.getLocksmith().get(p.getUniqueId().toString() + "." + p.getName()) == null) {
+            this.settings.getLocksmith().set(p.getUniqueId().toString() + ".name", p.getName());
+            this.settings.saveLocksmith();
+        }
+        this.settings.getLocksmith().set(p.getUniqueId().toString() + "." + key, keys + amt);
+    }
+
+    public void takeKey(Player p, String key, int amt) {
+        int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + key.toLowerCase());
+        key = key.toLowerCase();
+        if (this.settings.getLocksmith().get(p.getUniqueId().toString() + "." + p.getName()) == null) {
+            this.settings.getLocksmith().set(p.getUniqueId().toString() + ".name", p.getName());
+        }
+        this.settings.getLocksmith().set(p.getUniqueId().toString() + "." + key, keys - amt);
+    }
   
-  
-  
-  public void openall(Player p, int alpha, int beta, int omega, int token, int seasonal, int rank, int community, int vote, List<String> rw) {
-      LocksmithHandler.getInstance().takeKey(p, "Alpha", alpha);
-      LocksmithHandler.getInstance().takeKey(p, "Beta", beta);
-      LocksmithHandler.getInstance().takeKey(p, "Omega", omega);
-      LocksmithHandler.getInstance().takeKey(p, "Token", token);
-      LocksmithHandler.getInstance().takeKey(p, "Seasonal", seasonal);
-      LocksmithHandler.getInstance().takeKey(p, "Rank", rank);
-      LocksmithHandler.getInstance().takeKey(p, "Vote", vote);
-      LocksmithHandler.getInstance().takeKey(p, "Community", community);
-	  double multi = 0;
-  	  int tokens = 0;
+  public void openall(Player p, int alpha, int beta, int omega, int token, int seasonal, int rank, int community, int vote, List<String> rw, int t, double m) {
+      takeKey(p, "Alpha", alpha);
+      takeKey(p, "Beta", beta);
+      takeKey(p, "Omega", omega);
+      takeKey(p, "Token", token);
+      takeKey(p, "Seasonal", seasonal);
+      takeKey(p, "Rank", rank);
+      takeKey(p, "Vote", vote);
+      takeKey(p, "Community", community);
+	  double multi = m;
+  	  int tokens = t;
   	  List<String> rww = rw;
   	int i;
 	  for (i = 0; i < alpha; i++) {
@@ -576,13 +644,16 @@ public ItemStack loadItem(String s, String slot) {
     this.settings.getPlayerData().set(p.getUniqueId().toString()+".CratesOpened", crates+1);
      
     if(name.contains("Tokens")) {
-    	tokens += getValueInt(name);
+        int tgive = randomTokens(25000, 100000);
+    	tokens += tgive;
+        
+        continue;
     	
     } else if(name.contains("Multi")) {
     	
     	String[] nn = name.split(" ");
     	
-    	double mm = Double.parseDouble(nn[0]);
+    	double mm = Double.parseDouble(nn[1]);
     	
     	multi += mm;
     } else if(!name.contains("Key")){
@@ -620,13 +691,16 @@ public ItemStack loadItem(String s, String slot) {
 	    this.settings.getPlayerData().set(p.getUniqueId().toString()+".CratesOpened", crates+1);
 	     
 	    if(name.contains("Tokens")) {
-	    	tokens += getValueInt(name);
+            int tgive = randomTokens(30000, 125000);
+            tokens += tgive;
+            
+            continue;
 	    	
 	    } else if(name.contains("Multi")) {
 	    	
 	    	String[] nn = name.split(" ");
 	    	
-	    	double mm = Double.parseDouble(nn[0]);
+	    	double mm = Double.parseDouble(nn[1]);
 	    	
 	    	multi += mm;
 	    } else if(!name.contains("Key")){
@@ -652,13 +726,16 @@ public ItemStack loadItem(String s, String slot) {
 	    this.settings.getPlayerData().set(p.getUniqueId().toString()+".CratesOpened", crates+1);
 	     
 	    if(name.contains("Tokens")) {
-	    	tokens += getValueInt(name);
+            int tgive = randomTokens(45000, 150000);
+            tokens += tgive;
+            
+            continue;
 	    	
 	    } else if(name.contains("Multi")) {
 	    	
 	    	String[] nn = name.split(" ");
 	    	
-	    	double mm = Double.parseDouble(nn[0]);
+	    	double mm = Double.parseDouble(nn[1]);
 	    	
 	    	multi += mm;
 	    } else if(!name.contains("Key")){
@@ -684,13 +761,16 @@ public ItemStack loadItem(String s, String slot) {
 	    this.settings.getPlayerData().set(p.getUniqueId().toString()+".CratesOpened", crates+1);
 	     
 	    if(name.contains("Tokens")) {
-	    	tokens += getValueInt(name);
+            int tgive = randomTokens(75000, 300000);
+            tokens += tgive;
+            
+            continue;
 	    	
 	    } else if(name.contains("Multi")) {
 	    	
 	    	String[] nn = name.split(" ");
 	    	
-	    	double mm = Double.parseDouble(nn[0]);
+	    	double mm = Double.parseDouble(nn[1]);
 	    	
 	    	multi += mm;
 	    } else if(!name.contains("Key")){
@@ -722,7 +802,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	
 	    	String[] nn = name.split(" ");
 	    	
-	    	double mm = Double.parseDouble(nn[0]);
+	    	double mm = Double.parseDouble(nn[1]);
 	    	
 	    	multi += mm;
 	    } else if(!name.contains("Key")){
@@ -754,7 +834,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	
 	    	String[] nn = name.split(" ");
 	    	
-	    	double mm = Double.parseDouble(nn[0]);
+	    	double mm = Double.parseDouble(nn[1]);
 	    	
 	    	multi += mm;
 	    } else if(!name.contains("Key")){
@@ -786,7 +866,7 @@ public ItemStack loadItem(String s, String slot) {
 	    	
 	    	String[] nn = name.split(" ");
 	    	
-	    	double mm = Double.parseDouble(nn[0]);
+	    	double mm = Double.parseDouble(nn[1]);
 	    	
 	    	multi += mm;
 	    } else if(!name.contains("Key")){
@@ -812,13 +892,16 @@ public ItemStack loadItem(String s, String slot) {
 	    this.settings.getPlayerData().set(p.getUniqueId().toString()+".CratesOpened", crates+1);
 	     
 	    if(name.contains("Tokens")) {
-	    	tokens += getValueInt(name);
+            int tgive = randomTokens(100000, 500000);
+            tokens += tgive;
+            
+            continue;
 	    	
 	    } else if(name.contains("Multi")) {
 	    	
 	    	String[] nn = name.split(" ");
 	    	
-	    	double mm = Double.parseDouble(nn[0]);
+	    	double mm = Double.parseDouble(nn[1]);
 	    	
 	    	multi += mm;
 	    } else if(!name.contains("Key")){
@@ -836,18 +919,17 @@ public ItemStack loadItem(String s, String slot) {
 	   
 		  }
 
-	  this.settings.savePlayerData();
       if(LocksmithHandler.getInstance().hasKeys(p)) {
           String uuid = p.getUniqueId().toString();
           int a = this.settings.getLocksmith().getInt(uuid + ".alpha");
           int b = this.settings.getLocksmith().getInt(uuid + ".beta");
           int o = this.settings.getLocksmith().getInt(uuid + ".omega");
-          int t = this.settings.getLocksmith().getInt(uuid + ".token");
+          int to = this.settings.getLocksmith().getInt(uuid + ".token");
           int v = this.settings.getLocksmith().getInt(uuid + ".vote");
           int s = this.settings.getLocksmith().getInt(uuid + ".seasonal");
           int c = this.settings.getLocksmith().getInt(uuid + ".community");
           int r = this.settings.getLocksmith().getInt(uuid + ".rank");
-          openall(p, a, b, o, t, s, r, c, v, rww);
+          openall(p, a, b, o, to, s, r, c, v, rww, tokens, multi);
           return;
       }
 
@@ -859,6 +941,11 @@ public ItemStack loadItem(String s, String slot) {
 	  if(rww.size() >0) {
 	  reward.send(p);
 	  }
+      p.sendMessage(c("&e+⛀"+Main.formatAmt(tokens)));
+      Tokens.getInstance().addTokens(p, tokens);
+      p.sendMessage(c("&a+"+multi+" Multi"));
+
+
   }
   
   @EventHandler
@@ -908,7 +995,7 @@ public ItemStack loadItem(String s, String slot) {
 		    int community = this.settings.getLocksmith().getInt(uuid + ".community");
 		    int rank = this.settings.getLocksmith().getInt(uuid + ".rank");
             List<String> rw = new ArrayList<>();
-		    openall(p, alpha, beta, omega, token, seasonal, rank, community, vote, rw);
+		    openall(p, alpha, beta, omega, token, seasonal, rank, community, vote, rw, 0, 0);
 		  } else {
 			  p.sendMessage(c("&f&lCrates &8| &bYou must be rank Hero+ to use /openall"));
 		  }
@@ -930,6 +1017,8 @@ public ItemStack loadItem(String s, String slot) {
 		    }
 		    }
 		    p.getScoreboard().getTeam("tokens").setSuffix(c("&e"+Main.formatAmt(Tokens.getInstance().getTokens(p))));
+          settings.savePlayerData();
+          settings.saveLocksmith();
 	  }
 	  
 	  
@@ -957,7 +1046,7 @@ public ItemStack loadItem(String s, String slot) {
               p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cThat key does not exist."));
               return false;
             }
-              LocksmithHandler.getInstance().addKey(p, formatKey(args[0]), 1);
+              addKey(p, formatKey(args[0]), 1);
             //p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lCrates &8| &b+1 " + formatKey(args[0]) + " &bKey!"));
             return true;
           } 
@@ -975,7 +1064,7 @@ public ItemStack loadItem(String s, String slot) {
           } 
           Player p = Bukkit.getPlayer(args[0]);
           //p.getInventory().addItem(new ItemStack[] { getKey(formatKey(args[0]), 1) });
-          LocksmithHandler.getInstance().addKey(p, formatKey(args[1]), 1);
+          addKey(p, formatKey(args[1]), 1);
             //p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lCrates &8| &b+1 " + formatKey(args[1]) + " &bKey!"));
           return false;
          
@@ -991,7 +1080,7 @@ public ItemStack loadItem(String s, String slot) {
                 return false;
             }
             Player p = Bukkit.getPlayer(args[0]);
-            LocksmithHandler.getInstance().addKey(p, formatKey(args[1]), i);
+            addKey(p, formatKey(args[1]), i);
             //p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&lCrates &8| &b+"+i +" "+ formatKey(args[1]) + " &bKey!"));
             return false;
         }

@@ -136,17 +136,14 @@ public class Enchants implements Listener{
 		    	EnchantMethods.getInstance().KeyPartyBreak(p);
 				EnchantMethods.getInstance().prestigeBreak(p);
 
-		    	Mine m = null;
-		    	for(Mine mine: ResetHandler.api.getMinesByBlock(b)) {
-		    		m = mine;
-		    	}
+		    	Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
 		    	if(m != null)
 		    		m.removeBlockFromRegion(b);
 
 				assert m != null;
 				if(m.getMineRegion().getBlocksLeftPercentage() < 50F) {
 					int rank = RankupHandler.instance.getRank(p);
-					ResetHandler.resetMine(m, ResetReason.PERCENTAGE, MineHandler.Blocks(rank/16));
+					ResetHandler.resetMine(p, m, ResetReason.PERCENTAGE, MineHandler.Blocks(rank/16));
 				}
 		    	
 		    		

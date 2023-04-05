@@ -70,6 +70,20 @@ public class CMDRanks implements Listener, CommandExecutor {
         return false;
     }
 
+    private List<String> ranks() {
+        List<String> ranks = new ArrayList<>();
+        ranks.add("Sponsor");
+        ranks.add("VIP");
+        ranks.add("MVP");
+        ranks.add("Hero");
+        ranks.add("Demi-God");
+        ranks.add("Titan");
+        ranks.add("God");
+        ranks.add("Olympian");
+        ranks.add("Genesis");
+        return ranks;
+    }
+
 
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
@@ -78,7 +92,7 @@ public class CMDRanks implements Listener, CommandExecutor {
 
         if(p.getItemInHand().getType().equals(Material.NETHER_STAR)) {
             if(p.getItemInHand().hasItemMeta()) {
-                if(e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) {
+                if((e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) && ranks().contains(ChatColor.stripColor(p.getItemInHand().getItemMeta().getDisplayName().split(" ")[0]))) {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "manuaddsub "+p.getName()+" "+ ChatColor.stripColor(p.getItemInHand().getItemMeta().getDisplayName().split(" ")[0]));
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l"+p.getName()+ " &f&lHas redeemed "+p.getItemInHand().getItemMeta().getDisplayName());
                     if(p.getItemInHand().getAmount() == 1){

@@ -290,10 +290,10 @@ public class ScoreboardHandler implements Listener{
 
 									 if(isAFK(pp)) {
 										 team.setPrefix(prefix(pp)+c("&f&lGenesis &8"));
-										 pp.setPlayerListName(c(prefix+CMDOptions.TagColor(settings.getOptions().getString(p.getUniqueId().toString()+".GenesisColor"))+" &8"+pp.getName()));
+										 pp.setPlayerListName(c(prefix+CMDOptions.TagColor(settings.getOptions().getString(pp.getUniqueId().toString()+".GenesisColor"))+" &8"+pp.getName()));
 									 }else {
 										 team.setPrefix(prefix(pp)+c("&f&lGenesis &7"));
-										 pp.setPlayerListName(c(prefix+CMDOptions.TagColor(settings.getOptions().getString(p.getUniqueId().toString()+".GenesisColor"))+" &7"+pp.getName()));
+										 pp.setPlayerListName(c(prefix+CMDOptions.TagColor(settings.getOptions().getString(pp.getUniqueId().toString()+".GenesisColor"))+" &7"+pp.getName()));
 									 }
 									 team.addPlayer(pp);
 
@@ -372,10 +372,10 @@ public class ScoreboardHandler implements Listener{
 
 									 if(isAFK(pp)) {
 										 team.setPrefix(prefix(pp)+c("&f&lGenesis &8"));
-										 pp.setPlayerListName(c(prefix+CMDOptions.TagColor(settings.getOptions().getString(p.getUniqueId().toString()+".GenesisColor"))+" &8"+pp.getName()));
+										 pp.setPlayerListName(c(prefix+CMDOptions.TagColor(settings.getOptions().getString(pp.getUniqueId().toString()+".GenesisColor"))+" &8"+pp.getName()));
 									 }else {
 										 team.setPrefix(prefix(pp)+c("&f&lGenesis &7"));
-										 pp.setPlayerListName(c(prefix+CMDOptions.TagColor(settings.getOptions().getString(p.getUniqueId().toString()+".GenesisColor"))+" &7"+pp.getName()));
+										 pp.setPlayerListName(c(prefix+CMDOptions.TagColor(settings.getOptions().getString(pp.getUniqueId().toString()+".GenesisColor"))+" &7"+pp.getName()));
 									 }
 		        		            	team.addPlayer(pp);
 

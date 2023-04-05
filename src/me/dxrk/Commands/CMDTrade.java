@@ -352,7 +352,34 @@ public class CMDTrade implements Listener, CommandExecutor {
         cancelTrade(p);
     }
     
-
+    private List<Integer> slots() {
+        List<Integer> slots = new ArrayList<>();
+        slots.add(0);
+        slots.add(1);
+        slots.add(2);
+        slots.add(3);
+        slots.add(4);
+        slots.add(5);
+        slots.add(6);
+        slots.add(7);
+        slots.add(8);
+        slots.add(9);
+        slots.add(13);
+        slots.add(17);
+        slots.add(18);
+        slots.add(22);
+        slots.add(26);
+        slots.add(27);
+        slots.add(31);
+        slots.add(35);
+        slots.add(36);
+        slots.add(40);
+        slots.add(44);
+        slots.add(45);
+        slots.add(52);
+        slots.add(53);
+        return slots;
+    }
 
     @EventHandler
     public void onInv(InventoryClickEvent e) {
@@ -369,6 +396,9 @@ public class CMDTrade implements Listener, CommandExecutor {
             else if(e.getSlot() == 49) {
                 e.setCancelled(true);
                 clickCancel(p);
+            }
+            else if(slots().contains(e.getSlot())) {
+                e.setCancelled(true);
             }
             else if(e.getClickedInventory().equals(p.getInventory()) && trading.containsKey(p)) {
                 if(e.getClick().equals(ClickType.RIGHT) || e.getClick().equals(ClickType.SHIFT_RIGHT)) return;

@@ -68,9 +68,8 @@ public class CMDOptions implements Listener, CommandExecutor{
 		ops.setItem(11, option(p, "Booster-Messages"));
 		ops.setItem(12, option(p, "Junkpile-Messages"));
 		ops.setItem(13, option(p, "Laser-Messages"));
-		ops.setItem(14, option(p, "Prestige-Finder-Messages"));
-		ops.setItem(15, option(p, "Vote-Reminder"));
-		ops.setItem(16, option(p, "Daily-Reminder"));
+		ops.setItem(14, option(p, "Vote-Reminder"));
+		ops.setItem(15, option(p, "Daily-Reminder"));
 		p.openInventory(ops);
 	}
 
@@ -163,7 +162,6 @@ public class CMDOptions implements Listener, CommandExecutor{
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Booster-Messages", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Junkpile-Messages", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Laser-Messages", true);
-			this.settings.getOptions().set(p.getUniqueId().toString()+".Prestige-Finder-Messages", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Daily-Reminder", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Vote-Reminder", true);
 			this.settings.saveOptions();

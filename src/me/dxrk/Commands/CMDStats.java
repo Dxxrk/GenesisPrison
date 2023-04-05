@@ -129,9 +129,7 @@ public class CMDStats implements Listener, CommandExecutor {
 
         ItemStack blocks = new ItemStack(Material.DIAMOND_ORE);
         ItemMeta bm = blocks.getItemMeta();
-        if(p.isOnline())
-            bm.setDisplayName(m.c("&7Blocks Broken: &b"+ BlocksHandler.blocks.get(p)));
-        else bm.setDisplayName(m.c("&7Blocks Broken: &b"+settings.getPlayerData().get(uuid+".BlocksBroken")));
+        bm.setDisplayName(m.c("&7Blocks Broken: &b"+settings.getPlayerData().get(uuid+".BlocksBroken")));
         blocks.setItemMeta(bm);
         stats.setItem(39, blocks);
 

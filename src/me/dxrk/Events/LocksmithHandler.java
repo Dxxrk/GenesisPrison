@@ -62,7 +62,6 @@ public class LocksmithHandler implements Listener, CommandExecutor {
     } 
     this.settings.getLocksmith().set(p.getUniqueId().toString() + "." + key, keys + amt);
     this.settings.saveLocksmith();
-    this.settings.savePlayerData();
   }
   
   public void takeKey(Player p, String key, int amt) {

@@ -50,11 +50,11 @@ public class CMDVoteShop implements Listener, CommandExecutor{
 	
 	
 	public void openVS(Player p) {
-		double amount = getCoupons(p)*0.05;
-		Inventory voteshop = Bukkit.createInventory(null, InventoryType.HOPPER, m.c("&d&lCoupons: &a$" + amount));
-
-
+		double amount = getCoupons(p);
 		NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
+		Inventory voteshop = Bukkit.createInventory(null, InventoryType.HOPPER, m.c("&d&lCoupons: &a" + formatter.format(amount)));
+
+
 		String coupon = formatter.format(amount);
 		ItemStack item = new ItemStack(Material.PAPER);
 		ItemMeta im = item.getItemMeta();
@@ -76,7 +76,7 @@ public class CMDVoteShop implements Listener, CommandExecutor{
 			openVS((Player)sender);
 			
 		}
-		if(cmd.getName().equalsIgnoreCase("addvotepoint")){
+		if(cmd.getName().equalsIgnoreCase("addvotepoint") || sender.hasPermission("rank.admin")){
 			if(args.length == 2) {
 				Player p = Bukkit.getPlayer(args[0]);
 				int points = Integer.parseInt(args[1]);
@@ -134,8 +134,9 @@ public class CMDVoteShop implements Listener, CommandExecutor{
 		      return; 
 		    if (e.getClickedInventory().getName() == null)
 		      return;
-		  double amount = getCoupons(p)*0.05;
-		    if(e.getClickedInventory().getName().equals(m.c("&d&lCoupons: &a$" + amount))) {
+		  double amount = getCoupons(p);
+		  NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
+		    if(e.getClickedInventory().getName().equals(m.c("&d&lCoupons: &a" + formatter.format(amount)))) {
 		    	e.setCancelled(true);
 				if(e.getSlot() == 2){
 					if(getCoupons(p) <=0) return;
@@ -150,7 +151,7 @@ public class CMDVoteShop implements Listener, CommandExecutor{
 	  @EventHandler
 	  public void signUpdate(SignGUIUpdateEvent e) throws IOException, ApiException {
 		  Player p = e.getPlayer();
-		  if(e.getSignText()[0].equals(m.c("&lEnter"))){
+		  if(e.getSignText()[1].equals(m.c("Enter the Amount"))){
 			  String l = e.getSignText()[0];
 			  l = l.replaceAll("\"", "");
 			  if(l.equals("") || l.equals(" ")) return;
@@ -179,13 +180,10 @@ public class CMDVoteShop implements Listener, CommandExecutor{
 		  if(!settings.getVote().contains(p.getUniqueId().toString())) 
 			  return 0;
 		  double coupons = settings.getVote().getDouble(p.getUniqueId().toString() + ".Coupons");
-		  double dround = coupons*10.0;
-		  double drounded = Math.round(dround) /10.0;
-		  
 		  return coupons;
 	  }
 	  public void removeCoupons(Player p, double i) {
-		  double vps = settings.getVote().getInt(p.getUniqueId().toString() + ".Coupons");
+		  double vps = settings.getVote().getDouble(p.getUniqueId().toString() + ".Coupons");
 		  double newvps = vps - i;
 		  
 		  settings.getVote().set(p.getUniqueId().toString() + ".Coupons", newvps);

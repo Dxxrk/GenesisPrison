@@ -74,7 +74,7 @@ public class KeysHandler implements Listener {
     	}
       addKey(p, key, amt);
     int keysfound = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".KeysFound");
-	  this.settings.getPlayerData().set(p.getUniqueId().toString()+".KeysFound", (keysfound+1));
+	  this.settings.getPlayerData().set(p.getUniqueId().toString()+".KeysFound", (keysfound+amt));
   }
   
   public void DustFinderMSG(Player p, String dust) {
@@ -121,7 +121,7 @@ public class KeysHandler implements Listener {
   public void dustFinder(Player p, String s) {
 	  int level = m.getBlocks(s);
 	  int chance;
-      double lucky = Functions.Lucky(p);
+      double lucky = Functions.Karma(p);
       double luck = Functions.luckBoost(p);
       double skill = SkillsEventsListener.getSkillsBoostLuck(p);
 	  if(level == 0) return;
@@ -173,7 +173,8 @@ public class KeysHandler implements Listener {
       double event = SkillsEventsListener.getEventKeyFortune();
       chance += event;
     int kf = this.r.nextInt(100);
-    if(chance > 0 && kf <= chance) {
+    int d = this.r.nextInt(100);
+    if(chance > 0 && d <= chance) {
         if(kf <=20){
             KeyFinderMSG(p, "Alpha", "&7&l", "", 2);
         }
@@ -186,10 +187,10 @@ public class KeysHandler implements Listener {
         if(kf >60 && kf <=80) {
             KeyFinderMSG(p, "Token", "&e&l", "", 2);
         }
-        if(kf >80 && kf <=85) {
+        if(kf >80 && kf <=83) {
             KeyFinderMSG(p, "Seasonal", "&4&l&ki&f&l", "&4&l&ki&r", 2);
         }
-        if(kf >85) {
+        if(kf >83) {
             KeyFinderMSG(p, "Community", "&5&l", "", 2);
         }
 	}
@@ -206,10 +207,10 @@ public class KeysHandler implements Listener {
         if(kf >60 && kf <=80) {
             KeyFinderMSG(p, "Token", "&e&l", "", 1);
         }
-        if(kf >80 && kf <=85) {
+        if(kf >80 && kf <=83) {
             KeyFinderMSG(p, "Seasonal", "&4&l&ki&f&l", "&4&l&ki&r", 1);
         }
-        if(kf >85) {
+        if(kf >83) {
             KeyFinderMSG(p, "Community", "&5&l", "", 1);
         }
     }
@@ -219,14 +220,14 @@ public class KeysHandler implements Listener {
 
 	  int level = m.getBlocks(s);
 	  int chance;
-      double lucky = Functions.Lucky(p);
+      double lucky = Functions.Karma(p);
       double luck = Functions.luckBoost(p);
       double skill = SkillsEventsListener.getSkillsBoostLuck(p);
 	  if(level == 0) return;
 	  if(level == 1) {
-		  chance = (int) (850*lucky*luck*skill);
+		  chance = (int) (1000*lucky*luck*skill);
 	  } else {
-          chance = (int) ((850 - (0.07*level))*lucky*luck*skill);
+          chance = (int) ((1000 - (0.07*level))*lucky*luck*skill);
           if(chance < 200){
               chance = 200;
           }
@@ -266,7 +267,7 @@ public class KeysHandler implements Listener {
 
         if(Functions.multiply.contains(p)) multiply = 2;
 
-        int tokens = 20;
+        int tokens = 14;
 
         int tgive = (int) ((tokens*tf)*multiply*skill*event*tboost*unity*miningboost);
         return tgive;

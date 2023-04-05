@@ -110,13 +110,14 @@ public class Functions implements Listener{
 	
 	public static double greed(Player p) {
 		double level = 0;
+		if(!p.getItemInHand().hasItemMeta()) return 1;
 		for (String s : p.getItemInHand().getItemMeta().getLore()) {
 			
 		      if (ChatColor.stripColor(s).contains("Greed")) {
 		    	  level = m.getBlocks(s);
 		      }
 		}
-		double greed = level / 5;
+		double greed = level*2;
 		if(greed == 0){
 			greed = 1;
 		}
@@ -128,7 +129,7 @@ public class Functions implements Listener{
 	public static double Foruity(Player p) {
 
 		int level;
-
+		if(!p.getItemInHand().hasItemMeta()) return 1;
 		for (String s : p.getItemInHand().getItemMeta().getLore()) {
 
 			if (ChatColor.stripColor(s).contains("Fortuity")) {
@@ -140,13 +141,13 @@ public class Functions implements Listener{
 	}
 	
 	
-	public static double Lucky(Player p) {
+	public static double Karma(Player p) {
 		int level;
-
+		if(!p.getItemInHand().hasItemMeta()) return 1;
 		for (String s : p.getItemInHand().getItemMeta().getLore()) {
 			if (ChatColor.stripColor(s).contains("Karma")) {
 				level = m.getBlocks(s);
-				return 1+(level*0.0001);
+				return 1+(level*0.00007);
 			}
 		}
 		return 1;
@@ -157,11 +158,12 @@ public class Functions implements Listener{
 	public static void Multiply(Player p) {
 
 
-		double lucky = Functions.Lucky(p);
+		double lucky = Functions.Karma(p);
 		double luck = Functions.luckBoost(p);
 
 		int level = 0;
 		int chance;
+		if(!p.getItemInHand().hasItemMeta()) return;
 		for (String s : p.getItemInHand().getItemMeta().getLore()) {
 
 			if (ChatColor.stripColor(s).contains("Multiply")) {

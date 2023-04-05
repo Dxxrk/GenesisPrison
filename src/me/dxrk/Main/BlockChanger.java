@@ -1,6 +1,5 @@
 package me.dxrk.Main;
 
-
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -672,10 +671,10 @@ public class BlockChanger {
      * @param itemStack ItemStack to apply on the created block
      * @param physics   whether physics such as gravity should be applied or not
      */
-    public static CompletableFuture<Void> setBlockAsynchronously(Location location, ItemStack itemStack,
+    public static CompletableFuture<Void> setBlockAsynchronously(Player p, Location location, ItemStack itemStack,
                                                                  boolean physics) {
-        Object nmsWorld = getWorld(location.getWorld());
-        Object blockPosition = newMutableBlockPosition(location.getWorld(), location.getBlockX(), location.getBlockY(),
+        Object nmsWorld = getWorld(Bukkit.getWorld(p.getName()+"sWorld"));
+        Object blockPosition = newMutableBlockPosition(Bukkit.getWorld(p.getName()+"sWorld"), location.getBlockX(), location.getBlockY(),
                 location.getBlockZ());
         Object blockData = getBlockData(itemStack);
         CompletableFuture<Void> workloadFinishFuture = new CompletableFuture<>();
@@ -789,7 +788,7 @@ public class BlockChanger {
         return workloadFinishFuture;
     }
 
-    /*
+    /**
      * Asynchronously fills a cuboid from a corner to another with blocks retrieved
      * from the given ItemStack
      * using native NMS world block type and data setter
@@ -1244,7 +1243,7 @@ public class BlockChanger {
         return workloadFinishFuture;
     }
 
-    /*
+    /**
      * Has the same behavior as {@link #setSectionBlocks(World, Location, Material)}
      * but creates a cuboid from a location
      * to another as if using the vanilla command <b>/fill</b>
@@ -1257,8 +1256,8 @@ public class BlockChanger {
         setSectionCuboid(loc1, loc2, material, false);
     }
 
-    /*
-      *Has the same behavior as {@link #setSectionBlocks(World, Location, Material)}
+    /**
+     * Has the same behavior as {@link #setSectionBlocks(World, Location, Material)}
      * but creates a cuboid from a location
      * to another as if using the vanilla command <b>/fill</b>
      *
@@ -1317,7 +1316,7 @@ public class BlockChanger {
         }
     }
 
-    /*
+    /**
      * Has the same behavior as {@link #setSectionBlocks(World, Location, Material)}
      * but creates a cuboid from a location
      * to another as if using the vanilla command <b>/fill</b>
@@ -1330,7 +1329,7 @@ public class BlockChanger {
         setSectionCuboid(loc1, loc2, itemStack, false);
     }
 
-    /*
+    /**
      * Has the same behavior as {@link #setSectionBlocks(World, Location, Material)}
      * but creates a cuboid from a location
      * to another as if using the vanilla command <b>/fill</b>
@@ -1386,7 +1385,7 @@ public class BlockChanger {
         }
     }
 
-    /*
+    /**
      * Has the same behavior as {@link #setSectionBlocks(World, Location, Material)}
      * but creates a cuboid from a location
      * to another as if using the vanilla command <b>/fill</b> asynchronously
@@ -1400,7 +1399,7 @@ public class BlockChanger {
         return setSectionCuboidAsynchronously(loc1, loc2, itemStack, false);
     }
 
-    /*
+    /**
      * Has the same behavior as {@link #setSectionBlocks(World, Location, Material)}
      * but creates a cuboid from a location
      * to another as if using the vanilla command <b>/fill</b> asynchronously

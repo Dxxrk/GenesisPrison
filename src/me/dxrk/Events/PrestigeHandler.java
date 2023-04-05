@@ -2,8 +2,10 @@ package me.dxrk.Events;
 
 import com.connorlinfoot.titleapi.TitleAPI;
 import me.dxrk.Enchants.PickaxeLevel;
+import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Vote.CMDVoteShop;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -66,7 +68,17 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         lore.add(m.c(" "));
         lore.add(m.c("&7Prestiging gives a 50% increase to sell prices."));
         lore.add(m.c("&7Will also make levelling up considerably harder."));
-
+        lore.add(m.c("&a+$0.25 Coupon"));
+        lore.add(m.c("&b+1 &4&l&ki&f&lSeasonal&4&l&ki&r &7Key"));
+        String uuid = p.getUniqueId().toString();
+        int prestiges = pl.getInt(uuid+".Prestiges");
+        if(prestiges >=100) {
+            lore.clear();
+            lore.add(m.c("&c&lMAX LEVEL"));
+            prestige.setItem(2, prestigeItem(lore, m.c("&6&lYou did it!")));
+            p.openInventory(prestige);
+            return;
+        }
         prestige.setItem(2, prestigeItem(lore, m.c("&6&lCLICK TO PRESTIGE!")));
         prestige.setItem(0, PickaxeLevel.getInstance().Spacer());
         prestige.setItem(1, PickaxeLevel.getInstance().Spacer());
@@ -91,6 +103,11 @@ public class PrestigeHandler implements Listener, CommandExecutor {
             e.setCancelled(true);
 
             if(e.getSlot() == 2){
+                String uuid = p.getUniqueId().toString();
+                int prestiges = pl.getInt(uuid+".Prestiges");
+                if(prestiges >=100) {
+                    return;
+                }
                 Inventory sure = Bukkit.createInventory(null, InventoryType.HOPPER, m.c("&c&lARE YOU SURE?"));
 
                 ItemStack yes = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)5);
@@ -140,9 +157,12 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         int prestiges = pl.getInt(uuid+".Prestiges");
         pl.set(uuid+".Prestiges", (prestiges+1));
         RankupHandler.getInstance().setRank(p, 1);
+        Main.econ.withdrawPlayer(p, Main.econ.getBalance(p));
         settings.savePlayerData();
         TitleAPI.sendTitle(p, 2, 40, 2, m.c("&c&lPrestiged!"), m.c("&b&lPrestige +1"));
         MineHandler.getInstance().updateMine(p, 1);
+        CMDVoteShop.addCoupon(p, 0.25);
+        LocksmithHandler.getInstance().addKey(p, "Seasonal", 1);
     }
 
     public static void addPrestiges(Player p, int amt) {

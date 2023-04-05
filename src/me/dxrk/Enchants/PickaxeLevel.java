@@ -645,18 +645,18 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 
 
 			if (hasEnchant == false) {
-					int level = 0;
-					int plus = level + 1;
-					int price = (int) enchantPrice(Enchant, level);
-					if (Tokens.getInstance().getTokens(p) >= price) {
-						if(plus > maxLevel(Enchant)) return;
-						lore.add(c("&c" + Enchant + " &e" + plus));
-						this.tokens.takeTokens(p, price);
+				int level = 0;
+				int plus = level + 1;
+				int price = (int) enchantPrice(Enchant, level);
+				if (Tokens.getInstance().getTokens(p) >= price) {
+					if(plus > maxLevel(Enchant)) return;
+					lore.add(c("&c" + Enchant + " &e" + plus));
+					this.tokens.takeTokens(p, price);
 
-					} else {
-						p.sendMessage(c("&f&lTokens &8| &7Not enough Tokens."));
-						return;
-					}
+				} else {
+					p.sendMessage(c("&f&lTokens &8| &7Not enough Tokens."));
+					return;
+				}
 
 
 
@@ -692,17 +692,17 @@ public class PickaxeLevel implements Listener, CommandExecutor{
 			}
 
 			if (hasEnchant == false) {
-					int level = 0;
-					int plus = level + 1;
-					int price = (int) enchantPrice(Enchant, level);
-					if (Tokens.getInstance().getTokens(p) >= price) {
-						if(plus > maxLevel(Enchant)) return;
-						lore.add(c("&c" + Enchant + " &e" + plus));
-						this.tokens.takeTokens(p, price);
-					} else {
-						p.sendMessage(c("&f&lTokens &8| &7Not enough Tokens."));
-						return;
-					}
+				int level = 0;
+				int plus = level + 1;
+				int price = (int) enchantPrice(Enchant, level);
+				if (Tokens.getInstance().getTokens(p) >= price) {
+					if(plus > maxLevel(Enchant)) return;
+					lore.add(c("&c" + Enchant + " &e" + plus));
+					this.tokens.takeTokens(p, price);
+				} else {
+					p.sendMessage(c("&f&lTokens &8| &7Not enough Tokens."));
+					return;
+				}
 
 
 
