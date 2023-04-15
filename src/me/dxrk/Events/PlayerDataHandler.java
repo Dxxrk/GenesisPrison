@@ -142,7 +142,9 @@ public class PlayerDataHandler implements Listener {
     }
     if (this.pl.get(uuid + ".KitGenesis") == null) {
       this.pl.set(uuid + ".KitGenesis", 0);
-      
+    }
+    if (this.pl.get(uuid + ".Ethereal") == null) {
+      this.pl.set(uuid + ".Ethereal", false);
     }
     this.settings.savePlayerData();
   }

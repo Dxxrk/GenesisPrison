@@ -1,6 +1,6 @@
-package me.dxrk.Commands;
+package me.dxrk.Mines;
 
-import me.dxrk.Events.MineHandler;
+import me.dxrk.Mines.MineHandler;
 import me.dxrk.Main.SettingsManager;
 import org.bukkit.*;
 import org.bukkit.command.Command;

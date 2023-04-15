@@ -1,15 +1,20 @@
 package me.dxrk.Main;
 
-import com.onarandombox.MultiverseCore.MultiverseCore;
-import me.dxrk.Enchants.Enchants;
 import com.earth2me.essentials.Essentials;
 import me.dxrk.Commands.*;
 import me.dxrk.Discord.JDAEvents;
 import me.dxrk.Discord.jdaHandler;
+import me.dxrk.Enchants.Enchants;
+import me.dxrk.Enchants.PickaxeLevel;
+import me.dxrk.Enchants.PickaxeSkillTree;
+import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Events.*;
 import me.dxrk.Gangs.CMDGang;
-import me.dxrk.Tokens.*;
-import me.dxrk.Enchants.*;
+import me.dxrk.Mines.CMDMine;
+import me.dxrk.Mines.MineHandler;
+import me.dxrk.Tokens.TokenShop;
+import me.dxrk.Tokens.TokensCMD;
+import me.dxrk.Tokens.TokensListener;
 import me.dxrk.Vote.BuycraftUtil;
 import me.dxrk.Vote.CMDVote;
 import me.dxrk.Vote.CMDVoteShop;
@@ -32,14 +37,20 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
+import org.inventivetalent.bossbar.BossBarAPI;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Locale;
 
 public class Main extends JavaPlugin implements Listener, CommandExecutor {
   private static  Main INSTANCE;
@@ -92,11 +103,16 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
       t.rareDusting();
       t.epicDusting();
       t.legendaryDusting();
+      t.commonDustingOpened();
+      t.rareDustingOpened();
+      t.epicDustingOpened();
+      t.legendaryDustingOpened();
+      t.heroicDusting();
     
     
       getCommand("blocks").setExecutor(new BlocksHandler());
       getCommand("ChatColor").setExecutor(new ChatHandler());
-      getCommand("Chat").setExecutor(new ChatHandler());
+      //getCommand("Chat").setExecutor(new ChatHandler());
       getCommand("MuteChat").setExecutor(new ChatHandler());
       getCommand("rename").setExecutor(new CMDRename());
       getCommand("renamepaper").setExecutor(new CMDRename());
@@ -193,6 +209,8 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
       getCommand("gang").setExecutor(new CMDGang());
       getCommand("g").setExecutor(new CMDGang());
       getCommand("genesis").setExecutor(new CMDOptions());
+      registerEvents(this, new Listener[] { new CMDVanish() });
+      registerEvents(this, new Listener[] { new MomentumHandler() });
       registerEvents(this, new Listener[] { new SkillsEventsListener() });
       registerEvents(this, new Listener[] { new ReminderHandler() });
       registerEvents(this, new Listener[] { new CMDGang() });
@@ -239,9 +257,75 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
       registerEvents(this, new Listener[] { new PrestigeHandler() });
       registerEvents(this, new Listener[] { new PickaxeSkillTree() });
       registerEvents(this, new Listener[] { this});
-      // For when sale is active, use this || Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "motdchange sale 50");
+      // For when sale is active, use this ||
+       Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "motdchange sale 20");
       // For when maintenance active, use this ||
       //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "workmode enable");
+
+      new BukkitRunnable() {
+          @Override
+          public void run(){
+              for(Player p : Bukkit.getOnlinePlayers()) {
+                  if(MomentumHandler.startedMining.containsKey(p.getUniqueId())) {
+                      Date date = MomentumHandler.startedMining.get(p.getUniqueId());
+                      Date dateNOW = MomentumHandler.getDate();
+                      int seconds = (int) ((dateNOW.getTime() - date.getTime()) / 1000);
+                      if (seconds >= 60) {
+                          MomentumHandler.mining.remove(p.getUniqueId());
+                      }
+                  }
+                  if(MomentumHandler.mining.contains(p.getUniqueId())) {
+                      MomentumHandler.addMomentum(p);
+                  } else {
+                      MomentumHandler.removeMomentum(p);
+                  }
+                  MomentumHandler.setActionBar(p, MomentumHandler.momentum.get(p.getUniqueId()));
+                  MomentumHandler.sendTitleMomentum(p);
+                  if(!p.isOnline()) {
+                      cancel();
+                  }
+              }
+          }
+      }.runTaskTimer(this, 0, 20L);
+
+
+      new BukkitRunnable() {
+          @Override
+          public void run() {
+              for(Player p : Bukkit.getOnlinePlayers()) {
+                  //SPEED
+                  if(settings.getOptions().getBoolean(p.getUniqueId().toString()+".Speed-Effect")) {
+                      if (!p.hasPotionEffect(PotionEffectType.SPEED)) {
+                          p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999, 5));
+                      }
+                  } else {
+                      if (p.hasPotionEffect(PotionEffectType.SPEED)) {
+                          p.removePotionEffect(PotionEffectType.SPEED);
+                      }
+                  }
+                  //HASTE
+                  if(settings.getOptions().getBoolean(p.getUniqueId().toString()+".Haste-Effect")) {
+                      if (!p.hasPotionEffect(PotionEffectType.FAST_DIGGING)) {
+                          p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 999999, 10));
+                      }
+                  } else {
+                      if (p.hasPotionEffect(PotionEffectType.FAST_DIGGING)) {
+                          p.removePotionEffect(PotionEffectType.FAST_DIGGING);
+                      }
+                  }
+                  //NIGHT VISION
+                  if(settings.getOptions().getBoolean(p.getUniqueId().toString()+".Night-Vision-Effect")) {
+                      if (!p.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
+                          p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 999999, 2));
+                      }
+                  } else {
+                      if (p.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
+                          p.removePotionEffect(PotionEffectType.NIGHT_VISION);
+                      }
+                  }
+              }
+          }
+      }.runTaskTimer(this, 0, 5);
 
 
     new BukkitRunnable() {
@@ -316,7 +400,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
 
       new BukkitRunnable() {
           @Override
-          public void run() {
+          public void run() { // LAG SOURCE
               for(Player p : Bukkit.getOnlinePlayers()) {
                  if(RankupHandler.aru.contains(p)){
                      RankupHandler.getInstance().MaxRankup(p);
@@ -496,7 +580,7 @@ new BukkitRunnable() {
   }
 
   @EventHandler
-  public void onJoin(PlayerJoinEvent e) {
+  public void onJoin(PlayerJoinEvent e) { //LAG SOURCE
 	  if(!e.getPlayer().hasPlayedBefore()) {
 		  Bukkit.broadcastMessage(c("&dWelcome &f&l"+e.getPlayer().getName()+"&d to &c&lGenesis &b&lPrison!"));
 	  }
@@ -507,6 +591,7 @@ new BukkitRunnable() {
           public void run() {
               savePickaxe(e.getPlayer());
               settings.savePlayerData();
+              settings.saveboosts();
           }
       }.runTaskTimer(this, 0L, 20*120L);
 

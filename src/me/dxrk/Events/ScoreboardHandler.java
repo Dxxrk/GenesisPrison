@@ -166,37 +166,7 @@ public class ScoreboardHandler implements Listener{
 
 
 		            	Scoreboard NewBoard = p.getScoreboard();
-		            	NewBoard.getTeam("donor").setPrefix(c("&7Rank: "));
-				if (p.getName().equalsIgnoreCase("Dxrk")) {
 
-					NewBoard.getTeam("donor").setSuffix(c("&d&lOwner"));
-				} else if (p.getName().equalsIgnoreCase("BakonStrip") || p.getName().equalsIgnoreCase("32j")) {
-					NewBoard.getTeam("donor").setSuffix(c("&5&lManager"));
-				} else if (p.hasPermission("rank.builder")) {
-					NewBoard.getTeam("donor").setSuffix(c("&a&lBuilder"));
-				} else if (p.hasPermission("rank.mod")) {
-					NewBoard.getTeam("donor").setSuffix(c("&9&lMod"));
-				} else if (p.hasPermission("rank.genesis")) {
-					NewBoard.getTeam("donor").setSuffix(c("&c&lGenesis"));
-				} else if (p.hasPermission("rank.olympian")) {
-					NewBoard.getTeam("donor").setSuffix(c("&e&lOlympian"));
-				} else if (p.hasPermission("rank.god")) {
-					NewBoard.getTeam("donor").setSuffix(c("&d&lGod"));
-				} else if (p.hasPermission("rank.titan")) {
-					NewBoard.getTeam("donor").setSuffix(c("&3&lTitan"));
-				} else if (p.hasPermission("rank.demi-god")) {
-					NewBoard.getTeam("donor").setSuffix(c("&5&lDemi-God"));
-				} else if (p.hasPermission("rank.hero")) {
-					NewBoard.getTeam("donor").setSuffix(c("&c&lHero"));
-				} else if (p.hasPermission("rank.mvp")) {
-					NewBoard.getTeam("donor").setSuffix(c("&6&lMVP"));
-				} else if (p.hasPermission("rank.vip")) {
-					NewBoard.getTeam("donor").setSuffix(c("&a&lVIP"));
-				} else if (p.hasPermission("rank.sponsor")) {
-					NewBoard.getTeam("donor").setSuffix(c("&b&lSponsor"));
-				} else if (p.hasPermission("rank.default")) {
-					NewBoard.getTeam("donor").setSuffix(c("&7Member"));
-				}
 
 
 				//Prestige
@@ -211,8 +181,13 @@ public class ScoreboardHandler implements Listener{
 		        	        //rankup%
 
 		        	        NewBoard.getTeam("percent").setPrefix(c("&7Rankup: "));
-
 		        	        p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
+							if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
+								NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
+								NewBoard.getTeam("prestige").setSuffix(c("&e&lEthereal"));
+								p.getScoreboard().getTeam("prank").setPrefix(c("&7Level: "));
+								p.getScoreboard().getTeam("prank").setSuffix(c("&b&l" + RankupHandler.getInstance().getRank(p)));
+							}
 		        	    	double percents;
 		        	        p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
 		        	        percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
@@ -234,7 +209,7 @@ public class ScoreboardHandler implements Listener{
 		        	        NewBoard.getTeam("tokens").setPrefix(c("&7Tokens: &e⛀"));
 
 		        	        //xp
-		        	        NewBoard.getTeam("xp").setPrefix(c("&7XP Needed: &b✴"));
+		        	        NewBoard.getTeam("xp").setPrefix(c("&7XP: &b✴"));
 
 							double xp = (PickXPHandler.getInstance().calculateXPNeeded(p,PickXPHandler.getInstance().getLevel(p))-PickXPHandler.getInstance().getXP(p));
 							double xmultiply = xp * 10.0;
@@ -555,18 +530,14 @@ public class ScoreboardHandler implements Listener{
 		        stLine.addEntry(ChatColor.BLUE+"");
 		        stLine.setPrefix(c(""));
 		        stLine.setSuffix(c(""));
-		        obj.getScore(ChatColor.BLUE+"").setScore(15);
+		        obj.getScore(ChatColor.BLUE+"").setScore(14);
 
 				//Player
 				Team player = NewBoard.registerNewTeam("Player");
 				player.addEntry(ChatColor.RED+""+ChatColor.BLACK);
 				player.setPrefix(c("&f&lPlayer:"));
-				obj.getScore(ChatColor.RED+""+ChatColor.BLACK).setScore(14);
-		        
-		        //DonorRank
-		        Team donor = NewBoard.registerNewTeam("donor");
-		        donor.addEntry(ChatColor.DARK_AQUA+"");
-		        obj.getScore(ChatColor.DARK_AQUA+"").setScore(13);
+				obj.getScore(ChatColor.RED+""+ChatColor.BLACK).setScore(13);
+
 		        //Prestige
 		        Team prestige = NewBoard.registerNewTeam("prestige");
 		        prestige.addEntry(ChatColor.LIGHT_PURPLE+"");
@@ -640,42 +611,10 @@ public class ScoreboardHandler implements Listener{
 	    	Player p = e.getPlayer();
 	    	setSB(p);
 	    	Scoreboard NewBoard = p.getScoreboard();
-	    	NewBoard.getTeam("donor").setPrefix(c("&7Rank: "));
-	        	if (p.getName().equalsIgnoreCase("Dxrk")) {
-	              
-	            NewBoard.getTeam("donor").setSuffix(c("&d&lOwner"));
-	            } else if (p.getName().equalsIgnoreCase("BakonStrip") || p.getName().equalsIgnoreCase("32j")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&5&lManager"));
-	            } else if (p.hasPermission("rank.builder")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&a&lBuilder"));
-	            } else if (p.hasPermission("rank.mod")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&9&lMod"));
-	            } else if (p.hasPermission("rank.genesis")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&c&lGenesis"));
-	            } else if (p.hasPermission("rank.olympian")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&e&lOlympian"));
-	            } else if (p.hasPermission("rank.god")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&d&lGod"));
-	            } else if (p.hasPermission("rank.titan")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&3&lTitan"));
-	            } else if (p.hasPermission("rank.demi-god")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&5&lDemi-God"));
-	            } else if (p.hasPermission("rank.hero")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&c&lHero"));
-	            } else if (p.hasPermission("rank.mvp")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&6&lMVP"));
-	            } else if (p.hasPermission("rank.vip")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&a&lVIP"));
-	            } else if (p.hasPermission("rank.sponsor")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&b&lSponsor"));
-	            } else if (p.hasPermission("rank.default")) {
-	            	NewBoard.getTeam("donor").setSuffix(c("&7Member"));
-	            } 
     	
     	
 	        //Prestige
 	        	NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
-				//set suffix after setting up prestiges.
 				int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
 				NewBoard.getTeam("prestige").setSuffix(c("&b"+prestiges));
 
@@ -683,12 +622,16 @@ public class ScoreboardHandler implements Listener{
 	        NewBoard.getTeam("prank").setPrefix(c("&7Level: "));
 	        
 	        //rankup%
-	        
 	        NewBoard.getTeam("percent").setPrefix(c("&7Rankup: "));
-	        
-	        p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
+	        NewBoard.getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
+			if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
+				NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
+				NewBoard.getTeam("prestige").setSuffix(c("&e&lEthereal"));
+				NewBoard.getTeam("prank").setPrefix(c("&7Level: "));
+				NewBoard.getTeam("prank").setSuffix(c("&b&l" + RankupHandler.getInstance().getRank(p)));
+			}
 	    	double percents;
-	        p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
+	        NewBoard.getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
 	        percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
 	        double dmultiply = percents*10.0;
 	        double dRound = Math.round(dmultiply) /10.0;
@@ -706,7 +649,7 @@ public class ScoreboardHandler implements Listener{
 	        
 	        //tokens
 	        NewBoard.getTeam("tokens").setPrefix(c("&7Tokens: "));
-			p.getScoreboard().getTeam("tokens").setSuffix(c("&e"+Main.formatAmt(Tokens.getInstance().getTokens(p))+"⛀"));
+			NewBoard.getTeam("tokens").setSuffix(c("&e"+Main.formatAmt(Tokens.getInstance().getTokens(p))+"⛀"));
 	       
 	        //multi
 	        NewBoard.getTeam("multi").setPrefix(c("&7Multi: "));
@@ -720,6 +663,16 @@ public class ScoreboardHandler implements Listener{
 			//PickLevel
 			NewBoard.getTeam("PickLevel").setPrefix(c("&7Level: "));
 			NewBoard.getTeam("PickLevel").setSuffix(c("&b"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickLevel")));
+
+			//XP
+			NewBoard.getTeam("xp").setPrefix(c("&7XP: &b✴"));
+
+			double xp = (PickXPHandler.getInstance().calculateXPNeeded(p,PickXPHandler.getInstance().getLevel(p))-PickXPHandler.getInstance().getXP(p));
+			double xmultiply = xp * 10.0;
+			int xround = (int) (Math.round(xmultiply) / 10.0);
+			if(xround <0)
+				xround = 0;
+			NewBoard.getTeam("xp").setSuffix(c("&b"+xround));
 	    	
 
 

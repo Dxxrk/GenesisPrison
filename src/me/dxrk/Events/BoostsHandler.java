@@ -306,7 +306,7 @@ public class BoostsHandler implements Listener, CommandExecutor{
 
 					settings.getBoost().set("ActivatorSell", args[1]);
 
-					settings.saveboosts();
+
 
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l"+ args[1]+" &dhas activated a "+amp+"x Currency Boost!");
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &7Length: &b"+timeFormat(dur));
@@ -337,7 +337,7 @@ public class BoostsHandler implements Listener, CommandExecutor{
 						settings.getBoost().set("ActiveSell.Duration", 0);
 
 						settings.getBoost().set("ActivatorSell", "");
-						settings.saveboosts();
+
 						if(!nextUpsell.isEmpty()) {
 							String next = nextUpsell.get(0);
 							nextUpsell.remove(0);
@@ -383,8 +383,6 @@ public class BoostsHandler implements Listener, CommandExecutor{
 
 					settings.getBoost().set("ActivatorXP", args[1]);
 
-					settings.saveboosts();
-
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l"+ args[1]+" &dhas activated a "+amp+"x XP Boost!");
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &7Length: &b"+timeFormat(dur));
 
@@ -413,7 +411,6 @@ public class BoostsHandler implements Listener, CommandExecutor{
 						settings.getBoost().set("ActiveXP.Duration", 0);
 
 						settings.getBoost().set("ActivatorXP", "");
-						settings.saveboosts();
 						if(!nextUpxp.isEmpty()) {
 							String next = nextUpxp.get(0);
 							nextUpxp.remove(0);
@@ -428,6 +425,7 @@ public class BoostsHandler implements Listener, CommandExecutor{
 
 			}
 		}
+		settings.saveboosts();
 
 		if(cmd.getName().equalsIgnoreCase("giveboost")) {
 
@@ -471,46 +469,28 @@ public class BoostsHandler implements Listener, CommandExecutor{
 
 
 	public void saveBinv(Player p) {
-		try {
-			ArrayList<ItemStack> i = boostsinv.get(p);
-
-			for (int x = 0; x < i.size(); x++) {
-				ItemStack item = i.get(x);
-				this.settings.getBoost().set(p.getUniqueId().toString() + "." + x, item);
-			}
-
-			this.settings.saveboosts();
-		} catch (Exception ignored) {}
+		this.settings.getBoost().set(p.getUniqueId().toString()+".Boosts", boostsinv.get(p));
 	}
 
 	public void openBoost(Player p) {
 		Inventory i = Bukkit.createInventory(null, 45, c("&7"+p.getName()+"'s Boosts"));
-		ArrayList<ItemStack> bp = boostsinv.get(p);
-
 		for(int x = 0; x < 45; x++) {
 			try {
-				ItemStack item = bp.get(x);
+				ItemStack item = boostsinv.get(p).get(x);
 				i.setItem(x, item);
 			} catch (Exception ignored) {}
 		}
 
 		p.openInventory(i);
 	}
-
+	@SuppressWarnings("unchecked")
 	public void loadBoost(Player p) {
 		ArrayList<ItemStack> boost = new ArrayList<>();
-		if (this.settings.getBoost().contains(p.getUniqueId().toString()))
-			for (int x = 0; x < 2500; x++) {
-				try {
-					ItemStack item = this.settings.getBoost()
-							.getItemStack(p.getUniqueId().toString() + "." + x);
-					if(item != null)
-						boost.add(item);
-				} catch (Exception ignored) {}
-			}
-
-
-		boostsinv.put(p, boost);
+		if (this.settings.getBoost().contains(p.getUniqueId().toString())) {
+			boostsinv.put(p, (ArrayList<ItemStack>) this.settings.getBoost().get(p.getUniqueId().toString()+".Boosts"));
+		} else {
+			boostsinv.put(p, boost);
+		}
 
 	}
 
@@ -528,6 +508,7 @@ public class BoostsHandler implements Listener, CommandExecutor{
 	public void leave(PlayerQuitEvent e) {
 
 		saveBinv(e.getPlayer());
+		settings.saveboosts();
 		boostsinv.remove(e.getPlayer());
 	}
 	public boolean isInt(String s) {
@@ -607,17 +588,9 @@ public class BoostsHandler implements Listener, CommandExecutor{
 
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "activeboost Sell "+p.getName()+ " "+amp+" "+dur);
 
-				ArrayList<ItemStack> b = boostsinv.get(p);
-				if(e.getSlot() == 0) {
-					b.remove(0);
-				} else {
-					b.remove(e.getSlot());
-				}
 
 
-				boostsinv.put(p, b);
 
-				openBoost(p);
 			}else if(e.getCurrentItem().getType().equals(Material.EXP_BOTTLE)) {
 				String [] amps = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).split("x");
 
@@ -631,14 +604,11 @@ public class BoostsHandler implements Listener, CommandExecutor{
 
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "activeboost XP "+p.getName()+ " "+amp+" "+dur);
 
-				ArrayList<ItemStack> b = boostsinv.get(p);
-				b.remove(e.getSlot());
-
-				boostsinv.put(p, b);
-
-				openBoost(p);
-
 			}
+			boostsinv.get(p).remove(e.getSlot());
+			saveBinv(p);
+			settings.saveboosts();
+			openBoost(p);
 		}
 
 	}
@@ -647,6 +617,7 @@ public class BoostsHandler implements Listener, CommandExecutor{
 	public void onClose(InventoryCloseEvent e) {
 		Player p = (Player) e.getPlayer();
 		if(e.getInventory().getName().equals(c("&7"+p.getName()+"'s Boosts"))) {
+			saveBinv(p);
 			settings.saveboosts();
 		}
 	}
@@ -658,7 +629,8 @@ public class BoostsHandler implements Listener, CommandExecutor{
 			Field field = net.minecraft.server.v1_8_R3.Item.class.getDeclaredField("maxStackSize");
 			field.setAccessible(true);
 			field.setInt(getitem, i);
-		} catch (Exception ignored) {}}
+		} catch (Exception ignored) {}
+	}
 
 
 	public ItemStack BoostSell(String name, String length) {
@@ -673,9 +645,9 @@ public class BoostsHandler implements Listener, CommandExecutor{
 		i.setItemMeta(im);
 		i.removeEnchantment(Enchantment.DURABILITY);
 		lores.clear();
-		net.minecraft.server.v1_8_R3.ItemStack i2 = CraftItemStack.asNMSCopy(i);
+		/*net.minecraft.server.v1_8_R3.ItemStack i2 = CraftItemStack.asNMSCopy(i);
 		net.minecraft.server.v1_8_R3.Item getitem = i2.getItem();
-		setMaxStackSize(getitem, 1);
+		setMaxStackSize(getitem, 1);*/
 		return i;
 	}
 	public ItemStack BoostXP(String name, String length) {

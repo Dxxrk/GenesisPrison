@@ -4,7 +4,8 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import me.dxrk.Enchants.SkillsEventsListener;
-import me.dxrk.Events.ResetHandler.ResetReason;
+import me.dxrk.Mines.MineHandler;
+import me.dxrk.Mines.ResetHandler;
 import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Gangs.Gangs;
 import me.dxrk.Main.*;
@@ -12,12 +13,10 @@ import me.dxrk.Tokens.Tokens;
 import me.jet315.prisonmines.mine.Mine;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -136,6 +135,7 @@ public class SellHandler implements Listener, CommandExecutor {
 	    double sell = Functions.sellBoost(p);
 	    double miningboost = BoostsHandler.sell;
 	    double multi = SellHandler.getInstance().getMulti(p)/1.75;
+	  double momentum = MomentumHandler.getBonus(MomentumHandler.momentum.get(p.getUniqueId()));
 		if(multi <1) {
 			multi = 1;
 		}
@@ -157,7 +157,7 @@ public class SellHandler implements Listener, CommandExecutor {
 	  	    	double price = Methods.getSellPrice(i);
 
 
-	  	    	total += price * (multi+greed+event) * sell * miningboost*prestige*multiply*unity;
+	  	    	total += price * (multi+greed+event) * sell * miningboost*prestige*multiply*unity*momentum;
 
 	  	        amountotal += i.getAmount();
 
@@ -187,6 +187,7 @@ public class SellHandler implements Listener, CommandExecutor {
 	  double sell = Functions.sellBoost(p);
 	  double miningboost = BoostsHandler.sell;
 	  double multi = SellHandler.getInstance().getMulti(p)/1.75;
+	  double momentum = MomentumHandler.getBonus(MomentumHandler.momentum.get(p.getUniqueId()));
 	  if(multi <1) {
 		  multi = 1;
 	  }
@@ -206,7 +207,7 @@ public class SellHandler implements Listener, CommandExecutor {
 			  double price = Methods.getSellPrice(i);
 
 
-			  total += price * (multi+greed+event) * sell * miningboost*prestige*multiply;
+			  total += price * (multi+greed+event) * sell * miningboost*prestige*multiply*momentum;
 
 			  amountotal += i.getAmount();
 
@@ -373,7 +374,10 @@ public class SellHandler implements Listener, CommandExecutor {
 						  p.sendMessage(c("&c/resetmine(/rm) is on cooldown."));
 					  } else {
 						  int rank = RankupHandler.getInstance().getRank(p);
-						  ResetHandler.resetMine(p, mine, ResetReason.NORMAL, MineHandler.Blocks(rank / 16));
+						  if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
+							  rank = 1000;
+						  }
+						  ResetHandler.resetMineWorldEdit(mine, mine.getMineRegion().getMinPoint(), mine.getMineRegion().getMaxPoint(), MineHandler.Blocks(rank / 16));
 						  if (mine.isLocationInRegion(p.getLocation()))
 							  p.teleport(mine.getSpawnLocation());
 						  if (!p.isOp())
@@ -388,13 +392,6 @@ public class SellHandler implements Listener, CommandExecutor {
 						  }
 
 					  }.runTaskLater(Main.plugin, 20 * 60);
-				  }
-			  } else {
-				  if (args[0].equalsIgnoreCase("testblock") && p.isOp()) {
-					  Location l1 = new Location(p.getLocation().getWorld(), p.getLocation().getX() + 3, p.getLocation().getY() - 3, p.getLocation().getZ() + 3);
-					  Location l2 = new Location(p.getLocation().getWorld(), p.getLocation().getX() - 3, p.getLocation().getY() - 6, p.getLocation().getZ() - 3);
-					  BlockChanger.setSectionCuboidAsynchronously(l1, l2, new ItemStack(Material.COBBLESTONE));
-					  return false;
 				  }
 			  }
 		  }

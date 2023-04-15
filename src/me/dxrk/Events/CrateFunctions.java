@@ -431,14 +431,14 @@ public class CrateFunctions {
                 lore.add("giverank %PLAYER% &6&lMVP Rank");
                 rm.setLore(lore);
             }
-            if(ri > 88 && ri <=90){
+            if(ri > 88 && ri <=93){
                 rm.setDisplayName(m.c("&c&lHero Rank"));
                 reward.setType(Material.NETHER_STAR);
                 List<String> lore = new ArrayList<>();
                 lore.add("giverank %PLAYER% &c&lHero Rank");
                 rm.setLore(lore);
             }
-            if(ri > 90) {
+            if(ri > 93) {
                 Random misc = new Random();
                 int misci = misc.nextInt(5);
                 List<String> lore = new ArrayList<>();

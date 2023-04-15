@@ -4,17 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.mojang.authlib.GameProfile;
+import me.dxrk.Main.Main;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
+import net.minecraft.server.v1_8_R3.PlayerInteractManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.connorlinfoot.actionbarapi.ActionBarAPI;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class CMDVanish implements Listener, CommandExecutor{
 	
@@ -38,51 +47,56 @@ public class CMDVanish implements Listener, CommandExecutor{
 	      if (p.hasPermission("vanish.use"))
 	        if (isVanished(p)) {
 	          for (Player pp : Bukkit.getOnlinePlayers()) {
-	            if (args.length > 0)
-	              if (pp.hasPermission("vanish.see")) {
-	                pp.sendMessage(c("&7<&b+&7> &e&l" + p.getName() + " &a(Vanish)"));
-	              } else {
-	                pp.sendMessage(c("&7<&b+&7> &e&l" + p.getName()));
-	              }  
 	            vanished.remove(p.getUniqueId());
 	            pp.showPlayer(p);
-	            ActionBarAPI.sendActionBar(p, c("&cYou are no longer Vanished"), 200);
+	            ActionBarAPI.sendActionBar(p, c("&cYou are no longer Vanished"), 40);
 	          } 
 	        } else {
 	          for (Player pp : Bukkit.getOnlinePlayers()) {
-	            if (args.length > 0)
-	              if (pp.hasPermission("vanish.see")) {
-	                pp.sendMessage(c("&7<&b-&7> &e&l" + p.getName() + " &a(Vanish)"));
-	              } else {
-	                pp.sendMessage(c("&7<&b-&7> &e&l" + p.getName()));
-	              }  
-	            pp.hidePlayer(p);
+				if(!p.hasPermission("staffchat.use"))
+	            	pp.hidePlayer(p);
 	            vanished.add(p.getUniqueId());
-	            ActionBarAPI.sendActionBar(p, c("&cYou Are Now Vanished"), 200);
+	            ActionBarAPI.sendActionBar(p, c("&cYou Are Now Vanished"), 40);
 	          } 
 	        }  
 	    } 
 	    return false;
 	  }
+
+	@EventHandler
+	public void onLeave(PlayerQuitEvent e) {
+		Player p = e.getPlayer();
+		if (p.hasPermission("rank.helper")) {
+			if(vanished.contains(p.getUniqueId())) {
+				e.setQuitMessage("");
+			} else {
+				e.setQuitMessage(ChatColor.translateAlternateColorCodes('&', "&7<&b-&7> &e&l" + p.getName()));
+			}
+		} else {
+			e.setQuitMessage(ChatColor.translateAlternateColorCodes('&', "&7<&b-&7> &b" + p.getName()));
+		}
+	}
 	  
-	  @EventHandler
+	  @EventHandler(priority = EventPriority.HIGHEST)
 	  public void onJoin(PlayerJoinEvent e) {
-		  if(vanished.contains(e.getPlayer().getUniqueId())) {
-			  for(Player p : Bukkit.getOnlinePlayers()) {
-				  p.hidePlayer(e.getPlayer());
+		  Player p = e.getPlayer();
+		  if (p.hasPermission("rank.helper")) {
+			  e.setJoinMessage("");
+			  vanished.add(p.getUniqueId());
+		  } else {
+			  e.setJoinMessage(ChatColor.translateAlternateColorCodes('&', "&7<&b+&7> &b" + p.getName()));
+		  }
+		  if(vanished.contains(p.getUniqueId())) {
+			  for(Player pp : Bukkit.getOnlinePlayers()) {
+				  pp.hidePlayer(p);
 			  }
 				  
 		  }
-		  for(Player p : Bukkit.getOnlinePlayers()) {
-			  for(int i = 0; i < vanished.size(); i++) {
-				  Player pp = Bukkit.getPlayer(vanished.get(i));
-				  p.hidePlayer(pp);
-				  
-			  }
+		  for (UUID uuid : vanished) {
+			  Player van = Bukkit.getPlayer(uuid);
+			  if(!p.hasPermission("staffchat.use") && van !=null)
+			  	p.hidePlayer(van);
 		  }
-		  
-		  
-		  
 	  }
 	
 	

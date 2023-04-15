@@ -285,21 +285,4 @@ public class Methods {
             return 38000000+shmulti;
         return 1;
   }
-
-
-    public static String formatAmt(double amt) {
-    if (amt <= 0.0D)
-      return String.valueOf(0);
-    if(amt >= 1.0E18D)
-    	return String.format("%.1f Quint", amt / 1.0E18D);
-    if(amt >= 1.0E15D)
-    	return String.format("%.1f Quad", amt / 1.0E15D);
-    if (amt >= 1.0E12D)
-      return String.format("%.1f Tril", amt / 1.0E12D);
-    if (amt >= 1.0E9D)
-      return String.format("%.1f Bil", amt / 1.0E9D);
-    if (amt >= 1000000.0D)
-      return String.format("%.1f Mil", amt / 1000000.0D);
-    return NumberFormat.getNumberInstance(Locale.US).format(amt);
-  }
 }

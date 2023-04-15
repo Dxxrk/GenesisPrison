@@ -1,6 +1,5 @@
 package me.dxrk.Commands;
 
-import me.dxrk.Events.MineHandler;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import org.bukkit.Bukkit;

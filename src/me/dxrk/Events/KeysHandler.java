@@ -264,6 +264,7 @@ public class KeysHandler implements Listener {
         double miningboost = BoostsHandler.sell;
         String gang = Gangs.getInstance().getGang(p);
         double unity = CMDGang.getInstance().getUnityLevel(gang);
+        //double momentum =
 
         if(Functions.multiply.contains(p)) multiply = 2;
 

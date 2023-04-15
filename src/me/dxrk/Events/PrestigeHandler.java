@@ -5,6 +5,7 @@ import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Mines.MineHandler;
 import me.dxrk.Vote.CMDVoteShop;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -163,6 +164,7 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         MineHandler.getInstance().updateMine(p, 1);
         CMDVoteShop.addCoupon(p, 0.25);
         LocksmithHandler.getInstance().addKey(p, "Seasonal", 1);
+        settings.saveRankupPrices();
     }
 
     public static void addPrestiges(Player p, int amt) {

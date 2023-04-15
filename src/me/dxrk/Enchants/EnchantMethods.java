@@ -6,6 +6,8 @@ import java.util.Random;
 
 import me.dxrk.Events.*;
 import me.dxrk.Main.*;
+import me.dxrk.Mines.MineHandler;
+import me.dxrk.Mines.ResetHandler;
 import me.dxrk.Tokens.Tokens;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -21,7 +23,6 @@ import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 
 import me.dxrk.Vote.CMDVoteShop;
-import me.dxrk.Events.ResetHandler.ResetReason;
 
 import me.jet315.prisonmines.mine.Mine;
 public class EnchantMethods {
@@ -89,11 +90,11 @@ public class EnchantMethods {
 		      for (int y = loc.getBlockY() - radius; y <= loc.getBlockY() + radius; y++) {
 		        for (int z = loc.getBlockZ() - radius; z <= loc.getBlockZ() + radius; z++) {
 		          Location l = new Location(loc.getWorld(), x, y, z);
-		          if (l.distance(loc) <= radius)
-		            blocks.add(l.getBlock()); 
-		        } 
-		      } 
-		    } 
+		          if (l.distance(loc) <= radius && !l.getBlock().getType().equals(Material.AIR))
+		            blocks.add(l.getBlock());
+		        }
+		      }
+		    }
 		    return blocks;
 		  }
 
@@ -123,8 +124,8 @@ public class EnchantMethods {
 			for (int y = miny; y<=maxy;y++) {
 				for (int z = minz; z<=maxz;z++) {
 					Block b = w.getBlockAt(x, y, z);
-
-					blocks.add(b);
+					if(!b.getType().equals(Material.AIR))
+						blocks.add(b);
 				}
 			}
 		}
@@ -258,17 +259,15 @@ public class EnchantMethods {
 	public void Laser(Player p, Block b, int level) {
 
 		ArrayList<ItemStack> sellblocks = new ArrayList<>();
-		for(Mine m : ResetHandler.api.getMineManager().getMinesByBlock(b)) {
-			Location min = new Location(p.getWorld(), m.getMineRegion().getMinPoint().getX(), b.getY(), m.getMineRegion().getMinPoint().getZ());
-			Location max = new Location(p.getWorld(), m.getMineRegion().getMaxPoint().getX(), b.getY(), m.getMineRegion().getMaxPoint().getZ());
+		Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
 			int blocks = 1;
 
 
 			for (Block b1 : laserBlocks(b)) {
 				if (set(b1).allows(DefaultFlag.LIGHTER)) {
-					m.removeBlockFromRegion(b1);
+					
 					if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-						ResetHandler.setBlockFast(b1.getLocation(), new ItemStack(Material.AIR));
+						b1.setType(Material.AIR);
 						blocks = blocks + 1;
 					}
 				}
@@ -284,9 +283,9 @@ public class EnchantMethods {
 			int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity*skill /
 					(14));
 
-			double levelcap = 1+(level/750);
+			double levelcap = 1+(level/600);
 
-			sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks/3* (fortune)*levelcap))));
+			sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks/1.5* (fortune)*levelcap))));
 
 
 
@@ -296,7 +295,7 @@ public class EnchantMethods {
 			SellHandler.getInstance().sellEnchant(p, sellblocks, "Laser", tokens);
 
 
-		}
+
 	}
 	public void Laser(Player p, Block b) {
 		Random r = new Random();
@@ -350,23 +349,24 @@ public class EnchantMethods {
 
 	  
 	  public void Wave(Player p, Block b, int level) {
-			
 			ArrayList<ItemStack> sellblocks = new ArrayList<>();
-			for(Mine m : ResetHandler.api.getMineManager().getMinesByBlock(b)) {
+			int blocks = 0;
+		  Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
 			Location min = new Location(p.getWorld(), m.getMineRegion().getMinPoint().getX(), b.getY(), m.getMineRegion().getMinPoint().getZ());
 			Location max = new Location(p.getWorld(), m.getMineRegion().getMaxPoint().getX(), b.getY(), m.getMineRegion().getMaxPoint().getZ());
-			int blocks = 1;
-			
-			
-			for (Block b1 : blocksFromTwoPoints(min, max, p.getWorld())) {
-				if (set(b1).allows(DefaultFlag.LIGHTER)) {
-					m.removeBlockFromRegion(b1);
-					if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-						ResetHandler.setBlockFast(b1.getLocation(), new ItemStack(Material.AIR));
-						blocks = blocks + 1;
-					}
-				}
-			}
+		  for (Block b1 : blocksFromTwoPoints(min, max, p.getWorld())) {
+			  if (set(b1).allows(DefaultFlag.LIGHTER)) {
+				  if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+					  b1.setType(Material.AIR);
+					  blocks = blocks + 1;
+				  }
+			  }
+		  }
+		  int rank = RankupHandler.getInstance().getRank(p);
+		  if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
+			  rank = 1000;
+		  }
+		 // ResetHandler.setAIR(min, max, MineHandler.Blocks(rank/16));
 			double fortuity = Functions.Foruity(p);
 				double skill = SkillsEventsListener.getSkillsBoostFortune(p);
 				double event = SkillsEventsListener.getEventFortune();
@@ -392,7 +392,7 @@ public class EnchantMethods {
 				SellHandler.getInstance().sellEnchant(p, sellblocks, "Wave", tokens);
 					
 				
-			}
+
 		}
 	  
 	  public void Wave(Player p, Block b) {
@@ -432,26 +432,26 @@ public class EnchantMethods {
 	  @SuppressWarnings("deprecation")
 		public void exploBreak(Player p, Block b, int level) {
 			ArrayList<ItemStack> sellblocks = new ArrayList<>();
-			
-			int blocks =1;
-			
+
+			int blocks =0;
+
 			Location min = new Location(p.getWorld(), b.getX()-2, b.getY()-2, b.getZ()-2);
 			Location max = new Location(p.getWorld(), b.getX()+2, b.getY()+2, b.getZ()+2);
-			
-			for(Mine m : ResetHandler.api.getMinesByBlock(b)) {
+
+		  Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
 				for (Block b1 : blocksFromTwoPoints(min, max, p.getWorld())) {
-			      if (set(b1).allows(DefaultFlag.LIGHTER)) {
-			    	  if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-						  ResetHandler.setBlockFast(b1.getLocation(), new ItemStack(Material.AIR));
-			              blocks = blocks+1;
-			    	  }
-			            for (Mine mine : ResetHandler.api.getMineManager().getMinesByBlock(b1))
-			              mine.removeBlockFromRegion(b1); 
-			          
+					if (set(b1).allows(DefaultFlag.LIGHTER)) {
+						if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+							b1.setType(Material.AIR);
+						  blocks = blocks + 1;
+					  	}
 			        }
 				}
-
-				
+		  int rank = RankupHandler.getInstance().getRank(p);
+				if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
+					rank = 1000;
+				}
+		  //ResetHandler.setAIR(min, max, MineHandler.Blocks(rank/16));
 				double fortuity = Functions.Foruity(p);
 				double skill = SkillsEventsListener.getSkillsBoostFortune(p);
 				double event = SkillsEventsListener.getEventFortune();
@@ -463,26 +463,14 @@ public class EnchantMethods {
 				}
 				int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line))*fortuity*skill*event /
 						(14));
-
 				double levelcap = 1+(level/500);
 
-
-
-
-
-
-			    
 			    sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(),(int) ((blocks* (fortune))*levelcap)));
-
-
 
 				int tokens = (int) (KeysHandler.tokensPerBlock(p)*blocks*levelcap*2);
 				Tokens.getInstance().addTokens(p, tokens);
 				SellHandler.getInstance().sellEnchant(p, sellblocks, "Explosion", tokens);
 
-			}
-			
-			
 		}
 	  
 	  
@@ -525,6 +513,18 @@ public class EnchantMethods {
 	  
 	  public void roundRank(Player p) {
 		Random r = new Random();
+		if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
+			int tmin = 1;
+			int tmax = 3;
+			int ranks = r.nextInt(tmax - tmin)+ tmin;
+			for(int i = 0; i < ranks; i++) {
+				RankupHandler.getInstance().upRank(p);
+			}
+			if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Research-Messages") == true) {
+				p.sendMessage(c("&f&lResearch &8| &b+"+ranks+ " Levels"));
+			}
+			return;
+		}
 		  int tmin = 7;
 		  int tmax = 12;
 		  int ranks = r.nextInt(tmax - tmin)+ tmin;
@@ -559,9 +559,16 @@ public class EnchantMethods {
 				  if(level == 1) {
 					  chance = (int) (4300 * lucky * luck*skill);
 				  } else {
-					  chance = (int) ((4300 - (0.52*level*lucky * luck * skill)));
-					  if(chance < 400){
-						  chance = 400;
+					  if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
+						  chance = (int) ((6000 - (0.52*level*lucky * luck * skill)));
+						  if(chance < 400){
+							  chance = 400;
+						  }
+					  } else {
+						  chance = (int) ((4300 - (0.52 * level * lucky * luck * skill)));
+						  if (chance < 400) {
+							  chance = 400;
+						  }
 					  }
 				  }
 		    	  int i = r.nextInt(chance);
@@ -581,15 +588,15 @@ public class EnchantMethods {
 			
 			int amountblocks = 0;
 			
-			for(Mine m : ResetHandler.api.getMineManager().getMinesByBlock(b)) {
-				int mined = m.getMineRegion().getBlocksMinedInRegion();
-				int total = m.getMineRegion().getTotalBlocksInRegion();
-				amountblocks = total - mined;
-
-
-
-				int rank = RankupHandler.getInstance().getRank(p);
-	        	  ResetHandler.resetMine(p, m, ResetReason.NUKE, MineHandler.Blocks(rank/16));
+			Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
+			int mined = m.getMineRegion().getBlocksMinedInRegion();
+			int total = m.getMineRegion().getTotalBlocksInRegion();
+			amountblocks = total - mined;
+			int rank = RankupHandler.getInstance().getRank(p);
+		  if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
+			  rank = 1000;
+		  }
+		  ResetHandler.resetMineWorldEdit(m, m.getMineRegion().getMinPoint(), m.getMineRegion().getMaxPoint(), MineHandler.Blocks(rank/16));
 
 
 
@@ -617,7 +624,7 @@ public class EnchantMethods {
 				int tokens = (int) (KeysHandler.tokensPerBlock(p)*(amountblocks/6)*levelcap);
 				Tokens.getInstance().addTokens(p, tokens);
 				SellHandler.getInstance().sellEnchant(p, sellblocks, "Nuke", tokens);
-				}
+
 	  }
 			
 			
@@ -686,6 +693,13 @@ public class EnchantMethods {
 			 p.sendMessage(c("&f&lJunkpile &8| &b+"+multi+" Multi"));
 			 }
 		 } else if(rr >=60 && rr <70) {
+			 if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
+				 RankupHandler.getInstance().upRank(p);
+				 if(this.settings.getOptions().getBoolean(p.getUniqueId().toString()+".Junkpile-Messages") == true) {
+					 p.sendMessage(c("&f&lJunkpile &8| &b+1 Levels"));
+				 }
+				 return;
+			 }
 			 RankupHandler.getInstance().upRank(p);
 			 RankupHandler.getInstance().upRank(p);
 			 RankupHandler.getInstance().upRank(p);

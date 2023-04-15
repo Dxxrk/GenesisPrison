@@ -1,4 +1,4 @@
-package me.dxrk.Events;
+package me.dxrk.Mines;
 
 import com.github.yannicklamprecht.worldborder.api.BorderAPI;
 import com.github.yannicklamprecht.worldborder.api.WorldBorderApi;
@@ -12,7 +12,7 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import me.dxrk.Events.ResetHandler.ResetReason;
+import me.dxrk.Events.RankupHandler;
 import me.dxrk.Main.SettingsManager;
 import me.jet315.prisonmines.mine.Mine;
 import org.bukkit.*;
@@ -22,7 +22,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -179,8 +178,24 @@ public class MineHandler implements Listener, CommandExecutor{
 		m.getResetManager().setPercentageReset(20);
 		m.getMineRegion().setBlocksMinedInRegion(0);
 		m.save();
-		ResetHandler.resetMineFull(p, m, ResetReason.NORMAL, blocks);
+		ResetHandler.resetMineFullWorldEdit(m, m.getMineRegion().getMinPoint(), m.getMineRegion().getMaxPoint(), blocks);
 
+	}
+
+	@EventHandler
+	public void onLeave(PlayerQuitEvent e) {
+		Player p = e.getPlayer();
+		Bukkit.getServer().unloadWorld(p.getName()+"sWorld", false);
+	}
+
+	@EventHandler
+	public void onJoin(PlayerJoinEvent e) {
+		Player p = e.getPlayer();
+		MultiverseCore core = (MultiverseCore)Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
+		MVWorldManager wm = core.getMVWorldManager();
+		wm.loadWorld(p.getName()+"sWorld");
+		Location pworld = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 0.5, 113, 0.5, -90, 0);
+		p.teleport(pworld);
 	}
 
 
@@ -248,13 +263,16 @@ public class MineHandler implements Listener, CommandExecutor{
 		wb.setCenter(0, 0);
 		wb.setSize(250);
 		p.teleport(pworld);
-		Bukkit.getWorld(p.getName()+"sWorld").save();
 
 		Location point1 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 9, 111, 34);
 		Location point2 = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 49, 79, -34);
 
 
 		//Creating the actual mine
+		if(ResetHandler.api.getMines().contains(ResetHandler.api.getMineByName(p.getUniqueId().toString()))) {
+			Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
+			m.delete();
+		}
 		ResetHandler.api.createMine(p.getUniqueId().toString(), point1, point2);
 		Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
 
@@ -311,6 +329,11 @@ public class MineHandler implements Listener, CommandExecutor{
 
 			regions.addRegion(outside);
 		}
+		int rank = RankupHandler.getInstance().getRank(p);
+		if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
+			rank = 1000;
+		}
+		ResetHandler.resetMineFullWorldEdit(m, point2, point1, Blocks(rank/16));
 		settings.getPlayerData().set(p.getUniqueId().toString()+".HasMine", true);
 	}
 

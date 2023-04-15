@@ -1,5 +1,6 @@
 package me.dxrk.Enchants;
 
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
@@ -174,6 +175,7 @@ public class SkillsEventsListener implements Listener {
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         Random r = new Random();
+        if(!p.getLocation().getWorld().getName().equals(p.getName()+"sWorld") || !EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;
         couponBreak(p);
         //Zeus
         if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Zeus")) {

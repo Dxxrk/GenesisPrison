@@ -167,8 +167,10 @@ implements Listener {
         }
 
         if(canLevelUp(p)) levelUp(p);
-
-        updatePickaxe(p);
+        int update = r.nextInt(20);
+        if(update == 1) {
+            updatePickaxe(p);
+        }
         updateXpBoard(p);
 
 

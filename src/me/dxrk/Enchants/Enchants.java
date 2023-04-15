@@ -1,10 +1,10 @@
 package me.dxrk.Enchants;
 
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import me.dxrk.Events.MineHandler;
+import me.dxrk.Mines.MineHandler;
 import me.dxrk.Events.RankupHandler;
-import me.dxrk.Events.ResetHandler;
-import me.dxrk.Events.ResetHandler.ResetReason;
+import me.dxrk.Mines.ResetHandler;
+import me.dxrk.Main.Functions;
 import me.dxrk.Main.SettingsManager;
 import me.jet315.prisonmines.mine.Mine;
 import net.md_5.bungee.api.ChatColor;
@@ -135,15 +135,17 @@ public class Enchants implements Listener{
 		    	EnchantMethods.getInstance().BoosterBreak(p);
 		    	EnchantMethods.getInstance().KeyPartyBreak(p);
 				EnchantMethods.getInstance().prestigeBreak(p);
+				Functions.Multiply(p);
 
 		    	Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
-		    	if(m != null)
-		    		m.removeBlockFromRegion(b);
 
 				assert m != null;
 				if(m.getMineRegion().getBlocksLeftPercentage() < 50F) {
 					int rank = RankupHandler.instance.getRank(p);
-					ResetHandler.resetMine(p, m, ResetReason.PERCENTAGE, MineHandler.Blocks(rank/16));
+					if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
+						rank = 1000;
+					}
+					ResetHandler.resetMineWorldEdit(m, m.getMineRegion().getMinPoint(), m.getMineRegion().getMaxPoint(), MineHandler.Blocks(rank/16));
 				}
 		    	
 		    		

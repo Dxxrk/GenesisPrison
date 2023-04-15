@@ -4,7 +4,6 @@ import com.earth2me.essentials.Essentials;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
-import me.dxrk.Vote.CMDVote;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -145,28 +144,30 @@ public class Leaderboards implements Listener, CommandExecutor{
 		lb.setItem(29, ranks);
 		lore.clear();
 
-		CMDVote.getInstance().orderTop();
-		OfflinePlayer p3 = getOfflinePlayer(CMDVote.top5.get(0));
+		orderVote();
+		Set<Map.Entry<Integer, String> > ventrySet = ordervote.entrySet();
+		List<Map.Entry<Integer, String> > votetop = new ArrayList<>(ventrySet);
+		OfflinePlayer p3 = getOfflinePlayer(votetop.get(0).getValue());
 		ItemStack vote = Head(p3);
 		ItemMeta vm = vote.getItemMeta();
 		vm.setDisplayName(m.c("&bMost Votes:"));
-		if(CMDVote.top5.size() >=1)
-			lore.add(m.c("&7#1 &c"+getOfflinePlayer(CMDVote.top5.get(0)).getName()+": &b"+getVotes(getOfflinePlayer(CMDVote.top5.get(0)))));
-		if(CMDVote.top5.size() >=2)
-			lore.add(m.c("&7#2 &c"+getOfflinePlayer(CMDVote.top5.get(1)).getName()+": &b"+getVotes(getOfflinePlayer(CMDVote.top5.get(1)))));
-		if(CMDVote.top5.size() >=3)
-			lore.add(m.c("&7#3 &c"+getOfflinePlayer(CMDVote.top5.get(2)).getName()+": &b"+getVotes(getOfflinePlayer(CMDVote.top5.get(2)))));
-		if(CMDVote.top5.size() >=4)
-			lore.add(m.c("&7#4 &c"+getOfflinePlayer(CMDVote.top5.get(3)).getName()+": &b"+getVotes(getOfflinePlayer(CMDVote.top5.get(3)))));
-		if(CMDVote.top5.size() >=5)
-			lore.add(m.c("&7#5 &c"+getOfflinePlayer(CMDVote.top5.get(4)).getName()+": &b"+getVotes(getOfflinePlayer(CMDVote.top5.get(4)))));
+		if(votetop.size() >=1)
+			lore.add(m.c("&7#1 &c"+getOfflinePlayer(votetop.get(0).getValue()).getName()+": &b"+getVotes(getOfflinePlayer(votetop.get(0).getValue()))));
+		if(votetop.size() >=2)
+			lore.add(m.c("&7#2 &c"+getOfflinePlayer(votetop.get(1).getValue()).getName()+": &b"+getVotes(getOfflinePlayer(votetop.get(1).getValue()))));
+		if(votetop.size() >=3)
+			lore.add(m.c("&7#3 &c"+getOfflinePlayer(votetop.get(2).getValue()).getName()+": &b"+getVotes(getOfflinePlayer(votetop.get(2).getValue()))));
+		if(votetop.size() >=4)
+			lore.add(m.c("&7#4 &c"+getOfflinePlayer(votetop.get(3).getValue()).getName()+": &b"+getVotes(getOfflinePlayer(votetop.get(3).getValue()))));
+		if(votetop.size() >=5)
+			lore.add(m.c("&7#5 &c"+getOfflinePlayer(votetop.get(4).getValue()).getName()+": &b"+getVotes(getOfflinePlayer(votetop.get(4).getValue()))));
 		int v = 0;
-		for(int i = 0; i < CMDVote.top5.size(); i++) {
-			if(p.getName().equals(getOfflinePlayer(CMDVote.top5.get(i)).getName()))	{
+		for(int i = 0; i < votetop.size(); i++) {
+			if(p.getName().equals(getOfflinePlayer(votetop.get(i).getValue()).getName())) {
 				v= i;
 			}
 		}
-		lore.add(m.c("&cYour Rank: #"+(v+1)+" With &b"+getVotes(getOfflinePlayer(CMDVote.top5.get(v)))));
+		lore.add(m.c("&cYour Rank: #"+(v+1)+" With &b"+getVotes(getOfflinePlayer(votetop.get(v).getValue()))));
 		vm.setLore(lore);
 		vote.setItemMeta(vm);
 		lb.setItem(33, vote);
@@ -222,6 +223,15 @@ public class Leaderboards implements Listener, CommandExecutor{
 	public static SortedMap<Integer, String> ordertime = new TreeMap<>(Collections.reverseOrder());
 	public static SortedMap<Integer, String> orderrank = new TreeMap<>(Collections.reverseOrder());
 	public static SortedMap<Integer, String> ordergang = new TreeMap<>(Collections.reverseOrder());
+	public static SortedMap<Integer, String> ordervote = new TreeMap<>(Collections.reverseOrder());
+
+	public static void orderVote() {
+		ordervote.clear();
+		for (String uuid : settings.getVote().getKeys(false)) {
+			int votes = settings.getVote().getInt(uuid+".Votes");
+			ordervote.put(votes, uuid);
+		}
+	}
 
 
 

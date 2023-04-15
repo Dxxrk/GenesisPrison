@@ -157,7 +157,7 @@ public class CMDVoteShop implements Listener, CommandExecutor{
 			  if(l.equals("") || l.equals(" ")) return;
 
 			  double amount = Double.parseDouble(l);
-			  if(amount > getCoupons(p)){
+			  if(amount > getCoupons(p) || amount <0){
 				  p.sendMessage(m.c("&cError: You do not have enough."));
 				  return;
 			  }

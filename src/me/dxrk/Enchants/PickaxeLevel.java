@@ -1,7 +1,6 @@
 package me.dxrk.Enchants;
 
 import me.dxrk.Events.PickXPHandler;
-import me.dxrk.Events.ResetHandler;
 import me.dxrk.Events.TrinketHandler;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Tokens.Tokens;

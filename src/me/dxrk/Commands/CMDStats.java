@@ -1,6 +1,7 @@
 package me.dxrk.Commands;
 
 import me.dxrk.Events.BlocksHandler;
+import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import org.bukkit.Bukkit;
@@ -141,7 +142,7 @@ public class CMDStats implements Listener, CommandExecutor {
 
         ItemStack tokens = new ItemStack(Material.PRISMARINE_CRYSTALS);
         ItemMeta tm = tokens.getItemMeta();
-        tm.setDisplayName(m.c("&7Tokens: &e⛀"+settings.getET().getInt(uuid)));
+        tm.setDisplayName(m.c("&7Tokens: &e⛀"+ Main.formatAmt(settings.getET().getDouble(uuid))));
         tokens.setItemMeta(tm);
         stats.setItem(34, tokens);
 

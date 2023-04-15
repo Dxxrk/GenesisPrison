@@ -1,7 +1,9 @@
 package me.dxrk.Commands;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -27,6 +29,8 @@ public class CMDOptions implements Listener, CommandExecutor{
 	
 	SettingsManager settings = SettingsManager.getInstance();
 	static Methods m = Methods.getInstance();
+
+
 	
 	
 	private ItemStack option(Player p, String option) {
@@ -44,10 +48,7 @@ public class CMDOptions implements Listener, CommandExecutor{
 		}
 		om.setLore(lore);
 		ops.setItemMeta(om);
-		
-		
-		
-		
+
 		return ops;
 	}
 	
@@ -70,6 +71,9 @@ public class CMDOptions implements Listener, CommandExecutor{
 		ops.setItem(13, option(p, "Laser-Messages"));
 		ops.setItem(14, option(p, "Vote-Reminder"));
 		ops.setItem(15, option(p, "Daily-Reminder"));
+		ops.setItem(16, option(p, "Speed-Effect"));
+		ops.setItem(19, option(p, "Haste-Effect"));
+		ops.setItem(20, option(p, "Night-Vision-Effect"));
 		p.openInventory(ops);
 	}
 
@@ -164,6 +168,9 @@ public class CMDOptions implements Listener, CommandExecutor{
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Laser-Messages", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Daily-Reminder", true);
 			this.settings.getOptions().set(p.getUniqueId().toString()+".Vote-Reminder", true);
+			this.settings.getOptions().set(p.getUniqueId().toString()+".Speed-Effect", true);
+			this.settings.getOptions().set(p.getUniqueId().toString()+".Haste-Effect", true);
+			this.settings.getOptions().set(p.getUniqueId().toString()+".Night-Vision-Effect", true);
 			this.settings.saveOptions();
 		}
 		if(this.settings.getOptions().get(p.getUniqueId().toString()+".GenesisColor") == null){

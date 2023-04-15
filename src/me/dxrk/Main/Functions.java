@@ -173,13 +173,13 @@ public class Functions implements Listener{
 
 		if(level == 0) return;
 		if(level == 1) {
-			chance = (int) (3000 / lucky / luck);
+			chance = (int) (5500 / lucky / luck);
 		} else {
-			chance = (int) ((3000 - (1.5*level))/lucky / luck);
+			chance = (int) ((5500 - (level))/lucky / luck);
 		}
 		int i = r.nextInt(chance);
 
-		if(i == 1) {
+		if(i == 1 && !multiply.contains(p)) {
 			p.sendMessage(m.c("&f&lMultiply &8| &bActivated!"));
 			multiply.add(p);
 
@@ -187,8 +187,9 @@ public class Functions implements Listener{
 				@Override
 				public void run(){
 					p.sendMessage(m.c("&f&lMultiply &8| &bDeactivated!"));
+					multiply.remove(p);
 				}
-			}.runTaskLater(Main.plugin, 20*10L);
+			}.runTaskLater(Main.plugin, 20*12L);
 
 		}
 	}

@@ -4,6 +4,7 @@ import me.dxrk.Enchants.EnchantMethods;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Mines.MineHandler;
 import me.dxrk.Tokens.Tokens;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -77,9 +78,10 @@ public class RankupHandler implements Listener, CommandExecutor{
   
   
   public void upRank(Player p) {
-	  if(nextRank(p) == 1000 && getPrestiges(p) == 100) {
+	  if(nextRank(p) >= 1000 && getPrestiges(p) >= 100 && !this.settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
 		  this.settings.getRankupPrices().set(p.getUniqueId().toString(), 1);
 		  this.settings.getPlayerData().set(p.getUniqueId().toString()+".Ethereal", true);
+		  Bukkit.broadcastMessage(c("&f&l"+p.getName()+" is &b&l&kO&e&lEthereal&b&l&kO&r"));
 		  return;
 	  }
 
@@ -170,9 +172,8 @@ public class RankupHandler implements Listener, CommandExecutor{
 	  int rank = getRank(p);
 
 	  if(this.settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
-			double start = 7.523828125E20D*1000;
+			double start = 7.523828125E20D*25;
 			double price = start*(rank*1.75);
-
 			return price;
 	  }
 
@@ -188,14 +189,15 @@ public class RankupHandler implements Listener, CommandExecutor{
   public void rankup(Player p) {
 	  if(this.settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
 		  if (Main.econ.getBalance(p) < rankPrice(p)) {
-			  p.sendMessage(c("&f&lLevel &8| &7You need &a$"+Methods.formatAmt(rankPrice(p) - Main.econ.getBalance(p))+" &7to rankup."));
+			  p.sendMessage(c("&f&lLevel &8| &7You need &a$"+Main.formatAmt(rankPrice(p) - Main.econ.getBalance(p))+" &7to rankup."));
 			  return;
 		  }
 		  Main.econ.withdrawPlayer(p, rankPrice(p));
 		  upRank(p);
-		  if((getRank(p) %16 == 0) && getRank(p) <1000)
-			  MineHandler.getInstance().updateMine(p, getRank(p));
-		  p.getScoreboard().getTeam("prank").setSuffix(c("&b" + getRank(p)));
+		  p.getScoreboard().getTeam("prestige").setPrefix(c("&7Prestige: "));
+		  p.getScoreboard().getTeam("prestige").setSuffix(c("&e&lEthereal"));
+		  p.getScoreboard().getTeam("prank").setPrefix(c("&7Level: "));
+		  p.getScoreboard().getTeam("prank").setSuffix(c("&b&l"+getRank(p)));
 		  double percents;
 		  p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
 		  percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
@@ -214,7 +216,7 @@ public class RankupHandler implements Listener, CommandExecutor{
 
 
     if (Main.econ.getBalance(p) < rankPrice(p)) {
-      p.sendMessage(c("&f&lLevel &8| &7You need &a$"+Methods.formatAmt(rankPrice(p) - Main.econ.getBalance(p))+" &7to rankup."));
+      p.sendMessage(c("&f&lLevel &8| &7You need &a$"+Main.formatAmt(rankPrice(p) - Main.econ.getBalance(p))+" &7to rankup."));
       return;
     } 
     Main.econ.withdrawPlayer(p, rankPrice(p));
@@ -241,7 +243,32 @@ public class RankupHandler implements Listener, CommandExecutor{
   public void MaxRankup(Player p) {
 	  if (Main.econ.getBalance(p) < rankPrice(p)) {
 	      return;
-	    } 
+	    }
+	  if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
+		  while(Main.econ.getBalance(p) > rankPrice(p)) {
+			  Main.econ.withdrawPlayer(p, rankPrice(p));
+			  upRank(p);
+		  }
+		  p.getScoreboard().getTeam("prestige").setPrefix(c("&7Prestige: "));
+		  p.getScoreboard().getTeam("prestige").setSuffix(c("&e&lEthereal"));
+		  p.getScoreboard().getTeam("prank").setPrefix(c("&7Level: "));
+		  p.getScoreboard().getTeam("prank").setSuffix(c("&b&l"+getRank(p)));
+		  double percents;
+		  p.getScoreboard().getTeam("balance").setSuffix(c("&a"+Main.formatAmt(Tokens.getInstance().getBalance(p))));
+		  percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) *100);
+		  double dmultiply = percents*10.0;
+		  double dRound = Math.round(dmultiply) /10.0;
+
+
+
+		  if(dRound>=100.0) {
+			  p.getScoreboard().getTeam("percent").setSuffix(c("&c/rankup"));
+		  } else {
+			  p.getScoreboard().getTeam("percent").setSuffix(c("&c")+(dRound)+"%");
+		  }
+		  this.settings.saveRankupPrices();
+		  return;
+	  }
 	  while(Main.econ.getBalance(p) > rankPrice(p)) {
 		  Main.econ.withdrawPlayer(p, rankPrice(p));
 		  upRank(p);

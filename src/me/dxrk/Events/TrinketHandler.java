@@ -10,13 +10,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
@@ -163,6 +161,57 @@ public class TrinketHandler implements Listener, CommandExecutor{
 		dust.setItemMeta(dm);
 		return dust;
 	}
+	public ItemStack commonDust(int amt) {
+		ArrayList<String> lore = new ArrayList<>();
+		ItemStack dust = new ItemStack(Material.SUGAR, amt);
+		ItemMeta dm = dust.getItemMeta();
+		dm.setDisplayName(m.c("&bCommon Trinket Dust"));
+		lore.add(m.c("&7&oUse this to craft a &bCommon &7&oTrinket"));
+		dm.setLore(lore);
+		dust.setItemMeta(dm);
+		return dust;
+	}
+	public ItemStack rareDust(int amt) {
+		ArrayList<String> lore = new ArrayList<>();
+		ItemStack dust = new ItemStack(Material.SUGAR, amt);
+		ItemMeta dm = dust.getItemMeta();
+		dm.setDisplayName(m.c("&9Rare Trinket Dust"));
+		lore.add(m.c("&7&oUse this to craft a &9Rare &7&oTrinket"));
+		dm.setLore(lore);
+		dust.setItemMeta(dm);
+		return dust;
+	}
+	public ItemStack epicDust(int amt) {
+		ArrayList<String> lore = new ArrayList<>();
+		ItemStack dust = new ItemStack(Material.SUGAR, amt);
+		ItemMeta dm = dust.getItemMeta();
+		dm.setDisplayName(m.c("&5Epic Trinket Dust"));
+		lore.add(m.c("&7&oUse this to craft a &5Epic &7&oTrinket"));
+		dm.setLore(lore);
+		dust.setItemMeta(dm);
+		return dust;
+	}
+	public ItemStack legDust(int amt) {
+		ArrayList<String> lore = new ArrayList<>();
+		ItemStack dust = new ItemStack(Material.SUGAR, amt);
+		ItemMeta dm = dust.getItemMeta();
+		dm.setDisplayName(m.c("&6Legendary Trinket Dust"));
+		lore.add(m.c("&7&oUse this to craft a &6Legendary &7&oTrinket"));
+		dm.setLore(lore);
+		dust.setItemMeta(dm);
+		return dust;
+	}
+	public ItemStack herDust(int amt) {
+		ArrayList<String> lore = new ArrayList<>();
+		ItemStack dust = new ItemStack(Material.SUGAR, amt);
+		ItemMeta dm = dust.getItemMeta();
+		dm.setDisplayName(m.c("&4Heroic Trinket Dust"));
+		lore.add(m.c("&7&oUse this to craft a &4Heroic &7&oTrinket"));
+		dm.setLore(lore);
+		dust.setItemMeta(dm);
+		return dust;
+	}
+
 	
 	public ItemStack commonTrinket(int amount) {
 		ArrayList<String> lore = new ArrayList<>();
@@ -299,6 +348,41 @@ public class TrinketHandler implements Listener, CommandExecutor{
 		
 		r.addIngredient(1, Material.GOLD_NUGGET);
 		
+		Bukkit.addRecipe(r);
+	}
+	public void heroicDusting() {
+		ShapelessRecipe r = new ShapelessRecipe(herDust(5));
+
+		r.addIngredient(1, Material.GOLD_NUGGET);
+
+		Bukkit.addRecipe(r);
+	}
+	public void legendaryDustingOpened() {
+		ShapelessRecipe r = new ShapelessRecipe(legDust(5));
+
+		r.addIngredient(1, Material.GOLD_NUGGET);
+
+		Bukkit.addRecipe(r);
+	}
+	public void epicDustingOpened() {
+		ShapelessRecipe r = new ShapelessRecipe(epicDust(5));
+
+		r.addIngredient(1, Material.GOLD_NUGGET);
+
+		Bukkit.addRecipe(r);
+	}
+	public void rareDustingOpened() {
+		ShapelessRecipe r = new ShapelessRecipe(rareDust(5));
+
+		r.addIngredient(1, Material.GOLD_NUGGET);
+
+		Bukkit.addRecipe(r);
+	}
+	public void commonDustingOpened() {
+		ShapelessRecipe r = new ShapelessRecipe(commonDust(5));
+
+		r.addIngredient(1, Material.GOLD_NUGGET);
+
 		Bukkit.addRecipe(r);
 	}
 	
@@ -491,18 +575,52 @@ public class TrinketHandler implements Listener, CommandExecutor{
 						else if(items[i].getItemMeta().getDisplayName().equals(heroic)) {
 							e.getInventory().setResult(null);
 							break;
-						} else {
+						} else if(name.length >=3 && name[0].equals("Common")) {
+							e.getInventory().setResult(commonDust(5));
+							break;
+						}
+						else if(name.length >=3 && name[0].equals("Rare")) {
+							e.getInventory().setResult(rareDust(5));
+							break;
+						}
+						else if(name.length >=3 && name[0].equals("Epic")) {
+							e.getInventory().setResult(epicDust(5));
+							break;
+						}
+						else if(name.length >=3 && name[0].equals("Legendary")) {
+							e.getInventory().setResult(legDust(5));
+							break;
+						}
+						else if(name.length >=3 && name[0].equals("Heroic")) {
+							e.getInventory().setResult(herDust(5));
+							break;
+						}
+						else {
 							e.getInventory().setResult(null);
 						}
 					}else {
 						e.getInventory().setResult(null);
 					}
 				}
+				return;
 			}
 			if(e.getRecipe().getResult().equals(new ItemStack(Material.GOLD_INGOT))) {
 				e.getInventory().setResult(new ItemStack(Material.AIR));
 			}
-			
+			/*if(e.getRecipe().getResult().equals(commonDust(5))) {
+				ItemStack[] items = e.getInventory().getMatrix();
+				for(int i = 0; i < 9; i++) {
+					if(items[i] != null && !items[i].getType().equals(Material.AIR) && items[i].hasItemMeta()) {
+						String[] name = ChatColor.stripColor(items[i].getItemMeta().getDisplayName()).split(" ");
+						if(name.length >2 && name[0].equals("Common")) {
+							e.getInventory().setResult(commonDust(5));
+							break;
+						}
+					} else {
+						e.getInventory().setResult(null);
+					}
+				}
+			}*/
 			
 			if(e.getRecipe().getResult().equals(commonTrinket(1))) {
 				List<String> lore = new ArrayList<>();

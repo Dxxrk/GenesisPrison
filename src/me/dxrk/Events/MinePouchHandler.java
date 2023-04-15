@@ -335,7 +335,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 if (args[0].equalsIgnoreCase("withdraw")) {
                     int gems = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".Gems");
                     int amount = Integer.parseInt(args[1]);
-                    if (amount > gems && amount >0) {
+                    if (amount > gems || amount <0) {
                         p.sendMessage(m.c("&cError: Not Enough Gems"));
                         return false;
                     }

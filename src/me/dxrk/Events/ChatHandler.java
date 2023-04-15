@@ -373,7 +373,7 @@ public class ChatHandler implements Listener, CommandExecutor {
       lore.add(ChatColor.translateAlternateColorCodes('&', "&fRank &7» "));
     } 
     if (this.gang.getGang(p) != null) {
-      lore.add(ChatColor.translateAlternateColorCodes('&', "&fGang &7» "));
+      lore.add(ChatColor.translateAlternateColorCodes('&', "&fGang &7» &b"+gang.getGang(p)));
     } else {
       lore.add(ChatColor.translateAlternateColorCodes('&', "&fGang &7» "));
     } 
@@ -418,25 +418,7 @@ public class ChatHandler implements Listener, CommandExecutor {
 
 
 
-  @EventHandler(priority = EventPriority.HIGHEST)
-  public void onJoin(PlayerJoinEvent e){
-    Player p = e.getPlayer();
-    if (p.hasPermission("rank.helper")) {
-      e.setJoinMessage(ChatColor.translateAlternateColorCodes('&', "&7<&b+&7> &e&l" + p.getName()));
-    } else {
-      e.setJoinMessage(ChatColor.translateAlternateColorCodes('&', "&7<&b+&7> &b" + p.getName()));
-    }
-  }
-  
-  @EventHandler
-  public void onLeave(PlayerQuitEvent e) {
-    Player p = e.getPlayer();
-    if (p.hasPermission("rank.helper")) {
-      e.setQuitMessage(ChatColor.translateAlternateColorCodes('&', "&7<&b-&7> &e&l" + p.getName()));
-    } else {
-      e.setQuitMessage(ChatColor.translateAlternateColorCodes('&', "&7<&b-&7> &b" + p.getName()));
-    } 
-  }
+
   
 
   
@@ -478,13 +460,17 @@ public class ChatHandler implements Listener, CommandExecutor {
         this.waiting.put(event.getPlayer(), (new Date()).getTime());
       }  
     event.setCancelled(true);
-    String prestige = c("&8[&a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges")+"&8] ");
-    
-    String rank = ChatColor.translateAlternateColorCodes('&', "&8[&b" + RankupHandler.getInstance().getRank(p) + "&8] ");
-    if (p.hasPermission("Chat.RankOff")) {
-      rank = ""; 
-      prestige = "";
+    String prestige;
+    String rank = "";
+    if(this.settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
+      prestige = c("&e&l&oE&7-&b&l&o"+RankupHandler.getInstance().getRank(p)+ " ");
+    } else {
+      prestige = c("&8[&a"+settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges")+"&8] ");
+
+      rank = ChatColor.translateAlternateColorCodes('&', "&8[&b" + RankupHandler.getInstance().getRank(p) + "&8] ");
     }
+
+
     String prefix = prefix(p);
     if (this.settings.getcolor().getString(p.getName() + ".Nickname") == null) {
       name = ChatColor.GRAY + p.getName();
