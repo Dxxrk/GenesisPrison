@@ -17,7 +17,7 @@ public class FamiliarHandler implements Listener {
 
     private int rarity() {
         Random r = new Random();
-        return r.nextInt(5);
+        return r.nextInt(4);
     }
 
 
@@ -25,16 +25,16 @@ public class FamiliarHandler implements Listener {
         Random r = new Random();
         int ri = r.nextInt(100);
         if(ri <=40) {
-            return "Common";
+            return "";
         }
         else if(ri <=60) {
-            return "Rare";
+            return "";
         }
         else if(ri <=80) {
-            return "Epic";
+            return "";
         }
         else {
-            return "Mythical";
+            return "";
         }
     }
 
