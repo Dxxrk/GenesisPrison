@@ -39,6 +39,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
         pm.setDisplayName(m.c("&eGem Pouch"));
         List<String> lore = new ArrayList<>();
         lore.add(m.c("&aGems: 0"));
+        lore.add(m.c("&cEach block mined is 1 gem added to the pouch."));
+        lore.add(m.c("&4Note: You do not have to redeem this right away."));
         pm.setLore(lore);
         pouch.setItemMeta(pm);
         return pouch;

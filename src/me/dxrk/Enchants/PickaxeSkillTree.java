@@ -65,6 +65,7 @@ public class PickaxeSkillTree implements Listener {
         ItemMeta zm = zeus.getItemMeta();
         zm.setDisplayName(m.c("&e&lZeus Path"));
         lore.add(m.c("&7&oSelect this to confirm your skill path as &e&lskills."));
+        lore.add(m.c("&7Provides a boost in gaining keys."));
         zm.setLore(lore);
         zeus.setItemMeta(zm);
         skills.setItem(0, zeus);
@@ -74,6 +75,7 @@ public class PickaxeSkillTree implements Listener {
         ItemMeta pm = poseidon.getItemMeta();
         pm.setDisplayName(m.c("&9&lPoseidon Path"));
         lore.add(m.c("&7&oSelect this to confirm your skill path as &9&lPoseidon."));
+        lore.add(m.c("&7Provides a boost in fortune."));
         pm.setLore(lore);
         poseidon.setItemMeta(pm);
         skills.setItem(1, poseidon);
@@ -83,6 +85,7 @@ public class PickaxeSkillTree implements Listener {
         ItemMeta hm = hades.getItemMeta();
         hm.setDisplayName(m.c("&4&lHades Path"));
         lore.add(m.c("&7&oSelect this to confirm your skill path as &4&lhades."));
+        lore.add(m.c("&7Provides a boost to your personal multi."));
         hm.setLore(lore);
         hades.setItemMeta(hm);
         skills.setItem(2, hades);
@@ -92,6 +95,7 @@ public class PickaxeSkillTree implements Listener {
         ItemMeta am = aphrodite.getItemMeta();
         am.setDisplayName(m.c("&d&lAphrodite Path"));
         lore.add(m.c("&7&oSelect this to confirm your skill path as &d&lAphrodite."));
+        lore.add(m.c("&7Provides a boost to your pickaxe xp."));
         am.setLore(lore);
         aphrodite.setItemMeta(am);
         skills.setItem(3, aphrodite);
@@ -101,6 +105,7 @@ public class PickaxeSkillTree implements Listener {
         ItemMeta atm = ares.getItemMeta();
         atm.setDisplayName(m.c("&2&lAres Path"));
         lore.add(m.c("&7&oSelect this to confirm your skill path as &2&lAres."));
+        lore.add(m.c("&7Provides a boost in gaining tokens."));
         atm.setLore(lore);
         ares.setItemMeta(atm);
         skills.setItem(4, ares);

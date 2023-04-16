@@ -69,6 +69,7 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         lore.add(m.c(" "));
         lore.add(m.c("&7Prestiging gives a 50% increase to sell prices."));
         lore.add(m.c("&7Will also make levelling up considerably harder."));
+        lore.add(m.c("&7Will also reset your balance to 0."));
         lore.add(m.c("&a+$0.25 Coupon"));
         lore.add(m.c("&b+1 &4&l&ki&f&lSeasonal&4&l&ki&r &7Key"));
         String uuid = p.getUniqueId().toString();
