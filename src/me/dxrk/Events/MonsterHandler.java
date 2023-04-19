@@ -31,6 +31,7 @@ public class MonsterHandler implements Listener {
         int ri = r.nextInt(5);
         p.getInventory().addItem(type());
     }
+    //Add PlayerInteractEvent to open the eggs.
 
     private ItemStack Ladon(String rarity, int bonusmoney) {
         ItemStack ladon = api.getItemHead("44860");
