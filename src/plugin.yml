@@ -2,7 +2,7 @@ name: GenesisPrison
 main: me.dxrk.Main.Main
 version: "2.0.1"
 description: "The features!"
-depend: [JetsPrisonMines, ProtocolLib, DiscordBotAPI, SignGUI, Multiverse-Core]
+depend: [JetsPrisonMines, ProtocolLib, DiscordBotAPI, SignGUI, Multiverse-Core, HeadDatabase]
 commands:
   genesis:
   g:

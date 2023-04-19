@@ -30,19 +30,17 @@ import java.util.Locale;
 import java.util.logging.Level;
 
 public class Methods {
-  public static Methods instance = new Methods();
-  
-  public static SettingsManager settings = SettingsManager.getInstance();
-  
-  public static Methods getInstance() {
-    return instance;
-  }
-  public String c(String s) {
-	    return ChatColor.translateAlternateColorCodes('&', s);
-	  }
+    public static Methods instance = new Methods();
 
+    public static SettingsManager settings = SettingsManager.getInstance();
 
+    public static Methods getInstance() {
+        return instance;
+    }
 
+    public String c(String s) {
+        return ChatColor.translateAlternateColorCodes('&', s);
+    }
 
 
     public void playChestAction(Chest chest, boolean open) {
@@ -63,13 +61,13 @@ public class Methods {
 
     /**
      * Schedules a task to run at a certain hour every day.
+     *
      * @param plugin The plugin associated with this task
-     * @param task The task to run
-     * @param hour [0-23] The hour of the day to run the task
+     * @param task   The task to run
+     * @param hour   [0-23] The hour of the day to run the task
      * @return Task id number (-1 if scheduling failed)
      */
-    public static int schedule(Plugin plugin, Runnable task, int hour)
-    {
+    public static int schedule(Plugin plugin, Runnable task, int hour) {
         //Calendar is a class that represents a certain time and date.
         Calendar cal = Calendar.getInstance(); //obtains a calendar instance that represents the current time and date
 
@@ -91,7 +89,7 @@ public class Methods {
         //we will schedule it for tomorrow,
         //since we can't schedule it for the past.
         //we are not time travelers.
-        if(cal.get(Calendar.HOUR_OF_DAY) >= hour)
+        if (cal.get(Calendar.HOUR_OF_DAY) >= hour)
             cal.add(Calendar.DATE, 1); //do it tomorrow if now is after "hours"
 
         //we need to set this calendar instance to 7:00pm, or whatever.
@@ -113,176 +111,171 @@ public class Methods {
     }
 
 
+    public String convertItemStackToJson(ItemStack itemStack) {
+        Object itemAsJsonObject;
+        Class<?> craftItemStackClazz = ReflUtil.getOBCClass("inventory.CraftItemStack");
+        Method asNMSCopyMethod = ReflUtil.getMethodCached(craftItemStackClazz, "asNMSCopy", ItemStack.class);
+        Class<?> nmsItemStackClazz = ReflUtil.getNMSClass("ItemStack");
+        Class<?> nbtTagCompoundClazz = ReflUtil.getNMSClass("NBTTagCompound");
+        Method saveNmsItemStackMethod = ReflUtil.getMethodCached(nmsItemStackClazz, "save", nbtTagCompoundClazz);
+        try {
+            Object nmsNbtTagCompoundObj = nbtTagCompoundClazz.newInstance();
+            Object nmsItemStackObj = asNMSCopyMethod.invoke(null, itemStack);
+            itemAsJsonObject = saveNmsItemStackMethod.invoke(nmsItemStackObj, nmsNbtTagCompoundObj);
+        } catch (Throwable t) {
+            Bukkit.getLogger().log(Level.SEVERE, "failed to serialize itemstack to nms item", t);
+            return null;
+        }
+        return itemAsJsonObject.toString();
+    }
 
-  public String convertItemStackToJson(ItemStack itemStack) {
-    Object itemAsJsonObject;
-    Class<?> craftItemStackClazz = ReflUtil.getOBCClass("inventory.CraftItemStack");
-    Method asNMSCopyMethod = ReflUtil.getMethodCached(craftItemStackClazz, "asNMSCopy", ItemStack.class);
-    Class<?> nmsItemStackClazz = ReflUtil.getNMSClass("ItemStack");
-    Class<?> nbtTagCompoundClazz = ReflUtil.getNMSClass("NBTTagCompound");
-    Method saveNmsItemStackMethod = ReflUtil.getMethodCached(nmsItemStackClazz, "save", nbtTagCompoundClazz);
-    try {
-      Object nmsNbtTagCompoundObj = nbtTagCompoundClazz.newInstance();
-      Object nmsItemStackObj = asNMSCopyMethod.invoke(null, itemStack);
-      itemAsJsonObject = saveNmsItemStackMethod.invoke(nmsItemStackObj, nmsNbtTagCompoundObj);
-    } catch (Throwable t) {
-      Bukkit.getLogger().log(Level.SEVERE, "failed to serialize itemstack to nms item", t);
-      return null;
-    } 
-    return itemAsJsonObject.toString();
-  }
-  
-  public ArrayList<OfflinePlayer> beta() {
-    ArrayList<OfflinePlayer> b = new ArrayList<>();
-    byte b1;
-    int i;
-    OfflinePlayer[] arrayOfOfflinePlayer;
-    for (i = (arrayOfOfflinePlayer = Bukkit.getOfflinePlayers()).length, b1 = 0; b1 < i; ) {
-      OfflinePlayer p = arrayOfOfflinePlayer[b1];
-      if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Beta"))
-        b.add(p); 
-      b1++;
-    } 
-    return b;
-  }
-  
-  public String convertItemStackToJsonRegular(ItemStack itemStack) {
-    net.minecraft.server.v1_8_R3.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
-    NBTTagCompound compound = new NBTTagCompound();
-      nmsItemStack.save(compound);
-      return compound.toString();
-  }
-  
-  public TextComponent itemHover(String chat, ItemStack item) {
-    TextComponent test = new TextComponent(ChatColor.translateAlternateColorCodes('&', chat));
-    BaseComponent[] hoverEventComponents = {new TextComponent(convertItemStackToJson(new ItemStack(Material.DIAMOND, 1)))};
-    test.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, hoverEventComponents));
-    return test;
-  }
-  
-  
-  public int getBlocks(String s) {
-      StringBuilder lvl = new StringBuilder();
-      s = ChatColor.stripColor(s);
-      char[] arrayOfChar = s.toCharArray();
-      int i = arrayOfChar.length;
-      for (int b = 0; b < i; b = (byte)(b + 1)) {
-          char c = arrayOfChar[b];
-          if (!this.isInt(c)) continue;
-          lvl.append(c);
-      }
-      if (this.isInt(lvl.toString())) {
-          return Integer.parseInt(lvl.toString());
-      }
-      return -1;
-  }
-	
-	public boolean isInt(String s) {
-      try {
-          Integer.parseInt(s);
-          return true;
-      }
-      catch (Exception e1) {
-          return false;
-      }
-  }
+    public ArrayList<OfflinePlayer> beta() {
+        ArrayList<OfflinePlayer> b = new ArrayList<>();
+        byte b1;
+        int i;
+        OfflinePlayer[] arrayOfOfflinePlayer;
+        for (i = (arrayOfOfflinePlayer = Bukkit.getOfflinePlayers()).length, b1 = 0; b1 < i; ) {
+            OfflinePlayer p = arrayOfOfflinePlayer[b1];
+            if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Beta"))
+                b.add(p);
+            b1++;
+        }
+        return b;
+    }
 
-  public boolean isInt(char ss) {
-      String s = String.valueOf(ss);
-      try {
-          Integer.parseInt(s);
-          return true;
-      }
-      catch (Exception e1) {
-          return false;
-      }
-  }
-  
-  
-  
-  public boolean isInteger(String s, int radix) {
-    if (s.isEmpty())
-      return false; 
-    for (int i = 0; i < s.length(); i++) {
-      if (i == 0 && s.charAt(i) == '-') {
-        if (s.length() == 1)
-          return false; 
-      } else if (Character.digit(s.charAt(i), radix) < 0) {
-        return false;
-      } 
-    } 
-    return true;
-  }
-  
-  public boolean isInteger(String s) {
-    return isInteger(s, 10);
-  }
+    public String convertItemStackToJsonRegular(ItemStack itemStack) {
+        net.minecraft.server.v1_8_R3.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
+        NBTTagCompound compound = new NBTTagCompound();
+        nmsItemStack.save(compound);
+        return compound.toString();
+    }
+
+    public TextComponent itemHover(String chat, ItemStack item) {
+        TextComponent test = new TextComponent(ChatColor.translateAlternateColorCodes('&', chat));
+        BaseComponent[] hoverEventComponents = {new TextComponent(convertItemStackToJson(new ItemStack(Material.DIAMOND, 1)))};
+        test.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, hoverEventComponents));
+        return test;
+    }
 
 
+    public int getBlocks(String s) {
+        StringBuilder lvl = new StringBuilder();
+        s = ChatColor.stripColor(s);
+        char[] arrayOfChar = s.toCharArray();
+        int i = arrayOfChar.length;
+        for (int b = 0; b < i; b = (byte) (b + 1)) {
+            char c = arrayOfChar[b];
+            if (!this.isInt(c)) continue;
+            lvl.append(c);
+        }
+        if (this.isInt(lvl.toString())) {
+            return Integer.parseInt(lvl.toString());
+        }
+        return -1;
+    }
 
-  @SuppressWarnings("deprecation")
-  public static double getSellPrice(ItemStack i) {
-        int shmulti = 500000*i.getData().getData();
-        if(i.getTypeId() == 4)
-            return 1000000+shmulti;
-        else if(i.getTypeId() == 48)
-            return 1500000+shmulti;
-        else if(i.getTypeId() == 1)
-            return 2000000+shmulti; // 7
-        else if(i.getTypeId() == 98)
-            return 5500000+shmulti; // 4
-        else if(i.getTypeId() == 24)
-            return 7500000+shmulti; //3
-        else if(i.getTypeId() == 179)
-            return 9500000+shmulti; // 3
-        else if(i.getTypeId() == 172)
-            return 10000000+shmulti;
-        else if(i.getTypeId() == 159)
-            return 10500000+shmulti; // 16
-        else if(i.getTypeId() == 45)
-            return 18500000+shmulti;
-        else if(i.getTypeId() == 16)
-            return 19000000+shmulti;
-        else if(i.getTypeId() == 173)
-            return 19500000+shmulti;
-        else if(i.getTypeId() == 15)
-            return 20000000+shmulti;
-        else if(i.getTypeId() == 42)
-            return 21000000+shmulti;
-        else if(i.getTypeId() == 14)
-            return 22000000+shmulti;
-        else if(i.getTypeId() == 41)
-            return 23000000+shmulti;
-        else if(i.getTypeId() == 73)
-            return 24000000+shmulti;
-        else if(i.getTypeId() == 152)
-            return 25000000+shmulti;
-        else if(i.getTypeId() == 21)
-            return 26000000+shmulti;
-        else if(i.getTypeId() == 22)
-            return 27000000+shmulti;
-        else if(i.getTypeId() == 56)
-            return 28000000+shmulti;
-        else if(i.getTypeId() == 57)
-            return 28500000+shmulti;
-        else if(i.getTypeId() == 129)
-            return 29000000+shmulti;
-        else if(i.getTypeId() == 133)
-            return 29500000+shmulti;
-        else if(i.getTypeId() == 87)
-            return 30000000+shmulti;
-        else if(i.getTypeId() == 112)
-            return 31000000+shmulti;
-        else if(i.getTypeId() == 153)
-            return 32000000+shmulti;
-        else if(i.getTypeId() == 155)
-            return 32500000+shmulti; // 3
-        else if(i.getTypeId() == 168)
-            return 34500000+shmulti; // 3
-        else if(i.getTypeId() == 49)
-            return 37500000+shmulti;
-        else if(i.getTypeId() == 121)
-            return 38000000+shmulti;
+    public boolean isInt(String s) {
+        try {
+            Integer.parseInt(s);
+            return true;
+        } catch (Exception e1) {
+            return false;
+        }
+    }
+
+    public boolean isInt(char ss) {
+        String s = String.valueOf(ss);
+        try {
+            Integer.parseInt(s);
+            return true;
+        } catch (Exception e1) {
+            return false;
+        }
+    }
+
+
+    public boolean isInteger(String s, int radix) {
+        if (s.isEmpty())
+            return false;
+        for (int i = 0; i < s.length(); i++) {
+            if (i == 0 && s.charAt(i) == '-') {
+                if (s.length() == 1)
+                    return false;
+            } else if (Character.digit(s.charAt(i), radix) < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isInteger(String s) {
+        return isInteger(s, 10);
+    }
+
+
+    @SuppressWarnings("deprecation")
+    public static double getSellPrice(ItemStack i) {
+        int shmulti = 500000 * i.getData().getData();
+        if (i.getTypeId() == 4)
+            return 1000000 + shmulti;
+        else if (i.getTypeId() == 48)
+            return 1500000 + shmulti;
+        else if (i.getTypeId() == 1)
+            return 2000000 + shmulti; // 7
+        else if (i.getTypeId() == 98)
+            return 5500000 + shmulti; // 4
+        else if (i.getTypeId() == 24)
+            return 7500000 + shmulti; //3
+        else if (i.getTypeId() == 179)
+            return 9500000 + shmulti; // 3
+        else if (i.getTypeId() == 172)
+            return 10000000 + shmulti;
+        else if (i.getTypeId() == 159)
+            return 10500000 + shmulti; // 16
+        else if (i.getTypeId() == 45)
+            return 18500000 + shmulti;
+        else if (i.getTypeId() == 16)
+            return 19000000 + shmulti;
+        else if (i.getTypeId() == 173)
+            return 19500000 + shmulti;
+        else if (i.getTypeId() == 15)
+            return 20000000 + shmulti;
+        else if (i.getTypeId() == 42)
+            return 21000000 + shmulti;
+        else if (i.getTypeId() == 14)
+            return 22000000 + shmulti;
+        else if (i.getTypeId() == 41)
+            return 23000000 + shmulti;
+        else if (i.getTypeId() == 73)
+            return 24000000 + shmulti;
+        else if (i.getTypeId() == 152)
+            return 25000000 + shmulti;
+        else if (i.getTypeId() == 21)
+            return 26000000 + shmulti;
+        else if (i.getTypeId() == 22)
+            return 27000000 + shmulti;
+        else if (i.getTypeId() == 56)
+            return 28000000 + shmulti;
+        else if (i.getTypeId() == 57)
+            return 28500000 + shmulti;
+        else if (i.getTypeId() == 129)
+            return 29000000 + shmulti;
+        else if (i.getTypeId() == 133)
+            return 29500000 + shmulti;
+        else if (i.getTypeId() == 87)
+            return 30000000 + shmulti;
+        else if (i.getTypeId() == 112)
+            return 31000000 + shmulti;
+        else if (i.getTypeId() == 153)
+            return 32000000 + shmulti;
+        else if (i.getTypeId() == 155)
+            return 32500000 + shmulti; // 3
+        else if (i.getTypeId() == 168)
+            return 34500000 + shmulti; // 3
+        else if (i.getTypeId() == 49)
+            return 37500000 + shmulti;
+        else if (i.getTypeId() == 121)
+            return 38000000 + shmulti;
         return 1;
-  }
+    }
 }

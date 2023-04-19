@@ -53,658 +53,635 @@ import java.util.Iterator;
 import java.util.Locale;
 
 public class Main extends JavaPlugin implements Listener, CommandExecutor {
-  private static  Main INSTANCE;
-  public static Permission perms = null;
-  public static Economy econ = null;
-  public static Chat chat = null;
-  public ArrayList<String> Sb = new ArrayList<>();
-  public static Plugin plugin;
-  public static Scoreboard sb;
-  SettingsManager settings = SettingsManager.getInstance();
-  public static Essentials ess;
+    private static Main INSTANCE;
+    public static Permission perms = null;
+    public static Economy econ = null;
+    public static Chat chat = null;
+    public ArrayList<String> Sb = new ArrayList<>();
+    public static Plugin plugin;
+    public static Scoreboard sb;
+    SettingsManager settings = SettingsManager.getInstance();
+    public static Essentials ess;
 
-  public static String c(String s) {
-      return ChatColor.translateAlternateColorCodes('&', s);
-  }
-
-  public void onEnable() {
-      
-      plugin = this;
-      INSTANCE = this;
-
-      this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-    
-    
-      ess = (Essentials)Bukkit.getPluginManager().getPlugin("Essentials");
-      setupEconomy();
-      this.settings.setup(this);
-      setupPermissions();
-      setupChat();
-    
-      if (this.settings.getData().getString("Broadcast") == null) {
-        this.settings.getData().set("Broadcast", "Tesssttt");
-        this.settings.saveData();
-      }
-      new jdaHandler(this);
-
-      if(settings.getOptions().getString("DiscordToken") == null){
-          settings.getOptions().set("DiscordToken", "");
-        }
-    
-
-    
-      TrinketHandler t = new TrinketHandler();
-      t.customDustCommon();
-      t.customDustRare();
-      t.customDustEpic();
-      t.customDustLegendary();
-      t.customDustHeroic();
-      t.commonDusting();
-      t.rareDusting();
-      t.epicDusting();
-      t.legendaryDusting();
-      t.commonDustingOpened();
-      t.rareDustingOpened();
-      t.epicDustingOpened();
-      t.legendaryDustingOpened();
-      t.heroicDusting();
-    
-    
-      getCommand("blocks").setExecutor(new BlocksHandler());
-      getCommand("ChatColor").setExecutor(new ChatHandler());
-      //getCommand("Chat").setExecutor(new ChatHandler());
-      getCommand("MuteChat").setExecutor(new ChatHandler());
-      getCommand("rename").setExecutor(new CMDRename());
-      getCommand("renamepaper").setExecutor(new CMDRename());
-      getCommand("relore").setExecutor(new CMDRename());
-      getCommand("Vote").setExecutor(new CMDVote());
-      getCommand("voteparty").setExecutor(new CMDVote());
-      getCommand("coupon").setExecutor(new CMDVoteShop());
-      getCommand("coupons").setExecutor(new CMDVoteShop());
-      getCommand("addvotepoint").setExecutor(new CMDVoteShop());
-      getCommand("Tags").setExecutor(new CMDTags());
-      getCommand("rewards").setExecutor(new CMDVote());
-      getCommand("Say").setExecutor(new CMDSay());
-      //getCommand("CoinFlip").setExecutor(new CMDCoinflip());
-      getCommand("Tokens").setExecutor(new TokensCMD());
-      getCommand("Token").setExecutor(new TokensCMD());
-      getCommand("nick").setExecutor(new CMDNickname());
-      getCommand("nickname").setExecutor(new CMDNickname());
-      getCommand("nicknames").setExecutor(new CMDNickname());
-      getCommand("mine").setExecutor(new CMDMine());
-      getCommand("vanish").setExecutor(new CMDVanish());
-      getCommand("v").setExecutor(new CMDVanish());
-      getCommand("ev").setExecutor(new CMDVanish());
-      getCommand("evanish").setExecutor(new CMDVanish());
-      getCommand("pick").setExecutor(new PickaxeLevel());
-      getCommand("pickaxe").setExecutor(new PickaxeLevel());
-      getCommand("resetallmines").setExecutor(new PickaxeLevel());
-    //  getCommand("laser").setExecutor(new PickaxeLevel());
-      getCommand("motdchange").setExecutor(this);
-      getCommand("workmode").setExecutor(this);
-      getCommand("prestige").setExecutor(new PrestigeHandler());
-      getCommand("giveenchant").setExecutor(new DonorItems());
-      getCommand("activeboost").setExecutor(new BoostsHandler());
-      getCommand("boost").setExecutor(new BoostsHandler());
-      getCommand("giveboost").setExecutor(new BoostsHandler());
-      getCommand("blockstop").setExecutor(new Leaderboards());
-      getCommand("givedust").setExecutor(new TrinketHandler());
-      getCommand("givetrinket").setExecutor(new TrinketHandler());
-      getCommand("trinket").setExecutor(new TrinketHandler());
-      getCommand("trinkets").setExecutor(new TrinketHandler());
-      getCommand("relore").setExecutor(new CMDItemEdits());
-      getCommand("addlore").setExecutor(new CMDItemEdits());
-      getCommand("dellore").setExecutor(new CMDItemEdits());
-      getCommand("trash").setExecutor(new CMDTrash());
-      getCommand("ac").setExecutor(new CMDAc());
-      getCommand("cratekey").setExecutor(new CrateHandler());
-      getCommand("crateinfo").setExecutor(new CrateHandler());
-      getCommand("openall").setExecutor(new CrateHandler());
-      getCommand("rankup").setExecutor(new CMDRankup());
-      getCommand("maxrankup").setExecutor(new CMDRankup());
-      getCommand("rankupmax").setExecutor(new CMDRankup());
-      getCommand("locksmith").setExecutor(new LocksmithHandler());
-      getCommand("ls").setExecutor(new LocksmithHandler());
-      getCommand("keys").setExecutor(new LocksmithHandler());
-      getCommand("clearchat").setExecutor(new CMDClearchat());
-      getCommand("dr").setExecutor(new CMDDr());
-      getCommand("dp").setExecutor(new CMDDp());
-      getCommand("multi").setExecutor(new SellHandler());
-      getCommand("withdraw").setExecutor(new SellHandler());
-      getCommand("setrank").setExecutor(new CMDRankup());
-      getCommand("forcereset").setExecutor(new SellHandler());
-      getCommand("bpreset").setExecutor(new SellHandler());
-      getCommand("resetmine").setExecutor(new SellHandler());
-      getCommand("checkminereset").setExecutor(new MineHandler());
-      getCommand("rm").setExecutor(new SellHandler());
-      getCommand("autorankup").setExecutor(new RankupHandler());
-      getCommand("aru").setExecutor(new RankupHandler());
-      getCommand("giveplotitem").setExecutor(new MineHandler());
-      getCommand("buymsg").setExecutor( new BuycraftUtil());
-      getCommand("createcoupon").setExecutor( new BuycraftUtil());
-      getCommand("options").setExecutor(new CMDOptions());
-      getCommand("daily").setExecutor(new CMDDaily());
-      getCommand("discord").setExecutor( new JDAEvents());
-      getCommand("ranktop").setExecutor( new Leaderboards());
-      getCommand("rankstop").setExecutor( new Leaderboards());
-      getCommand("givemoney").setExecutor( new RankupHandler());
-      getCommand("randomtag").setExecutor( new TagsHandler());
-      getCommand("givecrate").setExecutor(new MysteryBoxHandler());
-      getCommand("givexp").setExecutor(new MysteryBoxHandler());
-      getCommand("giverank").setExecutor(new CMDRanks());
-      getCommand("removemine").setExecutor(new MineHandler());
-      getCommand("updatemine").setExecutor(new MineHandler());
-      getCommand("redeem").setExecutor(new BuycraftUtil());
-      getCommand("stats").setExecutor(new CMDStats());
-      //getCommand("ah").setExecutor(new AuctionHouseHandler());
-      getCommand("auctionhouse").setExecutor(new AuctionHouseHandler());
-      getCommand("gems").setExecutor(new MinePouchHandler());
-      getCommand("gem").setExecutor(new MinePouchHandler());
-      getCommand("help").setExecutor(new CMDHelp());
-      getCommand("leaderboard").setExecutor(new Leaderboards());
-      getCommand("leaderboards").setExecutor(new Leaderboards());
-      getCommand("lb").setExecutor(new Leaderboards());
-      getCommand("lbs").setExecutor(new Leaderboards());
-      getCommand("trade").setExecutor(new CMDTrade());
-      getCommand("gang").setExecutor(new CMDGang());
-      getCommand("g").setExecutor(new CMDGang());
-      getCommand("genesis").setExecutor(new CMDOptions());
-      registerEvents(this, new Listener[] { new CMDVanish() });
-      registerEvents(this, new Listener[] { new MomentumHandler() });
-      registerEvents(this, new Listener[] { new SkillsEventsListener() });
-      registerEvents(this, new Listener[] { new ReminderHandler() });
-      registerEvents(this, new Listener[] { new CMDGang() });
-      registerEvents(this, new Listener[] { new CMDTrade() });
-      registerEvents(this, new Listener[] { new Leaderboards() });
-      registerEvents(this, new Listener[] { new CMDHelp() });
-      registerEvents(this, new Listener[] { new MinePouchHandler() });
-      registerEvents(this, new Listener[] { new AuctionHouseHandler() });
-      registerEvents(this, new Listener[] { new CMDStats() });
-      registerEvents(this, new Listener[] { new CMDRanks() });
-      registerEvents(this, new Listener[] { new CMDVoteShop() });
-      registerEvents(this, new Listener[] { new TokensCMD() });
-      registerEvents(this, new Listener[] { new KitAndWarp() });
-      registerEvents(this, new Listener[] { new CMDTags() });
-      registerEvents(this, new Listener[] { new CMDCoinflip() });
-      registerEvents(this, new Listener[] { new ProtectOP() });
-      registerEvents(this, new Listener[] { new TokenShop() });
-      registerEvents(this, new Listener[] { new BlocksHandler() });
-      registerEvents(this, new Listener[] { new ChatHandler() });
-      registerEvents(this, new Listener[] { new CMDVote() });
-      registerEvents(this, new Listener[] { new DeathLogger() });
-      registerEvents(this, new Listener[] { new TokensListener() });
-      registerEvents(this, new Listener[] { new CMDNickname() });
-      registerEvents(this, new Listener[] { new PickaxeLevel() });
-      registerEvents(this, new Listener[] { new Enchants() });
-      registerEvents(this, new Listener[] { new PickXPHandler() });
-      registerEvents(this, new Listener[] { new BoostsHandler() });
-      registerEvents(this, new Listener[] { new MineHandler() });
-      registerEvents(this, new Listener[] { new Leaderboards() });
-      registerEvents(this, new Listener[] { new CMDMine() });
-      registerEvents(this, new Listener[] { new DonorItems() });
-      registerEvents(this, new Listener[] { new CrateHandler() });
-      registerEvents(this, new Listener[] { new SellHandler() });
-      registerEvents(this, new Listener[] { new PlayerDataHandler() });
-      registerEvents(this, new Listener[] { new KeysHandler() });
-      registerEvents(this, new Listener[] { new LocksmithHandler() });
-      registerEvents(this, new Listener[] { new RankupHandler() });
-      registerEvents(this, new Listener[] { new ScoreboardHandler() });
-      registerEvents(this, new Listener[] { new TrinketHandler() });
-      registerEvents(this, new Listener[] { new CMDOptions() });
-      registerEvents(this, new Listener[] { new CMDDaily() });
-      registerEvents(this, new Listener[] { new JDAEvents() });
-      registerEvents(this, new Listener[] { new MysteryBoxHandler() });
-      registerEvents(this, new Listener[] { new PrestigeHandler() });
-      registerEvents(this, new Listener[] { new PickaxeSkillTree() });
-      registerEvents(this, new Listener[] { this});
-      // For when sale is active, use this ||
-       Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "motdchange sale 20");
-      // For when maintenance active, use this ||
-      //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "workmode enable");
-
-      new BukkitRunnable() {
-          @Override
-          public void run(){
-              for(Player p : Bukkit.getOnlinePlayers()) {
-                  if(MomentumHandler.startedMining.containsKey(p.getUniqueId())) {
-                      Date date = MomentumHandler.startedMining.get(p.getUniqueId());
-                      Date dateNOW = MomentumHandler.getDate();
-                      int seconds = (int) ((dateNOW.getTime() - date.getTime()) / 1000);
-                      if (seconds >= 60) {
-                          MomentumHandler.mining.remove(p.getUniqueId());
-                      }
-                  }
-                  if(MomentumHandler.mining.contains(p.getUniqueId())) {
-                      MomentumHandler.addMomentum(p);
-                  } else {
-                      MomentumHandler.removeMomentum(p);
-                  }
-                  MomentumHandler.setActionBar(p, MomentumHandler.momentum.get(p.getUniqueId()));
-                  MomentumHandler.sendTitleMomentum(p);
-                  if(!p.isOnline()) {
-                      cancel();
-                  }
-              }
-          }
-      }.runTaskTimer(this, 0, 20L);
-
-
-      new BukkitRunnable() {
-          @Override
-          public void run() {
-              for(Player p : Bukkit.getOnlinePlayers()) {
-                  //SPEED
-                  if(settings.getOptions().getBoolean(p.getUniqueId().toString()+".Speed-Effect")) {
-                      if (!p.hasPotionEffect(PotionEffectType.SPEED)) {
-                          p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999, 5));
-                      }
-                  } else {
-                      if (p.hasPotionEffect(PotionEffectType.SPEED)) {
-                          p.removePotionEffect(PotionEffectType.SPEED);
-                      }
-                  }
-                  //HASTE
-                  if(settings.getOptions().getBoolean(p.getUniqueId().toString()+".Haste-Effect")) {
-                      if (!p.hasPotionEffect(PotionEffectType.FAST_DIGGING)) {
-                          p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 999999, 10));
-                      }
-                  } else {
-                      if (p.hasPotionEffect(PotionEffectType.FAST_DIGGING)) {
-                          p.removePotionEffect(PotionEffectType.FAST_DIGGING);
-                      }
-                  }
-                  //NIGHT VISION
-                  if(settings.getOptions().getBoolean(p.getUniqueId().toString()+".Night-Vision-Effect")) {
-                      if (!p.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
-                          p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 999999, 2));
-                      }
-                  } else {
-                      if (p.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
-                          p.removePotionEffect(PotionEffectType.NIGHT_VISION);
-                      }
-                  }
-              }
-          }
-      }.runTaskTimer(this, 0, 5);
-
-
-    new BukkitRunnable() {
-        @Override
-        public void run(){
-            for(String s : settings.getPlayerData().getKeys(false)){
-                if(!(settings.getPlayerData().getInt(s+".KitDemiGodKeys") == 0)) {
-                    int countdown = settings.getPlayerData().getInt(s+".KitDemiGodKeys");
-                    int replace = countdown-1;
-                    settings.getPlayerData().set(s+".KitDemiGodKeys", replace);
-                }
-                if(!(settings.getPlayerData().getInt(s+".KitTitanKeys") == 0)) {
-                    int countdown = settings.getPlayerData().getInt(s+".KitTitanKeys");
-                    int replace = countdown-1;
-                    settings.getPlayerData().set(s+".KitTitanKeys", replace);
-                }
-                if(!(settings.getPlayerData().getInt(s+".KitGodKeys") == 0)) {
-                    int countdown = settings.getPlayerData().getInt(s+".KitGodKeys");
-                    int replace = countdown-1;
-                    settings.getPlayerData().set(s+".KitGodKeys", replace);
-                }
-                if(!(settings.getPlayerData().getInt(s+".KitOlympianKeys") == 0)) {
-                    int countdown = settings.getPlayerData().getInt(s+".KitOlympianKeys");
-                    int replace = countdown-1;
-                    settings.getPlayerData().set(s+".KitOlympianKeys", replace);
-                }
-                if(!(settings.getPlayerData().getInt(s+".KitGenesisKeys") == 0)) {
-                    int countdown = settings.getPlayerData().getInt(s+".KitGenesisKeys");
-                    int replace = countdown-1;
-                    settings.getPlayerData().set(s+".KitGenesisKeys", replace);
-                }
-                if(!(settings.getPlayerData().getInt(s+".KitGod") == 0)) {
-                    int countdown = settings.getPlayerData().getInt(s+".KitGod");
-                    int replace = countdown-1;
-                    settings.getPlayerData().set(s+".KitGod", replace);
-                }
-                if(!(settings.getPlayerData().getInt(s+".KitOlympian") == 0)) {
-                    int countdown = settings.getPlayerData().getInt(s+".KitOlympian");
-                    int replace = countdown-1;
-                    settings.getPlayerData().set(s+".KitOlympian", replace);
-                }
-                if(!(settings.getPlayerData().getInt(s+".KitGenesis") == 0)) {
-                    int countdown = settings.getPlayerData().getInt(s+".KitGenesis");
-                    int replace = countdown-1;
-                    settings.getPlayerData().set(s+".KitGenesis", replace);
-                }
-            }
-        }
-    }.runTaskTimer(this, 0, 20L);
-
-      new BukkitRunnable() {
-
-          @Override
-          public void run() {
-              JDAEvents.getInstance().serverLink();
-          }
-      }.runTaskTimer(this, 0L, 20*60L);
-
-    
-    new BukkitRunnable() {
-
-		@Override
-		public void run() {
-			for(Player p : Bukkit.getOnlinePlayers()) {
-			ScoreboardHandler.updateSB(p);
-			if (!p.isOnline()) {
-			     cancel();
-			 }
-			}
-		}
- }.runTaskTimer(this, 0L, 20*2L);
-
-      new BukkitRunnable() {
-          @Override
-          public void run() { // LAG SOURCE
-              for(Player p : Bukkit.getOnlinePlayers()) {
-                 if(RankupHandler.aru.contains(p)){
-                     RankupHandler.getInstance().MaxRankup(p);
-                 }
-                  if (!p.isOnline()) {
-                      cancel();
-                  }
-              }
-          }
-      }.runTaskTimer(this, 0L, 20L);
- 
-
-
-new BukkitRunnable() {
-	@Override
-	public void run() {
-		Leaderboards.addTimePlayed();
-	}
-}.runTaskTimer(this, 0L, 20L);
- 
-    
-    
-    
-    
-    Iterator<Recipe> it = getServer().recipeIterator();
-    while (it.hasNext()) {
-      Recipe re = it.next();
-      if (re != null && re.getResult().getType() == Material.GOLDEN_APPLE)
-        it.remove(); 
+    public static String c(String s) {
+        return ChatColor.translateAlternateColorCodes('&', s);
     }
-    BoostsHandler.nextUpsell.clear();
-    BoostsHandler.nextUpsell.addAll(this.settings.getBoost().getStringList("nextUpSell"));
-    BoostsHandler.nextUpxp.clear();
-    BoostsHandler.nextUpxp.addAll(this.settings.getBoost().getStringList("nextUpXP"));
-    
-    if(this.settings.getBoost().getDouble("ActiveSell.Amp") != 0.0D) {
-    	int timeleft = this.settings.getBoost().getInt("TimeLeftSell");
-    	double amp = this.settings.getBoost().getDouble("ActiveSell.Amp");
-    	String act = this.settings.getBoost().getString("ActivatorSell");
-    	this.settings.getBoost().set("TimeLeftSell", 0);
+
+    public void onEnable() {
+
+        plugin = this;
+        INSTANCE = this;
+
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+
+
+        ess = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+        setupEconomy();
+        this.settings.setup(this);
+        setupPermissions();
+        setupChat();
+
+        if (this.settings.getData().getString("Broadcast") == null) {
+            this.settings.getData().set("Broadcast", "Tesssttt");
+            this.settings.saveData();
+        }
+        new jdaHandler(this);
+
+        if (settings.getOptions().getString("DiscordToken") == null) {
+            settings.getOptions().set("DiscordToken", "");
+        }
+
+
+        TrinketHandler t = new TrinketHandler();
+        t.customDustCommon();
+        t.customDustRare();
+        t.customDustEpic();
+        t.customDustLegendary();
+        t.customDustHeroic();
+        t.commonDusting();
+        t.rareDusting();
+        t.epicDusting();
+        t.legendaryDusting();
+        t.commonDustingOpened();
+        t.rareDustingOpened();
+        t.epicDustingOpened();
+        t.legendaryDustingOpened();
+        t.heroicDusting();
+
+
+        getCommand("blocks").setExecutor(new BlocksHandler());
+        getCommand("ChatColor").setExecutor(new ChatHandler());
+        //getCommand("Chat").setExecutor(new ChatHandler());
+        getCommand("MuteChat").setExecutor(new ChatHandler());
+        getCommand("rename").setExecutor(new CMDRename());
+        getCommand("renamepaper").setExecutor(new CMDRename());
+        getCommand("relore").setExecutor(new CMDRename());
+        getCommand("Vote").setExecutor(new CMDVote());
+        getCommand("voteparty").setExecutor(new CMDVote());
+        getCommand("coupon").setExecutor(new CMDVoteShop());
+        getCommand("coupons").setExecutor(new CMDVoteShop());
+        getCommand("addvotepoint").setExecutor(new CMDVoteShop());
+        getCommand("Tags").setExecutor(new CMDTags());
+        getCommand("rewards").setExecutor(new CMDVote());
+        getCommand("Say").setExecutor(new CMDSay());
+        //getCommand("CoinFlip").setExecutor(new CMDCoinflip());
+        getCommand("Tokens").setExecutor(new TokensCMD());
+        getCommand("Token").setExecutor(new TokensCMD());
+        getCommand("nick").setExecutor(new CMDNickname());
+        getCommand("nickname").setExecutor(new CMDNickname());
+        getCommand("nicknames").setExecutor(new CMDNickname());
+        getCommand("mine").setExecutor(new CMDMine());
+        getCommand("vanish").setExecutor(new CMDVanish());
+        getCommand("v").setExecutor(new CMDVanish());
+        getCommand("ev").setExecutor(new CMDVanish());
+        getCommand("evanish").setExecutor(new CMDVanish());
+        getCommand("pick").setExecutor(new PickaxeLevel());
+        getCommand("pickaxe").setExecutor(new PickaxeLevel());
+        getCommand("resetallmines").setExecutor(new PickaxeLevel());
+        //  getCommand("laser").setExecutor(new PickaxeLevel());
+        getCommand("motdchange").setExecutor(this);
+        getCommand("workmode").setExecutor(this);
+        getCommand("prestige").setExecutor(new PrestigeHandler());
+        getCommand("giveenchant").setExecutor(new DonorItems());
+        getCommand("activeboost").setExecutor(new BoostsHandler());
+        getCommand("boost").setExecutor(new BoostsHandler());
+        getCommand("giveboost").setExecutor(new BoostsHandler());
+        getCommand("blockstop").setExecutor(new Leaderboards());
+        getCommand("givedust").setExecutor(new TrinketHandler());
+        getCommand("givetrinket").setExecutor(new TrinketHandler());
+        getCommand("trinket").setExecutor(new TrinketHandler());
+        getCommand("trinkets").setExecutor(new TrinketHandler());
+        getCommand("relore").setExecutor(new CMDItemEdits());
+        getCommand("addlore").setExecutor(new CMDItemEdits());
+        getCommand("dellore").setExecutor(new CMDItemEdits());
+        getCommand("trash").setExecutor(new CMDTrash());
+        getCommand("ac").setExecutor(new CMDAc());
+        getCommand("cratekey").setExecutor(new CrateHandler());
+        getCommand("crateinfo").setExecutor(new CrateHandler());
+        getCommand("openall").setExecutor(new CrateHandler());
+        getCommand("rankup").setExecutor(new CMDRankup());
+        getCommand("maxrankup").setExecutor(new CMDRankup());
+        getCommand("rankupmax").setExecutor(new CMDRankup());
+        getCommand("locksmith").setExecutor(new LocksmithHandler());
+        getCommand("ls").setExecutor(new LocksmithHandler());
+        getCommand("keys").setExecutor(new LocksmithHandler());
+        getCommand("clearchat").setExecutor(new CMDClearchat());
+        getCommand("dr").setExecutor(new CMDDr());
+        getCommand("dp").setExecutor(new CMDDp());
+        getCommand("multi").setExecutor(new SellHandler());
+        getCommand("withdraw").setExecutor(new SellHandler());
+        getCommand("setrank").setExecutor(new CMDRankup());
+        getCommand("forcereset").setExecutor(new SellHandler());
+        getCommand("bpreset").setExecutor(new SellHandler());
+        getCommand("resetmine").setExecutor(new SellHandler());
+        getCommand("checkminereset").setExecutor(new MineHandler());
+        getCommand("rm").setExecutor(new SellHandler());
+        getCommand("autorankup").setExecutor(new RankupHandler());
+        getCommand("aru").setExecutor(new RankupHandler());
+        getCommand("giveplotitem").setExecutor(new MineHandler());
+        getCommand("buymsg").setExecutor(new BuycraftUtil());
+        getCommand("createcoupon").setExecutor(new BuycraftUtil());
+        getCommand("options").setExecutor(new CMDOptions());
+        getCommand("daily").setExecutor(new CMDDaily());
+        getCommand("discord").setExecutor(new JDAEvents());
+        getCommand("ranktop").setExecutor(new Leaderboards());
+        getCommand("rankstop").setExecutor(new Leaderboards());
+        getCommand("givemoney").setExecutor(new RankupHandler());
+        getCommand("randomtag").setExecutor(new TagsHandler());
+        getCommand("givecrate").setExecutor(new MysteryBoxHandler());
+        getCommand("givexp").setExecutor(new MysteryBoxHandler());
+        getCommand("giverank").setExecutor(new CMDRanks());
+        getCommand("removemine").setExecutor(new MineHandler());
+        getCommand("updatemine").setExecutor(new MineHandler());
+        getCommand("redeem").setExecutor(new BuycraftUtil());
+        getCommand("stats").setExecutor(new CMDStats());
+        //getCommand("ah").setExecutor(new AuctionHouseHandler());
+        getCommand("auctionhouse").setExecutor(new AuctionHouseHandler());
+        getCommand("gems").setExecutor(new MinePouchHandler());
+        getCommand("gem").setExecutor(new MinePouchHandler());
+        getCommand("help").setExecutor(new CMDHelp());
+        getCommand("leaderboard").setExecutor(new Leaderboards());
+        getCommand("leaderboards").setExecutor(new Leaderboards());
+        getCommand("lb").setExecutor(new Leaderboards());
+        getCommand("lbs").setExecutor(new Leaderboards());
+        getCommand("trade").setExecutor(new CMDTrade());
+        getCommand("gang").setExecutor(new CMDGang());
+        getCommand("g").setExecutor(new CMDGang());
+        getCommand("genesis").setExecutor(new CMDOptions());
+        registerEvents(this, new Listener[]{new CMDVanish()});
+        registerEvents(this, new Listener[]{new MomentumHandler()});
+        registerEvents(this, new Listener[]{new SkillsEventsListener()});
+        registerEvents(this, new Listener[]{new ReminderHandler()});
+        registerEvents(this, new Listener[]{new CMDGang()});
+        registerEvents(this, new Listener[]{new CMDTrade()});
+        registerEvents(this, new Listener[]{new Leaderboards()});
+        registerEvents(this, new Listener[]{new CMDHelp()});
+        registerEvents(this, new Listener[]{new MinePouchHandler()});
+        registerEvents(this, new Listener[]{new AuctionHouseHandler()});
+        registerEvents(this, new Listener[]{new CMDStats()});
+        registerEvents(this, new Listener[]{new CMDRanks()});
+        registerEvents(this, new Listener[]{new CMDVoteShop()});
+        registerEvents(this, new Listener[]{new TokensCMD()});
+        registerEvents(this, new Listener[]{new KitAndWarp()});
+        registerEvents(this, new Listener[]{new CMDTags()});
+        registerEvents(this, new Listener[]{new CMDCoinflip()});
+        registerEvents(this, new Listener[]{new ProtectOP()});
+        registerEvents(this, new Listener[]{new TokenShop()});
+        registerEvents(this, new Listener[]{new BlocksHandler()});
+        registerEvents(this, new Listener[]{new ChatHandler()});
+        registerEvents(this, new Listener[]{new CMDVote()});
+        registerEvents(this, new Listener[]{new DeathLogger()});
+        registerEvents(this, new Listener[]{new TokensListener()});
+        registerEvents(this, new Listener[]{new CMDNickname()});
+        registerEvents(this, new Listener[]{new PickaxeLevel()});
+        registerEvents(this, new Listener[]{new Enchants()});
+        registerEvents(this, new Listener[]{new PickXPHandler()});
+        registerEvents(this, new Listener[]{new BoostsHandler()});
+        registerEvents(this, new Listener[]{new MineHandler()});
+        registerEvents(this, new Listener[]{new Leaderboards()});
+        registerEvents(this, new Listener[]{new CMDMine()});
+        registerEvents(this, new Listener[]{new DonorItems()});
+        registerEvents(this, new Listener[]{new CrateHandler()});
+        registerEvents(this, new Listener[]{new SellHandler()});
+        registerEvents(this, new Listener[]{new PlayerDataHandler()});
+        registerEvents(this, new Listener[]{new KeysHandler()});
+        registerEvents(this, new Listener[]{new LocksmithHandler()});
+        registerEvents(this, new Listener[]{new RankupHandler()});
+        registerEvents(this, new Listener[]{new ScoreboardHandler()});
+        registerEvents(this, new Listener[]{new TrinketHandler()});
+        registerEvents(this, new Listener[]{new CMDOptions()});
+        registerEvents(this, new Listener[]{new CMDDaily()});
+        registerEvents(this, new Listener[]{new JDAEvents()});
+        registerEvents(this, new Listener[]{new MysteryBoxHandler()});
+        registerEvents(this, new Listener[]{new PrestigeHandler()});
+        registerEvents(this, new Listener[]{new PickaxeSkillTree()});
+        registerEvents(this, new Listener[]{this});
+        // For when sale is active, use this ||
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "motdchange sale 20");
+        // For when maintenance active, use this ||
+        //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "workmode enable");
+
         new BukkitRunnable() {
+            @Override
             public void run() {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "activeboost sell " + act + " " + amp + " " + timeleft);
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    if (MomentumHandler.startedMining.containsKey(p.getUniqueId())) {
+                        Date date = MomentumHandler.startedMining.get(p.getUniqueId());
+                        Date dateNOW = MomentumHandler.getDate();
+                        int seconds = (int) ((dateNOW.getTime() - date.getTime()) / 1000);
+                        if (seconds >= 60) {
+                            MomentumHandler.mining.remove(p.getUniqueId());
+                        }
+                    }
+                    if (MomentumHandler.mining.contains(p.getUniqueId())) {
+                        MomentumHandler.addMomentum(p);
+                    } else {
+                        MomentumHandler.removeMomentum(p);
+                    }
+                    MomentumHandler.setActionBar(p, MomentumHandler.momentum.get(p.getUniqueId()));
+                    MomentumHandler.sendTitleMomentum(p);
+                    if (!p.isOnline()) {
+                        cancel();
+                    }
+                }
             }
-        }.runTaskLater(this, 20*5L);
-    	
-    }
-    if(this.settings.getBoost().getInt("ActiveXP.Amp") != 0) {
-    	int timeleft = this.settings.getBoost().getInt("TimeLeftXP");
-    	int amp = this.settings.getBoost().getInt("ActiveXP.Amp");
-    	String act = this.settings.getBoost().getString("ActivatorXP");
-    	this.settings.getBoost().set("TimeLeftXP", 0);
-    	new BukkitRunnable() {
+        }.runTaskTimer(this, 0, 20L);
+
+
+        new BukkitRunnable() {
+            @Override
             public void run() {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"activeboost XP "+act+" "+amp+" "+timeleft);
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    //SPEED
+                    if (settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Speed-Effect")) {
+                        if (!p.hasPotionEffect(PotionEffectType.SPEED)) {
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999, 5));
+                        }
+                    } else {
+                        if (p.hasPotionEffect(PotionEffectType.SPEED)) {
+                            p.removePotionEffect(PotionEffectType.SPEED);
+                        }
+                    }
+                    //HASTE
+                    if (settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Haste-Effect")) {
+                        if (!p.hasPotionEffect(PotionEffectType.FAST_DIGGING)) {
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 999999, 10));
+                        }
+                    } else {
+                        if (p.hasPotionEffect(PotionEffectType.FAST_DIGGING)) {
+                            p.removePotionEffect(PotionEffectType.FAST_DIGGING);
+                        }
+                    }
+                    //NIGHT VISION
+                    if (settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Night-Vision-Effect")) {
+                        if (!p.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 999999, 2));
+                        }
+                    } else {
+                        if (p.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
+                            p.removePotionEffect(PotionEffectType.NIGHT_VISION);
+                        }
+                    }
+                }
             }
+        }.runTaskTimer(this, 0, 5);
 
 
-        }.runTaskLater(this, 20*5L);
-    	
-    }
-    
-    
-    
-    
-    Methods.schedule(this, new Runnable()
-    {
-        public void run()
-        {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (String s : settings.getPlayerData().getKeys(false)) {
+                    if (!(settings.getPlayerData().getInt(s + ".KitDemiGodKeys") == 0)) {
+                        int countdown = settings.getPlayerData().getInt(s + ".KitDemiGodKeys");
+                        int replace = countdown - 1;
+                        settings.getPlayerData().set(s + ".KitDemiGodKeys", replace);
+                    }
+                    if (!(settings.getPlayerData().getInt(s + ".KitTitanKeys") == 0)) {
+                        int countdown = settings.getPlayerData().getInt(s + ".KitTitanKeys");
+                        int replace = countdown - 1;
+                        settings.getPlayerData().set(s + ".KitTitanKeys", replace);
+                    }
+                    if (!(settings.getPlayerData().getInt(s + ".KitGodKeys") == 0)) {
+                        int countdown = settings.getPlayerData().getInt(s + ".KitGodKeys");
+                        int replace = countdown - 1;
+                        settings.getPlayerData().set(s + ".KitGodKeys", replace);
+                    }
+                    if (!(settings.getPlayerData().getInt(s + ".KitOlympianKeys") == 0)) {
+                        int countdown = settings.getPlayerData().getInt(s + ".KitOlympianKeys");
+                        int replace = countdown - 1;
+                        settings.getPlayerData().set(s + ".KitOlympianKeys", replace);
+                    }
+                    if (!(settings.getPlayerData().getInt(s + ".KitGenesisKeys") == 0)) {
+                        int countdown = settings.getPlayerData().getInt(s + ".KitGenesisKeys");
+                        int replace = countdown - 1;
+                        settings.getPlayerData().set(s + ".KitGenesisKeys", replace);
+                    }
+                    if (!(settings.getPlayerData().getInt(s + ".KitGod") == 0)) {
+                        int countdown = settings.getPlayerData().getInt(s + ".KitGod");
+                        int replace = countdown - 1;
+                        settings.getPlayerData().set(s + ".KitGod", replace);
+                    }
+                    if (!(settings.getPlayerData().getInt(s + ".KitOlympian") == 0)) {
+                        int countdown = settings.getPlayerData().getInt(s + ".KitOlympian");
+                        int replace = countdown - 1;
+                        settings.getPlayerData().set(s + ".KitOlympian", replace);
+                    }
+                    if (!(settings.getPlayerData().getInt(s + ".KitGenesis") == 0)) {
+                        int countdown = settings.getPlayerData().getInt(s + ".KitGenesis");
+                        int replace = countdown - 1;
+                        settings.getPlayerData().set(s + ".KitGenesis", replace);
+                    }
+                }
+            }
+        }.runTaskTimer(this, 0, 20L);
 
-           Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &cServer Restart in 1 Hour!");
+        new BukkitRunnable() {
 
-           new BukkitRunnable() {
-        	   @Override
-        	   public void run() {
-        		   Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &cServer Restart in 30 Minutes!");
-        	   }
-           }.runTaskLater(Main.plugin, 20*60*30);
-           new BukkitRunnable() {
-        	   @Override
-        	   public void run() {
-        		   Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &cServer Restart in 10 Minutes!");
-        	   }
-           }.runTaskLater(Main.plugin, 20*60*50);
-           new BukkitRunnable() {
-        	   @Override
-        	   public void run() {
-        		   Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &cServer Restart in 1 Minute!");
-        	   }
-           }.runTaskLater(Main.plugin, 20*60*59);
+            @Override
+            public void run() {
+                JDAEvents.getInstance().serverLink();
+            }
+        }.runTaskTimer(this, 0L, 20 * 60L);
 
 
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    ScoreboardHandler.updateSB(p);
+                    if (!p.isOnline()) {
+                        cancel();
+                    }
+                }
+            }
+        }.runTaskTimer(this, 0L, 20 * 2L);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() { // LAG SOURCE
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    if (RankupHandler.aru.contains(p)) {
+                        RankupHandler.getInstance().MaxRankup(p);
+                    }
+                    if (!p.isOnline()) {
+                        cancel();
+                    }
+                }
+            }
+        }.runTaskTimer(this, 0L, 20L);
+
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Leaderboards.addTimePlayed();
+            }
+        }.runTaskTimer(this, 0L, 20L);
+
+
+        Iterator<Recipe> it = getServer().recipeIterator();
+        while (it.hasNext()) {
+            Recipe re = it.next();
+            if (re != null && re.getResult().getType() == Material.GOLDEN_APPLE)
+                it.remove();
+        }
+        BoostsHandler.nextUpsell.clear();
+        BoostsHandler.nextUpsell.addAll(this.settings.getBoost().getStringList("nextUpSell"));
+        BoostsHandler.nextUpxp.clear();
+        BoostsHandler.nextUpxp.addAll(this.settings.getBoost().getStringList("nextUpXP"));
+
+        if (this.settings.getBoost().getDouble("ActiveSell.Amp") != 0.0D) {
+            int timeleft = this.settings.getBoost().getInt("TimeLeftSell");
+            double amp = this.settings.getBoost().getDouble("ActiveSell.Amp");
+            String act = this.settings.getBoost().getString("ActivatorSell");
+            this.settings.getBoost().set("TimeLeftSell", 0);
+            new BukkitRunnable() {
+                public void run() {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "activeboost sell " + act + " " + amp + " " + timeleft);
+                }
+            }.runTaskLater(this, 20 * 5L);
 
         }
-    }, 3);
-    
-    
-    Methods.schedule(this, new Runnable()
-	    {
-	        public void run()
-	        {
+        if (this.settings.getBoost().getInt("ActiveXP.Amp") != 0) {
+            int timeleft = this.settings.getBoost().getInt("TimeLeftXP");
+            int amp = this.settings.getBoost().getInt("ActiveXP.Amp");
+            String act = this.settings.getBoost().getString("ActivatorXP");
+            this.settings.getBoost().set("TimeLeftXP", 0);
+            new BukkitRunnable() {
+                public void run() {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "activeboost XP " + act + " " + amp + " " + timeleft);
+                }
 
-	           Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "restart");
-	        }
-	    }, 4);
-    
-    
-    new BukkitRunnable() {
-        @Override
-        public void run() {
-            settings.saveGangs();
+
+            }.runTaskLater(this, 20 * 5L);
+
         }
-    }.runTaskTimer(this, 0, 20*150L);
-    
-  }
-  
-  
- 
-  
-  public static Main getInstance() {
-	  return INSTANCE;
-  }
-  
-  
-  private String motd = c("&3&lSeason 3!   &c&lGenesis &b&lPrison!   &e&l[1.8.x-1.19.x]\n                        &c&l>> &a&lJoin Now! &c&l<<");
-  private String savemotd = "";
-  
-  @Override
-	public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-	  
-	  if(label.equalsIgnoreCase("motdchange")) {
-          if(!cs.hasPermission("rank.owner")) return false;
-		  if(args.length == 2) {
-              if(args[0].equalsIgnoreCase("sale")) {
 
-                 motd = c("&3&lSeason 3!   &c&lGenesis &b&lPrison!   &e&l[1.8.x-1.19.x]\n                    &c&l>> &a&l"+args[1]+"% Sale Now! &c&l<<");
-              }
-          }
-	  }
-      if(label.equalsIgnoreCase("workmode")) {
-          if(!cs.hasPermission("rank.owner")) return false;
-          if(args.length == 1){
-              if(args[0].equalsIgnoreCase("enable")){                             //&4&lMaintenance Mode
-                  savemotd = motd;
-                  motd = c("                        &c&lGenesis &b&lPrison!\n                   &4&lMaintenance Mode");
-              }
-              if(args[0].equalsIgnoreCase("disable")){
-                  motd = savemotd;
-              }
-          }
-      }
-	  
-	  
-	  
-	  return false;
-  }
-  
-  @EventHandler
-  public void motd(ServerListPingEvent e) {
-	  e.setMotd(motd);
-  }
-  
 
-  public void savePickaxe(Player p) {
-      ItemStack[] inv = p.getInventory().getContents();
+        Methods.schedule(this, new Runnable() {
+            public void run() {
 
-      for(ItemStack i : inv) {
-          if(i == null) continue;
-          if(i.getType() == null) continue;
-          if(i.getType().equals(Material.WOOD_PICKAXE) || i.getType().equals(Material.STONE_PICKAXE) || i.getType().equals(Material.IRON_PICKAXE) || i.getType().equals(Material.GOLD_PICKAXE)
-          || i.getType().equals(Material.DIAMOND_PICKAXE)) {
-              ItemStack pickaxe = i;
-              settings.getPlayerData().set(p.getUniqueId().toString()+".Pickaxe", pickaxe);
-          }
-      }
-      settings.savePlayerData();
-  }
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &cServer Restart in 1 Hour!");
 
-  @EventHandler
-  public void onJoin(PlayerJoinEvent e) { //LAG SOURCE
-	  if(!e.getPlayer().hasPlayedBefore()) {
-		  Bukkit.broadcastMessage(c("&dWelcome &f&l"+e.getPlayer().getName()+"&d to &c&lGenesis &b&lPrison!"));
-	  }
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &cServer Restart in 30 Minutes!");
+                    }
+                }.runTaskLater(Main.plugin, 20 * 60 * 30);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &cServer Restart in 10 Minutes!");
+                    }
+                }.runTaskLater(Main.plugin, 20 * 60 * 50);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &cServer Restart in 1 Minute!");
+                    }
+                }.runTaskLater(Main.plugin, 20 * 60 * 59);
+
+
+            }
+        }, 3);
+
+
+        Methods.schedule(this, new Runnable() {
+            public void run() {
+
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "restart");
+            }
+        }, 4);
+
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                settings.saveGangs();
+            }
+        }.runTaskTimer(this, 0, 20 * 150L);
+
+    }
+
+
+    public static Main getInstance() {
+        return INSTANCE;
+    }
+
+
+    private String motd = c("&3&lSeason 3!   &c&lGenesis &b&lPrison!   &e&l[1.8.x-1.19.x]\n                        &c&l>> &a&lJoin Now! &c&l<<");
+    private String savemotd = "";
+
+    @Override
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
+
+        if (label.equalsIgnoreCase("motdchange")) {
+            if (!cs.hasPermission("rank.owner")) return false;
+            if (args.length == 2) {
+                if (args[0].equalsIgnoreCase("sale")) {
+
+                    motd = c("&3&lSeason 3!   &c&lGenesis &b&lPrison!   &e&l[1.8.x-1.19.x]\n                    &c&l>> &a&l" + args[1] + "% Sale Now! &c&l<<");
+                }
+            }
+        }
+        if (label.equalsIgnoreCase("workmode")) {
+            if (!cs.hasPermission("rank.owner")) return false;
+            if (args.length == 1) {
+                if (args[0].equalsIgnoreCase("enable")) {                             //&4&lMaintenance Mode
+                    savemotd = motd;
+                    motd = c("                        &c&lGenesis &b&lPrison!\n                   &4&lMaintenance Mode");
+                }
+                if (args[0].equalsIgnoreCase("disable")) {
+                    motd = savemotd;
+                }
+            }
+        }
+
+
+        return false;
+    }
+
+    @EventHandler
+    public void motd(ServerListPingEvent e) {
+        e.setMotd(motd);
+    }
+
+
+    public void savePickaxe(Player p) {
+        ItemStack[] inv = p.getInventory().getContents();
+
+        for (ItemStack i : inv) {
+            if (i == null) continue;
+            if (i.getType() == null) continue;
+            if (i.getType().equals(Material.WOOD_PICKAXE) || i.getType().equals(Material.STONE_PICKAXE) || i.getType().equals(Material.IRON_PICKAXE) || i.getType().equals(Material.GOLD_PICKAXE)
+                    || i.getType().equals(Material.DIAMOND_PICKAXE)) {
+                ItemStack pickaxe = i;
+                settings.getPlayerData().set(p.getUniqueId().toString() + ".Pickaxe", pickaxe);
+            }
+        }
+        settings.savePlayerData();
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) { //LAG SOURCE
+        if (!e.getPlayer().hasPlayedBefore()) {
+            Bukkit.broadcastMessage(c("&dWelcome &f&l" + e.getPlayer().getName() + "&d to &c&lGenesis &b&lPrison!"));
+        }
         savePickaxe(e.getPlayer());
-      settings.savePlayerData();
-      new BukkitRunnable() {
-          @Override
-          public void run() {
-              savePickaxe(e.getPlayer());
-              settings.savePlayerData();
-              settings.saveboosts();
-          }
-      }.runTaskTimer(this, 0L, 20*120L);
+        settings.savePlayerData();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                savePickaxe(e.getPlayer());
+                settings.savePlayerData();
+                settings.saveboosts();
+            }
+        }.runTaskTimer(this, 0L, 20 * 120L);
 
 
-
-  }
- 
-	  
-  public static String formatAmt(double amt) {
-	    if (amt <= 0.0D)
-	      return String.valueOf(0);
-        if (amt >= 1.0E24D)
-          return String.format("%.1fS", amt / 1.0E24D);
-        if (amt >= 1.0E21D)
-          return String.format("%.1fs", amt / 1.0E21D);
-	    if (amt >= 1.0E18D)
-	        return String.format("%.1fQ", amt / 1.0E18D);
-	    if(amt >= 1.0E15D)
-	    	return String.format("%.1fq", amt / 1.0E15D);
-	    if (amt >= 1.0E12D)
-	      return String.format("%.1fT", amt / 1.0E12D);
-	    if (amt >= 1.0E9D)
-	      return String.format("%.1fB", amt / 1.0E9D);
-	    if (amt >= 1000000.0D)
-	      return String.format("%.1fM", amt / 1000000.0D);
-	    return NumberFormat.getNumberInstance(Locale.US).format(amt);
-	  }
-  
-  
-  
-  
-  
-  
-  public void onDisable() {
-	  
-	  settings.saveVote();
-      settings.saveGangs();
-	  
-	  if(settings.getBoost().getDouble("ActiveSell.Amp") != 0.0D) {
-	  this.settings.getBoost().set("TimeLeftSell", BoostsHandler.selltime);
-	  }
-	  if(settings.getBoost().getDouble("ActiveXP.Amp") != 0.0D) {
-		  this.settings.getBoost().set("TimeLeftXP", BoostsHandler.xptime);
-		  }
-	  for(Player p : Bukkit.getOnlinePlayers()) {
-		  BoostsHandler.getInstance().saveBinv(p);
-		  BoostsHandler.boostsinv.remove(p);
-	  }
-	  
-	  this.settings.getBoost().set("nextUpSell", BoostsHandler.nextUpsell);
-	  this.settings.getBoost().set("nextUpXP", BoostsHandler.nextUpxp);
-	  this.settings.saveboosts();
-	  
-	  this.settings.getVote().set("VoteShopLog", CMDVoteShop.votelog);
-	  this.settings.saveVote();
-      this.settings.savePlayerData();
-	  
-	  
-	  
-    this.settings.saveData();
-    BlocksHandler.getInstance().onEnd();
-    
-    for(Player p : Bukkit.getOnlinePlayers()) {
-    ByteArrayOutputStream b = new ByteArrayOutputStream();
-	DataOutputStream out = new DataOutputStream(b);
-	try {
-	out.writeUTF("Connect");
-	out.writeUTF("Lobby");
-	} catch (IOException eee) {
-        System.out.println(eee.getMessage());
-	}
-	p.sendPluginMessage(this, "BungeeCord", b.toByteArray());
     }
-    
-    
-  }
-  
-  private boolean setupPermissions() {
-    RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-    perms = rsp.getProvider();
-    return perms != null;
-  }
-  
-  private boolean setupChat() {
-	  RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
-	  chat = rsp.getProvider();
-	  return chat != null;
-	  
-  }
-  
-  
-  public void registerEvents(Plugin plugin, Listener[] listeners) {
-    byte b;
-    int i;
-    Listener[] arrayOfListener;
-    for (i = (arrayOfListener = listeners).length, b = 0; b < i; ) {
-      Listener listener = arrayOfListener[b];
-      Bukkit.getServer().getPluginManager().  registerEvents(listener, plugin);
-      b++;
-    } 
-  }
-  
-  private boolean setupEconomy() {
-    if (getServer().getPluginManager().getPlugin("Vault") == null)
-      return false;
-    RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-    if (rsp == null)
-      return false;
-    econ = rsp.getProvider();
-    return econ != null;
-  }
-  
-  
-  
+
+
+    public static String formatAmt(double amt) {
+        if (amt <= 0.0D)
+            return String.valueOf(0);
+        if (amt >= 1.0E24D)
+            return String.format("%.1fS", amt / 1.0E24D);
+        if (amt >= 1.0E21D)
+            return String.format("%.1fs", amt / 1.0E21D);
+        if (amt >= 1.0E18D)
+            return String.format("%.1fQ", amt / 1.0E18D);
+        if (amt >= 1.0E15D)
+            return String.format("%.1fq", amt / 1.0E15D);
+        if (amt >= 1.0E12D)
+            return String.format("%.1fT", amt / 1.0E12D);
+        if (amt >= 1.0E9D)
+            return String.format("%.1fB", amt / 1.0E9D);
+        if (amt >= 1000000.0D)
+            return String.format("%.1fM", amt / 1000000.0D);
+        return NumberFormat.getNumberInstance(Locale.US).format(amt);
+    }
+
+
+    public void onDisable() {
+
+        settings.saveVote();
+        settings.saveGangs();
+
+        if (settings.getBoost().getDouble("ActiveSell.Amp") != 0.0D) {
+            this.settings.getBoost().set("TimeLeftSell", BoostsHandler.selltime);
+        }
+        if (settings.getBoost().getDouble("ActiveXP.Amp") != 0.0D) {
+            this.settings.getBoost().set("TimeLeftXP", BoostsHandler.xptime);
+        }
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            BoostsHandler.getInstance().saveBinv(p);
+            BoostsHandler.boostsinv.remove(p);
+        }
+
+        this.settings.getBoost().set("nextUpSell", BoostsHandler.nextUpsell);
+        this.settings.getBoost().set("nextUpXP", BoostsHandler.nextUpxp);
+        this.settings.saveboosts();
+
+        this.settings.getVote().set("VoteShopLog", CMDVoteShop.votelog);
+        this.settings.saveVote();
+        this.settings.savePlayerData();
+
+
+        this.settings.saveData();
+        BlocksHandler.getInstance().onEnd();
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            ByteArrayOutputStream b = new ByteArrayOutputStream();
+            DataOutputStream out = new DataOutputStream(b);
+            try {
+                out.writeUTF("Connect");
+                out.writeUTF("Lobby");
+            } catch (IOException eee) {
+                System.out.println(eee.getMessage());
+            }
+            p.sendPluginMessage(this, "BungeeCord", b.toByteArray());
+        }
+
+
+    }
+
+    private boolean setupPermissions() {
+        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+        perms = rsp.getProvider();
+        return perms != null;
+    }
+
+    private boolean setupChat() {
+        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
+        chat = rsp.getProvider();
+        return chat != null;
+
+    }
+
+
+    public void registerEvents(Plugin plugin, Listener[] listeners) {
+        byte b;
+        int i;
+        Listener[] arrayOfListener;
+        for (i = (arrayOfListener = listeners).length, b = 0; b < i; ) {
+            Listener listener = arrayOfListener[b];
+            Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
+            b++;
+        }
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null)
+            return false;
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null)
+            return false;
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+
 
 }
