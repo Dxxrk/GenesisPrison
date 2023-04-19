@@ -32,6 +32,7 @@ public class MonsterHandler implements Listener {
         p.getInventory().addItem(type());
     }
     //Add PlayerInteractEvent to open the eggs.
+    //Create Values that can be boosted by pets and add a way to upgrade them.
 
     private ItemStack Ladon(String rarity, int bonusmoney) {
         ItemStack ladon = api.getItemHead("44860");
