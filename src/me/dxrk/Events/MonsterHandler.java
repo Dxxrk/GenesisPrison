@@ -33,6 +33,7 @@ public class MonsterHandler implements Listener {
     }
     //Add PlayerInteractEvent to open the eggs.
     //Create Values that can be boosted by pets and add a way to upgrade them.
+    //Myabe have special abilities for the monsters on a cooldown? (right click)
 
     private ItemStack Ladon(String rarity, int bonusmoney) {
         ItemStack ladon = api.getItemHead("44860");
