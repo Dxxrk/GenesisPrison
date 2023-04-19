@@ -34,6 +34,7 @@ public class CMDVanish implements Listener, CommandExecutor {
             return true;
         return false;
     }
+    //Remake this class to use packets(probably)
 
     String c(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
