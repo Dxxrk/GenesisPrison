@@ -2,25 +2,59 @@ package me.dxrk.Events;
 
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.dxrk.Main.Methods;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Skull;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
-public class MonsterHandler implements Listener {
+public class MonsterHandler implements Listener, CommandExecutor {
     private HeadDatabaseAPI api = new HeadDatabaseAPI();
     private Methods m = Methods.getInstance();
 
-   public static Map<Player, ItemStack> activeMonster = new HashMap<>();
+    public static Map<Player, ItemStack> activeMonster = new HashMap<>();
+
+
+    public static double getMonsterBoost(Player p) {
+        double boost = 1;
+        for (ItemStack i : p.getInventory().getContents()) {
+            assert i != null;
+            String active = ChatColor.stripColor(i.getItemMeta().getDisplayName()).split(" ")[1];
+            if (i.getType().equals(Material.SKULL_ITEM) && i.hasItemMeta() && i.getItemMeta().hasLore() && active.equals("(Active)") && activeMonster.containsKey(p)) {
+                String lore = ChatColor.stripColor(i.getItemMeta().getLore().get(3));
+                String first = lore.split("%")[0];
+                String percent = first.split(" ")[1];
+                boost += Double.parseDouble(percent);
+            }
+        }
+        return boost;
+    }
+
+    public static boolean hasActiveMonsterInInventory(Player p) {
+        if (activeMonster.containsKey(p)) {
+            for (ItemStack i : p.getInventory().getContents()) {
+                if(i.equals(activeMonster.get(p))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     private ItemStack egg() {
         ItemStack egg = new ItemStack(Material.MONSTER_EGG);
@@ -29,11 +63,19 @@ public class MonsterHandler implements Listener {
         List<String> lore = new ArrayList<>();
         lore.add(m.c("&7Right click to collect a new monster"));
         em.setLore(lore);
+        egg.setItemMeta(em);
         return egg;
     }
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if(cmd.getName().equalsIgnoreCase("giveegg")) {
 
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (cmd.getName().equalsIgnoreCase("giveegg")) {
+            if (sender.isOp()) {
+                if (args.length == 1) {
+                    Player p = Bukkit.getPlayer(args[0]);
+                    p.getInventory().addItem(egg());
+                }
+            }
         }
 
         return false;
@@ -42,25 +84,31 @@ public class MonsterHandler implements Listener {
     private void giveMonster(Player p) {
         p.getInventory().addItem(type());
     }
-    private void activeateMonster(Player p, ItemStack item) {
-        for(int i = 0; i <p.getInventory().getSize(); i++) {
+
+    private void activateMonster(Player p, ItemStack item) {
+        for (int i = 0; i < p.getInventory().getSize(); i++) {
             ItemStack it = p.getInventory().getItem(i);
-            if(it.isSimilar(item)) {
+            if (it != null && it.equals(item)) {
                 ItemStack pitem = item.clone();
                 String[] name = pitem.getItemMeta().getDisplayName().split(" ");
-                pitem.getItemMeta().setDisplayName(name[0]+" &7(&aActive&7)");
+                ItemMeta pim = pitem.getItemMeta();
+                pim.setDisplayName(m.c(name[0] + " &7(&aActive&7)"));
+                pitem.setItemMeta(pim);
                 p.getInventory().setItem(i, pitem);
                 return;
             }
         }
     }
-    private void deactiveateMonster(Player p, ItemStack item) {
-        for(int i = 0; i <p.getInventory().getSize(); i++) {
+
+    private void deactivateMonster(Player p, ItemStack item) {
+        for (int i = 0; i < p.getInventory().getSize(); i++) {
             ItemStack it = p.getInventory().getItem(i);
-            if(it.isSimilar(item)) {
+            if (it != null && it.equals(item)) {
                 ItemStack pitem = item.clone();
                 String[] name = pitem.getItemMeta().getDisplayName().split(" ");
-                pitem.getItemMeta().setDisplayName(name[0]+" &7(&cInactive&7)");
+                ItemMeta pim = pitem.getItemMeta();
+                pim.setDisplayName(m.c(name[0] + " &7(&cInactive&7)"));
+                pitem.setItemMeta(pim);
                 p.getInventory().setItem(i, pitem);
                 return;
             }
@@ -68,12 +116,14 @@ public class MonsterHandler implements Listener {
     }
     //Create Values that can be boosted by pets and add a way to upgrade them.
     //Myabe have special abilities for the monsters on a cooldown? (right click)
+    //Automatically set to inactive when moved out of your own inventory
+    //Only allow inactive monsters to be sold on /ah
 
     @EventHandler
     public void openEgg(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if(e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) {
-            if(p.getItemInHand().getType().equals(Material.MONSTER_EGG) && p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&c&lMonster &7&lEgg"))) {
+        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) || e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+            if (p.getItemInHand().getType().equals(Material.MONSTER_EGG) && p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&c&lMonster &7&lEgg"))) {
                 giveMonster(p);
                 int amount = p.getItemInHand().getAmount();
                 if (amount == 1) {
@@ -83,22 +133,32 @@ public class MonsterHandler implements Listener {
                 }
                 return;
             }
-            String active = p.getItemInHand().getItemMeta().getDisplayName().split(" ")[1];
-            if(p.getItemInHand().getType().equals(Material.SKULL) && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore() && active.equals(m.c("&7(&cInactive&7)"))) {
-                if(activeMonster.containsKey(p)) {
+            String active = ChatColor.stripColor(p.getItemInHand().getItemMeta().getDisplayName()).split(" ")[1];
+            if (p.getItemInHand().getType().equals(Material.SKULL_ITEM) && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore() && active.equals("(Inactive)")) {
+                if (activeMonster.containsKey(p)) {
                     p.sendMessage(m.c("&f&lMonsters &8| &7You have a monster active already."));
                     return;
                 }
+                activateMonster(p, p.getItemInHand());
                 activeMonster.put(p, p.getItemInHand());
-                activeateMonster(p, p.getItemInHand());
                 return;
             }
-            if(p.getItemInHand().getType().equals(Material.SKULL) && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore() && active.equals(m.c("&7(&aActive&7)"))) {
-                if(activeMonster.containsKey(p)) {
-                    deactiveateMonster(p, p.getItemInHand());
+            if (p.getItemInHand().getType().equals(Material.SKULL_ITEM) && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore() && active.equals("(Active)")) {
+                if (activeMonster.containsKey(p)) {
+                    deactivateMonster(p, p.getItemInHand());
                     activeMonster.remove(p);
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void setMaxStackSize(net.minecraft.server.v1_8_R3.Item getitem, int i) {
+        try {
+            Field field = net.minecraft.server.v1_8_R3.Item.class.getDeclaredField("maxStackSize");
+            field.setAccessible(true);
+            field.setInt(getitem, i);
+        } catch (Exception ignored) {
         }
     }
 
@@ -114,7 +174,9 @@ public class MonsterHandler implements Listener {
         lore.add(m.c("&aBoost: " + bonusmoney + "% Money Boost"));
         lm.setLore(lore);
         ladon.setItemMeta(lm);
-
+        net.minecraft.server.v1_8_R3.ItemStack i2 = CraftItemStack.asNMSCopy(ladon);
+        net.minecraft.server.v1_8_R3.Item getitem = i2.getItem();
+        setMaxStackSize(getitem, 1);
         return ladon;
     }
 
@@ -130,6 +192,9 @@ public class MonsterHandler implements Listener {
         lore.add(m.c("&aBoost: " + bonus + "% Money Boost"));
         im.setLore(lore);
         item.setItemMeta(im);
+        net.minecraft.server.v1_8_R3.ItemStack i2 = CraftItemStack.asNMSCopy(item);
+        net.minecraft.server.v1_8_R3.Item getitem = i2.getItem();
+        setMaxStackSize(getitem, 1);
 
         return item;
     }
@@ -146,7 +211,9 @@ public class MonsterHandler implements Listener {
         lore.add(m.c("&aBoost: " + bonus + "% Money Boost"));
         im.setLore(lore);
         item.setItemMeta(im);
-
+        net.minecraft.server.v1_8_R3.ItemStack i2 = CraftItemStack.asNMSCopy(item);
+        net.minecraft.server.v1_8_R3.Item getitem = i2.getItem();
+        setMaxStackSize(getitem, 1);
         return item;
     }
 
@@ -162,12 +229,14 @@ public class MonsterHandler implements Listener {
         lore.add(m.c("&aBoost: " + bonus + "% Money Boost"));
         im.setLore(lore);
         item.setItemMeta(im);
-
+        net.minecraft.server.v1_8_R3.ItemStack i2 = CraftItemStack.asNMSCopy(item);
+        net.minecraft.server.v1_8_R3.Item getitem = i2.getItem();
+        setMaxStackSize(getitem, 1);
         return item;
     }
 
     private ItemStack Medusa(String rarity, int bonus) {
-        ItemStack item = api.getItemHead("683");
+        ItemStack item = api.getItemHead("1394");
         ItemMeta im = item.getItemMeta();
         im.setDisplayName(m.c("&7&lMedusa &7(&cInactive&7)"));
         List<String> lore = new ArrayList<>();
@@ -178,7 +247,9 @@ public class MonsterHandler implements Listener {
         lore.add(m.c("&aBoost: " + bonus + "% Money Boost"));
         im.setLore(lore);
         item.setItemMeta(im);
-
+        net.minecraft.server.v1_8_R3.ItemStack i2 = CraftItemStack.asNMSCopy(item);
+        net.minecraft.server.v1_8_R3.Item getitem = i2.getItem();
+        setMaxStackSize(getitem, 1);
         return item;
     }
 
@@ -214,24 +285,25 @@ public class MonsterHandler implements Listener {
             return Medusa(rarity, effect(rarity)); //1394
         }
     }
+
     private int effect(String rarity) {
         Random r = new Random();
-        if(rarity.equals(m.c("&bCommon"))) {
+        if (rarity.equals(m.c("&bCommon"))) {
             int min = 5;
             int max = 15;
             return r.nextInt(max - min) + min;
         }
-        if(rarity.equals(m.c("&9Rare"))) {
+        if (rarity.equals(m.c("&9Rare"))) {
             int min = 15;
             int max = 25;
             return r.nextInt(max - min) + min;
         }
-        if(rarity.equals(m.c("&5Epic"))) {
+        if (rarity.equals(m.c("&5Epic"))) {
             int min = 25;
             int max = 35;
             return r.nextInt(max - min) + min;
         }
-        if(rarity.equals(m.c("&cMythical"))) {
+        if (rarity.equals(m.c("&cMythical"))) {
             int min = 35;
             int max = 50;
             return r.nextInt(max - min) + min;

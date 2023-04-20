@@ -208,6 +208,8 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("gang").setExecutor(new CMDGang());
         getCommand("g").setExecutor(new CMDGang());
         getCommand("genesis").setExecutor(new CMDOptions());
+        getCommand("giveegg").setExecutor(new MonsterHandler());
+        registerEvents(this, new Listener[]{new MonsterHandler()});
         registerEvents(this, new Listener[]{new CMDVanish()});
         registerEvents(this, new Listener[]{new MomentumHandler()});
         registerEvents(this, new Listener[]{new SkillsEventsListener()});
