@@ -135,9 +135,15 @@ public class SellHandler implements Listener, CommandExecutor {
 	    double sell = Functions.sellBoost(p);
 	    double miningboost = BoostsHandler.sell;
 	    double multi = SellHandler.getInstance().getMulti(p)/1.75;
-	  double momentum = MomentumHandler.getBonus(MomentumHandler.momentum.get(p.getUniqueId()));
+	  double momentum = MomentumHandler.getBonus(p.getUniqueId());
 		if(multi <1) {
 			multi = 1;
+		}
+		double monster = 1;
+		if(MonsterHandler.activeMonster.containsKey(p) && (ChatColor.stripColor(MonsterHandler.activeMonster.get(p).getItemMeta().getDisplayName()).split(" ")[0].equals("Ladon")
+		|| ChatColor.stripColor(MonsterHandler.activeMonster.get(p).getItemMeta().getDisplayName()).split(" ")[0].equals("Phoenix")
+		|| ChatColor.stripColor(MonsterHandler.activeMonster.get(p).getItemMeta().getDisplayName()).split(" ")[0].equals("Medusa"))) {
+			monster = MonsterHandler.getMonsterBoost(p, 3);
 		}
 	  double event = SkillsEventsListener.getEventMulti();
 		double prestige = getPrestiges(p)*1.25;
@@ -157,7 +163,7 @@ public class SellHandler implements Listener, CommandExecutor {
 	  	    	double price = Methods.getSellPrice(i);
 
 
-	  	    	total += price * (multi+greed+event) * sell * miningboost*prestige*multiply*unity*momentum;
+	  	    	total += price * (multi+greed+event) * sell * miningboost*prestige*multiply*unity*momentum*monster;
 
 	  	        amountotal += i.getAmount();
 
@@ -187,9 +193,15 @@ public class SellHandler implements Listener, CommandExecutor {
 	  double sell = Functions.sellBoost(p);
 	  double miningboost = BoostsHandler.sell;
 	  double multi = SellHandler.getInstance().getMulti(p)/1.75;
-	  double momentum = MomentumHandler.getBonus(MomentumHandler.momentum.get(p.getUniqueId()));
+	  double momentum = MomentumHandler.getBonus(p.getUniqueId());
 	  if(multi <1) {
 		  multi = 1;
+	  }
+	  double monster = 1;
+	  if(MonsterHandler.activeMonster.containsKey(p) && (ChatColor.stripColor(MonsterHandler.activeMonster.get(p).getItemMeta().getDisplayName()).split(" ")[0].equals("Ladon")
+			  || ChatColor.stripColor(MonsterHandler.activeMonster.get(p).getItemMeta().getDisplayName()).split(" ")[0].equals("Phoenix")
+			  || ChatColor.stripColor(MonsterHandler.activeMonster.get(p).getItemMeta().getDisplayName()).split(" ")[0].equals("Medusa"))) {
+		  monster = MonsterHandler.getMonsterBoost(p, 3);
 	  }
 	  double event = SkillsEventsListener.getEventFortune();
 	  double prestige = getPrestiges(p)*1.25;
@@ -207,7 +219,7 @@ public class SellHandler implements Listener, CommandExecutor {
 			  double price = Methods.getSellPrice(i);
 
 
-			  total += price * (multi+greed+event) * sell * miningboost*prestige*multiply*momentum;
+			  total += price * (multi+greed+event) * sell * miningboost*prestige*multiply*momentum*monster;
 
 			  amountotal += i.getAmount();
 

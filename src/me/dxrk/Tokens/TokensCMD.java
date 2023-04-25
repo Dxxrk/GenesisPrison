@@ -173,7 +173,7 @@ public class TokensCMD implements CommandExecutor, Listener {
               } 
               if (SellHandler.getInstance().isDbl(args[2])) {
                 String Amount = args[2];
-                int amount = Integer.parseInt(Amount);
+                double amount = Double.parseDouble(Amount);
                 this.tokens.addTokens(p, amount);
               } else {
                 p.sendMessage(ChatColor.AQUA + "Not an int");

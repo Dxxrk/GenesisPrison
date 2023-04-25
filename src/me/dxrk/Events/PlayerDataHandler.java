@@ -146,6 +146,13 @@ public class PlayerDataHandler implements Listener {
     if (this.pl.get(uuid + ".Ethereal") == null) {
       this.pl.set(uuid + ".Ethereal", false);
     }
+    if (this.pl.get(uuid + ".RestartMomentum") == null) {
+      this.pl.set(uuid + ".RestartMomentum", 0);
+    }
+    if (this.pl.get(uuid + ".RestartMomentumList") == null) {
+      ArrayList<Long> momentums = new ArrayList<>();
+      this.pl.set(uuid + ".RestartMomentumList", momentums);
+    }
     this.settings.savePlayerData();
   }
 }

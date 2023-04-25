@@ -160,13 +160,11 @@ public class ScoreboardHandler implements Listener {
 
 
         //Prestige
-        NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
         //set suffix here
-        int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".Prestiges");
-        NewBoard.getTeam("prestige").setSuffix(c("&b" + prestiges));
+
 
         //prisonrank
-        NewBoard.getTeam("prank").setPrefix(c("&7Level: "));
+
 
         //rankup%
 
@@ -177,6 +175,12 @@ public class ScoreboardHandler implements Listener {
             NewBoard.getTeam("prestige").setSuffix(c("&e&lEthereal"));
             p.getScoreboard().getTeam("prank").setPrefix(c("&7Level: "));
             p.getScoreboard().getTeam("prank").setSuffix(c("&b&l" + RankupHandler.getInstance().getRank(p)));
+        } else {
+            NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
+            NewBoard.getTeam("prank").setPrefix(c("&7Level: "));
+            int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".Prestiges");
+            NewBoard.getTeam("prestige").setSuffix(c("&b" + prestiges));
+            NewBoard.getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
         }
         double percents;
         p.getScoreboard().getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
@@ -582,21 +586,19 @@ public class ScoreboardHandler implements Listener {
 
 
         //Prestige
-        NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
-        int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".Prestiges");
-        NewBoard.getTeam("prestige").setSuffix(c("&b" + prestiges));
-
-        //prisonrank
-        NewBoard.getTeam("prank").setPrefix(c("&7Level: "));
-
-        //rankup%
         NewBoard.getTeam("percent").setPrefix(c("&7Rankup: "));
-        NewBoard.getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
+        p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
         if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Ethereal")) {
             NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
             NewBoard.getTeam("prestige").setSuffix(c("&e&lEthereal"));
+            p.getScoreboard().getTeam("prank").setPrefix(c("&7Level: "));
+            p.getScoreboard().getTeam("prank").setSuffix(c("&b&l" + RankupHandler.getInstance().getRank(p)));
+        } else {
+            NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
             NewBoard.getTeam("prank").setPrefix(c("&7Level: "));
-            NewBoard.getTeam("prank").setSuffix(c("&b&l" + RankupHandler.getInstance().getRank(p)));
+            int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".Prestiges");
+            NewBoard.getTeam("prestige").setSuffix(c("&b" + prestiges));
+            NewBoard.getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
         }
         double percents;
         NewBoard.getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));

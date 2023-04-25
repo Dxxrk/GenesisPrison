@@ -126,12 +126,19 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 gem += 0.10;
             }
         }
+        if(MonsterHandler.activeMonster.containsKey(p) && ChatColor.stripColor(MonsterHandler.activeMonster.get(p).getItemMeta().getDisplayName()).split(" ")[0].equals("Cerberus")) {
+            gem *= MonsterHandler.getMonsterBoost(p, 3);
+        }
+        else if(MonsterHandler.activeMonster.containsKey(p) && ChatColor.stripColor(MonsterHandler.activeMonster.get(p).getItemMeta().getDisplayName()).split(" ")[0].equals("Medusa")) {
+            gem *= MonsterHandler.getMonsterBoost(p, 5);
+        }
 
         if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             ItemStack item = p.getItemInHand();
             if (item.getType().equals(Material.INK_SACK) && item.getItemMeta().getDisplayName().equals(m.c("&eGem Pouch"))) {
                 int gems = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(item.getItemMeta().getLore().get(0)));
                 addGems(p, (int) (gems*gem));
+                p.sendMessage(m.c("&f&lGems &8| &a+"+(int) (gems*gem)));
                 if (p.getItemInHand().getAmount() > 1) {
                     p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
                 } else {
@@ -141,6 +148,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
             if (item.getType().equals(Material.PAPER) && item.getItemMeta().getDisplayName().equals(m.c("&aGem Voucher"))) {
                 int gems = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(item.getItemMeta().getLore().get(0)));
                 addGems(p, gems);
+                p.sendMessage(m.c("&f&lGems &8| &a+"+gems));
                 if (p.getItemInHand().getAmount() > 1) {
                     p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
                 } else {

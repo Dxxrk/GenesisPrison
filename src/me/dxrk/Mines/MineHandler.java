@@ -193,9 +193,11 @@ public class MineHandler implements Listener, CommandExecutor{
 		Player p = e.getPlayer();
 		MultiverseCore core = (MultiverseCore)Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
 		MVWorldManager wm = core.getMVWorldManager();
-		wm.loadWorld(p.getName()+"sWorld");
-		Location pworld = new Location(Bukkit.getWorld(p.getName()+"sWorld"), 0.5, 113, 0.5, -90, 0);
-		p.teleport(pworld);
+		if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".HasMine")) {
+			wm.loadWorld(p.getName() + "sWorld");
+			Location pworld = new Location(Bukkit.getWorld(p.getName() + "sWorld"), 0.5, 113, 0.5, -90, 0);
+			p.teleport(pworld);
+		}
 	}
 
 

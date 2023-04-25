@@ -1,5 +1,13 @@
 package me.dxrk.Main;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.ListenerOptions;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.wrappers.WrappedGameProfile;
+import com.comphenix.protocol.wrappers.WrappedServerPing;
 import com.earth2me.essentials.Essentials;
 import me.dxrk.Commands.*;
 import me.dxrk.Discord.JDAEvents;
@@ -41,16 +49,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
-import org.inventivetalent.bossbar.BossBarAPI;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Locale;
+import java.util.*;
 
 public class Main extends JavaPlugin implements Listener, CommandExecutor {
     private static Main INSTANCE;
@@ -66,14 +67,31 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     public static String c(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
+    @SuppressWarnings("deprecation")
+    private void handlePing(WrappedServerPing ping) {
+        ping.setPlayers(Arrays.asList(
+                new WrappedGameProfile("id1", ChatColor.YELLOW+"store.mcgenesis.net"),
+                new WrappedGameProfile("id2", ""),
+                new WrappedGameProfile("id3", ChatColor.LIGHT_PURPLE+"Remember to Vote!")
+        ));
+    }
 
     public void onEnable() {
 
         plugin = this;
         INSTANCE = this;
 
-        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        ProtocolLibrary.getProtocolManager().addPacketListener(
+// I mark my listener as async, as I don't use the Bukkit API. Please note that
+// your listener may be executed on the main thread regardless.
+                new PacketAdapter(this, ListenerPriority.NORMAL,
+                        Arrays.asList(PacketType.Status.Server.OUT_SERVER_INFO), ListenerOptions.ASYNC) {
 
+                    @Override
+                    public void onPacketSending(PacketEvent event) {
+                        handlePing(event.getPacket().getServerPings().read(0));
+                    }
+                });
 
         ess = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
         setupEconomy();
@@ -259,35 +277,11 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         registerEvents(this, new Listener[]{new PickaxeSkillTree()});
         registerEvents(this, new Listener[]{this});
         // For when sale is active, use this ||
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "motdchange sale 20");
+        //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "motdchange sale 20");
         // For when maintenance active, use this ||
         //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "workmode enable");
+        MomentumHandler.runMomentum();
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (MomentumHandler.startedMining.containsKey(p.getUniqueId())) {
-                        Date date = MomentumHandler.startedMining.get(p.getUniqueId());
-                        Date dateNOW = MomentumHandler.getDate();
-                        int seconds = (int) ((dateNOW.getTime() - date.getTime()) / 1000);
-                        if (seconds >= 60) {
-                            MomentumHandler.mining.remove(p.getUniqueId());
-                        }
-                    }
-                    if (MomentumHandler.mining.contains(p.getUniqueId())) {
-                        MomentumHandler.addMomentum(p);
-                    } else {
-                        MomentumHandler.removeMomentum(p);
-                    }
-                    MomentumHandler.setActionBar(p, MomentumHandler.momentum.get(p.getUniqueId()));
-                    MomentumHandler.sendTitleMomentum(p);
-                    if (!p.isOnline()) {
-                        cancel();
-                    }
-                }
-            }
-        }.runTaskTimer(this, 0, 20L);
 
 
         new BukkitRunnable() {
@@ -459,6 +453,16 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             }.runTaskLater(this, 20 * 5L);
 
         }
+        for(String s : settings.getPlayerData().getKeys(false)) {
+            UUID id =UUID.fromString(s);
+            int seconds = settings.getPlayerData().getInt(s+".RestartMomentum");
+            if(seconds >0) {
+                MomentumHandler.seconds.put(id, seconds);
+            }
+            ArrayList<Long> momentums = (ArrayList<Long>) settings.getPlayerData().getLongList(id.toString()+".RestartMomentumList");
+            MomentumHandler.momentum.put(id, momentums);
+        }
+
 
 
         Methods.schedule(this, new Runnable() {
@@ -548,6 +552,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void motd(ServerListPingEvent e) {
         e.setMotd(motd);
+        e.setMaxPlayers(0);
     }
 
 
@@ -572,7 +577,6 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             Bukkit.broadcastMessage(c("&dWelcome &f&l" + e.getPlayer().getName() + "&d to &c&lGenesis &b&lPrison!"));
         }
         savePickaxe(e.getPlayer());
-        settings.savePlayerData();
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -629,23 +633,15 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
 
         this.settings.getVote().set("VoteShopLog", CMDVoteShop.votelog);
         this.settings.saveVote();
+        for(UUID id : MomentumHandler.seconds.keySet()) {
+            long seconds = MomentumHandler.seconds.get(id);
+            settings.getPlayerData().set(id.toString()+".RestartMomentum", seconds);
+            ArrayList<Long> momentums = MomentumHandler.momentum.get(id);
+            settings.getPlayerData().set(id.toString()+".RestartMomentumList", momentums);
+        }
         this.settings.savePlayerData();
-
-
         this.settings.saveData();
         BlocksHandler.getInstance().onEnd();
-
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            ByteArrayOutputStream b = new ByteArrayOutputStream();
-            DataOutputStream out = new DataOutputStream(b);
-            try {
-                out.writeUTF("Connect");
-                out.writeUTF("Lobby");
-            } catch (IOException eee) {
-                System.out.println(eee.getMessage());
-            }
-            p.sendPluginMessage(this, "BungeeCord", b.toByteArray());
-        }
 
 
     }
