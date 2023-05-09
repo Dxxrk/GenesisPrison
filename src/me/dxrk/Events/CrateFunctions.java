@@ -139,7 +139,7 @@ public class CrateFunctions {
         lore.add(m.c("&e⛀500,000-1,000,000"));
         lore.add(m.c(" "));
         lore.add(m.c("&f&l&m--&f&lKeys&m--"));
-        lore.add(m.c("&e1-5x R&7andom Keys"));
+        lore.add(m.c("&e1-5x &7Random Keys"));
         lore.add(m.c("&e1x &3&lRank &7Key"));
         lore.add(m.c(" "));
         lore.add(m.c("&f&l&m--&f&lRanks&m--"));
