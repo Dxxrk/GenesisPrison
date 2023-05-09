@@ -38,6 +38,7 @@ public class MomentumHandler implements Listener {
 
     public static void runMomentum() {
         Bukkit.getScheduler().runTaskTimer(Main.getInstance(), () -> {
+            if(momentum.isEmpty()) return;
             for (UUID player : momentum.keySet()) {
                 ArrayList<Long> timeStamps = momentum.get(player);
                 if (timeStamps.size() == 0)
@@ -49,6 +50,7 @@ public class MomentumHandler implements Listener {
                     removeMomentum(player);
                     if(p != null)
                         ActionBarAPI.sendActionBar(p, m.c("&d&lMomentum: ") + Leaderboards.formatTime(getSeconds(player)));
+                    return;
                 } else {
                     addSeconds(player);
                     if(p != null) {

@@ -50,9 +50,9 @@ public class CMDRename implements CommandExecutor {
       if (sender instanceof Player) {
         Player p = (Player)sender;
         if (sender.hasPermission("epsilon.rename")) {
-          if (p.getItemInHand() != null && !p.getItemInHand().getType().equals(Material.AIR) && (p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)
+          if ((p.getItemInHand() != null && !p.getItemInHand().getType().equals(Material.AIR) && (p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)
                   || p.getItemInHand().getType().equals(Material.IRON_PICKAXE) || p.getItemInHand().getType().equals(Material.GOLD_PICKAXE) || p.getItemInHand().getType().equals(Material.STONE_PICKAXE)
-                  || p.getItemInHand().getType().equals(Material.WOOD_PICKAXE))) {
+                  || p.getItemInHand().getType().equals(Material.WOOD_PICKAXE))) || p.isOp()) {
             if (args.length >= 1) {
               ItemStack itemStack = p.getItemInHand();
               StringBuilder message = new StringBuilder();
@@ -115,9 +115,9 @@ public class CMDRename implements CommandExecutor {
       if (sender instanceof Player) {
         if (sender.hasPermission("Epsilon.Relore")) {
           Player p = (Player)sender;
-          if (p.getItemInHand() != null && !p.getItemInHand().getType().equals(Material.AIR) && (p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)
+          if ((p.getItemInHand() != null && !p.getItemInHand().getType().equals(Material.AIR) && (p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)
           || p.getItemInHand().getType().equals(Material.IRON_PICKAXE) || p.getItemInHand().getType().equals(Material.GOLD_PICKAXE) || p.getItemInHand().getType().equals(Material.STONE_PICKAXE)
-          || p.getItemInHand().getType().equals(Material.WOOD_PICKAXE))) {
+          || p.getItemInHand().getType().equals(Material.WOOD_PICKAXE))) || p.isOp()) {
             if (args.length >= 1) {
               ItemStack itemStack = p.getItemInHand();
               StringBuilder message = new StringBuilder();

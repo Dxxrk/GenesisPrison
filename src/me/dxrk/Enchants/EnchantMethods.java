@@ -9,11 +9,17 @@ import me.dxrk.Main.*;
 import me.dxrk.Mines.MineHandler;
 import me.dxrk.Mines.ResetHandler;
 import me.dxrk.Tokens.Tokens;
+import me.dxrk.utils.WaveEffect;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -26,7 +32,7 @@ import me.dxrk.Vote.CMDVoteShop;
 
 import me.jet315.prisonmines.mine.Mine;
 
-public class EnchantMethods {
+public class EnchantMethods implements CommandExecutor {
 
     static EnchantMethods instance = new EnchantMethods();
 
@@ -74,6 +80,66 @@ public class EnchantMethods {
             return Integer.parseInt(lvl.toString());
         }
         return -1;
+    }
+    public ItemStack testenchant(String Enchant) {
+        ItemStack a = new ItemStack(Material.WOOD_PICKAXE, 1, (short) 0);
+        ItemMeta am = a.getItemMeta();
+        List<String> lore = new ArrayList<>();
+        am.setDisplayName(c("&cTest Pickaxe"));
+        am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
+        am.addEnchant(Enchantment.DURABILITY, 32000, true);
+        am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        lore.add(c("&b&m-<>-&aEnchants&b&m-<>- "));
+        lore.add(c("&c"+Enchant+ " &e9999"));
+        lore.add("  ");
+        lore.add(c("&b&m-<>-&aTrinkets 0/4&b&m-<>- "));
+        lore.add("  ");
+        lore.add(c("&b&m-<>-&aLevel&b&m-<>- "));
+        lore.add(c("&cLevel: &e1"));
+        lore.add(c("&cProgress: &e0%"));
+        am.setLore(lore);
+        a.setItemMeta(am);
+        return a;
+    }
+    private ArrayList<Location> getCircle(Location center, double radius, int amount) {
+        World world = center.getWorld();
+        double increment = ((2 * Math.PI) / amount);
+        ArrayList<Location> locations = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            double angle = i * increment;
+            double x = center.getX() + (radius * Math.cos(angle));
+            double z = center.getZ() + (radius * Math.sin(angle));
+            locations.add(new Location(world, x, center.getY(), z));
+        }
+        return locations;
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (cmd.getName().equalsIgnoreCase("testenchant")) {
+            if (sender.isOp()) {
+                if (args.length == 1) {
+                    Player p = (Player)sender;
+                    String enchant = args[0];
+                    p.getInventory().addItem(testenchant(enchant));
+                }
+            }
+        }
+        if(cmd.getName().equalsIgnoreCase("wave")) {
+            Player p = ((Player)sender);
+            WaveEffect wave = null;
+                wave = new WaveEffect(p.getLocation());
+            WaveEffect finalWave = wave;
+            Location finalLoc = p.getLocation();
+            new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        finalWave.stop();
+                        //for(Block b : getCircle(p.getLocation()))
+                    }
+                }.runTaskLater(Main.plugin, 20L);
+        }
+        return false;
     }
 
 
@@ -130,218 +196,7 @@ public class EnchantMethods {
 
         return blocks;
     }
-
-    public static List<Block> laserBlocks(Block b) {
-        List<Block> blocks = new ArrayList<>();
-
-        for (int i = 0; i < 200; i++) {
-            World w = b.getLocation().getWorld();
-            int x = b.getX();
-            int y = b.getY();
-            int z = b.getZ();
-            Block bb = w.getBlockAt(new Location(w, x + i, y, z));
-            Block bup = w.getBlockAt(bb.getRelative(BlockFace.UP).getLocation());
-            Block bdown = w.getBlockAt(bb.getRelative(BlockFace.DOWN).getLocation());
-            Block bleft = w.getBlockAt(bb.getRelative(BlockFace.WEST).getLocation());
-            Block bright = w.getBlockAt(bb.getRelative(BlockFace.EAST).getLocation());
-            Block bfront = w.getBlockAt(bb.getRelative(BlockFace.NORTH).getLocation());
-            Block bback = w.getBlockAt(bb.getRelative(BlockFace.SOUTH).getLocation());
-            blocks.add(bup);
-            blocks.add(bdown);
-            blocks.add(bleft);
-            blocks.add(bright);
-            blocks.add(bfront);
-            blocks.add(bback);
-        }
-        //repeat this for every direction of coordinates.
-        for (int i = 0; i < 200; i++) {
-            World w = b.getLocation().getWorld();
-            int x = b.getX();
-            int y = b.getY();
-            int z = b.getZ();
-            Block bb = w.getBlockAt(new Location(w, x - i, y, z));
-            Block bup = w.getBlockAt(bb.getRelative(BlockFace.UP).getLocation());
-            Block bdown = w.getBlockAt(bb.getRelative(BlockFace.DOWN).getLocation());
-            Block bleft = w.getBlockAt(bb.getRelative(BlockFace.WEST).getLocation());
-            Block bright = w.getBlockAt(bb.getRelative(BlockFace.EAST).getLocation());
-            Block bfront = w.getBlockAt(bb.getRelative(BlockFace.NORTH).getLocation());
-            Block bback = w.getBlockAt(bb.getRelative(BlockFace.SOUTH).getLocation());
-            blocks.add(bup);
-            blocks.add(bdown);
-            blocks.add(bleft);
-            blocks.add(bright);
-            blocks.add(bfront);
-            blocks.add(bback);
-        }
-        for (int i = 0; i < 200; i++) {
-            World w = b.getLocation().getWorld();
-            int x = b.getX();
-            int y = b.getY();
-            int z = b.getZ();
-            Block bb = w.getBlockAt(new Location(w, x, y + i, z));
-            Block bup = w.getBlockAt(bb.getRelative(BlockFace.UP).getLocation());
-            Block bdown = w.getBlockAt(bb.getRelative(BlockFace.DOWN).getLocation());
-            Block bleft = w.getBlockAt(bb.getRelative(BlockFace.WEST).getLocation());
-            Block bright = w.getBlockAt(bb.getRelative(BlockFace.EAST).getLocation());
-            Block bfront = w.getBlockAt(bb.getRelative(BlockFace.NORTH).getLocation());
-            Block bback = w.getBlockAt(bb.getRelative(BlockFace.SOUTH).getLocation());
-            blocks.add(bup);
-            blocks.add(bdown);
-            blocks.add(bleft);
-            blocks.add(bright);
-            blocks.add(bfront);
-            blocks.add(bback);
-        }
-        for (int i = 0; i < 200; i++) {
-            World w = b.getLocation().getWorld();
-            int x = b.getX();
-            int y = b.getY();
-            int z = b.getZ();
-            Block bb = w.getBlockAt(new Location(w, x, y - i, z));
-            Block bup = w.getBlockAt(bb.getRelative(BlockFace.UP).getLocation());
-            Block bdown = w.getBlockAt(bb.getRelative(BlockFace.DOWN).getLocation());
-            Block bleft = w.getBlockAt(bb.getRelative(BlockFace.WEST).getLocation());
-            Block bright = w.getBlockAt(bb.getRelative(BlockFace.EAST).getLocation());
-            Block bfront = w.getBlockAt(bb.getRelative(BlockFace.NORTH).getLocation());
-            Block bback = w.getBlockAt(bb.getRelative(BlockFace.SOUTH).getLocation());
-            blocks.add(bup);
-            blocks.add(bdown);
-            blocks.add(bleft);
-            blocks.add(bright);
-            blocks.add(bfront);
-            blocks.add(bback);
-        }
-        for (int i = 0; i < 200; i++) {
-            World w = b.getLocation().getWorld();
-            int x = b.getX();
-            int y = b.getY();
-            int z = b.getZ();
-            Block bb = w.getBlockAt(new Location(w, x, y, z + i));
-            Block bup = w.getBlockAt(bb.getRelative(BlockFace.UP).getLocation());
-            Block bdown = w.getBlockAt(bb.getRelative(BlockFace.DOWN).getLocation());
-            Block bleft = w.getBlockAt(bb.getRelative(BlockFace.WEST).getLocation());
-            Block bright = w.getBlockAt(bb.getRelative(BlockFace.EAST).getLocation());
-            Block bfront = w.getBlockAt(bb.getRelative(BlockFace.NORTH).getLocation());
-            Block bback = w.getBlockAt(bb.getRelative(BlockFace.SOUTH).getLocation());
-            blocks.add(bup);
-            blocks.add(bdown);
-            blocks.add(bleft);
-            blocks.add(bright);
-            blocks.add(bfront);
-            blocks.add(bback);
-        }
-        for (int i = 0; i < 200; i++) {
-            World w = b.getLocation().getWorld();
-            int x = b.getX();
-            int y = b.getY();
-            int z = b.getZ();
-            Block bb = w.getBlockAt(new Location(w, x, y, z - i));
-            Block bup = w.getBlockAt(bb.getRelative(BlockFace.UP).getLocation());
-            Block bdown = w.getBlockAt(bb.getRelative(BlockFace.DOWN).getLocation());
-            Block bleft = w.getBlockAt(bb.getRelative(BlockFace.WEST).getLocation());
-            Block bright = w.getBlockAt(bb.getRelative(BlockFace.EAST).getLocation());
-            Block bfront = w.getBlockAt(bb.getRelative(BlockFace.NORTH).getLocation());
-            Block bback = w.getBlockAt(bb.getRelative(BlockFace.SOUTH).getLocation());
-            blocks.add(bup);
-            blocks.add(bdown);
-            blocks.add(bleft);
-            blocks.add(bright);
-            blocks.add(bfront);
-            blocks.add(bback);
-        }
-
-
-        return blocks;
-    }
-
-    public void Laser(Player p, Block b, int level) {
-
-        ArrayList<ItemStack> sellblocks = new ArrayList<>();
-        Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
-        int blocks = 1;
-
-
-        for (Block b1 : laserBlocks(b)) {
-            if (set(b1).allows(DefaultFlag.LIGHTER)) {
-
-                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-                    b1.setType(Material.AIR);
-                    blocks = blocks + 1;
-                }
-            }
-        }
-        double fortuity = Functions.Foruity(p);
-        double skill = SkillsEventsListener.getSkillsBoostFortune(p);
-        int line = 0;
-        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
-            if (org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
-                line = x;
-            }
-        }
-        int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill /
-                (14));
-
-        double levelcap = 1 + (level / 600);
-
-        sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(), (int) ((blocks / 1.5 * (fortune) * levelcap))));
-
-
-        int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * levelcap);
-        Tokens.getInstance().addTokens(p, tokens);
-        SellHandler.getInstance().sellEnchant(p, sellblocks, "Laser", tokens);
-
-
-    }
-
-    public void Laser(Player p, Block b) {
-        Random r = new Random();
-
-        double lucky = Functions.Karma(p);
-        double luck = Functions.luckBoost(p);
-        double skill = SkillsEventsListener.getSkillsBoostLuck(p);
-
-        int level = 0;
-        int chance;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
-
-            if (ChatColor.stripColor(s).contains("Laser")) {
-                level = m.getBlocks(s);
-            }
-        }
-
-        if (level == 0) return;
-        if (level == 1) {
-            chance = (int) (7500 * lucky * luck * skill);
-        } else {
-            chance = (int) ((7500 - (1.2 * level * lucky * luck * skill)));
-            if (chance < 600) {
-                chance = 600;
-            }
-        }
-        int i = r.nextInt(chance);
-        if (laser.contains(p)) {
-            Laser(p, b, level);
-            i = 2;
-        }
-
-        if (i == 1) {
-            p.sendMessage(c("&f&lLaser &8| &bActivated!"));
-            laser.add(p);
-            Laser(p, b, level);
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    laser.remove(p);
-                    p.sendMessage(c("&f&lLaser &8| &bDeactivated!"));
-                }
-            }.runTaskLater(Main.plugin, (long) (20 * 3.5));
-
-        }
-
-    }
-
-
-    public void Wave(Player p, Block b, int level) {
+    public void Jackhammer(Player p, Block b, int level) {
         ArrayList<ItemStack> sellblocks = new ArrayList<>();
         int blocks = 0;
         Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
@@ -380,190 +235,9 @@ public class EnchantMethods {
 
         int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * levelcap);
         Tokens.getInstance().addTokens(p, tokens);
-        SellHandler.getInstance().sellEnchant(p, sellblocks, "Wave", tokens);
+        SellHandler.getInstance().sellEnchant(p, sellblocks, "Jackhammer", tokens);
 
 
-    }
-
-    public void Wave(Player p, Block b) {
-        Random r = new Random();
-
-        double lucky = Functions.Karma(p);
-        double luck = Functions.luckBoost(p);
-        double skill = SkillsEventsListener.getSkillsBoostLuck(p);
-
-        int level = 0;
-        int chance;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
-
-            if (ChatColor.stripColor(s).contains("Wave")) {
-                level = m.getBlocks(s);
-            }
-        }
-
-        if (level == 0) return;
-        if (level == 1) {
-            chance = (int) (2000 * lucky * luck * skill);
-        } else {
-            chance = (int) ((2000 - (1.15 * level * lucky * luck * skill)));
-            if (chance < 300) {
-                chance = 300;
-            }
-        }
-        int i = r.nextInt(chance);
-        if (i == 1) {
-            Wave(p, b, level);
-
-        }
-
-    }
-
-
-    @SuppressWarnings("deprecation")
-    public void exploBreak(Player p, Block b, int level) {
-        ArrayList<ItemStack> sellblocks = new ArrayList<>();
-
-        int blocks = 0;
-
-        Location min = new Location(p.getWorld(), b.getX() - 2, b.getY() - 2, b.getZ() - 2);
-        Location max = new Location(p.getWorld(), b.getX() + 2, b.getY() + 2, b.getZ() + 2);
-
-        Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
-        for (Block b1 : blocksFromTwoPoints(min, max, p.getWorld())) {
-            if (set(b1).allows(DefaultFlag.LIGHTER)) {
-                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-                    b1.setType(Material.AIR);
-                    blocks = blocks + 1;
-                }
-            }
-        }
-        int rank = RankupHandler.getInstance().getRank(p);
-        if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Ethereal")) {
-            rank = 1000;
-        }
-        //ResetHandler.setAIR(min, max, MineHandler.Blocks(rank/16));
-        double fortuity = Functions.Foruity(p);
-        double skill = SkillsEventsListener.getSkillsBoostFortune(p);
-        double event = SkillsEventsListener.getEventFortune();
-        int line = 0;
-        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
-            if (org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
-                line = x;
-            }
-        }
-        int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
-                (14));
-        double levelcap = 1 + (level / 500);
-
-        sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(), (int) ((blocks * (fortune)) * levelcap)));
-
-        int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * levelcap * 2);
-        Tokens.getInstance().addTokens(p, tokens);
-        SellHandler.getInstance().sellEnchant(p, sellblocks, "Explosion", tokens);
-
-    }
-
-
-    public void Explosion(Player p, Block b) {
-        Random r = new Random();
-
-        double lucky = Functions.Karma(p);
-        double luck = Functions.luckBoost(p);
-        double skill = SkillsEventsListener.getSkillsBoostLuck(p);
-
-        int level = 0;
-        int chance = 1750;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
-
-            if (ChatColor.stripColor(s).contains("Explosion")) {
-                level = m.getBlocks(s);
-            }
-        }
-
-        if (level == 0) return;
-        if (level == 1) {
-            chance = (int) (1350 * lucky * luck * skill);
-        } else {
-            chance = (int) ((1350 - (0.75 * level * lucky * luck * skill)));
-            if (chance < 150) {
-                chance = 150;
-            }
-        }
-        int i = r.nextInt(chance);
-
-        if (i == 1) {
-            exploBreak(p, b, level);
-
-        }
-    }
-
-
-    public void roundRank(Player p) {
-        Random r = new Random();
-        if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Ethereal")) {
-            int tmin = 1;
-            int tmax = 3;
-            int ranks = r.nextInt(tmax - tmin) + tmin;
-            for (int i = 0; i < ranks; i++) {
-                RankupHandler.getInstance().upRank(p);
-            }
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Research-Messages") == true) {
-                p.sendMessage(c("&f&lResearch &8| &b+" + ranks + " Levels"));
-            }
-            return;
-        }
-        int tmin = 7;
-        int tmax = 12;
-        int ranks = r.nextInt(tmax - tmin) + tmin;
-        for (int i = 0; i < ranks; i++) {
-            RankupHandler.getInstance().upRank(p);
-            if ((RankupHandler.getInstance().getRank(p) % 16 == 0) && RankupHandler.getInstance().getRank(p) < 1000)
-                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
-        }
-        if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Research-Messages") == true) {
-            p.sendMessage(c("&f&lResearch &8| &b+" + ranks + " Levels"));
-        }
-
-
-    }
-
-    public void Research(Player p) {
-        Random r = new Random();
-
-        double lucky = Functions.Karma(p);
-        double luck = Functions.luckBoost(p);
-        double skill = SkillsEventsListener.getSkillsBoostLuck(p);
-
-        int level = 0;
-        int chance = 4500;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
-            if (ChatColor.stripColor(s).contains("Research")) {
-                level = m.getBlocks(s);
-            }
-        }
-
-        if (level == 0) return;
-        if (level == 1) {
-            chance = (int) (4300 * lucky * luck * skill);
-        } else {
-            if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Ethereal")) {
-                chance = (int) ((6000 - (0.52 * level * lucky * luck * skill)));
-                if (chance < 400) {
-                    chance = 400;
-                }
-            } else {
-                chance = (int) ((4300 - (0.52 * level * lucky * luck * skill)));
-                if (chance < 400) {
-                    chance = 400;
-                }
-            }
-        }
-        int i = r.nextInt(chance);
-
-        if (i == 1) {
-            roundRank(p);
-
-        }
     }
 
 
@@ -608,42 +282,50 @@ public class EnchantMethods {
 
     }
 
-
-    public void Vaporize(Player p, Block b) {
-        Random r = new Random();
-
-        double lucky = Functions.Karma(p);
-        double luck = Functions.luckBoost(p);
-        double skill = SkillsEventsListener.getSkillsBoostLuck(p);
-
-        int level = 0;
-        int chance = 25000;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
-
-            if (ChatColor.stripColor(s).contains("Nuke")) {
-                level = m.getBlocks(s);
+    public void lightning(Player p, Block b, int level) {
+        ArrayList<ItemStack> sellblocks = new ArrayList<>();
+        int blocks = 0;
+        Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
+        b.getWorld().strikeLightningEffect(b.getLocation());
+        for (Block b1 : getBlocksAroundCenter(b.getLocation(), 7)) {
+            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+                    b1.setType(Material.AIR);
+                    blocks = blocks + 1;
+                }
             }
         }
-
-        if (level == 0) return;
-        if (level == 1) {
-            chance = (int) (23000 * lucky * luck * skill);
-        } else {
-            chance = (int) ((23000 - (20 * level * lucky * luck * skill)));
-            if (chance < 2000) {
-                chance = 2000;
+        int rank = RankupHandler.getInstance().getRank(p);
+        if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Ethereal")) {
+            rank = 1000;
+        }
+        // ResetHandler.setAIR(min, max, MineHandler.Blocks(rank/16));
+        double fortuity = Functions.Foruity(p);
+        double skill = SkillsEventsListener.getSkillsBoostFortune(p);
+        double event = SkillsEventsListener.getEventFortune();
+        int line = 0;
+        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
+            if (org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
+                line = x;
             }
         }
-        int i = r.nextInt(chance);
+        int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
+                (14));
 
-        if (i == 1) {
-            nukebreak(p, b, level);
+        double levelcap = 1 + (level / 1000);
 
-        }
+
+        sellblocks.add(new ItemStack(m.getBlockManager().getRandomBlockFromMine().getType(), (int) ((blocks /1.5* (fortune) * levelcap))));
+
+
+        int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * levelcap);
+        Tokens.getInstance().addTokens(p, tokens);
+        SellHandler.getInstance().sellEnchant(p, sellblocks, "Smite", tokens);
     }
 
 
-    public void RandomItem(Player p) {
+
+    public void Junkpile(Player p) {
         Random r = new Random();
 
         int fmin = 1000;
@@ -664,33 +346,17 @@ public class EnchantMethods {
             }
 
             PickXPHandler.getInstance().addXP(p, xp);
-        } else if (rr >= 40 && rr < 60) {
+        } else if (rr >= 40 && rr < 75) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "multi add " + p.getName() + " " + multi);
             if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Junkpile-Messages") == true) {
                 p.sendMessage(c("&f&lJunkpile &8| &b+" + multi + " Multi"));
             }
-        } else if (rr >= 60 && rr < 70) {
-            if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Ethereal")) {
-                RankupHandler.getInstance().upRank(p);
-                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Junkpile-Messages") == true) {
-                    p.sendMessage(c("&f&lJunkpile &8| &b+1 Levels"));
-                }
-                return;
-            }
-            RankupHandler.getInstance().upRank(p);
-            RankupHandler.getInstance().upRank(p);
-            RankupHandler.getInstance().upRank(p);
-            RankupHandler.getInstance().upRank(p);
-            RankupHandler.getInstance().upRank(p);
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Junkpile-Messages") == true) {
-                p.sendMessage(c("&f&lJunkpile &8| &b+5 Levels"));
-            }
-        } else if (rr >= 70 && rr < 75) {
+        } else if (rr >= 75 && rr < 77) {
             CMDVoteShop.addCoupon(p, 0.05);
             if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Junkpile-Messages") == true) {
                 p.sendMessage(c("&f&lJunkpile &8| &b+$0.05 Coupon"));
             }
-        } else if (rr >= 75) {
+        } else if (rr >= 77) {
             int rint = r.nextInt(4);
             if (rint == 0) {
                 p.getInventory().addItem(TrinketHandler.getInstance().commonDust());
@@ -703,42 +369,6 @@ public class EnchantMethods {
             } else if (rint == 4) {
                 p.getInventory().addItem(TrinketHandler.getInstance().herDust());
             }
-        }
-
-
-    }
-
-
-    public void Junkpile(Player p) {
-        Random r = new Random();
-
-        double lucky = Functions.Karma(p);
-        double luck = Functions.luckBoost(p);
-        double skill = SkillsEventsListener.getSkillsBoostLuck(p);
-
-        int level = 0;
-        int chance = 3500;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
-
-            if (ChatColor.stripColor(s).contains("Junkpile")) {
-                level = m.getBlocks(s);
-            }
-        }
-
-        if (level == 0) return;
-        if (level == 1) {
-            chance = (int) (4400 * lucky * luck * skill);
-        } else {
-            chance = (int) ((4400 - (0.85 * level * lucky * luck * skill)));
-            if (chance < 500) {
-                chance = 500;
-            }
-        }
-        int i = r.nextInt(chance);
-
-        if (i == 1) {
-            RandomItem(p);
-
         }
     }
 
@@ -792,41 +422,6 @@ public class EnchantMethods {
     }
 
 
-    public void KeyPartyBreak(Player p) {
-        Random r = new Random();
-
-        double lucky = Functions.Karma(p);
-        double luck = Functions.luckBoost(p);
-        double skill = SkillsEventsListener.getSkillsBoostLuck(p);
-
-        int level = 0;
-        int chance = 3000;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
-
-            if (ChatColor.stripColor(s).contains("Key Party")) {
-                level = m.getBlocks(s);
-            }
-        }
-
-        if (level == 0) return;
-        if (level == 1) {
-            chance = (int) (3800 * lucky * luck * skill);
-        } else {
-            chance = (int) ((3800 - (level * lucky * luck * skill)));
-            if (chance < 400) {
-                chance = 400;
-            }
-        }
-        int i = r.nextInt(chance);
-
-        if (i == 1) {
-            KeyParty(p);
-
-        }
-
-    }
-
-
     public void Booster(Player p) {
         Random r = new Random();
         int i = r.nextInt(5);
@@ -865,112 +460,109 @@ public class EnchantMethods {
 
     }
 
-    public void BoosterBreak(Player p) {
+    public void Treasury(Player p) {
         Random r = new Random();
+        int min = 500;
+        int max = 2500;
+        int gems = r.nextInt(max - min) + min;
+        MinePouchHandler.addGems(p, gems);
+    }
 
+    public double getEnchantChance(String Enchant, int level, Player p) {
         double lucky = Functions.Karma(p);
         double luck = Functions.luckBoost(p);
         double skill = SkillsEventsListener.getSkillsBoostLuck(p);
-
-        int level = 0;
-        int chance = 4500;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
-
-            if (ChatColor.stripColor(s).contains("Booster")) {
-                level = m.getBlocks(s);
-            }
+        double procChance = 0;
+        switch(Enchant) {
+            case "Booster":
+                double chance = 6300 - (0.65 * level * lucky * luck * skill);
+                procChance = (chance < 300) ? 300 : chance;
+                break;
+            case "Key Party":
+                chance = 3800 - (level * lucky * luck * skill);
+                procChance = (chance < 400) ? 400 : chance;
+                break;
+            case "Junkpile":
+                chance = 4400 - (0.85 * level * lucky * luck * skill);
+                procChance = (chance < 500) ? 500 : chance;
+                break;
+            case "Nuke":
+                chance = 23000 - (20 * level * lucky * luck * skill);
+                procChance = (chance < 2000) ? 2000 : chance;
+                break;
+            case "Wave":
+                chance = 1750 - (1.15 * level * lucky * luck * skill);
+                procChance = (chance < 300) ? 300 : chance;
+                break;
+            case "Treasury":
+                chance = 3000 - (0.80 * level * lucky * luck * skill);
+                procChance = (chance < 600) ? 600 : chance;
+                break;
+            case "Smite":
+                chance = 3000 - (0.80 * level * lucky * luck * skill);
+                procChance = (chance < 600) ? 600 : chance;
+                break;
         }
-
-        if (level == 0) return;
-        if (level == 1) {
-            chance = (int) (6300 * lucky * luck * skill);
-        } else {
-            chance = (int) ((6300 - (0.65 * level * lucky * luck * skill)));
-            if (chance < 550) {
-                chance = 550;
-            }
-        }
-        int i = r.nextInt(chance);
-
-        if (i == 1) {
-            Booster(p);
-
-        }
-
-
+        return procChance;
     }
 
-    private void prestigeFinder(Player p, int level) {
-        int prestige = 0;
+    public void procEnchant(String Enchant, Player p, Block b) {
         Random r = new Random();
-        int rint = r.nextInt(4);
-        if (rint == 0) {
-            prestige = (int) (1 * (level / 1000));
-        } else if (rint == 1) {
-            prestige = (int) (2 * (level / 1000));
-        } else if (rint == 2) {
-            prestige = (int) (3 * (level / 1000));
-        } else if (rint == 3) {
-            prestige = (int) (4 * (level / 1000));
-        }
-        if (prestige < 1) {
-            prestige = 1;
-        }
-
-
-        PrestigeHandler.addPrestiges(p, prestige);
-        p.sendMessage(m.c("&f&lPrestige Finder &8| &b+&e" + prestige + " &bPrestiges."));
-    }
-
-
-    public void prestigeBreak(Player p) {
-        Random r = new Random();
-
-        double lucky = Functions.Karma(p);
-        double luck = Functions.luckBoost(p);
-        double skill = SkillsEventsListener.getSkillsBoostLuck(p);
-
-        int level = 0;
-        int chance = 4500;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
-
-            if (ChatColor.stripColor(s).contains("Prestige Finder")) {
-                level = m.getBlocks(s);
-            }
-        }
-
-        if (level == 0) return;
-        if (level == 1) {
-            chance = (int) (4500 * lucky * luck * skill);
-        } else {
-            chance = (int) ((4500 - (0.3 * level * lucky * luck * skill)));
-            if (chance < 600) {
-                chance = 600;
-            }
-        }
-        int i = r.nextInt(chance);
-
-        if (i == 1) {
-            prestigeFinder(p, level);
-
+        int level = getEnchantLevel(p, Enchant);
+        switch(Enchant) {
+            case "Booster":
+                if(r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
+                    Booster(p);
+                }
+                break;
+            case "Key Party":
+                if(r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
+                    KeyParty(p);
+                }
+                break;
+            case "Junkpile":
+                if(r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
+                    Junkpile(p);
+                }
+                break;
+            case "Nuke":
+                if(r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
+                    nukebreak(p, b, level);
+                }
+                break;
+            case "Wave":
+                if(r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
+                    Jackhammer(p, b, level);
+                }
+                break;
+            case "Smite":
+                if(r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
+                    lightning(p, b, level);
+                }
+                break;
         }
     }
+    public List<String> Enchants() {
+        List<String> enchants = new ArrayList<>();
+        enchants.add("Booster");
+        enchants.add("Key Party");
+        enchants.add("Junkpile");
+        enchants.add("Nuke");
+        enchants.add("Jackhammer");
+        enchants.add("Treasury");
+        enchants.add("Smite");
+        return enchants;
+    }
+    public int getEnchantLevel(Player p, String Enchant) {
+        int enchantLevel = 0;
 
-
-    public int getBlocks(String s) {
-        StringBuilder lvl = new StringBuilder();
-        s = ChatColor.stripColor((String) s);
-        char[] arrayOfChar = s.toCharArray();
-        int i = arrayOfChar.length;
-        for (int b = 0; b < i; b = (int) ((byte) (b + 1))) {
-            char c = arrayOfChar[b];
-            if (!this.isInt(c)) continue;
-            lvl.append(c);
+        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
+            String s = p.getItemInHand().getItemMeta().getLore().get(x);
+            if (ChatColor.stripColor(s).contains(Enchant)) {
+                enchantLevel = PickaxeLevel.getInstance().getInt(p.getItemInHand().getItemMeta().getLore().get(x));
+            }
         }
-        if (this.isInt(lvl.toString())) {
-            return Integer.parseInt(lvl.toString());
-        }
-        return -1;
+        return enchantLevel;
     }
 
     static String c(String s) {

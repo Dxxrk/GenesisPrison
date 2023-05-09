@@ -1,16 +1,13 @@
 package me.dxrk.Commands;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import me.dxrk.Main.Methods;
+import me.dxrk.Main.SettingsManager;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,10 +17,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import me.dxrk.Events.SellHandler;
-import me.dxrk.Main.Methods;
-import me.dxrk.Main.SettingsManager;
-import net.md_5.bungee.api.ChatColor;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CMDOptions implements Listener, CommandExecutor{
 	
@@ -36,7 +31,7 @@ public class CMDOptions implements Listener, CommandExecutor{
 	private ItemStack option(Player p, String option) {
 		ItemStack ops = new ItemStack(Material.INK_SACK);
 		ItemMeta om = ops.getItemMeta();
-		List<String> lore = new ArrayList<String>();
+		List<String> lore = new ArrayList<>();
 		if(settings.getOptions().getBoolean(p.getUniqueId().toString()+"."+option) == true) {
 			ops.setDurability((short)10);
 			om.setDisplayName(m.c("&a"+option)+" Enabled");
@@ -92,7 +87,7 @@ public class CMDOptions implements Listener, CommandExecutor{
 			return m.c("&f&ki&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls&f&ki&r");
 		if(s.equalsIgnoreCase("pink"))
 			return m.c("&f&ki&d&lGenesis&f&ki&r");
-		if(s.equalsIgnoreCase("blue"))
+		if(s.equalsIgnoreCase("aqua"))
 			return m.c("&f&ki&b&lGenesis&f&ki&r");
 		if(s.equalsIgnoreCase("lime"))
 			return m.c("&f&ki&a&lGenesis&f&ki&r");
@@ -106,20 +101,29 @@ public class CMDOptions implements Listener, CommandExecutor{
 			return m.c("&f&ki&6&lGenesis&f&ki&r");
 		if(s.equalsIgnoreCase("cyan"))
 			return m.c("&f&ki&3&lGenesis&f&ki&r");
+		if(s.equalsIgnoreCase("white"))
+			return m.c("&f&ki&f&lGenesis&f&ki&r");
+		if(s.equalsIgnoreCase("blue"))
+			return m.c("&f&ki&9&lGenesis&f&ki&r");
+		if(s.equalsIgnoreCase("purple"))
+			return m.c("&f&ki&5&lGenesis&f&ki&r");
 		return m.c("&f&ki&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls&f&ki&r");
 	}
 
 	public void openGenesis(Player p) {
-		Inventory gen = Bukkit.createInventory(null, 9, m.c("&cChange Tag Color"));
+		Inventory gen = Bukkit.createInventory(null, 18, m.c("&cChange Tag Color"));
 		gen.setItem(0, tagColor(m.c("&4&lD&c&le&6&lf&e&la&a&lu&b&ll&d&lt"), (short)8));
 		gen.setItem(1, tagColor(m.c("&d&lPink"), (short)9));
-		gen.setItem(2, tagColor(m.c("&b&lBlue"), (short)12));
+		gen.setItem(2, tagColor(m.c("&b&lAqua"), (short)12));
 		gen.setItem(3, tagColor(m.c("&a&lLime"), (short)10));
 		gen.setItem(4, tagColor(m.c("&e&lYellow"), (short)11));
 		gen.setItem(5, tagColor(m.c("&c&lRed"), (short)1));
 		gen.setItem(6, tagColor(m.c("&2&lGreen"), (short)2));
 		gen.setItem(7, tagColor(m.c("&6&lGold"), (short)14));
 		gen.setItem(8, tagColor(m.c("&3&lCyan"), (short)6));
+		gen.setItem(12, tagColor(m.c("&9&lBlue"), (short)4));
+		gen.setItem(13, tagColor(m.c("&f&lWhite"), (short)15));
+		gen.setItem(14, tagColor(m.c("&5&lPurple"), (short)5));
 		p.openInventory(gen);
 	}
 	

@@ -126,15 +126,9 @@ public class Enchants implements Listener{
 				return;
 			}
 		    if(EnchantMethods.set(b).allows(DefaultFlag.LIGHTER)) {
-		    	EnchantMethods.getInstance().Wave(p, b);
-		    	EnchantMethods.getInstance().Explosion(p, b);
-				EnchantMethods.getInstance().Laser(p, b);
-				EnchantMethods.getInstance().Vaporize(p, b);
-		    	EnchantMethods.getInstance().Research(p);
-		    	EnchantMethods.getInstance().Junkpile(p);
-		    	EnchantMethods.getInstance().BoosterBreak(p);
-		    	EnchantMethods.getInstance().KeyPartyBreak(p);
-				EnchantMethods.getInstance().prestigeBreak(p);
+		    	for(String s : EnchantMethods.getInstance().Enchants()) {
+					EnchantMethods.getInstance().procEnchant(s, p, b);
+				}
 				Functions.Multiply(p);
 
 		    	Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());

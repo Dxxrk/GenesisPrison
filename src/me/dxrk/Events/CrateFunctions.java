@@ -4,7 +4,6 @@ import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -69,25 +68,26 @@ public class CrateFunctions {
         lore.add(m.c("&7From the list below, all rewards are randomly selected."));
         lore.add(m.c("&a&lRewards:"));
         lore.add(m.c(" "));
-        lore.add(m.c("&e&l&m--&e&lTokens&m--"));
+        lore.add(m.c("&f&l&m--&f&lTokens&m--"));
         lore.add(m.c("&e⛀2,000,000-5,000,000"));
         lore.add(m.c(" "));
-        lore.add(m.c("&c&l&m--&c&lKeys&m--"));
-        lore.add(m.c("&c1-10x Random Keys"));
-        lore.add(m.c("&c3x Rank Keys"));
+        lore.add(m.c("&f&l&m--&f&lKeys&m--"));
+        lore.add(m.c("&e1-10x &7Random Keys"));
+        lore.add(m.c("&e3x &3&lRank &7Keys"));
         lore.add(m.c(" "));
-        lore.add(m.c("&5&l&m--&5&lRanks&m--"));
+        lore.add(m.c("&f&l&m--&f&lRanks&m--"));
         lore.add(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank"));
         lore.add(m.c(" "));
-        lore.add(m.c("&6&l&m--&6&lItems&m--"));
-        lore.add(m.c("&51-3x Epic Trinkets"));
-        lore.add(m.c("&61x Legendary Trinkets"));
+        lore.add(m.c("&f&l&m--&f&lItems&m--"));
+        lore.add(m.c("&e1-3x &5Epic Trinkets"));
+        lore.add(m.c("&e1x &bLegendary Trinket"));
+        lore.add(m.c("&e1x &c&lMonster &7Egg"));
         lore.add(m.c(" "));
-        lore.add(m.c("&d&l&m--&5&lMisc.&m--"));
+        lore.add(m.c("&f&l&m--&f&lMisc.&m--"));
         lore.add(m.c("&dItem Rename"));
-        lore.add(m.c("&d3x Currency Boost"));
-        lore.add(m.c("&d2x XP Boost"));
-        lore.add(m.c("&d2x Currency Boost"));
+        lore.add(m.c("&b3x Currency Boost"));
+        lore.add(m.c("&a2x XP Boost"));
+        lore.add(m.c("&b2x Currency Boost"));
         gm.setLore(lore);
         gcrate.setItemMeta(gm);
 
@@ -102,24 +102,25 @@ public class CrateFunctions {
         lore.add(m.c("&7From the list below, all rewards are randomly selected."));
         lore.add(m.c("&a&lRewards:"));
         lore.add(m.c(" "));
-        lore.add(m.c("&e&l&m--&e&lTokens&m--"));
+        lore.add(m.c("&f&l&m--Tokens--"));
         lore.add(m.c("&e⛀3,000,000-10,000,000"));
         lore.add(m.c(" "));
-        lore.add(m.c("&c&l&m--&c&lKeys&m--"));
-        lore.add(m.c("&c1-20x Random Keys"));
-        lore.add(m.c("&c3x Rank Keys"));
+        lore.add(m.c("&f&l&m--&f&lKeys&m--"));
+        lore.add(m.c("&e1-20x &7Random Keys"));
+        lore.add(m.c("&e3x &3&lRank &7Keys"));
         lore.add(m.c(" "));
-        lore.add(m.c("&5&l&m--&5&lRanks&m--"));
+        lore.add(m.c("&f&l&m--&f&lRanks&m--"));
         lore.add(m.c("&d&lGod Rank"));
         lore.add(m.c("&e&lOlympian Rank"));
         lore.add(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank"));
         lore.add(m.c(" "));
-        lore.add(m.c("&6&l&m--&6&lItems&m--"));
-        lore.add(m.c("&61-5x Legendary Trinkets"));
+        lore.add(m.c("&f&l&m--&f&lItems&m--"));
+        lore.add(m.c("&e1-5x &6Legendary Trinkets"));
+        lore.add(m.c("&e1x &c&lMonster &7Egg"));
         lore.add(m.c(" "));
-        lore.add(m.c("&d&l&m--&5&lMisc.&m--"));
-        lore.add(m.c("&d3x Currency Boost"));
-        lore.add(m.c("&d2x XP Boost"));
+        lore.add(m.c("&f&l&m--&f&lMisc.&m--"));
+        lore.add(m.c("&b3x Currency Boost"));
+        lore.add(m.c("&a2x XP Boost"));
         gm.setLore(lore);
         gcrate.setItemMeta(gm);
 
@@ -134,27 +135,27 @@ public class CrateFunctions {
         lore.add(m.c("&7From the list below, all rewards are randomly selected."));
         lore.add(m.c("&a&lRewards:"));
         lore.add(m.c(" "));
-        lore.add(m.c("&e&l&m--&e&lTokens&m--"));
+        lore.add(m.c("&f&l&m--&f&lTokens&m--"));
         lore.add(m.c("&e⛀500,000-1,000,000"));
         lore.add(m.c(" "));
-        lore.add(m.c("&c&l&m--&c&lKeys&m--"));
-        lore.add(m.c("&c1-5x Random Keys"));
-        lore.add(m.c("&c1x Rank Keys"));
+        lore.add(m.c("&f&l&m--&f&lKeys&m--"));
+        lore.add(m.c("&e1-5x R&7andom Keys"));
+        lore.add(m.c("&e1x &3&lRank &7Key"));
         lore.add(m.c(" "));
-        lore.add(m.c("&5&l&m--&5&lRanks&m--"));
+        lore.add(m.c("&f&l&m--&f&lRanks&m--"));
         lore.add(m.c("&a&lVIP Rank"));
         lore.add(m.c("&6&lMVP Rank"));
         lore.add(m.c("&c&lHero Rank"));
         lore.add(m.c(" "));
-        lore.add(m.c("&6&l&m--&6&lItems&m--"));
-        lore.add(m.c("&b1-3x Common Trinkets"));
-        lore.add(m.c("&91x Rare Trinkets"));
+        lore.add(m.c("&f&l&m--&f&lItems&m--"));
+        lore.add(m.c("&e1-3x &bCommon Trinkets"));
+        lore.add(m.c("&e1x &9Rare Trinkets"));
         lore.add(m.c(" "));
-        lore.add(m.c("&d&l&m--&5&lMisc.&m--"));
+        lore.add(m.c("&f&l&m--&f&lMisc.&m--"));
         lore.add(m.c("&dItem Rename"));
-        lore.add(m.c("&d1.5x Currency Boost"));
-        lore.add(m.c("&d2x XP Boost"));
-        lore.add(m.c("&d2x Currency Boost"));
+        lore.add(m.c("&b1.5x Currency Boost"));
+        lore.add(m.c("&a2x XP Boost"));
+        lore.add(m.c("&b2x Currency Boost"));
         lore.add(m.c("&d1.5-2.5 Multi"));
         gm.setLore(lore);
         gcrate.setItemMeta(gm);
@@ -201,7 +202,7 @@ public class CrateFunctions {
                 lore.add("cratekey %PLAYER% rank 3");
                 rm.setLore(lore);
             }
-            if(ri > 370 && ri <=500) {
+            if(ri > 370 && ri <=450) {
                 int tmin = 1;
                 int tmax = 5;
                 int trinkets = r.nextInt(tmax - tmin)+ tmin;
@@ -209,6 +210,13 @@ public class CrateFunctions {
                 reward.setType(Material.GOLD_NUGGET);
                 List<String> lore = new ArrayList<>();
                 lore.add("givetrinket %PLAYER% legendary "+trinkets);
+                rm.setLore(lore);
+            }
+            if(ri > 450 && ri <= 500) {
+                rm.setDisplayName(m.c("&c&lMonster &7&lEgg"));
+                reward.setType(Material.MONSTER_EGG);
+                List<String> lore = new ArrayList<>();
+                lore.add("giveegg %PLAYER%");
                 rm.setLore(lore);
             }
             if(ri > 500 && ri <=503){
@@ -298,14 +306,14 @@ public class CrateFunctions {
                 lore.add("cratekey %PLAYER% rank 3");
                 rm.setLore(lore);
             }
-            if(ri > 305 && ri <=400){
+            if(ri > 305 && ri <=375){
                 rm.setDisplayName(m.c("&e1x &6Legendary Trinket"));
                 reward.setType(Material.GOLD_NUGGET);
                 List<String> lore = new ArrayList<>();
                 lore.add("givetrinket %PLAYER% legendary 1");
                 rm.setLore(lore);
             }
-            if(ri > 400 && ri <=525) {
+            if(ri > 375 && ri <=475) {
                 int tmin = 1;
                 int tmax = 3;
                 int trinkets = r.nextInt(tmax - tmin)+ tmin;
@@ -313,6 +321,13 @@ public class CrateFunctions {
                 reward.setType(Material.GOLD_NUGGET);
                 List<String> lore = new ArrayList<>();
                 lore.add("givetrinket %PLAYER% epic "+trinkets);
+                rm.setLore(lore);
+            }
+            if(ri > 475 && ri <=525) {
+                rm.setDisplayName(m.c("&c&lMonster &7&lEgg"));
+                reward.setType(Material.MONSTER_EGG);
+                List<String> lore = new ArrayList<>();
+                lore.add("giveegg %PLAYER%");
                 rm.setLore(lore);
             }
             if(ri > 525 && ri <=527){

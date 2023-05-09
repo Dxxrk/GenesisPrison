@@ -12,10 +12,7 @@ import com.earth2me.essentials.Essentials;
 import me.dxrk.Commands.*;
 import me.dxrk.Discord.JDAEvents;
 import me.dxrk.Discord.jdaHandler;
-import me.dxrk.Enchants.Enchants;
-import me.dxrk.Enchants.PickaxeLevel;
-import me.dxrk.Enchants.PickaxeSkillTree;
-import me.dxrk.Enchants.SkillsEventsListener;
+import me.dxrk.Enchants.*;
 import me.dxrk.Events.*;
 import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Mines.CMDMine;
@@ -74,6 +71,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
                 new WrappedGameProfile("id2", ""),
                 new WrappedGameProfile("id3", ChatColor.LIGHT_PURPLE+"Remember to Vote!")
         ));
+        ping.setPlayersOnline(ScoreboardHandler.getPlayersOnline());
     }
 
     public void onEnable() {
@@ -227,6 +225,8 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("g").setExecutor(new CMDGang());
         getCommand("genesis").setExecutor(new CMDOptions());
         getCommand("giveegg").setExecutor(new MonsterHandler());
+        getCommand("testenchant").setExecutor(new EnchantMethods());
+        getCommand("wave").setExecutor(new EnchantMethods());
         registerEvents(this, new Listener[]{new MonsterHandler()});
         registerEvents(this, new Listener[]{new CMDVanish()});
         registerEvents(this, new Listener[]{new MomentumHandler()});
@@ -625,6 +625,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         for (Player p : Bukkit.getOnlinePlayers()) {
             BoostsHandler.getInstance().saveBinv(p);
             BoostsHandler.boostsinv.remove(p);
+            MonsterHandler.forceDeactivate(p);
         }
 
         this.settings.getBoost().set("nextUpSell", BoostsHandler.nextUpsell);

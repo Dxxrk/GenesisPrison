@@ -34,16 +34,17 @@ public class CMDVanish implements Listener, CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (label.equalsIgnoreCase("vanish") || label.equalsIgnoreCase("v") || label.equalsIgnoreCase("ev") || label.equalsIgnoreCase("evanish")) {
-            if (sender instanceof Player){
+            if (sender instanceof Player) {
                 Player player = (Player) sender;
-                if (vanished.contains(player)){
+                if (vanished.contains(player)) {
                     for (Player people : Bukkit.getOnlinePlayers()) {
                         people.showPlayer(player);
                     }
                     vanished.remove(player);
                     player.sendMessage(m.c("&f&lVanish &8| &bYou are no longer vanished."));
-                }else{
-                    for (Player people : Bukkit.getOnlinePlayers()){
+                } else {
+                    for (Player people : Bukkit.getOnlinePlayers()) {
+                        if (people.hasPermission("rank.helper")) continue;
                         people.hidePlayer(player);
                     }
                     vanished.add(player);
@@ -72,10 +73,12 @@ public class CMDVanish implements Listener, CommandExecutor {
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
         for (Player value : vanished) {
-            player.hidePlayer(value);
+            if(player != value)
+                player.hidePlayer(value);
         }
-        if(player.hasPermission("rank.helper")) {
-            for (Player people : Bukkit.getOnlinePlayers()){
+        if (player.hasPermission("rank.helper")) {
+            for (Player people : Bukkit.getOnlinePlayers()) {
+                if (people.hasPermission("rank.helper")) continue;
                 people.hidePlayer(player);
             }
             vanished.add(player);

@@ -269,7 +269,7 @@ public class KeysHandler implements Listener {
             monster = MonsterHandler.getMonsterBoost(p, 4);
         }
 
-        int tokens = 14;
+        int tokens = 10;
 
         int tgive = (int) ((tokens * tf) * multiply * skill * event * tboost * unity * miningboost * monster);
         return tgive;

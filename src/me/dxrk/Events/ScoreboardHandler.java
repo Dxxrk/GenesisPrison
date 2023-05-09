@@ -38,7 +38,7 @@ public class ScoreboardHandler implements Listener {
     public static int getPlayersOnline() {
         int x = 0;
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (!CMDVanish.vanished.contains(p.getUniqueId()))
+            if (!CMDVanish.vanished.contains(p))
                 x++;
         }
         return x;

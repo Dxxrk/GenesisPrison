@@ -277,7 +277,6 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         list.add("Wave");
         list.add("Junkpile");
         list.add("Nuke");
-        list.add("Explosion");
         list.add("Fortuity");
         list.add("Karma");
         list.add("Booster");
@@ -285,11 +284,10 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         list.add("Multiply");
         list.add("Fortune");
         list.add("Greed");
-        list.add("Prestige Finder");
         list.add("XP Finder");
-        list.add("Laser");
         list.add("Charity");
-
+        list.add("Treasury");
+        list.add("Smite");
         return list;
     }
 
