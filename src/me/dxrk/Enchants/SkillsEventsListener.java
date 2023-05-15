@@ -175,7 +175,7 @@ public class SkillsEventsListener implements Listener {
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         Random r = new Random();
-        if(!p.getLocation().getWorld().getName().equals(p.getName()+"sWorld") || !EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;
+        if(!p.getLocation().getWorld().getName().equals(p.getUniqueId().toString()) || !EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;
         couponBreak(p);
         //Zeus
         if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Zeus")) {

@@ -15,8 +15,7 @@ import me.dxrk.Discord.jdaHandler;
 import me.dxrk.Enchants.*;
 import me.dxrk.Events.*;
 import me.dxrk.Gangs.CMDGang;
-import me.dxrk.Mines.CMDMine;
-import me.dxrk.Mines.MineHandler;
+import me.dxrk.Mines.*;
 import me.dxrk.Tokens.TokenShop;
 import me.dxrk.Tokens.TokensCMD;
 import me.dxrk.Tokens.TokensListener;
@@ -29,6 +28,7 @@ import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -47,10 +47,12 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 
+
 import java.text.NumberFormat;
 import java.util.*;
 
 public class Main extends JavaPlugin implements Listener, CommandExecutor {
+
     private static Main INSTANCE;
     public static Permission perms = null;
     public static Economy econ = null;
@@ -74,10 +76,29 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         ping.setPlayersOnline(ScoreboardHandler.getPlayersOnline());
     }
 
+    private List<String> worlds() {
+        List<String> worlds = new ArrayList<>();
+        worlds.add("Prison");
+        //worlds.add("world_the_end");
+        worlds.add("Build");
+        worlds.add("Dxrk");
+        return worlds;
+    }
+    private void loadWorlds() {
+        /*for (String s : worlds()) {
+            if(Bukkit.getWorld(s) == null) {
+                new WorldCreator(s).createWorld();
+            }
+        }*/
+    }
+
     public void onEnable() {
 
         plugin = this;
         INSTANCE = this;
+        Mines.getInstance().preLoadWorlds();
+        Mines.getInstance().enable();
+        System.out.println(MineSystem.getInstance().getActiveMines());
 
         ProtocolLibrary.getProtocolManager().addPacketListener(
 // I mark my listener as async, as I don't use the Bukkit API. Please note that
@@ -533,7 +554,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             }
         }
         if (label.equalsIgnoreCase("workmode")) {
-            if (!cs.hasPermission("rank.owner")) return false;
+            if (!cs.isOp()) return false;
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("enable")) {                             //&4&lMaintenance Mode
                     savemotd = motd;
@@ -615,6 +636,11 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
 
         settings.saveVote();
         settings.saveGangs();
+        Iterator mineList = MineSystem.getInstance().getActiveMines().values().iterator();
+        while(mineList.hasNext()) {
+            Mine mine = (Mine)mineList.next();
+            mine.save();
+        }
 
         if (settings.getBoost().getDouble("ActiveSell.Amp") != 0.0D) {
             this.settings.getBoost().set("TimeLeftSell", BoostsHandler.selltime);

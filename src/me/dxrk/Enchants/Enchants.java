@@ -1,13 +1,14 @@
 package me.dxrk.Enchants;
 
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import me.dxrk.Mines.Mine;
 import me.dxrk.Mines.MineHandler;
 import me.dxrk.Events.RankupHandler;
+import me.dxrk.Mines.MineSystem;
 import me.dxrk.Mines.ResetHandler;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.SettingsManager;
-import me.jet315.prisonmines.mine.Mine;
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +21,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 
 public class Enchants implements Listener{
+
 	static String c(String s) {
 	    return ChatColor.translateAlternateColorCodes('&', s);
 	  }
@@ -103,10 +105,7 @@ public class Enchants implements Listener{
 		        int blocks = blockss + 1;
 		    }
 		  
-		  
-		  
-		  
-		  
+
 	
 	
 	@SuppressWarnings("deprecation")
@@ -121,25 +120,26 @@ public class Enchants implements Listener{
 		      return; 
 		    if (!p.getItemInHand().getItemMeta().hasLore())
 		      return;
-			if(!p.getWorld().getName().equals(p.getName()+"sWorld")) {
+			if(!p.getWorld().getName().equals(p.getUniqueId().toString())) {
 				e.setCancelled(true);
 				return;
 			}
 		    if(EnchantMethods.set(b).allows(DefaultFlag.LIGHTER)) {
 		    	for(String s : EnchantMethods.getInstance().Enchants()) {
+					//add check for if pickaxe has that enchant
 					EnchantMethods.getInstance().procEnchant(s, p, b);
 				}
 				Functions.Multiply(p);
 
-		    	Mine m = ResetHandler.api.getMineByName(p.getUniqueId().toString());
+				Mine m = MineSystem.getInstance().getMineByPlayer(p);
 
 				assert m != null;
-				if(m.getMineRegion().getBlocksLeftPercentage() < 50F) {
+				if(m.getBlocksLeftPercentage() < 50F) {
 					int rank = RankupHandler.instance.getRank(p);
 					if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
 						rank = 1000;
 					}
-					ResetHandler.resetMineWorldEdit(m, m.getMineRegion().getMinPoint(), m.getMineRegion().getMaxPoint(), MineHandler.Blocks(rank/16));
+					ResetHandler.resetMineWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), MineHandler.Blocks(rank/16));
 				}
 		    	
 		    		

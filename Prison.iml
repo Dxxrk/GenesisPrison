@@ -12,7 +12,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Desktop/genesis/particle-1.8.jar!/" />
+          <root url="jar://$USER_HOME$/asdfasdf/particle-1.8.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -21,7 +21,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Desktop/genesis/API.jar!/" />
+          <root url="jar://$USER_HOME$/asdfasdf/API.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

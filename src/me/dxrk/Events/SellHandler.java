@@ -5,12 +5,13 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Mines.MineHandler;
+import me.dxrk.Mines.MineSystem;
 import me.dxrk.Mines.ResetHandler;
 import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Gangs.Gangs;
 import me.dxrk.Main.*;
 import me.dxrk.Tokens.Tokens;
-import me.jet315.prisonmines.mine.Mine;
+import me.dxrk.Mines.Mine;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -35,25 +36,27 @@ import java.util.Locale;
 
 @SuppressWarnings("deprecation")
 public class SellHandler implements Listener, CommandExecutor {
+
+
   SettingsManager settings = SettingsManager.getInstance();
-  
+
   Methods methods = Methods.getInstance();
 
   public static double servermulti = 1.0D;
-  
+
   public static HashMap<Player, Double> pickmulti = new HashMap<>();
 
-  
+
   public static SellHandler instance = new SellHandler();
-  
+
   public static SellHandler getInstance() {
     return instance;
   }
   static String c(String s) {
 	    return ChatColor.translateAlternateColorCodes('&', s);
 	  }
-  
-  
+
+
   public static String format(double amt) {
 	  if (amt >= 1.0E18D)
 	      return String.format("%.1f Quint", amt / 1.0E18D);
@@ -67,19 +70,19 @@ public class SellHandler implements Listener, CommandExecutor {
       return String.format("%.1f Mil", amt / 1000000.0D);
     return NumberFormat.getNumberInstance(Locale.US).format(amt);
   }
-  
 
-  
-  
 
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
   public double getMulti(Player p) {
       double d = SettingsManager.getInstance().getMultiplier().getDouble(p.getUniqueId().toString());
-      
+
       if (d < 1.0) {
           d = 1.0;
       }
@@ -94,14 +97,14 @@ public class SellHandler implements Listener, CommandExecutor {
 	      return true;
 	    } catch (NumberFormatException e) {
 	      return false;
-	    } 
+	    }
 	  }
-  
-  
-  
-  
 
-  
+
+
+
+
+
 
 
 
@@ -272,10 +275,10 @@ public class SellHandler implements Listener, CommandExecutor {
 	      return true;
 	    } catch (Exception e1) {
 	      return false;
-	    } 
+	    }
 	  }
-		  
-	  
+
+
 	  public int getFortune(String s) {
 	        StringBuilder lvl = new StringBuilder();
 	        s = ChatColor.stripColor(s);
@@ -291,8 +294,8 @@ public class SellHandler implements Listener, CommandExecutor {
 	        }
 	        return -1;
 	    }
-	  
-	  
+
+
 	  @EventHandler(priority = EventPriority.HIGHEST)
 	  public void onBlockPlace(BlockPlaceEvent e ) {
 		  Player p = e.getPlayer();
@@ -303,7 +306,7 @@ public class SellHandler implements Listener, CommandExecutor {
 		    	e.setCancelled(true);
 		    }
 	  }
-  
+
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onBlockBreak(BlockBreakEvent event) {
     Player p = event.getPlayer();
@@ -313,7 +316,7 @@ public class SellHandler implements Listener, CommandExecutor {
       .getApplicableRegions(event.getBlock().getLocation());
     if (!set.allows(DefaultFlag.LIGHTER)) {
 
-      if (p.isOp() && p.getItemInHand() != null && 
+      if (p.isOp() && p.getItemInHand() != null &&
         p.getItemInHand().getType() == Material.DIAMOND_PICKAXE || p.getItemInHand().getType() == Material.WOOD_PICKAXE
 	  || p.getItemInHand().getType() == Material.STONE_PICKAXE || p.getItemInHand().getType() == Material.GOLD_PICKAXE
 	  || p.getItemInHand().getType() == Material.IRON_PICKAXE)
@@ -327,10 +330,10 @@ public class SellHandler implements Listener, CommandExecutor {
 
 
 
-    
+
     if (!event.isCancelled()) {
 		if (p.getItemInHand() != null) {
-			if(!p.getWorld().getName().equals(p.getName()+"sWorld")) {
+			if(!p.getWorld().getName().equals(p.getUniqueId().toString())) {
 				event.setCancelled(true);
 				return;
 			}
@@ -356,24 +359,24 @@ public class SellHandler implements Listener, CommandExecutor {
 		}
 	}
   }
-  
 
 
-  
-  
-  
-  
-  
 
-  
-  
+
+
+
+
+
+
+
+
   private ArrayList<String> reset = new ArrayList<>();
-  
-  
 
-  
+
+
+
   public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-	  
+
 
 	  if(cmd.getName().equalsIgnoreCase("resetmine") || cmd.getName().equalsIgnoreCase("rm")) {
 		  if (cs instanceof Player) {
@@ -381,7 +384,7 @@ public class SellHandler implements Listener, CommandExecutor {
 
 			  if(args.length == 0) {
 				  if (p.hasPermission("mines.resetmine")) {
-					  Mine mine = ResetHandler.api.getMineByName(p.getUniqueId().toString());
+					  Mine mine = MineSystem.getInstance().getMineByPlayer(p);
 					  if (reset.contains(p.getUniqueId().toString())) {
 						  p.sendMessage(c("&c/resetmine(/rm) is on cooldown."));
 					  } else {
@@ -389,8 +392,8 @@ public class SellHandler implements Listener, CommandExecutor {
 						  if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
 							  rank = 1000;
 						  }
-						  ResetHandler.resetMineWorldEdit(mine, mine.getMineRegion().getMinPoint(), mine.getMineRegion().getMaxPoint(), MineHandler.Blocks(rank / 16));
-						  if (mine.isLocationInRegion(p.getLocation()))
+						  ResetHandler.resetMineWorldEdit(mine, mine.getMinPoint(), mine.getMaxPoint(), MineHandler.Blocks(rank / 16));
+						  if (mine.isInMine(p.getLocation()))
 							  p.teleport(mine.getSpawnLocation());
 						  if (!p.isOp())
 							  reset.add(p.getUniqueId().toString());

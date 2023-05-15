@@ -72,7 +72,7 @@ public class BlocksHandler implements CommandExecutor, Listener {
     ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
     if (!set.allows(DefaultFlag.LIGHTER))
       return;
-    if(!p.getWorld().getName().equals(p.getName()+"sWorld")) {
+    if(!p.getWorld().getName().equals(p.getUniqueId().toString())) {
       e.setCancelled(true);
       return;
     }

@@ -61,6 +61,7 @@ public class CMDVanish implements Listener, CommandExecutor {
         if (p.hasPermission("rank.helper")) {
             if (vanished.contains(p)) {
                 e.setQuitMessage("");
+                vanished.remove(p);
             } else {
                 e.setQuitMessage(ChatColor.translateAlternateColorCodes('&', "&7<&b-&7> &e&l" + p.getName()));
             }
@@ -73,13 +74,13 @@ public class CMDVanish implements Listener, CommandExecutor {
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
         for (Player value : vanished) {
-            if(player != value)
+            if (!player.hasPermission("rank.helper"))
                 player.hidePlayer(value);
         }
         if (player.hasPermission("rank.helper")) {
             for (Player people : Bukkit.getOnlinePlayers()) {
-                if (people.hasPermission("rank.helper")) continue;
-                people.hidePlayer(player);
+                if (!people.hasPermission("rank.helper"))
+                    people.hidePlayer(player);
             }
             vanished.add(player);
             player.sendMessage(m.c("&f&lVanish &8| &bYou are vanished!"));

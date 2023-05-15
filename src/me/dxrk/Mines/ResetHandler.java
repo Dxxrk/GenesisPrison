@@ -12,13 +12,8 @@ import com.sk89q.worldedit.function.pattern.RandomPattern;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import me.dxrk.Events.RankupHandler;
-import me.jet315.prisonmines.JetsPrisonMines;
-import me.jet315.prisonmines.JetsPrisonMinesAPI;
-import me.jet315.prisonmines.mine.Mine;
-import net.minecraft.server.v1_8_R3.BlockPosition;
-import net.minecraft.server.v1_8_R3.IBlockData;
-import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,10 +21,6 @@ import java.util.List;
 import java.util.Random;
 
 public class ResetHandler {
-
-	private static JetsPrisonMines jpm = (JetsPrisonMines) Bukkit.getPluginManager().getPlugin("JetsPrisonMines");
-	public static JetsPrisonMinesAPI api = jpm.getAPI();
-
 
 	public static ItemStack mineBlock(Player p) {
 		int rank = RankupHandler.getInstance().getRank(p);
@@ -114,7 +105,7 @@ public class ResetHandler {
 		WorldEditRegion miningRegion = new WorldEditRegion(toWEVector(loc1), toWEVector(loc2), loc1.getWorld());
 		fillAIR(miningRegion, blocks.get(0), blocks.get(1), blocks.get(2));
 		for(Player pp : Bukkit.getOnlinePlayers()) {
-			if(mine.isLocationInRegion(pp.getLocation())) {
+			if(mine.isInMine(pp.getLocation())) {
 				pp.teleport(mine.getSpawnLocation());
 			}
 		}
@@ -123,7 +114,7 @@ public class ResetHandler {
 		WorldEditRegion miningRegion = new WorldEditRegion(toWEVector(loc1), toWEVector(loc2), loc1.getWorld());
 		fill(miningRegion, blocks.get(0), blocks.get(1), blocks.get(2));
 		for(Player pp : Bukkit.getOnlinePlayers()) {
-			if(mine.isLocationInRegion(pp.getLocation())) {
+			if(mine.isInMine(pp.getLocation())) {
 				pp.teleport(mine.getSpawnLocation());
 			}
 		}

@@ -152,7 +152,7 @@ implements Listener {
         if(p.getItemInHand() == null) return;
         if(!p.getItemInHand().hasItemMeta()) return;
         if(!p.getItemInHand().getItemMeta().hasLore()) return;
-        if(!p.getWorld().getName().equals(p.getName()+"sWorld")) return;
+        if(!p.getWorld().getName().equals(p.getUniqueId().toString())) return;
         if(!set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;
         Random r = new Random();
         int fmin = 1;

@@ -91,7 +91,6 @@ public class MonsterHandler implements Listener, CommandExecutor {
                 }
             }
         }
-
         return false;
     }
 

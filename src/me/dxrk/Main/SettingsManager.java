@@ -120,7 +120,18 @@ FileConfiguration PlayerData;
 
   File gangfile;
   
-  
+
+  public FileConfiguration getConfig(File file) {
+    return YamlConfiguration.loadConfiguration(file);
+  }
+  public void saveConfig(File file, FileConfiguration config) {
+    try {
+      config.save(file);
+    } catch (IOException e) {
+      Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not save file "+file.getName()+"!");
+    }
+  }
+
   
   public static SettingsManager getInstance() {
     return instance;
@@ -128,7 +139,7 @@ FileConfiguration PlayerData;
   
   public void setup(Plugin p) {
     if (!p.getDataFolder().exists())
-      p.getDataFolder().mkdir(); 
+      p.getDataFolder().mkdir();
     this.dfile = new File(p.getDataFolder(), "data.yml");
     this.tagfile = new File(p.getDataFolder(), "tags.yml");
     this.etfile = new File(p.getDataFolder(), "tokenshop.yml");
@@ -345,6 +356,8 @@ FileConfiguration PlayerData;
     this.auctionhouse = YamlConfiguration.loadConfiguration(this.ahfile);
     this.gangs = YamlConfiguration.loadConfiguration(this.gangfile);
   }
+
+  public FileConfiguration getFileConfig(FileConfiguration fc) { return fc;}
 
   public FileConfiguration getGangs() {
     return this.gangs;
