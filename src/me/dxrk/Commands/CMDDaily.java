@@ -59,27 +59,28 @@ public class CMDDaily implements Listener, CommandExecutor{
 			loree.add(m.c("&e&lTokens +100,000"));
 		}
 		else if(name.equals(m.c("&c&lHero Reward!"))){
-			loree.add(m.c("&bCommon Trnket Dust +1"));
-			loree.add(m.c("&9Rare Trinket Dust +1"));
-			loree.add(m.c("&5Epic Trinket Dust +1"));
-			loree.add(m.c("&6Legendary Trinket Dust +1"));
+			loree.add(m.c("&e5x &5&lCommunity &7Key"));
+			loree.add(m.c("&e3x &4&lOmega &7Key"));
 		}
 		else if(name.equals(m.c("&5&lDemi-God Reward!"))){
-			loree.add(m.c("&e1x &5&lCommunity &7Key"));
-			loree.add(m.c("&e2x &4&lOmega &7Key"));
-		}
-		else if(name.equals(m.c("&3&lTitan Reward!"))){
 			loree.add(m.c("&e&lTokens +150,000"));
-			loree.add(m.c("&e2x &4&lOmega &7Key"));
+			loree.add(m.c("&e5x &4&lOmega &7Key"));
 			loree.add(m.c("&e1x &4&l&ki&f&lSeasonal&4&l&ki&r &7Key"));
 		}
+		else if(name.equals(m.c("&3&lTitan Reward!"))){
+			loree.add(m.c("&bCommon Trinket +1"));
+			loree.add(m.c("&9Rare Trinket +1"));
+			loree.add(m.c("&5Epic Trinket  +1"));
+			loree.add(m.c("&6Legendary Trinket +1"));
+		}
 		else if(name.equals(m.c("&d&lGod Reward!"))){
-			loree.add(m.c("&e5x &e&lToken &7Key"));
+			loree.add(m.c("&e10x &e&lToken &7Key"));
 			loree.add(m.c("&b10000 XP"));
+			loree.add(m.c("&e2x &4&l&ki&f&lSeasonal&4&l&ki&r &7Key"));
 		}
 		else if(name.equals(m.c("&e&lOlympian Reward!"))){
-			loree.add(m.c("&e5x &4&lOmega &7Key"));
-			loree.add(m.c("&e2x &5&lCommunity &7Key"));
+			loree.add(m.c("&e10x &4&lOmega &7Key"));
+			loree.add(m.c("&e10x &5&lCommunity &7Key"));
 		}
 		else if(name.equals(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lReward!"))){
 			loree.add(m.c("&e&lTokens +250,000"));
@@ -176,40 +177,42 @@ public class CMDDaily implements Listener, CommandExecutor{
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily &6&lMVP &bClaimed!"));
 		}
 		if(rank.equals("hero")) {
-			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givedust "+p.getName()+" common");
-			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givedust "+p.getName()+" rare");
-			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givedust "+p.getName()+" epic");
-			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givedust "+p.getName()+" legendary");
+			LocksmithHandler.getInstance().addKey(p, "Community", 5);
+			LocksmithHandler.getInstance().addKey(p, "Omega", 3);
 			this.settings.getDaily().set(p.getUniqueId().toString()+".HeroReward", getTodayDate());
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily &c&lHero &bClaimed!"));
 		}
 		if(rank.equals("demi-god")) {
-			LocksmithHandler.getInstance().addKey(p, "Community", 1);
-			LocksmithHandler.getInstance().addKey(p, "Omega", 2);
+			Tokens.getInstance().addTokens(p, 150000);
+			LocksmithHandler.getInstance().addKey(p, "Omega", 5);
+			LocksmithHandler.getInstance().addKey(p, "Seasonal", 1);
 			this.settings.getDaily().set(p.getUniqueId().toString()+".Demi-GodReward", getTodayDate());
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily &5&lDemi-God &bClaimed!"));
 		}
 		if(rank.equals("titan")) {
-			Tokens.getInstance().addTokens(p, 150000);
-			LocksmithHandler.getInstance().addKey(p, "Omega", 2);
-			LocksmithHandler.getInstance().addKey(p, "Seasonal", 1);
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givetrinket "+p.getName()+" common");
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givetrinket "+p.getName()+" rare");
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givetrinket "+p.getName()+" epic");
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givetrinket "+p.getName()+" legendary");
 			this.settings.getDaily().set(p.getUniqueId().toString()+".TitanReward", getTodayDate());
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily &3&lTitan &bClaimed!"));
 		}
 		if(rank.equals("god")) {
 			PickXPHandler.getInstance().addXP(p, 10000);
-			LocksmithHandler.getInstance().addKey(p, "Token", 5);
+			LocksmithHandler.getInstance().addKey(p, "Token", 10);
 			this.settings.getDaily().set(p.getUniqueId().toString()+".GodReward", getTodayDate());
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily &d&lGod &bClaimed!"));
 		}
 		if(rank.equals("olympian")) {
-			LocksmithHandler.getInstance().addKey(p, "Omega", 5);
-			LocksmithHandler.getInstance().addKey(p, "Community", 2);
+			LocksmithHandler.getInstance().addKey(p, "Omega", 10);
+			LocksmithHandler.getInstance().addKey(p, "Community", 10);
+			LocksmithHandler.getInstance().addKey(p, "Seasonal", 2);
 			this.settings.getDaily().set(p.getUniqueId().toString()+".OlympianReward", getTodayDate());
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily &e&lOlympian &bClaimed!"));
 		}
 		if(rank.equals("genesis")) {
-			Tokens.getInstance().addTokens(p, 250000);
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate "+p.getName()+" genesis");
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveegg "+p.getName());
 			this.settings.getDaily().set(p.getUniqueId().toString()+".GenesisReward", getTodayDate());
 			p.sendMessage(m.c("&f&lRewards &8| &bDaily &4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &bClaimed!"));
 		}
