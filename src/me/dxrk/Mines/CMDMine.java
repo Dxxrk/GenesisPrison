@@ -16,6 +16,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class CMDMine implements CommandExecutor, Listener {
 
@@ -50,36 +51,50 @@ public class CMDMine implements CommandExecutor, Listener {
 
 		return skull;
 	}
-	
+
+	public void openMineInventory(Player p) {
+		Inventory mineMenu = Bukkit.createInventory(null, 27, c("&a&lYour Mine!"));
+
+		ItemStack teleport = new ItemStack(Material.ENDER_PORTAL_FRAME);
+		ItemMeta tm = teleport.getItemMeta();
+		tm.setDisplayName(c("&aTeleport to your mine! (/mine home|tp)"));
+		teleport.setItemMeta(tm);
+		mineMenu.setItem(4, teleport);
+
+		ItemStack portal = Head(p);
+		ItemMeta pm = portal.getItemMeta();
+		pm.setDisplayName(c("&aTo Visit another mine use /mine visit <name>."));
+		portal.setItemMeta(pm);
+		mineMenu.setItem(2, portal);
+
+		ItemStack upgrade = new ItemStack(Material.DIAMOND);
+		ItemMeta um = upgrade.getItemMeta();
+		um.setDisplayName(c("&aUpgrade your mine."));
+		upgrade.setItemMeta(um);
+		mineMenu.setItem(6, upgrade);
+
+		ItemStack reset = new ItemStack(Material.REDSTONE_TORCH_ON);
+		ItemMeta rm = reset.getItemMeta();
+		rm.setDisplayName(c("&aMine Reset Settings"));
+		reset.setItemMeta(rm);
+		mineMenu.setItem(20, reset);
+
+		ItemStack block = new ItemStack(Material.DIAMOND_ORE);
+		ItemMeta bm = block.getItemMeta();
+		bm.setDisplayName(c("&aChange your mine block"));
+		block.setItemMeta(bm);
+		mineMenu.setItem(22, block);
+
+		p.openInventory(mineMenu);
+	}
+
 	@Override
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     if (label.equalsIgnoreCase("mine")) {
     	if(args.length == 0) {
       		if (!(sender instanceof Player)) return false;
       		Player p = (Player)sender;
-			Inventory mineMenu = Bukkit.createInventory(null, 9, c("&a&lYour Mine!"));
-
-	  		ItemStack teleport = new ItemStack(Material.GRASS);
-	  		ItemMeta tm = teleport.getItemMeta();
-	  		tm.setDisplayName(c("&cTeleport to your mine! (/mine home|tp)"));
-	  		teleport.setItemMeta(tm);
-	  		mineMenu.setItem(4, teleport);
-
-			ItemStack mineBlocks = new ItemStack(Material.IRON_FENCE);
-			ItemMeta mm = mineBlocks.getItemMeta();
-			mm.setDisplayName(c("&aNew Blocks every 16 Levels!"));
-			mineBlocks.setItemMeta(mm);
-			mineMenu.setItem(6, mineBlocks);
-
-			ItemStack portal = Head(p);
-			ItemMeta pm = portal.getItemMeta();
-			pm.setDisplayName(c("&bTo Visit another mine use /mine visit <name>."));
-			portal.setItemMeta(pm);
-			mineMenu.setItem(2, portal);
-
-
-	  		p.openInventory(mineMenu);
-
+			openMineInventory(p);
     	}
 		if(args.length == 1) {
 			Player p = (Player)sender;
@@ -91,24 +106,18 @@ public class CMDMine implements CommandExecutor, Listener {
 					p.sendMessage(c("&f&lMine &8| &7Unable to find your mine(/mine)."));
 				}
 			}
+			if(args[0].equalsIgnoreCase("upgrade")) {
+				//open inventory
+			}
 		}
 		if(args.length == 2) {
 			Player p = (Player)sender;
 			if(args[0].equalsIgnoreCase("visit")) {
-				boolean online = false;
-				for(Player on : Bukkit.getOnlinePlayers()) {
-					String name = on.getName();
-					if(name.equalsIgnoreCase(args[1])){
-						online = true;
-					}
-				}
-				if(online == false) {
-					p.sendMessage(c("&f&lMine &8| &7Player not Online."));
-					return false;
-				}
+				OfflinePlayer visit = Bukkit.getOfflinePlayer(args[1]);
+				UUID id = visit.getUniqueId();
 
-				if(Bukkit.getWorlds().contains(Bukkit.getWorld(args[1] + "sWorld"))) {
-					Location pworld = new Location(Bukkit.getWorld(args[1] + "sWorld"), 0.5, 100.5, 0.5, -90, 0);
+				if(Bukkit.getWorlds().contains(Bukkit.getWorld(id.toString()))) {
+					Location pworld = new Location(Bukkit.getWorld(id.toString()), 0.5, 100.5, 0.5, -90, 0);
 					p.teleport(pworld);
 				} else {
 					p.sendMessage(c("&f&lMine &8| &7That player has not created their mine."));
