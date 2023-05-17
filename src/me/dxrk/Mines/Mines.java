@@ -76,7 +76,8 @@ public class Mines {
                 ItemStack block2 = config.getItemStack("second_block");
                 ItemStack block3 = config.getItemStack("third_block");
                 Location spawnLoc = new Location(mineWorld, config.getInt("spawn_loc.X"), config.getInt("spawn_loc.Y"), config.getInt("spawn_loc.Z"));
-                Mine mine = new Mine(mineName, minPoint, maxPoint, block1, block2, block3, spawnLoc, mineWorld);
+                float reset = config.getFloat("reset_percentage");
+                Mine mine = new Mine(mineName, minPoint, maxPoint, block1, block2, block3, spawnLoc, mineWorld, reset);
                 MineSystem.getInstance().addActiveMine(mine);
             } catch (Exception e) {
                 System.out.println(" ");

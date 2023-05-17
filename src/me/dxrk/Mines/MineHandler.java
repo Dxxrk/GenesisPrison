@@ -251,8 +251,8 @@ public class MineHandler implements Listener, CommandExecutor {
         }
     }
 
-    public void createMine(String name, Location corner1, Location corner2, Location spawn, World world) {
-        Mine m = new Mine(name, corner1, corner2, new ItemStack(Material.COBBLESTONE), new ItemStack(Material.COBBLESTONE), new ItemStack(Material.COBBLESTONE), spawn, world);
+    public void createMine(String name, Location corner1, Location corner2, Location spawn, World world, float percent) {
+        Mine m = new Mine(name, corner1, corner2, new ItemStack(Material.COBBLESTONE), new ItemStack(Material.COBBLESTONE), new ItemStack(Material.COBBLESTONE), spawn, world, percent);
         m.save();
         MineSystem.getInstance().addActiveMine(m);
     }
@@ -281,7 +281,8 @@ public class MineHandler implements Listener, CommandExecutor {
         //Creating the actual mine
         //ResetHandler.api.createMine(p.getUniqueId().toString(), point1, point2);
 
-        createMine(p.getUniqueId().toString(), point1, point2, pworld, world);
+
+        createMine(p.getUniqueId().toString(), point1, point2, pworld, world, 75F);
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
 
         RegionManager regions = getWorldGuard().getRegionManager(world);

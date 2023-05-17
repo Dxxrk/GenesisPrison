@@ -88,6 +88,34 @@ public class CMDMine implements CommandExecutor, Listener {
 		p.openInventory(mineMenu);
 	}
 
+	public void openResetInventory(Player p, float percent) {
+		Inventory reset = Bukkit.createInventory(null, 9, c("&c&lChange Reset Percentage"));
+
+		ItemStack r = new ItemStack(Material.REDSTONE_TORCH_ON);
+		ItemMeta rm = r.getItemMeta();
+		rm.setDisplayName(c("&aPercentage"));
+		List<String> lore = new ArrayList<>();
+		if(percent == 50F) {
+			lore.add(c("&aReset at 50% Mined"));
+		} else {
+			lore.add(c("&cReset at 50% Mined"));
+		}
+		if(percent == 75F) {
+			lore.add(c("&aReset at 75% Mined"));
+		} else {
+			lore.add(c("&cReset at 75% Mined"));
+		}
+		if(percent == 10F) {
+			lore.add(c("&aReset at 90% Mined"));
+		} else {
+			lore.add(c("&cReset at 90% Mined"));
+		}
+
+	}
+	public void openBlockInventory(Player p) {
+
+	}
+
 	@Override
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     if (label.equalsIgnoreCase("mine")) {
@@ -155,6 +183,23 @@ public class CMDMine implements CommandExecutor, Listener {
 	  if(e.getInventory().getName().equals(c("&c&lMine Blocks"))) {
 		  if(e.getClickedInventory().equals(p.getInventory())) return;
 		  e.setCancelled(true);
+	  }
+	  if(e.getInventory().getName().equals(c("&c&lChange Reset Percentage"))) {
+		  if(e.getSlot() == 4) {
+			  Mine m = MineSystem.getInstance().getMineByPlayer(p);
+			  float reset = m.getResetPercent();
+			  if(reset == 50F) {
+				  m.setResetPercent(75F);
+			  }
+			  if(reset == 75F) {
+				  m.setResetPercent(90F);
+			  }
+			  if(reset == 90F) {
+				  m.setResetPercent(50F);
+			  }
+			  m.save();
+			  openResetInventory(p, m.getResetPercent());
+		  }
 	  }
 	    
 	  
