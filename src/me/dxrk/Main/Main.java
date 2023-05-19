@@ -155,6 +155,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("relore").setExecutor(new CMDRename());
         getCommand("Vote").setExecutor(new CMDVote());
         getCommand("voteparty").setExecutor(new CMDVote());
+        getCommand("givevotepoints").setExecutor(new CMDVote());
         getCommand("coupon").setExecutor(new CMDVoteShop());
         getCommand("coupons").setExecutor(new CMDVoteShop());
         getCommand("addvotepoint").setExecutor(new CMDVoteShop());

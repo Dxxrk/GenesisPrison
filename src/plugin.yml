@@ -102,6 +102,7 @@ commands:
   v:
   ev:
   voteparty:
+  givevotepoints:
   evanish:
   pick:
   pickaxe:
