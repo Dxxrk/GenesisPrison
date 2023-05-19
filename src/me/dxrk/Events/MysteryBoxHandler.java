@@ -25,8 +25,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import xyz.xenondevs.particle.ParticleBuilder;
-import xyz.xenondevs.particle.ParticleEffect;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -290,11 +289,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 					playSound(plugin, p, Sound.NOTE_PIANO, i);
 
 				// Try to use a SingleTask - Check GitHub
-				new ParticleBuilder(ParticleEffect.ENCHANTMENT_TABLE, place)
-						.setOffsetX((float) -x)
-						.setOffsetZ((float) -z)
-						.setSpeed(0.1f)
-						.display();
+
 
 				spawnArmorStand(plugin, place, stands, items, item, holos, crate, p, time);
 

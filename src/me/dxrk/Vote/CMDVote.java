@@ -1,5 +1,6 @@
 package me.dxrk.Vote;
 
+import java.sql.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 import me.dxrk.Events.LocksmithHandler;
 import me.dxrk.Events.ScoreboardHandler;
+import me.dxrk.Events.SellHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
@@ -52,7 +54,173 @@ public class CMDVote implements Listener, CommandExecutor {
     i.setItem(4, voteItem(p, "MinecraftServers"));
     p.openInventory(i);
   }
-  
+  public void openNewVotingInv(Player p){
+    Inventory i = Bukkit.createInventory(null,InventoryType.HOPPER, ChatColor.AQUA + "Vote Now!");
+    //vote links
+    ItemStack emerald = new ItemStack(Material.EMERALD, 1);
+    ItemMeta imemerald = emerald.getItemMeta();
+    imemerald.setDisplayName(ChatColor.GREEN + "Vote Links");
+    List<String> loreemerald = new ArrayList<>();
+    loreemerald.add(ChatColor.GREEN + "Click to see vote links.");
+    imemerald.setLore(loreemerald);
+    emerald.setItemMeta(imemerald);
+    i.setItem(0,emerald);
+    //info
+    ItemStack paper = new ItemStack(Material.PAPER,1);
+    ItemMeta impaper = paper.getItemMeta();
+    impaper.setDisplayName(ChatColor.GREEN + "Info:");
+    List<String> lorepaper = new ArrayList<>();
+    lorepaper.add(ChatColor.AQUA + "Each Vote is a VotePoint added to your account.");
+    lorepaper.add(ChatColor.AQUA + "For each VotePoint you can unlock a single treasure chest in Treasury.");
+    impaper.setLore(lorepaper);
+    paper.setItemMeta(impaper);
+    i.setItem(2,paper);
+    //treasury
+    ItemStack gold = new ItemStack(Material.GOLD_INGOT, 1);
+    ItemMeta imgold = gold.getItemMeta();
+    imgold.setDisplayName(ChatColor.GOLD + "Treasury");
+    List<String> loregold = new ArrayList<>();
+    loregold.add(ChatColor.AQUA + "Click to open Treasury");
+    loregold.add(ChatColor.AQUA + "And test your luck!");
+    imgold.setLore(loregold);
+    gold.setItemMeta(imgold);
+    i.setItem(4,gold);
+  }
+
+  public void openTreasuryInv(Player p){
+    Inventory i = Bukkit.createInventory(null,36, ChatColor.GOLD + "Treasury");
+    i.setItem(35,VotePointsPaper(p));
+    for(int j=0;j<35;j++){
+      i.setItem(j,TreasureChest());
+    }
+    p.openInventory(i);
+  }
+  public ItemStack VotePointsPaper(Player p){
+    int votePoints = settings.getVote().getInt(p.getUniqueId().toString()+".VotePoints");
+    ItemStack paper = new ItemStack(Material.PAPER, 1);
+    ItemMeta impaper = paper.getItemMeta();
+    impaper.setDisplayName(ChatColor.WHITE + "Votepoints: " + votePoints);
+    paper.setItemMeta(impaper);
+    return paper;
+  }
+  public ItemStack TreasureChest(){
+    ItemStack i = new ItemStack(Material.CHEST, 1);
+    ItemMeta im = i.getItemMeta();
+    im.setDisplayName(ChatColor.GOLD + "Treasure Chest");
+    List<String> lore = new ArrayList<>();
+    lore.add("Click to open!");
+    im.setLore(lore);
+    i.setItemMeta(im);
+    return i;
+  }
+
+  @EventHandler
+  public void onNewInvClick(InventoryClickEvent e){
+    Player p = (Player)e.getWhoClicked();
+
+    if (e.getInventory().getName().equals(ChatColor.AQUA + "Vote Now!")) {
+      e.setCancelled(true);
+      if(e.getCurrentItem()==null || e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Info:"))
+        return;
+      if(e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Vote Links")){
+        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&bstore.mcgenesis.net/vote"));
+      }
+      else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Treasury")){
+        openTreasuryInv(p);
+      }
+    }
+    if (e.getInventory().getName().equals(ChatColor.GOLD + "Treasury")){
+      e.setCancelled(true);
+      int votePoints = settings.getVote().getInt(p.getUniqueId().toString()+".VotePoints");
+      if(!e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Treasure Chest"))
+        return;
+      Random r = new Random();
+      int crateposition = r.nextInt(35);
+      int eggposition = r.nextInt(35);
+      if(crateposition==eggposition){
+        eggposition=r.nextInt(35);
+      }
+      int rankposition = r.nextInt(35);
+      if(rankposition==eggposition || rankposition==crateposition) {
+        rankposition = r.nextInt(35);
+      }
+      Inventory i = e.getClickedInventory();
+      if(e.getRawSlot()==rankposition){
+        ItemStack rankkey = new ItemStack(Material.NETHER_STAR,1);
+        ItemMeta im = rankkey.getItemMeta();
+        im.setDisplayName(ChatColor.LIGHT_PURPLE + "2x Rank Keys");
+        rankkey.setItemMeta(im);
+        i.setItem(rankposition,rankkey);
+        settings.getVote().set(p.getUniqueId().toString()+".VotePoints", votePoints-1);
+        settings.saveVote();
+        i.setItem(35, VotePointsPaper(p));
+        LocksmithHandler.getInstance().addKey(p,"Rank",2);
+        settings.saveLocksmith();
+      }
+      else if(e.getRawSlot()==crateposition){
+        ItemStack crate = new ItemStack(Material.ENDER_CHEST,1);
+        ItemMeta im = crate.getItemMeta();
+        im.setDisplayName(ChatColor.BLUE + "1x Genesis Crate");
+        crate.setItemMeta(im);
+        i.setItem(crateposition,crate);
+        settings.getVote().set(p.getUniqueId().toString()+".VotePoints", votePoints-1);
+        settings.saveVote();
+        i.setItem(35, VotePointsPaper(p));
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate "+p.getName()+" genesis");
+      }
+      else if(e.getRawSlot()==eggposition){
+        ItemStack egg = new ItemStack(Material.MONSTER_EGG,1);
+        ItemMeta im = egg.getItemMeta();
+        im.setDisplayName(ChatColor.WHITE + "1x Monster Egg");
+        egg.setItemMeta(im);
+        i.setItem(rankposition,egg);
+        settings.getVote().set(p.getUniqueId().toString()+".VotePoints", votePoints-1);
+        settings.saveVote();
+        i.setItem(35, VotePointsPaper(p));
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveegg "+p.getName());
+      }
+      else{
+        int reward = r.nextInt(3);
+        if(reward==0){
+          ItemStack betakey = new ItemStack(Material.TRIPWIRE_HOOK,1);
+          ItemMeta im = betakey.getItemMeta();
+          im.setDisplayName(ChatColor.RED + "10x Beta Key");
+          betakey.setItemMeta(im);
+          i.setItem(e.getRawSlot(),betakey);
+          settings.getVote().set(p.getUniqueId().toString()+".VotePoints", votePoints-1);
+          settings.saveVote();
+          i.setItem(35, VotePointsPaper(p));
+          LocksmithHandler.getInstance().addKey(p, "Beta", 10);
+          settings.saveLocksmith();
+        }
+        else if(reward==1){
+          ItemStack omegakey = new ItemStack(Material.TRIPWIRE_HOOK,1);
+          ItemMeta im = omegakey.getItemMeta();
+          im.setDisplayName(ChatColor.DARK_RED + "10x Omega Key");
+          omegakey.setItemMeta(im);
+          i.setItem(e.getRawSlot(),omegakey);
+          settings.getVote().set(p.getUniqueId().toString()+".VotePoints", votePoints-1);
+          settings.saveVote();
+          i.setItem(35, VotePointsPaper(p));
+          LocksmithHandler.getInstance().addKey(p, "Omega", 10);
+          settings.saveLocksmith();
+        }
+        else if(reward==2){
+          ItemStack multi = new ItemStack(Material.EMERALD,1);
+          ItemMeta im = multi.getItemMeta();
+          im.setDisplayName(ChatColor.GRAY + "10x Multi");
+          multi.setItemMeta(im);
+          i.setItem(e.getRawSlot(),multi);
+          settings.getVote().set(p.getUniqueId().toString()+".VotePoints", votePoints-1);
+          settings.saveVote();
+          i.setItem(35, VotePointsPaper(p));
+          SellHandler.getInstance().setMulti(p,SellHandler.getInstance().getMulti(p)+10);
+          settings.saveMultiplier();
+        }
+      }
+    }
+  }
+
   String prefix = ChatColor.translateAlternateColorCodes('&', "&7&l[&b&lVote&d&lParty&7&l] &f");
   
   public void updateNPC() {
@@ -250,22 +418,29 @@ public void orderTop() {
       b++;
     } 
   }
-  
+
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+
     if (cmd.getName().equalsIgnoreCase("Vote")) {
       Player p = (Player)sender;
       if (args.length == 0) {
-        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&bstore.mcgenesis.net/vote"));
-        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&dYou currently have &7&l[&b" + getVotes(p) + "&7&l]&d votes!"));
+          openNewVotingInv(p);
       }
     } else if(cmd.getName().equalsIgnoreCase("voteparty")) {
     	if(sender.hasPermission("voteparty.start")) {
     	voteParty();
     	}
+    } else if(cmd.getName().equalsIgnoreCase("givevotepoints")){
+      if(sender.hasPermission("givevotepoints")){
+        Player p = Bukkit.getPlayer(args[0]);
+        int votePoints = settings.getVote().getInt(p.getUniqueId().toString()+".VotePoints");
+        settings.getVote().set(p.getUniqueId().toString()+".VotePoints", votePoints+args[1]);
+        settings.saveVote();
+      }
     }
     return false;
   }
-  
+
   public int getVotes(Player p) {
     return this.settings.getVote().getInt(p.getUniqueId().toString() + ".Votes");
   }
@@ -367,5 +542,7 @@ public void orderTop() {
       this.settings.saveVote();
       voteParty();
     }
+    int votePoints = settings.getVote().getInt(p.getUniqueId().toString()+".VotePoints");
+    settings.getVote().set(p.getUniqueId().toString()+".VotePoints", votePoints+1);
   }
 }
