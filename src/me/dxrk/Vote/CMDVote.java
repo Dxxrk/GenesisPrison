@@ -431,10 +431,10 @@ public void orderTop() {
     	voteParty();
     	}
     } else if(cmd.getName().equalsIgnoreCase("givevotepoints")){
-      if(sender.hasPermission("givevotepoints")){
+      if(sender.hasPermission("genesis.givevotepoints")){
         Player p = Bukkit.getPlayer(args[0]);
         int votePoints = settings.getVote().getInt(p.getUniqueId().toString()+".VotePoints");
-        settings.getVote().set(p.getUniqueId().toString()+".VotePoints", votePoints+args[1]);
+        settings.getVote().set(p.getUniqueId().toString()+".VotePoints", votePoints+Integer.parseInt(args[1]));
         settings.saveVote();
       }
     }

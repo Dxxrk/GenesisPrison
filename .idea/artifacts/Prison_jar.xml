@@ -3,8 +3,6 @@
     <output-path>$USER_HOME$/Desktop/genesis</output-path>
     <root id="archive" name="GenesisPrison.jar">
       <element id="module-output" name="Prison" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/genesis/particle-1.8.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/genesis/API.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

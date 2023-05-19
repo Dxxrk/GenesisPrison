@@ -102,11 +102,12 @@ public class PlayerDataHandler implements Listener {
     }
     if (this.settings.getVote().get(uuid + ".Votes") == null) {
       this.settings.getVote().set(uuid + ".Votes", 0);
-      this.settings.saveVote();
     }
     if (this.settings.getVote().get(uuid + ".Coupons") == null) {
       this.settings.getVote().set(uuid + ".Coupons", 0);
-      this.settings.saveVote();
+    }
+    if (this.settings.getVote().get(uuid + ".VotePoints") == null) {
+      this.settings.getVote().set(uuid + ".VotePoints", 0);
     }
     if (this.pl.get(uuid + ".NitroBoosting") == null) {
       this.pl.set(uuid + ".NitroBoosting", false);
@@ -154,5 +155,6 @@ public class PlayerDataHandler implements Listener {
       this.pl.set(uuid + ".RestartMomentumList", momentums);
     }
     this.settings.savePlayerData();
+    this.settings.saveVote();
   }
 }

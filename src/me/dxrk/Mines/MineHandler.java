@@ -1,7 +1,5 @@
 package me.dxrk.Mines;
 
-import com.github.yannicklamprecht.worldborder.api.BorderAPI;
-import com.github.yannicklamprecht.worldborder.api.WorldBorderApi;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.DefaultDomain;
@@ -11,7 +9,6 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Events.RankupHandler;
-import me.dxrk.Main.Main;
 import me.dxrk.Main.SettingsManager;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -23,8 +20,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -53,8 +48,6 @@ public class MineHandler implements Listener, CommandExecutor {
 
         return (WorldGuardPlugin) plugin;
     }
-
-    WorldBorderApi borderapi = BorderAPI.getApi();
 
 
     private ArrayList<Player> list = new ArrayList<>();
