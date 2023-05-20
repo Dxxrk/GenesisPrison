@@ -85,6 +85,7 @@ public class CMDVote implements Listener, CommandExecutor {
     imgold.setLore(loregold);
     gold.setItemMeta(imgold);
     i.setItem(4,gold);
+    p.openInventory(i);
   }
 
   public void openTreasuryInv(Player p){
@@ -113,34 +114,47 @@ public class CMDVote implements Listener, CommandExecutor {
     i.setItemMeta(im);
     return i;
   }
-
+  int crateposition;
+  int eggposition;
+  int rankposition;
   @EventHandler
   public void onNewInvClick(InventoryClickEvent e){
     Player p = (Player)e.getWhoClicked();
-
+    if (e.getClickedInventory() == null)
+      return;
+    if (e.getClickedInventory().getName() == null)
+      return;
+    if (e.getCurrentItem() == null) {
+      return;
+    }
     if (e.getInventory().getName().equals(ChatColor.AQUA + "Vote Now!")) {
       e.setCancelled(true);
-      if(e.getCurrentItem()==null || e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Info:"))
+      if(e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Info:"))
         return;
       if(e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Vote Links")){
         p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&bstore.mcgenesis.net/vote"));
       }
       else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Treasury")){
         openTreasuryInv(p);
+        crateposition = r.nextInt(35);
+        eggposition = r.nextInt(35);
+        rankposition = r.nextInt(35);
       }
     }
     if (e.getInventory().getName().equals(ChatColor.GOLD + "Treasury")){
       e.setCancelled(true);
       int votePoints = settings.getVote().getInt(p.getUniqueId().toString()+".VotePoints");
+      if(votePoints<=0)
+        return;
+      if(!e.getCurrentItem().hasItemMeta())
+        return;
       if(!e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Treasure Chest"))
         return;
-      Random r = new Random();
-      int crateposition = r.nextInt(35);
-      int eggposition = r.nextInt(35);
+
+
       if(crateposition==eggposition){
         eggposition=r.nextInt(35);
       }
-      int rankposition = r.nextInt(35);
       if(rankposition==eggposition || rankposition==crateposition) {
         rankposition = r.nextInt(35);
       }
@@ -173,7 +187,7 @@ public class CMDVote implements Listener, CommandExecutor {
         ItemMeta im = egg.getItemMeta();
         im.setDisplayName(ChatColor.WHITE + "1x Monster Egg");
         egg.setItemMeta(im);
-        i.setItem(rankposition,egg);
+        i.setItem(eggposition,egg);
         settings.getVote().set(p.getUniqueId().toString()+".VotePoints", votePoints-1);
         settings.saveVote();
         i.setItem(35, VotePointsPaper(p));
@@ -205,7 +219,7 @@ public class CMDVote implements Listener, CommandExecutor {
           LocksmithHandler.getInstance().addKey(p, "Omega", 10);
           settings.saveLocksmith();
         }
-        else if(reward==2){
+        else{
           ItemStack multi = new ItemStack(Material.EMERALD,1);
           ItemMeta im = multi.getItemMeta();
           im.setDisplayName(ChatColor.GRAY + "10x Multi");
