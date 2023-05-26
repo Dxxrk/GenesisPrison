@@ -93,24 +93,24 @@ public class CMDMine implements CommandExecutor, Listener {
         p.openInventory(mineMenu);
     }
 
-    public void openResetInventory(Player p, float percent) {
+    public void openResetInventory(Player p, double percent) {
         Inventory reset = Bukkit.createInventory(null, InventoryType.HOPPER, c("&c&lChange Reset Percentage"));
 
         ItemStack r = new ItemStack(Material.REDSTONE_TORCH_ON);
         ItemMeta rm = r.getItemMeta();
         rm.setDisplayName(c("&aPercentage"));
         List<String> lore = new ArrayList<>();
-        if (percent == 50F) {
+        if (percent == 50) {
             lore.add(c("&aReset at 50% Mined"));
         } else {
             lore.add(c("&cReset at 50% Mined"));
         }
-        if (percent == 75F) {
+        if (percent == 25) {
             lore.add(c("&aReset at 75% Mined"));
         } else {
             lore.add(c("&cReset at 75% Mined"));
         }
-        if (percent == 10F) {
+        if (percent == 10) {
             lore.add(c("&aReset at 90% Mined"));
         } else {
             lore.add(c("&cReset at 90% Mined"));
@@ -380,17 +380,17 @@ public class CMDMine implements CommandExecutor, Listener {
                 return;
             }
             e.setCancelled(true);
-            if (e.getSlot() == 4) {
+            if (e.getSlot() == 2) {
                 Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                float reset = m.getResetPercent();
-                if (reset == 50F) {
-                    m.setResetPercent(75F);
+                double reset = m.getResetPercent();
+                if (reset == 50) {
+                    m.setResetPercent(25);
                 }
-                if (reset == 75F) {
-                    m.setResetPercent(90F);
+                if (reset == 25) {
+                    m.setResetPercent(10);
                 }
-                if (reset == 90F) {
-                    m.setResetPercent(50F);
+                if (reset == 10) {
+                    m.setResetPercent(50);
                 }
                 m.save();
                 openResetInventory(p, m.getResetPercent());

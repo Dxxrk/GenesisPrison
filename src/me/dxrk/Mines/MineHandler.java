@@ -276,7 +276,7 @@ public class MineHandler implements Listener, CommandExecutor {
         }
     }
 
-    public void createMine(String name, Location corner1, Location corner2, Location spawn, World world, float percent) {
+    public void createMine(String name, Location corner1, Location corner2, Location spawn, World world, double percent) {
         Mine m = new Mine(name, corner1, corner2, new ItemStack(Material.COBBLESTONE), new ItemStack(Material.COBBLESTONE), new ItemStack(Material.COBBLESTONE), spawn, world, percent);
         m.save();
         MineSystem.getInstance().addActiveMine(m);
@@ -339,7 +339,7 @@ public class MineHandler implements Listener, CommandExecutor {
         //ResetHandler.api.createMine(p.getUniqueId().toString(), point1, point2);
 
 
-        createMine(p.getUniqueId().toString(), point1, point2, pworld, world, 75F);
+        createMine(p.getUniqueId().toString(), point1, point2, pworld, world, 25.0);
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
 
 

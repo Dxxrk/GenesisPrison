@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Gangs.Gangs;
@@ -301,13 +302,13 @@ public class KeysHandler implements Listener {
             return;
         if (!i.getItemMeta().hasLore())
             return;
-        Mine m = MineSystem.getInstance().getMineByPlayer(p);
-        if(!m.isInMine(e.getBlock().getLocation())) {
+        WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+        ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
+        ProtectedRegion region = wg.getRegionManager(p.getWorld()).getRegion(p.getName());
+        if(!set.getRegions().contains(region)) {
             e.setCancelled(true);
             return;
         }
-        WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-        ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
         if (!set.allows(DefaultFlag.LIGHTER))
             return;
 

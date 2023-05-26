@@ -4,9 +4,13 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Main.SettingsManager;
 
 import java.util.HashMap;
+
+import me.dxrk.Mines.Mine;
+import me.dxrk.Mines.MineSystem;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -67,15 +71,16 @@ public class BlocksHandler implements CommandExecutor, Listener {
     if (p.getItemInHand() == null)
       return; 
     if (e.isCancelled())
-      return; 
+      return;
     WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
     ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
-    if (!set.allows(DefaultFlag.LIGHTER))
-      return;
-    if(!p.getWorld().getName().equals(p.getUniqueId().toString())) {
+    ProtectedRegion region = wg.getRegionManager(p.getWorld()).getRegion(p.getName());
+    if(!set.getRegions().contains(region)) {
       e.setCancelled(true);
       return;
     }
+    if (!set.allows(DefaultFlag.LIGHTER))
+      return;
     int blocksbroken = this.settings.getPlayerData().getInt(p.getUniqueId().toString() + ".BlocksBroken");
     this.settings.getPlayerData().set(p.getUniqueId().toString()+".BlocksBroken", blocksbroken+1);
   }

@@ -4,11 +4,14 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Mines.Mine;
+import me.dxrk.Mines.MineSystem;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -152,7 +155,13 @@ implements Listener {
         if(p.getItemInHand() == null) return;
         if(!p.getItemInHand().hasItemMeta()) return;
         if(!p.getItemInHand().getItemMeta().hasLore()) return;
-        if(!p.getWorld().getName().equals(p.getUniqueId().toString())) return;
+        WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+        ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
+        ProtectedRegion region = wg.getRegionManager(p.getWorld()).getRegion(p.getName());
+        if(!set.getRegions().contains(region)) {
+            e.setCancelled(true);
+            return;
+        }
         if(!set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;
         Random r = new Random();
         int fmin = 1;

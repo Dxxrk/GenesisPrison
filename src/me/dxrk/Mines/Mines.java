@@ -87,7 +87,7 @@ public class Mines {
                 ItemStack block2 = config.getItemStack("second_block");
                 ItemStack block3 = config.getItemStack("third_block");
                 Location spawnLoc = new Location(mineWorld, config.getDouble("spawn_loc.X"), config.getDouble("spawn_loc.Y"), config.getDouble("spawn_loc.Z"));
-                float reset = config.getFloat("reset_percentage");
+                double reset = config.getDouble("reset");
                 Mine mine = new Mine(mineName, minPoint, maxPoint, block1, block2, block3, spawnLoc, mineWorld, reset);
                 MineSystem.getInstance().addActiveMine(mine);
             } catch (Exception e) {
@@ -98,34 +98,6 @@ public class Mines {
                 System.out.println(" ");
             }
         }
-
-        this.areMinesLoaded = true;
-    }
-    public void loadMine(String name) {
-            File mineFile = new File(Main.plugin.getDataFolder() + File.separator + "mines", name+".yml");
-            FileConfiguration config = YamlConfiguration.loadConfiguration(mineFile);
-            try {
-                String mineName = config.getString("mine_name");
-                if(Bukkit.getWorld(config.getString("mine_world")) == null) {
-                    new WorldCreator(config.getString("mine_world")).createWorld();
-                }
-                World mineWorld = Bukkit.getWorld(config.getString("mine_world"));
-                Location minPoint = new Location(mineWorld, config.getDouble("min_point.X"), config.getDouble("min_point.Y"), config.getDouble("min_point.Z"));
-                Location maxPoint = new Location(mineWorld, config.getDouble("max_point.X"), config.getDouble("max_point.Y"), config.getDouble("max_point.Z"));
-                ItemStack block1 = config.getItemStack("first_block");
-                ItemStack block2 = config.getItemStack("second_block");
-                ItemStack block3 = config.getItemStack("third_block");
-                Location spawnLoc = new Location(mineWorld, config.getDouble("spawn_loc.X"), config.getDouble("spawn_loc.Y"), config.getDouble("spawn_loc.Z"));
-                float reset = config.getFloat("reset_percentage");
-                Mine mine = new Mine(mineName, minPoint, maxPoint, block1, block2, block3, spawnLoc, mineWorld, reset);
-                MineSystem.getInstance().addActiveMine(mine);
-            } catch (Exception e) {
-                System.out.println(" ");
-                System.out.println("Unable to load the mine file " + mineFile.getName() + ", Please delete this file at location: " + mineFile.getAbsolutePath());
-                System.out.println("Stack trace:");
-                System.out.println(e.getMessage());
-                System.out.println(" ");
-            }
 
         this.areMinesLoaded = true;
     }

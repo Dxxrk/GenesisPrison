@@ -1,7 +1,10 @@
 package me.dxrk.Enchants;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Mines.Mine;
 import me.dxrk.Mines.MineHandler;
 import me.dxrk.Events.RankupHandler;
@@ -143,8 +146,10 @@ public class Enchants implements Listener {
             return;
         if (!p.getItemInHand().getItemMeta().hasLore())
             return;
-        Mine m = MineSystem.getInstance().getMineByPlayer(p);
-        if (!m.isInMine(e.getBlock().getLocation())) {
+        WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+        ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
+        ProtectedRegion region = wg.getRegionManager(p.getWorld()).getRegion(p.getName());
+        if(!set.getRegions().contains(region)) {
             e.setCancelled(true);
             return;
         }
@@ -154,14 +159,13 @@ public class Enchants implements Listener {
                     EnchantMethods.getInstance().procEnchant(s, p, b);
             }
             Functions.Multiply(p);
-
-
+            Mine m = MineSystem.getInstance().getMineByPlayer(p);
+            System.out.println(m.getBlocksLeftPercentage());
+            System.out.println(m.getResetPercent());
             if (m.getBlocksLeftPercentage() < m.getResetPercent()) {
                 double lucky = settings.getPlayerData().getDouble(p.getUniqueId().toString() + ".LuckyBlock");
                 ResetHandler.resetMineWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), lucky);
             }
-
-
         }
     }
 

@@ -2,11 +2,16 @@ package me.dxrk.Events;
 
 import com.connorlinfoot.actionbarapi.ActionBarAPI;
 import com.connorlinfoot.titleapi.TitleAPI;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Enchants.EnchantMethods;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Mines.Mine;
+import me.dxrk.Mines.MineSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -137,7 +142,14 @@ public class MomentumHandler implements Listener {
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         UUID id = p.getUniqueId();
-        if (e.getBlock().getWorld().getName().equals(p.getName() + "sWorld") && EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) {
+        WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+        ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
+        ProtectedRegion region = wg.getRegionManager(p.getWorld()).getRegion(p.getName());
+        if(!set.getRegions().contains(region)) {
+            e.setCancelled(true);
+            return;
+        }
+        if (EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) {
             ArrayList<Long> timeStamps = (momentum.get(id) == null) ? new ArrayList<>() : momentum.get(id);
             timeStamps.add(System.currentTimeMillis());
             momentum.put(id, timeStamps);

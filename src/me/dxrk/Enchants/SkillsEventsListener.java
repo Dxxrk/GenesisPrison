@@ -1,9 +1,14 @@
 package me.dxrk.Enchants;
 
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Mines.Mine;
+import me.dxrk.Mines.MineSystem;
 import me.dxrk.Vote.CMDVoteShop;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -170,12 +175,19 @@ public class SkillsEventsListener implements Listener {
             }
         }
     }
-
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         Random r = new Random();
-        if(!p.getLocation().getWorld().getName().equals(p.getUniqueId().toString()) || !EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;
+        WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+        ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
+        ProtectedRegion region = wg.getRegionManager(p.getWorld()).getRegion(p.getName());
+        if(!set.getRegions().contains(region)) {
+            e.setCancelled(true);
+            return;
+        }
+        if(!EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;
         couponBreak(p);
         //Zeus
         if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Zeus")) {

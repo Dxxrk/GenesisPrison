@@ -3,6 +3,7 @@ package me.dxrk.Events;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Mines.MineHandler;
 import me.dxrk.Mines.MineSystem;
@@ -333,8 +334,8 @@ public class SellHandler implements Listener, CommandExecutor {
 
     if (!event.isCancelled()) {
 		if (p.getItemInHand() != null && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore()) {
-			Mine m = MineSystem.getInstance().getMineByPlayer(p);
-			if(!m.isInMine(event.getBlock().getLocation())) {
+			ProtectedRegion region = wg.getRegionManager(p.getWorld()).getRegion(p.getName());
+			if(!set.getRegions().contains(region)) {
 				event.setCancelled(true);
 				return;
 			}

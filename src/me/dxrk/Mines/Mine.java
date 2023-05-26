@@ -22,7 +22,7 @@ public class Mine {
     private Location spawnLocation;
     private World mineWorld;
 
-    private float resetpercent;
+    private double resetpercent;
 
     private int TotalBlocks;
     private int Blocks;
@@ -45,7 +45,7 @@ public class Mine {
         this.minesystem.addActiveMine(m);
     }*/
 
-    public Mine(String name, Location c1, Location c2, ItemStack b1, ItemStack b2, ItemStack b3, Location spawn, World world, float reset) {
+    public Mine(String name, Location c1, Location c2, ItemStack b1, ItemStack b2, ItemStack b3, Location spawn, World world, double reset) {
         this.mineName = name;
         this.corner1 = c1;
         this.corner2 = c2;
@@ -66,8 +66,8 @@ public class Mine {
     public Location getMinPoint() {return this.corner1;}
     public Location getMaxPoint() {return this.corner2;}
 
-    public float getResetPercent() {return this.resetpercent;}
-    public void setResetPercent(float reset) {this.resetpercent = reset;}
+    public double getResetPercent() {return this.resetpercent;}
+    public void setResetPercent(double reset) {this.resetpercent = reset;}
 
     public boolean isInMine(Location l) {
         return getLocationsInMine(this.corner1, this.corner2, this.mineWorld).contains(l);
@@ -84,10 +84,10 @@ public class Mine {
         return getLocationsInMineAir(this.corner1, this.corner2, this.mineWorld).size();
     }
 
-    public float getBlocksLeftPercentage() {
+    public double getBlocksLeftPercentage() {
         int var1 = this.getBlocksMined();
         int var2 = this.getTotalBlocks();
-        return var1 == 0 ? 100.0F : 100.0F - (float)var1 / (float)var2 * 100.0F;
+        return var1 == 0 ? 100.0 : 100.0 - (double)var1 / (double)var2 * 100.0;
     }
 
     public ItemStack getBlock1() {return this.block1;}
@@ -125,7 +125,7 @@ public class Mine {
             config.set("spawn_loc.X", this.getSpawnLocation().getX());
             config.set("spawn_loc.Y", this.getSpawnLocation().getY());
             config.set("spawn_loc.Z", this.getSpawnLocation().getZ());
-            config.set("reset_percentage", this.getResetPercent());
+            config.set("reset", this.getResetPercent());
             config.save(mineFile);
         } catch(Exception e) {
             System.out.println("ERROR SAVING MINE: "+getMineName());
