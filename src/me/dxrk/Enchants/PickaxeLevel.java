@@ -274,13 +274,13 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         list.add("Key Party");
         list.add("Dust Finder");
         list.add("Token Finder");
+        list.add("Jackhammer");
         list.add("Wave");
         list.add("Junkpile");
         list.add("Nuke");
         list.add("Fortuity");
         list.add("Karma");
         list.add("Booster");
-        list.add("Research");
         list.add("Multiply");
         list.add("Fortune");
         list.add("Greed");
@@ -288,6 +288,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         list.add("Charity");
         list.add("Treasury");
         list.add("Smite");
+        list.add("Seismic Shock");
         return list;
     }
 
@@ -559,8 +560,9 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             case "Wave":
             case "Fortuity":
             case "Key Party":
-            case "Explosion":
             case "Charity":
+            case "Seismic Shock":
+            case "Smite":
                 i = 1000;
 
                 break;
@@ -570,6 +572,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
                 break;
             case "Booster":
+            case "Treasury":
                 i = 2500;
 
                 break;
@@ -600,11 +603,6 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
             case "Multiply":
                 i = 1500;
-
-                break;
-
-            case "Laser":
-                i = 750;
 
                 break;
         }

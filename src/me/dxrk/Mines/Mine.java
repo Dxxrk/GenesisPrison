@@ -113,12 +113,12 @@ public class Mine {
 
             config.set("mine_name", this.getMineName());
             config.set("mine_world", this.getMineWorld().getName());
-            config.set("minPoint.X", this.getMinPoint().getX());
-            config.set("minPoint.Y", this.getMinPoint().getY());
-            config.set("minPoint.Z", this.getMinPoint().getZ());
-            config.set("maxPoint.X", this.getMaxPoint().getX());
-            config.set("maxPoint.Y", this.getMaxPoint().getY());
-            config.set("maxPoint.Z", this.getMaxPoint().getZ());
+            config.set("min_point.X", this.getMinPoint().getX());
+            config.set("min_point.Y", this.getMinPoint().getY());
+            config.set("min_point.Z", this.getMinPoint().getZ());
+            config.set("max_point.X", this.getMaxPoint().getX());
+            config.set("max_point.Y", this.getMaxPoint().getY());
+            config.set("max_point.Z", this.getMaxPoint().getZ());
             config.set("first_block", this.getBlock1());
             config.set("second_block", this.getBlock2());
             config.set("third_block", this.getBlock3());

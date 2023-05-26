@@ -154,6 +154,9 @@ public class PlayerDataHandler implements Listener {
       ArrayList<Long> momentums = new ArrayList<>();
       this.pl.set(uuid + ".RestartMomentumList", momentums);
     }
+    if (this.pl.get(uuid + ".CustomBlock") == null) {
+      this.pl.set(uuid + ".CustomBlock", null);
+    }
     this.settings.savePlayerData();
     this.settings.saveVote();
   }

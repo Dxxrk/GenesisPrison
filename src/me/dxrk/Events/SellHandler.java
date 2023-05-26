@@ -163,7 +163,7 @@ public class SellHandler implements Listener, CommandExecutor {
 
 
 				//Change this config file to look a lot nicer + add different block prices
-	  	    	double price = Methods.getSellPrice(i);
+	  	    	double price = Methods.getSellPrice(RankupHandler.getInstance().getRank(p));
 
 
 	  	    	total += price * (multi+greed+event) * sell * miningboost*prestige*multiply*unity*momentum*monster;
@@ -219,7 +219,7 @@ public class SellHandler implements Listener, CommandExecutor {
 		  if (i != null) {
 
 
-			  double price = Methods.getSellPrice(i);
+			  double price = Methods.getSellPrice(RankupHandler.getInstance().getRank(p));
 
 
 			  total += price * (multi+greed+event) * sell * miningboost*prestige*multiply*momentum*monster;
@@ -332,12 +332,12 @@ public class SellHandler implements Listener, CommandExecutor {
 
 
     if (!event.isCancelled()) {
-		if (p.getItemInHand() != null) {
-			if(!p.getWorld().getName().equals(p.getUniqueId().toString())) {
+		if (p.getItemInHand() != null && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore()) {
+			Mine m = MineSystem.getInstance().getMineByPlayer(p);
+			if(!m.isInMine(event.getBlock().getLocation())) {
 				event.setCancelled(true);
 				return;
 			}
-
 			int line = 0;
 			for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
 				if (ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
@@ -392,7 +392,8 @@ public class SellHandler implements Listener, CommandExecutor {
 						  if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
 							  rank = 1000;
 						  }
-						  ResetHandler.resetMineWorldEdit(mine, mine.getMinPoint(), mine.getMaxPoint(), MineHandler.Blocks(rank / 16));
+						  double lucky = settings.getPlayerData().getDouble(p.getUniqueId().toString()+".LuckyBlock");
+						  ResetHandler.resetMineWorldEdit(mine, mine.getMinPoint(), mine.getMaxPoint(), lucky);
 						  if (mine.isInMine(p.getLocation()))
 							  p.teleport(mine.getSpawnLocation());
 						  if (!p.isOp())

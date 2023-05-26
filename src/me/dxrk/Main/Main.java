@@ -96,9 +96,11 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
 
         plugin = this;
         INSTANCE = this;
-        Mines.getInstance().preLoadWorlds();
         Mines.getInstance().enable();
         System.out.println(MineSystem.getInstance().getActiveMines());
+        MineWorldCreator.getInstance().createMineWorld("mines");
+        MineWorldCreator.getInstance().createMineWorld("minestwo");
+        MineWorldCreator.getInstance().createMineWorld("minesthree");
 
         ProtocolLibrary.getProtocolManager().addPacketListener(
 // I mark my listener as async, as I don't use the Bukkit API. Please note that
@@ -117,6 +119,11 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         this.settings.setup(this);
         setupPermissions();
         setupChat();
+        if (this.settings.getOptions().get("numberofmines") == null) {
+            this.settings.getOptions().set("numberofmines", 0);
+            this.settings.saveOptions();
+        }
+
 
         if (this.settings.getData().getString("Broadcast") == null) {
             this.settings.getData().set("Broadcast", "Tesssttt");
@@ -427,7 +434,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
                     }
                 }
             }
-        }.runTaskTimer(this, 0L, 20L);
+        }.runTaskTimer(this, 0L, 30L);
 
 
         new BukkitRunnable() {

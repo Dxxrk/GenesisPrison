@@ -1,10 +1,15 @@
 package me.dxrk.Mines;
 
+import me.dxrk.Events.RankupHandler;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Tokens.Tokens;
+import net.minecraft.server.v1_8_R3.PacketPlayOutWorldBorder;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -57,19 +62,19 @@ public class CMDMine implements CommandExecutor, Listener {
 
         ItemStack teleport = new ItemStack(Material.ENDER_PORTAL_FRAME);
         ItemMeta tm = teleport.getItemMeta();
-        tm.setDisplayName(c("&aTeleport to your mine! (/mine home|tp)"));
+        tm.setDisplayName(c("&aTeleport to Your Mine (/mine home|tp)"));
         teleport.setItemMeta(tm);
         mineMenu.setItem(4, teleport);
 
         ItemStack portal = Head(p);
         ItemMeta pm = portal.getItemMeta();
-        pm.setDisplayName(c("&aTo Visit another mine use /mine visit <name>."));
+        pm.setDisplayName(c("&aTo Visit another mine use /Mine Visit <name>"));
         portal.setItemMeta(pm);
         mineMenu.setItem(2, portal);
 
         ItemStack upgrade = new ItemStack(Material.DIAMOND);
         ItemMeta um = upgrade.getItemMeta();
-        um.setDisplayName(c("&aUpgrade your mine."));
+        um.setDisplayName(c("&aUpgrade Your Mine"));
         upgrade.setItemMeta(um);
         mineMenu.setItem(6, upgrade);
 
@@ -77,13 +82,13 @@ public class CMDMine implements CommandExecutor, Listener {
         ItemMeta rm = reset.getItemMeta();
         rm.setDisplayName(c("&aMine Reset Settings"));
         reset.setItemMeta(rm);
-        mineMenu.setItem(20, reset);
+        mineMenu.setItem(21, reset);
 
         ItemStack block = new ItemStack(Material.DIAMOND_ORE);
         ItemMeta bm = block.getItemMeta();
-        bm.setDisplayName(c("&aChange your mine block"));
+        bm.setDisplayName(c("&aChange Your Mine Block"));
         block.setItemMeta(bm);
-        mineMenu.setItem(22, block);
+        mineMenu.setItem(23, block);
 
         p.openInventory(mineMenu);
     }
@@ -116,12 +121,103 @@ public class CMDMine implements CommandExecutor, Listener {
         p.openInventory(reset);
     }
 
-    public void openBlockInventory(Player p) {
+    private ItemStack invBlock(Material mat, short data, String rank, String b, Player p) {
+        ItemStack block = new ItemStack(mat, 1, data);
+        ItemMeta bm = block.getItemMeta();
+        bm.setDisplayName(c("&7Choose " + b));
+        List<String> lore = new ArrayList<>();
+        if (p.hasPermission("rank." + rank)) {
+            lore.add(c("&cYou need " + rank + " to pick this block"));
+        }
+        bm.setLore(lore);
+        block.setItemMeta(bm);
+        return block;
+    }
 
+    public void openBlockInventory(Player p) {
+        Inventory blocks = Bukkit.createInventory(null, 27, c("&3&lChoose a Custom Block"));
+        blocks.setItem(0, invBlock(Material.SMOOTH_BRICK, (short) 0, "sponsor", "Stone Brick", p));
+        blocks.setItem(2, invBlock(Material.COAL_BLOCK, (short) 0, "vip", "Coal Block", p));
+        blocks.setItem(4, invBlock(Material.NETHERRACK, (short) 0, "mvp", "Netherrack", p));
+        blocks.setItem(6, invBlock(Material.PRISMARINE, (short) 2, "hero", "Dark Prismarine", p));
+        blocks.setItem(8, invBlock(Material.NETHER_BRICK, (short) 0, "demi-god", "Nether Brick", p));
+        blocks.setItem(10, invBlock(Material.STAINED_CLAY, (short) 0, "titan", "White Stained Clay", p));
+        blocks.setItem(12, invBlock(Material.STAINED_CLAY, (short) 10, "god", "Purple Stained Clay", p));
+        blocks.setItem(14, invBlock(Material.STAINED_CLAY, (short) 13, "olympian", "Green Stained Clay", p));
+        blocks.setItem(16, invBlock(Material.STAINED_CLAY, (short) 7, "genesis", "Gray Stained Clay", p));
+        p.openInventory(blocks);
     }
 
     public void openUpgradeInventory(Player p) {
+        Inventory upgrade = Bukkit.createInventory(null, 27, c("&a&lUpgrade Your Mine"));
 
+        ItemStack lucky1 = new ItemStack(Material.SEA_LANTERN);
+        if(settings.getPlayerData().getDouble(p.getUniqueId().toString()+".LuckyBlock") >=0.01) {
+            lucky1.setType(Material.BARRIER);
+        }
+        ItemMeta l1 = lucky1.getItemMeta();
+        l1.setDisplayName(c("&aLucky Block Level 1"));
+        List<String> lore = new ArrayList<>();
+        lore.add(c("&7Lucky Blocks will randomly spawn in your mine"));
+        lore.add(c("&aCost: &e⛀2.0 Million"));
+        l1.setLore(lore);
+        lucky1.setItemMeta(l1);
+        upgrade.setItem(0, lucky1);
+        lore.clear();
+
+        ItemStack lucky2 = new ItemStack(Material.SEA_LANTERN);
+        if(settings.getPlayerData().getDouble(p.getUniqueId().toString()+".LuckyBlock") >=0.03) {
+            lucky2.setType(Material.BARRIER);
+        }
+        ItemMeta l2 = lucky2.getItemMeta();
+        l2.setDisplayName(c("&aLucky Block Level 2"));
+        lore.add(c("&7Increases Lucky Block Spawns"));
+        lore.add(c("&aCost: &e⛀100.0 Million"));
+        l2.setLore(lore);
+        lucky2.setItemMeta(l2);
+        upgrade.setItem(4, lucky2);
+        lore.clear();
+
+        ItemStack lucky3 = new ItemStack(Material.SEA_LANTERN);
+        if(settings.getPlayerData().getDouble(p.getUniqueId().toString()+".LuckyBlock") >=0.07) {
+            lucky3.setType(Material.BARRIER);
+        }
+        ItemMeta l3 = lucky3.getItemMeta();
+        l3.setDisplayName(c("&aLucky Block Level 3"));
+        lore.add(c("&7Increases Lucky Block Spawns"));
+        lore.add(c("&aCost: &e⛀500.0 Million"));
+        l3.setLore(lore);
+        lucky3.setItemMeta(l3);
+        upgrade.setItem(8, lucky3);
+        lore.clear();
+
+        ItemStack size1 = new ItemStack(Material.DIAMOND_ORE);
+        if(settings.getPlayerData().getInt(p.getUniqueId().toString()+".MineSize") >=2) {
+            size1.setType(Material.BARRIER);
+        }
+        ItemMeta s1 = size1.getItemMeta();
+        s1.setDisplayName(c("&aMine Size Level 2"));
+        lore.add(c("&7Increases Mine to 50x50x50"));
+        lore.add(c("&aCost: &e⛀25.0 Million"));
+        s1.setLore(lore);
+        size1.setItemMeta(s1);
+        upgrade.setItem(2, size1);
+        lore.clear();
+
+        ItemStack size2 = new ItemStack(Material.DIAMOND_ORE);
+        if(settings.getPlayerData().getInt(p.getUniqueId().toString()+".MineSize") >=3) {
+            size2.setType(Material.BARRIER);
+        }
+        ItemMeta s2 = size2.getItemMeta();
+        s2.setDisplayName(c("&aMine Size Level 2"));
+        lore.add(c("&7Increases Mine to 65x65x65"));
+        lore.add(c("&aCost: &e⛀250.0 Million"));
+        s2.setLore(lore);
+        size2.setItemMeta(s2);
+        upgrade.setItem(6, size2);
+        lore.clear();
+
+        p.openInventory(upgrade);
     }
 
     @SuppressWarnings("deprecation")
@@ -136,9 +232,18 @@ public class CMDMine implements CommandExecutor, Listener {
             if (args.length == 1) {
                 Player p = (Player) sender;
                 if (args[0].equalsIgnoreCase("teleport") || args[0].equalsIgnoreCase("tp") || args[0].equalsIgnoreCase("home") || args[0].equalsIgnoreCase("go")) {
-                    if (Bukkit.getWorlds().contains(Bukkit.getWorld(p.getUniqueId().toString()))) {
-                        Location pworld = new Location(Bukkit.getWorld(p.getUniqueId().toString()), 0.5, 100.5, 0.5, -90, 0);
-                        p.teleport(pworld);
+                    if (settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".HasMine")) {
+                        Mine m = MineSystem.getInstance().getMineByPlayer(p);
+                        Location loc = new Location(m.getMineWorld(), m.getSpawnLocation().getX(), m.getSpawnLocation().getY(), m.getSpawnLocation().getZ(), -90, 0);
+                        p.teleport(loc);
+                        net.minecraft.server.v1_8_R3.WorldBorder wb = new net.minecraft.server.v1_8_R3.WorldBorder();
+                        wb.world = ((CraftWorld) m.getMineWorld()).getHandle();
+                        wb.setCenter(34.5, m.getSpawnLocation().getZ());
+                        wb.setSize(83);
+                        wb.setWarningDistance(1);
+                        wb.setWarningTime(1);
+                        PacketPlayOutWorldBorder packetPlayOutWorldBorder = new PacketPlayOutWorldBorder(wb, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE);
+                        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutWorldBorder);
                     } else {
                         p.sendMessage(c("&f&lMine &8| &7Unable to find your mine(/mine)."));
                     }
@@ -153,11 +258,20 @@ public class CMDMine implements CommandExecutor, Listener {
                     OfflinePlayer visit = Bukkit.getOfflinePlayer(args[1]);
                     UUID id = visit.getUniqueId();
 
-                    if (Bukkit.getWorlds().contains(Bukkit.getWorld(id.toString()))) {
-                        Location pworld = new Location(Bukkit.getWorld(id.toString()), 0.5, 100.5, 0.5, -90, 0);
-                        p.teleport(pworld);
+                    if (settings.getPlayerData().getBoolean(id.toString()+".HasMine")) {
+                        Mine m = MineSystem.getInstance().getMineByName(id.toString());
+                        Location loc = new Location(m.getMineWorld(), m.getSpawnLocation().getX(), m.getSpawnLocation().getY(), m.getSpawnLocation().getZ(), -90, 0);
+                        p.teleport(loc);
+                        net.minecraft.server.v1_8_R3.WorldBorder wb = new net.minecraft.server.v1_8_R3.WorldBorder();
+                        wb.world = ((CraftWorld) m.getMineWorld()).getHandle();
+                        wb.setCenter(34.5, m.getSpawnLocation().getZ());
+                        wb.setSize(83);
+                        wb.setWarningDistance(1);
+                        wb.setWarningTime(1);
+                        PacketPlayOutWorldBorder packetPlayOutWorldBorder = new PacketPlayOutWorldBorder(wb, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE);
+                        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutWorldBorder);
                     } else {
-                        p.sendMessage(c("&f&lMine &8| &7That player has not created their mine."));
+                        p.sendMessage(c("&f&lMine &8| &7Player has not created their mine."));
                     }
 
                 }
@@ -182,18 +296,90 @@ public class CMDMine implements CommandExecutor, Listener {
             e.setCancelled(true);
             if (e.getSlot() == 4) {
                 if (!settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".HasMine")) {
-                    MineHandler.getInstance().CreateMine(p);
+                    MineHandler.getInstance().CreateMine(p, "firstmine", "mines");
                 } else {
                     Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                    p.teleport(m.getSpawnLocation());
+                    Location loc = new Location(m.getMineWorld(), m.getSpawnLocation().getX(), m.getSpawnLocation().getY(), m.getSpawnLocation().getZ(), -90, 0);
+                    p.teleport(loc);
+                    net.minecraft.server.v1_8_R3.WorldBorder wb = new net.minecraft.server.v1_8_R3.WorldBorder();
+                    wb.world = ((CraftWorld) m.getMineWorld()).getHandle();
+                    wb.setCenter(34.5, m.getSpawnLocation().getZ());
+                    wb.setSize(83);
+                    wb.setWarningDistance(1);
+                    wb.setWarningTime(1);
+                    PacketPlayOutWorldBorder packetPlayOutWorldBorder = new PacketPlayOutWorldBorder(wb, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE);
+
+                    ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutWorldBorder);
                 }
             }
+            if(e.getSlot() == 6) {
+                openUpgradeInventory(p);
+            }
+            if(e.getSlot() == 21) {
+                openResetInventory(p, MineSystem.getInstance().getMineByPlayer(p).getResetPercent());
+            }
+            if(e.getSlot() == 23) {
+                openBlockInventory(p);
+            }
         }
-        if (e.getInventory().getName().equals(c("&c&lMine Blocks"))) {
-            if (e.getClickedInventory().equals(p.getInventory())) return;
+        if (e.getInventory().getName().equals(c("&3&lChoose a Custom Block"))) {
+            if (e.getClickedInventory().equals(p.getInventory())) {
+                e.setCancelled(true);
+                return;
+            }
             e.setCancelled(true);
+            if(e.getSlot() == 0) {
+                if(!p.hasPermission("rank.sponsor")) return;
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.SMOOTH_BRICK));
+                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+            }
+            if(e.getSlot() == 2) {
+                if(!p.hasPermission("rank.vip")) return;
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.COAL_BLOCK));
+                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+            }
+            if(e.getSlot() == 4) {
+                if(!p.hasPermission("rank.mvp")) return;
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.NETHERRACK));
+                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+            }
+            if(e.getSlot() == 6) {
+                if(!p.hasPermission("rank.hero")) return;
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.PRISMARINE, 1, (short)2));
+                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+            }
+            if(e.getSlot() == 8) {
+                if(!p.hasPermission("rank.demi-god")) return;
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.NETHER_BRICK));
+                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+            }
+            if(e.getSlot() == 10) {
+                if(!p.hasPermission("rank.titan")) return;
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.STAINED_CLAY, 1, (short)0));
+                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+            }
+            if(e.getSlot() == 12) {
+                if(!p.hasPermission("rank.god")) return;
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.STAINED_CLAY, 1, (short)10));
+                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+            }
+            if(e.getSlot() == 14) {
+                if(!p.hasPermission("rank.olympian")) return;
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.STAINED_CLAY, 1, (short)13));
+                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+            }
+            if(e.getSlot() == 16) {
+                if(!p.hasPermission("rank.genesis")) return;
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.STAINED_CLAY, 1, (short)7));
+                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+            }
         }
         if (e.getInventory().getName().equals(c("&c&lChange Reset Percentage"))) {
+            if (e.getClickedInventory().equals(p.getInventory())) {
+                e.setCancelled(true);
+                return;
+            }
+            e.setCancelled(true);
             if (e.getSlot() == 4) {
                 Mine m = MineSystem.getInstance().getMineByPlayer(p);
                 float reset = m.getResetPercent();
@@ -209,6 +395,54 @@ public class CMDMine implements CommandExecutor, Listener {
                 m.save();
                 openResetInventory(p, m.getResetPercent());
             }
+        }
+        if(e.getInventory().getName().equals(c("&a&lUpgrade Your Mine"))) {
+            if (e.getClickedInventory().equals(p.getInventory())) {
+                e.setCancelled(true);
+                return;
+            }
+            e.setCancelled(true);
+            if(e.getCurrentItem().getType().equals(Material.BARRIER)) {
+                e.setCancelled(true);
+                return;
+            }
+            if(e.getSlot() == 0) {
+                if(Tokens.getInstance().getTokens(p) < 2E6) return;
+                settings.getPlayerData().set(p.getUniqueId().toString()+".LuckyBlock", 0.01);
+                Mine m = MineSystem.getInstance().getMineByPlayer(p);
+                ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), settings.getPlayerData().getDouble(p.getUniqueId().toString()+".LuckyBlock"));
+            }
+            if(e.getSlot() == 4) {
+                if(Tokens.getInstance().getTokens(p) < 100E6) return;
+                settings.getPlayerData().set(p.getUniqueId().toString()+".LuckyBlock", 0.03);
+                Mine m = MineSystem.getInstance().getMineByPlayer(p);
+                ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), settings.getPlayerData().getDouble(p.getUniqueId().toString()+".LuckyBlock"));
+            }
+            if(e.getSlot() == 8) {
+                if(Tokens.getInstance().getTokens(p) < 500E6) return;
+                settings.getPlayerData().set(p.getUniqueId().toString()+".LuckyBlock", 0.07);
+                Mine m = MineSystem.getInstance().getMineByPlayer(p);
+                ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), settings.getPlayerData().getDouble(p.getUniqueId().toString()+".LuckyBlock"));
+            }
+            if(e.getSlot() == 2) {
+                if(Tokens.getInstance().getTokens(p) < 10E6) return;
+                settings.getPlayerData().set(p.getUniqueId().toString()+".MineSize", 2);
+                Mine m = MineSystem.getInstance().getMineByPlayer(p);
+                MineSystem.getInstance().removeActiveMine(m);
+                m.delete();
+                MineHandler.getInstance().CreateMine(p, "secondmine", "minestwo");
+
+            }
+            if(e.getSlot() == 6) {
+                if(Tokens.getInstance().getTokens(p) < 250E6) return;
+                settings.getPlayerData().set(p.getUniqueId().toString()+".MineSize", 3);
+                Mine m = MineSystem.getInstance().getMineByPlayer(p);
+                MineSystem.getInstance().removeActiveMine(m);
+                m.delete();
+                MineHandler.getInstance().CreateMine(p, "thirdmine", "minesthree");
+
+            }
+
         }
 
 

@@ -27,16 +27,18 @@ public class WaveEffect {
                 fb.remove();
             }
             rad++;
-            rad = (((rad % 100) == 0) ? 1 : rad);
+            rad = (((rad % time) == 0) ? 1 : rad);
         }
     };
 
     private Location l;
     private int rad = 1;
     private int id;
+    private int time;
 
-    public WaveEffect(Location l) {
+    public WaveEffect(Location l, int t) {
         this.l = l;
+        this.time = t;
         start(2);
     }
 

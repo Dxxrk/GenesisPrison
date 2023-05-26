@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.sk89q.worldedit.regions.CuboidRegion;
 import me.dxrk.Events.*;
 import me.dxrk.Main.*;
 import me.dxrk.Mines.Mine;
@@ -33,7 +34,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import me.dxrk.Vote.CMDVoteShop;
 
 public class EnchantMethods implements CommandExecutor {
-    
+
 
     static EnchantMethods instance = new EnchantMethods();
 
@@ -157,16 +158,6 @@ public class EnchantMethods implements CommandExecutor {
         return blocks;
     }
 
-    private WorldGuardPlugin getWorldGuard() {
-        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-
-        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
-            return null;
-        }
-
-        return (WorldGuardPlugin) plugin;
-    }
-
 
     public static List<Block> blocksFromTwoPoints(Location loc1, Location loc2, World w) {
         List<Block> blocks = new ArrayList<>();
@@ -189,7 +180,7 @@ public class EnchantMethods implements CommandExecutor {
 
         return blocks;
     }
-    
+
 
     public void Jackhammer(Player p, Block b, int level) {
         ArrayList<ItemStack> sellblocks = new ArrayList<>();
@@ -224,11 +215,11 @@ public class EnchantMethods implements CommandExecutor {
 
         double levelcap = 1 + (level / 1000);
 
-        int blocksInThirds = blocks/3;
+        int blocksInThirds = blocks / 3;
 
-        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds*fortune*levelcap)));
-        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocksInThirds*fortune*levelcap)));
-        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocksInThirds*fortune*levelcap)));
+        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds * fortune * levelcap)));
+        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocksInThirds * fortune * levelcap)));
+        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocksInThirds * fortune * levelcap)));
 
         int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * levelcap);
         Tokens.getInstance().addTokens(p, tokens);
@@ -246,30 +237,9 @@ public class EnchantMethods implements CommandExecutor {
 
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
         amountblocks = m.getBlocksLeft();
-        int rank = RankupHandler.getInstance().getRank(p);
-        if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Ethereal")) {
-            rank = 1000;
-        }
-        WaveEffect wave = null;
-        wave = new WaveEffect(p.getLocation());
-        WaveEffect finalWave = wave;
-        Location finalLoc = p.getLocation();
-        int finalRank = rank;
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                finalWave.stop();
-                for (Block b1 : getCircle(finalLoc, 100)) {
-                    if (set(b1).allows(DefaultFlag.LIGHTER)) {
-                        if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-                            b1.setType(Material.AIR);
-                        }
-                    }
-                }
-                ResetHandler.resetMineWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), MineHandler.Blocks(finalRank / 16));
 
-            }
-        }.runTaskLater(Main.plugin, 100L);
+        double lucky = settings.getPlayerData().getDouble(p.getUniqueId().toString() + ".LuckyBlock");
+        ResetHandler.resetMineWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), lucky);
 
 
         double fortuity = Functions.Foruity(p);
@@ -287,11 +257,11 @@ public class EnchantMethods implements CommandExecutor {
         double levelcap = 1 + (level / 500);
 
 
-        int blocksInThirds = (amountblocks/10)/3;
+        int blocksInThirds = (amountblocks / 10) / 3;
 
-        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds*fortune*levelcap)));
-        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocksInThirds*fortune*levelcap)));
-        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocksInThirds*fortune*levelcap)));
+        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds * fortune * levelcap)));
+        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocksInThirds * fortune * levelcap)));
+        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocksInThirds * fortune * levelcap)));
 
 
         int tokens = (int) (KeysHandler.tokensPerBlock(p) * (amountblocks / 6) * levelcap);
@@ -305,7 +275,7 @@ public class EnchantMethods implements CommandExecutor {
         int blocks = 0;
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
         b.getWorld().strikeLightningEffect(b.getLocation());
-        for (Block b1 : getBlocksAroundCenter(b.getLocation(), 15)) {
+        for (Block b1 : getBlocksAroundCenter(b.getLocation(), 10)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     b1.setType(Material.AIR);
@@ -313,11 +283,6 @@ public class EnchantMethods implements CommandExecutor {
                 }
             }
         }
-        int rank = RankupHandler.getInstance().getRank(p);
-        if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Ethereal")) {
-            rank = 1000;
-        }
-        // ResetHandler.setAIR(min, max, MineHandler.Blocks(rank/16));
         double fortuity = Functions.Foruity(p);
         double skill = SkillsEventsListener.getSkillsBoostFortune(p);
         double event = SkillsEventsListener.getEventFortune();
@@ -331,16 +296,63 @@ public class EnchantMethods implements CommandExecutor {
                 (14));
 
         double levelcap = 1 + (level / 1000);
-        int blocksInThirds = blocks/3;
+        int blocksInThirds = blocks / 3;
 
-        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds*fortune*levelcap)));
-        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocksInThirds*fortune*levelcap)));
-        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocksInThirds*fortune*levelcap)));
+        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds * fortune * levelcap)));
+        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocksInThirds * fortune * levelcap)));
+        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocksInThirds * fortune * levelcap)));
 
 
         int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * levelcap);
         Tokens.getInstance().addTokens(p, tokens);
         SellHandler.getInstance().sellEnchant(p, sellblocks, "Smite", tokens);
+    }
+
+    public void seismic(Player p, Block b, int level) {
+        ArrayList<ItemStack> sellblocks = new ArrayList<>();
+        int blocks = 0;
+        Mine m = MineSystem.getInstance().getMineByPlayer(p);
+        WaveEffect wave = null;
+        wave = new WaveEffect(b.getLocation(), 100);
+        WaveEffect finalWave = wave;
+        Location finalLoc = b.getLocation();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                finalWave.stop();
+                for (Block b1 : getCircle(finalLoc, 25)) {
+                    if (set(b1).allows(DefaultFlag.LIGHTER)) {
+                        if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+                            b1.setType(Material.AIR);
+                        }
+                    }
+                }
+            }
+        }.runTaskLater(Main.plugin, 100L);
+
+        double fortuity = Functions.Foruity(p);
+        double skill = SkillsEventsListener.getSkillsBoostFortune(p);
+        double event = SkillsEventsListener.getEventFortune();
+        int line = 0;
+        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
+            if (org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
+                line = x;
+            }
+        }
+        int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
+                (14));
+
+        double levelcap = 1 + (level / 1000);
+        int blocksInThirds = blocks / 3;
+
+        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds * fortune * levelcap)));
+        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocksInThirds * fortune * levelcap)));
+        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocksInThirds * fortune * levelcap)));
+
+
+        int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * levelcap);
+        Tokens.getInstance().addTokens(p, tokens);
+        SellHandler.getInstance().sellEnchant(p, sellblocks, "Seismic Shock", tokens);
     }
 
 

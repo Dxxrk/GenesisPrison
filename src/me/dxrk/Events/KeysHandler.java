@@ -14,6 +14,8 @@ import me.dxrk.Gangs.Gangs;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Mines.Mine;
+import me.dxrk.Mines.MineSystem;
 import me.dxrk.Tokens.Tokens;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -299,7 +301,11 @@ public class KeysHandler implements Listener {
             return;
         if (!i.getItemMeta().hasLore())
             return;
-        if (!p.getWorld().getName().equals(p.getName() + "sWorld")) return;
+        Mine m = MineSystem.getInstance().getMineByPlayer(p);
+        if(!m.isInMine(e.getBlock().getLocation())) {
+            e.setCancelled(true);
+            return;
+        }
         WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
         ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
         if (!set.allows(DefaultFlag.LIGHTER))

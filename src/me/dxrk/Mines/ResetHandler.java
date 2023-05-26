@@ -14,6 +14,7 @@ import com.sk89q.worldedit.regions.Region;
 import me.dxrk.Events.RankupHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -74,12 +75,24 @@ public class ResetHandler {
 		session.flushQueue();
 	}
 	@SuppressWarnings("deprecation")
-	public static void fillAIR(WorldEditRegion region, ItemStack i, ItemStack i2, ItemStack i3) {
+	public static void fillAIR(WorldEditRegion region, ItemStack i, ItemStack i2, ItemStack i3, double lucky) {
 		EditSession session = (new EditSessionBuilder(FaweAPI.getWorld(region.getWorld().getName()))).fastmode(Boolean.TRUE).build();
 		RandomPattern pat = new RandomPattern();
 		BaseBlock block = new BaseBlock(i.getTypeId(), i.getData().getData());
 		BaseBlock block2 = new BaseBlock(i2.getTypeId(), i2.getData().getData());
 		BaseBlock block3 = new BaseBlock(i3.getTypeId(), i3.getData().getData());
+
+		if(lucky != 0) {
+			ItemStack luckyblock = new ItemStack(Material.SEA_LANTERN);
+			BaseBlock block4 = new BaseBlock(luckyblock.getTypeId(), luckyblock.getData().getData());
+			pat.add(block, 0.33);
+			pat.add(block2, 0.34-lucky);
+			pat.add(block3, 0.33);
+			pat.add(block4, lucky);
+			session.setBlocks(transform(region), pat);
+			session.flushQueue();
+			return;
+		}
 		pat.add(block, 0.33);
 		pat.add(block2, 0.34);
 		pat.add(block3, 0.33);
@@ -88,12 +101,24 @@ public class ResetHandler {
 		session.flushQueue();
 	}
 	@SuppressWarnings("deprecation")
-	public static void fill(WorldEditRegion region, ItemStack i, ItemStack i2, ItemStack i3) {
+	public static void fill(WorldEditRegion region, ItemStack i, ItemStack i2, ItemStack i3, double lucky) {
 		EditSession session = (new EditSessionBuilder(FaweAPI.getWorld(region.getWorld().getName()))).fastmode(Boolean.TRUE).build();
 		RandomPattern pat = new RandomPattern();
 		BaseBlock block = new BaseBlock(i.getTypeId(), i.getData().getData());
 		BaseBlock block2 = new BaseBlock(i2.getTypeId(), i2.getData().getData());
 		BaseBlock block3 = new BaseBlock(i3.getTypeId(), i3.getData().getData());
+
+		if(lucky != 0) {
+			ItemStack luckyblock = new ItemStack(Material.SEA_LANTERN);
+			BaseBlock block4 = new BaseBlock(luckyblock.getTypeId(), luckyblock.getData().getData());
+			pat.add(block, 0.33);
+			pat.add(block2, 0.34-lucky);
+			pat.add(block3, 0.33);
+			pat.add(block4, lucky);
+			session.setBlocks(transform(region), pat);
+			session.flushQueue();
+			return;
+		}
 		pat.add(block, 0.33);
 		pat.add(block2, 0.34);
 		pat.add(block3, 0.33);
@@ -101,18 +126,18 @@ public class ResetHandler {
 		session.flushQueue();
 	}
 
-	public static void resetMineWorldEdit(Mine mine, Location loc1, Location loc2, List<ItemStack> blocks) {
+	public static void resetMineWorldEdit(Mine mine, Location loc1, Location loc2, double lucky) {
 		WorldEditRegion miningRegion = new WorldEditRegion(toWEVector(loc1), toWEVector(loc2), loc1.getWorld());
-		fillAIR(miningRegion, blocks.get(0), blocks.get(1), blocks.get(2));
+		fillAIR(miningRegion, mine.getBlock1(), mine.getBlock2(), mine.getBlock3(), lucky);
 		for(Player pp : Bukkit.getOnlinePlayers()) {
 			if(mine.isInMine(pp.getLocation())) {
 				pp.teleport(mine.getSpawnLocation());
 			}
 		}
 	}
-	public static void resetMineFullWorldEdit(Mine mine, Location loc1, Location loc2, List<ItemStack> blocks) {
+	public static void resetMineFullWorldEdit(Mine mine, Location loc1, Location loc2, double lucky) {
 		WorldEditRegion miningRegion = new WorldEditRegion(toWEVector(loc1), toWEVector(loc2), loc1.getWorld());
-		fill(miningRegion, blocks.get(0), blocks.get(1), blocks.get(2));
+		fill(miningRegion, mine.getBlock1(), mine.getBlock2(), mine.getBlock3(), lucky);
 		for(Player pp : Bukkit.getOnlinePlayers()) {
 			if(mine.isInMine(pp.getLocation())) {
 				pp.teleport(mine.getSpawnLocation());

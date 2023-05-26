@@ -214,68 +214,10 @@ public class Methods {
 
 
     @SuppressWarnings("deprecation")
-    public static double getSellPrice(ItemStack i) {
-        int shmulti = 500000 * i.getData().getData();
-        if (i.getTypeId() == 4)
-            return 1000000 + shmulti;
-        else if (i.getTypeId() == 48)
-            return 1500000 + shmulti;
-        else if (i.getTypeId() == 1)
-            return 2000000 + shmulti; // 7
-        else if (i.getTypeId() == 98)
-            return 5500000 + shmulti; // 4
-        else if (i.getTypeId() == 24)
-            return 7500000 + shmulti; //3
-        else if (i.getTypeId() == 179)
-            return 9500000 + shmulti; // 3
-        else if (i.getTypeId() == 172)
-            return 10000000 + shmulti;
-        else if (i.getTypeId() == 159)
-            return 10500000 + shmulti; // 16
-        else if (i.getTypeId() == 45)
-            return 18500000 + shmulti;
-        else if (i.getTypeId() == 16)
-            return 19000000 + shmulti;
-        else if (i.getTypeId() == 173)
-            return 19500000 + shmulti;
-        else if (i.getTypeId() == 15)
-            return 20000000 + shmulti;
-        else if (i.getTypeId() == 42)
-            return 21000000 + shmulti;
-        else if (i.getTypeId() == 14)
-            return 22000000 + shmulti;
-        else if (i.getTypeId() == 41)
-            return 23000000 + shmulti;
-        else if (i.getTypeId() == 73)
-            return 24000000 + shmulti;
-        else if (i.getTypeId() == 152)
-            return 25000000 + shmulti;
-        else if (i.getTypeId() == 21)
-            return 26000000 + shmulti;
-        else if (i.getTypeId() == 22)
-            return 27000000 + shmulti;
-        else if (i.getTypeId() == 56)
-            return 28000000 + shmulti;
-        else if (i.getTypeId() == 57)
-            return 28500000 + shmulti;
-        else if (i.getTypeId() == 129)
-            return 29000000 + shmulti;
-        else if (i.getTypeId() == 133)
-            return 29500000 + shmulti;
-        else if (i.getTypeId() == 87)
-            return 30000000 + shmulti;
-        else if (i.getTypeId() == 112)
-            return 31000000 + shmulti;
-        else if (i.getTypeId() == 153)
-            return 32000000 + shmulti;
-        else if (i.getTypeId() == 155)
-            return 32500000 + shmulti; // 3
-        else if (i.getTypeId() == 168)
-            return 34500000 + shmulti; // 3
-        else if (i.getTypeId() == 49)
-            return 37500000 + shmulti;
-        else if (i.getTypeId() == 121)
-            return 38000000 + shmulti;
-        return 1;
+    public static double getSellPrice(int rank) {
+        int block = rank/16;
+        if(block < 1)
+            block = 1;
+        return block*500000;
     }
 }

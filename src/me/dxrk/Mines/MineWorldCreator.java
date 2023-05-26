@@ -48,21 +48,15 @@ public class MineWorldCreator {
         return(path.delete());
     }
 
-    public void createMineWorld1(Player p) {
-        if(Bukkit.getWorld(p.getUniqueId().toString()) != null) {
-            World world = Bukkit.getWorld(p.getUniqueId().toString());
-            unloadWorld(world);
-            File file = world.getWorldFolder();
-            deleteWorld(file);
+    public void createMineWorld(String name) {
+        if(Bukkit.getWorld(name) != null) {
+            return;
         }
-        World mineWorld = Bukkit.createWorld(new WorldCreator(p.getUniqueId().toString())
+        World mineWorld = Bukkit.createWorld((new WorldCreator(name))
                 .type(WorldType.FLAT)
                 .generator(new EmptyWorldGenerator()));
-
-        File schem = new File(Main.plugin.getDataFolder() + File.separator + "schematics", "firstmine.schematic");
-        Location paste = new Location(mineWorld, 0, 144, 0);
-        paste.setYaw(-90);
-        pasteSchematic(Objects.requireNonNull(WESchematic.getSchematic(schem)), paste);
+        mineWorld.setKeepSpawnInMemory(false);
+        mineWorld.save();
     }
 
     public void pasteSchematic(Schematic schematic, Location location) {
