@@ -17,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -240,12 +241,19 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         sm.setLore(lore);
         skills.setItemMeta(sm);
         enchantmenu.setItem(46, skills);
+        lore.clear();
 
+        ItemStack skillenchants = new ItemStack(Material.MAGMA_CREAM);
+        ItemMeta semeta = skillenchants.getItemMeta();
+        semeta.setDisplayName(c("&a&lPickaxe Skill Enchants"));
+        lore.add(c("&6Open skill enchant menu"));
+        semeta.setLore(lore);
+        skillenchants.setItemMeta(semeta);
+        enchantmenu.setItem(49,skillenchants);
 
         enchantmenu.setItem(45, Spacer());
         enchantmenu.setItem(47, Spacer());
         enchantmenu.setItem(48, Spacer());
-        enchantmenu.setItem(49, Spacer());
         enchantmenu.setItem(50, Spacer());
         enchantmenu.setItem(51, Spacer());
         enchantmenu.setItem(53, Spacer());
@@ -743,7 +751,35 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
         }
     }
+    @EventHandler
+    public void openSkillEnchantsInv(Player p){
+        Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER,c("&6Pickaxe Skill Enchants"));
 
+        //add an if here for it to be red pane until path finished, and green after path finished
+        ItemStack calamity = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)14);
+        ItemMeta calamitymeta = calamity.getItemMeta();
+        calamitymeta.setDisplayName(c("&bUpgrade Calamity"));
+        List<String> calamitylore = new ArrayList<>();
+        calamitylore.add(c("&cUnlocks after finishing Zeus Path."));
+        calamitymeta.setLore(calamitylore);
+        calamity.setItemMeta(calamitymeta);
+        inv.setItem(0,calamity);
+
+        ItemStack infernum = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)14);
+        ItemMeta infernummeta = calamity.getItemMeta();
+        infernummeta.setDisplayName(c("&bUpgrade Infernum"));
+        List<String> infernumlore = new ArrayList<>();
+        infernumlore.add(c("&cUnlocks after finishing Hades Path."));
+        infernummeta.setLore(infernumlore);
+        infernum.setItemMeta(infernummeta);
+        inv.setItem(1,infernum);
+
+        //others are placeholders for until other enchants have been thought of
+        inv.setItem(2,calamity);
+        inv.setItem(3,calamity);
+        inv.setItem(4,calamity);
+        p.openInventory(inv);
+    }
     @EventHandler
     public void oninv(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
@@ -783,7 +819,10 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 TrinketHandler.getInstance().openTrinkets(p);
                 return;
             }
-
+            if(e.getSlot() == 49){
+                openSkillEnchantsInv(p);
+                return;
+            }
 
             String[] display = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).split("Upgrade ");
             String name = display[1];
@@ -807,6 +846,12 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             openenchantmenu(p);
 
 
+        }
+        else if(e.getInventory().getName().equals(c("&6Pickaxe Skill Enchants"))){
+            e.setCancelled(true);
+            if (e.getClickedInventory().equals(p.getInventory())) return;
+            if (e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return;
+            //add upgrading for pickaxe skill enchants
         }
     }
 
