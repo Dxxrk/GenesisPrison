@@ -67,25 +67,37 @@ implements Listener {
         if(level >=25){
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints+1);
         }
-        settings.getPlayerData().set(p.getUniqueId().toString()+".PickXP", 0);
         settings.savePlayerData();
     }
 
     public boolean canLevelUp(Player p) {
-        boolean levelup = calculateXPNeeded(p, getLevel(p)) <= getXP(p);
+        boolean levelup = calculateXPNeeded(getLevel(p)) <= getXP(p);
 
         return levelup;
     }
 
-
-    public double calculateXPNeeded(Player p, int pick) {
-        return 2750+(2750*(pick*0.3));
+    public double calculateXPNeeded(int level) {
+        double cost = 0;
+        for(int i = 1; i <level; i++) {
+            cost += cost(i);
+        }
+        return cost;
+    }
+    public double cost(int pick) {
+        return 1000+(1000*(pick*0.3));
+    }
+    public double totalXP() {
+        double cost = 0;
+        for(int i = 1; i <301; i++) {
+            cost += cost(i);
+        }
+        return cost;
     }
 
 
 
     public double findPercent(Player p) {
-        double percent = (getXP(p) / calculateXPNeeded(p, getLevel(p))) * 100;
+        double percent = (getXP(p) / calculateXPNeeded(getLevel(p))) * 100;
         double dmultiply = percent * 10.0;
         double dround = Math.round(dmultiply) / 10.0;
 
@@ -125,7 +137,7 @@ implements Listener {
     public void updateXpBoard(Player p){
         Scoreboard board = p.getScoreboard();
 
-        double xp = (calculateXPNeeded(p, getLevel(p)) - getXP(p));
+        double xp = (calculateXPNeeded(getLevel(p)) - getXP(p));
         double xmultiply = xp * 10.0;
         int xround = (int) (Math.round(xmultiply) / 10.0);
 

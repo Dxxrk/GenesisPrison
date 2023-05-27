@@ -179,7 +179,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
         String cost;
 
-        if (enchantLevel != maxLevel(enchantName)) {
+        if (enchantLevel != maxLevel(enchantName, p)) {
             cost = c("&bCost: &e" + ((int) price) + "⛀");
         } else {
             cost = c("&bCost: &eMAX LEVEL!");
@@ -193,7 +193,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         lore.add(desc);
         lore.add(" ");
         lore.add(c("&bCurrent Level: &e" + enchantLevel));
-        lore.add(c("&bMax Level: &e" + maxLevel(enchantName)));
+        lore.add(c("&bMax Level: &e" + maxLevel(enchantName, p)));
         lore.add(cost);
         lore.add(" ");
         lore.add(c("&7&oLeft Click: Buy 1"));
@@ -610,7 +610,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         return i;
     }
 
-    public int maxLevel(String Enchant) {
+    public int maxLevel(String Enchant, Player p) {
         int i = 0;
         switch (Enchant) {
             case "Key Finder":
@@ -621,7 +621,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
                 break;
 
-            case "Wave":
+            case "Jackhammer":
             case "Fortuity":
             case "Key Party":
             case "Charity":
@@ -703,7 +703,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 int plus = level + 1;
                 int price = (int) enchantPrice(Enchant, level);
                 if (Tokens.getInstance().getTokens(p) >= price) {
-                    if (plus > maxLevel(Enchant)) return;
+                    if (plus > maxLevel(Enchant, p)) return;
                     lore.add(c("&c" + Enchant + " &e" + plus));
                     this.tokens.takeTokens(p, price);
 
@@ -725,7 +725,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                     int plus = level + 1;
                     int price = (int) enchantPrice(Enchant, level);
                     if (Tokens.getInstance().getTokens(p) >= price) {
-                        if (plus > maxLevel(Enchant)) return;
+                        if (plus > maxLevel(Enchant, p)) return;
                         lore.set(line, c("&c" + Enchant + " &e" + plus));
                         this.tokens.takeTokens(p, price);
                     } else {
@@ -748,7 +748,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 int plus = level + 1;
                 int price = (int) enchantPrice(Enchant, level);
                 if (Tokens.getInstance().getTokens(p) >= price) {
-                    if (plus > maxLevel(Enchant)) return;
+                    if (plus > maxLevel(Enchant, p)) return;
                     lore.add(c("&c" + Enchant + " &e" + plus));
                     this.tokens.takeTokens(p, price);
                 } else {
@@ -765,12 +765,12 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                         line = z;
                 }
                 int l = getInt(lore.get(line));
-                for (int x = 0; x < (maxLevel(Enchant) - l); x++) {
+                for (int x = 0; x < (maxLevel(Enchant, p) - l); x++) {
                     int level = getInt(lore.get(line));
                     int plus = level + 1;
                     int price = (int) enchantPrice(Enchant, level);
                     if (Tokens.getInstance().getTokens(p) >= price) {
-                        if (plus > maxLevel(Enchant)) return;
+                        if (plus > maxLevel(Enchant, p)) return;
                         lore.set(line, c("&c" + Enchant + " &e" + plus));
                         this.tokens.takeTokens(p, price);
                     } else {

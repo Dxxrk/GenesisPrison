@@ -205,7 +205,7 @@ public class ScoreboardHandler implements Listener {
         //xp
         NewBoard.getTeam("xp").setPrefix(c("&7XP: &b✴"));
 
-        double xp = (PickXPHandler.getInstance().calculateXPNeeded(p, PickXPHandler.getInstance().getLevel(p)) - PickXPHandler.getInstance().getXP(p));
+        double xp = (PickXPHandler.getInstance().calculateXPNeeded(PickXPHandler.getInstance().getLevel(p)) - PickXPHandler.getInstance().getXP(p));
         double xmultiply = xp * 10.0;
         int xround = (int) (Math.round(xmultiply) / 10.0);
         if (xround < 0)
@@ -637,7 +637,7 @@ public class ScoreboardHandler implements Listener {
         //XP
         NewBoard.getTeam("xp").setPrefix(c("&7XP: &b✴"));
 
-        double xp = (PickXPHandler.getInstance().calculateXPNeeded(p, PickXPHandler.getInstance().getLevel(p)) - PickXPHandler.getInstance().getXP(p));
+        double xp = (PickXPHandler.getInstance().calculateXPNeeded(PickXPHandler.getInstance().getLevel(p)) - PickXPHandler.getInstance().getXP(p));
         double xmultiply = xp * 10.0;
         int xround = (int) (Math.round(xmultiply) / 10.0);
         if (xround < 0)
