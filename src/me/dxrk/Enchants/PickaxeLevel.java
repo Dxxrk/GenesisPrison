@@ -614,6 +614,9 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         int i = 0;
         switch (Enchant) {
             case "Key Finder":
+                int skillmaxlevelkf = settings.getPlayerData().getInt(p.getUniqueId().toString()+".KFMaxLevelRaise");
+                i=5000 + skillmaxlevelkf;
+                break;
             case "Dust Finder":
             case "Prestige Finder":
             case "Karma":
@@ -631,6 +634,9 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
                 break;
             case "Token Finder":
+                int skillmaxleveltf = settings.getPlayerData().getInt(p.getUniqueId().toString()+".TFMaxLevelRaise");
+                i=3000+skillmaxleveltf;
+                break;
             case "Research":
                 i = 3000;
 
@@ -642,10 +648,9 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 break;
 
             case "Fortune":
-                i = 25000;
-
+                int skillmaxlevelfortune = settings.getPlayerData().getInt(p.getUniqueId().toString()+".FortuneMaxLevelRaise");
+                i = 25000 + skillmaxlevelfortune;
                 break;
-
             case "Nuke":
                 i = 500;
 
@@ -661,10 +666,9 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 break;
 
             case "XP Finder":
-                i = 10000;
-
+                int skillmaxlevelxpf = settings.getPlayerData().getInt(p.getUniqueId().toString()+".XPFMaxLevelRaise");
+                i = 10000+skillmaxlevelxpf;
                 break;
-
             case "Multiply":
                 i = 1500;
 

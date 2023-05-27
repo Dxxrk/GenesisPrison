@@ -170,6 +170,8 @@ public class KeysHandler implements Listener {
         }
         double event = SkillsEventsListener.getEventKeyFortune();
         chance += event;
+        double keyboost = settings.getPlayerData().getInt(p.getUniqueId()+".SkillKeyBoost");
+        chance+=keyboost;
         int kf = this.r.nextInt(100);
         int d = this.r.nextInt(100);
         if (chance > 0 && d <= chance) {

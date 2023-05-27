@@ -19,6 +19,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
+
 public class PickaxeSkillTree implements Listener {
 
     static Methods m = Methods.getInstance();
@@ -156,7 +158,7 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 2)");
         skills.add("Luck Boost (Level 2)");
         skills.add("Token Bonus (Level 3)");
-        skills.add("Coupon Finder (Level 1)");
+        skills.add("250 raise in max level of keyfinder");
         skills.add("Fortune Boost (Level 2)");
         skills.add("Luck Boost (Level 3)");
         skills.add("Token Bonus (Level 4)");
@@ -164,15 +166,15 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 5)");
         skills.add("Luck Boost (Level 4)");
         skills.add("Fortune Boost (Level 3)");
-        skills.add("Coupon Finder (Level 2)");
+        skills.add("+20% chance for x2 keys");
         skills.add("Fortune Boost (Level 4)");
         skills.add("Luck Boost (Level 5)");
         skills.add("Token Bonus (Level 6)");
         skills.add("Fortune Boost (Level 5)");
         skills.add("Zeus (Level 4)");
-        skills.add("Coupon Finder (Level 3)");
-        skills.add("Coupon Finder (Level 4)");
-        skills.add("Coupon Finder (Level 5)");
+        skills.add("500 raise in max level of keyfinder");
+        skills.add("+30% chance for x2 keys");
+        skills.add("750 raise in max level of keyfinder");
         skills.add("Zeus (Level 5)");
 
         return skills;
@@ -187,7 +189,7 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 2)");
         skills.add("Luck Boost (Level 2)");
         skills.add("Token Bonus (Level 3)");
-        skills.add("Coupon Finder (Level 1)");
+        skills.add("1250 raise in max level of fortune");
         skills.add("Fortune Boost (Level 2)");
         skills.add("Luck Boost (Level 3)");
         skills.add("Token Bonus (Level 4)");
@@ -201,9 +203,9 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 6)");
         skills.add("Fortune Boost (Level 5)");
         skills.add("Poseidon (Level 4)");
-        skills.add("Coupon Finder (Level 3)");
+        skills.add("1500 raise in max level of fortune");
         skills.add("Coupon Finder (Level 4)");
-        skills.add("Coupon Finder (Level 5)");
+        skills.add("1750 raise in max level of fortune");
         skills.add("Poseidon (Level 5)");
 
         return skills;
@@ -249,7 +251,7 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 2)");
         skills.add("Luck Boost (Level 2)");
         skills.add("Token Bonus (Level 3)");
-        skills.add("Coupon Finder (Level 1)");
+        skills.add("500 raise in max level of xp finder");
         skills.add("Fortune Boost (Level 2)");
         skills.add("Luck Boost (Level 3)");
         skills.add("Token Bonus (Level 4)");
@@ -263,9 +265,9 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 6)");
         skills.add("Fortune Boost (Level 5)");
         skills.add("Aphrodite (Level 4)");
-        skills.add("Coupon Finder (Level 3)");
+        skills.add("1000 raise in max level of xp finder");
         skills.add("Coupon Finder (Level 4)");
-        skills.add("Coupon Finder (Level 5)");
+        skills.add("1500 raise in max level of xp finder");
         skills.add("Aphrodite (Level 5)");
 
         return skills;
@@ -280,7 +282,7 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 2)");
         skills.add("Luck Boost (Level 2)");
         skills.add("Token Bonus (Level 3)");
-        skills.add("Coupon Finder (Level 1)");
+        skills.add("200 raise in max level of token finder");
         skills.add("Fortune Boost (Level 2)");
         skills.add("Luck Boost (Level 3)");
         skills.add("Token Bonus (Level 4)");
@@ -294,9 +296,9 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 6)");
         skills.add("Fortune Boost (Level 5)");
         skills.add("Ares (Level 4)");
-        skills.add("Coupon Finder (Level 3)");
+        skills.add("300 raise in max level of token finder");
         skills.add("Coupon Finder (Level 4)");
-        skills.add("Coupon Finder (Level 5)");
+        skills.add("500 raise in max level of token finder");
         skills.add("Ares (Level 5)");
 
         return skills;
@@ -335,30 +337,30 @@ public class PickaxeSkillTree implements Listener {
             zeus.setItem(i, Spacer());
         }
         //Token Bonus
-        zeus.setItem(9, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 5% token bonus."), 1));
-        zeus.setItem(37, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 4));
-        zeus.setItem(29, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 7));
-        zeus.setItem(13, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 12));
-        zeus.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 16));
-        zeus.setItem(15, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 5% token bonus."), 20));
+        zeus.setItem(9, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 2% token bonus."), 1));
+        zeus.setItem(37, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 2% token bonus."), 4));
+        zeus.setItem(29, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 2% token bonus."), 7));
+        zeus.setItem(13, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 2% token bonus."), 12));
+        zeus.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 2% token bonus."), 16));
+        zeus.setItem(15, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 2% token bonus."), 20));
         //Luck Boost
-        zeus.setItem(18, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 1));
-        zeus.setItem(38, skillItem(p, "Luck Boost (Level 2)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 5));
-        zeus.setItem(12, skillItem(p, "Luck Boost (Level 3)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 9));
-        zeus.setItem(40, skillItem(p, "Luck Boost (Level 4)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 13));
-        zeus.setItem(24, skillItem(p, "Luck Boost (Level 5)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 17)); // pickaxe level 275 to max
+        zeus.setItem(18, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 1));
+        zeus.setItem(38, skillItem(p, "Luck Boost (Level 2)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 5));
+        zeus.setItem(12, skillItem(p, "Luck Boost (Level 3)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 9));
+        zeus.setItem(40, skillItem(p, "Luck Boost (Level 4)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 13));
+        zeus.setItem(24, skillItem(p, "Luck Boost (Level 5)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 17)); // pickaxe level 275 to max
         //Fortune
-        zeus.setItem(27, skillItem(p, "Fortune Boost (Level 1)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 1));
-        zeus.setItem(11, skillItem(p, "Fortune Boost (Level 2)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 5));
-        zeus.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 9));
-        zeus.setItem(33, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 13));
-        zeus.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 17));
+        zeus.setItem(27, skillItem(p, "Fortune Boost (Level 1)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 1));
+        zeus.setItem(11, skillItem(p, "Fortune Boost (Level 2)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 5));
+        zeus.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 9));
+        zeus.setItem(33, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 13));
+        zeus.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 17));
         //Coupon finder
-        zeus.setItem(20, skillItem(p, "Coupon Finder (Level 1)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 15));
-        zeus.setItem(42, skillItem(p, "Coupon Finder (Level 2)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 20));
-        zeus.setItem(26, skillItem(p, "Coupon Finder (Level 3)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 25));
-        zeus.setItem(35, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 30));
-        zeus.setItem(44, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
+        zeus.setItem(20, skillItem(p, "250 raise in max level of keyfinder", m.c("&7Each of these skills raises the max level of keyfinder."), 15));
+        zeus.setItem(42, skillItem(p, "+20% chance for x2 keys", m.c("&7Each of these skills raises the chance of finding 2x keys."), 20));
+        zeus.setItem(26, skillItem(p, "500 raise in max level of keyfinder", m.c("&7Each of these skills raises the max level of keyfinder."), 25));
+        zeus.setItem(35, skillItem(p, "+30% chance for x2 keys", m.c("&7Each of these skills raises the chance of finding 2x keys."), 30));
+        zeus.setItem(44, skillItem(p, "750 raise in max level of keyfinder", m.c("&7Each of these skills raises the max level of keyfinder."), 35));
         //Level ups / abilities
         zeus.setItem(0, skillItem(p, "Unlocked Zeus", m.c("&7Chose the Zeus path. Unlocks Thunderstorm and ThunderBolt Events."), 0));
         zeus.setItem(36, skillItem(p, "Zeus (Level 2)", m.c("&7Upgrades Zeus Events."), 0));
@@ -374,30 +376,30 @@ public class PickaxeSkillTree implements Listener {
             poseidon.setItem(i, Spacer());
         }
         //Token Bonus
-        poseidon.setItem(9, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 5% token bonus."), 1));
-        poseidon.setItem(37, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 4));
-        poseidon.setItem(29, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 7));
-        poseidon.setItem(13, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 12));
-        poseidon.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 16));
-        poseidon.setItem(15, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 5% token bonus."), 20));
+        poseidon.setItem(9, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 2% token bonus."), 1));
+        poseidon.setItem(37, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 2% token bonus."), 4));
+        poseidon.setItem(29, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 2% token bonus."), 7));
+        poseidon.setItem(13, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 2% token bonus."), 12));
+        poseidon.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 2% token bonus."), 16));
+        poseidon.setItem(15, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 2% token bonus."), 20));
         //Luck Boost
-        poseidon.setItem(18, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 1));
-        poseidon.setItem(38, skillItem(p, "Luck Boost (Level 2)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 5));
-        poseidon.setItem(12, skillItem(p, "Luck Boost (Level 3)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 9));
-        poseidon.setItem(40, skillItem(p, "Luck Boost (Level 4)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 13));
-        poseidon.setItem(24, skillItem(p, "Luck Boost (Level 5)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 17)); // pickaxe level 275 to max
+        poseidon.setItem(18, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 1));
+        poseidon.setItem(38, skillItem(p, "Luck Boost (Level 2)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 5));
+        poseidon.setItem(12, skillItem(p, "Luck Boost (Level 3)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 9));
+        poseidon.setItem(40, skillItem(p, "Luck Boost (Level 4)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 13));
+        poseidon.setItem(24, skillItem(p, "Luck Boost (Level 5)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 17)); // pickaxe level 275 to max
         //Fortune
-        poseidon.setItem(27, skillItem(p, "Fortune Boost (Level 1)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 1));
-        poseidon.setItem(11, skillItem(p, "Fortune Boost (Level 2)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 5));
-        poseidon.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 9));
-        poseidon.setItem(33, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 13));
-        poseidon.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 17));
+        poseidon.setItem(27, skillItem(p, "Fortune Boost (Level 1)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 1));
+        poseidon.setItem(11, skillItem(p, "Fortune Boost (Level 2)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 5));
+        poseidon.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 9));
+        poseidon.setItem(33, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 13));
+        poseidon.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 17));
         //Coupon finder
-        poseidon.setItem(20, skillItem(p, "Coupon Finder (Level 1)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 15));
+        poseidon.setItem(20, skillItem(p, "1250 raise in max level of fortune", m.c("&7Each of these skills raises the max level of fortune."), 15));
         poseidon.setItem(42, skillItem(p, "Coupon Finder (Level 2)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 20));
-        poseidon.setItem(26, skillItem(p, "Coupon Finder (Level 3)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 25));
+        poseidon.setItem(26, skillItem(p, "1500 raise in max level of fortune", m.c("&7Each of these skills raises the max level of fortune."), 25));
         poseidon.setItem(35, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 30));
-        poseidon.setItem(44, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
+        poseidon.setItem(44, skillItem(p, "1750 raise in max level of fortune", m.c("&7Each of these skills raises the max level of fortune."), 35));
         //Level ups / abilities
         poseidon.setItem(0, skillItem(p, "Unlocked Poseidon", m.c("&7Chose the Poseidon path. Unlocks Tsunami and Typhoon Events."), 0));
         poseidon.setItem(36, skillItem(p, "Poseidon (Level 2)", m.c("&7Upgrades Poseidon Events."), 0));
@@ -413,24 +415,24 @@ public class PickaxeSkillTree implements Listener {
             hades.setItem(i, Spacer());
         }
         //Token Bonus
-        hades.setItem(9, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 5% token bonus."), 1));
-        hades.setItem(37, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 4));
-        hades.setItem(29, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 7));
-        hades.setItem(13, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 12));
-        hades.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 16));
-        hades.setItem(15, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 5% token bonus."), 20));
+        hades.setItem(9, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 2% token bonus."), 1));
+        hades.setItem(37, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 2% token bonus."), 4));
+        hades.setItem(29, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 2% token bonus."), 7));
+        hades.setItem(13, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 2% token bonus."), 12));
+        hades.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 2% token bonus."), 16));
+        hades.setItem(15, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 2% token bonus."), 20));
         //Luck Boost
-        hades.setItem(18, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 1));
-        hades.setItem(38, skillItem(p, "Luck Boost (Level 2)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 5));
-        hades.setItem(12, skillItem(p, "Luck Boost (Level 3)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 9));
-        hades.setItem(40, skillItem(p, "Luck Boost (Level 4)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 13));
-        hades.setItem(24, skillItem(p, "Luck Boost (Level 5)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 17)); // pickaxe level 275 to max
+        hades.setItem(18, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 1));
+        hades.setItem(38, skillItem(p, "Luck Boost (Level 2)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 5));
+        hades.setItem(12, skillItem(p, "Luck Boost (Level 3)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 9));
+        hades.setItem(40, skillItem(p, "Luck Boost (Level 4)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 13));
+        hades.setItem(24, skillItem(p, "Luck Boost (Level 5)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 17)); // pickaxe level 275 to max
         //Fortune
-        hades.setItem(27, skillItem(p, "Fortune Boost (Level 1)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 1));
-        hades.setItem(11, skillItem(p, "Fortune Boost (Level 2)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 5));
-        hades.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 9));
-        hades.setItem(33, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 13));
-        hades.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 17));
+        hades.setItem(27, skillItem(p, "Fortune Boost (Level 1)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 1));
+        hades.setItem(11, skillItem(p, "Fortune Boost (Level 2)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 5));
+        hades.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 9));
+        hades.setItem(33, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 13));
+        hades.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 17));
         //Coupon finder
         hades.setItem(20, skillItem(p, "Coupon Finder (Level 1)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 15));
         hades.setItem(42, skillItem(p, "Coupon Finder (Level 2)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 20));
@@ -452,30 +454,30 @@ public class PickaxeSkillTree implements Listener {
             ares.setItem(i, Spacer());
         }
         //Token Bonus
-        ares.setItem(9, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 5% token bonus."), 1));
-        ares.setItem(37, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 4));
-        ares.setItem(29, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 7));
-        ares.setItem(13, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 12));
-        ares.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 16));
-        ares.setItem(15, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 5% token bonus."), 20));
+        ares.setItem(9, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 2% token bonus."), 1));
+        ares.setItem(37, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 2% token bonus."), 4));
+        ares.setItem(29, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 2% token bonus."), 7));
+        ares.setItem(13, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 2% token bonus."), 12));
+        ares.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 2% token bonus."), 16));
+        ares.setItem(15, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 2% token bonus."), 20));
         //Luck Boost
-        ares.setItem(18, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 1));
-        ares.setItem(38, skillItem(p, "Luck Boost (Level 2)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 5));
-        ares.setItem(12, skillItem(p, "Luck Boost (Level 3)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 9));
-        ares.setItem(40, skillItem(p, "Luck Boost (Level 4)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 13));
-        ares.setItem(24, skillItem(p, "Luck Boost (Level 5)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 17)); // pickaxe level 275 to max
+        ares.setItem(18, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 1));
+        ares.setItem(38, skillItem(p, "Luck Boost (Level 2)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 5));
+        ares.setItem(12, skillItem(p, "Luck Boost (Level 3)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 9));
+        ares.setItem(40, skillItem(p, "Luck Boost (Level 4)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 13));
+        ares.setItem(24, skillItem(p, "Luck Boost (Level 5)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 17)); // pickaxe level 275 to max
         //Fortune
-        ares.setItem(27, skillItem(p, "Fortune Boost (Level 1)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 1));
-        ares.setItem(11, skillItem(p, "Fortune Boost (Level 2)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 5));
-        ares.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 9));
-        ares.setItem(33, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 13));
-        ares.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 17));
+        ares.setItem(27, skillItem(p, "Fortune Boost (Level 1)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 1));
+        ares.setItem(11, skillItem(p, "Fortune Boost (Level 2)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 5));
+        ares.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 9));
+        ares.setItem(33, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 13));
+        ares.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 17));
         //Coupon finder
-        ares.setItem(20, skillItem(p, "Coupon Finder (Level 1)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 15));
+        ares.setItem(20, skillItem(p, "200 raise in max level of token finder", m.c("&7Each of these skills raises the max level of token finder."), 15));
         ares.setItem(42, skillItem(p, "Coupon Finder (Level 2)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 20));
-        ares.setItem(26, skillItem(p, "Coupon Finder (Level 3)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 25));
+        ares.setItem(26, skillItem(p, "300 raise in max level of token finder", m.c("&7Each of these skills raises the max level of token finder."), 25));
         ares.setItem(35, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 30));
-        ares.setItem(44, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
+        ares.setItem(44, skillItem(p, "500 raise in max level of token finder", m.c("&7Each of these skills raises the max level of token finder."), 35));
         //Level ups / abilities
         ares.setItem(0, skillItem(p, "Unlocked Ares", m.c("&7Chose the ares path. Unlocks War Torn and Bloodshed Events."), 0));
         ares.setItem(36, skillItem(p, "Ares (Level 2)", m.c("&7Upgrades Ares Events."), 0));
@@ -491,30 +493,30 @@ public class PickaxeSkillTree implements Listener {
             aphrodite.setItem(i, Spacer());
         }
         //Token Bonus
-        aphrodite.setItem(9, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 5% token bonus."), 1));
-        aphrodite.setItem(37, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 5% token bonus."), 4));
-        aphrodite.setItem(29, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 5% token bonus."), 7));
-        aphrodite.setItem(13, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 5% token bonus."), 12));
-        aphrodite.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 5% token bonus."), 16));
-        aphrodite.setItem(15, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 5% token bonus."), 20));
+        aphrodite.setItem(9, skillItem(p, "Token Bonus (Level 1)", m.c("&7Each of these skills gives an additional 2% token bonus."), 1));
+        aphrodite.setItem(37, skillItem(p, "Token Bonus (Level 2)", m.c("&7Each of these skills gives an additional 2% token bonus."), 4));
+        aphrodite.setItem(29, skillItem(p, "Token Bonus (Level 3)", m.c("&7Each of these skills gives an additional 2% token bonus."), 7));
+        aphrodite.setItem(13, skillItem(p, "Token Bonus (Level 4)", m.c("&7Each of these skills gives an additional 2% token bonus."), 12));
+        aphrodite.setItem(31, skillItem(p, "Token Bonus (Level 5)", m.c("&7Each of these skills gives an additional 2% token bonus."), 16));
+        aphrodite.setItem(15, skillItem(p, "Token Bonus (Level 6)", m.c("&7Each of these skills gives an additional 2% token bonus."), 20));
         //Luck Boost
-        aphrodite.setItem(18, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 1));
-        aphrodite.setItem(38, skillItem(p, "Luck Boost (Level 2)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 5));
-        aphrodite.setItem(12, skillItem(p, "Luck Boost (Level 3)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 9));
-        aphrodite.setItem(40, skillItem(p, "Luck Boost (Level 4)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 13));
-        aphrodite.setItem(24, skillItem(p, "Luck Boost (Level 5)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 17)); // pickaxe level 275 to max
+        aphrodite.setItem(18, skillItem(p, "Luck Boost (Level 1)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 1));
+        aphrodite.setItem(38, skillItem(p, "Luck Boost (Level 2)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 5));
+        aphrodite.setItem(12, skillItem(p, "Luck Boost (Level 3)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 9));
+        aphrodite.setItem(40, skillItem(p, "Luck Boost (Level 4)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 13));
+        aphrodite.setItem(24, skillItem(p, "Luck Boost (Level 5)", m.c("&7Each of these skills gives an additional 2% chance for enchants to proc."), 17)); // pickaxe level 275 to max
         //Fortune
-        aphrodite.setItem(27, skillItem(p, "Fortune Boost (Level 1)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 1));
-        aphrodite.setItem(11, skillItem(p, "Fortune Boost (Level 2)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 5));
-        aphrodite.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 9));
-        aphrodite.setItem(33, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 13));
-        aphrodite.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 17));
+        aphrodite.setItem(27, skillItem(p, "Fortune Boost (Level 1)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 1));
+        aphrodite.setItem(11, skillItem(p, "Fortune Boost (Level 2)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 5));
+        aphrodite.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 9));
+        aphrodite.setItem(33, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 13));
+        aphrodite.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 17));
         //Coupon finder
-        aphrodite.setItem(20, skillItem(p, "Coupon Finder (Level 1)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 15));
+        aphrodite.setItem(20, skillItem(p, "500 raise in max level of xp finder", m.c("&7Each of these skills raises the max level of xp finder."), 15));
         aphrodite.setItem(42, skillItem(p, "Coupon Finder (Level 2)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 20));
-        aphrodite.setItem(26, skillItem(p, "Coupon Finder (Level 3)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 25));
+        aphrodite.setItem(26, skillItem(p, "1000 raise in max level of xp finder", m.c("&7Each of these skills raises the max level of xp finder."), 25));
         aphrodite.setItem(35, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 30));
-        aphrodite.setItem(44, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
+        aphrodite.setItem(44, skillItem(p, "1500 raise in max level of xp finder", m.c("&7Each of these skills raises the max level of xp finder."), 35));
         //Level ups / abilities
         aphrodite.setItem(0, skillItem(p, "Unlocked Aphrodite", m.c("&7Chose the aphrodite path. Unlocks Allure and Strong Desire Events."), 0));
         aphrodite.setItem(36, skillItem(p, "Aphrodite (Level 2)", m.c("&7Upgrades Aphrodite Events."), 0));
@@ -667,17 +669,29 @@ public class PickaxeSkillTree implements Listener {
             String[] firstword = skill.split(" ");
             if(firstword[0].equals("Token")){
                 double tokenboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillTokenBoost");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.05);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.02);
             }
             if(firstword[0].equals("Luck")){
                 double luckboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillLuckBoost");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.05);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.02);
             }
             if(firstword[0].equals("Fortune")){
                 double fortuneboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillFortuneBoost");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.05);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.02);
             }
-
+            if(firstword[0].equals("250") || firstword[0].equals("500") || firstword[0].equals("750")){
+                int maxlevel = settings.getPlayerData().getInt(p.getUniqueId()+".KFMaxLevelRaise");
+                int maxleveladd = parseInt(firstword[0]);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".KFMaxLevelRaise",maxlevel+maxleveladd);
+            }
+            if(firstword[0].equals("+20%")){
+                double keyboost = settings.getPlayerData().getInt(p.getUniqueId()+".SkillKeyBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillKeyBoost",keyboost+20);
+            }
+            if(firstword[0].equals("+30%")){
+                double keyboost = settings.getPlayerData().getInt(p.getUniqueId()+".SkillKeyBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillKeyBoost",keyboost+30);
+            }
             if(skill.contains("Zeus")) {
                 setType(p, findPickaxeType(p));
 
@@ -735,17 +749,21 @@ public class PickaxeSkillTree implements Listener {
             String[] firstword = skill.split(" ");
             if(firstword[0].equals("Token")){
                 double tokenboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillTokenBoost");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.05);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.02);
             }
             if(firstword[0].equals("Luck")){
                 double luckboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillLuckBoost");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.05);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.02);
             }
             if(firstword[0].equals("Fortune")){
                 double fortuneboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillFortuneBoost");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.05);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.02);
             }
-
+            if(firstword[0].equals("1250") || firstword[0].equals("1500") || firstword[0].equals("1750")){
+                int maxlevel = settings.getPlayerData().getInt(p.getUniqueId()+".FortuneMaxLevelRaise");
+                int maxleveladd = parseInt(firstword[0]);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".FortuneMaxLevelRaise",maxlevel+maxleveladd);
+            }
             if(skill.contains("Poseidon")) {
                 setType(p, findPickaxeType(p));
 
@@ -803,15 +821,15 @@ public class PickaxeSkillTree implements Listener {
             String[] firstword = skill.split(" ");
             if(firstword[0].equals("Token")){
                 double tokenboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillTokenBoost");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.05);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.02);
             }
             if(firstword[0].equals("Luck")){
                 double luckboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillLuckBoost");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.05);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.02);
             }
             if(firstword[0].equals("Fortune")){
                 double fortuneboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillFortuneBoost");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.05);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.02);
             }
 
             if(skill.contains("Hades")) {
@@ -870,17 +888,21 @@ public class PickaxeSkillTree implements Listener {
             String[] firstword = skill.split(" ");
             if(firstword[0].equals("Token")){
                 double tokenboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillTokenBoost");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.05);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.02);
             }
             if(firstword[0].equals("Luck")){
                 double luckboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillLuckBoost");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.05);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.02);
             }
             if(firstword[0].equals("Fortune")){
                 double fortuneboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillFortuneBoost");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.05);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.02);
             }
-
+            if(firstword[0].equals("500") || firstword[0].equals("1000") || firstword[0].equals("1500")){
+                int maxlevel = settings.getPlayerData().getInt(p.getUniqueId()+".XPFMaxLevelRaise");
+                int maxleveladd = parseInt(firstword[0]);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".XPFMaxLevelRaise",maxlevel+maxleveladd);
+            }
             if(skill.contains("Aphrodite")) {
                 setType(p, findPickaxeType(p));
 
@@ -936,17 +958,21 @@ public class PickaxeSkillTree implements Listener {
             String[] firstword = skill.split(" ");
             if(firstword[0].equals("Token")){
                 double tokenboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillTokenBoost");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.05);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.02);
             }
             if(firstword[0].equals("Luck")){
                 double luckboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillLuckBoost");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.05);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.02);
             }
             if(firstword[0].equals("Fortune")){
                 double fortuneboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillFortuneBoost");
-                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.05);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.02);
             }
-
+            if(firstword[0].equals("200") || firstword[0].equals("300") || firstword[0].equals("500")){
+                int maxlevel = settings.getPlayerData().getInt(p.getUniqueId()+".TFMaxLevelRaise");
+                int maxleveladd = parseInt(firstword[0]);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".TFMaxLevelRaise",maxlevel+maxleveladd);
+            }
             if(skill.contains("Ares")) {
                 setType(p, findPickaxeType(p));
 
