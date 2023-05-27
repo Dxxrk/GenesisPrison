@@ -276,6 +276,30 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         return x;
     }
 
+    public void resetPickaxe(Player p) {
+        int x;
+        ItemStack pitem = p.getItemInHand().clone();
+        ItemMeta pm = pitem.getItemMeta();
+        List<String> lore = pm.getLore();
+        for (int i = 0; i < lore.size(); i++) {
+            String s = lore.get(i);
+            if (Enchants().contains(ChatColor.stripColor(s))) {
+                x = i;
+                lore.remove(x);
+            }
+            if(ChatColor.stripColor(s).contains("Level:")) {
+                x = i;
+                lore.remove(x);
+                lore.add(c("&cLevel: &e1"));
+            }
+        }
+        settings.getPlayerData().set(p.getUniqueId().toString()+".PickLevel", 1);
+        pm.setLore(Lore(lore, p));
+        pitem.setItemMeta(pm);
+        p.setItemInHand(pitem);
+        p.updateInventory();
+    }
+
     private List<String> Enchants() {
         List<String> list = new ArrayList<>();
         list.add("Key Finder");
@@ -297,6 +321,12 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         list.add("Treasury");
         list.add("Smite");
         list.add("Seismic Shock");
+        return list;
+    }
+    private List<String> SkillEnchants() {
+        List<String> list = new ArrayList<>();
+        list.add("Infernum");
+        list.add("Calamity");
         return list;
     }
 
@@ -321,6 +351,11 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                     || ChatColor.stripColor(s).contains("Trinket")) continue;
             if (s.equals(" ")) continue;
             for (String ss : Enchants()) {
+                if (ChatColor.stripColor(s).contains(ss)) {
+                    Enchants.add(s);
+                }
+            }
+            for (String ss : SkillEnchants()) {
                 if (ChatColor.stripColor(s).contains(ss)) {
                     Enchants.add(s);
                 }
