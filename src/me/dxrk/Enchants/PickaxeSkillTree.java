@@ -1,7 +1,9 @@
 package me.dxrk.Enchants;
 
+import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Tokens.Tokens;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -39,6 +41,15 @@ public class PickaxeSkillTree implements Listener {
         lore.add(" ");
         List<String> skillsUnlocked = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
         if(skillsUnlocked.contains(name)){
+            if(name.equals("Zeus (Level 5)") || name.equals("Poseidon (Level 5)") || name.equals("Hades (Level 5)") || name.equals("Ares (Level 5)") || name.equals("Aphrodite (Level 5)")){
+                skill = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)1);
+                sm.setDisplayName(m.c("&6Rebirth"));
+                List<String> confirm = new ArrayList<>();
+                confirm.add(m.c("&aClick if you want to rebirth your pickaxe"));
+                sm.setLore(confirm);
+                skill.setItemMeta(sm);
+                return skill;
+            }
             skill = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)5);
             sm.setDisplayName(m.c("&a"+name));
             sm.setLore(lore);
@@ -471,7 +482,6 @@ public class PickaxeSkillTree implements Listener {
         aphrodite.setItem(40, skillItem(p, "Luck Boost (Level 4)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 13));
         aphrodite.setItem(24, skillItem(p, "Luck Boost (Level 5)", m.c("&7Each of these skills gives an additional 5% chance for enchants to proc."), 17)); // pickaxe level 275 to max
         //Fortune
-        //9,37,29,13,31,15,18,38,12,40,24,27,11,41,33,16,20,42,26,35,44,0,36,22,17,53
         aphrodite.setItem(27, skillItem(p, "Fortune Boost (Level 1)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 1));
         aphrodite.setItem(11, skillItem(p, "Fortune Boost (Level 2)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 5));
         aphrodite.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 5% effective boost to fortune."), 9));
@@ -541,6 +551,38 @@ public class PickaxeSkillTree implements Listener {
         }
     }
 
+    public void openConfirmation(Player p){
+        Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, m.c("&4&lAre you sure?"));
+        inv.setItem(1,Spacer());
+        inv.setItem(3,Spacer());
+
+        ItemStack no = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)14);
+        ItemMeta nometa = no.getItemMeta();
+        nometa.setDisplayName(m.c("&c&lNo!"));
+        no.setItemMeta(nometa);
+        inv.setItem(0,no);
+
+        ItemStack yes = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)13);
+        ItemMeta yesmeta = yes.getItemMeta();
+        yesmeta.setDisplayName(m.c("&a&lYes!"));
+        yes.setItemMeta(yesmeta);
+        inv.setItem(4,yes);
+
+        ItemStack info = new ItemStack(Material.PAPER,1);
+        ItemMeta infometa = info.getItemMeta();
+        infometa.setDisplayName(m.c("&6Rebirth:"));
+        List<String> lore = new ArrayList<>();
+        lore.add(m.c("&cRebirthing your pickaxe removes all your enchants."));
+        lore.add(m.c("&cResets your tokens to 0."));
+        lore.add(m.c("&cResets your pickaxe level back to 0."));
+        lore.add(m.c("&cUnlocks a brand new enchant depending on your path."));
+        lore.add(m.c("&cAnd you may choose another path again."));
+        infometa.setLore(lore);
+        info.setItemMeta(infometa);
+        inv.setItem(2,info);
+
+        p.openInventory(inv);
+    }
 
     @SuppressWarnings("deprecation")
     @EventHandler
@@ -577,7 +619,10 @@ public class PickaxeSkillTree implements Listener {
             e.setCancelled(true);
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
-
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1){
+                openConfirmation(p);
+                return;
+            }
             int price = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
             int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
             String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
@@ -627,6 +672,10 @@ public class PickaxeSkillTree implements Listener {
             e.setCancelled(true);
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1){
+                openConfirmation(p);
+                return;
+            }
 
             int price = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
             int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
@@ -675,6 +724,10 @@ public class PickaxeSkillTree implements Listener {
             e.setCancelled(true);
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1){
+                openConfirmation(p);
+                return;
+            }
 
             int price = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
             int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
@@ -723,6 +776,10 @@ public class PickaxeSkillTree implements Listener {
             e.setCancelled(true);
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1){
+                openConfirmation(p);
+                return;
+            }
 
             int price = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
             int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
@@ -771,6 +828,10 @@ public class PickaxeSkillTree implements Listener {
             e.setCancelled(true);
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
             if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1){
+                openConfirmation(p);
+                return;
+            }
 
             int price = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
             int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
@@ -815,7 +876,24 @@ public class PickaxeSkillTree implements Listener {
             settings.savePlayerData();
             openAres(p);
         }
-
+        if(e.getClickedInventory().getName().equals(m.c("&4&lAre you sure?"))){
+            e.setCancelled(true);
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
+            if(e.getCurrentItem().getItemMeta().getDisplayName().equals(m.c("&c&lNo!"))){
+                p.closeInventory();
+                return;
+            }
+            if(e.getCurrentItem().getItemMeta().getDisplayName().equals(m.c("&a&lYes!"))){
+                Tokens.getInstance().setTokens(p,0);
+                p.closeInventory();
+                /*
+                Clear pickaxe enchants
+                Reset players pick level to 0
+                A file to store when person has finished a path
+                hopefully token/luck/fortune buffs stay
+                */
+            }
+        }
     }
 
 
