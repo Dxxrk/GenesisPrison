@@ -43,7 +43,7 @@ public class PickaxeSkillTree implements Listener {
         if(skillsUnlocked.contains(name)){
             if(name.equals("Zeus (Level 5)") || name.equals("Poseidon (Level 5)") || name.equals("Hades (Level 5)") || name.equals("Ares (Level 5)") || name.equals("Aphrodite (Level 5)")){
                 skill = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)1);
-                sm.setDisplayName(m.c("&6Rebirth"));
+                sm.setDisplayName(m.c("&6Rebirth Pickaxe"));
                 List<String> confirm = new ArrayList<>();
                 confirm.add(m.c("&aClick if you want to rebirth your pickaxe"));
                 sm.setLore(confirm);
@@ -72,11 +72,17 @@ public class PickaxeSkillTree implements Listener {
         Inventory skills = Bukkit.createInventory(null, InventoryType.HOPPER, m.c("&cSelect a Path"));
         List<String> lore = new ArrayList<>();
 
+        List<String> completed = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".CompletedPaths");
+
         ItemStack zeus = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)4);
         ItemMeta zm = zeus.getItemMeta();
         zm.setDisplayName(m.c("&e&lZeus Path"));
-        lore.add(m.c("&7&oSelect this to confirm your skill path as &e&lskills."));
-        lore.add(m.c("&7Provides a boost in gaining keys."));
+        if(!completed.contains("Zeus")) {
+            lore.add(m.c("&7&oSelect this to confirm your skill path as &e&lskills."));
+            lore.add(m.c("&7Provides a boost in gaining keys."));
+        }
+        else
+            lore.add(m.c("&aCompleted."));
         zm.setLore(lore);
         zeus.setItemMeta(zm);
         skills.setItem(0, zeus);
@@ -85,8 +91,12 @@ public class PickaxeSkillTree implements Listener {
         ItemStack poseidon = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)11);
         ItemMeta pm = poseidon.getItemMeta();
         pm.setDisplayName(m.c("&9&lPoseidon Path"));
-        lore.add(m.c("&7&oSelect this to confirm your skill path as &9&lPoseidon."));
-        lore.add(m.c("&7Provides a boost in fortune."));
+        if(!completed.contains("Poseidon")){
+            lore.add(m.c("&7&oSelect this to confirm your skill path as &9&lPoseidon."));
+            lore.add(m.c("&7Provides a boost in fortune."));
+        }
+        else
+            lore.add(m.c("&aCompleted."));
         pm.setLore(lore);
         poseidon.setItemMeta(pm);
         skills.setItem(1, poseidon);
@@ -95,8 +105,12 @@ public class PickaxeSkillTree implements Listener {
         ItemStack hades = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)14);
         ItemMeta hm = hades.getItemMeta();
         hm.setDisplayName(m.c("&4&lHades Path"));
-        lore.add(m.c("&7&oSelect this to confirm your skill path as &4&lhades."));
-        lore.add(m.c("&7Provides a boost to your personal multi."));
+        if(!completed.contains("Hades")){
+            lore.add(m.c("&7&oSelect this to confirm your skill path as &4&lhades."));
+            lore.add(m.c("&7Provides a boost to your personal multi."));
+        }
+        else
+            lore.add(m.c("&aCompleted."));
         hm.setLore(lore);
         hades.setItemMeta(hm);
         skills.setItem(2, hades);
@@ -105,8 +119,12 @@ public class PickaxeSkillTree implements Listener {
         ItemStack aphrodite = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)6);
         ItemMeta am = aphrodite.getItemMeta();
         am.setDisplayName(m.c("&d&lAphrodite Path"));
-        lore.add(m.c("&7&oSelect this to confirm your skill path as &d&lAphrodite."));
-        lore.add(m.c("&7Provides a boost to your pickaxe xp."));
+        if(!completed.contains("Aphrodite")){
+            lore.add(m.c("&7&oSelect this to confirm your skill path as &d&lAphrodite."));
+            lore.add(m.c("&7Provides a boost to your pickaxe xp."));
+        }
+        else
+            lore.add(m.c("&aCompleted."));
         am.setLore(lore);
         aphrodite.setItemMeta(am);
         skills.setItem(3, aphrodite);
@@ -115,8 +133,12 @@ public class PickaxeSkillTree implements Listener {
         ItemStack ares = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)13);
         ItemMeta atm = ares.getItemMeta();
         atm.setDisplayName(m.c("&2&lAres Path"));
-        lore.add(m.c("&7&oSelect this to confirm your skill path as &2&lAres."));
-        lore.add(m.c("&7Provides a boost in gaining tokens."));
+        if(!completed.contains("Ares")){
+            lore.add(m.c("&7&oSelect this to confirm your skill path as &2&lAres."));
+            lore.add(m.c("&7Provides a boost in gaining tokens."));
+        }
+        else
+            lore.add(m.c("&aCompleted."));
         atm.setLore(lore);
         ares.setItemMeta(atm);
         skills.setItem(4, ares);
@@ -531,7 +553,6 @@ public class PickaxeSkillTree implements Listener {
         p.updateInventory();
         settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skills);
         settings.savePlayerData();
-
         switch(path){
             case "Zeus":
                 openZeus(p);
@@ -597,21 +618,21 @@ public class PickaxeSkillTree implements Listener {
         if(e.getInventory().getName().equals(m.c("&cSelect a Path"))){
             e.setCancelled(true);
             if(e.getClickedInventory().equals(p.getInventory())) return;
+            List<String> completed = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".CompletedPaths");
 
-
-            if(e.getSlot() == 0){
+            if(e.getSlot() == 0 && !completed.contains("Zeus")){
                 selectPath(p, "Zeus", "&f");
             }
-            if(e.getSlot() == 1){
+            if(e.getSlot() == 1 && !completed.contains("Poseidon")){
                 selectPath(p, "Poseidon", "&9");
             }
-            if(e.getSlot() == 2){
+            if(e.getSlot() == 2 && !completed.contains("Hades")){
                 selectPath(p, "Hades", "&4");
             }
-            if(e.getSlot() == 3){
+            if(e.getSlot() == 3 && !completed.contains("Aphrodite")){
                 selectPath(p, "Aphrodite", "&d");
             }
-            if(e.getSlot() == 4){
+            if(e.getSlot() == 4 && !completed.contains("Ares")){
                 selectPath(p, "Ares", "&2");
             }
         }
@@ -642,6 +663,21 @@ public class PickaxeSkillTree implements Listener {
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
 
             skillsUnlocked.add(skill);
+
+            String[] firstword = skill.split(" ");
+            if(firstword[0].equals("Token")){
+                double tokenboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillTokenBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.05);
+            }
+            if(firstword[0].equals("Luck")){
+                double luckboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillLuckBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.05);
+            }
+            if(firstword[0].equals("Fortune")){
+                double fortuneboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillFortuneBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.05);
+            }
+
             if(skill.contains("Zeus")) {
                 setType(p, findPickaxeType(p));
 
@@ -695,6 +731,21 @@ public class PickaxeSkillTree implements Listener {
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
 
             skillsUnlocked.add(skill);
+
+            String[] firstword = skill.split(" ");
+            if(firstword[0].equals("Token")){
+                double tokenboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillTokenBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.05);
+            }
+            if(firstword[0].equals("Luck")){
+                double luckboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillLuckBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.05);
+            }
+            if(firstword[0].equals("Fortune")){
+                double fortuneboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillFortuneBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.05);
+            }
+
             if(skill.contains("Poseidon")) {
                 setType(p, findPickaxeType(p));
 
@@ -743,10 +794,26 @@ public class PickaxeSkillTree implements Listener {
                 p.sendMessage(m.c("&cError: Please unlock &a"+previous+" &cfirst."));
                 return;
             }
+
             if(skillPoints < price) return;
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
 
             skillsUnlocked.add(skill);
+
+            String[] firstword = skill.split(" ");
+            if(firstword[0].equals("Token")){
+                double tokenboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillTokenBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.05);
+            }
+            if(firstword[0].equals("Luck")){
+                double luckboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillLuckBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.05);
+            }
+            if(firstword[0].equals("Fortune")){
+                double fortuneboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillFortuneBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.05);
+            }
+
             if(skill.contains("Hades")) {
                 setType(p, findPickaxeType(p));
 
@@ -799,6 +866,21 @@ public class PickaxeSkillTree implements Listener {
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
 
             skillsUnlocked.add(skill);
+
+            String[] firstword = skill.split(" ");
+            if(firstword[0].equals("Token")){
+                double tokenboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillTokenBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.05);
+            }
+            if(firstword[0].equals("Luck")){
+                double luckboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillLuckBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.05);
+            }
+            if(firstword[0].equals("Fortune")){
+                double fortuneboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillFortuneBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.05);
+            }
+
             if(skill.contains("Aphrodite")) {
                 setType(p, findPickaxeType(p));
 
@@ -851,6 +933,20 @@ public class PickaxeSkillTree implements Listener {
             settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
 
             skillsUnlocked.add(skill);
+            String[] firstword = skill.split(" ");
+            if(firstword[0].equals("Token")){
+                double tokenboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillTokenBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.05);
+            }
+            if(firstword[0].equals("Luck")){
+                double luckboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillLuckBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.05);
+            }
+            if(firstword[0].equals("Fortune")){
+                double fortuneboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillFortuneBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.05);
+            }
+
             if(skill.contains("Ares")) {
                 setType(p, findPickaxeType(p));
 
@@ -885,20 +981,27 @@ public class PickaxeSkillTree implements Listener {
             }
             if(e.getCurrentItem().getItemMeta().getDisplayName().equals(m.c("&a&lYes!"))){
                 Tokens.getInstance().setTokens(p,0);
+
+                String path = settings.getPlayerData().get(p.getUniqueId().toString() + ".PickaxeSkill").toString();
+                List<String> completed = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".CompletedPaths");
+                completed.add(path);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CompletedPaths", completed);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkill", "None");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", 0);
+                PickaxeLevel.getInstance().resetPickaxe(p);
+                List<String> skills = new ArrayList<>();
+                settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skills);
+                settings.savePlayerData();
+
                 p.closeInventory();
                 /*
                 Clear pickaxe enchants
                 Reset players pick level to 0
-                A file to store when person has finished a path
                 hopefully token/luck/fortune buffs stay
                 */
             }
         }
     }
-
-
-
-
 
 
 }

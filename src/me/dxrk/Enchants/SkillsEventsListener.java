@@ -87,38 +87,20 @@ public class SkillsEventsListener implements Listener {
 
     public static double getSkillsBoostToken(Player p){
         double amt = 1.0;
-        List<String> skills = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
-        for(String s : skills){
-            if(s.contains("Token")){
-                amt+=0.05;
-            }
-        }
-
-
+        double boost=settings.getPlayerData().getDouble(p.getUniqueId().toString()+".SkillTokenBoost");
+        amt+=boost;
         return amt;
     }
     public static double getSkillsBoostFortune(Player p){
         double amt = 1.0;
-        List<String> skills = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
-        for(String s : skills){
-            if(s.contains("Fortune")) {
-                amt+=0.05;
-            }
-        }
-
-
+        double boost=settings.getPlayerData().getDouble(p.getUniqueId().toString()+".SkillFortuneBoost");
+        amt+=boost;
         return amt;
     }
     public static double getSkillsBoostLuck(Player p){
         double amt = 1.0;
-        List<String> skills = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
-        for(String s : skills) {
-            if(s.contains("Luck")) {
-                amt+=0.05;
-            }
-        }
-
-
+        double boost=settings.getPlayerData().getDouble(p.getUniqueId().toString()+".SkillLuckBoost");
+        amt+=boost;
         return amt;
     }
     public void couponBreak(Player p) {

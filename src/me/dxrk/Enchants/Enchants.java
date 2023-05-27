@@ -160,8 +160,6 @@ public class Enchants implements Listener {
             }
             Functions.Multiply(p);
             Mine m = MineSystem.getInstance().getMineByPlayer(p);
-            System.out.println(m.getBlocksLeftPercentage());
-            System.out.println(m.getResetPercent());
             if (m.getBlocksLeftPercentage() < m.getResetPercent()) {
                 double lucky = settings.getPlayerData().getDouble(p.getUniqueId().toString() + ".LuckyBlock");
                 ResetHandler.resetMineWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), lucky);

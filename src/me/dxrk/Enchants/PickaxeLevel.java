@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
+
 
 public class PickaxeLevel implements Listener, CommandExecutor {
 
@@ -77,14 +79,14 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             lvl.append(c);
         }
         if (this.isInt(lvl.toString())) {
-            return Integer.parseInt(lvl.toString());
+            return parseInt(lvl.toString());
         }
         return -1;
     }
 
     public boolean isInt(String s) {
         try {
-            Integer.parseInt(s);
+            parseInt(s);
             return true;
         } catch (Exception e1) {
             return false;
@@ -94,7 +96,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
     public boolean isInt(char ss) {
         String s = String.valueOf(ss);
         try {
-            Integer.parseInt(s);
+            parseInt(s);
             return true;
         } catch (Exception e1) {
             return false;
@@ -118,7 +120,9 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
 
             }
+
         }
+
         if (sender instanceof Player) {
             Player p = (Player) sender;
             if (label.equalsIgnoreCase("pickaxe")) {
@@ -129,7 +133,19 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 p.updateInventory();
             }
         }
-
+        if(label.equalsIgnoreCase("resetpickaxe")){
+            if(sender.hasPermission("genesis.resetpickaxe")){
+                Player reciever = Bukkit.getPlayerExact(args[0]);
+                resetPickaxe(reciever);
+            }
+        }
+        if(label.equalsIgnoreCase("setskillpoints")){
+            if(sender.hasPermission("genesis.setskillpoints")){
+                Player reciever = Bukkit.getPlayerExact(args[0]);
+                int amount = parseInt(args[1]);
+                settings.getPlayerData().set(reciever.getUniqueId().toString()+".PickaxeSkillPoints", amount);
+            }
+        }
 
         return false;
     }
@@ -291,6 +307,11 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 x = i;
                 lore.remove(x);
                 lore.add(c("&cLevel: &e1"));
+            }
+            if(ChatColor.stripColor(s).contains("Skill:")){
+                x=i;
+                lore.remove(x);
+                lore.add(c("&cSkill: "));
             }
         }
         settings.getPlayerData().set(p.getUniqueId().toString()+".PickLevel", 1);
@@ -790,29 +811,51 @@ public class PickaxeLevel implements Listener, CommandExecutor {
     public void openSkillEnchantsInv(Player p){
         Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER,c("&6Pickaxe Skill Enchants"));
 
-        //add an if here for it to be red pane until path finished, and green after path finished
-        ItemStack calamity = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)14);
-        ItemMeta calamitymeta = calamity.getItemMeta();
-        calamitymeta.setDisplayName(c("&bUpgrade Calamity"));
-        List<String> calamitylore = new ArrayList<>();
-        calamitylore.add(c("&cUnlocks after finishing Zeus Path."));
-        calamitymeta.setLore(calamitylore);
-        calamity.setItemMeta(calamitymeta);
-        inv.setItem(0,calamity);
+        List<String> completed = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".CompletedPaths");
 
-        ItemStack infernum = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)14);
-        ItemMeta infernummeta = calamity.getItemMeta();
-        infernummeta.setDisplayName(c("&bUpgrade Infernum"));
-        List<String> infernumlore = new ArrayList<>();
-        infernumlore.add(c("&cUnlocks after finishing Hades Path."));
-        infernummeta.setLore(infernumlore);
-        infernum.setItemMeta(infernummeta);
+        ItemStack calamity;
+        if(!completed.contains("Zeus")) {
+            calamity = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+            ItemMeta calamitymeta = calamity.getItemMeta();
+            calamitymeta.setDisplayName(c("&bUpgrade Calamity"));
+            List<String> calamitylore = new ArrayList<>();
+            calamitylore.add(c("&cUnlocks after finishing Zeus Path."));
+            calamitymeta.setLore(calamitylore);
+            calamity.setItemMeta(calamitymeta);
+        }
+        else{
+            calamity = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
+            ItemMeta calamitymeta = calamity.getItemMeta();
+            calamitymeta.setDisplayName(c("&bUpgrade Calamity"));
+            List<String> calamitylore = new ArrayList<>();
+            calamitylore.add(c("&cTylar do your upgrading balances here"));
+            calamitymeta.setLore(calamitylore);
+            calamity.setItemMeta(calamitymeta);
+        }
+        inv.setItem(0, calamity);
+        ItemStack infernum;
+        if(!completed.contains("Hades")){
+            infernum = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)14);
+            ItemMeta infernummeta = infernum.getItemMeta();
+            infernummeta.setDisplayName(c("&bUpgrade Infernum"));
+            List<String> infernumlore = new ArrayList<>();
+            infernumlore.add(c("&cUnlocks after finishing Hades Path."));
+            infernummeta.setLore(infernumlore);
+            infernum.setItemMeta(infernummeta);
+        }
+        else{
+            infernum = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)13);
+            ItemMeta infernummeta = infernum.getItemMeta();
+            infernummeta.setDisplayName(c("&bUpgrade Infernum"));
+            List<String> infernumlore = new ArrayList<>();
+            infernumlore.add(c("&cTylar do your upgrading balances here"));
+            infernummeta.setLore(infernumlore);
+            infernum.setItemMeta(infernummeta);
+        }
         inv.setItem(1,infernum);
 
-        //others are placeholders for until other enchants have been thought of
-        inv.setItem(2,calamity);
-        inv.setItem(3,calamity);
-        inv.setItem(4,calamity);
+        //add the rest later
+
         p.openInventory(inv);
     }
     @EventHandler
