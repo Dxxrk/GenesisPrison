@@ -83,7 +83,8 @@ public class CMDDaily implements Listener, CommandExecutor{
 			loree.add(m.c("&e10x &5&lCommunity &7Key"));
 		}
 		else if(name.equals(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lReward!"))){
-			loree.add(m.c("&e&lTokens +250,000"));
+			loree.add(m.c("&c&l1x Monster Egg"));
+			loree.add(m.c("&1&l1x Genesis Crate"));
 		}
 		else if(name.equals(m.c("&7Free Daily Reward!"))){
 			loree.add(m.c("&e&lTokens +50,000"));
