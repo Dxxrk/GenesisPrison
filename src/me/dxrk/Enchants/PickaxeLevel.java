@@ -315,6 +315,8 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             }
         }
         settings.getPlayerData().set(p.getUniqueId().toString()+".PickLevel", 1);
+        settings.getPlayerData().set(p.getUniqueId().toString()+".PickXP",0);
+        settings.savePlayerData();
         pm.setLore(Lore(lore, p));
         pitem.setItemMeta(pm);
         p.setItemInHand(pitem);
@@ -347,6 +349,9 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         List<String> list = new ArrayList<>();
         list.add("Infernum");
         list.add("Calamity");
+        list.add("Euphoria");
+        list.add("Battlecry");
+        list.add("Tidal Wave");
         return list;
     }
 
@@ -844,8 +849,66 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             infernum.setItemMeta(infernummeta);
         }
         inv.setItem(1,infernum);
-
-        //add the rest later
+        ItemStack tidalwave;
+        if(!completed.contains("Poseidon")){
+            tidalwave = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)14);
+            ItemMeta tidalwavemeta = tidalwave.getItemMeta();
+            tidalwavemeta.setDisplayName(c("&bUpgrade Tidal Wave"));
+            List<String> tidalwavelore = new ArrayList<>();
+            tidalwavelore.add(c("&cUnlocks after finishing Poseidon Path."));
+            tidalwavemeta.setLore(tidalwavelore);
+            tidalwave.setItemMeta(tidalwavemeta);
+        }
+        else{
+            tidalwave = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)13);
+            ItemMeta tidalwavemeta = tidalwave.getItemMeta();
+            tidalwavemeta.setDisplayName(c("&bUpgrade Tidal Wave"));
+            List<String> tidalwavelore = new ArrayList<>();
+            tidalwavelore.add(c("&cTylar do your upgrading balances here"));
+            tidalwavemeta.setLore(tidalwavelore);
+            tidalwave.setItemMeta(tidalwavemeta);
+        }
+        inv.setItem(2,tidalwave);
+        ItemStack euphoria;
+        if(!completed.contains("Aphrodite")){
+            euphoria = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)14);
+            ItemMeta euphoriameta = euphoria.getItemMeta();
+            euphoriameta.setDisplayName(c("&bUpgrade Euphoria"));
+            List<String> euphorialore = new ArrayList<>();
+            euphorialore.add(c("&cUnlocks after finishing Aphrodite Path."));
+            euphoriameta.setLore(euphorialore);
+            euphoria.setItemMeta(euphoriameta);
+        }
+        else{
+            euphoria = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)13);
+            ItemMeta euphoriameta = euphoria.getItemMeta();
+            euphoriameta.setDisplayName(c("&bUpgrade Euphoria"));
+            List<String> euphorialore = new ArrayList<>();
+            euphorialore.add(c("&cTylar do your upgrading balances here"));
+            euphoriameta.setLore(euphorialore);
+            euphoria.setItemMeta(euphoriameta);
+        }
+        inv.setItem(3,euphoria);
+        ItemStack battlecry;
+        if(!completed.contains("Ares")){
+            battlecry = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)14);
+            ItemMeta battlecrymeta = battlecry.getItemMeta();
+            battlecrymeta.setDisplayName(c("&bUpgrade Battlecry"));
+            List<String> battlecrylore = new ArrayList<>();
+            battlecrylore.add(c("&cUnlocks after finishing Ares Path."));
+            battlecrymeta.setLore(battlecrylore);
+            battlecry.setItemMeta(battlecrymeta);
+        }
+        else{
+            battlecry = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)13);
+            ItemMeta battlecrymeta = battlecry.getItemMeta();
+            battlecrymeta.setDisplayName(c("&bUpgrade Battlecry"));
+            List<String> battlecrylore = new ArrayList<>();
+            battlecrylore.add(c("&cTylar do your upgrading balances here"));
+            battlecrymeta.setLore(battlecrylore);
+            battlecry.setItemMeta(battlecrymeta);
+        }
+        inv.setItem(4,battlecry);
 
         p.openInventory(inv);
     }
