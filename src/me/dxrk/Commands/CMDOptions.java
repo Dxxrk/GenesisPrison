@@ -56,19 +56,20 @@ public class CMDOptions implements Listener, CommandExecutor{
 		ops.setItem(1, option(p, "Autorankup"));
 		ops.setItem(2, option(p, "Dust-Finder-Messages"));
 		ops.setItem(3, option(p, "Key-Finder-Messages"));
-		ops.setItem(4, option(p, "Explosion-Messages"));
-		ops.setItem(5, option(p, "Wave-Messages"));
-		ops.setItem(6, option(p, "Nuke-Messages"));
-		ops.setItem(7, option(p, "Research-Messages"));
-		ops.setItem(10, option(p, "Key-Party-Messages"));
-		ops.setItem(11, option(p, "Booster-Messages"));
-		ops.setItem(12, option(p, "Junkpile-Messages"));
-		ops.setItem(13, option(p, "Laser-Messages"));
-		ops.setItem(14, option(p, "Vote-Reminder"));
-		ops.setItem(15, option(p, "Daily-Reminder"));
-		ops.setItem(16, option(p, "Speed-Effect"));
-		ops.setItem(19, option(p, "Haste-Effect"));
-		ops.setItem(20, option(p, "Night-Vision-Effect"));
+		ops.setItem(4, option(p, "Jackhammer-Messages"));
+		ops.setItem(5, option(p, "Nuke-Messages"));
+		ops.setItem(6, option(p, "Key-Party-Messages"));
+		ops.setItem(7, option(p, "Booster-Messages"));
+		ops.setItem(10, option(p, "Junkpile-Messages"));
+		ops.setItem(11, option(p, "Treasury-Messages"));
+		ops.setItem(12, option(p, "Seismic-Shock-Messages"));
+		ops.setItem(13, option(p, "Calamity-Messages"));
+		ops.setItem(14, option(p, "Infernum-Messages"));
+		ops.setItem(15, option(p, "Vote-Reminder"));
+		ops.setItem(16, option(p, "Daily-Reminder"));
+		ops.setItem(19, option(p, "Speed-Effect"));
+		ops.setItem(20, option(p, "Haste-Effect"));
+		ops.setItem(21, option(p, "Night-Vision-Effect"));
 		p.openInventory(ops);
 	}
 
@@ -107,6 +108,8 @@ public class CMDOptions implements Listener, CommandExecutor{
 			return m.c("&f&ki&9&lGenesis&f&ki&r");
 		if(s.equalsIgnoreCase("purple"))
 			return m.c("&f&ki&5&lGenesis&f&ki&r");
+		if(s.equalsIgnoreCase("thematic"))
+			return m.c("&f&ki&c&lG&b&le&c&ln&b&le&c&ls&b&li&c&ls&f&ki&r");
 		return m.c("&f&ki&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls&f&ki&r");
 	}
 
@@ -124,6 +127,7 @@ public class CMDOptions implements Listener, CommandExecutor{
 		gen.setItem(12, tagColor(m.c("&9&lBlue"), (short)4));
 		gen.setItem(13, tagColor(m.c("&f&lWhite"), (short)15));
 		gen.setItem(14, tagColor(m.c("&5&lPurple"), (short)5));
+		gen.setItem(15, tagColor(m.c("&c&lT&b&lh&c&le&b&lm&c&la&b&lt&c&li&b&lc"), (short)1));
 		p.openInventory(gen);
 	}
 	

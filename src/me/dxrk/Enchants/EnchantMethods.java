@@ -521,7 +521,7 @@ public class EnchantMethods implements CommandExecutor {
                 procChance = (chance < 500) ? 500 : chance;
                 break;
             case "Nuke":
-                chance = 23000 - (20 * level * lucky * luck * skill);
+                chance = 15000 - (20 * level * lucky * luck * skill);
                 procChance = (chance < 2000) ? 2000 : chance;
                 break;
             case "Jackhammer":
@@ -533,8 +533,12 @@ public class EnchantMethods implements CommandExecutor {
                 procChance = (chance < 600) ? 600 : chance;
                 break;
             case "Calamity":
-                chance = 3000 - (0.80 * level * lucky * luck * skill);
+                chance = 3000 - (0.6 * level * lucky * luck * skill);
                 procChance = (chance < 1000) ? 1000 : chance;
+                break;
+            case "Seismic Shock":
+                chance = 4000 - (0.80 * level * lucky * luck * skill);
+                procChance = (chance < 1100) ? 1100 : chance;
                 break;
         }
         return procChance;

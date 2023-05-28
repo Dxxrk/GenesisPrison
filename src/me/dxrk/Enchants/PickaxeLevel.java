@@ -586,6 +586,14 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 i = 15000 + (15000 * (level * 0.15)); // 1.1 Billion Level 1,000 MAX
 
                 break;
+            case "Calamity":
+                if (level == 0) {
+                    i = 12500;
+                    break;
+                }
+                i = 12500 + (12500 * (level * 0.125)); // 793 Million Level 1,000 MAX
+
+                break;
         }
         return i;
     }
