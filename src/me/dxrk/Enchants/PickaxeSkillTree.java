@@ -266,9 +266,9 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Fortune Boost (Level 5)");
         skills.add("Aphrodite (Level 4)");
         skills.add("1000 raise in max level of xp finder");
-        skills.add("Coupon Finder (Level 4)");
+        skills.add("+300% Junkpile XP Gain");
         skills.add("1500 raise in max level of xp finder");
-        skills.add("Aphrodite (Level 5)");
+        skills.add("+500% Junkpile XP Gain");
 
         return skills;
     }
@@ -513,9 +513,9 @@ public class PickaxeSkillTree implements Listener {
         aphrodite.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 17));
         //Coupon finder
         aphrodite.setItem(20, skillItem(p, "500 raise in max level of xp finder", m.c("&7Each of these skills raises the max level of xp finder."), 15));
-        aphrodite.setItem(42, skillItem(p, "Coupon Finder (Level 2)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 20));
+        aphrodite.setItem(42, skillItem(p, "+300% Junkpile XP Gain", m.c("&7Each of these skills raises the amount of XP given by junkpile."), 20));
         aphrodite.setItem(26, skillItem(p, "1000 raise in max level of xp finder", m.c("&7Each of these skills raises the max level of xp finder."), 25));
-        aphrodite.setItem(35, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 30));
+        aphrodite.setItem(35, skillItem(p, "+500% Junkpile XP Gain", m.c("&7Each of these skills raises the amount of XP given by junkpile."), 30));
         aphrodite.setItem(44, skillItem(p, "1500 raise in max level of xp finder", m.c("&7Each of these skills raises the max level of xp finder."), 35));
         //Level ups / abilities
         aphrodite.setItem(0, skillItem(p, "Unlocked Aphrodite", m.c("&7Chose the aphrodite path. Unlocks Allure and Strong Desire Events."), 0));
@@ -902,6 +902,14 @@ public class PickaxeSkillTree implements Listener {
                 int maxlevel = settings.getPlayerData().getInt(p.getUniqueId()+".XPFMaxLevelRaise");
                 int maxleveladd = parseInt(firstword[0]);
                 settings.getPlayerData().set(p.getUniqueId().toString()+".XPFMaxLevelRaise",maxlevel+maxleveladd);
+            }
+            if(firstword[0].equals("+300%")){
+                int junkpilexpboost = settings.getPlayerData().getInt(p.getUniqueId()+".SkillJunkpileXPBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillKeyBoost",junkpilexpboost+3);
+            }
+            if(firstword[0].equals("+500%")){
+                int junkpilexpboost = settings.getPlayerData().getInt(p.getUniqueId()+".SkillJunkpileXPBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillKeyBoost",junkpilexpboost+5);
             }
             if(skill.contains("Aphrodite")) {
                 setType(p, findPickaxeType(p));

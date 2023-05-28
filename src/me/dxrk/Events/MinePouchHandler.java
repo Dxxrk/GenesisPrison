@@ -219,7 +219,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
     private ItemStack egg() {
         ItemStack egg = new ItemStack(Material.MONSTER_EGG);
         ItemMeta em = egg.getItemMeta();
-        em.setDisplayName(m.c("&c&lMonster &7&lEgg &a10,000 Gems"));
+        em.setDisplayName(m.c("&c&lMonster &7&lEgg &a75,000 Gems"));
         List<String> lore = new ArrayList<>();
         lore.add(m.c("&7Right click to collect a new monster"));
         em.setLore(lore);
@@ -240,13 +240,13 @@ public class MinePouchHandler implements Listener, CommandExecutor {
 
         ItemStack rank = new ItemStack(Material.TRIPWIRE_HOOK);
         ItemMeta rm = rank.getItemMeta();
-        rm.setDisplayName(m.c("&3&lRank &7Key &a150,000 Gems"));
+        rm.setDisplayName(m.c("&3&lRank &7Key &a100,000 Gems"));
         List<String> lore = new ArrayList<>();
         lore.add(m.c("&cRight Click &7the &3&lRank &7Crate"));
         rm.setLore(lore);
         rank.setItemMeta(rm);
         shop.setItem(20, rank);
-        rm.setDisplayName(m.c("&e3x &3&lRank &7Key &a300,000 Gems"));
+        rm.setDisplayName(m.c("&e3x &3&lRank &7Key &a200,000 Gems"));
         rank.setAmount(3);
         rm.setLore(lore);
         rank.setItemMeta(rm);
@@ -310,8 +310,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 }
             }
             if(e.getSlot() == 14) {
-                if(gems >= 10000){
-                    removeGems(p, 10000);
+                if(gems >= 75000){
+                    removeGems(p, 75000);
                     p.getInventory().addItem(MonsterHandler.egg());
                     p.updateInventory();
                 }
@@ -321,8 +321,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 }
             }
             if(e.getSlot() == 20) {
-                if(gems >= 150000){
-                    removeGems(p, 150000);
+                if(gems >= 100000){
+                    removeGems(p, 100000);
                     LocksmithHandler.getInstance().addKey(p, "rank", 1);
                 }
                 else {
@@ -331,8 +331,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 }
             }
             if(e.getSlot() == 24) {
-                if(gems >= 300000){
-                    removeGems(p, 300000);
+                if(gems >= 200000){
+                    removeGems(p, 200000);
                     LocksmithHandler.getInstance().addKey(p, "rank", 3);
                 }
                 else {
