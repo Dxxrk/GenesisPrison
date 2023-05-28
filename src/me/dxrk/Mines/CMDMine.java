@@ -330,47 +330,47 @@ public class CMDMine implements CommandExecutor, Listener {
             e.setCancelled(true);
             if(e.getSlot() == 0) {
                 if(!p.hasPermission("rank.sponsor")) return;
-                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.SMOOTH_BRICK));
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomBlock", new ItemStack(Material.SMOOTH_BRICK));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
             if(e.getSlot() == 2) {
                 if(!p.hasPermission("rank.vip")) return;
-                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.COAL_BLOCK));
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomBlock", new ItemStack(Material.COAL_BLOCK));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
             if(e.getSlot() == 4) {
                 if(!p.hasPermission("rank.mvp")) return;
-                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.NETHERRACK));
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomBlock", new ItemStack(Material.NETHERRACK));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
             if(e.getSlot() == 6) {
                 if(!p.hasPermission("rank.hero")) return;
-                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.PRISMARINE, 1, (short)2));
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomBlock", new ItemStack(Material.PRISMARINE, 1, (short)2));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
             if(e.getSlot() == 8) {
                 if(!p.hasPermission("rank.demi-god")) return;
-                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.NETHER_BRICK));
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomBlock", new ItemStack(Material.NETHER_BRICK));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
             if(e.getSlot() == 10) {
                 if(!p.hasPermission("rank.titan")) return;
-                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.STAINED_CLAY, 1, (short)0));
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short)0));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
             if(e.getSlot() == 12) {
                 if(!p.hasPermission("rank.god")) return;
-                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.STAINED_CLAY, 1, (short)10));
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short)10));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
             if(e.getSlot() == 14) {
                 if(!p.hasPermission("rank.olympian")) return;
-                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.STAINED_CLAY, 1, (short)13));
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short)13));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
             if(e.getSlot() == 16) {
                 if(!p.hasPermission("rank.genesis")) return;
-                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomMine", new ItemStack(Material.STAINED_CLAY, 1, (short)7));
+                settings.getPlayerData().set(p.getUniqueId().toString()+".CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short)7));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
         }

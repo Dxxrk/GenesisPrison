@@ -1,17 +1,14 @@
 package me.dxrk.Enchants;
 
+import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import me.dxrk.Mines.Mine;
-import me.dxrk.Mines.MineHandler;
-import me.dxrk.Events.RankupHandler;
-import me.dxrk.Mines.MineSystem;
-import me.dxrk.Mines.ResetHandler;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Mines.Mine;
+import me.dxrk.Mines.MineSystem;
+import me.dxrk.Mines.ResetHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -22,7 +19,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 
@@ -112,16 +108,6 @@ public class Enchants implements Listener {
     }
 
 
-    private WorldGuardPlugin getWorldGuard() {
-        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-
-        if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
-            return null;
-        }
-
-        return (WorldGuardPlugin) plugin;
-    }
-
     private boolean hasEnchant(Player p, String enchant) {
         List<String> lore = p.getItemInHand().getItemMeta().getLore();
         int x;
@@ -148,12 +134,8 @@ public class Enchants implements Listener {
             return;
         WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
         ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
-        ProtectedRegion region = wg.getRegionManager(p.getWorld()).getRegion(p.getName());
-        if(!set.getRegions().contains(region)) {
-            e.setCancelled(true);
-            return;
-        }
-        if (EnchantMethods.set(b).allows(DefaultFlag.LIGHTER)) {
+        LocalPlayer player = wg.wrapPlayer(p);
+        if (EnchantMethods.set(b).allows(DefaultFlag.LIGHTER) || set.isMemberOfAll(player)) {
             for (String s : EnchantMethods.getInstance().Enchants()) {
                 if (hasEnchant(p, s))
                     EnchantMethods.getInstance().procEnchant(s, p, b);

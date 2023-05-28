@@ -1,5 +1,6 @@
 package me.dxrk.Events;
 
+import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
@@ -306,12 +307,8 @@ public class KeysHandler implements Listener {
             return;
         WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
         ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
-        ProtectedRegion region = wg.getRegionManager(p.getWorld()).getRegion(p.getName());
-        if(!set.getRegions().contains(region)) {
-            e.setCancelled(true);
-            return;
-        }
-        if (!set.allows(DefaultFlag.LIGHTER))
+        LocalPlayer player = wg.wrapPlayer(p);
+        if (!set.allows(DefaultFlag.LIGHTER) || !set.isMemberOfAll(player))
             return;
 
         findTokens(p);

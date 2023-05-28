@@ -173,7 +173,7 @@ public class MineHandler implements Listener, CommandExecutor {
         int start = rank / 16;
         List<ItemStack> blocks = Blocks(start);
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
-        if(settings.getPlayerData().getItemStack(p.getUniqueId().toString()+".CustomBlock") != null) {
+        if(settings.getPlayerData().getItemStack(p.getUniqueId().toString()+".CustomBlock") == null) {
             if (start == 0) {
                 m.setBlock1(new ItemStack(Material.COBBLESTONE));
                 m.setBlock2(new ItemStack(Material.COBBLESTONE));
@@ -385,6 +385,8 @@ public class MineHandler implements Listener, CommandExecutor {
         outside.setFlag(DefaultFlag.MOB_SPAWNING, StateFlag.State.DENY);
         outside.setFlag(DefaultFlag.WEATHER_LOCK, WeatherType.CLEAR);
         outside.setFlag(DefaultFlag.TIME_LOCK, "6000");
+        DefaultDomain omembers = outside.getMembers();
+        omembers.addPlayer(p.getUniqueId());
         outside.setPriority(1);
 
         regions.addRegion(outside);

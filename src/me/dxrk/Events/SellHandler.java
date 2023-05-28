@@ -1,5 +1,6 @@
 package me.dxrk.Events;
 
+import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
@@ -329,16 +330,16 @@ public class SellHandler implements Listener, CommandExecutor {
 	  double skill = SkillsEventsListener.getSkillsBoostFortune(p);
 	  double event1 = SkillsEventsListener.getEventFortune();
 
-
+	  LocalPlayer player = wg.wrapPlayer(p);
+	  if(!set.isMemberOfAll(player))  {
+		  event.setCancelled(true);
+		  return;
+	  }
 
 
     if (!event.isCancelled()) {
 		if (p.getItemInHand() != null && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore()) {
-			ProtectedRegion region = wg.getRegionManager(p.getWorld()).getRegion(p.getName());
-			if(!set.getRegions().contains(region)) {
-				event.setCancelled(true);
-				return;
-			}
+
 			int line = 0;
 			for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
 				if (ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {

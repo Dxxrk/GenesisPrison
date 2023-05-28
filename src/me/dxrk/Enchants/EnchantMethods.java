@@ -342,7 +342,7 @@ public class EnchantMethods implements CommandExecutor {
         int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
 
-        double levelcap = 1 + (level / 1000);
+        double levelcap = 1 + (level / 100);
         int blocksInThirds = blocks / 3;
 
         sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds * fortune * levelcap)));
@@ -521,17 +521,17 @@ public class EnchantMethods implements CommandExecutor {
                 chance = 23000 - (20 * level * lucky * luck * skill);
                 procChance = (chance < 2000) ? 2000 : chance;
                 break;
-            case "Wave":
-                chance = 1750 - (1.15 * level * lucky * luck * skill);
-                procChance = (chance < 300) ? 300 : chance;
+            case "Jackhammer":
+                chance = 1750 - (1.5 * level * lucky * luck * skill);
+                procChance = (chance < 50) ? 50 : chance;
                 break;
             case "Treasury":
                 chance = 3000 - (0.80 * level * lucky * luck * skill);
                 procChance = (chance < 600) ? 600 : chance;
                 break;
-            case "Smite":
+            case "Calamity":
                 chance = 3000 - (0.80 * level * lucky * luck * skill);
-                procChance = (chance < 600) ? 600 : chance;
+                procChance = (chance < 1000) ? 1000 : chance;
                 break;
         }
         return procChance;
@@ -561,12 +561,12 @@ public class EnchantMethods implements CommandExecutor {
                     nukebreak(p, b, level);
                 }
                 break;
-            case "Wave":
+            case "Jackhammer":
                 if (r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
                     Jackhammer(p, b, level);
                 }
                 break;
-            case "Smite":
+            case "Calamity":
                 if (r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
                     lightning(p, b, level);
                 }

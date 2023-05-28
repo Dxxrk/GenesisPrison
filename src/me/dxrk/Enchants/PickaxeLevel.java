@@ -340,7 +340,6 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         list.add("XP Finder");
         list.add("Charity");
         list.add("Treasury");
-        list.add("Smite");
         list.add("Seismic Shock");
         return list;
     }
@@ -475,7 +474,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 i = 100 + (100 * (level * 0.032)); // 1 Billion Level 25,000 MAX
 
                 break;
-            case "Wave":
+            case "Jackhammer":
                 if (level == 0) {
                     i = 4500;
                     break;
@@ -493,10 +492,10 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 break;
             case "Charity":
                 if (level == 0) {
-                    i = 2500;
+                    i = 10000;
                     break;
                 }
-                i = 2500 + (2500 * (level * 0.15)); // 187 Million Level 1,000 MAX
+                i = 10000 + (10000 * (level * 0.13)); // 659 Million Level 1,000 MAX
 
                 break;
             case "Nuke":
@@ -505,22 +504,6 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                     break;
                 }
                 i = 20000 + (20000 * (level * 0.6)); // 1.5 Billion Level 500 MAX
-
-                break;
-            case "Explosion":
-                if (level == 0) {
-                    i = 2500;
-                    break;
-                }
-                i = 2500 + (2500 * (level * 0.038)); // 50 Million Level 1,000 MAX
-
-                break;
-            case "Research":
-                if (level == 0) {
-                    i = 4000;
-                    break;
-                }
-                i = 4000 + (4000 * (level * 0.0077)); // 150 Million Level 3,000 MAX
 
                 break;
             case "Greed":
@@ -545,14 +528,6 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                     break;
                 }
                 i = 6000 + (6000 * (level * 0.076)); // 234 Million Level 1,000 MAX
-
-                break;
-            case "Prestige Finder":
-                if (level == 0) {
-                    i = 3500;
-                    break;
-                }
-                i = 3500 + (3500 * (level * 0.0046)); // 219 Million Level 5,000 MAX
 
                 break;
             case "XP Finder":
@@ -595,18 +570,23 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 i = 9000 + (9000 * (level * 0.00405)); // 500 Million Level 5,000 MAX
 
                 break;
-            case "Laser":
+            case "Treasury":
+                if (level == 0) {
+                    i = 6000;
+                    break;
+                }
+                i = 6000 + (6000 * (level * 0.015)); // 296 Million Level 2,500 MAX
+
+                break;
+            case "Seismic Shock":
                 if (level == 0) {
                     i = 15000;
                     break;
                 }
-                i = 15000 + (15000 * (level * 0.2347)); // 1 Billion Level 750 MAX
+                i = 15000 + (15000 * (level * 0.15)); // 1.1 Billion Level 1,000 MAX
 
                 break;
-
         }
-
-
         return i;
     }
 
@@ -629,7 +609,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             case "Key Party":
             case "Charity":
             case "Seismic Shock":
-            case "Smite":
+            case "Calamity":
                 i = 1000;
 
                 break;
