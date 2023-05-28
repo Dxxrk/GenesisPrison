@@ -220,7 +220,7 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 2)");
         skills.add("Luck Boost (Level 2)");
         skills.add("Token Bonus (Level 3)");
-        skills.add("Coupon Finder (Level 1)");
+        skills.add("150 raise in max level of junkpile");
         skills.add("Fortune Boost (Level 2)");
         skills.add("Luck Boost (Level 3)");
         skills.add("Token Bonus (Level 4)");
@@ -228,15 +228,15 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 5)");
         skills.add("Luck Boost (Level 4)");
         skills.add("Fortune Boost (Level 3)");
-        skills.add("Coupon Finder (Level 2)");
+        skills.add("+100% Junkpile Multi Gain");
         skills.add("Fortune Boost (Level 4)");
         skills.add("Luck Boost (Level 5)");
         skills.add("Token Bonus (Level 6)");
         skills.add("Fortune Boost (Level 5)");
         skills.add("Hades (Level 4)");
-        skills.add("Coupon Finder (Level 3)");
-        skills.add("Coupon Finder (Level 4)");
-        skills.add("Coupon Finder (Level 5)");
+        skills.add("250 raise in max level of junkpile");
+        skills.add("+200% Junkpile Multi Gain");
+        skills.add("350 raise in max level of junkpile");
         skills.add("Hades (Level 5)");
 
         return skills;
@@ -259,16 +259,16 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 5)");
         skills.add("Luck Boost (Level 4)");
         skills.add("Fortune Boost (Level 3)");
-        skills.add("Coupon Finder (Level 2)");
+        skills.add("+300% Junkpile XP Gain");
         skills.add("Fortune Boost (Level 4)");
         skills.add("Luck Boost (Level 5)");
         skills.add("Token Bonus (Level 6)");
         skills.add("Fortune Boost (Level 5)");
         skills.add("Aphrodite (Level 4)");
         skills.add("1000 raise in max level of xp finder");
-        skills.add("+300% Junkpile XP Gain");
-        skills.add("1500 raise in max level of xp finder");
         skills.add("+500% Junkpile XP Gain");
+        skills.add("1500 raise in max level of xp finder");
+        skills.add("Aphrodite (Level 5)");
 
         return skills;
     }
@@ -434,11 +434,11 @@ public class PickaxeSkillTree implements Listener {
         hades.setItem(33, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 13));
         hades.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 17));
         //Coupon finder
-        hades.setItem(20, skillItem(p, "Coupon Finder (Level 1)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 15));
-        hades.setItem(42, skillItem(p, "Coupon Finder (Level 2)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 20));
-        hades.setItem(26, skillItem(p, "Coupon Finder (Level 3)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 25));
-        hades.setItem(35, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 30));
-        hades.setItem(44, skillItem(p, "Coupon Finder (Level 5)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 35));
+        hades.setItem(20, skillItem(p, "150 raise in max level of junkpile", m.c("&7Each of these skills raises the max level of junkpile."), 15));
+        hades.setItem(42, skillItem(p, "+100% Junkpile Multi Gain", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 20));
+        hades.setItem(26, skillItem(p, "250 raise in max level of junkpile", m.c("&7Each of these skills raises the max level of junkpile."), 25));
+        hades.setItem(35, skillItem(p, "+200% Junkpile Multi Gain", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 30));
+        hades.setItem(44, skillItem(p, "350 raise in max level of junkpile", m.c("&7Each of these skills raises the max level of junkpile."), 35));
         //Level ups / abilities
         hades.setItem(0, skillItem(p, "Unlocked Hades", m.c("&7Chose the Hades path. Unlocks Meteor Shower and Scorched Earth Events."), 0));
         hades.setItem(36, skillItem(p, "Hades (Level 2)", m.c("&7Upgrades Hades Events."), 0));
@@ -831,7 +831,19 @@ public class PickaxeSkillTree implements Listener {
                 double fortuneboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillFortuneBoost");
                 settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.02);
             }
-
+            if(firstword[0].equals("150") || firstword[0].equals("250") || firstword[0].equals("350")){
+                int maxlevel = settings.getPlayerData().getInt(p.getUniqueId()+".JunkpileMaxLevelRaise");
+                int maxleveladd = parseInt(firstword[0]);
+                settings.getPlayerData().set(p.getUniqueId().toString()+".JunkpileMaxLevelRaise",maxlevel+maxleveladd);
+            }
+            if(firstword[0].equals("+100%")){
+                double skilljunkpilemultiboost = settings.getPlayerData().getInt(p.getUniqueId()+".SkillJunkpileMultiBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillJunkpileMultiBoost",skilljunkpilemultiboost+1);
+            }
+            if(firstword[0].equals("+200%")){
+                double skilljunkpilemultiboost = settings.getPlayerData().getInt(p.getUniqueId()+".SkillJunkpileMultiBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillJunkpileMultiBoost",skilljunkpilemultiboost+2);
+            }
             if(skill.contains("Hades")) {
                 setType(p, findPickaxeType(p));
 

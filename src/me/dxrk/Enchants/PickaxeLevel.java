@@ -649,10 +649,9 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
                 break;
             case "Junkpile":
-                i = 2000;
-
+                int skillmaxleveljunkpile = settings.getPlayerData().getInt(p.getUniqueId().toString()+".JunkpileMaxLevelRaise");
+                i = 2000 + skillmaxleveljunkpile;
                 break;
-
             case "XP Finder":
                 int skillmaxlevelxpf = settings.getPlayerData().getInt(p.getUniqueId().toString()+".XPFMaxLevelRaise");
                 i = 10000+skillmaxlevelxpf;

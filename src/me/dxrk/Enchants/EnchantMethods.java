@@ -359,16 +359,18 @@ public class EnchantMethods implements CommandExecutor {
     public void Junkpile(Player p) {
         Random r = new Random();
 
-        int skillboost = 1;
-        int junkpilexpboost = settings.getPlayerData().getInt(p.getUniqueId()+".SkillJunkpileXPBoost");
-        skillboost+=junkpilexpboost;
-        int fmin = 1000*junkpilexpboost;
-        int fmax = 2500*junkpilexpboost;
+        int xpboost = 1;
+        int skillxpboost = settings.getPlayerData().getInt(p.getUniqueId().toString()+".SkillJunkpileXPBoost");
+        xpboost+=skillxpboost;
+        int fmin = 1000*xpboost;
+        int fmax = 2500*xpboost;
         int xp = r.nextInt(fmax - fmin) + fmin;
 
-
-        double min = 0.1;
-        double max = 0.5;
+        int multiboost = 1;
+        int skillmultiboost = settings.getPlayerData().getInt(p.getUniqueId().toString()+".SkillJunkpileMultiBoost");
+        multiboost+=skillmultiboost;
+        double min = 0.1*multiboost;
+        double max = 0.5*multiboost;
         double multi = Math.round((min + (max - min) * r.nextDouble()) * 10) / 10.0;
 
 
