@@ -184,13 +184,17 @@ public class MonsterHandler implements Listener, CommandExecutor {
             return;
         if (e.getClickedInventory().getName() == null)
             return;
-        if (activeMonster.containsKey(p) && e.getCurrentItem().equals(activeMonster.get(p))) {
-            e.setCancelled(true);
-            p.updateInventory();
-            if(e.getClick() == ClickType.NUMBER_KEY) {
+        if (activeMonster.containsKey(p) && e.getClick() == ClickType.NUMBER_KEY) {
+            int slot = e.getHotbarButton();
+            if (p.getInventory().getItem(slot).equals(activeMonster.get(p))) {
                 e.setCancelled(true);
                 p.updateInventory();
             }
+            return;
+        }
+        if (activeMonster.containsKey(p) && e.getCurrentItem().equals(activeMonster.get(p))) {
+            e.setCancelled(true);
+            p.updateInventory();
         }
     }
 
