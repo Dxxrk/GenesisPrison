@@ -126,7 +126,7 @@ public class CMDMine implements CommandExecutor, Listener {
         ItemMeta bm = block.getItemMeta();
         bm.setDisplayName(c("&7Choose " + b));
         List<String> lore = new ArrayList<>();
-        if (p.hasPermission("rank." + rank)) {
+        if (!p.hasPermission("rank." + rank)) {
             lore.add(c("&cYou need " + rank + " to pick this block"));
         }
         bm.setLore(lore);

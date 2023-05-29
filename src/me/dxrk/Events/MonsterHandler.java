@@ -18,7 +18,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -184,6 +186,11 @@ public class MonsterHandler implements Listener, CommandExecutor {
             return;
         if (activeMonster.containsKey(p) && e.getCurrentItem().equals(activeMonster.get(p))) {
             e.setCancelled(true);
+            p.updateInventory();
+            if(e.getClick() == ClickType.NUMBER_KEY) {
+                e.setCancelled(true);
+                p.updateInventory();
+            }
         }
     }
 

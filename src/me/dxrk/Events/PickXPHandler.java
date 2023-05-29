@@ -28,28 +28,27 @@ import java.util.List;
 import java.util.Random;
 
 public class PickXPHandler
-implements Listener {
-	
-	public static PickXPHandler instance = new PickXPHandler();
-	public static PickXPHandler getInstance() {
-		return instance;
-	}
-	
-	
-	public Methods m = Methods.getInstance();
+        implements Listener {
+
+    public static PickXPHandler instance = new PickXPHandler();
+
+    public static PickXPHandler getInstance() {
+        return instance;
+    }
+
+
+    public Methods m = Methods.getInstance();
 
     SettingsManager settings = SettingsManager.getInstance();
 
-	
-	
 
-    public double getXP(Player p){
-        double xp = settings.getPlayerData().getDouble(p.getUniqueId().toString()+".PickXP");
+    public double getXP(Player p) {
+        double xp = settings.getPlayerData().getDouble(p.getUniqueId().toString() + ".PickXP");
         return xp;
     }
 
     public int getLevel(Player p) {
-        int level = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickLevel");
+        int level = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".PickLevel");
         return level;
     }
 
@@ -57,15 +56,15 @@ implements Listener {
     public void addXP(Player p, double add) {
         double xp = getXP(p);
 
-        settings.getPlayerData().set(p.getUniqueId().toString()+".PickXP", (xp+add));
+        settings.getPlayerData().set(p.getUniqueId().toString() + ".PickXP", (xp + add));
     }
 
     public void levelUp(Player p) {
         int level = getLevel(p);
-        int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
-        settings.getPlayerData().set(p.getUniqueId().toString()+".PickLevel", level+1);
-        if(level >=25){
-            settings.getPlayerData().set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints+1);
+        int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".PickaxeSkillPoints");
+        settings.getPlayerData().set(p.getUniqueId().toString() + ".PickLevel", level + 1);
+        if (level >= 25) {
+            settings.getPlayerData().set(p.getUniqueId().toString() + ".PickaxeSkillPoints", skillPoints + 1);
         }
         settings.savePlayerData();
     }
@@ -78,22 +77,23 @@ implements Listener {
 
     public double calculateXPNeeded(int level) {
         double cost = 0;
-        for(int i = 1; i <level; i++) {
-            cost += cost(i);
-        }
-        return cost;
-    }
-    public double cost(int pick) {
-        return 1000+(1000*(pick*0.3));
-    }
-    public double totalXP() {
-        double cost = 0;
-        for(int i = 1; i <301; i++) {
+        for (int i = 0; i <= level; i++) {
             cost += cost(i);
         }
         return cost;
     }
 
+    public double cost(int pick) {
+        return 1000 + (1000 * (pick * 0.3));
+    }
+
+    public double totalXP() {
+        double cost = 0;
+        for (int i = 0; i <= 300; i++) {
+            cost += cost(i);
+        }
+        return cost;
+    }
 
 
     public double findPercent(Player p) {
@@ -112,20 +112,20 @@ implements Listener {
         ItemMeta pm = pitem.getItemMeta();
 
         List<String> lore = p.getItemInHand().getItemMeta().getLore();
-        for(int i = 0; i < lore.size(); i++){
-            if(ChatColor.stripColor(lore.get(i)).contains("Level:")){
+        for (int i = 0; i < lore.size(); i++) {
+            if (ChatColor.stripColor(lore.get(i)).contains("Level:")) {
                 line = i;
             }
         }
-        lore.set(line, m.c("&cLevel: &e"+getLevel(p)));
+        lore.set(line, m.c("&cLevel: &e" + getLevel(p)));
 
         line = 0;
-        for(int i = 0; i < lore.size(); i++){
-            if(ChatColor.stripColor(lore.get(i)).contains("Progress:")){
+        for (int i = 0; i < lore.size(); i++) {
+            if (ChatColor.stripColor(lore.get(i)).contains("Progress:")) {
                 line = i;
             }
         }
-        lore.set(line, m.c("&cProgress: &e"+findPercent(p)+"%"));
+        lore.set(line, m.c("&cProgress: &e" + findPercent(p) + "%"));
 
         pm.setLore(PickaxeLevel.getInstance().Lore(lore, p));
         pitem.setItemMeta(pm);
@@ -134,15 +134,15 @@ implements Listener {
 
     }
 
-    public void updateXpBoard(Player p){
+    public void updateXpBoard(Player p) {
         Scoreboard board = p.getScoreboard();
 
         double xp = (calculateXPNeeded(getLevel(p)) - getXP(p));
         double xmultiply = xp * 10.0;
         int xround = (int) (Math.round(xmultiply) / 10.0);
 
-        board.getTeam("xp").setSuffix(m.c("&b"+xround));
-        board.getTeam("PickLevel").setSuffix(m.c("&b"+getLevel(p)));
+        board.getTeam("xp").setSuffix(m.c("&b" + xround));
+        board.getTeam("PickLevel").setSuffix(m.c("&b" + getLevel(p)));
     }
 
 
@@ -155,6 +155,7 @@ implements Listener {
 
         return (WorldGuardPlugin) plugin;
     }
+
     public static ApplicableRegionSet set(Block b) {
         WorldGuardPlugin worldGuard = WorldGuardPlugin.inst();
         RegionManager regionManager = worldGuard.getRegionManager(b.getWorld());
@@ -164,44 +165,39 @@ implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
-        if(p.getItemInHand() == null) return;
-        if(!p.getItemInHand().hasItemMeta()) return;
-        if(!p.getItemInHand().getItemMeta().hasLore()) return;
-        WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+        if (p.getItemInHand() == null) return;
+        if (!p.getItemInHand().hasItemMeta()) return;
+        if (!p.getItemInHand().getItemMeta().hasLore()) return;
+        WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
         ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
         ProtectedRegion region = wg.getRegionManager(p.getWorld()).getRegion(p.getName());
-        if(!set.getRegions().contains(region)) {
+        if (!set.getRegions().contains(region)) {
             e.setCancelled(true);
             return;
         }
-        if(!set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;
+        if (!set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;
         Random r = new Random();
         int fmin = 1;
         int fmax = 4;
-        int xp = r.nextInt(fmax - fmin)+ fmin;
-        double xpToAdd =xp*Functions.xpBoost(p) * Functions.XPEnchant(p) * BoostsHandler.xp* SkillsEventsListener.getEventXP();
-        double xpToAdd2 =Functions.xpBoost(p) * Functions.XPEnchant(p) * BoostsHandler.xp * SkillsEventsListener.getEventXP();
-        if(getLevel(p) <16)
+        int xp = r.nextInt(fmax - fmin) + fmin;
+        double xpToAdd = xp * Functions.xpBoost(p) * Functions.XPEnchant(p) * BoostsHandler.xp * SkillsEventsListener.getEventXP();
+        double xpToAdd2 = Functions.xpBoost(p) * Functions.XPEnchant(p) * BoostsHandler.xp * SkillsEventsListener.getEventXP();
+        if (getLevel(p) < 16)
             addXP(p, xpToAdd);
         else {
             addXP(p, xpToAdd2);
         }
 
-        if(canLevelUp(p)) levelUp(p);
+        if (canLevelUp(p)) levelUp(p);
         int update = r.nextInt(20);
-        if(update == 1) {
+        if (update == 1) {
             updatePickaxe(p);
         }
         updateXpBoard(p);
 
 
-
     }
 
-
-
-    
-    
 
 }
 

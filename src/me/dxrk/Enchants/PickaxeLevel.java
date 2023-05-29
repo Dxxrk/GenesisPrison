@@ -46,11 +46,11 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
     public SettingsManager settings = SettingsManager.getInstance();
 
-    public ItemStack spacer() {
+    public ItemStack pickaxe() {
         ItemStack a = new ItemStack(Material.WOOD_PICKAXE, 1, (short) 0);
         ItemMeta am = a.getItemMeta();
         List<String> lore = new ArrayList<>();
-        am.setDisplayName(c("&cTest Pickaxe"));
+        am.setDisplayName(c("&cStarter Pickaxe"));
         am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
         am.addEnchant(Enchantment.DURABILITY, 32000, true);
         am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -129,21 +129,21 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 if (!p.hasPermission("rank.owner")) {
                     return false;
                 }
-                p.getInventory().addItem(spacer());
+                p.getInventory().addItem(pickaxe());
                 p.updateInventory();
             }
         }
-        if(label.equalsIgnoreCase("resetpickaxe")){
-            if(sender.hasPermission("genesis.resetpickaxe")){
+        if (label.equalsIgnoreCase("resetpickaxe")) {
+            if (sender.hasPermission("genesis.resetpickaxe")) {
                 Player reciever = Bukkit.getPlayerExact(args[0]);
                 resetPickaxe(reciever);
             }
         }
-        if(label.equalsIgnoreCase("setskillpoints")){
-            if(sender.hasPermission("genesis.setskillpoints")){
+        if (label.equalsIgnoreCase("setskillpoints")) {
+            if (sender.hasPermission("genesis.setskillpoints")) {
                 Player reciever = Bukkit.getPlayerExact(args[0]);
                 int amount = parseInt(args[1]);
-                settings.getPlayerData().set(reciever.getUniqueId().toString()+".PickaxeSkillPoints", amount);
+                settings.getPlayerData().set(reciever.getUniqueId().toString() + ".PickaxeSkillPoints", amount);
             }
         }
 
@@ -265,7 +265,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         lore.add(c("&6Open skill enchant menu"));
         semeta.setLore(lore);
         skillenchants.setItemMeta(semeta);
-        enchantmenu.setItem(49,skillenchants);
+        enchantmenu.setItem(49, skillenchants);
 
         enchantmenu.setItem(45, Spacer());
         enchantmenu.setItem(47, Spacer());
@@ -292,34 +292,24 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         return x;
     }
 
+
     public void resetPickaxe(Player p) {
-        int x;
         ItemStack pitem = p.getItemInHand().clone();
         ItemMeta pm = pitem.getItemMeta();
-        List<String> lore = pm.getLore();
-        for (int i = 0; i < lore.size(); i++) {
-            String s = lore.get(i);
-            if (Enchants().contains(ChatColor.stripColor(s))) {
-                x = i;
-                lore.remove(x);
-            }
-            if(ChatColor.stripColor(s).contains("Level:")) {
-                x = i;
-                lore.remove(x);
-                lore.add(c("&cLevel: &e1"));
-            }
-            if(ChatColor.stripColor(s).contains("Skill:")){
-                x=i;
-                lore.remove(x);
-                lore.add(c("&cSkill: "));
+        List<String> plore = pm.getLore();
+
+        ItemStack newpick = pickaxe().clone();
+        ItemMeta nm = newpick.getItemMeta();
+        List<String> lore = nm.getLore();
+        for(String s : plore) {
+            if (SkillEnchants().contains(ChatColor.stripColor(s))) {
+                lore.add(s);
             }
         }
-        settings.getPlayerData().set(p.getUniqueId().toString()+".PickLevel", 1);
-        settings.getPlayerData().set(p.getUniqueId().toString()+".PickXP",0);
-        settings.savePlayerData();
-        pm.setLore(Lore(lore, p));
-        pitem.setItemMeta(pm);
-        p.setItemInHand(pitem);
+        nm.setDisplayName(pm.getDisplayName());
+        nm.setLore(Lore(lore, p));
+        newpick.setItemMeta(nm);
+        p.setItemInHand(newpick);
         p.updateInventory();
     }
 
@@ -330,7 +320,6 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         list.add("Dust Finder");
         list.add("Token Finder");
         list.add("Jackhammer");
-        list.add("Wave");
         list.add("Junkpile");
         list.add("Nuke");
         list.add("Fortuity");
@@ -345,6 +334,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         list.add("Seismic Shock");
         return list;
     }
+
     private List<String> SkillEnchants() {
         List<String> list = new ArrayList<>();
         list.add("Infernum");
@@ -444,9 +434,9 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
     public List<String> Lore(List<String> list, Player p) {
         List<String> lore = new ArrayList<>(orgainzeEnchants(list));
-        lore.add(c("  "));
+        lore.add(c(" "));
         lore.addAll(organizeTrinkets(p));
-        lore.add(c("  "));
+        lore.add(c(" "));
         lore.add(c("&b&m-<>-&aLevel&b&m-<>-"));
         lore.addAll(pickLevel(list));
         return lore;
@@ -607,8 +597,8 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         int i = 0;
         switch (Enchant) {
             case "Key Finder":
-                int skillmaxlevelkf = settings.getPlayerData().getInt(p.getUniqueId().toString()+".KFMaxLevelRaise");
-                i=5000 + skillmaxlevelkf;
+                int skillmaxlevelkf = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".KFMaxLevelRaise");
+                i = 5000 + skillmaxlevelkf;
                 break;
             case "Dust Finder":
             case "Prestige Finder":
@@ -627,8 +617,8 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
                 break;
             case "Token Finder":
-                int skillmaxleveltf = settings.getPlayerData().getInt(p.getUniqueId().toString()+".TFMaxLevelRaise");
-                i=3000+skillmaxleveltf;
+                int skillmaxleveltf = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".TFMaxLevelRaise");
+                i = 3000 + skillmaxleveltf;
                 break;
             case "Research":
                 i = 3000;
@@ -641,7 +631,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 break;
 
             case "Fortune":
-                int skillmaxlevelfortune = settings.getPlayerData().getInt(p.getUniqueId().toString()+".FortuneMaxLevelRaise");
+                int skillmaxlevelfortune = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".FortuneMaxLevelRaise");
                 i = 25000 + skillmaxlevelfortune;
                 break;
             case "Nuke":
@@ -654,12 +644,12 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
                 break;
             case "Junkpile":
-                int skillmaxleveljunkpile = settings.getPlayerData().getInt(p.getUniqueId().toString()+".JunkpileMaxLevelRaise");
+                int skillmaxleveljunkpile = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".JunkpileMaxLevelRaise");
                 i = 2000 + skillmaxleveljunkpile;
                 break;
             case "XP Finder":
-                int skillmaxlevelxpf = settings.getPlayerData().getInt(p.getUniqueId().toString()+".XPFMaxLevelRaise");
-                i = 10000+skillmaxlevelxpf;
+                int skillmaxlevelxpf = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".XPFMaxLevelRaise");
+                i = 10000 + skillmaxlevelxpf;
                 break;
             case "Multiply":
                 i = 1500;
@@ -803,14 +793,15 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
         }
     }
-    @EventHandler
-    public void openSkillEnchantsInv(Player p){
-        Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER,c("&6Pickaxe Skill Enchants"));
 
-        List<String> completed = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".CompletedPaths");
+    @EventHandler
+    public void openSkillEnchantsInv(Player p) {
+        Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, c("&6Pickaxe Skill Enchants"));
+
+        List<String> completed = settings.getPlayerData().getStringList(p.getUniqueId().toString() + ".CompletedPaths");
 
         ItemStack calamity;
-        if(!completed.contains("Zeus")) {
+        if (!completed.contains("Zeus")) {
             calamity = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
             ItemMeta calamitymeta = calamity.getItemMeta();
             calamitymeta.setDisplayName(c("&bUpgrade Calamity"));
@@ -818,8 +809,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             calamitylore.add(c("&cUnlocks after finishing Zeus Path."));
             calamitymeta.setLore(calamitylore);
             calamity.setItemMeta(calamitymeta);
-        }
-        else{
+        } else {
             calamity = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
             ItemMeta calamitymeta = calamity.getItemMeta();
             calamitymeta.setDisplayName(c("&bUpgrade Calamity"));
@@ -830,17 +820,16 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         }
         inv.setItem(0, calamity);
         ItemStack infernum;
-        if(!completed.contains("Hades")){
-            infernum = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)14);
+        if (!completed.contains("Hades")) {
+            infernum = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
             ItemMeta infernummeta = infernum.getItemMeta();
             infernummeta.setDisplayName(c("&bUpgrade Infernum"));
             List<String> infernumlore = new ArrayList<>();
             infernumlore.add(c("&cUnlocks after finishing Hades Path."));
             infernummeta.setLore(infernumlore);
             infernum.setItemMeta(infernummeta);
-        }
-        else{
-            infernum = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)13);
+        } else {
+            infernum = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
             ItemMeta infernummeta = infernum.getItemMeta();
             infernummeta.setDisplayName(c("&bUpgrade Infernum"));
             List<String> infernumlore = new ArrayList<>();
@@ -848,19 +837,18 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             infernummeta.setLore(infernumlore);
             infernum.setItemMeta(infernummeta);
         }
-        inv.setItem(1,infernum);
+        inv.setItem(1, infernum);
         ItemStack tidalwave;
-        if(!completed.contains("Poseidon")){
-            tidalwave = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)14);
+        if (!completed.contains("Poseidon")) {
+            tidalwave = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
             ItemMeta tidalwavemeta = tidalwave.getItemMeta();
             tidalwavemeta.setDisplayName(c("&bUpgrade Tidal Wave"));
             List<String> tidalwavelore = new ArrayList<>();
             tidalwavelore.add(c("&cUnlocks after finishing Poseidon Path."));
             tidalwavemeta.setLore(tidalwavelore);
             tidalwave.setItemMeta(tidalwavemeta);
-        }
-        else{
-            tidalwave = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)13);
+        } else {
+            tidalwave = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
             ItemMeta tidalwavemeta = tidalwave.getItemMeta();
             tidalwavemeta.setDisplayName(c("&bUpgrade Tidal Wave"));
             List<String> tidalwavelore = new ArrayList<>();
@@ -868,19 +856,18 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             tidalwavemeta.setLore(tidalwavelore);
             tidalwave.setItemMeta(tidalwavemeta);
         }
-        inv.setItem(2,tidalwave);
+        inv.setItem(2, tidalwave);
         ItemStack euphoria;
-        if(!completed.contains("Aphrodite")){
-            euphoria = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)14);
+        if (!completed.contains("Aphrodite")) {
+            euphoria = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
             ItemMeta euphoriameta = euphoria.getItemMeta();
             euphoriameta.setDisplayName(c("&bUpgrade Euphoria"));
             List<String> euphorialore = new ArrayList<>();
             euphorialore.add(c("&cUnlocks after finishing Aphrodite Path."));
             euphoriameta.setLore(euphorialore);
             euphoria.setItemMeta(euphoriameta);
-        }
-        else{
-            euphoria = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)13);
+        } else {
+            euphoria = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
             ItemMeta euphoriameta = euphoria.getItemMeta();
             euphoriameta.setDisplayName(c("&bUpgrade Euphoria"));
             List<String> euphorialore = new ArrayList<>();
@@ -888,19 +875,18 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             euphoriameta.setLore(euphorialore);
             euphoria.setItemMeta(euphoriameta);
         }
-        inv.setItem(3,euphoria);
+        inv.setItem(3, euphoria);
         ItemStack battlecry;
-        if(!completed.contains("Ares")){
-            battlecry = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)14);
+        if (!completed.contains("Ares")) {
+            battlecry = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
             ItemMeta battlecrymeta = battlecry.getItemMeta();
             battlecrymeta.setDisplayName(c("&bUpgrade Battlecry"));
             List<String> battlecrylore = new ArrayList<>();
             battlecrylore.add(c("&cUnlocks after finishing Ares Path."));
             battlecrymeta.setLore(battlecrylore);
             battlecry.setItemMeta(battlecrymeta);
-        }
-        else{
-            battlecry = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)13);
+        } else {
+            battlecry = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
             ItemMeta battlecrymeta = battlecry.getItemMeta();
             battlecrymeta.setDisplayName(c("&bUpgrade Battlecry"));
             List<String> battlecrylore = new ArrayList<>();
@@ -908,10 +894,11 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             battlecrymeta.setLore(battlecrylore);
             battlecry.setItemMeta(battlecrymeta);
         }
-        inv.setItem(4,battlecry);
+        inv.setItem(4, battlecry);
 
         p.openInventory(inv);
     }
+
     @EventHandler
     public void oninv(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
@@ -951,7 +938,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 TrinketHandler.getInstance().openTrinkets(p);
                 return;
             }
-            if(e.getSlot() == 49){
+            if (e.getSlot() == 49) {
                 openSkillEnchantsInv(p);
                 return;
             }
@@ -978,8 +965,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             openenchantmenu(p);
 
 
-        }
-        else if(e.getInventory().getName().equals(c("&6Pickaxe Skill Enchants"))){
+        } else if (e.getInventory().getName().equals(c("&6Pickaxe Skill Enchants"))) {
             e.setCancelled(true);
             if (e.getClickedInventory().equals(p.getInventory())) return;
             if (e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return;
