@@ -297,7 +297,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         ItemStack pitem = p.getItemInHand().clone();
         ItemMeta pm = pitem.getItemMeta();
         List<String> plore = pm.getLore();
-        //test
+        //test numero zwei
         ItemStack newpick = pickaxe().clone();
         ItemMeta nm = newpick.getItemMeta();
         List<String> lore = nm.getLore();
