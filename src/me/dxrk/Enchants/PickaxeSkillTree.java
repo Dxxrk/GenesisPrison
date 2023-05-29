@@ -197,14 +197,14 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 5)");
         skills.add("Luck Boost (Level 4)");
         skills.add("Fortune Boost (Level 3)");
-        skills.add("Coupon Finder (Level 2)");
+        skills.add("8% Fortune Boost");
         skills.add("Fortune Boost (Level 4)");
         skills.add("Luck Boost (Level 5)");
         skills.add("Token Bonus (Level 6)");
         skills.add("Fortune Boost (Level 5)");
         skills.add("Poseidon (Level 4)");
         skills.add("1500 raise in max level of fortune");
-        skills.add("Coupon Finder (Level 4)");
+        skills.add("12% Fortune Boost");
         skills.add("1750 raise in max level of fortune");
         skills.add("Poseidon (Level 5)");
 
@@ -290,14 +290,14 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 5)");
         skills.add("Luck Boost (Level 4)");
         skills.add("Fortune Boost (Level 3)");
-        skills.add("Coupon Finder (Level 2)");
+        skills.add("8% Token Boost");
         skills.add("Fortune Boost (Level 4)");
         skills.add("Luck Boost (Level 5)");
         skills.add("Token Bonus (Level 6)");
         skills.add("Fortune Boost (Level 5)");
         skills.add("Ares (Level 4)");
         skills.add("300 raise in max level of token finder");
-        skills.add("Coupon Finder (Level 4)");
+        skills.add("12% Token Boost");
         skills.add("500 raise in max level of token finder");
         skills.add("Ares (Level 5)");
 
@@ -355,7 +355,7 @@ public class PickaxeSkillTree implements Listener {
         zeus.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 9));
         zeus.setItem(33, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 13));
         zeus.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 17));
-        //Coupon finder
+        //Special buffs
         zeus.setItem(20, skillItem(p, "250 raise in max level of keyfinder", m.c("&7Each of these skills raises the max level of keyfinder."), 15));
         zeus.setItem(42, skillItem(p, "+20% chance for x2 keys", m.c("&7Each of these skills raises the chance of finding 2x keys."), 20));
         zeus.setItem(26, skillItem(p, "500 raise in max level of keyfinder", m.c("&7Each of these skills raises the max level of keyfinder."), 25));
@@ -394,11 +394,11 @@ public class PickaxeSkillTree implements Listener {
         poseidon.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 9));
         poseidon.setItem(33, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 13));
         poseidon.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 17));
-        //Coupon finder
+        //Special buffs
         poseidon.setItem(20, skillItem(p, "1250 raise in max level of fortune", m.c("&7Each of these skills raises the max level of fortune."), 15));
-        poseidon.setItem(42, skillItem(p, "Coupon Finder (Level 2)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 20));
+        poseidon.setItem(42, skillItem(p, "8% Fortune Boost", m.c("&7Each of these skills gives an additional fortune bonus."), 20));
         poseidon.setItem(26, skillItem(p, "1500 raise in max level of fortune", m.c("&7Each of these skills raises the max level of fortune."), 25));
-        poseidon.setItem(35, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 30));
+        poseidon.setItem(35, skillItem(p, "12% Fortune Boost", m.c("&7Each of these skills gives an additional fortune bonus."), 30));
         poseidon.setItem(44, skillItem(p, "1750 raise in max level of fortune", m.c("&7Each of these skills raises the max level of fortune."), 35));
         //Level ups / abilities
         poseidon.setItem(0, skillItem(p, "Unlocked Poseidon", m.c("&7Chose the Poseidon path. Unlocks Tsunami and Typhoon Events."), 0));
@@ -433,7 +433,7 @@ public class PickaxeSkillTree implements Listener {
         hades.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 9));
         hades.setItem(33, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 13));
         hades.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 17));
-        //Coupon finder
+        //Special buffs
         hades.setItem(20, skillItem(p, "150 raise in max level of junkpile", m.c("&7Each of these skills raises the max level of junkpile."), 15));
         hades.setItem(42, skillItem(p, "+100% Junkpile Multi Gain", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 20));
         hades.setItem(26, skillItem(p, "250 raise in max level of junkpile", m.c("&7Each of these skills raises the max level of junkpile."), 25));
@@ -472,11 +472,11 @@ public class PickaxeSkillTree implements Listener {
         ares.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 9));
         ares.setItem(33, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 13));
         ares.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 17));
-        //Coupon finder
+        //Special buffs
         ares.setItem(20, skillItem(p, "200 raise in max level of token finder", m.c("&7Each of these skills raises the max level of token finder."), 15));
-        ares.setItem(42, skillItem(p, "Coupon Finder (Level 2)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 20));
+        ares.setItem(42, skillItem(p, "8% Token Boost", m.c("&7Each of these skills gives an additional token bonus."), 20));
         ares.setItem(26, skillItem(p, "300 raise in max level of token finder", m.c("&7Each of these skills raises the max level of token finder."), 25));
-        ares.setItem(35, skillItem(p, "Coupon Finder (Level 4)", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 30));
+        ares.setItem(35, skillItem(p, "12% Token Boost", m.c("&7Each of these skills gives an additional token bonus."), 30));
         ares.setItem(44, skillItem(p, "500 raise in max level of token finder", m.c("&7Each of these skills raises the max level of token finder."), 35));
         //Level ups / abilities
         ares.setItem(0, skillItem(p, "Unlocked Ares", m.c("&7Chose the ares path. Unlocks War Torn and Bloodshed Events."), 0));
@@ -511,7 +511,7 @@ public class PickaxeSkillTree implements Listener {
         aphrodite.setItem(41, skillItem(p, "Fortune Boost (Level 3)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 9));
         aphrodite.setItem(33, skillItem(p, "Fortune Boost (Level 4)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 13));
         aphrodite.setItem(16, skillItem(p, "Fortune Boost (Level 5)", m.c("&7Each of these skills gives a 2% effective boost to fortune."), 17));
-        //Coupon finder
+        //Special buffs
         aphrodite.setItem(20, skillItem(p, "500 raise in max level of xp finder", m.c("&7Each of these skills raises the max level of xp finder."), 15));
         aphrodite.setItem(42, skillItem(p, "+300% Junkpile XP Gain", m.c("&7Each of these skills raises the amount of XP given by junkpile."), 20));
         aphrodite.setItem(26, skillItem(p, "1000 raise in max level of xp finder", m.c("&7Each of these skills raises the max level of xp finder."), 25));
@@ -764,6 +764,14 @@ public class PickaxeSkillTree implements Listener {
                 int maxleveladd = parseInt(firstword[0]);
                 settings.getPlayerData().set(p.getUniqueId().toString()+".FortuneMaxLevelRaise",maxlevel+maxleveladd);
             }
+            if(firstword[0].equals("8%")){
+                double fortuneboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillFortuneBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost", fortuneboost+0.08);
+            }
+            if(firstword[0].equals("12%")){
+                double fortuneboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillFortuneBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillFortuneBoost", fortuneboost+0.12);
+            }
             if(skill.contains("Poseidon")) {
                 setType(p, findPickaxeType(p));
 
@@ -992,6 +1000,14 @@ public class PickaxeSkillTree implements Listener {
                 int maxlevel = settings.getPlayerData().getInt(p.getUniqueId()+".TFMaxLevelRaise");
                 int maxleveladd = parseInt(firstword[0]);
                 settings.getPlayerData().set(p.getUniqueId().toString()+".TFMaxLevelRaise",maxlevel+maxleveladd);
+            }
+            if(firstword[0].equals("8%")){
+                double tokenboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillTokenBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost", tokenboost+0.08);
+            }
+            if(firstword[0].equals("12%")){
+                double tokenboost = settings.getPlayerData().getDouble(p.getUniqueId()+".SkillTokenBoost");
+                settings.getPlayerData().set(p.getUniqueId().toString()+".SkillTokenBoost", tokenboost+0.12);
             }
             if(skill.contains("Ares")) {
                 setType(p, findPickaxeType(p));
