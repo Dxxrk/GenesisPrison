@@ -485,8 +485,8 @@ public ItemStack loadItem(String s, String slot) {
     	    String slot = checkForSlot(won, getCrate(e.getClickedBlock()));
     	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
     	    
-    	    int crates = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".CratesOpened");
-    	    this.settings.getPlayerData().set(p.getUniqueId().toString()+".CratesOpened", crates+1);
+    	    int crates = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId().toString()+".CratesOpened");
+    	    PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".CratesOpened", crates+1);
     	     
     	    if(name.contains("Tokens")) {
                 int tgive = randomTokensClick(getCrate(e.getClickedBlock()));
@@ -602,8 +602,8 @@ public ItemStack loadItem(String s, String slot) {
   }
 
     public void addKey(Player p, String key, int amt) {
-        int keysfound = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".KeysFound");
-        this.settings.getPlayerData().set(p.getUniqueId().toString()+".KeysFound", keysfound+amt);
+        int keysfound = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId().toString()+".KeysFound");
+        PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".KeysFound", keysfound+amt);
         int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + key.toLowerCase());
         key = key.toLowerCase();
         if (this.settings.getLocksmith().get(p.getUniqueId().toString() + "." + p.getName()) == null) {
@@ -640,8 +640,8 @@ public ItemStack loadItem(String s, String slot) {
     String slot = checkForSlot(won, "Alpha");
     String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
     
-    int crates = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".CratesOpened");
-    this.settings.getPlayerData().set(p.getUniqueId().toString()+".CratesOpened", crates+1);
+    int crates = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId().toString()+".CratesOpened");
+    PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".CratesOpened", crates+1);
      
     if(name.contains("Tokens")) {
         int tgive = randomTokens(25000, 100000);
@@ -687,8 +687,8 @@ public ItemStack loadItem(String s, String slot) {
 	    String slot = checkForSlot(won, "Beta");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
 	    
-	    int crates = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".CratesOpened");
-	    this.settings.getPlayerData().set(p.getUniqueId().toString()+".CratesOpened", crates+1);
+	    int crates = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId().toString()+".CratesOpened");
+	    PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".CratesOpened", crates+1);
 	     
 	    if(name.contains("Tokens")) {
             int tgive = randomTokens(30000, 125000);
@@ -722,8 +722,8 @@ public ItemStack loadItem(String s, String slot) {
 	    String slot = checkForSlot(won, "Omega");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
 	    
-	    int crates = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".CratesOpened");
-	    this.settings.getPlayerData().set(p.getUniqueId().toString()+".CratesOpened", crates+1);
+	    int crates = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId().toString()+".CratesOpened");
+	    PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".CratesOpened", crates+1);
 	     
 	    if(name.contains("Tokens")) {
             int tgive = randomTokens(45000, 150000);
@@ -757,8 +757,8 @@ public ItemStack loadItem(String s, String slot) {
 	    String slot = checkForSlot(won, "Token");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
 	    
-	    int crates = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".CratesOpened");
-	    this.settings.getPlayerData().set(p.getUniqueId().toString()+".CratesOpened", crates+1);
+	    int crates = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId().toString()+".CratesOpened");
+	    PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".CratesOpened", crates+1);
 	     
 	    if(name.contains("Tokens")) {
             int tgive = randomTokens(75000, 300000);
@@ -792,8 +792,8 @@ public ItemStack loadItem(String s, String slot) {
 	    String slot = checkForSlot(won, "Seasonal");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
 	    
-	    int crates = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".CratesOpened");
-	    this.settings.getPlayerData().set(p.getUniqueId().toString()+".CratesOpened", crates+1);
+	    int crates = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId().toString()+".CratesOpened");
+	    PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".CratesOpened", crates+1);
 	     
 	    if(name.contains("Tokens")) {
 	    	tokens += getValueInt(name);
@@ -824,8 +824,8 @@ public ItemStack loadItem(String s, String slot) {
 	    String slot = checkForSlot(won, "Rank");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
 	    
-	    int crates = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".CratesOpened");
-	    this.settings.getPlayerData().set(p.getUniqueId().toString()+".CratesOpened", crates+1);
+	    int crates = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId().toString()+".CratesOpened");
+	    PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".CratesOpened", crates+1);
 	     
 	    if(name.contains("Tokens")) {
 	    	tokens += getValueInt(name);
@@ -856,8 +856,8 @@ public ItemStack loadItem(String s, String slot) {
 	    String slot = checkForSlot(won, "Community");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
 	    
-	    int crates = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".CratesOpened");
-	    this.settings.getPlayerData().set(p.getUniqueId().toString()+".CratesOpened", crates+1);
+	    int crates = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId().toString()+".CratesOpened");
+	    PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".CratesOpened", crates+1);
 	     
 	    if(name.contains("Tokens")) {
 	    	tokens += getValueInt(name);
@@ -888,8 +888,8 @@ public ItemStack loadItem(String s, String slot) {
 	    String slot = checkForSlot(won, "Vote");
 	    String name = ChatColor.stripColor(won.getItemMeta().getDisplayName());
 	    
-	    int crates = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".CratesOpened");
-	    this.settings.getPlayerData().set(p.getUniqueId().toString()+".CratesOpened", crates+1);
+	    int crates = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId().toString()+".CratesOpened");
+	    PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".CratesOpened", crates+1);
 	     
 	    if(name.contains("Tokens")) {
             int tgive = randomTokens(100000, 500000);
@@ -1017,7 +1017,7 @@ public ItemStack loadItem(String s, String slot) {
 		    }
 		    }
 		    p.getScoreboard().getTeam("tokens").setSuffix(c("&e"+Main.formatAmt(Tokens.getInstance().getTokens(p))));
-          settings.savePlayerData();
+          PlayerDataHandler.savePlayerData(p);
           settings.saveLocksmith();
 	  }
 	  

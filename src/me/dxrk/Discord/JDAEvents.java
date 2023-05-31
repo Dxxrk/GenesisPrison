@@ -1,5 +1,6 @@
 package me.dxrk.Discord;
 
+import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
@@ -76,7 +77,7 @@ public class JDAEvents extends ListenerAdapter implements Listener, CommandExecu
 								jdaHandler.jda.getGuilds().get(0).addRoleToMember(user, sponsor).queue();
 							}
 							if(Objects.requireNonNull(jdaHandler.jda.getGuilds().get(0).getMember(user)).isBoosting())  {
-								settings.getPlayerData().set(p.getUniqueId().toString()+".NitroBoosting", true);
+								PlayerDataHandler.getPlayerData(p).set("NitroBoosting", true);
 							}
 						});
 					}

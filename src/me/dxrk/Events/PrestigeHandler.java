@@ -29,7 +29,6 @@ public class PrestigeHandler implements Listener, CommandExecutor {
 
     Methods m = Methods.getInstance();
     static SettingsManager settings = SettingsManager.getInstance();
-    public static FileConfiguration pl = settings.getPlayerData();
 
     private ItemStack prestigeItem(List<String> lore, String name) {
         ItemStack item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 5);
@@ -73,7 +72,7 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         lore.add(m.c("&a+$0.25 Coupon"));
         lore.add(m.c("&b+1 &4&l&ki&f&lSeasonal&4&l&ki&r &7Key"));
         String uuid = p.getUniqueId().toString();
-        int prestiges = pl.getInt(uuid+".Prestiges");
+        int prestiges = PlayerDataHandler.getPlayerData(p).getInt("Prestiges");
         if(prestiges >=100) {
             lore.clear();
             lore.add(m.c("&c&lMAX LEVEL"));
@@ -106,7 +105,7 @@ public class PrestigeHandler implements Listener, CommandExecutor {
 
             if(e.getSlot() == 2){
                 String uuid = p.getUniqueId().toString();
-                int prestiges = pl.getInt(uuid+".Prestiges");
+                int prestiges = PlayerDataHandler.getPlayerData(p).getInt("Prestiges");
                 if(prestiges >=100) {
                     return;
                 }
@@ -156,11 +155,11 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         String uuid = p.getUniqueId().toString();
 
         //Adding Prestige and resetting rank
-        int prestiges = pl.getInt(uuid+".Prestiges");
-        pl.set(uuid+".Prestiges", (prestiges+1));
+        int prestiges = PlayerDataHandler.getPlayerData(p).getInt("Prestiges");
+        PlayerDataHandler.getPlayerData(p).set("Prestiges", (prestiges+1));
         RankupHandler.getInstance().setRank(p, 1);
         Main.econ.withdrawPlayer(p, Main.econ.getBalance(p));
-        settings.savePlayerData();
+        PlayerDataHandler.savePlayerData(p);
         TitleAPI.sendTitle(p, 2, 40, 2, m.c("&c&lPrestiged!"), m.c("&b&lPrestige +1"));
         MineHandler.getInstance().updateMine(p, 1);
         CMDVoteShop.addCoupon(p, 0.25);
@@ -170,9 +169,9 @@ public class PrestigeHandler implements Listener, CommandExecutor {
 
     public static void addPrestiges(Player p, int amt) {
         String uuid = p.getUniqueId().toString();
-        int prestiges = pl.getInt(uuid+".Prestiges");
-        pl.set(uuid+".Prestiges", prestiges+amt);
-        settings.savePlayerData();
+        int prestiges = PlayerDataHandler.getPlayerData(p).getInt("Prestiges");
+        PlayerDataHandler.getPlayerData(p).set("Prestiges", prestiges+amt);
+        PlayerDataHandler.savePlayerData(p);
     }
 
 

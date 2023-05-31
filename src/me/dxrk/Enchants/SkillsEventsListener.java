@@ -4,6 +4,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
@@ -87,24 +88,24 @@ public class SkillsEventsListener implements Listener {
 
     public static double getSkillsBoostToken(Player p){
         double amt = 1.0;
-        double boost=settings.getPlayerData().getDouble(p.getUniqueId().toString()+".SkillTokenBoost");
+        double boost=PlayerDataHandler.getPlayerData(p).getDouble("SkillTokenBoost");
         amt+=boost;
         return amt;
     }
     public static double getSkillsBoostFortune(Player p){
         double amt = 1.0;
-        double boost=settings.getPlayerData().getDouble(p.getUniqueId().toString()+".SkillFortuneBoost");
+        double boost=PlayerDataHandler.getPlayerData(p).getDouble("SkillFortuneBoost");
         amt+=boost;
         return amt;
     }
     public static double getSkillsBoostLuck(Player p){
         double amt = 1.0;
-        double boost=settings.getPlayerData().getDouble(p.getUniqueId().toString()+".SkillLuckBoost");
+        double boost= PlayerDataHandler.getPlayerData(p).getDouble("SkillLuckBoost");
         amt+=boost;
         return amt;
     }
     public void couponBreak(Player p) {
-        List<String> skills = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
+        List<String> skills = PlayerDataHandler.getPlayerData(p).getStringList("PickaxeSkillsUnlocked");
         Random r = new Random();
         int level = 0;
         for(String s : skills) {
@@ -150,7 +151,7 @@ public class SkillsEventsListener implements Listener {
     public void eventBreak(Player p, String event){
         Random r = new Random();
 
-        List<String> skillsUnlocked = settings.getPlayerData().getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
+        List<String> skillsUnlocked = PlayerDataHandler.getPlayerData(p).getStringList("PickaxeSkillsUnlocked");
         for(String s : skillsUnlocked) {
             if(s.contains(event)) {
                 activateEvent(event);
@@ -172,8 +173,8 @@ public class SkillsEventsListener implements Listener {
         if(!EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;
         couponBreak(p);
         //Zeus
-        if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Zeus")) {
-            int skill = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillLevel");
+        if(PlayerDataHandler.getPlayerData(p).get("PickaxeSkill").equals("Zeus")) {
+            int skill = PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillLevel");
             int i = r.nextInt(10000/(skill));
             if(i == 1) {
                 if(activeEvents.size() >=2) {
@@ -205,8 +206,8 @@ public class SkillsEventsListener implements Listener {
             }
         }
         //Poseidon
-        if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Poseidon")) {
-            int skill = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillLevel");
+        if(PlayerDataHandler.getPlayerData(p).get("PickaxeSkill").equals("Poseidon")) {
+            int skill = PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillLevel");
             int i = r.nextInt(10000/(skill));
             if(i == 1) {
                 if(activeEvents.size() >=2) {
@@ -238,8 +239,8 @@ public class SkillsEventsListener implements Listener {
             }
         }
         //Hades
-        if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Hades")) {
-            int skill = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillLevel");
+        if(PlayerDataHandler.getPlayerData(p).get("PickaxeSkill").equals("Hades")) {
+            int skill = PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillLevel");
             int i = r.nextInt(10000/(skill));
             if(i == 1) {
                 if(activeEvents.size() >=2) {
@@ -271,8 +272,8 @@ public class SkillsEventsListener implements Listener {
             }
         }
         //Ares
-        if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Ares")) {
-            int skill = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillLevel");
+        if(PlayerDataHandler.getPlayerData(p).get("PickaxeSkill").equals("Ares")) {
+            int skill = PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillLevel");
             int i = r.nextInt(10000/(skill));
             if(i == 1) {
                 if(activeEvents.size() >=2) {
@@ -304,8 +305,8 @@ public class SkillsEventsListener implements Listener {
             }
         }
         //Aphrodite
-        if(settings.getPlayerData().get(p.getUniqueId().toString()+".PickaxeSkill").equals("Aphrodite")) {
-            int skill = settings.getPlayerData().getInt(p.getUniqueId().toString()+".PickaxeSkillLevel");
+        if(PlayerDataHandler.getPlayerData(p).get("PickaxeSkill").equals("Aphrodite")) {
+            int skill = PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillLevel");
             int i = r.nextInt(10000/(skill));
             if(i == 1) {
                 if(activeEvents.size() >=2) {

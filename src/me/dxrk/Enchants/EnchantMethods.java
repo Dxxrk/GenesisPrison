@@ -45,7 +45,6 @@ public class EnchantMethods implements CommandExecutor {
     private Methods m = Methods.getInstance();
     private final SettingsManager settings = SettingsManager.getInstance();
 
-    public static List<Player> laser = new ArrayList<>();
 
 
     public boolean isInt(String s) {
@@ -197,7 +196,7 @@ public class EnchantMethods implements CommandExecutor {
             }
         }
         int rank = RankupHandler.getInstance().getRank(p);
-        if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Ethereal")) {
+        if (PlayerDataHandler.getPlayerData(p).getBoolean("Ethereal")) {
             rank = 1000;
         }
         // ResetHandler.setAIR(min, max, MineHandler.Blocks(rank/16));
@@ -238,7 +237,7 @@ public class EnchantMethods implements CommandExecutor {
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
         amountblocks = m.getBlocksLeft();
 
-        double lucky = settings.getPlayerData().getDouble(p.getUniqueId().toString() + ".LuckyBlock");
+        double lucky = PlayerDataHandler.getPlayerData(p).getDouble("LuckyBlock");
         ResetHandler.resetMineWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), lucky);
 
 
@@ -360,14 +359,14 @@ public class EnchantMethods implements CommandExecutor {
         Random r = new Random();
 
         int xpboost = 1;
-        int skillxpboost = settings.getPlayerData().getInt(p.getUniqueId().toString()+".SkillJunkpileXPBoost");
+        int skillxpboost = PlayerDataHandler.getPlayerData(p).getInt("SkillJunkpileXPBoost");
         xpboost+=skillxpboost;
         int fmin = 1000*xpboost;
         int fmax = 2500*xpboost;
         int xp = r.nextInt(fmax - fmin) + fmin;
 
         int multiboost = 1;
-        int skillmultiboost = settings.getPlayerData().getInt(p.getUniqueId().toString()+".SkillJunkpileMultiBoost");
+        int skillmultiboost = PlayerDataHandler.getPlayerData(p).getInt("SkillJunkpileMultiBoost");
         multiboost+=skillmultiboost;
         double min = 0.1*multiboost;
         double max = 0.5*multiboost;

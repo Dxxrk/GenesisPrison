@@ -1,6 +1,7 @@
 package me.dxrk.Gangs;
 
 import me.dxrk.Enchants.PickaxeLevel;
+import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.ScoreboardHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
@@ -22,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
 import java.util.*;
 
 public class CMDGang implements Listener, CommandExecutor {
@@ -451,8 +453,15 @@ public class CMDGang implements Listener, CommandExecutor {
                 }
                 boolean online = false;
                 OfflinePlayer op = null;
-                for(String uuid : settings.getPlayerData().getKeys(false)) {
-                    OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
+                File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
+                File[] var = mineFiles;
+                assert mineFiles != null;
+                int amountOfMines = mineFiles.length;
+                for (int i = 0; i < amountOfMines; ++i) {
+                    File mineFile = var[i];
+                    String name = mineFile.getName().split("\\.")[0];
+                    UUID id = UUID.fromString(name);
+                    OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(name));
                     if(args[1].equalsIgnoreCase(player.getName()) && g.hasGang(player)) {
                         online = true;
                         op = player;
@@ -474,16 +483,23 @@ public class CMDGang implements Listener, CommandExecutor {
                 }
                 List<String> members = settings.getGangs().getStringList(gang+".Members");
                 String uuid = null;
-                for(String s : settings.getPlayerData().getKeys(false)) {
-                    OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(s));
+                File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
+                File[] var = mineFiles;
+                assert mineFiles != null;
+                int amountOfMines = mineFiles.length;
+                for (int i = 0; i < amountOfMines; ++i) {
+                    File mineFile = var[i];
+                    String name = mineFile.getName().split("\\.")[0];
+                    UUID id = UUID.fromString(name);
+                    OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(name));
                     if(args[1].equalsIgnoreCase(player.getName())) {
-                        uuid = s;
+                        uuid = name;
                     }
                 }
                 if(uuid != null && members.contains(uuid)) {
                     members.remove(uuid);
-                    settings.getPlayerData().set(uuid + ".Gang", "");
-                    settings.savePlayerData();
+                    PlayerDataHandler.getPlayerData(p).set(uuid + ".Gang", "");
+                    PlayerDataHandler.savePlayerData(p);
                     settings.getGangs().set(gang + ".Members", members);
                     settings.saveGangs();
                     OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
@@ -517,7 +533,7 @@ public class CMDGang implements Listener, CommandExecutor {
                 }
                 p.sendMessage(m.c("&f&lGangs &8| &bGang Deleted."));
                 settings.getGangs().set(gang, null);
-                settings.getPlayerData().set(p.getUniqueId().toString()+".Gang", "");
+                PlayerDataHandler.getPlayerData(p).set("Gang", "");
                 settings.saveGangs();
             }
             if(args.length == 1 && args[0].equalsIgnoreCase("leave")) {

@@ -1,6 +1,7 @@
 package me.dxrk.Events;
 
 import me.dxrk.Enchants.PickaxeLevel;
+import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Tokens.Tokens;
@@ -20,6 +21,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.io.File;
 import java.util.*;
 
 public class AuctionHouseHandler implements Listener, CommandExecutor {
@@ -265,11 +267,9 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
     }
 
 
-    public void giveTokens(String uuid, double tokens) {
-        double has = settings.getET().getInt(uuid);
-        settings.getET().set(uuid, has + tokens);
-        settings.saveEtFile();
-
+    public void giveTokens(UUID uuid, double tokens) {
+        double has = PlayerDataHandler.getPlayerData(uuid).getInt("Tokens");
+        PlayerDataHandler.getPlayerData(uuid).set("Tokens", has + tokens);
     }
 
 
@@ -369,10 +369,17 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                     }
                 }
                 String ss = ChatColor.stripColor(lore.get(line)).split(" ")[1];
-                for (String uuid : settings.getPlayerData().getKeys(false)) {
-                    OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
+                File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
+                File[] var = mineFiles;
+                assert mineFiles != null;
+                int amountOfMines = mineFiles.length;
+                for (int i = 0; i < amountOfMines; ++i) {
+                    File mineFile = var[i];
+                    String name = mineFile.getName().split("\\.")[0];
+                    UUID id = UUID.fromString(name);
+                    OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(name));
                     if (player.getName().equalsIgnoreCase(ss)) {
-                        giveTokens(uuid, price);
+                        giveTokens(UUID.fromString(name), price);
                     }
                 }
 

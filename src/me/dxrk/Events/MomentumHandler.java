@@ -10,8 +10,6 @@ import me.dxrk.Enchants.EnchantMethods;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
-import me.dxrk.Mines.Mine;
-import me.dxrk.Mines.MineSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -69,9 +67,9 @@ public class MomentumHandler implements Listener {
 
     private static void removeMomentum(UUID id) {
         int max = seconds.get(id);
-        int prev = settings.getPlayerData().getInt(id.toString()+".MaxMomentum");
+        int prev = PlayerDataHandler.getPlayerData(id).getInt("MaxMomentum");
         if(max > prev) {
-            settings.getPlayerData().set(id.toString()+".MaxMomentum", max);
+            PlayerDataHandler.getPlayerData(id).set("MaxMomentum", max);
         }
         seconds.remove(id);
         momentum.remove(id);

@@ -74,20 +74,42 @@ public class Mine {
     }
 
     public int getTotalBlocks() {
-        return getLocationsInMine(this.corner1, this.corner2, this.mineWorld).size();
+        byte b = 0;
+        Location location1 = getMinPoint();
+        Location location2 = getMaxPoint();
+        for (int i = location1.getBlockX(); i <= location2.getBlockX(); i++) {
+            for (int j = location1.getBlockZ(); j <= location2.getBlockZ(); j++) {
+                for (int k = location1.getBlockY(); k <= location2.getY(); k++)
+                    b++;
+            }
+        }
+        return b;
     }
 
     public int getBlocksLeft() {
         return getLocationsInMineNotAir(this.corner1, this.corner2, this.mineWorld).size();
     }
     public int getBlocksMined() {
-        return getLocationsInMineAir(this.corner1, this.corner2, this.mineWorld).size();
+        byte b = 0;
+        Location location1 = getMinPoint();
+        Location location2 = getMaxPoint();
+        for (int i = location1.getBlockX(); i <= location2.getBlockX(); i++) {
+            for (int j = location1.getBlockZ(); j <= location2.getBlockZ(); j++) {
+                for (int k = location1.getBlockY(); k <= location2.getY(); k++) {
+                    if (location1.getWorld().getBlockAt(i, k, j).getType() == Material.AIR)
+                        b++;
+                }
+            }
+        }
+        return b;
     }
 
-    public double getBlocksLeftPercentage() {
-        int var1 = this.getBlocksMined();
-        int var2 = this.getTotalBlocks();
-        return var1 == 0 ? 100.0 : 100.0 - (double)var1 / (double)var2 * 100.0;
+    public float getBlocksLeftPercentage() {
+        int i = getBlocksMined();
+        int j = getTotalBlocks();
+        if (i == 0)
+            return 100.0F;
+        return 100.0F - i / j * 100.0F;
     }
 
     public ItemStack getBlock1() {return this.block1;}

@@ -34,9 +34,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.ServerListPingEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -46,6 +44,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.io.File;
 import java.text.NumberFormat;
 import java.util.*;
 
@@ -355,46 +354,54 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (String s : settings.getPlayerData().getKeys(false)) {
-                    if (!(settings.getPlayerData().getInt(s + ".KitDemiGodKeys") == 0)) {
-                        int countdown = settings.getPlayerData().getInt(s + ".KitDemiGodKeys");
+                File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
+                File[] var = mineFiles;
+                assert mineFiles != null;
+                int amountOfMines = mineFiles.length;
+                for (int i = 0; i < amountOfMines; ++i) {
+                    File mineFile = var[i];
+                    String name = mineFile.getName().split("\\.")[0];
+                    UUID id = UUID.fromString(name);
+                    
+                    if (!(PlayerDataHandler.getPlayerData(id).getInt("KitDemiGodKeys") == 0)) {
+                        int countdown = PlayerDataHandler.getPlayerData(id).getInt("KitDemiGodKeys");
                         int replace = countdown - 1;
-                        settings.getPlayerData().set(s + ".KitDemiGodKeys", replace);
+                        PlayerDataHandler.getPlayerData(id).set("KitDemiGodKeys", replace);
                     }
-                    if (!(settings.getPlayerData().getInt(s + ".KitTitanKeys") == 0)) {
-                        int countdown = settings.getPlayerData().getInt(s + ".KitTitanKeys");
+                    if (!(PlayerDataHandler.getPlayerData(id).getInt("KitTitanKeys") == 0)) {
+                        int countdown = PlayerDataHandler.getPlayerData(id).getInt("KitTitanKeys");
                         int replace = countdown - 1;
-                        settings.getPlayerData().set(s + ".KitTitanKeys", replace);
+                        PlayerDataHandler.getPlayerData(id).set("KitTitanKeys", replace);
                     }
-                    if (!(settings.getPlayerData().getInt(s + ".KitGodKeys") == 0)) {
-                        int countdown = settings.getPlayerData().getInt(s + ".KitGodKeys");
+                    if (!(PlayerDataHandler.getPlayerData(id).getInt("KitGodKeys") == 0)) {
+                        int countdown = PlayerDataHandler.getPlayerData(id).getInt("KitGodKeys");
                         int replace = countdown - 1;
-                        settings.getPlayerData().set(s + ".KitGodKeys", replace);
+                        PlayerDataHandler.getPlayerData(id).set("KitGodKeys", replace);
                     }
-                    if (!(settings.getPlayerData().getInt(s + ".KitOlympianKeys") == 0)) {
-                        int countdown = settings.getPlayerData().getInt(s + ".KitOlympianKeys");
+                    if (!(PlayerDataHandler.getPlayerData(id).getInt("KitOlympianKeys") == 0)) {
+                        int countdown = PlayerDataHandler.getPlayerData(id).getInt("KitOlympianKeys");
                         int replace = countdown - 1;
-                        settings.getPlayerData().set(s + ".KitOlympianKeys", replace);
+                        PlayerDataHandler.getPlayerData(id).set("KitOlympianKeys", replace);
                     }
-                    if (!(settings.getPlayerData().getInt(s + ".KitGenesisKeys") == 0)) {
-                        int countdown = settings.getPlayerData().getInt(s + ".KitGenesisKeys");
+                    if (!(PlayerDataHandler.getPlayerData(id).getInt("KitGenesisKeys") == 0)) {
+                        int countdown = PlayerDataHandler.getPlayerData(id).getInt("KitGenesisKeys");
                         int replace = countdown - 1;
-                        settings.getPlayerData().set(s + ".KitGenesisKeys", replace);
+                        PlayerDataHandler.getPlayerData(id).set("KitGenesisKeys", replace);
                     }
-                    if (!(settings.getPlayerData().getInt(s + ".KitGod") == 0)) {
-                        int countdown = settings.getPlayerData().getInt(s + ".KitGod");
+                    if (!(PlayerDataHandler.getPlayerData(id).getInt("KitGod") == 0)) {
+                        int countdown = PlayerDataHandler.getPlayerData(id).getInt("KitGod");
                         int replace = countdown - 1;
-                        settings.getPlayerData().set(s + ".KitGod", replace);
+                        PlayerDataHandler.getPlayerData(id).set("KitGod", replace);
                     }
-                    if (!(settings.getPlayerData().getInt(s + ".KitOlympian") == 0)) {
-                        int countdown = settings.getPlayerData().getInt(s + ".KitOlympian");
+                    if (!(PlayerDataHandler.getPlayerData(id).getInt("KitOlympian") == 0)) {
+                        int countdown = PlayerDataHandler.getPlayerData(id).getInt("KitOlympian");
                         int replace = countdown - 1;
-                        settings.getPlayerData().set(s + ".KitOlympian", replace);
+                        PlayerDataHandler.getPlayerData(id).set("KitOlympian", replace);
                     }
-                    if (!(settings.getPlayerData().getInt(s + ".KitGenesis") == 0)) {
-                        int countdown = settings.getPlayerData().getInt(s + ".KitGenesis");
+                    if (!(PlayerDataHandler.getPlayerData(id).getInt("KitGenesis") == 0)) {
+                        int countdown = PlayerDataHandler.getPlayerData(id).getInt("KitGenesis");
                         int replace = countdown - 1;
-                        settings.getPlayerData().set(s + ".KitGenesis", replace);
+                        PlayerDataHandler.getPlayerData(id).set("KitGenesis", replace);
                     }
                 }
             }
@@ -482,13 +489,19 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             }.runTaskLater(this, 20 * 5L);
 
         }
-        for(String s : settings.getPlayerData().getKeys(false)) {
-            UUID id =UUID.fromString(s);
-            int seconds = settings.getPlayerData().getInt(s+".RestartMomentum");
+        File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
+        File[] var = mineFiles;
+        assert mineFiles != null;
+        int amountOfMines = mineFiles.length;
+        for (int i = 0; i < amountOfMines; ++i) {
+            File mineFile = var[i];
+            String name = mineFile.getName().split("\\.")[0];
+            UUID id = UUID.fromString(name);
+            int seconds = PlayerDataHandler.getPlayerData(id).getInt("RestartMomentum");
             if(seconds >0) {
                 MomentumHandler.seconds.put(id, seconds);
             }
-            ArrayList<Long> momentums = (ArrayList<Long>) settings.getPlayerData().getLongList(id.toString()+".RestartMomentumList");
+            ArrayList<Long> momentums = (ArrayList<Long>) PlayerDataHandler.getPlayerData(id).getLongList("RestartMomentumList");
             MomentumHandler.momentum.put(id, momentums);
         }
 
@@ -585,38 +598,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     }
 
 
-    public void savePickaxe(Player p) {
-        ItemStack[] inv = p.getInventory().getContents();
 
-        for (ItemStack i : inv) {
-            if (i == null) continue;
-            if (i.getType() == null) continue;
-            if (i.getType().equals(Material.WOOD_PICKAXE) || i.getType().equals(Material.STONE_PICKAXE) || i.getType().equals(Material.IRON_PICKAXE) || i.getType().equals(Material.GOLD_PICKAXE)
-                    || i.getType().equals(Material.DIAMOND_PICKAXE)) {
-                ItemStack pickaxe = i;
-                settings.getPlayerData().set(p.getUniqueId().toString() + ".Pickaxe", pickaxe);
-            }
-        }
-        settings.savePlayerData();
-    }
-
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e) { //LAG SOURCE
-        if (!e.getPlayer().hasPlayedBefore()) {
-            Bukkit.broadcastMessage(c("&dWelcome &f&l" + e.getPlayer().getName() + "&d to &c&lGenesis &b&lPrison!"));
-        }
-        savePickaxe(e.getPlayer());
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                savePickaxe(e.getPlayer());
-                settings.savePlayerData();
-                settings.saveboosts();
-            }
-        }.runTaskTimer(this, 0L, 20 * 120L);
-
-
-    }
 
 
     public static String formatAmt(double amt) {
@@ -670,11 +652,12 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         this.settings.saveVote();
         for(UUID id : MomentumHandler.seconds.keySet()) {
             long seconds = MomentumHandler.seconds.get(id);
-            settings.getPlayerData().set(id.toString()+".RestartMomentum", seconds);
+            PlayerDataHandler.getPlayerData(id).set(id +".RestartMomentum", seconds);
             ArrayList<Long> momentums = MomentumHandler.momentum.get(id);
-            settings.getPlayerData().set(id.toString()+".RestartMomentumList", momentums);
+            PlayerDataHandler.getPlayerData(id).set(id +".RestartMomentumList", momentums);
+            PlayerDataHandler.savePlayerData(id);
         }
-        this.settings.savePlayerData();
+
         this.settings.saveData();
         BlocksHandler.getInstance().onEnd();
 

@@ -2,6 +2,7 @@ package me.dxrk.Events;
 
 import com.earth2me.essentials.Essentials;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import org.bukkit.*;
@@ -17,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -119,15 +121,15 @@ public class Leaderboards implements Listener, CommandExecutor{
 		ItemMeta rm = ranks.getItemMeta();
 		rm.setDisplayName(m.c("&bHighest Rank:"));
 		if(rankstop.size() >= 1)
-			lore.add(m.c("&7#1 &c"+getOfflinePlayer(rankstop.get(0).getValue()).getName()+": &7Prestiges: &a"+settings.getPlayerData().getInt(rankstop.get(0).getValue()+".Prestiges")+" &7Level: &b"+settings.getRankupPrices().getInt(rankstop.get(0).getValue())));
+			lore.add(m.c("&7#1 &c"+getOfflinePlayer(rankstop.get(0).getValue()).getName()+": &7Prestiges: &a"+PlayerDataHandler.getPlayerData(UUID.fromString(rankstop.get(0).getValue())).getInt("Prestiges")+" &7Level: &b"+PlayerDataHandler.getPlayerData(UUID.fromString(rankstop.get(0).getValue())).getInt("Level")));
 		if(rankstop.size() >= 2)
-			lore.add(m.c("&7#2 &c"+getOfflinePlayer(rankstop.get(1).getValue()).getName()+": &7Prestiges: &a"+settings.getPlayerData().getInt(rankstop.get(1).getValue()+".Prestiges")+" &7Level: &b"+settings.getRankupPrices().getInt(rankstop.get(1).getValue())));
+			lore.add(m.c("&7#2 &c"+getOfflinePlayer(rankstop.get(1).getValue()).getName()+": &7Prestiges: &a"+PlayerDataHandler.getPlayerData(UUID.fromString(rankstop.get(1).getValue())).getInt("Prestiges")+" &7Level: &b"+PlayerDataHandler.getPlayerData(UUID.fromString(rankstop.get(1).getValue())).getInt("Level")));
 		if(rankstop.size() >= 3)
-			lore.add(m.c("&7#3 &c"+getOfflinePlayer(rankstop.get(2).getValue()).getName()+": &7Prestiges: &a"+settings.getPlayerData().getInt(rankstop.get(2).getValue()+".Prestiges")+" &7Level: &b"+settings.getRankupPrices().getInt(rankstop.get(2).getValue())));
+			lore.add(m.c("&7#3 &c"+getOfflinePlayer(rankstop.get(2).getValue()).getName()+": &7Prestiges: &a"+PlayerDataHandler.getPlayerData(UUID.fromString(rankstop.get(2).getValue())).getInt("Prestiges")+" &7Level: &b"+PlayerDataHandler.getPlayerData(UUID.fromString(rankstop.get(2).getValue())).getInt("Level")));
 		if(rankstop.size() >= 4)
-			lore.add(m.c("&7#4 &c"+getOfflinePlayer(rankstop.get(3).getValue()).getName()+": &7Prestiges: &a"+settings.getPlayerData().getInt(rankstop.get(3).getValue()+".Prestiges")+" &7Level: &b"+settings.getRankupPrices().getInt(rankstop.get(3).getValue())));
+			lore.add(m.c("&7#4 &c"+getOfflinePlayer(rankstop.get(3).getValue()).getName()+": &7Prestiges: &a"+PlayerDataHandler.getPlayerData(UUID.fromString(rankstop.get(3).getValue())).getInt("Prestiges")+" &7Level: &b"+PlayerDataHandler.getPlayerData(UUID.fromString(rankstop.get(3).getValue())).getInt("Level")));
 		if(rankstop.size() >= 5)
-			lore.add(m.c("&7#5 &c"+getOfflinePlayer(rankstop.get(4).getValue()).getName()+": &7Prestiges: &a"+settings.getPlayerData().getInt(rankstop.get(4).getValue()+".Prestiges")+" &7Level: &b"+settings.getRankupPrices().getInt(rankstop.get(4).getValue())));
+			lore.add(m.c("&7#5 &c"+getOfflinePlayer(rankstop.get(4).getValue()).getName()+": &7Prestiges: &a"+PlayerDataHandler.getPlayerData(UUID.fromString(rankstop.get(4).getValue())).getInt("Prestiges")+" &7Level: &b"+PlayerDataHandler.getPlayerData(UUID.fromString(rankstop.get(4).getValue())).getInt("Level")));
 		int r = 0;
 		for(int i = 0; i < rankstop.size(); i++) {
 			if(p.getName().equals(getOfflinePlayer(rankstop.get(i).getValue()).getName())) {
@@ -135,7 +137,7 @@ public class Leaderboards implements Listener, CommandExecutor{
 			}
 		}
 		if(rankstop.size() > r+1)
-			lore.add(m.c("&cYour Rank: #"+(r+1)+" With &b"+": &7Prestiges: &a"+settings.getPlayerData().getInt(rankstop.get(r).getValue()+".Prestiges")+" &7Level: &b"+settings.getRankupPrices().getInt(rankstop.get(r).getValue())));
+			lore.add(m.c("&cYour Rank: #"+(r+1)+" With &b"+": &7Prestiges: &a"+PlayerDataHandler.getPlayerData(UUID.fromString(rankstop.get(r).getValue())).getInt("Prestiges")+" &7Level: &b"+PlayerDataHandler.getPlayerData(UUID.fromString(rankstop.get(r).getValue())).getInt("Level")));
 		else {
 			lore.add(m.c("&cYour Rank: #N/A With &bN/A"));
 		}
@@ -244,37 +246,58 @@ public class Leaderboards implements Listener, CommandExecutor{
 	}
 	public static void orderRanks() {
 		orderrank.clear();
-		for (String uuid : settings.getPlayerData().getKeys(false)) {
-			if(uuid.equals("7dd67277-1c1a-42e7-98ac-aa64eb122ec8")) continue;
-			if(uuid.equals("c32dfc2e-6780-4dbb-9baf-9ca671fbd35f")) continue;
-			if(uuid.equals("6a137295-d6e3-4a4d-b4e8-9d09898f9057")) continue;
-			if(uuid.equals("8ae918d9-21ad-4184-a26e-abcf8d0ac6d9")) continue;
-			int prestige = settings.getPlayerData().getInt(uuid+".Prestiges")*50000;
-			int rank = settings.getRankupPrices().getInt(uuid);
+		File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
+		File[] var = mineFiles;
+		assert mineFiles != null;
+		int amountOfMines = mineFiles.length;
+		for (int i = 0; i < amountOfMines; ++i) {
+			File mineFile = var[i];
+			String name = mineFile.getName().split("\\.")[0];
+			UUID id = UUID.fromString(name);
+			if(name.equals("7dd67277-1c1a-42e7-98ac-aa64eb122ec8")) continue;
+			if(name.equals("c32dfc2e-6780-4dbb-9baf-9ca671fbd35f")) continue;
+			if(name.equals("6a137295-d6e3-4a4d-b4e8-9d09898f9057")) continue;
+			if(name.equals("8ae918d9-21ad-4184-a26e-abcf8d0ac6d9")) continue;
+			int prestige = PlayerDataHandler.getPlayerData(id).getInt("Prestiges")*50000;
+			int rank = PlayerDataHandler.getPlayerData(id).getInt("Level");
 			int total = prestige+rank;
-			orderrank.put(total, uuid);
+			orderrank.put(total, name);
 
 		}
 	}
-	
+
 	public static void orderBlocks() {
 		orderblocks.clear();
-		for(String uuid : settings.getPlayerData().getKeys(false)) {
-			if(uuid.equals("7dd67277-1c1a-42e7-98ac-aa64eb122ec8")) continue;
-			if(uuid.equals("c32dfc2e-6780-4dbb-9baf-9ca671fbd35f")) continue;
-			if(uuid.equals("8ae918d9-21ad-4184-a26e-abcf8d0ac6d9")) continue;
-			int blocks = settings.getPlayerData().getInt(uuid+".BlocksBroken");
-		    orderblocks.put(blocks, uuid);
+		File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
+		File[] var = mineFiles;
+		assert mineFiles != null;
+		int amountOfMines = mineFiles.length;
+		for (int i = 0; i < amountOfMines; ++i) {
+			File mineFile = var[i];
+			String name = mineFile.getName().split("\\.")[0];
+			UUID id = UUID.fromString(name);
+			if(name.equals("7dd67277-1c1a-42e7-98ac-aa64eb122ec8")) continue;
+			if(name.equals("c32dfc2e-6780-4dbb-9baf-9ca671fbd35f")) continue;
+			if(name.equals("8ae918d9-21ad-4184-a26e-abcf8d0ac6d9")) continue;
+			int blocks = PlayerDataHandler.getPlayerData(id).getInt("BlocksBroken");
+		    orderblocks.put(blocks, name);
 		}
 	}
 	public static void orderTime() {
 		ordertime.clear();
-		for(String uuid : settings.getPlayerData().getKeys(false)) {
-			if(uuid.equals("7dd67277-1c1a-42e7-98ac-aa64eb122ec8")) continue;
-			if(uuid.equals("c32dfc2e-6780-4dbb-9baf-9ca671fbd35f")) continue;
-			if(uuid.equals("8ae918d9-21ad-4184-a26e-abcf8d0ac6d9")) continue;
-			int time = settings.getPlayerData().getInt(uuid+".TimePlayed");
-		    ordertime.put(time, uuid);
+		File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
+		File[] var = mineFiles;
+		assert mineFiles != null;
+		int amountOfMines = mineFiles.length;
+		for (int i = 0; i < amountOfMines; ++i) {
+			File mineFile = var[i];
+			String name = mineFile.getName().split("\\.")[0];
+			UUID id = UUID.fromString(name);
+			if(name.equals("7dd67277-1c1a-42e7-98ac-aa64eb122ec8")) continue;
+			if(name.equals("c32dfc2e-6780-4dbb-9baf-9ca671fbd35f")) continue;
+			if(name.equals("8ae918d9-21ad-4184-a26e-abcf8d0ac6d9")) continue;
+			int time = PlayerDataHandler.getPlayerData(id).getInt("TimePlayed");
+		    ordertime.put(time, name);
 		}
 	}
 	
@@ -288,8 +311,8 @@ public class Leaderboards implements Listener, CommandExecutor{
 				if(!p.isOnline()) continue;
 				if(ess.getUser(p) != null && ess.getUser(p).isAfk()) continue;
 				
-				int time = settings.getPlayerData().getInt(p.getUniqueId().toString()+".TimePlayed");
-				settings.getPlayerData().set(p.getUniqueId().toString()+".TimePlayed", time+1);
+				int time = PlayerDataHandler.getPlayerData(p).getInt("TimePlayed");
+				PlayerDataHandler.getPlayerData(p).set("TimePlayed", time+1);
 				
 				
 				

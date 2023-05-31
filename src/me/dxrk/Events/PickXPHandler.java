@@ -43,12 +43,12 @@ public class PickXPHandler
 
 
     public double getXP(Player p) {
-        double xp = settings.getPlayerData().getDouble(p.getUniqueId().toString() + ".PickXP");
+        double xp = PlayerDataHandler.getPlayerData(p).getDouble("PickXP");
         return xp;
     }
 
     public int getLevel(Player p) {
-        int level = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".PickLevel");
+        int level = PlayerDataHandler.getPlayerData(p).getInt("PickLevel");
         return level;
     }
 
@@ -56,17 +56,17 @@ public class PickXPHandler
     public void addXP(Player p, double add) {
         double xp = getXP(p);
 
-        settings.getPlayerData().set(p.getUniqueId().toString() + ".PickXP", (xp + add));
+        PlayerDataHandler.getPlayerData(p).set("PickXP", (xp + add));
     }
 
     public void levelUp(Player p) {
         int level = getLevel(p);
-        int skillPoints = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".PickaxeSkillPoints");
-        settings.getPlayerData().set(p.getUniqueId().toString() + ".PickLevel", level + 1);
+        int skillPoints = PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillPoints");
+        PlayerDataHandler.getPlayerData(p).set("PickLevel", level + 1);
         if (level >= 25) {
-            settings.getPlayerData().set(p.getUniqueId().toString() + ".PickaxeSkillPoints", skillPoints + 1);
+            PlayerDataHandler.getPlayerData(p).set("PickaxeSkillPoints", skillPoints + 1);
         }
-        settings.savePlayerData();
+        PlayerDataHandler.savePlayerData(p);
     }
 
     public boolean canLevelUp(Player p) {

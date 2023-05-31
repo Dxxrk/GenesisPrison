@@ -4,14 +4,7 @@ import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Main.SettingsManager;
-
-import java.util.HashMap;
-
-import me.dxrk.Mines.Mine;
-import me.dxrk.Mines.MineSystem;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -23,8 +16,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.HashMap;
+
 public class BlocksHandler implements CommandExecutor, Listener {
-  public static HashMap<Player, Integer> blocks = new HashMap<Player, Integer>();
+  public static HashMap<Player, Integer> blocks = new HashMap<>();
 
   SettingsManager settings = SettingsManager.getInstance();
   
@@ -47,8 +42,8 @@ public class BlocksHandler implements CommandExecutor, Listener {
   public void onEnd() {
     for (Player p : Bukkit.getOnlinePlayers()) {
       if (blocks.containsKey(p)) {
-        this.settings.getPlayerData().set(p.getUniqueId().toString()+".BlocksBroken", blocks.get(p));
-        this.settings.savePlayerData();
+        PlayerDataHandler.getPlayerData(p).set("BlocksBroken", blocks.get(p));
+        PlayerDataHandler.savePlayerData(p);
         blocks.remove(p);
       } 
     } 
@@ -56,8 +51,8 @@ public class BlocksHandler implements CommandExecutor, Listener {
   public void onEndLB() {
 	    for (Player p : Bukkit.getOnlinePlayers()) {
 	      if (blocks.containsKey(p)) {
-	        this.settings.getPlayerData().set(p.getUniqueId().toString()+".BlocksBroken", blocks.get(p));
-	        this.settings.savePlayerData();
+	        PlayerDataHandler.getPlayerData(p).set("BlocksBroken", blocks.get(p));
+	        PlayerDataHandler.savePlayerData(p);
 	      } 
 	    } 
 	  }
@@ -81,8 +76,8 @@ public class BlocksHandler implements CommandExecutor, Listener {
     }
     if (!set.allows(DefaultFlag.LIGHTER))
       return;
-    int blocksbroken = this.settings.getPlayerData().getInt(p.getUniqueId().toString() + ".BlocksBroken");
-    this.settings.getPlayerData().set(p.getUniqueId().toString()+".BlocksBroken", blocksbroken+1);
+    int blocksbroken = PlayerDataHandler.getPlayerData(p).getInt("BlocksBroken");
+    PlayerDataHandler.getPlayerData(p).set("BlocksBroken", blocksbroken+1);
   }
   
   @EventHandler
@@ -90,7 +85,7 @@ public class BlocksHandler implements CommandExecutor, Listener {
     Player p = e.getPlayer();
       blocks.remove(p);
       this.settings.saveBlocks();
-      this.settings.savePlayerData();
+      PlayerDataHandler.savePlayerData(p);
 
   }
   
@@ -99,7 +94,7 @@ public class BlocksHandler implements CommandExecutor, Listener {
       if (!(sender instanceof Player))
         return false; 
       Player p = (Player)sender;
-      int blocksbroken = this.settings.getPlayerData().getInt(p.getUniqueId().toString() + ".BlocksBroken");
+      int blocksbroken = PlayerDataHandler.getPlayerData(p).getInt("BlocksBroken");
       p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b[&dBlocks&b] &bYou've broken &d&n" + blocksbroken + "&b blocks!"));
     } 
     return false;

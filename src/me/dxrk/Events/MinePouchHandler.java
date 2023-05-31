@@ -64,15 +64,15 @@ public class MinePouchHandler implements Listener, CommandExecutor {
 
 
     public static void addGems(Player p, int add) {
-        int gems = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Gems");
-        settings.getPlayerData().set(p.getUniqueId().toString()+".Gems", gems+add);
-        settings.savePlayerData();
+        int gems = PlayerDataHandler.getPlayerData(p).getInt("Gems");
+        PlayerDataHandler.getPlayerData(p).set("Gems", gems+add);
+        PlayerDataHandler.savePlayerData(p);
     }
 
     public void removeGems(Player p, int remove) {
-        int gems = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Gems");
-        settings.getPlayerData().set(p.getUniqueId().toString()+".Gems", gems-remove);
-        settings.savePlayerData();
+        int gems = PlayerDataHandler.getPlayerData(p).getInt("Gems");
+        PlayerDataHandler.getPlayerData(p).set("Gems", gems-remove);
+        PlayerDataHandler.savePlayerData(p);
     }
 
     public void givePouch(Player p) {
@@ -276,7 +276,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 e.setCancelled(true);
                 return;
             }
-            int gems = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Gems");
+            int gems = PlayerDataHandler.getPlayerData(p).getInt("Gems");
             if(e.getSlot() == 2) {
                 if(gems >= 15000){
                     removeGems(p, 15000);
@@ -360,7 +360,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
             }
             if(args.length == 2) {
                 if (args[0].equalsIgnoreCase("withdraw")) {
-                    int gems = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".Gems");
+                    int gems = PlayerDataHandler.getPlayerData(p).getInt("Gems");
                     int amount = Integer.parseInt(args[1]);
                     if (amount > gems || amount <0) {
                         p.sendMessage(m.c("&cError: Not Enough Gems"));

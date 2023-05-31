@@ -4,6 +4,7 @@ import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Mines.Mine;
@@ -143,7 +144,7 @@ public class Enchants implements Listener {
             Functions.Multiply(p);
             Mine m = MineSystem.getInstance().getMineByPlayer(p);
             if (m.getBlocksLeftPercentage() < m.getResetPercent()) {
-                double lucky = settings.getPlayerData().getDouble(p.getUniqueId().toString() + ".LuckyBlock");
+                double lucky = PlayerDataHandler.getPlayerData(p).getDouble("LuckyBlock");
                 ResetHandler.resetMineWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), lucky);
             }
         }

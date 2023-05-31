@@ -170,7 +170,7 @@ public class ScoreboardHandler implements Listener {
 
         NewBoard.getTeam("percent").setPrefix(c("&7Rankup: "));
         p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
-        if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Ethereal")) {
+        if (PlayerDataHandler.getPlayerData(p).getBoolean("Ethereal")) {
             NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
             NewBoard.getTeam("prestige").setSuffix(c("&e&lEthereal"));
             p.getScoreboard().getTeam("prank").setPrefix(c("&7Level: "));
@@ -178,7 +178,7 @@ public class ScoreboardHandler implements Listener {
         } else {
             NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
             NewBoard.getTeam("prank").setPrefix(c("&7Level: "));
-            int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".Prestiges");
+            int prestiges = PlayerDataHandler.getPlayerData(p).getInt("Prestiges");
             NewBoard.getTeam("prestige").setSuffix(c("&b" + prestiges));
             NewBoard.getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
         }
@@ -222,7 +222,7 @@ public class ScoreboardHandler implements Listener {
 
 
         //gems
-        int gems = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".Gems");
+        int gems = PlayerDataHandler.getPlayerData(p).getInt("Gems");
         NewBoard.getTeam("gems").setPrefix(c("&7Gems: "));
         NewBoard.getTeam("gems").setSuffix(c("&a" + gems));
 
@@ -230,7 +230,7 @@ public class ScoreboardHandler implements Listener {
         for (Player pp : Bukkit.getOnlinePlayers()) {
 
             String prefix = "";
-            if (settings.getPlayerData().getBoolean(pp.getUniqueId().toString() + ".NitroBoosting"))
+            if (PlayerDataHandler.getPlayerData(p).getBoolean("NitroBoosting"))
                 prefix = c("&d&l♦ ");
 
             if (pp.getName().equalsIgnoreCase("Dxrk")) {
@@ -588,7 +588,7 @@ public class ScoreboardHandler implements Listener {
         //Prestige
         NewBoard.getTeam("percent").setPrefix(c("&7Rankup: "));
         p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
-        if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Ethereal")) {
+        if (PlayerDataHandler.getPlayerData(p).getBoolean("Ethereal")) {
             NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
             NewBoard.getTeam("prestige").setSuffix(c("&e&lEthereal"));
             p.getScoreboard().getTeam("prank").setPrefix(c("&7Level: "));
@@ -596,7 +596,7 @@ public class ScoreboardHandler implements Listener {
         } else {
             NewBoard.getTeam("prestige").setPrefix(c("&7Prestige: "));
             NewBoard.getTeam("prank").setPrefix(c("&7Level: "));
-            int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".Prestiges");
+            int prestiges = PlayerDataHandler.getPlayerData(p).getInt("Prestiges");
             NewBoard.getTeam("prestige").setSuffix(c("&b" + prestiges));
             NewBoard.getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
         }
@@ -626,13 +626,13 @@ public class ScoreboardHandler implements Listener {
         NewBoard.getTeam("multi").setSuffix(c("&b" + SellHandler.getInstance().getMulti(p)));
 
         //gems
-        int gems = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".Gems");
+        int gems = PlayerDataHandler.getPlayerData(p).getInt("Gems");
         NewBoard.getTeam("gems").setPrefix(c("&7Gems: "));
         NewBoard.getTeam("gems").setSuffix(c("&a" + gems));
 
         //PickLevel
         NewBoard.getTeam("PickLevel").setPrefix(c("&7Level: "));
-        NewBoard.getTeam("PickLevel").setSuffix(c("&b" + settings.getPlayerData().getInt(p.getUniqueId().toString() + ".PickLevel")));
+        NewBoard.getTeam("PickLevel").setSuffix(c("&b" + PlayerDataHandler.getPlayerData(p).getInt("PickLevel")));
 
         //XP
         NewBoard.getTeam("xp").setPrefix(c("&7XP: &b✴"));

@@ -16,6 +16,7 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.RankupHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.SettingsManager;
@@ -173,7 +174,7 @@ public class MineHandler implements Listener, CommandExecutor {
         int start = rank / 16;
         List<ItemStack> blocks = Blocks(start);
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
-        if(settings.getPlayerData().getItemStack(p.getUniqueId().toString()+".CustomBlock") == null) {
+        if(PlayerDataHandler.getPlayerData(p).getItemStack("CustomBlock") == null) {
             if (start == 0) {
                 m.setBlock1(new ItemStack(Material.COBBLESTONE));
                 m.setBlock2(new ItemStack(Material.COBBLESTONE));
@@ -184,13 +185,13 @@ public class MineHandler implements Listener, CommandExecutor {
                 m.setBlock3(blocks.get(2));
             }
         } else {
-            ItemStack block = settings.getPlayerData().getItemStack(p.getUniqueId().toString()+".CustomBlock");
+            ItemStack block = PlayerDataHandler.getPlayerData(p).getItemStack("CustomBlock");
             m.setBlock1(block);
             m.setBlock2(block);
             m.setBlock3(block);
         }
         m.save();
-        double lucky = settings.getPlayerData().getDouble(p.getUniqueId().toString()+".LuckyBlock");
+        double lucky = PlayerDataHandler.getPlayerData(p).getDouble("LuckyBlock");
         ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), lucky);
 
     }
@@ -207,7 +208,7 @@ public class MineHandler implements Listener, CommandExecutor {
                 OfflinePlayer p = Bukkit.getOfflinePlayer(args[0]);
                 Mine m = MineSystem.getInstance().getMineByPlayer(player);
                 //add methods for mine delete
-                settings.getPlayerData().set(p.getUniqueId().toString() + ".HasMine", false);
+                PlayerDataHandler.getPlayerData(p).set("HasMine", false);
                 m.delete();
                 MineSystem.getInstance().removeActiveMine(m);
                 if (p.isOnline()) {
@@ -255,7 +256,7 @@ public class MineHandler implements Listener, CommandExecutor {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".HasMine")) {
+        if (PlayerDataHandler.getPlayerData(p).getBoolean("HasMine")) {
             Mine m = MineSystem.getInstance().getMineByPlayer(p);
             Location loc = new Location(m.getMineWorld(), m.getSpawnLocation().getX(), m.getSpawnLocation().getY(), m.getSpawnLocation().getZ(), -90, 0);
             p.teleport(loc);
@@ -314,7 +315,7 @@ public class MineHandler implements Listener, CommandExecutor {
         pasteSchematic(Objects.requireNonNull(WESchematic.getSchematic(schematic)), paste);
 
         Location pworld = new Location(world, 0.5, 100.5, (mines*250)+0.5, -90, 0);
-        settings.getPlayerData().set(p.getUniqueId().toString()+".MineSize", 1);
+        PlayerDataHandler.getPlayerData(p).set("MineSize", 1);
         p.teleport(pworld);
 
         WorldBorder wb = new WorldBorder();
@@ -391,9 +392,9 @@ public class MineHandler implements Listener, CommandExecutor {
 
         regions.addRegion(outside);
 
-        double lucky = settings.getPlayerData().getDouble(p.getUniqueId().toString()+".LuckyBlock");
+        double lucky = PlayerDataHandler.getPlayerData(p).getDouble("LuckyBlock");
         ResetHandler.resetMineFullWorldEdit(m, point2, point1, lucky);
-        settings.getPlayerData().set(p.getUniqueId().toString() + ".HasMine", true);
+        PlayerDataHandler.getPlayerData(p).set("HasMine", true);
         settings.getOptions().set("numberofmines", (mines+1));
         settings.saveOptions();
     }

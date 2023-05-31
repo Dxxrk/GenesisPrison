@@ -120,7 +120,7 @@ public class SellHandler implements Listener, CommandExecutor {
   }
 
 	public int getPrestiges(Player p){
-		int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString()+".Prestiges");
+		int prestiges = PlayerDataHandler.getPlayerData(p).getInt("Prestiges");
 		return prestiges;
 	}
 
@@ -391,10 +391,10 @@ public class SellHandler implements Listener, CommandExecutor {
 						  p.sendMessage(c("&c/resetmine(/rm) is on cooldown."));
 					  } else {
 						  int rank = RankupHandler.getInstance().getRank(p);
-						  if(settings.getPlayerData().getBoolean(p.getUniqueId().toString()+".Ethereal")) {
+						  if(PlayerDataHandler.getPlayerData(p).getBoolean("Ethereal")) {
 							  rank = 1000;
 						  }
-						  double lucky = settings.getPlayerData().getDouble(p.getUniqueId().toString()+".LuckyBlock");
+						  double lucky = PlayerDataHandler.getPlayerData(p).getDouble("LuckyBlock");
 						  ResetHandler.resetMineWorldEdit(mine, mine.getMinPoint(), mine.getMaxPoint(), lucky);
 						  if (mine.isInMine(p.getLocation()))
 							  p.teleport(mine.getSpawnLocation());

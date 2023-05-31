@@ -1,6 +1,7 @@
 package me.dxrk.Gangs;
 
 
+import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import org.bukkit.OfflinePlayer;
@@ -20,7 +21,7 @@ public class Gangs implements Listener {
     Methods m = Methods.getInstance();
 
     public String getGang(OfflinePlayer p){
-        return settings.getPlayerData().getString(p.getUniqueId().toString()+".Gang");
+        return PlayerDataHandler.getPlayerData(p).getString("Gang");
     }
     public int getGangLevel(String gang) {
         return settings.getGangs().getInt(gang+".Level");
@@ -30,7 +31,7 @@ public class Gangs implements Listener {
     }
 
     public boolean hasGang(OfflinePlayer p) {
-        return !settings.getPlayerData().getString(p.getUniqueId().toString() + ".Gang").equals("");
+        return !PlayerDataHandler.getPlayerData(p).getString("Gang").equals("");
     }
 
     public void createGang(Player p, String name) {
@@ -43,8 +44,8 @@ public class Gangs implements Listener {
         List<String> perks = new ArrayList<>();
         settings.getGangs().set(name+".PerksUnlocked", perks);
         settings.saveGangs();
-        settings.getPlayerData().set(p.getUniqueId().toString()+".Gang", name);
-        settings.savePlayerData();
+        PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".Gang", name);
+        PlayerDataHandler.savePlayerData(p);
     }
 
     public void addMember(Player p, String name) {
@@ -52,8 +53,8 @@ public class Gangs implements Listener {
         members.add(p.getUniqueId().toString());
         settings.getGangs().set(name+".Members", members);
         settings.saveGangs();
-        settings.getPlayerData().set(p.getUniqueId().toString()+".Gang", name);
-        settings.savePlayerData();
+        PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".Gang", name);
+        PlayerDataHandler.savePlayerData(p);
     }
 
     public void removeMember(OfflinePlayer p, String name) {
@@ -61,8 +62,8 @@ public class Gangs implements Listener {
         members.remove(p.getUniqueId().toString());
         settings.getGangs().set(name+".Members", members);
         settings.saveGangs();
-        settings.getPlayerData().set(p.getUniqueId().toString()+".Gang", "");
-        settings.savePlayerData();
+        PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".Gang", "");
+        PlayerDataHandler.savePlayerData(p);
     }
 
     public void addToBank(String name, double tokens) {

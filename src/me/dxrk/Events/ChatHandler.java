@@ -365,7 +365,7 @@ public class ChatHandler implements Listener, CommandExecutor {
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fName &7" + p.getName()));
         List<String> lore = new ArrayList<>();
-        lore.add(c("&fPrestiges &7" + settings.getPlayerData().getInt(p.getUniqueId().toString() + ".Prestiges")));
+        lore.add(c("&fPrestiges &7" + PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId().toString() + ".Prestiges")));
         lore.add(ChatColor.translateAlternateColorCodes('&', "&fLevel &7» " + RankupHandler.getInstance().getRank(p)));
         if (prefix(p) != null) {
             lore.add(ChatColor.translateAlternateColorCodes('&', "&fRank &7» " + prefix(p)));
@@ -379,7 +379,7 @@ public class ChatHandler implements Listener, CommandExecutor {
         }
         lore.add(ChatColor.translateAlternateColorCodes('&', "&fBalance &7» &a$" + format(Main.econ.getBalance(p))));
         lore.add(ChatColor.translateAlternateColorCodes('&', "&fTokens &7» &e⛀" + Main.formatAmt(Tokens.getInstance().getTokens(p))));
-        lore.add(ChatColor.translateAlternateColorCodes('&', "&fBlocks Mined &7» &b" + this.settings.getPlayerData().getInt(p.getUniqueId().toString() + ".BlocksBroken")));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&fBlocks Mined &7» &b" + PlayerDataHandler.getPlayerData(p).getInt("BlocksBroken")));
         lore.add("");
         lore.add(ChatColor.translateAlternateColorCodes('&', "&7Click to visit mine"));
         im.setLore(lore);
@@ -456,10 +456,10 @@ public class ChatHandler implements Listener, CommandExecutor {
         event.setCancelled(true);
         String prestige;
         String rank = "";
-        if (this.settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Ethereal")) {
+        if (PlayerDataHandler.getPlayerData(p).getBoolean("Ethereal")) {
             prestige = c("&e&l&oE&7-&b&l&o" + RankupHandler.getInstance().getRank(p) + " ");
         } else {
-            prestige = c("&8[&a" + settings.getPlayerData().getInt(p.getUniqueId().toString() + ".Prestiges") + "&8] ");
+            prestige = c("&8[&a" + PlayerDataHandler.getPlayerData(p).getInt("Prestiges") + "&8] ");
 
             rank = ChatColor.translateAlternateColorCodes('&', "&8[&b" + RankupHandler.getInstance().getRank(p) + "&8] ");
         }

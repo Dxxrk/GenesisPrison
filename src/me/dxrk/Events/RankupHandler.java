@@ -1,6 +1,5 @@
 package me.dxrk.Events;
 
-import me.dxrk.Enchants.EnchantMethods;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
@@ -42,11 +41,10 @@ public class RankupHandler implements Listener, CommandExecutor {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        int i = this.settings.getRankupPrices().getInt(p.getUniqueId().toString());
+        int i = PlayerDataHandler.getPlayerData(p).getInt("Level");
 
         if (i == 0) {
-            this.settings.getRankupPrices().set(p.getUniqueId().toString(), 1);
-            this.settings.saveRankupPrices();
+            PlayerDataHandler.getPlayerData(p).set("Level", 1);
         }
         if (!aru.contains(p)) {
             if (settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Autorankup") == true) {
@@ -61,45 +59,43 @@ public class RankupHandler implements Listener, CommandExecutor {
 
     @EventHandler
     public void onLeave(PlayerQuitEvent e) {
-        EnchantMethods.laser.remove(e.getPlayer());
-        this.settings.saveRankupPrices();
         this.settings.saveOptions();
     }
 
     public int getRank(Player p) {
-        int i = this.settings.getRankupPrices().getInt(p.getUniqueId().toString());
+        int i = PlayerDataHandler.getPlayerData(p).getInt("Level");
         if (i == 0) {
             return 1;
         }
 
-        return this.settings.getRankupPrices().getInt(p.getUniqueId().toString());
+        return PlayerDataHandler.getPlayerData(p).getInt("Level");
     }
 
 
     public void upRank(Player p) {
-        if (nextRank(p) >= 1000 && getPrestiges(p) >= 100 && !this.settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Ethereal")) {
-            this.settings.getRankupPrices().set(p.getUniqueId().toString(), 1);
-            this.settings.getPlayerData().set(p.getUniqueId().toString() + ".Ethereal", true);
+        if (nextRank(p) >= 1000 && getPrestiges(p) >= 100 && !PlayerDataHandler.getPlayerData(p).getBoolean("Ethereal")) {
+            PlayerDataHandler.getPlayerData(p).set("Level", 1);
+            PlayerDataHandler.getPlayerData(p).set("Ethereal", true);
             Bukkit.broadcastMessage(c("&f&l" + p.getName() + " is &b&l&kO&e&lEthereal&b&l&kO&r"));
             return;
         }
 
 
-        int i = this.settings.getRankupPrices().getInt(p.getUniqueId().toString());
-        this.settings.getRankupPrices().set(p.getUniqueId().toString(), i + 1);
+        int i = PlayerDataHandler.getPlayerData(p).getInt("Level");
+        PlayerDataHandler.getPlayerData(p).set("Level", i + 1);
 
-        p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
+        p.getScoreboard().getTeam("prank").setSuffix(c("&b" + getRank(p)));
 
     }
 
     public void setRank(Player p, int i) {
-        this.settings.getRankupPrices().set(p.getUniqueId().toString(), i);
-        this.settings.saveRankupPrices();
-        p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
+        PlayerDataHandler.getPlayerData(p).set("Level", i);
+        PlayerDataHandler.savePlayerData(p);
+        p.getScoreboard().getTeam("prank").setSuffix(c("&b" + getRank(p)));
     }
 
     public int getPrestiges(Player p) {
-        int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".Prestiges");
+        int prestiges = PlayerDataHandler.getPlayerData(p).getInt("Prestiges");
         return prestiges;
     }
 
@@ -159,7 +155,7 @@ public class RankupHandler implements Listener, CommandExecutor {
     public double rankPrice(Player p) {
         int rank = getRank(p);
 
-        if (this.settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Ethereal")) {
+        if (PlayerDataHandler.getPlayerData(p).getBoolean("Ethereal")) {
             double start = 7.523828125E20D * 25;
             double price = start * (rank * 1.75);
             return price;
@@ -175,7 +171,7 @@ public class RankupHandler implements Listener, CommandExecutor {
     }
 
     public void rankup(Player p) {
-        if (this.settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Ethereal")) {
+        if (PlayerDataHandler.getPlayerData(p).getBoolean("Ethereal")) {
             if (Main.econ.getBalance(p) < rankPrice(p)) {
                 p.sendMessage(c("&f&lLevel &8| &7You need &a$" + Main.formatAmt(rankPrice(p) - Main.econ.getBalance(p)) + " &7to rankup."));
                 return;
@@ -188,7 +184,7 @@ public class RankupHandler implements Listener, CommandExecutor {
             p.getScoreboard().getTeam("prank").setSuffix(c("&b&l" + getRank(p)));
             double percents;
             p.getScoreboard().getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
-            percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) * 100);
+            percents = (Main.econ.getBalance(p) / rankPrice(p) * 100);
             double dmultiply = percents * 10.0;
             double dRound = Math.round(dmultiply) / 10.0;
 
@@ -213,7 +209,7 @@ public class RankupHandler implements Listener, CommandExecutor {
         p.getScoreboard().getTeam("prank").setSuffix(c("&b" + getRank(p)));
         double percents;
         p.getScoreboard().getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
-        percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) * 100);
+        percents = (Main.econ.getBalance(p) / rankPrice(p) * 100);
         double dmultiply = percents * 10.0;
         double dRound = Math.round(dmultiply) / 10.0;
 
@@ -223,14 +219,13 @@ public class RankupHandler implements Listener, CommandExecutor {
         } else {
             p.getScoreboard().getTeam("percent").setSuffix(c("&c") + (dRound) + "%");
         }
-        this.settings.saveRankupPrices();
     }
 
     public void MaxRankup(Player p) {
         if (Main.econ.getBalance(p) < rankPrice(p)) {
             return;
         }
-        if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Ethereal")) {
+        if (PlayerDataHandler.getPlayerData(p).getBoolean("Ethereal")) {
             while (Main.econ.getBalance(p) > rankPrice(p)) {
                 Main.econ.withdrawPlayer(p, rankPrice(p));
                 upRank(p);
@@ -241,7 +236,7 @@ public class RankupHandler implements Listener, CommandExecutor {
             p.getScoreboard().getTeam("prank").setSuffix(c("&b&l" + getRank(p)));
             double percents;
             p.getScoreboard().getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
-            percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) * 100);
+            percents = (Main.econ.getBalance(p) / rankPrice(p) * 100);
             double dmultiply = percents * 10.0;
             double dRound = Math.round(dmultiply) / 10.0;
 
@@ -251,7 +246,6 @@ public class RankupHandler implements Listener, CommandExecutor {
             } else {
                 p.getScoreboard().getTeam("percent").setSuffix(c("&c") + (dRound) + "%");
             }
-            this.settings.saveRankupPrices();
             return;
         }
         while (Main.econ.getBalance(p) > rankPrice(p)) {
@@ -261,10 +255,10 @@ public class RankupHandler implements Listener, CommandExecutor {
                 MineHandler.getInstance().updateMine(p, getRank(p));
 
         }
-        p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
+        p.getScoreboard().getTeam("prank").setSuffix(c("&b" + getRank(p)));
         double percents;
         p.getScoreboard().getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
-        percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) * 100);
+        percents = (Main.econ.getBalance(p) / rankPrice(p) * 100);
         double dmultiply = percents * 10.0;
         double dRound = Math.round(dmultiply) / 10.0;
 
@@ -274,7 +268,6 @@ public class RankupHandler implements Listener, CommandExecutor {
         } else {
             p.getScoreboard().getTeam("percent").setSuffix(c("&c") + (dRound) + "%");
         }
-        this.settings.saveRankupPrices();
 
     }
 

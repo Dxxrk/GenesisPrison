@@ -75,8 +75,8 @@ public class KeysHandler implements Listener {
             p.sendMessage(s);
         }
         addKey(p, key, amt);
-        int keysfound = this.settings.getPlayerData().getInt(p.getUniqueId().toString() + ".KeysFound");
-        this.settings.getPlayerData().set(p.getUniqueId().toString() + ".KeysFound", (keysfound + amt));
+        int keysfound = PlayerDataHandler.getPlayerData(p).getInt("KeysFound");
+        PlayerDataHandler.getPlayerData(p).set("KeysFound", (keysfound + amt));
     }
 
     public void DustFinderMSG(Player p, String dust) {
@@ -171,7 +171,7 @@ public class KeysHandler implements Listener {
         }
         double event = SkillsEventsListener.getEventKeyFortune();
         chance += event;
-        double keyboost = settings.getPlayerData().getInt(p.getUniqueId()+".SkillKeyBoost");
+        double keyboost = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId()+".SkillKeyBoost");
         chance+=keyboost;
         int kf = this.r.nextInt(100);
         int d = this.r.nextInt(100);
@@ -243,7 +243,7 @@ public class KeysHandler implements Listener {
 
 
     public int getPrestiges(Player p) {
-        int prestiges = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".Prestiges");
+        int prestiges = PlayerDataHandler.getPlayerData(p).getInt("Prestiges");
         return prestiges;
     }
 

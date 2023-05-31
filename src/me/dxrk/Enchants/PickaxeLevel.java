@@ -1,6 +1,7 @@
 package me.dxrk.Enchants;
 
 import me.dxrk.Events.PickXPHandler;
+import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.TrinketHandler;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Tokens.Tokens;
@@ -143,7 +144,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             if (sender.hasPermission("genesis.setskillpoints")) {
                 Player reciever = Bukkit.getPlayerExact(args[0]);
                 int amount = parseInt(args[1]);
-                settings.getPlayerData().set(reciever.getUniqueId().toString() + ".PickaxeSkillPoints", amount);
+                PlayerDataHandler.getPlayerData(reciever).set("PickaxeSkillPoints", amount);
             }
         }
 
@@ -385,7 +386,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
     public List<String> organizeTrinkets(Player p) {
         List<String> lore = new ArrayList<>();
         int trinkets = 0;
-        List<String> ilore = settings.getPlayerData().getStringList(p.getUniqueId().toString() + ".Trinkets");
+        List<String> ilore = PlayerDataHandler.getPlayerData(p).getStringList("Trinkets");
         List<String> Trinkets = new ArrayList<>();
 
         for (String s : ilore) {
@@ -596,7 +597,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         int i = 0;
         switch (Enchant) {
             case "Key Finder":
-                int skillmaxlevelkf = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".KFMaxLevelRaise");
+                int skillmaxlevelkf = PlayerDataHandler.getPlayerData(p).getInt("KFMaxLevelRaise");
                 i = 5000 + skillmaxlevelkf;
                 break;
             case "Dust Finder":
@@ -616,7 +617,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
                 break;
             case "Token Finder":
-                int skillmaxleveltf = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".TFMaxLevelRaise");
+                int skillmaxleveltf = PlayerDataHandler.getPlayerData(p).getInt("TFMaxLevelRaise");
                 i = 3000 + skillmaxleveltf;
                 break;
             case "Research":
@@ -630,7 +631,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 break;
 
             case "Fortune":
-                int skillmaxlevelfortune = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".FortuneMaxLevelRaise");
+                int skillmaxlevelfortune = PlayerDataHandler.getPlayerData(p).getInt("FortuneMaxLevelRaise");
                 i = 25000 + skillmaxlevelfortune;
                 break;
             case "Nuke":
@@ -643,11 +644,11 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
                 break;
             case "Junkpile":
-                int skillmaxleveljunkpile = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".JunkpileMaxLevelRaise");
+                int skillmaxleveljunkpile = PlayerDataHandler.getPlayerData(p).getInt("JunkpileMaxLevelRaise");
                 i = 2000 + skillmaxleveljunkpile;
                 break;
             case "XP Finder":
-                int skillmaxlevelxpf = settings.getPlayerData().getInt(p.getUniqueId().toString() + ".XPFMaxLevelRaise");
+                int skillmaxlevelxpf = PlayerDataHandler.getPlayerData(p).getInt("XPFMaxLevelRaise");
                 i = 10000 + skillmaxlevelxpf;
                 break;
             case "Multiply":
@@ -797,7 +798,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
     public void openSkillEnchantsInv(Player p) {
         Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, c("&6Pickaxe Skill Enchants"));
 
-        List<String> completed = settings.getPlayerData().getStringList(p.getUniqueId().toString() + ".CompletedPaths");
+        List<String> completed = PlayerDataHandler.getPlayerData(p).getStringList("CompletedPaths");
 
         ItemStack calamity;
         if (!completed.contains("Zeus")) {
@@ -916,18 +917,18 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 if (PickXPHandler.getInstance().getLevel(p) < 25) {
                     return;
                 }
-                if (settings.getPlayerData().get(p.getUniqueId().toString() + ".PickaxeSkill").equals("None")) {
+                if (PlayerDataHandler.getPlayerData(p).get("PickaxeSkill").equals("None")) {
                     PickaxeSkillTree.openSkills(p);
                 } else {
-                    if (settings.getPlayerData().get(p.getUniqueId().toString() + ".PickaxeSkill").equals("Zeus")) {
+                    if (PlayerDataHandler.getPlayerData(p).get("PickaxeSkill").equals("Zeus")) {
                         PickaxeSkillTree.openZeus(p);
-                    } else if (settings.getPlayerData().get(p.getUniqueId().toString() + ".PickaxeSkill").equals("Poseidon")) {
+                    } else if (PlayerDataHandler.getPlayerData(p).get("PickaxeSkill").equals("Poseidon")) {
                         PickaxeSkillTree.openPoseidon(p);
-                    } else if (settings.getPlayerData().get(p.getUniqueId().toString() + ".PickaxeSkill").equals("Hades")) {
+                    } else if (PlayerDataHandler.getPlayerData(p).get("PickaxeSkill").equals("Hades")) {
                         PickaxeSkillTree.openHades(p);
-                    } else if (settings.getPlayerData().get(p.getUniqueId().toString() + ".PickaxeSkill").equals("Ares")) {
+                    } else if (PlayerDataHandler.getPlayerData(p).get("PickaxeSkill").equals("Ares")) {
                         PickaxeSkillTree.openAres(p);
-                    } else if (settings.getPlayerData().get(p.getUniqueId().toString() + ".PickaxeSkill").equals("Aphrodite")) {
+                    } else if (PlayerDataHandler.getPlayerData(p).get("PickaxeSkill").equals("Aphrodite")) {
                         PickaxeSkillTree.openAphrodite(p);
                     }
                 }

@@ -52,8 +52,8 @@ public class LocksmithHandler implements Listener, CommandExecutor {
   }
   
   public void addKey(Player p, String key, int amt) {
-	  int keysfound = this.settings.getPlayerData().getInt(p.getUniqueId().toString()+".KeysFound");
-	  this.settings.getPlayerData().set(p.getUniqueId().toString()+".KeysFound", keysfound+amt);
+	  int keysfound = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId().toString()+".KeysFound");
+	  PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".KeysFound", keysfound+amt);
     int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + key.toLowerCase());
     key = key.toLowerCase();
     if (this.settings.getLocksmith().get(p.getUniqueId().toString() + "." + p.getName()) == null) {

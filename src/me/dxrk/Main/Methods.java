@@ -1,5 +1,6 @@
 package me.dxrk.Main;
 
+import me.dxrk.Events.PlayerDataHandler;
 import net.ess3.nms.refl.ReflUtil;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -136,7 +137,7 @@ public class Methods {
         OfflinePlayer[] arrayOfOfflinePlayer;
         for (i = (arrayOfOfflinePlayer = Bukkit.getOfflinePlayers()).length, b1 = 0; b1 < i; ) {
             OfflinePlayer p = arrayOfOfflinePlayer[b1];
-            if (settings.getPlayerData().getBoolean(p.getUniqueId().toString() + ".Beta"))
+            if (PlayerDataHandler.getPlayerData(p).getBoolean("Beta"))
                 b.add(p);
             b1++;
         }

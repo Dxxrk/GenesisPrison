@@ -1,6 +1,7 @@
 package me.dxrk.Commands;
 
 import me.dxrk.Events.BlocksHandler;
+import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
@@ -20,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -99,9 +101,9 @@ public class CMDStats implements Listener, CommandExecutor {
         ItemStack player = Head(p);
         ItemMeta pm = player.getItemMeta();
         pm.setDisplayName(m.c("&f&lPlayer: "+p.getName()));
-        lore.add(m.c("&7Keys Found: &b"+settings.getPlayerData().getInt(uuid+".KeysFound")));
-        lore.add(m.c("&7Crates Opened: &b"+settings.getPlayerData().getInt(uuid+".CratesOpened")));
-        lore.add(m.c("&7Time Played: ")+formatTime(settings.getPlayerData().getInt(uuid+".TimePlayed")));
+        lore.add(m.c("&7Keys Found: &b"+ PlayerDataHandler.getPlayerData(p).getInt(uuid+".KeysFound")));
+        lore.add(m.c("&7Crates Opened: &b"+PlayerDataHandler.getPlayerData(p).getInt(uuid+".CratesOpened")));
+        lore.add(m.c("&7Time Played: ")+formatTime(PlayerDataHandler.getPlayerData(p).getInt(uuid+".TimePlayed")));
         pm.setLore(lore);
         player.setItemMeta(pm);
         lore.clear();
@@ -115,22 +117,22 @@ public class CMDStats implements Listener, CommandExecutor {
 
         ItemStack level = new ItemStack(Material.ENDER_PEARL);
         ItemMeta lm = level.getItemMeta();
-        lm.setDisplayName(m.c("&7Level: &b"+ settings.getRankupPrices().getInt(uuid)));
+        lm.setDisplayName(m.c("&7Level: &b"+ PlayerDataHandler.getPlayerData(p).getInt("Level")));
         level.setItemMeta(lm);
         stats.setItem(23, level);
 
         ItemStack prestiges = new ItemStack(Material.EYE_OF_ENDER);
         ItemMeta prm = prestiges.getItemMeta();
-        prm.setDisplayName(m.c("&7Prestiges: &b"+settings.getPlayerData().getInt(uuid+".Prestiges")));
+        prm.setDisplayName(m.c("&7Prestiges: &b"+PlayerDataHandler.getPlayerData(p).getInt(uuid+".Prestiges")));
         prestiges.setItemMeta(prm);
         stats.setItem(16, prestiges);
 
-        ItemStack pickaxe = settings.getPlayerData().getItemStack(uuid+".Pickaxe");
+        ItemStack pickaxe = PlayerDataHandler.getPlayerData(p).getItemStack(uuid+".Pickaxe");
         stats.setItem(28, pickaxe);
 
         ItemStack blocks = new ItemStack(Material.DIAMOND_ORE);
         ItemMeta bm = blocks.getItemMeta();
-        bm.setDisplayName(m.c("&7Blocks Broken: &b"+settings.getPlayerData().get(uuid+".BlocksBroken")));
+        bm.setDisplayName(m.c("&7Blocks Broken: &b"+PlayerDataHandler.getPlayerData(p).get(uuid+".BlocksBroken")));
         blocks.setItemMeta(bm);
         stats.setItem(39, blocks);
 
@@ -142,7 +144,7 @@ public class CMDStats implements Listener, CommandExecutor {
 
         ItemStack tokens = new ItemStack(Material.PRISMARINE_CRYSTALS);
         ItemMeta tm = tokens.getItemMeta();
-        tm.setDisplayName(m.c("&7Tokens: &e⛀"+ Main.formatAmt(settings.getET().getDouble(uuid))));
+        tm.setDisplayName(m.c("&7Tokens: &e⛀"+ Main.formatAmt(PlayerDataHandler.getPlayerData(p).getDouble("Tokens"))));
         tokens.setItemMeta(tm);
         stats.setItem(34, tokens);
 
@@ -159,10 +161,18 @@ public class CMDStats implements Listener, CommandExecutor {
 
 
             if(args.length == 1){
-                for (String uuid : settings.getPlayerData().getKeys(false)) {
-                    OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
+                File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
+                File[] var = mineFiles;
+                assert mineFiles != null;
+                int amountOfMines = mineFiles.length;
+                for (int i = 0; i < amountOfMines; ++i) {
+                    File mineFile = var[i];
+                    String name = mineFile.getName().split("\\.")[0];
+                    UUID id = UUID.fromString(name);
+
+                    OfflinePlayer p = Bukkit.getOfflinePlayer(id);
                     if(p.getName().equalsIgnoreCase(args[0])){
-                        openStats(player, uuid);
+                        openStats(player, name);
                     }
                 }
 

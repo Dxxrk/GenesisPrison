@@ -1,11 +1,13 @@
 package me.dxrk.Tokens;
 
+import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -28,37 +30,34 @@ public class Tokens {
 
   String prefix = ChatColor.translateAlternateColorCodes('&', "&f&lTokens &8|&r ");
   
-  public double getBalance(Player p) {
+  public double getBalance(OfflinePlayer p) {
     return Main.econ.getBalance(p);
   }
   
-  public boolean hasTokens(Player p, double tokens) {
+  public boolean hasTokens(OfflinePlayer p, double tokens) {
     return getTokens(p) >= tokens;
   }
   
-  public double getTokens(Player p) {
-    if (!this.settings.getET().contains(p.getUniqueId().toString()))
+  public double getTokens(OfflinePlayer p) {
+    if (!PlayerDataHandler.getPlayerData(p).contains("Tokens"))
       return 0; 
-    return this.settings.getET().getDouble(p.getUniqueId().toString());
+    return PlayerDataHandler.getPlayerData(p).getDouble("Tokens");
   }
   
-  public void setTokens(Player p, double tokens) {
-    this.settings.getET().set(p.getUniqueId().toString(), tokens);
-    p.sendMessage(this.prefix + "Tokens set to " + tokens);
-    this.settings.saveEtFile();
-    p.getScoreboard().getTeam("tokens").setSuffix(m.c("&e"+Main.formatAmt(getTokens(p))));
+  public void setTokens(OfflinePlayer p, double tokens) {
+    PlayerDataHandler.getPlayerData(p).set("Tokens", tokens);
+    p.getPlayer().sendMessage(this.prefix + "Tokens set to " + tokens);
+    p.getPlayer().getScoreboard().getTeam("Tokens").setSuffix(m.c("&e"+Main.formatAmt(getTokens(p))));
   }
   
-  public void addTokens(Player p, double tokens) {
-    this.settings.getET().set(p.getUniqueId().toString(), getTokens(p) + tokens);
-    this.settings.saveEtFile();
-    p.getScoreboard().getTeam("tokens").setSuffix(m.c("&e"+Main.formatAmt(getTokens(p))));
+  public void addTokens(OfflinePlayer p, double tokens) {
+    PlayerDataHandler.getPlayerData(p).set("Tokens", getTokens(p) + tokens);
+    p.getPlayer().getScoreboard().getTeam("Tokens").setSuffix(m.c("&e"+Main.formatAmt(getTokens(p))));
   }
   
-  public void takeTokens(Player p, double tokens) {
-    this.settings.getET().set(p.getUniqueId().toString(), getTokens(p) - tokens);
-    this.settings.saveEtFile();
-    p.getScoreboard().getTeam("tokens").setSuffix(m.c("&e"+Main.formatAmt(getTokens(p))));
+  public void takeTokens(OfflinePlayer p, double tokens) {
+    PlayerDataHandler.getPlayerData(p).set("Tokens", getTokens(p) - tokens);
+    p.getPlayer().getScoreboard().getTeam("Tokens").setSuffix(m.c("&e"+Main.formatAmt(getTokens(p))));
   }
   
   public void sendTokens(Player sender, Player reciever, double tokens) {
@@ -72,10 +71,10 @@ public class Tokens {
     takeTokens(sender, tokens);
   }
   
-  public void openEtShop(Player p) {
+  public void openEtShop(OfflinePlayer p) {
     if (this.pages.isEmpty())
       loadEtShop(); 
-    p.openInventory(this.pages.get(0));
+    p.getPlayer().openInventory(this.pages.get(0));
   }
   
   public ArrayList<Inventory> pages = new ArrayList<>();
@@ -114,14 +113,14 @@ public class Tokens {
     } 
   }
   
-  public void loadEditableShop(Player p, String name) {
+  public void loadEditableShop(OfflinePlayer p, String name) {
     Inventory i = Bukkit.createInventory(null, 54, ChatColor.AQUA + "Edit Shop: " + name);
     if (this.settings.getTokenShop().contains(name))
       for (int x = 0; x < i.getSize(); x++) {
         if (this.settings.getTokenShop().contains(name + "." + x))
           i.setItem(x, this.settings.getTokenShop().getItemStack(name + "." + x + ".item"));
       }  
-    p.openInventory(i);
+    p.getPlayer().openInventory(i);
   }
   
   public void refreshConfig() {
