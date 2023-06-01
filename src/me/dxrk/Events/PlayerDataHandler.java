@@ -1,12 +1,10 @@
 package me.dxrk.Events;
 
-
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -18,6 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,10 +26,50 @@ public class PlayerDataHandler implements Listener {
 
     public static PlayerDataHandler instance = new PlayerDataHandler();
 
-
     public static PlayerDataHandler getInstance() {
         return instance;
     }
+
+
+    public static HashMap<UUID, PlayerData> PlayerDataList = new HashMap<>();
+
+    public FileConfiguration getPlayerData(Player p) {
+        return PlayerDataList.get(p.getUniqueId()).get();
+    }
+
+    public FileConfiguration getPlayerData(UUID id) {
+        return PlayerDataList.get(id).get();
+    }
+
+    public void savePlayerData(Player p) {
+        PlayerData pdata = PlayerDataList.get(p.getUniqueId());
+        pdata.save();
+    }
+
+    public void savePlayerData(UUID id) {
+        PlayerData pdata = PlayerDataList.get(id);
+        pdata.save();
+    }
+
+    public HashMap<UUID, PlayerData> getPdataList() {
+        return PlayerDataList;
+    }
+
+    public void loadPlayerData() {
+        createFolder();
+        File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
+        File[] var3 = mineFiles;
+        assert mineFiles != null;
+        int amountOfMines = mineFiles.length;
+        for (int i = 0; i < amountOfMines; ++i) {
+            File mineFile = var3[i];
+            UUID id = UUID.fromString(mineFile.getName().split("\\.")[0]);
+            PlayerData pdata = new PlayerData(id);
+            PlayerDataList.put(id, pdata);
+        }
+
+    }
+
 
     public void createFolder() {
         File var1 = new File(Main.plugin.getDataFolder() + File.separator + "playerdata");
@@ -189,6 +228,8 @@ public class PlayerDataHandler implements Listener {
                 pl.set("CustomBlock", null);
             }
             pl.save(pdata);
+            PlayerData playerdata = new PlayerData(p.getUniqueId());
+            PlayerDataList.put(p.getUniqueId(), playerdata);
 
         } catch (Exception e) {
             System.out.println("ERROR SAVING PLAYERDATA: " + p.getUniqueId().toString());
@@ -198,41 +239,6 @@ public class PlayerDataHandler implements Listener {
         }
     }
 
-    public static FileConfiguration getPlayerData(OfflinePlayer p) {
-        File pdata = new File(Main.plugin.getDataFolder() + File.separator + "playerdata", p.getUniqueId().toString() + ".yml");
-        FileConfiguration pl = YamlConfiguration.loadConfiguration(pdata);
-        return pl;
-    }
-    public static FileConfiguration getPlayerData(UUID id) {
-        File pdata = new File(Main.plugin.getDataFolder() + File.separator + "playerdata", id.toString() + ".yml");
-        FileConfiguration pl = YamlConfiguration.loadConfiguration(pdata);
-        return pl;
-    }
-
-    public static void savePlayerData(OfflinePlayer p) {
-        File pdata = new File(Main.plugin.getDataFolder() + File.separator + "playerdata", p.getUniqueId().toString() + ".yml");
-        FileConfiguration pl = YamlConfiguration.loadConfiguration(pdata);
-        try {
-            pl.save(pdata);
-        } catch (Exception e) {
-            System.out.println("ERROR SAVING PLAYERDATA: " + p.getUniqueId().toString());
-            System.out.println("ERROR SAVING PLAYERDATA: " + p.getUniqueId().toString());
-            System.out.println("ERROR SAVING PLAYERDATA: " + p.getUniqueId().toString());
-            System.out.println(e.getMessage());
-        }
-    }
-    public static void savePlayerData(UUID id) {
-        File pdata = new File(Main.plugin.getDataFolder() + File.separator + "playerdata", id.toString() + ".yml");
-        FileConfiguration pl = YamlConfiguration.loadConfiguration(pdata);
-        try {
-            pl.save(pdata);
-        } catch (Exception e) {
-            System.out.println("ERROR SAVING PLAYERDATA: " + id);
-            System.out.println("ERROR SAVING PLAYERDATA: " + id);
-            System.out.println("ERROR SAVING PLAYERDATA: " + id);
-            System.out.println(e.getMessage());
-        }
-    }
 
     public void savePickaxe(Player p) {
         ItemStack[] inv = p.getInventory().getContents();
@@ -248,18 +254,21 @@ public class PlayerDataHandler implements Listener {
         }
     }
 
+
     @EventHandler
-    public void onJoin(PlayerJoinEvent e) { //LAG SOURCE
-        if (!e.getPlayer().hasPlayedBefore()) {
-            Bukkit.broadcastMessage(m.c("&dWelcome &f&l" + e.getPlayer().getName() + "&d to &c&lGenesis &b&lPrison!"));
+    public void onJoin(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        if (!p.hasPlayedBefore()) {
+            Bukkit.broadcastMessage(m.c("&dWelcome &f&l" + p.getName() + "&d to &c&lGenesis &b&lPrison!"));
+            createPlayerData(p);
         }
-        savePickaxe(e.getPlayer());
+
         new BukkitRunnable() {
             @Override
             public void run() {
-                savePickaxe(e.getPlayer());
-                savePlayerData(e.getPlayer());
-                if (!e.getPlayer().isOnline()) {
+                savePickaxe(p);
+                savePlayerData(p);
+                if (!p.isOnline()) {
                     cancel();
                 }
             }
@@ -267,4 +276,6 @@ public class PlayerDataHandler implements Listener {
 
 
     }
+
+
 }

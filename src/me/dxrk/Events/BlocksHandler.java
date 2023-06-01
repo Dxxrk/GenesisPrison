@@ -19,86 +19,76 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.HashMap;
 
 public class BlocksHandler implements CommandExecutor, Listener {
-  public static HashMap<Player, Integer> blocks = new HashMap<>();
+    public static HashMap<Player, Integer> blocks = new HashMap<>();
 
-  SettingsManager settings = SettingsManager.getInstance();
-  
-  static BlocksHandler instance = new BlocksHandler();
-  
-  public static BlocksHandler getInstance() {
-    return instance;
-  }
-  
-  
-  
+    SettingsManager settings = SettingsManager.getInstance();
 
-  
-  
-  
- 
-  
-  
-  
-  public void onEnd() {
-    for (Player p : Bukkit.getOnlinePlayers()) {
-      if (blocks.containsKey(p)) {
-        PlayerDataHandler.getPlayerData(p).set("BlocksBroken", blocks.get(p));
-        PlayerDataHandler.savePlayerData(p);
-        blocks.remove(p);
-      } 
-    } 
-  }
-  public void onEndLB() {
-	    for (Player p : Bukkit.getOnlinePlayers()) {
-	      if (blocks.containsKey(p)) {
-	        PlayerDataHandler.getPlayerData(p).set("BlocksBroken", blocks.get(p));
-	        PlayerDataHandler.savePlayerData(p);
-	      } 
-	    } 
-	  }
-  
+    static BlocksHandler instance = new BlocksHandler();
 
-  
-  
-  @SuppressWarnings("deprecation")
-@EventHandler
-  public void onBreak(BlockBreakEvent e) {
-    Player p = e.getPlayer();
-    if (p.getItemInHand() == null)
-      return; 
-    if (e.isCancelled())
-      return;
-    WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-    ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
-    LocalPlayer player = wg.wrapPlayer(p);
-    if(!set.isMemberOfAll(player)) {
-      return;
+    public static BlocksHandler getInstance() {
+        return instance;
     }
-    if (!set.allows(DefaultFlag.LIGHTER))
-      return;
-    int blocksbroken = PlayerDataHandler.getPlayerData(p).getInt("BlocksBroken");
-    PlayerDataHandler.getPlayerData(p).set("BlocksBroken", blocksbroken+1);
-  }
-  
-  @EventHandler
-  public void onLeave(PlayerQuitEvent e) {
-    Player p = e.getPlayer();
-      blocks.remove(p);
-      this.settings.saveBlocks();
-      PlayerDataHandler.savePlayerData(p);
 
-  }
-  
-  public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-    if (label.equalsIgnoreCase("blocks")) {
-      if (!(sender instanceof Player))
-        return false; 
-      Player p = (Player)sender;
-      int blocksbroken = PlayerDataHandler.getPlayerData(p).getInt("BlocksBroken");
-      p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b[&dBlocks&b] &bYou've broken &d&n" + blocksbroken + "&b blocks!"));
-    } 
-    return false;
-  }
-  
-  
+
+    public void onEnd() {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (blocks.containsKey(p)) {
+                PlayerDataHandler.getInstance().getPlayerData(p).set("BlocksBroken", blocks.get(p));
+                PlayerDataHandler.getInstance().savePlayerData(p);
+                blocks.remove(p);
+            }
+        }
+    }
+
+    public void onEndLB() {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (blocks.containsKey(p)) {
+                PlayerDataHandler.getInstance().getPlayerData(p).set("BlocksBroken", blocks.get(p));
+                PlayerDataHandler.getInstance().savePlayerData(p);
+            }
+        }
+    }
+
+
+    @SuppressWarnings("deprecation")
+    @EventHandler
+    public void onBreak(BlockBreakEvent e) {
+        Player p = e.getPlayer();
+        if (p.getItemInHand() == null)
+            return;
+        if (e.isCancelled())
+            return;
+        WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+        ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
+        LocalPlayer player = wg.wrapPlayer(p);
+        if (!set.isMemberOfAll(player)) {
+            return;
+        }
+        if (!set.allows(DefaultFlag.LIGHTER))
+            return;
+        int blocksbroken = PlayerDataHandler.getInstance().getPlayerData(p).getInt("BlocksBroken");
+        PlayerDataHandler.getInstance().getPlayerData(p).set("BlocksBroken", blocksbroken + 1);
+    }
+
+    @EventHandler
+    public void onLeave(PlayerQuitEvent e) {
+        Player p = e.getPlayer();
+        blocks.remove(p);
+        this.settings.saveBlocks();
+        PlayerDataHandler.getInstance().savePlayerData(p);
+
+    }
+
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (label.equalsIgnoreCase("blocks")) {
+            if (!(sender instanceof Player))
+                return false;
+            Player p = (Player) sender;
+            int blocksbroken = PlayerDataHandler.getInstance().getPlayerData(p).getInt("BlocksBroken");
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b[&dBlocks&b] &bYou've broken &d&n" + blocksbroken + "&b blocks!"));
+        }
+        return false;
+    }
+
+
 }

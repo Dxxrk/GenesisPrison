@@ -1,6 +1,5 @@
 package me.dxrk.Main;
 
-import me.dxrk.Events.PlayerDataHandler;
 import net.ess3.nms.refl.ReflUtil;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -13,21 +12,15 @@ import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Chest;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_8_R3.util.CraftMagicNumbers;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Method;
-import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.logging.Level;
 
 public class Methods {
@@ -130,19 +123,6 @@ public class Methods {
         return itemAsJsonObject.toString();
     }
 
-    public ArrayList<OfflinePlayer> beta() {
-        ArrayList<OfflinePlayer> b = new ArrayList<>();
-        byte b1;
-        int i;
-        OfflinePlayer[] arrayOfOfflinePlayer;
-        for (i = (arrayOfOfflinePlayer = Bukkit.getOfflinePlayers()).length, b1 = 0; b1 < i; ) {
-            OfflinePlayer p = arrayOfOfflinePlayer[b1];
-            if (PlayerDataHandler.getPlayerData(p).getBoolean("Beta"))
-                b.add(p);
-            b1++;
-        }
-        return b;
-    }
 
     public String convertItemStackToJsonRegular(ItemStack itemStack) {
         net.minecraft.server.v1_8_R3.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
@@ -216,9 +196,9 @@ public class Methods {
 
     @SuppressWarnings("deprecation")
     public static double getSellPrice(int rank) {
-        int block = rank/16;
-        if(block < 1)
+        int block = rank / 16;
+        if (block < 1)
             block = 1;
-        return block*500000;
+        return block * 500000;
     }
 }

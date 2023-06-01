@@ -1,6 +1,5 @@
 package me.dxrk.Commands;
 
-import me.dxrk.Events.BlocksHandler;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
@@ -32,41 +31,33 @@ public class CMDStats implements Listener, CommandExecutor {
     SettingsManager settings = SettingsManager.getInstance();
     Methods m = Methods.getInstance();
 
-    private String formatTime(int seconds){
+    private String formatTime(int seconds) {
         int day = (int) TimeUnit.SECONDS.toDays(seconds);
         long hours = TimeUnit.SECONDS.toHours(seconds) - (day * 24L);
-        long minute = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds)* 60);
-        long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
-        return m.c("&b"+day+"D "+hours+"H "+minute+"M "+second+"S");
+        long minute = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
+        long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) * 60);
+        return m.c("&b" + day + "D " + hours + "H " + minute + "M " + second + "S");
     }
 
-    private String getRank(Player p){
+    private String getRank(Player p) {
 
-        if(p.hasPermission("rank.genesis")){
+        if (p.hasPermission("rank.genesis")) {
             return m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls");
-        }
-        else if(p.hasPermission("rank.olympian")){
+        } else if (p.hasPermission("rank.olympian")) {
             return m.c("&e&lOlympian");
-        }
-        else if(p.hasPermission("rank.God")){
+        } else if (p.hasPermission("rank.God")) {
             return m.c("&d&lGod");
-        }
-        else if(p.hasPermission("rank.Titan")){
+        } else if (p.hasPermission("rank.Titan")) {
             return m.c("&3&lTitan");
-        }
-        else if(p.hasPermission("rank.Demi-God")){
+        } else if (p.hasPermission("rank.Demi-God")) {
             return m.c("&5&lDemi-God");
-        }
-        else if(p.hasPermission("rank.Hero")){
+        } else if (p.hasPermission("rank.Hero")) {
             return m.c("&c&lHero");
-        }
-        else if(p.hasPermission("rank.MVP")){
+        } else if (p.hasPermission("rank.MVP")) {
             return m.c("&6&lMVP");
-        }
-        else if(p.hasPermission("rank.VIP")){
+        } else if (p.hasPermission("rank.VIP")) {
             return m.c("&a&lVIP");
-        }
-        else if(p.hasPermission("rank.sponsor")){
+        } else if (p.hasPermission("rank.sponsor")) {
             return m.c("&b&lSponsor");
         }
 
@@ -81,7 +72,7 @@ public class CMDStats implements Listener, CommandExecutor {
         return skull;
     }
 
-    public void openStats(Player opener, String uuid){
+    public void openStats(Player opener, String uuid) {
         OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
     /*Under Player Head
     Keys Found
@@ -90,7 +81,7 @@ public class CMDStats implements Listener, CommandExecutor {
      */
 
         Inventory stats = Bukkit.createInventory(null, 54, m.c("&c&lStats:"));
-        for(int i = 0; i<54; i++){
+        for (int i = 0; i < 54; i++) {
             ItemStack fence = new ItemStack(Material.IRON_FENCE);
             ItemMeta fm = fence.getItemMeta();
             fm.setDisplayName(m.c("&c&lGenesis &b&lPrison"));
@@ -100,10 +91,10 @@ public class CMDStats implements Listener, CommandExecutor {
         List<String> lore = new ArrayList<>();
         ItemStack player = Head(p);
         ItemMeta pm = player.getItemMeta();
-        pm.setDisplayName(m.c("&f&lPlayer: "+p.getName()));
-        lore.add(m.c("&7Keys Found: &b"+ PlayerDataHandler.getPlayerData(p).getInt(uuid+".KeysFound")));
-        lore.add(m.c("&7Crates Opened: &b"+PlayerDataHandler.getPlayerData(p).getInt(uuid+".CratesOpened")));
-        lore.add(m.c("&7Time Played: ")+formatTime(PlayerDataHandler.getPlayerData(p).getInt(uuid+".TimePlayed")));
+        pm.setDisplayName(m.c("&f&lPlayer: " + p.getName()));
+        lore.add(m.c("&7Keys Found: &b" + PlayerDataHandler.getInstance().getPlayerData(p.getUniqueId()).getInt("KeysFound")));
+        lore.add(m.c("&7Crates Opened: &b" + PlayerDataHandler.getInstance().getPlayerData(p.getUniqueId()).getInt("CratesOpened")));
+        lore.add(m.c("&7Time Played: ") + formatTime(PlayerDataHandler.getInstance().getPlayerData(p.getUniqueId()).getInt("TimePlayed")));
         pm.setLore(lore);
         player.setItemMeta(pm);
         lore.clear();
@@ -111,40 +102,40 @@ public class CMDStats implements Listener, CommandExecutor {
 
         ItemStack multi = new ItemStack(Material.NETHER_STAR);
         ItemMeta mm = multi.getItemMeta();
-        mm.setDisplayName(m.c("&7Multi: &b"+settings.getMultiplier().getInt(uuid)));
+        mm.setDisplayName(m.c("&7Multi: &b" + settings.getMultiplier().getInt(uuid)));
         multi.setItemMeta(mm);
         stats.setItem(21, multi);
 
         ItemStack level = new ItemStack(Material.ENDER_PEARL);
         ItemMeta lm = level.getItemMeta();
-        lm.setDisplayName(m.c("&7Level: &b"+ PlayerDataHandler.getPlayerData(p).getInt("Level")));
+        lm.setDisplayName(m.c("&7Level: &b" + PlayerDataHandler.getInstance().getPlayerData(p.getUniqueId()).getInt("Level")));
         level.setItemMeta(lm);
         stats.setItem(23, level);
 
         ItemStack prestiges = new ItemStack(Material.EYE_OF_ENDER);
         ItemMeta prm = prestiges.getItemMeta();
-        prm.setDisplayName(m.c("&7Prestiges: &b"+PlayerDataHandler.getPlayerData(p).getInt(uuid+".Prestiges")));
+        prm.setDisplayName(m.c("&7Prestiges: &b" + PlayerDataHandler.getInstance().getPlayerData(p.getUniqueId()).getInt("Prestiges")));
         prestiges.setItemMeta(prm);
         stats.setItem(16, prestiges);
 
-        ItemStack pickaxe = PlayerDataHandler.getPlayerData(p).getItemStack(uuid+".Pickaxe");
+        ItemStack pickaxe = PlayerDataHandler.getInstance().getPlayerData(p.getUniqueId()).getItemStack("Pickaxe");
         stats.setItem(28, pickaxe);
 
         ItemStack blocks = new ItemStack(Material.DIAMOND_ORE);
         ItemMeta bm = blocks.getItemMeta();
-        bm.setDisplayName(m.c("&7Blocks Broken: &b"+PlayerDataHandler.getPlayerData(p).get(uuid+".BlocksBroken")));
+        bm.setDisplayName(m.c("&7Blocks Broken: &b" + PlayerDataHandler.getInstance().getPlayerData(p.getUniqueId()).get("BlocksBroken")));
         blocks.setItemMeta(bm);
         stats.setItem(39, blocks);
 
         ItemStack votes = new ItemStack(Material.PAPER);
         ItemMeta vm = votes.getItemMeta();
-        vm.setDisplayName(m.c("&7Votes: &b"+settings.getVote().getInt(uuid + ".Votes")));
+        vm.setDisplayName(m.c("&7Votes: &b" + settings.getVote().getInt(uuid + ".Votes")));
         votes.setItemMeta(vm);
         stats.setItem(41, votes);
 
         ItemStack tokens = new ItemStack(Material.PRISMARINE_CRYSTALS);
         ItemMeta tm = tokens.getItemMeta();
-        tm.setDisplayName(m.c("&7Tokens: &e⛀"+ Main.formatAmt(PlayerDataHandler.getPlayerData(p).getDouble("Tokens"))));
+        tm.setDisplayName(m.c("&7Tokens: &e⛀" + Main.formatAmt(PlayerDataHandler.getInstance().getPlayerData(p.getUniqueId()).getDouble("Tokens"))));
         tokens.setItemMeta(tm);
         stats.setItem(34, tokens);
 
@@ -156,11 +147,11 @@ public class CMDStats implements Listener, CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if(cmd.getName().equalsIgnoreCase("stats")){
+        if (cmd.getName().equalsIgnoreCase("stats")) {
             Player player = (Player) sender;
 
 
-            if(args.length == 1){
+            if (args.length == 1) {
                 File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
                 File[] var = mineFiles;
                 assert mineFiles != null;
@@ -171,13 +162,13 @@ public class CMDStats implements Listener, CommandExecutor {
                     UUID id = UUID.fromString(name);
 
                     OfflinePlayer p = Bukkit.getOfflinePlayer(id);
-                    if(p.getName().equalsIgnoreCase(args[0])){
+                    if (p.getName().equalsIgnoreCase(args[0])) {
                         openStats(player, name);
                     }
                 }
 
             }
-            if(args.length == 0) {
+            if (args.length == 0) {
                 openStats(player, player.getUniqueId().toString());
             }
         }
@@ -187,13 +178,10 @@ public class CMDStats implements Listener, CommandExecutor {
     }
 
     @EventHandler
-    public void onClick(InventoryClickEvent e){
-        if(e.getInventory().getName().equals(m.c("&c&lStats:")))
+    public void onClick(InventoryClickEvent e) {
+        if (e.getInventory().getName().equals(m.c("&c&lStats:")))
             e.setCancelled(true);
     }
-
-
-
 
 
 }

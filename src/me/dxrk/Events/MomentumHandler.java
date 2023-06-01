@@ -34,14 +34,15 @@ public class MomentumHandler implements Listener {
         int s = seconds.get(id);
         seconds.put(id, s + 1);
     }
+
     public static int getSeconds(UUID id) {
-        if(seconds.containsKey(id)) return seconds.get(id);
+        if (seconds.containsKey(id)) return seconds.get(id);
         return 0;
     }
 
     public static void runMomentum() {
         Bukkit.getScheduler().runTaskTimer(Main.getInstance(), () -> {
-            if(momentum.isEmpty()) return;
+            if (momentum.isEmpty()) return;
             for (UUID player : momentum.keySet()) {
                 ArrayList<Long> timeStamps = momentum.get(player);
                 if (timeStamps.size() == 0)
@@ -51,12 +52,12 @@ public class MomentumHandler implements Listener {
                 Player p = Bukkit.getPlayer(player);
                 if (currentTimeStamp - lastTimeStamp >= 60000L) {
                     removeMomentum(player);
-                    if(p != null)
+                    if (p != null)
                         ActionBarAPI.sendActionBar(p, m.c("&d&lMomentum: ") + Leaderboards.formatTime(getSeconds(player)));
                     return;
                 } else {
                     addSeconds(player);
-                    if(p != null) {
+                    if (p != null) {
                         ActionBarAPI.sendActionBar(p, m.c("&d&lMomentum: ") + Leaderboards.formatTime(getSeconds(player)));
                         sendTitleMomentum(p);
                     }
@@ -67,9 +68,9 @@ public class MomentumHandler implements Listener {
 
     private static void removeMomentum(UUID id) {
         int max = seconds.get(id);
-        int prev = PlayerDataHandler.getPlayerData(id).getInt("MaxMomentum");
-        if(max > prev) {
-            PlayerDataHandler.getPlayerData(id).set("MaxMomentum", max);
+        int prev = PlayerDataHandler.getInstance().getPlayerData(id).getInt("MaxMomentum");
+        if (max > prev) {
+            PlayerDataHandler.getInstance().getPlayerData(id).set("MaxMomentum", max);
         }
         seconds.remove(id);
         momentum.remove(id);
@@ -140,10 +141,10 @@ public class MomentumHandler implements Listener {
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         UUID id = p.getUniqueId();
-        WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+        WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
         ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
         ProtectedRegion region = wg.getRegionManager(p.getWorld()).getRegion(p.getName());
-        if(!set.getRegions().contains(region)) {
+        if (!set.getRegions().contains(region)) {
             e.setCancelled(true);
             return;
         }
@@ -151,11 +152,10 @@ public class MomentumHandler implements Listener {
             ArrayList<Long> timeStamps = (momentum.get(id) == null) ? new ArrayList<>() : momentum.get(id);
             timeStamps.add(System.currentTimeMillis());
             momentum.put(id, timeStamps);
-            if(!seconds.containsKey(id))
+            if (!seconds.containsKey(id))
                 seconds.put(id, 0);
         }
     }
-
 
 
 }

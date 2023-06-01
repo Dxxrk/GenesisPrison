@@ -17,79 +17,83 @@ public class Gangs implements Listener {
     public static Gangs getInstance() {
         return instance;
     }
+
     SettingsManager settings = SettingsManager.getInstance();
     Methods m = Methods.getInstance();
 
-    public String getGang(OfflinePlayer p){
-        return PlayerDataHandler.getPlayerData(p).getString("Gang");
+    public String getGang(OfflinePlayer p) {
+        return PlayerDataHandler.getInstance().getPlayerData(p.getUniqueId()).getString("Gang");
     }
+
     public int getGangLevel(String gang) {
-        return settings.getGangs().getInt(gang+".Level");
+        return settings.getGangs().getInt(gang + ".Level");
     }
+
     public double getGangBlocks(String gang) {
-        return settings.getGangs().getDouble(gang+".BlocksBroken");
+        return settings.getGangs().getDouble(gang + ".BlocksBroken");
     }
 
     public boolean hasGang(OfflinePlayer p) {
-        return !PlayerDataHandler.getPlayerData(p).getString("Gang").equals("");
+        return !PlayerDataHandler.getInstance().getPlayerData(p.getUniqueId()).getString("Gang").equals("");
     }
 
     public void createGang(Player p, String name) {
-        settings.getGangs().set(name+".Owner", p.getUniqueId().toString());
-        settings.getGangs().set(name+".Level", 0);
-        settings.getGangs().set(name+".BlocksBroken", 0);
-        settings.getGangs().set(name+".MaxMembers", 4);
+        settings.getGangs().set(name + ".Owner", p.getUniqueId().toString());
+        settings.getGangs().set(name + ".Level", 0);
+        settings.getGangs().set(name + ".BlocksBroken", 0);
+        settings.getGangs().set(name + ".MaxMembers", 4);
         List<String> members = new ArrayList<>();
-        settings.getGangs().set(name+".Members", members);
+        settings.getGangs().set(name + ".Members", members);
         List<String> perks = new ArrayList<>();
-        settings.getGangs().set(name+".PerksUnlocked", perks);
+        settings.getGangs().set(name + ".PerksUnlocked", perks);
         settings.saveGangs();
-        PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".Gang", name);
-        PlayerDataHandler.savePlayerData(p);
+        PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".Gang", name);
+        PlayerDataHandler.getInstance().savePlayerData(p);
     }
 
     public void addMember(Player p, String name) {
-        List<String> members = settings.getGangs().getStringList(name+".Members");
+        List<String> members = settings.getGangs().getStringList(name + ".Members");
         members.add(p.getUniqueId().toString());
-        settings.getGangs().set(name+".Members", members);
+        settings.getGangs().set(name + ".Members", members);
         settings.saveGangs();
-        PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".Gang", name);
-        PlayerDataHandler.savePlayerData(p);
+        PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".Gang", name);
+        PlayerDataHandler.getInstance().savePlayerData(p);
     }
 
     public void removeMember(OfflinePlayer p, String name) {
-        List<String> members = settings.getGangs().getStringList(name+".Members");
+        List<String> members = settings.getGangs().getStringList(name + ".Members");
         members.remove(p.getUniqueId().toString());
-        settings.getGangs().set(name+".Members", members);
+        settings.getGangs().set(name + ".Members", members);
         settings.saveGangs();
-        PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".Gang", "");
-        PlayerDataHandler.savePlayerData(p);
+        PlayerDataHandler.getInstance().getPlayerData(p.getUniqueId()).set(p.getUniqueId().toString() + ".Gang", "");
+        PlayerDataHandler.getInstance().savePlayerData(p.getUniqueId());
     }
 
     public void addToBank(String name, double tokens) {
-        int gangTokens = settings.getGangs().getInt(name+".GangTokens");
-        settings.getGangs().set(name+"GangTokens", gangTokens+((int) (tokens/10000)));
+        int gangTokens = settings.getGangs().getInt(name + ".GangTokens");
+        settings.getGangs().set(name + "GangTokens", gangTokens + ((int) (tokens / 10000)));
         settings.saveGangs();
     }
 
     public void removeFromBank(String name, int amt) {
-        int gangTokens = settings.getGangs().getInt(name+".GangTokens");
-        settings.getGangs().set(name+"GangTokens", gangTokens-amt);
+        int gangTokens = settings.getGangs().getInt(name + ".GangTokens");
+        settings.getGangs().set(name + "GangTokens", gangTokens - amt);
         settings.saveGangs();
     }
 
     public void addPerk(String name, String perk) {
-        List<String> perks = settings.getGangs().getStringList(name+".PerksUnlocked");
+        List<String> perks = settings.getGangs().getStringList(name + ".PerksUnlocked");
         perks.add(perk);
-        settings.getGangs().set(name+".PerksUnlocked", perks);
+        settings.getGangs().set(name + ".PerksUnlocked", perks);
         settings.saveGangs();
     }
+
     public void changeOwner(Player p, String newOwner, String name) {
-        String owner = settings.getGangs().getString(name+".Owner");
-        List<String> members = settings.getGangs().getStringList(name+".Members");
+        String owner = settings.getGangs().getString(name + ".Owner");
+        List<String> members = settings.getGangs().getStringList(name + ".Members");
         members.remove(p.getUniqueId().toString());
         members.add(owner);
-        settings.getGangs().set(name+".Owner", newOwner);
-        settings.getGangs().set(name+".Members", members);
+        settings.getGangs().set(name + ".Owner", newOwner);
+        settings.getGangs().set(name + ".Members", members);
     }
 }

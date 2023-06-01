@@ -8,6 +8,7 @@ public class MineSystem {
     public static HashMap<String, Mine> mines = new HashMap<>();
 
     static MineSystem instance = new MineSystem();
+
     public static MineSystem getInstance() {
         return instance;
     }

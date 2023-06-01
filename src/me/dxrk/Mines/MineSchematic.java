@@ -1,9 +1,10 @@
 package me.dxrk.Mines;
 
+import org.bukkit.inventory.ItemStack;
+
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
-import org.bukkit.inventory.ItemStack;
 
 public abstract class MineSchematic<S> {
     private final String name;
@@ -28,7 +29,7 @@ public abstract class MineSchematic<S> {
             return true;
         if (!(o instanceof MineSchematic))
             return false;
-        MineSchematic<?> that = (MineSchematic)o;
+        MineSchematic<?> that = (MineSchematic) o;
         return (Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
                 Objects.equals(getFile(), that.getFile()) &&
@@ -36,7 +37,7 @@ public abstract class MineSchematic<S> {
     }
 
     public int hashCode() {
-        return Objects.hash(new Object[] { getName(), getDescription(), getFile(), getIcon() });
+        return Objects.hash(new Object[]{getName(), getDescription(), getFile(), getIcon()});
     }
 
     public String getName() {

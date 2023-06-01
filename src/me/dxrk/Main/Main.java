@@ -63,12 +63,13 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     public static String c(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
+
     @SuppressWarnings("deprecation")
     private void handlePing(WrappedServerPing ping) {
         ping.setPlayers(Arrays.asList(
-                new WrappedGameProfile("id1", ChatColor.YELLOW+"store.mcgenesis.net"),
+                new WrappedGameProfile("id1", ChatColor.YELLOW + "store.mcgenesis.net"),
                 new WrappedGameProfile("id2", ""),
-                new WrappedGameProfile("id3", ChatColor.LIGHT_PURPLE+"Remember to Vote!")
+                new WrappedGameProfile("id3", ChatColor.LIGHT_PURPLE + "Remember to Vote!")
         ));
         ping.setPlayersOnline(ScoreboardHandler.getPlayersOnline());
     }
@@ -81,6 +82,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         worlds.add("Dxrk");
         return worlds;
     }
+
     private void loadWorlds() {
         /*for (String s : worlds()) {
             if(Bukkit.getWorld(s) == null) {
@@ -94,6 +96,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         plugin = this;
         INSTANCE = this;
         Mines.getInstance().enable();
+        PlayerDataHandler.getInstance().loadPlayerData();
         System.out.println(MineSystem.getInstance().getActiveMines());
         MineWorldCreator.getInstance().createMineWorld("mines");
         MineWorldCreator.getInstance().createMineWorld("minestwo");
@@ -311,7 +314,6 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         MomentumHandler.runMomentum();
 
 
-
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -362,46 +364,46 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
                     File mineFile = var[i];
                     String name = mineFile.getName().split("\\.")[0];
                     UUID id = UUID.fromString(name);
-                    
-                    if (!(PlayerDataHandler.getPlayerData(id).getInt("KitDemiGodKeys") == 0)) {
-                        int countdown = PlayerDataHandler.getPlayerData(id).getInt("KitDemiGodKeys");
+
+                    if (!(PlayerDataHandler.getInstance().getPlayerData(id).getInt("KitDemiGodKeys") == 0)) {
+                        int countdown = PlayerDataHandler.getInstance().getPlayerData(id).getInt("KitDemiGodKeys");
                         int replace = countdown - 1;
-                        PlayerDataHandler.getPlayerData(id).set("KitDemiGodKeys", replace);
+                        PlayerDataHandler.getInstance().getPlayerData(id).set("KitDemiGodKeys", replace);
                     }
-                    if (!(PlayerDataHandler.getPlayerData(id).getInt("KitTitanKeys") == 0)) {
-                        int countdown = PlayerDataHandler.getPlayerData(id).getInt("KitTitanKeys");
+                    if (!(PlayerDataHandler.getInstance().getPlayerData(id).getInt("KitTitanKeys") == 0)) {
+                        int countdown = PlayerDataHandler.getInstance().getPlayerData(id).getInt("KitTitanKeys");
                         int replace = countdown - 1;
-                        PlayerDataHandler.getPlayerData(id).set("KitTitanKeys", replace);
+                        PlayerDataHandler.getInstance().getPlayerData(id).set("KitTitanKeys", replace);
                     }
-                    if (!(PlayerDataHandler.getPlayerData(id).getInt("KitGodKeys") == 0)) {
-                        int countdown = PlayerDataHandler.getPlayerData(id).getInt("KitGodKeys");
+                    if (!(PlayerDataHandler.getInstance().getPlayerData(id).getInt("KitGodKeys") == 0)) {
+                        int countdown = PlayerDataHandler.getInstance().getPlayerData(id).getInt("KitGodKeys");
                         int replace = countdown - 1;
-                        PlayerDataHandler.getPlayerData(id).set("KitGodKeys", replace);
+                        PlayerDataHandler.getInstance().getPlayerData(id).set("KitGodKeys", replace);
                     }
-                    if (!(PlayerDataHandler.getPlayerData(id).getInt("KitOlympianKeys") == 0)) {
-                        int countdown = PlayerDataHandler.getPlayerData(id).getInt("KitOlympianKeys");
+                    if (!(PlayerDataHandler.getInstance().getPlayerData(id).getInt("KitOlympianKeys") == 0)) {
+                        int countdown = PlayerDataHandler.getInstance().getPlayerData(id).getInt("KitOlympianKeys");
                         int replace = countdown - 1;
-                        PlayerDataHandler.getPlayerData(id).set("KitOlympianKeys", replace);
+                        PlayerDataHandler.getInstance().getPlayerData(id).set("KitOlympianKeys", replace);
                     }
-                    if (!(PlayerDataHandler.getPlayerData(id).getInt("KitGenesisKeys") == 0)) {
-                        int countdown = PlayerDataHandler.getPlayerData(id).getInt("KitGenesisKeys");
+                    if (!(PlayerDataHandler.getInstance().getPlayerData(id).getInt("KitGenesisKeys") == 0)) {
+                        int countdown = PlayerDataHandler.getInstance().getPlayerData(id).getInt("KitGenesisKeys");
                         int replace = countdown - 1;
-                        PlayerDataHandler.getPlayerData(id).set("KitGenesisKeys", replace);
+                        PlayerDataHandler.getInstance().getPlayerData(id).set("KitGenesisKeys", replace);
                     }
-                    if (!(PlayerDataHandler.getPlayerData(id).getInt("KitGod") == 0)) {
-                        int countdown = PlayerDataHandler.getPlayerData(id).getInt("KitGod");
+                    if (!(PlayerDataHandler.getInstance().getPlayerData(id).getInt("KitGod") == 0)) {
+                        int countdown = PlayerDataHandler.getInstance().getPlayerData(id).getInt("KitGod");
                         int replace = countdown - 1;
-                        PlayerDataHandler.getPlayerData(id).set("KitGod", replace);
+                        PlayerDataHandler.getInstance().getPlayerData(id).set("KitGod", replace);
                     }
-                    if (!(PlayerDataHandler.getPlayerData(id).getInt("KitOlympian") == 0)) {
-                        int countdown = PlayerDataHandler.getPlayerData(id).getInt("KitOlympian");
+                    if (!(PlayerDataHandler.getInstance().getPlayerData(id).getInt("KitOlympian") == 0)) {
+                        int countdown = PlayerDataHandler.getInstance().getPlayerData(id).getInt("KitOlympian");
                         int replace = countdown - 1;
-                        PlayerDataHandler.getPlayerData(id).set("KitOlympian", replace);
+                        PlayerDataHandler.getInstance().getPlayerData(id).set("KitOlympian", replace);
                     }
-                    if (!(PlayerDataHandler.getPlayerData(id).getInt("KitGenesis") == 0)) {
-                        int countdown = PlayerDataHandler.getPlayerData(id).getInt("KitGenesis");
+                    if (!(PlayerDataHandler.getInstance().getPlayerData(id).getInt("KitGenesis") == 0)) {
+                        int countdown = PlayerDataHandler.getInstance().getPlayerData(id).getInt("KitGenesis");
                         int replace = countdown - 1;
-                        PlayerDataHandler.getPlayerData(id).set("KitGenesis", replace);
+                        PlayerDataHandler.getInstance().getPlayerData(id).set("KitGenesis", replace);
                     }
                 }
             }
@@ -497,14 +499,13 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             File mineFile = var[i];
             String name = mineFile.getName().split("\\.")[0];
             UUID id = UUID.fromString(name);
-            int seconds = PlayerDataHandler.getPlayerData(id).getInt("RestartMomentum");
-            if(seconds >0) {
+            int seconds = PlayerDataHandler.getInstance().getPlayerData(id).getInt("RestartMomentum");
+            if (seconds > 0) {
                 MomentumHandler.seconds.put(id, seconds);
             }
-            ArrayList<Long> momentums = (ArrayList<Long>) PlayerDataHandler.getPlayerData(id).getLongList("RestartMomentumList");
+            ArrayList<Long> momentums = (ArrayList<Long>) PlayerDataHandler.getInstance().getPlayerData(id).getLongList("RestartMomentumList");
             MomentumHandler.momentum.put(id, momentums);
         }
-
 
 
         Methods.schedule(this, new Runnable() {
@@ -598,9 +599,6 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     }
 
 
-
-
-
     public static String formatAmt(double amt) {
         if (amt <= 0.0D)
             return String.valueOf(0);
@@ -627,9 +625,14 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         settings.saveVote();
         settings.saveGangs();
         Iterator mineList = MineSystem.getInstance().getActiveMines().values().iterator();
-        while(mineList.hasNext()) {
-            Mine mine = (Mine)mineList.next();
+        while (mineList.hasNext()) {
+            Mine mine = (Mine) mineList.next();
             mine.save();
+        }
+        Iterator pdataList = PlayerDataHandler.getInstance().getPdataList().values().iterator();
+        while (mineList.hasNext()) {
+            PlayerData pdata = (PlayerData) pdataList.next();
+            pdata.save();
         }
 
         if (settings.getBoost().getDouble("ActiveSell.Amp") != 0.0D) {
@@ -650,12 +653,12 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
 
         this.settings.getVote().set("VoteShopLog", CMDVoteShop.votelog);
         this.settings.saveVote();
-        for(UUID id : MomentumHandler.seconds.keySet()) {
+        for (UUID id : MomentumHandler.seconds.keySet()) {
             long seconds = MomentumHandler.seconds.get(id);
-            PlayerDataHandler.getPlayerData(id).set(id +".RestartMomentum", seconds);
+            PlayerDataHandler.getInstance().getPlayerData(id).set(id + ".RestartMomentum", seconds);
             ArrayList<Long> momentums = MomentumHandler.momentum.get(id);
-            PlayerDataHandler.getPlayerData(id).set(id +".RestartMomentumList", momentums);
-            PlayerDataHandler.savePlayerData(id);
+            PlayerDataHandler.getInstance().getPlayerData(id).set(id + ".RestartMomentumList", momentums);
+            PlayerDataHandler.getInstance().savePlayerData(id);
         }
 
         this.settings.saveData();

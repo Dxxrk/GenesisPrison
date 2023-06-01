@@ -3,14 +3,14 @@ package me.dxrk.utils;
 import java.util.ArrayList;
 
 public enum TimeUnit {
-    SECOND(new String[] { "second", "seconds" }, 1L),
-    MINUTE(new String[] { "minute", "minutes" }, 60L),
-    HOUR(new String[] { "hour", "hours" }, 3600L),
-    DAY(new String[] { "day", "days" }, 86400L),
-    WEEK(new String[] { "week", "weeks" }, 604800L),
-    MONTH(new String[] { "month", "months" }, 2592000L),
-    YEAR(new String[] { "year", "years" }, 31104000L),
-    FOREVER(new String[] { "forever" }, Long.MAX_VALUE);
+    SECOND(new String[]{"second", "seconds"}, 1L),
+    MINUTE(new String[]{"minute", "minutes"}, 60L),
+    HOUR(new String[]{"hour", "hours"}, 3600L),
+    DAY(new String[]{"day", "days"}, 86400L),
+    WEEK(new String[]{"week", "weeks"}, 604800L),
+    MONTH(new String[]{"month", "months"}, 2592000L),
+    YEAR(new String[]{"year", "years"}, 31104000L),
+    FOREVER(new String[]{"forever"}, Long.MAX_VALUE);
 
     private String[] identifiers;
 
@@ -41,9 +41,9 @@ public enum TimeUnit {
                 String timeIdentifier = arrayOfString[b1];
                 if (timeIdentifier.equalsIgnoreCase(identifier))
                     return timeUnit;
-                b1 = (byte)(b1 + 1);
+                b1 = (byte) (b1 + 1);
             }
-            b = (byte)(b + 1);
+            b = (byte) (b + 1);
         }
         return null;
     }
@@ -73,7 +73,7 @@ public enum TimeUnit {
                 } else {
                     identifier = String.valueOf(identifier) + str;
                 }
-                b1 = (byte)(b1 + 1);
+                b1 = (byte) (b1 + 1);
             }
             TimeUnit timeUnit = getTimeUnit(identifier);
             if (timeUnit != null)
@@ -81,7 +81,7 @@ public enum TimeUnit {
                     timeUnits.add(timeUnit);
                     k++;
                 }
-            b = (byte)(b + 1);
+            b = (byte) (b + 1);
         }
         return getSeconds(timeUnits);
     }
@@ -141,13 +141,13 @@ public enum TimeUnit {
             timeUnits.add(FOREVER);
             return timeUnits;
         }
-        int years = (int)(seconds / 31104000L);
-        int months = (int)(seconds % 31104000L / 2592000L);
-        int weeks = (int)(seconds % 31104000L % 2592000L / 604800L);
-        int days = (int)(seconds % 31104000L % 2592000L % 604800L / 86400L);
-        int hours = (int)(seconds % 31104000L % 2592000L % 604800L % 86400L / 3600L);
-        int minute = (int)(seconds % 31104000L % 2592000L % 604800L % 86400L % 3600L / 60L);
-        int secondS = (int)(seconds % 31104000L % 2592000L % 604800L % 86400L % 3600L % 60L);
+        int years = (int) (seconds / 31104000L);
+        int months = (int) (seconds % 31104000L / 2592000L);
+        int weeks = (int) (seconds % 31104000L % 2592000L / 604800L);
+        int days = (int) (seconds % 31104000L % 2592000L % 604800L / 86400L);
+        int hours = (int) (seconds % 31104000L % 2592000L % 604800L % 86400L / 3600L);
+        int minute = (int) (seconds % 31104000L % 2592000L % 604800L % 86400L % 3600L / 60L);
+        int secondS = (int) (seconds % 31104000L % 2592000L % 604800L % 86400L % 3600L % 60L);
         int i;
         for (i = 0; i < years; ) {
             timeUnits.add(YEAR);

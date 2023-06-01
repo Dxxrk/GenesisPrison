@@ -28,31 +28,30 @@ public class ReminderHandler implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(!settings.getDaily().get(p.getUniqueId().toString()+".FreeReward").equals(getTodayDate())) {
-                    if(settings.getOptions().getBoolean(p.getUniqueId().toString()+".Daily-Reminder"))
+                if (!settings.getDaily().get(p.getUniqueId().toString() + ".FreeReward").equals(getTodayDate())) {
+                    if (settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Daily-Reminder"))
                         p.sendMessage(m.c("&f&lDaily &8| &bYou Haven't claimed your daily rewards! &7/Daily."));
                 }
-                if(!p.isOnline()) {
+                if (!p.isOnline()) {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(Main.plugin, 0L, 20*300L);
+        }.runTaskTimer(Main.plugin, 0L, 20 * 300L);
 
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(!settings.getVote().get(p.getUniqueId().toString()+".HasVoted").equals(getTodayDate())) {
-                    if(settings.getOptions().getBoolean(p.getUniqueId().toString()+".Vote-Reminder"))
+                if (!settings.getVote().get(p.getUniqueId().toString() + ".HasVoted").equals(getTodayDate())) {
+                    if (settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Vote-Reminder"))
                         p.sendMessage(m.c("&f&lVote &8| &bYou Haven't voted today! &7/Vote."));
                 }
-                if(!p.isOnline()) {
+                if (!p.isOnline()) {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(Main.plugin, 0L, 20*300L);
+        }.runTaskTimer(Main.plugin, 0L, 20 * 300L);
 
     }
-
 
 
 }

@@ -12,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,21 +39,19 @@ public class PrestigeHandler implements Listener, CommandExecutor {
     }
 
 
-
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player p = (Player) sender;
-        if(p == null){
+        if (p == null) {
             return false;
         }
 
 
-        if(label.equalsIgnoreCase("prestige")){
-            if(RankupHandler.getInstance().getRank(p) >=1000)
+        if (label.equalsIgnoreCase("prestige")) {
+            if (RankupHandler.getInstance().getRank(p) >= 1000)
                 openInv(p);
             else
                 p.sendMessage(m.c("&cMust be level 1000 or higher."));
         }
-
 
 
         return false;
@@ -72,8 +69,8 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         lore.add(m.c("&a+$0.25 Coupon"));
         lore.add(m.c("&b+1 &4&l&ki&f&lSeasonal&4&l&ki&r &7Key"));
         String uuid = p.getUniqueId().toString();
-        int prestiges = PlayerDataHandler.getPlayerData(p).getInt("Prestiges");
-        if(prestiges >=100) {
+        int prestiges = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Prestiges");
+        if (prestiges >= 100) {
             lore.clear();
             lore.add(m.c("&c&lMAX LEVEL"));
             prestige.setItem(2, prestigeItem(lore, m.c("&6&lYou did it!")));
@@ -92,7 +89,7 @@ public class PrestigeHandler implements Listener, CommandExecutor {
     }
 
     @EventHandler
-    public void onClick(InventoryClickEvent e){
+    public void onClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
         if (e.getClickedInventory() == null)
@@ -100,18 +97,18 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         if (e.getClickedInventory().getName() == null)
             return;
 
-        if(e.getClickedInventory().getName().contains(m.c("&cPrestige:"))){
+        if (e.getClickedInventory().getName().contains(m.c("&cPrestige:"))) {
             e.setCancelled(true);
 
-            if(e.getSlot() == 2){
+            if (e.getSlot() == 2) {
                 String uuid = p.getUniqueId().toString();
-                int prestiges = PlayerDataHandler.getPlayerData(p).getInt("Prestiges");
-                if(prestiges >=100) {
+                int prestiges = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Prestiges");
+                if (prestiges >= 100) {
                     return;
                 }
                 Inventory sure = Bukkit.createInventory(null, InventoryType.HOPPER, m.c("&c&lARE YOU SURE?"));
 
-                ItemStack yes = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)5);
+                ItemStack yes = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 5);
                 ItemMeta ym = yes.getItemMeta();
                 List<String> lore = new ArrayList<>();
                 lore.add(m.c("&7&oThis Action is permanent."));
@@ -120,7 +117,7 @@ public class PrestigeHandler implements Listener, CommandExecutor {
                 yes.setItemMeta(ym);
                 lore.clear();
 
-                ItemStack no = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)14);
+                ItemStack no = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
                 ItemMeta nm = no.getItemMeta();
                 nm.setDisplayName(m.c("&c&lNO"));
                 no.setItemMeta(nm);
@@ -134,32 +131,29 @@ public class PrestigeHandler implements Listener, CommandExecutor {
 
             }
         }
-        if(e.getClickedInventory().getName().equals(m.c("&c&lARE YOU SURE?"))){
+        if (e.getClickedInventory().getName().equals(m.c("&c&lARE YOU SURE?"))) {
             e.setCancelled(true);
-            if(e.getSlot() == 1){
+            if (e.getSlot() == 1) {
                 prestige(p);
                 p.closeInventory();
 
             }
-            if(e.getSlot() == 3){
+            if (e.getSlot() == 3) {
                 p.closeInventory();
             }
         }
     }
 
 
-
-
-
     public void prestige(Player p) {
         String uuid = p.getUniqueId().toString();
 
         //Adding Prestige and resetting rank
-        int prestiges = PlayerDataHandler.getPlayerData(p).getInt("Prestiges");
-        PlayerDataHandler.getPlayerData(p).set("Prestiges", (prestiges+1));
+        int prestiges = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Prestiges");
+        PlayerDataHandler.getInstance().getPlayerData(p).set("Prestiges", (prestiges + 1));
         RankupHandler.getInstance().setRank(p, 1);
         Main.econ.withdrawPlayer(p, Main.econ.getBalance(p));
-        PlayerDataHandler.savePlayerData(p);
+        PlayerDataHandler.getInstance().savePlayerData(p);
         TitleAPI.sendTitle(p, 2, 40, 2, m.c("&c&lPrestiged!"), m.c("&b&lPrestige +1"));
         MineHandler.getInstance().updateMine(p, 1);
         CMDVoteShop.addCoupon(p, 0.25);
@@ -169,15 +163,10 @@ public class PrestigeHandler implements Listener, CommandExecutor {
 
     public static void addPrestiges(Player p, int amt) {
         String uuid = p.getUniqueId().toString();
-        int prestiges = PlayerDataHandler.getPlayerData(p).getInt("Prestiges");
-        PlayerDataHandler.getPlayerData(p).set("Prestiges", prestiges+amt);
-        PlayerDataHandler.savePlayerData(p);
+        int prestiges = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Prestiges");
+        PlayerDataHandler.getInstance().getPlayerData(p).set("Prestiges", prestiges + amt);
+        PlayerDataHandler.getInstance().savePlayerData(p);
     }
-
-
-
-
-
 
 
 }

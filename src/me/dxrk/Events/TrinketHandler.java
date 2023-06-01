@@ -426,7 +426,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
     public void openTrinkets(Player p) {
         Inventory trinket = Bukkit.createInventory(null, 9, m.c("&a&lTrinkets:"));
 
-        List<String> TrinketList = PlayerDataHandler.getPlayerData(p).getStringList("Trinkets");
+        List<String> TrinketList = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("Trinkets");
 
         ItemStack trinket1 = new ItemStack(Material.GOLD_NUGGET);
         ItemMeta tm1 = trinket1.getItemMeta();
@@ -516,7 +516,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 e.setCancelled(true);
                 if (e.getCursor().getType().equals(Material.GOLD_NUGGET)) {
                     if (ChatColor.stripColor(e.getCursor().getItemMeta().getDisplayName()).contains("Trinket")) {
-                        List<String> trinket = PlayerDataHandler.getPlayerData(p).getStringList("Trinkets");
+                        List<String> trinket = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("Trinkets");
                         if (e.getSlot() == 1) {
                             if (trinket.size() > 0 && trinket.get(0) != null) {
                                 trinket.set(0, e.getCursor().getItemMeta().getDisplayName() + " - " + e.getCursor().getItemMeta().getLore().get(0).split(" ")[0]);
@@ -545,7 +545,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                                 trinket.add(e.getCursor().getItemMeta().getDisplayName() + " - " + e.getCursor().getItemMeta().getLore().get(0).split(" ")[0]);
                             }
                         }
-                        PlayerDataHandler.getPlayerData(p).set("Trinkets", trinket);
+                        PlayerDataHandler.getInstance().getPlayerData(p).set("Trinkets", trinket);
                         e.setCursor(null);
                         openTrinkets(p);
                         ItemStack pitem = p.getItemInHand().clone();

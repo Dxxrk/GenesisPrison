@@ -57,17 +57,33 @@ public class Mine {
         this.resetpercent = reset;
     }
 
-    public String getMineName() {return this.mineName;}
+    public String getMineName() {
+        return this.mineName;
+    }
 
-    public Location getSpawnLocation() {return this.spawnLocation;}
+    public Location getSpawnLocation() {
+        return this.spawnLocation;
+    }
 
-    public World getMineWorld() {return this.mineWorld;}
+    public World getMineWorld() {
+        return this.mineWorld;
+    }
 
-    public Location getMinPoint() {return this.corner1;}
-    public Location getMaxPoint() {return this.corner2;}
+    public Location getMinPoint() {
+        return this.corner1;
+    }
 
-    public double getResetPercent() {return this.resetpercent;}
-    public void setResetPercent(double reset) {this.resetpercent = reset;}
+    public Location getMaxPoint() {
+        return this.corner2;
+    }
+
+    public double getResetPercent() {
+        return this.resetpercent;
+    }
+
+    public void setResetPercent(double reset) {
+        this.resetpercent = reset;
+    }
 
     public boolean isInMine(Location l) {
         return getLocationsInMine(this.corner1, this.corner2, this.mineWorld).contains(l);
@@ -89,6 +105,7 @@ public class Mine {
     public int getBlocksLeft() {
         return getLocationsInMineNotAir(this.corner1, this.corner2, this.mineWorld).size();
     }
+
     public int getBlocksMined() {
         byte b = 0;
         Location location1 = getMinPoint();
@@ -112,15 +129,26 @@ public class Mine {
         return 100.0F - i / j * 100.0F;
     }
 
-    public ItemStack getBlock1() {return this.block1;}
-    public ItemStack getBlock2() {return this.block2;}
-    public ItemStack getBlock3() {return this.block3;}
+    public ItemStack getBlock1() {
+        return this.block1;
+    }
+
+    public ItemStack getBlock2() {
+        return this.block2;
+    }
+
+    public ItemStack getBlock3() {
+        return this.block3;
+    }
+
     public void setBlock1(ItemStack i) {
         this.block1 = i;
     }
+
     public void setBlock2(ItemStack i) {
         this.block2 = i;
     }
+
     public void setBlock3(ItemStack i) {
         this.block3 = i;
     }
@@ -149,10 +177,10 @@ public class Mine {
             config.set("spawn_loc.Z", this.getSpawnLocation().getZ());
             config.set("reset", this.getResetPercent());
             config.save(mineFile);
-        } catch(Exception e) {
-            System.out.println("ERROR SAVING MINE: "+getMineName());
-            System.out.println("ERROR SAVING MINE: "+getMineName());
-            System.out.println("ERROR SAVING MINE: "+getMineName());
+        } catch (Exception e) {
+            System.out.println("ERROR SAVING MINE: " + getMineName());
+            System.out.println("ERROR SAVING MINE: " + getMineName());
+            System.out.println("ERROR SAVING MINE: " + getMineName());
             System.out.println(e.getMessage());
         }
     }
@@ -178,6 +206,7 @@ public class Mine {
 
         return blocks;
     }
+
     private List<Location> getLocationsInMineNotAir(Location loc1, Location loc2, World w) {
         List<Location> blocks = new ArrayList<>();
 
@@ -191,7 +220,7 @@ public class Mine {
             for (int y = miny; y <= maxy; y++) {
                 for (int z = minz; z <= maxz; z++) {
                     Location b = new Location(w, x, y, z);
-                    if(!w.getBlockAt(b).getType().equals(Material.AIR))
+                    if (!w.getBlockAt(b).getType().equals(Material.AIR))
                         blocks.add(b);
                 }
             }
@@ -199,6 +228,7 @@ public class Mine {
 
         return blocks;
     }
+
     private List<Location> getLocationsInMineAir(Location loc1, Location loc2, World w) {
         List<Location> blocks = new ArrayList<>();
 
@@ -212,7 +242,7 @@ public class Mine {
             for (int y = miny; y <= maxy; y++) {
                 for (int z = minz; z <= maxz; z++) {
                     Location b = new Location(w, x, y, z);
-                    if(w.getBlockAt(b).getType().equals(Material.AIR))
+                    if (w.getBlockAt(b).getType().equals(Material.AIR))
                         blocks.add(b);
                 }
             }

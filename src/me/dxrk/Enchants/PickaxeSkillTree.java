@@ -27,24 +27,24 @@ public class PickaxeSkillTree implements Listener {
     static SettingsManager settings = SettingsManager.getInstance();
 
 
-    private static ItemStack Spacer(){
-        ItemStack white = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)0);
+    private static ItemStack Spacer() {
+        ItemStack white = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 0);
         ItemMeta wm = white.getItemMeta();
         wm.setDisplayName(m.c(" "));
         white.setItemMeta(wm);
         return white;
     }
 
-    private static ItemStack skillItem(Player p, String name, String desc, int price){
-        ItemStack skill = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)14);
+    private static ItemStack skillItem(Player p, String name, String desc, int price) {
+        ItemStack skill = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
         ItemMeta sm = skill.getItemMeta();
         List<String> lore = new ArrayList<>();
         lore.add(desc);
         lore.add(" ");
-        List<String> skillsUnlocked = PlayerDataHandler.getPlayerData(p).getStringList("PickaxeSkillsUnlocked");
-        if(skillsUnlocked.contains(name)){
-            if(name.equals("Zeus (Level 5)") || name.equals("Poseidon (Level 5)") || name.equals("Hades (Level 5)") || name.equals("Ares (Level 5)") || name.equals("Aphrodite (Level 5)")){
-                skill = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)1);
+        List<String> skillsUnlocked = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("PickaxeSkillsUnlocked");
+        if (skillsUnlocked.contains(name)) {
+            if (name.equals("Zeus (Level 5)") || name.equals("Poseidon (Level 5)") || name.equals("Hades (Level 5)") || name.equals("Ares (Level 5)") || name.equals("Aphrodite (Level 5)")) {
+                skill = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 1);
                 sm.setDisplayName(m.c("&6Rebirth Pickaxe"));
                 List<String> confirm = new ArrayList<>();
                 confirm.add(m.c("&aClick if you want to rebirth your pickaxe"));
@@ -52,16 +52,16 @@ public class PickaxeSkillTree implements Listener {
                 skill.setItemMeta(sm);
                 return skill;
             }
-            skill = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)5);
-            sm.setDisplayName(m.c("&a"+name));
+            skill = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 5);
+            sm.setDisplayName(m.c("&a" + name));
             sm.setLore(lore);
             skill.setItemMeta(sm);
             return skill;
         }
 
 
-        sm.setDisplayName(m.c("&c"+name));
-        lore.add(m.c("&9Price: &b"+price));
+        sm.setDisplayName(m.c("&c" + name));
+        lore.add(m.c("&9Price: &b" + price));
         sm.setLore(lore);
         skill.setItemMeta(sm);
 
@@ -70,76 +70,71 @@ public class PickaxeSkillTree implements Listener {
     }
 
 
-    public static void openSkills(Player p){
+    public static void openSkills(Player p) {
         Inventory skills = Bukkit.createInventory(null, InventoryType.HOPPER, m.c("&cSelect a Path"));
         List<String> lore = new ArrayList<>();
 
-        List<String> completed = PlayerDataHandler.getPlayerData(p).getStringList("CompletedPaths");
+        List<String> completed = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("CompletedPaths");
 
-        ItemStack zeus = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)4);
+        ItemStack zeus = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 4);
         ItemMeta zm = zeus.getItemMeta();
         zm.setDisplayName(m.c("&e&lZeus Path"));
-        if(!completed.contains("Zeus")) {
+        if (!completed.contains("Zeus")) {
             lore.add(m.c("&7&oSelect this to confirm your skill path as &e&lskills."));
             lore.add(m.c("&7Provides a boost in gaining keys."));
-        }
-        else
+        } else
             lore.add(m.c("&aCompleted."));
         zm.setLore(lore);
         zeus.setItemMeta(zm);
         skills.setItem(0, zeus);
         lore.clear();
 
-        ItemStack poseidon = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)11);
+        ItemStack poseidon = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 11);
         ItemMeta pm = poseidon.getItemMeta();
         pm.setDisplayName(m.c("&9&lPoseidon Path"));
-        if(!completed.contains("Poseidon")){
+        if (!completed.contains("Poseidon")) {
             lore.add(m.c("&7&oSelect this to confirm your skill path as &9&lPoseidon."));
             lore.add(m.c("&7Provides a boost in fortune."));
-        }
-        else
+        } else
             lore.add(m.c("&aCompleted."));
         pm.setLore(lore);
         poseidon.setItemMeta(pm);
         skills.setItem(1, poseidon);
         lore.clear();
 
-        ItemStack hades = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)14);
+        ItemStack hades = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
         ItemMeta hm = hades.getItemMeta();
         hm.setDisplayName(m.c("&4&lHades Path"));
-        if(!completed.contains("Hades")){
+        if (!completed.contains("Hades")) {
             lore.add(m.c("&7&oSelect this to confirm your skill path as &4&lhades."));
             lore.add(m.c("&7Provides a boost to your personal multi."));
-        }
-        else
+        } else
             lore.add(m.c("&aCompleted."));
         hm.setLore(lore);
         hades.setItemMeta(hm);
         skills.setItem(2, hades);
         lore.clear();
 
-        ItemStack aphrodite = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)6);
+        ItemStack aphrodite = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 6);
         ItemMeta am = aphrodite.getItemMeta();
         am.setDisplayName(m.c("&d&lAphrodite Path"));
-        if(!completed.contains("Aphrodite")){
+        if (!completed.contains("Aphrodite")) {
             lore.add(m.c("&7&oSelect this to confirm your skill path as &d&lAphrodite."));
             lore.add(m.c("&7Provides a boost to your pickaxe xp."));
-        }
-        else
+        } else
             lore.add(m.c("&aCompleted."));
         am.setLore(lore);
         aphrodite.setItemMeta(am);
         skills.setItem(3, aphrodite);
         lore.clear();
 
-        ItemStack ares = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)13);
+        ItemStack ares = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
         ItemMeta atm = ares.getItemMeta();
         atm.setDisplayName(m.c("&2&lAres Path"));
-        if(!completed.contains("Ares")){
+        if (!completed.contains("Ares")) {
             lore.add(m.c("&7&oSelect this to confirm your skill path as &2&lAres."));
             lore.add(m.c("&7Provides a boost in gaining tokens."));
-        }
-        else
+        } else
             lore.add(m.c("&aCompleted."));
         atm.setLore(lore);
         ares.setItemMeta(atm);
@@ -148,7 +143,7 @@ public class PickaxeSkillTree implements Listener {
         p.openInventory(skills);
     }
 
-    private List<String> zeusSkills(){
+    private List<String> zeusSkills() {
         List<String> skills = new ArrayList<>();
         skills.add("Unlocked Zeus");
         skills.add("Token Bonus (Level 1)");
@@ -179,7 +174,8 @@ public class PickaxeSkillTree implements Listener {
 
         return skills;
     }
-    private List<String> poseidonSkills(){
+
+    private List<String> poseidonSkills() {
         List<String> skills = new ArrayList<>();
         skills.add("Unlocked Poseidon");
         skills.add("Token Bonus (Level 1)");
@@ -210,7 +206,8 @@ public class PickaxeSkillTree implements Listener {
 
         return skills;
     }
-    private List<String> hadesSkills(){
+
+    private List<String> hadesSkills() {
         List<String> skills = new ArrayList<>();
         skills.add("Unlocked Hades");
         skills.add("Token Bonus (Level 1)");
@@ -241,7 +238,8 @@ public class PickaxeSkillTree implements Listener {
 
         return skills;
     }
-    private List<String> aphroditeSkills(){
+
+    private List<String> aphroditeSkills() {
         List<String> skills = new ArrayList<>();
         skills.add("Unlocked Aphrodite");
         skills.add("Token Bonus (Level 1)");
@@ -272,7 +270,8 @@ public class PickaxeSkillTree implements Listener {
 
         return skills;
     }
-    private List<String> aresSkills(){
+
+    private List<String> aresSkills() {
         List<String> skills = new ArrayList<>();
         skills.add("Unlocked Ares");
         skills.add("Token Bonus (Level 1)");
@@ -303,17 +302,19 @@ public class PickaxeSkillTree implements Listener {
 
         return skills;
     }
+
     public int findPickaxeType(Player p) {
-        if(p.getItemInHand().getType().equals(Material.WOOD_PICKAXE)) return 1;
-        if(p.getItemInHand().getType().equals(Material.STONE_PICKAXE)) return 2;
-        if(p.getItemInHand().getType().equals(Material.GOLD_PICKAXE)) return 3;
-        if(p.getItemInHand().getType().equals(Material.IRON_PICKAXE)) return 4;
-        if(p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)) return 5;
+        if (p.getItemInHand().getType().equals(Material.WOOD_PICKAXE)) return 1;
+        if (p.getItemInHand().getType().equals(Material.STONE_PICKAXE)) return 2;
+        if (p.getItemInHand().getType().equals(Material.GOLD_PICKAXE)) return 3;
+        if (p.getItemInHand().getType().equals(Material.IRON_PICKAXE)) return 4;
+        if (p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)) return 5;
 
         return 1;
     }
+
     public void setType(Player p, int i) {
-        switch(i){
+        switch (i) {
             case 1:
                 p.getItemInHand().setType(Material.STONE_PICKAXE);
                 break;
@@ -331,9 +332,9 @@ public class PickaxeSkillTree implements Listener {
     }
 
     //Each Skill path is able to summon server-wide events from their respective tree.
-    public static void openZeus(Player p){
-        Inventory zeus = Bukkit.createInventory(null, 54, m.c("&e&lZeus Skill Tree: &a"+PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillPoints")+" Skill Points"));
-        for(int i = 0; i < 54; i++){
+    public static void openZeus(Player p) {
+        Inventory zeus = Bukkit.createInventory(null, 54, m.c("&e&lZeus Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"));
+        for (int i = 0; i < 54; i++) {
             zeus.setItem(i, Spacer());
         }
         //Token Bonus
@@ -370,9 +371,9 @@ public class PickaxeSkillTree implements Listener {
         p.openInventory(zeus);
     }
 
-    public static void openPoseidon(Player p){
-        Inventory poseidon = Bukkit.createInventory(null, 54, m.c("&9&lPoseidon Skill Tree: &a"+PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillPoints")+" Skill Points"));
-        for(int i = 0; i < 54; i++){
+    public static void openPoseidon(Player p) {
+        Inventory poseidon = Bukkit.createInventory(null, 54, m.c("&9&lPoseidon Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"));
+        for (int i = 0; i < 54; i++) {
             poseidon.setItem(i, Spacer());
         }
         //Token Bonus
@@ -409,9 +410,9 @@ public class PickaxeSkillTree implements Listener {
         p.openInventory(poseidon);
     }
 
-    public static void openHades(Player p){
-        Inventory hades = Bukkit.createInventory(null, 54, m.c("&4&lHades Skill Tree: &a"+PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillPoints")+" Skill Points"));
-        for(int i = 0; i < 54; i++){
+    public static void openHades(Player p) {
+        Inventory hades = Bukkit.createInventory(null, 54, m.c("&4&lHades Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"));
+        for (int i = 0; i < 54; i++) {
             hades.setItem(i, Spacer());
         }
         //Token Bonus
@@ -448,9 +449,9 @@ public class PickaxeSkillTree implements Listener {
         p.openInventory(hades);
     }
 
-    public static void openAres(Player p){
-        Inventory ares = Bukkit.createInventory(null,54, m.c("&2&lAres Skill Tree: &a"+PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillPoints")+" Skill Points"));
-        for(int i = 0; i < 54; i++){
+    public static void openAres(Player p) {
+        Inventory ares = Bukkit.createInventory(null, 54, m.c("&2&lAres Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"));
+        for (int i = 0; i < 54; i++) {
             ares.setItem(i, Spacer());
         }
         //Token Bonus
@@ -487,9 +488,9 @@ public class PickaxeSkillTree implements Listener {
         p.openInventory(ares);
     }
 
-    public static void openAphrodite(Player p){
-        Inventory aphrodite = Bukkit.createInventory(null, 54, m.c("&d&lAphrodite Skill Tree: &a"+PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillPoints")+" Skill Points"));
-        for(int i = 0; i < 54; i++){
+    public static void openAphrodite(Player p) {
+        Inventory aphrodite = Bukkit.createInventory(null, 54, m.c("&d&lAphrodite Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"));
+        for (int i = 0; i < 54; i++) {
             aphrodite.setItem(i, Spacer());
         }
         //Token Bonus
@@ -537,25 +538,25 @@ public class PickaxeSkillTree implements Listener {
         ItemMeta pm = pitem.getItemMeta();
         List<String> lore = pm.getLore();
 
-        PlayerDataHandler.getPlayerData(p).set("PickaxeSkill", path);
-        PlayerDataHandler.getPlayerData(p).set("PickaxeSkillLevel", 1);
+        PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkill", path);
+        PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkillLevel", 1);
         List<String> skills = new ArrayList<>();
-        skills.add("Unlocked "+path);
+        skills.add("Unlocked " + path);
         int line = 0;
-        for(int i = 0; i < lore.size(); i++) {
+        for (int i = 0; i < lore.size(); i++) {
             String s = lore.get(i);
-            if(s.contains("Skill:")){
+            if (s.contains("Skill:")) {
                 line = i;
             }
         }
-        lore.set(line, m.c("&cSkill: "+color+path +" (Level 1)"));
+        lore.set(line, m.c("&cSkill: " + color + path + " (Level 1)"));
         pm.setLore(PickaxeLevel.getInstance().Lore(lore, p));
         pitem.setItemMeta(pm);
         p.setItemInHand(pitem);
         p.updateInventory();
-        PlayerDataHandler.getPlayerData(p).set("PickaxeSkillsUnlocked", skills);
-        PlayerDataHandler.savePlayerData(p);
-        switch(path){
+        PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkillsUnlocked", skills);
+        PlayerDataHandler.getInstance().savePlayerData(p);
+        switch (path) {
             case "Zeus":
                 openZeus(p);
                 break;
@@ -574,24 +575,24 @@ public class PickaxeSkillTree implements Listener {
         }
     }
 
-    public void openConfirmation(Player p){
+    public void openConfirmation(Player p) {
         Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, m.c("&4&lAre you sure?"));
-        inv.setItem(1,Spacer());
-        inv.setItem(3,Spacer());
+        inv.setItem(1, Spacer());
+        inv.setItem(3, Spacer());
 
-        ItemStack no = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)14);
+        ItemStack no = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
         ItemMeta nometa = no.getItemMeta();
         nometa.setDisplayName(m.c("&c&lNo!"));
         no.setItemMeta(nometa);
-        inv.setItem(0,no);
+        inv.setItem(0, no);
 
-        ItemStack yes = new ItemStack(Material.STAINED_GLASS_PANE,1,(short)13);
+        ItemStack yes = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
         ItemMeta yesmeta = yes.getItemMeta();
         yesmeta.setDisplayName(m.c("&a&lYes!"));
         yes.setItemMeta(yesmeta);
-        inv.setItem(4,yes);
+        inv.setItem(4, yes);
 
-        ItemStack info = new ItemStack(Material.PAPER,1);
+        ItemStack info = new ItemStack(Material.PAPER, 1);
         ItemMeta infometa = info.getItemMeta();
         infometa.setDisplayName(m.c("&6Rebirth:"));
         List<String> lore = new ArrayList<>();
@@ -602,97 +603,99 @@ public class PickaxeSkillTree implements Listener {
         lore.add(m.c("&cAnd you may choose another path again."));
         infometa.setLore(lore);
         info.setItemMeta(infometa);
-        inv.setItem(2,info);
+        inv.setItem(2, info);
 
         p.openInventory(inv);
     }
 
     @SuppressWarnings("deprecation")
     @EventHandler
-    public void onClick(InventoryClickEvent e){
+    public void onClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
         if (e.getClickedInventory() == null) return;
         if (e.getClickedInventory().getName() == null) return;
-        if(e.getCurrentItem() == null) return;
-        if(!e.getCurrentItem().hasItemMeta()) return;
+        if (e.getCurrentItem() == null) return;
+        if (!e.getCurrentItem().hasItemMeta()) return;
 
-        if(e.getInventory().getName().equals(m.c("&cSelect a Path"))){
+        if (e.getInventory().getName().equals(m.c("&cSelect a Path"))) {
             e.setCancelled(true);
-            if(e.getClickedInventory().equals(p.getInventory())) return;
-            List<String> completed = PlayerDataHandler.getPlayerData(p).getStringList("CompletedPaths");
+            if (e.getClickedInventory().equals(p.getInventory())) return;
+            List<String> completed = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("CompletedPaths");
 
-            if(e.getSlot() == 0 && !completed.contains("Zeus")){
+            if (e.getSlot() == 0 && !completed.contains("Zeus")) {
                 selectPath(p, "Zeus", "&f");
             }
-            if(e.getSlot() == 1 && !completed.contains("Poseidon")){
+            if (e.getSlot() == 1 && !completed.contains("Poseidon")) {
                 selectPath(p, "Poseidon", "&9");
             }
-            if(e.getSlot() == 2 && !completed.contains("Hades")){
+            if (e.getSlot() == 2 && !completed.contains("Hades")) {
                 selectPath(p, "Hades", "&4");
             }
-            if(e.getSlot() == 3 && !completed.contains("Aphrodite")){
+            if (e.getSlot() == 3 && !completed.contains("Aphrodite")) {
                 selectPath(p, "Aphrodite", "&d");
             }
-            if(e.getSlot() == 4 && !completed.contains("Ares")){
+            if (e.getSlot() == 4 && !completed.contains("Ares")) {
                 selectPath(p, "Ares", "&2");
             }
         }
-        if(e.getInventory().getName().equals(m.c("&e&lZeus Skill Tree: &a"+PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillPoints")+" Skill Points"))){
+        if (e.getInventory().getName().equals(m.c("&e&lZeus Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
             e.setCancelled(true);
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1){
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5)
+                return;
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0)
+                return;
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1) {
                 openConfirmation(p);
                 return;
             }
             int price = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
-            int skillPoints = PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillPoints");
+            int skillPoints = PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints");
             String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
-            List<String> skillsUnlocked = PlayerDataHandler.getPlayerData(p).getStringList("PickaxeSkillsUnlocked");
+            List<String> skillsUnlocked = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("PickaxeSkillsUnlocked");
             String previous = "";
-            for(int i = 0; i < zeusSkills().size(); i++){
-                if(zeusSkills().get(i).equals(skill)){
+            for (int i = 0; i < zeusSkills().size(); i++) {
+                if (zeusSkills().get(i).equals(skill)) {
                     previous = zeusSkills().get(zeusSkills().indexOf(skill) - 1);
                 }
             }
-            if(!skillsUnlocked.contains(previous)) {
-                p.sendMessage(m.c("&cError: Please unlock &a"+previous+" &cfirst."));
+            if (!skillsUnlocked.contains(previous)) {
+                p.sendMessage(m.c("&cError: Please unlock &a" + previous + " &cfirst."));
                 p.closeInventory();
                 return;
             }
-            if(skillPoints < price) return;
-            PlayerDataHandler.getPlayerData(p).set("PickaxeSkillPoints", skillPoints-price);
+            if (skillPoints < price) return;
+            PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkillPoints", skillPoints - price);
 
             skillsUnlocked.add(skill);
 
             String[] firstword = skill.split(" ");
-            if(firstword[0].equals("Token")){
-                double tokenboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillTokenBoost");
-                PlayerDataHandler.getPlayerData(p).set("SkillTokenBoost",tokenboost+0.02);
+            if (firstword[0].equals("Token")) {
+                double tokenboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillTokenBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillTokenBoost", tokenboost + 0.02);
             }
-            if(firstword[0].equals("Luck")){
-                double luckboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillLuckBoost");
-                PlayerDataHandler.getPlayerData(p).set("SkillLuckBoost",luckboost+0.02);
+            if (firstword[0].equals("Luck")) {
+                double luckboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillLuckBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillLuckBoost", luckboost + 0.02);
             }
-            if(firstword[0].equals("Fortune")){
-                double fortuneboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillFortuneBoost");
-                PlayerDataHandler.getPlayerData(p).set("SkillFortuneBoost",fortuneboost+0.02);
+            if (firstword[0].equals("Fortune")) {
+                double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillFortuneBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.02);
             }
-            if(firstword[0].equals("250") || firstword[0].equals("500") || firstword[0].equals("750")){
-                int maxlevel = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId()+".KFMaxLevelRaise");
+            if (firstword[0].equals("250") || firstword[0].equals("500") || firstword[0].equals("750")) {
+                int maxlevel = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId() + ".KFMaxLevelRaise");
                 int maxleveladd = parseInt(firstword[0]);
-                PlayerDataHandler.getPlayerData(p).set("KFMaxLevelRaise",maxlevel+maxleveladd);
+                PlayerDataHandler.getInstance().getPlayerData(p).set("KFMaxLevelRaise", maxlevel + maxleveladd);
             }
-            if(firstword[0].equals("+20%")){
-                double keyboost = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId()+".SkillKeyBoost");
-                PlayerDataHandler.getPlayerData(p).set("SkillKeyBoost",keyboost+20);
+            if (firstword[0].equals("+20%")) {
+                double keyboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId() + ".SkillKeyBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillKeyBoost", keyboost + 20);
             }
-            if(firstword[0].equals("+30%")){
-                double keyboost = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId()+".SkillKeyBoost");
-                PlayerDataHandler.getPlayerData(p).set("SkillKeyBoost",keyboost+30);
+            if (firstword[0].equals("+30%")) {
+                double keyboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId() + ".SkillKeyBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillKeyBoost", keyboost + 30);
             }
-            if(skill.contains("Zeus")) {
+            if (skill.contains("Zeus")) {
                 setType(p, findPickaxeType(p));
 
                 ItemStack pitem = p.getItemInHand().clone();
@@ -700,13 +703,13 @@ public class PickaxeSkillTree implements Listener {
                 List<String> lore = pm.getLore();
 
                 int line = 0;
-                for(int i = 0; i < lore.size(); i++){
+                for (int i = 0; i < lore.size(); i++) {
                     String s = lore.get(i);
-                    if(s.contains("Skill:")){
+                    if (s.contains("Skill:")) {
                         line = i;
                     }
                 }
-                lore.set(line, m.c("&cSkill: &eZeus (Level "+PickaxeLevel.getInstance().getInt(skill)+")"));
+                lore.set(line, m.c("&cSkill: &eZeus (Level " + PickaxeLevel.getInstance().getInt(skill) + ")"));
                 pm.setLore(PickaxeLevel.getInstance().Lore(lore, p));
                 pitem.setItemMeta(pm);
                 p.updateInventory();
@@ -714,65 +717,67 @@ public class PickaxeSkillTree implements Listener {
 
 
             }
-            PlayerDataHandler.getPlayerData(p).set("PickaxeSkillsUnlocked", skillsUnlocked);
-            PlayerDataHandler.savePlayerData(p);
+            PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkillsUnlocked", skillsUnlocked);
+            PlayerDataHandler.getInstance().savePlayerData(p);
             openZeus(p);
         }
-        if(e.getClickedInventory().getName().equals(m.c("&9&lPoseidon Skill Tree: &a"+PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillPoints")+" Skill Points"))){
+        if (e.getClickedInventory().getName().equals(m.c("&9&lPoseidon Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
             e.setCancelled(true);
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1){
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5)
+                return;
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0)
+                return;
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1) {
                 openConfirmation(p);
                 return;
             }
 
             int price = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
-            int skillPoints = PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillPoints");
+            int skillPoints = PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints");
             String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
-            List<String> skillsUnlocked = PlayerDataHandler.getPlayerData(p).getStringList("PickaxeSkillsUnlocked");
+            List<String> skillsUnlocked = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("PickaxeSkillsUnlocked");
             String previous = "";
-            for(int i = 0; i < poseidonSkills().size(); i++){
-                if(poseidonSkills().get(i).equals(skill)){
+            for (int i = 0; i < poseidonSkills().size(); i++) {
+                if (poseidonSkills().get(i).equals(skill)) {
                     previous = poseidonSkills().get(poseidonSkills().indexOf(skill) - 1);
                 }
             }
-            if(!skillsUnlocked.contains(previous)) {
-                p.sendMessage(m.c("&cError: Please unlock &a"+previous+" &cfirst."));
+            if (!skillsUnlocked.contains(previous)) {
+                p.sendMessage(m.c("&cError: Please unlock &a" + previous + " &cfirst."));
                 return;
             }
-            if(skillPoints < price) return;
-            PlayerDataHandler.getPlayerData(p).set("PickaxeSkillPoints", skillPoints-price);
+            if (skillPoints < price) return;
+            PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkillPoints", skillPoints - price);
 
             skillsUnlocked.add(skill);
 
             String[] firstword = skill.split(" ");
-            if(firstword[0].equals("Token")){
-                double tokenboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillTokenBoost");
-                PlayerDataHandler.getPlayerData(p).set("SkillTokenBoost",tokenboost+0.02);
+            if (firstword[0].equals("Token")) {
+                double tokenboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillTokenBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillTokenBoost", tokenboost + 0.02);
             }
-            if(firstword[0].equals("Luck")){
-                double luckboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillLuckBoost");
-                PlayerDataHandler.getPlayerData(p).set("SkillLuckBoost",luckboost+0.02);
+            if (firstword[0].equals("Luck")) {
+                double luckboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillLuckBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillLuckBoost", luckboost + 0.02);
             }
-            if(firstword[0].equals("Fortune")){
-                double fortuneboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillFortuneBoost");
-                PlayerDataHandler.getPlayerData(p).set("SkillFortuneBoost",fortuneboost+0.02);
+            if (firstword[0].equals("Fortune")) {
+                double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillFortuneBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.02);
             }
-            if(firstword[0].equals("1250") || firstword[0].equals("1500") || firstword[0].equals("1750")){
-                int maxlevel = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId()+".FortuneMaxLevelRaise");
+            if (firstword[0].equals("1250") || firstword[0].equals("1500") || firstword[0].equals("1750")) {
+                int maxlevel = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId() + ".FortuneMaxLevelRaise");
                 int maxleveladd = parseInt(firstword[0]);
-                PlayerDataHandler.getPlayerData(p).set("FortuneMaxLevelRaise",maxlevel+maxleveladd);
+                PlayerDataHandler.getInstance().getPlayerData(p).set("FortuneMaxLevelRaise", maxlevel + maxleveladd);
             }
-            if(firstword[0].equals("8%")){
-                double fortuneboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillFortuneBoost");
-                PlayerDataHandler.getPlayerData(p).set("SkillFortuneBoost", fortuneboost+0.08);
+            if (firstword[0].equals("8%")) {
+                double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillFortuneBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.08);
             }
-            if(firstword[0].equals("12%")){
-                double fortuneboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillFortuneBoost");
-                PlayerDataHandler.getPlayerData(p).set("SkillFortuneBoost", fortuneboost+0.12);
+            if (firstword[0].equals("12%")) {
+                double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillFortuneBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.12);
             }
-            if(skill.contains("Poseidon")) {
+            if (skill.contains("Poseidon")) {
                 setType(p, findPickaxeType(p));
 
                 ItemStack pitem = p.getItemInHand().clone();
@@ -780,79 +785,81 @@ public class PickaxeSkillTree implements Listener {
                 List<String> lore = pm.getLore();
 
                 int line = 0;
-                for(int i = 0; i < lore.size(); i++){
+                for (int i = 0; i < lore.size(); i++) {
                     String s = lore.get(i);
-                    if(s.contains("Skill:")){
+                    if (s.contains("Skill:")) {
                         line = i;
                     }
                 }
-                lore.set(line, m.c("&cSkill: &9Poseidon (Level "+PickaxeLevel.getInstance().getInt(skill)+")"));
+                lore.set(line, m.c("&cSkill: &9Poseidon (Level " + PickaxeLevel.getInstance().getInt(skill) + ")"));
                 pm.setLore(PickaxeLevel.getInstance().Lore(lore, p));
                 pitem.setItemMeta(pm);
                 p.updateInventory();
                 p.setItemInHand(pitem);
 
             }
-            PlayerDataHandler.getPlayerData(p).set("PickaxeSkillsUnlocked", skillsUnlocked);
-            PlayerDataHandler.savePlayerData(p);
+            PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkillsUnlocked", skillsUnlocked);
+            PlayerDataHandler.getInstance().savePlayerData(p);
             openPoseidon(p);
         }
-        if(e.getClickedInventory().getName().equals(m.c("&4&lHades Skill Tree: &a"+PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillPoints")+" Skill Points"))){
+        if (e.getClickedInventory().getName().equals(m.c("&4&lHades Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
             e.setCancelled(true);
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1){
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5)
+                return;
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0)
+                return;
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1) {
                 openConfirmation(p);
                 return;
             }
 
             int price = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
-            int skillPoints = PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillPoints");
+            int skillPoints = PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints");
             String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
-            List<String> skillsUnlocked = PlayerDataHandler.getPlayerData(p).getStringList("PickaxeSkillsUnlocked");
+            List<String> skillsUnlocked = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("PickaxeSkillsUnlocked");
             String previous = "";
-            for(int i = 0; i < hadesSkills().size(); i++){
-                if(hadesSkills().get(i).equals(skill)){
+            for (int i = 0; i < hadesSkills().size(); i++) {
+                if (hadesSkills().get(i).equals(skill)) {
                     previous = hadesSkills().get(hadesSkills().indexOf(skill) - 1);
                 }
             }
-            if(!skillsUnlocked.contains(previous)) {
-                p.sendMessage(m.c("&cError: Please unlock &a"+previous+" &cfirst."));
+            if (!skillsUnlocked.contains(previous)) {
+                p.sendMessage(m.c("&cError: Please unlock &a" + previous + " &cfirst."));
                 return;
             }
 
-            if(skillPoints < price) return;
-            PlayerDataHandler.getPlayerData(p).set("PickaxeSkillPoints", skillPoints-price);
+            if (skillPoints < price) return;
+            PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkillPoints", skillPoints - price);
 
             skillsUnlocked.add(skill);
 
             String[] firstword = skill.split(" ");
-            if(firstword[0].equals("Token")){
-                double tokenboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillTokenBoost");
-                PlayerDataHandler.getPlayerData(p).set("SkillTokenBoost",tokenboost+0.02);
+            if (firstword[0].equals("Token")) {
+                double tokenboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillTokenBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillTokenBoost", tokenboost + 0.02);
             }
-            if(firstword[0].equals("Luck")){
-                double luckboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillLuckBoost");
-                PlayerDataHandler.getPlayerData(p).set("SkillLuckBoost",luckboost+0.02);
+            if (firstword[0].equals("Luck")) {
+                double luckboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillLuckBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillLuckBoost", luckboost + 0.02);
             }
-            if(firstword[0].equals("Fortune")){
-                double fortuneboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillFortuneBoost");
-                PlayerDataHandler.getPlayerData(p).set("SkillFortuneBoost",fortuneboost+0.02);
+            if (firstword[0].equals("Fortune")) {
+                double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillFortuneBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.02);
             }
-            if(firstword[0].equals("150") || firstword[0].equals("250") || firstword[0].equals("350")){
-                int maxlevel = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId()+".JunkpileMaxLevelRaise");
+            if (firstword[0].equals("150") || firstword[0].equals("250") || firstword[0].equals("350")) {
+                int maxlevel = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId() + ".JunkpileMaxLevelRaise");
                 int maxleveladd = parseInt(firstword[0]);
-                PlayerDataHandler.getPlayerData(p).set("JunkpileMaxLevelRaise",maxlevel+maxleveladd);
+                PlayerDataHandler.getInstance().getPlayerData(p).set("JunkpileMaxLevelRaise", maxlevel + maxleveladd);
             }
-            if(firstword[0].equals("+100%")){
-                double skilljunkpilemultiboost = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId()+".SkillJunkpileMultiBoost");
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".SkillJunkpileMultiBoost",skilljunkpilemultiboost+1);
+            if (firstword[0].equals("+100%")) {
+                double skilljunkpilemultiboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId() + ".SkillJunkpileMultiBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".SkillJunkpileMultiBoost", skilljunkpilemultiboost + 1);
             }
-            if(firstword[0].equals("+200%")){
-                double skilljunkpilemultiboost = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId()+".SkillJunkpileMultiBoost");
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".SkillJunkpileMultiBoost",skilljunkpilemultiboost+2);
+            if (firstword[0].equals("+200%")) {
+                double skilljunkpilemultiboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId() + ".SkillJunkpileMultiBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".SkillJunkpileMultiBoost", skilljunkpilemultiboost + 2);
             }
-            if(skill.contains("Hades")) {
+            if (skill.contains("Hades")) {
                 setType(p, findPickaxeType(p));
 
                 ItemStack pitem = p.getItemInHand().clone();
@@ -860,78 +867,80 @@ public class PickaxeSkillTree implements Listener {
                 List<String> lore = pm.getLore();
 
                 int line = 0;
-                for(int i = 0; i < lore.size(); i++){
+                for (int i = 0; i < lore.size(); i++) {
                     String s = lore.get(i);
-                    if(s.contains("Skill:")){
+                    if (s.contains("Skill:")) {
                         line = i;
                     }
                 }
-                lore.set(line, m.c("&cSkill: &4Hades (Level "+PickaxeLevel.getInstance().getInt(skill)+")"));
+                lore.set(line, m.c("&cSkill: &4Hades (Level " + PickaxeLevel.getInstance().getInt(skill) + ")"));
                 pm.setLore(PickaxeLevel.getInstance().Lore(lore, p));
                 pitem.setItemMeta(pm);
                 p.updateInventory();
                 p.setItemInHand(pitem);
 
             }
-            PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
-            PlayerDataHandler.savePlayerData(p);
+            PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".PickaxeSkillsUnlocked", skillsUnlocked);
+            PlayerDataHandler.getInstance().savePlayerData(p);
             openHades(p);
         }
-        if(e.getClickedInventory().getName().equals(m.c("&d&lAphrodite Skill Tree: &a"+PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+" Skill Points"))){
+        if (e.getClickedInventory().getName().equals(m.c("&d&lAphrodite Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".PickaxeSkillPoints") + " Skill Points"))) {
             e.setCancelled(true);
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1){
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5)
+                return;
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0)
+                return;
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1) {
                 openConfirmation(p);
                 return;
             }
 
             int price = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
-            int skillPoints = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
+            int skillPoints = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".PickaxeSkillPoints");
             String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
-            List<String> skillsUnlocked = PlayerDataHandler.getPlayerData(p).getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
+            List<String> skillsUnlocked = PlayerDataHandler.getInstance().getPlayerData(p).getStringList(p.getUniqueId().toString() + ".PickaxeSkillsUnlocked");
             String previous = "";
-            for(int i = 0; i < aphroditeSkills().size(); i++){
-                if(aphroditeSkills().get(i).equals(skill)){
+            for (int i = 0; i < aphroditeSkills().size(); i++) {
+                if (aphroditeSkills().get(i).equals(skill)) {
                     previous = aphroditeSkills().get(aphroditeSkills().indexOf(skill) - 1);
                 }
             }
-            if(!skillsUnlocked.contains(previous)) {
-                p.sendMessage(m.c("&cError: Please unlock &a"+previous+" &cfirst."));
+            if (!skillsUnlocked.contains(previous)) {
+                p.sendMessage(m.c("&cError: Please unlock &a" + previous + " &cfirst."));
                 return;
             }
-            if(skillPoints < price) return;
-            PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
+            if (skillPoints < price) return;
+            PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".PickaxeSkillPoints", skillPoints - price);
 
             skillsUnlocked.add(skill);
 
             String[] firstword = skill.split(" ");
-            if(firstword[0].equals("Token")){
-                double tokenboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillTokenBoost");
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.02);
+            if (firstword[0].equals("Token")) {
+                double tokenboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillTokenBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".SkillTokenBoost", tokenboost + 0.02);
             }
-            if(firstword[0].equals("Luck")){
-                double luckboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillLuckBoost");
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.02);
+            if (firstword[0].equals("Luck")) {
+                double luckboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillLuckBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".SkillLuckBoost", luckboost + 0.02);
             }
-            if(firstword[0].equals("Fortune")){
-                double fortuneboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillFortuneBoost");
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.02);
+            if (firstword[0].equals("Fortune")) {
+                double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillFortuneBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".SkillFortuneBoost", fortuneboost + 0.02);
             }
-            if(firstword[0].equals("500") || firstword[0].equals("1000") || firstword[0].equals("1500")){
-                int maxlevel = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId()+".XPFMaxLevelRaise");
+            if (firstword[0].equals("500") || firstword[0].equals("1000") || firstword[0].equals("1500")) {
+                int maxlevel = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId() + ".XPFMaxLevelRaise");
                 int maxleveladd = parseInt(firstword[0]);
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".XPFMaxLevelRaise",maxlevel+maxleveladd);
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".XPFMaxLevelRaise", maxlevel + maxleveladd);
             }
-            if(firstword[0].equals("+300%")){
-                int junkpilexpboost = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId()+".SkillJunkpileXPBoost");
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".SkillKeyBoost",junkpilexpboost+3);
+            if (firstword[0].equals("+300%")) {
+                int junkpilexpboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId() + ".SkillJunkpileXPBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".SkillKeyBoost", junkpilexpboost + 3);
             }
-            if(firstword[0].equals("+500%")){
-                int junkpilexpboost = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId()+".SkillJunkpileXPBoost");
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".SkillKeyBoost",junkpilexpboost+5);
+            if (firstword[0].equals("+500%")) {
+                int junkpilexpboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId() + ".SkillJunkpileXPBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".SkillKeyBoost", junkpilexpboost + 5);
             }
-            if(skill.contains("Aphrodite")) {
+            if (skill.contains("Aphrodite")) {
                 setType(p, findPickaxeType(p));
 
                 ItemStack pitem = p.getItemInHand().clone();
@@ -939,77 +948,79 @@ public class PickaxeSkillTree implements Listener {
                 List<String> lore = pm.getLore();
 
                 int line = 0;
-                for(int i = 0; i < lore.size(); i++){
+                for (int i = 0; i < lore.size(); i++) {
                     String s = lore.get(i);
-                    if(s.contains("Skill:")){
+                    if (s.contains("Skill:")) {
                         line = i;
                     }
                 }
-                lore.set(line, m.c("&cSkill: &dAphrodite (Level "+PickaxeLevel.getInstance().getInt(skill)+")"));
+                lore.set(line, m.c("&cSkill: &dAphrodite (Level " + PickaxeLevel.getInstance().getInt(skill) + ")"));
                 pm.setLore(PickaxeLevel.getInstance().Lore(lore, p));
                 pitem.setItemMeta(pm);
                 p.updateInventory();
                 p.setItemInHand(pitem);
 
             }
-            PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
-            PlayerDataHandler.savePlayerData(p);
+            PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".PickaxeSkillsUnlocked", skillsUnlocked);
+            PlayerDataHandler.getInstance().savePlayerData(p);
             openAphrodite(p);
         }
-        if(e.getClickedInventory().getName().equals(m.c("&2&lAres Skill Tree: &a"+PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId().toString()+".PickaxeSkillPoints")+" Skill Points"))){
+        if (e.getClickedInventory().getName().equals(m.c("&2&lAres Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".PickaxeSkillPoints") + " Skill Points"))) {
             e.setCancelled(true);
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5) return;
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1){
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5)
+                return;
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0)
+                return;
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1) {
                 openConfirmation(p);
                 return;
             }
 
             int price = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(2)));
-            int skillPoints = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId().toString()+".PickaxeSkillPoints");
+            int skillPoints = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".PickaxeSkillPoints");
             String skill = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
-            List<String> skillsUnlocked = PlayerDataHandler.getPlayerData(p).getStringList(p.getUniqueId().toString()+".PickaxeSkillsUnlocked");
+            List<String> skillsUnlocked = PlayerDataHandler.getInstance().getPlayerData(p).getStringList(p.getUniqueId().toString() + ".PickaxeSkillsUnlocked");
             String previous = "";
-            for(int i = 0; i < aresSkills().size(); i++){
-                if(aresSkills().get(i).equals(skill)){
+            for (int i = 0; i < aresSkills().size(); i++) {
+                if (aresSkills().get(i).equals(skill)) {
                     previous = aresSkills().get(aresSkills().indexOf(skill) - 1);
                 }
             }
-            if(!skillsUnlocked.contains(previous)) {
-                p.sendMessage(m.c("&cError: Please unlock &a"+previous+" &cfirst."));
+            if (!skillsUnlocked.contains(previous)) {
+                p.sendMessage(m.c("&cError: Please unlock &a" + previous + " &cfirst."));
                 return;
             }
-            if(skillPoints < price) return;
-            PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".PickaxeSkillPoints", skillPoints-price);
+            if (skillPoints < price) return;
+            PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".PickaxeSkillPoints", skillPoints - price);
 
             skillsUnlocked.add(skill);
             String[] firstword = skill.split(" ");
-            if(firstword[0].equals("Token")){
-                double tokenboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillTokenBoost");
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".SkillTokenBoost",tokenboost+0.02);
+            if (firstword[0].equals("Token")) {
+                double tokenboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillTokenBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".SkillTokenBoost", tokenboost + 0.02);
             }
-            if(firstword[0].equals("Luck")){
-                double luckboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillLuckBoost");
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".SkillLuckBoost",luckboost+0.02);
+            if (firstword[0].equals("Luck")) {
+                double luckboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillLuckBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".SkillLuckBoost", luckboost + 0.02);
             }
-            if(firstword[0].equals("Fortune")){
-                double fortuneboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillFortuneBoost");
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".SkillFortuneBoost",fortuneboost+0.02);
+            if (firstword[0].equals("Fortune")) {
+                double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillFortuneBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".SkillFortuneBoost", fortuneboost + 0.02);
             }
-            if(firstword[0].equals("200") || firstword[0].equals("300") || firstword[0].equals("500")){
-                int maxlevel = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId()+".TFMaxLevelRaise");
+            if (firstword[0].equals("200") || firstword[0].equals("300") || firstword[0].equals("500")) {
+                int maxlevel = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId() + ".TFMaxLevelRaise");
                 int maxleveladd = parseInt(firstword[0]);
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".TFMaxLevelRaise",maxlevel+maxleveladd);
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".TFMaxLevelRaise", maxlevel + maxleveladd);
             }
-            if(firstword[0].equals("8%")){
-                double tokenboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillTokenBoost");
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".SkillTokenBoost", tokenboost+0.08);
+            if (firstword[0].equals("8%")) {
+                double tokenboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillTokenBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".SkillTokenBoost", tokenboost + 0.08);
             }
-            if(firstword[0].equals("12%")){
-                double tokenboost = PlayerDataHandler.getPlayerData(p).getDouble(p.getUniqueId()+".SkillTokenBoost");
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".SkillTokenBoost", tokenboost+0.12);
+            if (firstword[0].equals("12%")) {
+                double tokenboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble(p.getUniqueId() + ".SkillTokenBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".SkillTokenBoost", tokenboost + 0.12);
             }
-            if(skill.contains("Ares")) {
+            if (skill.contains("Ares")) {
                 setType(p, findPickaxeType(p));
 
                 ItemStack pitem = p.getItemInHand().clone();
@@ -1017,43 +1028,44 @@ public class PickaxeSkillTree implements Listener {
                 List<String> lore = pm.getLore();
 
                 int line = 0;
-                for(int i = 0; i < lore.size(); i++){
+                for (int i = 0; i < lore.size(); i++) {
                     String s = lore.get(i);
-                    if(s.contains("Skill:")){
+                    if (s.contains("Skill:")) {
                         line = i;
                     }
                 }
-                lore.set(line, m.c("&cSkill: &2Ares (Level "+PickaxeLevel.getInstance().getInt(skill)+")"));
+                lore.set(line, m.c("&cSkill: &2Ares (Level " + PickaxeLevel.getInstance().getInt(skill) + ")"));
                 pm.setLore(PickaxeLevel.getInstance().Lore(lore, p));
                 pitem.setItemMeta(pm);
                 p.updateInventory();
                 p.setItemInHand(pitem);
 
             }
-            PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skillsUnlocked);
-            PlayerDataHandler.savePlayerData(p);
+            PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".PickaxeSkillsUnlocked", skillsUnlocked);
+            PlayerDataHandler.getInstance().savePlayerData(p);
             openAres(p);
         }
-        if(e.getClickedInventory().getName().equals(m.c("&4&lAre you sure?"))){
+        if (e.getClickedInventory().getName().equals(m.c("&4&lAre you sure?"))) {
             e.setCancelled(true);
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0) return;
-            if(e.getCurrentItem().getItemMeta().getDisplayName().equals(m.c("&c&lNo!"))){
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0)
+                return;
+            if (e.getCurrentItem().getItemMeta().getDisplayName().equals(m.c("&c&lNo!"))) {
                 p.closeInventory();
                 return;
             }
-            if(e.getCurrentItem().getItemMeta().getDisplayName().equals(m.c("&a&lYes!"))){
-                Tokens.getInstance().setTokens(p,0);
+            if (e.getCurrentItem().getItemMeta().getDisplayName().equals(m.c("&a&lYes!"))) {
+                Tokens.getInstance().setTokens(p, 0);
 
-                String path = PlayerDataHandler.getPlayerData(p).get("PickaxeSkill").toString();
-                List<String> completed = PlayerDataHandler.getPlayerData(p).getStringList(p.getUniqueId().toString()+".CompletedPaths");
+                String path = PlayerDataHandler.getInstance().getPlayerData(p).get("PickaxeSkill").toString();
+                List<String> completed = PlayerDataHandler.getInstance().getPlayerData(p).getStringList(p.getUniqueId().toString() + ".CompletedPaths");
                 completed.add(path);
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".CompletedPaths", completed);
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".PickaxeSkill", "None");
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".PickaxeSkillPoints", 0);
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".CompletedPaths", completed);
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".PickaxeSkill", "None");
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".PickaxeSkillPoints", 0);
                 PickaxeLevel.getInstance().resetPickaxe(p);
                 List<String> skills = new ArrayList<>();
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".PickaxeSkillsUnlocked", skills);
-                PlayerDataHandler.savePlayerData(p);
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".PickaxeSkillsUnlocked", skills);
+                PlayerDataHandler.getInstance().savePlayerData(p);
 
                 p.closeInventory();
                 /*

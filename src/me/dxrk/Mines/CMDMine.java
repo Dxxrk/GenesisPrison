@@ -153,7 +153,7 @@ public class CMDMine implements CommandExecutor, Listener {
         Inventory upgrade = Bukkit.createInventory(null, 27, c("&a&lUpgrade Your Mine"));
 
         ItemStack lucky1 = new ItemStack(Material.SEA_LANTERN);
-        if(PlayerDataHandler.getPlayerData(p).getDouble("LuckyBlock") >=0.01) {
+        if (PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock") >= 0.01) {
             lucky1.setType(Material.BARRIER);
         }
         ItemMeta l1 = lucky1.getItemMeta();
@@ -167,7 +167,7 @@ public class CMDMine implements CommandExecutor, Listener {
         lore.clear();
 
         ItemStack lucky2 = new ItemStack(Material.SEA_LANTERN);
-        if(PlayerDataHandler.getPlayerData(p).getDouble("LuckyBlock") >=0.03) {
+        if (PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock") >= 0.03) {
             lucky2.setType(Material.BARRIER);
         }
         ItemMeta l2 = lucky2.getItemMeta();
@@ -180,7 +180,7 @@ public class CMDMine implements CommandExecutor, Listener {
         lore.clear();
 
         ItemStack lucky3 = new ItemStack(Material.SEA_LANTERN);
-        if(PlayerDataHandler.getPlayerData(p).getDouble("LuckyBlock") >=0.07) {
+        if (PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock") >= 0.07) {
             lucky3.setType(Material.BARRIER);
         }
         ItemMeta l3 = lucky3.getItemMeta();
@@ -193,7 +193,7 @@ public class CMDMine implements CommandExecutor, Listener {
         lore.clear();
 
         ItemStack size1 = new ItemStack(Material.DIAMOND_ORE);
-        if(PlayerDataHandler.getPlayerData(p).getInt("MineSize") >=2) {
+        if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("MineSize") >= 2) {
             size1.setType(Material.BARRIER);
         }
         ItemMeta s1 = size1.getItemMeta();
@@ -206,7 +206,7 @@ public class CMDMine implements CommandExecutor, Listener {
         lore.clear();
 
         ItemStack size2 = new ItemStack(Material.DIAMOND_ORE);
-        if(PlayerDataHandler.getPlayerData(p).getInt("MineSize") >=3) {
+        if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("MineSize") >= 3) {
             size2.setType(Material.BARRIER);
         }
         ItemMeta s2 = size2.getItemMeta();
@@ -233,7 +233,7 @@ public class CMDMine implements CommandExecutor, Listener {
             if (args.length == 1) {
                 Player p = (Player) sender;
                 if (args[0].equalsIgnoreCase("teleport") || args[0].equalsIgnoreCase("tp") || args[0].equalsIgnoreCase("home") || args[0].equalsIgnoreCase("go")) {
-                    if (PlayerDataHandler.getPlayerData(p).getBoolean("HasMine")) {
+                    if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("HasMine")) {
                         Mine m = MineSystem.getInstance().getMineByPlayer(p);
                         Location loc = new Location(m.getMineWorld(), m.getSpawnLocation().getX(), m.getSpawnLocation().getY(), m.getSpawnLocation().getZ(), -90, 0);
                         p.teleport(loc);
@@ -259,7 +259,7 @@ public class CMDMine implements CommandExecutor, Listener {
                     OfflinePlayer visit = Bukkit.getOfflinePlayer(args[1]);
                     UUID id = visit.getUniqueId();
 
-                    if (PlayerDataHandler.getPlayerData(p).getBoolean(id.toString()+".HasMine")) {
+                    if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean(id.toString() + ".HasMine")) {
                         Mine m = MineSystem.getInstance().getMineByName(id.toString());
                         Location loc = new Location(m.getMineWorld(), m.getSpawnLocation().getX(), m.getSpawnLocation().getY(), m.getSpawnLocation().getZ(), -90, 0);
                         p.teleport(loc);
@@ -296,7 +296,7 @@ public class CMDMine implements CommandExecutor, Listener {
             if (e.getClickedInventory().equals(p.getInventory())) return;
             e.setCancelled(true);
             if (e.getSlot() == 4) {
-                if (!PlayerDataHandler.getPlayerData(p).getBoolean("HasMine")) {
+                if (!PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("HasMine")) {
                     MineHandler.getInstance().CreateMine(p, "firstmine", "mines");
                 } else {
                     Mine m = MineSystem.getInstance().getMineByPlayer(p);
@@ -313,13 +313,13 @@ public class CMDMine implements CommandExecutor, Listener {
                     ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutWorldBorder);
                 }
             }
-            if(e.getSlot() == 6) {
+            if (e.getSlot() == 6) {
                 openUpgradeInventory(p);
             }
-            if(e.getSlot() == 21) {
+            if (e.getSlot() == 21) {
                 openResetInventory(p, MineSystem.getInstance().getMineByPlayer(p).getResetPercent());
             }
-            if(e.getSlot() == 23) {
+            if (e.getSlot() == 23) {
                 openBlockInventory(p);
             }
         }
@@ -329,49 +329,49 @@ public class CMDMine implements CommandExecutor, Listener {
                 return;
             }
             e.setCancelled(true);
-            if(e.getSlot() == 0) {
-                if(!p.hasPermission("rank.sponsor")) return;
-                PlayerDataHandler.getPlayerData(p).set("CustomBlock", new ItemStack(Material.SMOOTH_BRICK));
+            if (e.getSlot() == 0) {
+                if (!p.hasPermission("rank.sponsor")) return;
+                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.SMOOTH_BRICK));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
-            if(e.getSlot() == 2) {
-                if(!p.hasPermission("rank.vip")) return;
-                PlayerDataHandler.getPlayerData(p).set("CustomBlock", new ItemStack(Material.COAL_BLOCK));
+            if (e.getSlot() == 2) {
+                if (!p.hasPermission("rank.vip")) return;
+                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.COAL_BLOCK));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
-            if(e.getSlot() == 4) {
-                if(!p.hasPermission("rank.mvp")) return;
-                PlayerDataHandler.getPlayerData(p).set("CustomBlock", new ItemStack(Material.NETHERRACK));
+            if (e.getSlot() == 4) {
+                if (!p.hasPermission("rank.mvp")) return;
+                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.NETHERRACK));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
-            if(e.getSlot() == 6) {
-                if(!p.hasPermission("rank.hero")) return;
-                PlayerDataHandler.getPlayerData(p).set("CustomBlock", new ItemStack(Material.PRISMARINE, 1, (short)2));
+            if (e.getSlot() == 6) {
+                if (!p.hasPermission("rank.hero")) return;
+                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.PRISMARINE, 1, (short) 2));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
-            if(e.getSlot() == 8) {
-                if(!p.hasPermission("rank.demi-god")) return;
-                PlayerDataHandler.getPlayerData(p).set("CustomBlock", new ItemStack(Material.NETHER_BRICK));
+            if (e.getSlot() == 8) {
+                if (!p.hasPermission("rank.demi-god")) return;
+                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.NETHER_BRICK));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
-            if(e.getSlot() == 10) {
-                if(!p.hasPermission("rank.titan")) return;
-                PlayerDataHandler.getPlayerData(p).set("CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short)0));
+            if (e.getSlot() == 10) {
+                if (!p.hasPermission("rank.titan")) return;
+                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short) 0));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
-            if(e.getSlot() == 12) {
-                if(!p.hasPermission("rank.god")) return;
-                PlayerDataHandler.getPlayerData(p).set("CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short)10));
+            if (e.getSlot() == 12) {
+                if (!p.hasPermission("rank.god")) return;
+                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short) 10));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
-            if(e.getSlot() == 14) {
-                if(!p.hasPermission("rank.olympian")) return;
-                PlayerDataHandler.getPlayerData(p).set("CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short)13));
+            if (e.getSlot() == 14) {
+                if (!p.hasPermission("rank.olympian")) return;
+                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short) 13));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
-            if(e.getSlot() == 16) {
-                if(!p.hasPermission("rank.genesis")) return;
-                PlayerDataHandler.getPlayerData(p).set("CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short)7));
+            if (e.getSlot() == 16) {
+                if (!p.hasPermission("rank.genesis")) return;
+                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short) 7));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
             }
         }
@@ -397,46 +397,46 @@ public class CMDMine implements CommandExecutor, Listener {
                 openResetInventory(p, m.getResetPercent());
             }
         }
-        if(e.getInventory().getName().equals(c("&a&lUpgrade Your Mine"))) {
+        if (e.getInventory().getName().equals(c("&a&lUpgrade Your Mine"))) {
             if (e.getClickedInventory().equals(p.getInventory())) {
                 e.setCancelled(true);
                 return;
             }
             e.setCancelled(true);
-            if(e.getCurrentItem().getType().equals(Material.BARRIER)) {
+            if (e.getCurrentItem().getType().equals(Material.BARRIER)) {
                 e.setCancelled(true);
                 return;
             }
-            if(e.getSlot() == 0) {
-                if(Tokens.getInstance().getTokens(p) < 2E6) return;
-                PlayerDataHandler.getPlayerData(p).set("LuckyBlock", 0.01);
+            if (e.getSlot() == 0) {
+                if (Tokens.getInstance().getTokens(p) < 2E6) return;
+                PlayerDataHandler.getInstance().getPlayerData(p).set("LuckyBlock", 0.01);
                 Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), PlayerDataHandler.getPlayerData(p).getDouble("LuckyBlock"));
+                ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock"));
             }
-            if(e.getSlot() == 4) {
-                if(Tokens.getInstance().getTokens(p) < 100E6) return;
-                PlayerDataHandler.getPlayerData(p).set("LuckyBlock", 0.03);
+            if (e.getSlot() == 4) {
+                if (Tokens.getInstance().getTokens(p) < 100E6) return;
+                PlayerDataHandler.getInstance().getPlayerData(p).set("LuckyBlock", 0.03);
                 Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), PlayerDataHandler.getPlayerData(p).getDouble("LuckyBlock"));
+                ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock"));
             }
-            if(e.getSlot() == 8) {
-                if(Tokens.getInstance().getTokens(p) < 500E6) return;
-                PlayerDataHandler.getPlayerData(p).set("LuckyBlock", 0.07);
+            if (e.getSlot() == 8) {
+                if (Tokens.getInstance().getTokens(p) < 500E6) return;
+                PlayerDataHandler.getInstance().getPlayerData(p).set("LuckyBlock", 0.07);
                 Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), PlayerDataHandler.getPlayerData(p).getDouble("LuckyBlock"));
+                ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock"));
             }
-            if(e.getSlot() == 2) {
-                if(Tokens.getInstance().getTokens(p) < 10E6) return;
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".MineSize", 2);
+            if (e.getSlot() == 2) {
+                if (Tokens.getInstance().getTokens(p) < 10E6) return;
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".MineSize", 2);
                 Mine m = MineSystem.getInstance().getMineByPlayer(p);
                 MineSystem.getInstance().removeActiveMine(m);
                 m.delete();
                 MineHandler.getInstance().CreateMine(p, "secondmine", "minestwo");
 
             }
-            if(e.getSlot() == 6) {
-                if(Tokens.getInstance().getTokens(p) < 250E6) return;
-                PlayerDataHandler.getPlayerData(p).set(p.getUniqueId().toString()+".MineSize", 3);
+            if (e.getSlot() == 6) {
+                if (Tokens.getInstance().getTokens(p) < 250E6) return;
+                PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".MineSize", 3);
                 Mine m = MineSystem.getInstance().getMineByPlayer(p);
                 MineSystem.getInstance().removeActiveMine(m);
                 m.delete();

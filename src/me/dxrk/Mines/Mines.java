@@ -49,11 +49,12 @@ public class Mines {
         for (int i = 0; i < amountOfMines; ++i) {
             File mineFile = var[i];
             String name = mineFile.getName().split("\\.")[0];
-            if(Bukkit.getWorld(name) == null) {
+            if (Bukkit.getWorld(name) == null) {
                 new WorldCreator(name).createWorld();
             }
         }
     }
+
     public void unloadWorlds() {
         File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "mines")).listFiles();
         File[] var = mineFiles;
@@ -77,7 +78,7 @@ public class Mines {
 
             try {
                 String mineName = config.getString("mine_name");
-                if(Bukkit.getWorld(config.getString("mine_world")) == null) {
+                if (Bukkit.getWorld(config.getString("mine_world")) == null) {
                     new WorldCreator(config.getString("mine_world")).createWorld();
                 }
                 World mineWorld = Bukkit.getWorld(config.getString("mine_world"));
@@ -101,7 +102,6 @@ public class Mines {
 
         this.areMinesLoaded = true;
     }
-
 
 
     public boolean isMinesLoaded() {

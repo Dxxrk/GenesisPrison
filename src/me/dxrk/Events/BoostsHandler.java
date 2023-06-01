@@ -1,17 +1,10 @@
 package me.dxrk.Events;
 
-import java.awt.*;
-import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.TimeZone;
-
+import me.dxrk.Discord.jdaHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.SettingsManager;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -33,8 +26,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import me.dxrk.Discord.jdaHandler;
-import net.dv8tion.jda.api.entities.TextChannel;
+import java.awt.*;
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.*;
 
 public class BoostsHandler implements Listener, CommandExecutor {
     static String c(String s) {

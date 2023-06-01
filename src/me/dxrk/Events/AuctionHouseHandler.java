@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -170,17 +169,18 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
         p.openInventory(ah);
 
     }
+
     public void openSelling(Player p) {
         Inventory selling = Bukkit.createInventory(null, 45, m.c("&c&lYour Items:"));
         List<ItemStack> items = new ArrayList<>();
         for (int i = 0; i < 500; i++) {
             ItemStack item = settings.getAH().getItemStack("Items." + i);
             if (item == null) break;
-            if(ChatColor.stripColor(item.getItemMeta().getLore().get(4)).split(" ")[1].equals(p.getName())) {
+            if (ChatColor.stripColor(item.getItemMeta().getLore().get(4)).split(" ")[1].equals(p.getName())) {
                 items.add(item);
             }
         }
-        for(ItemStack i : items) {
+        for (ItemStack i : items) {
             selling.addItem(i);
         }
         p.openInventory(selling);
@@ -199,45 +199,45 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
 
         double cost = Double.parseDouble(ChatColor.stripColor(item.getItemMeta().getLore().get(2)).split("⛀")[1]);
 
-        ItemStack buy1 = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)14);
+        ItemStack buy1 = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
         ItemMeta bm1 = buy1.getItemMeta();
         bm1.setDisplayName(m.c("&aBuy 1"));
         List<String> lore = new ArrayList<>();
-        lore.add(m.c("&cCost: &e⛀"+cost));
+        lore.add(m.c("&cCost: &e⛀" + cost));
         bm1.setLore(lore);
         buy1.setItemMeta(bm1);
         confirm.setItem(2, buy1);
         lore.clear();
 
-        ItemStack buy5 = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)14);
+        ItemStack buy5 = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
         ItemMeta bm5 = buy5.getItemMeta();
         bm5.setDisplayName(m.c("&aBuy 5"));
-        lore.add(m.c("&cCost: &e⛀"+cost*5));
+        lore.add(m.c("&cCost: &e⛀" + cost * 5));
         bm5.setLore(lore);
         buy5.setItemMeta(bm5);
         confirm.setItem(3, buy5);
         lore.clear();
-        
-        ItemStack cancel = new ItemStack(Material.INK_SACK, 1, (short)1);
+
+        ItemStack cancel = new ItemStack(Material.INK_SACK, 1, (short) 1);
         ItemMeta cm = cancel.getItemMeta();
         cm.setDisplayName(m.c("&cCancel"));
         cancel.setItemMeta(cm);
         confirm.setItem(4, cancel);
 
-        ItemStack buy10 = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)14);
+        ItemStack buy10 = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
         ItemMeta bm10 = buy10.getItemMeta();
         bm10.setDisplayName(m.c("&aBuy 10"));
-        lore.add(m.c("&cCost: &e⛀"+cost*10));
+        lore.add(m.c("&cCost: &e⛀" + cost * 10));
         bm10.setLore(lore);
         buy10.setItemMeta(bm10);
         confirm.setItem(4, buy10);
         lore.clear();
 
-        ItemStack buyA = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)14);
+        ItemStack buyA = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
         ItemMeta bmA = buyA.getItemMeta();
         bmA.setDisplayName(m.c("&aBuy A"));
         int amount = Integer.parseInt(ChatColor.stripColor(item.getItemMeta().getLore().get(2)).split(" ")[1]);
-        lore.add(m.c("&cCost: &e⛀"+cost*amount));
+        lore.add(m.c("&cCost: &e⛀" + cost * amount));
         bmA.setLore(lore);
         buyA.setItemMeta(bmA);
         confirm.setItem(4, buyA);
@@ -268,8 +268,8 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
 
 
     public void giveTokens(UUID uuid, double tokens) {
-        double has = PlayerDataHandler.getPlayerData(uuid).getInt("Tokens");
-        PlayerDataHandler.getPlayerData(uuid).set("Tokens", has + tokens);
+        double has = PlayerDataHandler.getInstance().getPlayerData(uuid).getInt("Tokens");
+        PlayerDataHandler.getInstance().getPlayerData(uuid).set("Tokens", has + tokens);
     }
 
 
@@ -303,7 +303,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                     ahorder.put(p, "hightolow");
                     openAuctionHouse(p, 1, "hightolow");
                 }
-                if(e.getSlot() == 49) {
+                if (e.getSlot() == 49) {
 
                 }
                 if (e.getSlot() == 50) {
@@ -337,7 +337,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                     }
                 }
                 String seller = ChatColor.stripColor(item.getItemMeta().getLore().get(4)).split(" ")[1];
-                if(seller.equals(p.getName())) {
+                if (seller.equals(p.getName())) {
                     openSelling(p);
                     return;
                 }
@@ -437,7 +437,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
             if (args.length == 3) {
                 if (args[0].equalsIgnoreCase("sell")) {
                     double tokens = Double.parseDouble(args[2]);
-                    if(tokens < 0) {
+                    if (tokens < 0) {
                         p.sendMessage(m.c("&cError: Cannot parse number."));
                         return false;
                     }

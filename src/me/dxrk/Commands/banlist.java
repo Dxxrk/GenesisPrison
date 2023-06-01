@@ -8,16 +8,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class banlist implements Listener {
 
 
-
     @EventHandler
-    public void onJoin(PlayerJoinEvent e){
-        if(e.getPlayer().getName().equals("BakonStrip")){
+    public void onJoin(PlayerJoinEvent e) {
+        if (e.getPlayer().getName().equals("BakonStrip")) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban BakonStrip");
         }
 
 
     }
-
 
 
 }

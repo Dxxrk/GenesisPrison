@@ -12,8 +12,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class MineBombHandler implements Listener, CommandExecutor {
 
 
-
-
     @EventHandler
     public void onInt(PlayerInteractEvent e) {
 
@@ -22,15 +20,15 @@ public class MineBombHandler implements Listener, CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if(cmd.getName().equalsIgnoreCase("giveminebomb")) {
-            if(sender.isOp()) {
+        if (cmd.getName().equalsIgnoreCase("giveminebomb")) {
+            if (sender.isOp()) {
                 Player p = Bukkit.getPlayer(args[0]);
                 String rarity = args[1];
-                if(rarity.equalsIgnoreCase("common")) {
+                if (rarity.equalsIgnoreCase("common")) {
 
-                } else if(rarity.equalsIgnoreCase("rare")) {
+                } else if (rarity.equalsIgnoreCase("rare")) {
 
-                } else if(rarity.equalsIgnoreCase("epic")) {
+                } else if (rarity.equalsIgnoreCase("epic")) {
 
                 }
             }

@@ -1,7 +1,5 @@
 package me.dxrk.utils;
 
-import java.util.ArrayList;
-
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import me.dxrk.Enchants.EnchantMethods;
 import me.dxrk.Main.Main;
@@ -13,13 +11,16 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+
 public class WaveEffect {
     Runnable timer = new Runnable() {
         @SuppressWarnings("deprecation")
         public void run() {
             for (Location loc : getCircle(l, rad, (rad * ((int) (Math.PI * 2))))) {
                 Block b = loc.getBlock();
-                if(b.getType().equals(Material.BEDROCK) || !EnchantMethods.set(b).allows(DefaultFlag.LIGHTER)) continue;
+                if (b.getType().equals(Material.BEDROCK) || !EnchantMethods.set(b).allows(DefaultFlag.LIGHTER))
+                    continue;
                 FallingBlock fb = loc.getWorld().spawnFallingBlock(loc, loc.getBlock().getType(), loc.getBlock().getData());
                 fb.setVelocity(new Vector(0, .3, 0));
                 loc.getBlock().setType(Material.AIR);

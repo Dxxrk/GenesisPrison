@@ -1,17 +1,7 @@
 package me.dxrk.Vote;
 
-import java.sql.Array;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-
+import com.vexsoftware.votifier.model.Vote;
+import com.vexsoftware.votifier.model.VotifierEvent;
 import me.dxrk.Events.LocksmithHandler;
 import me.dxrk.Events.ScoreboardHandler;
 import me.dxrk.Events.SellHandler;
@@ -20,11 +10,7 @@ import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import mkremins.fanciful.FancyMessage;
 import net.citizensnpcs.api.CitizensAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.block.Chest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -38,8 +24,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.vexsoftware.votifier.model.Vote;
-import com.vexsoftware.votifier.model.VotifierEvent;
+import java.time.LocalDate;
+import java.util.*;
 
 public class CMDVote implements Listener, CommandExecutor {
 

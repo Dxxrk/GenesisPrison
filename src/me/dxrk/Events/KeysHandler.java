@@ -4,20 +4,12 @@ import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Gangs.Gangs;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
-import me.dxrk.Mines.Mine;
-import me.dxrk.Mines.MineSystem;
 import me.dxrk.Tokens.Tokens;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,6 +18,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 public class KeysHandler implements Listener {
     public SettingsManager settings = SettingsManager.getInstance();
@@ -75,8 +71,8 @@ public class KeysHandler implements Listener {
             p.sendMessage(s);
         }
         addKey(p, key, amt);
-        int keysfound = PlayerDataHandler.getPlayerData(p).getInt("KeysFound");
-        PlayerDataHandler.getPlayerData(p).set("KeysFound", (keysfound + amt));
+        int keysfound = PlayerDataHandler.getInstance().getPlayerData(p).getInt("KeysFound");
+        PlayerDataHandler.getInstance().getPlayerData(p).set("KeysFound", (keysfound + amt));
     }
 
     public void DustFinderMSG(Player p, String dust) {
@@ -171,8 +167,8 @@ public class KeysHandler implements Listener {
         }
         double event = SkillsEventsListener.getEventKeyFortune();
         chance += event;
-        double keyboost = PlayerDataHandler.getPlayerData(p).getInt(p.getUniqueId()+".SkillKeyBoost");
-        chance+=keyboost;
+        double keyboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId() + ".SkillKeyBoost");
+        chance += keyboost;
         int kf = this.r.nextInt(100);
         int d = this.r.nextInt(100);
         if (chance > 0 && d <= chance) {
@@ -243,7 +239,7 @@ public class KeysHandler implements Listener {
 
 
     public int getPrestiges(Player p) {
-        int prestiges = PlayerDataHandler.getPlayerData(p).getInt("Prestiges");
+        int prestiges = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Prestiges");
         return prestiges;
     }
 
@@ -305,7 +301,7 @@ public class KeysHandler implements Listener {
             return;
         if (!i.getItemMeta().hasLore())
             return;
-        WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+        WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
         ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
         LocalPlayer player = wg.wrapPlayer(p);
         if (!set.allows(DefaultFlag.LIGHTER) || !set.isMemberOfAll(player))

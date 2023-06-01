@@ -41,10 +41,10 @@ public class RankupHandler implements Listener, CommandExecutor {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        int i = PlayerDataHandler.getPlayerData(p).getInt("Level");
+        int i = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Level");
 
         if (i == 0) {
-            PlayerDataHandler.getPlayerData(p).set("Level", 1);
+            PlayerDataHandler.getInstance().getPlayerData(p).set("Level", 1);
         }
         if (!aru.contains(p)) {
             if (settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Autorankup") == true) {
@@ -63,39 +63,39 @@ public class RankupHandler implements Listener, CommandExecutor {
     }
 
     public int getRank(Player p) {
-        int i = PlayerDataHandler.getPlayerData(p).getInt("Level");
+        int i = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Level");
         if (i == 0) {
             return 1;
         }
 
-        return PlayerDataHandler.getPlayerData(p).getInt("Level");
+        return PlayerDataHandler.getInstance().getPlayerData(p).getInt("Level");
     }
 
 
     public void upRank(Player p) {
-        if (nextRank(p) >= 1000 && getPrestiges(p) >= 100 && !PlayerDataHandler.getPlayerData(p).getBoolean("Ethereal")) {
-            PlayerDataHandler.getPlayerData(p).set("Level", 1);
-            PlayerDataHandler.getPlayerData(p).set("Ethereal", true);
+        if (nextRank(p) >= 1000 && getPrestiges(p) >= 100 && !PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("Ethereal")) {
+            PlayerDataHandler.getInstance().getPlayerData(p).set("Level", 1);
+            PlayerDataHandler.getInstance().getPlayerData(p).set("Ethereal", true);
             Bukkit.broadcastMessage(c("&f&l" + p.getName() + " is &b&l&kO&e&lEthereal&b&l&kO&r"));
             return;
         }
 
 
-        int i = PlayerDataHandler.getPlayerData(p).getInt("Level");
-        PlayerDataHandler.getPlayerData(p).set("Level", i + 1);
+        int i = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Level");
+        PlayerDataHandler.getInstance().getPlayerData(p).set("Level", i + 1);
 
         p.getScoreboard().getTeam("prank").setSuffix(c("&b" + getRank(p)));
 
     }
 
     public void setRank(Player p, int i) {
-        PlayerDataHandler.getPlayerData(p).set("Level", i);
-        PlayerDataHandler.savePlayerData(p);
+        PlayerDataHandler.getInstance().getPlayerData(p).set("Level", i);
+        PlayerDataHandler.getInstance().savePlayerData(p);
         p.getScoreboard().getTeam("prank").setSuffix(c("&b" + getRank(p)));
     }
 
     public int getPrestiges(Player p) {
-        int prestiges = PlayerDataHandler.getPlayerData(p).getInt("Prestiges");
+        int prestiges = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Prestiges");
         return prestiges;
     }
 
@@ -155,7 +155,7 @@ public class RankupHandler implements Listener, CommandExecutor {
     public double rankPrice(Player p) {
         int rank = getRank(p);
 
-        if (PlayerDataHandler.getPlayerData(p).getBoolean("Ethereal")) {
+        if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("Ethereal")) {
             double start = 7.523828125E20D * 25;
             double price = start * (rank * 1.75);
             return price;
@@ -171,7 +171,7 @@ public class RankupHandler implements Listener, CommandExecutor {
     }
 
     public void rankup(Player p) {
-        if (PlayerDataHandler.getPlayerData(p).getBoolean("Ethereal")) {
+        if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("Ethereal")) {
             if (Main.econ.getBalance(p) < rankPrice(p)) {
                 p.sendMessage(c("&f&lLevel &8| &7You need &a$" + Main.formatAmt(rankPrice(p) - Main.econ.getBalance(p)) + " &7to rankup."));
                 return;
@@ -225,7 +225,7 @@ public class RankupHandler implements Listener, CommandExecutor {
         if (Main.econ.getBalance(p) < rankPrice(p)) {
             return;
         }
-        if (PlayerDataHandler.getPlayerData(p).getBoolean("Ethereal")) {
+        if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("Ethereal")) {
             while (Main.econ.getBalance(p) > rankPrice(p)) {
                 Main.econ.withdrawPlayer(p, rankPrice(p));
                 upRank(p);

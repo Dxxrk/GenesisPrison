@@ -133,7 +133,7 @@ public class Enchants implements Listener {
             return;
         if (!p.getItemInHand().getItemMeta().hasLore())
             return;
-        WorldGuardPlugin wg = (WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+        WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
         ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
         LocalPlayer player = wg.wrapPlayer(p);
         if (EnchantMethods.set(b).allows(DefaultFlag.LIGHTER) || set.isMemberOfAll(player)) {
@@ -144,7 +144,7 @@ public class Enchants implements Listener {
             Functions.Multiply(p);
             Mine m = MineSystem.getInstance().getMineByPlayer(p);
             if (m.getBlocksLeftPercentage() < m.getResetPercent()) {
-                double lucky = PlayerDataHandler.getPlayerData(p).getDouble("LuckyBlock");
+                double lucky = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock");
                 ResetHandler.resetMineWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), lucky);
             }
         }

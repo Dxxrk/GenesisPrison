@@ -1,17 +1,19 @@
 package me.dxrk.Enchants;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.managers.RegionManager;
 import me.dxrk.Events.*;
-import me.dxrk.Main.*;
+import me.dxrk.Main.Functions;
+import me.dxrk.Main.Main;
+import me.dxrk.Main.Methods;
+import me.dxrk.Main.SettingsManager;
 import me.dxrk.Mines.Mine;
-import me.dxrk.Mines.MineHandler;
 import me.dxrk.Mines.MineSystem;
 import me.dxrk.Mines.ResetHandler;
 import me.dxrk.Tokens.Tokens;
+import me.dxrk.Vote.CMDVoteShop;
 import me.dxrk.utils.WaveEffect;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -23,15 +25,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-
-import me.dxrk.Vote.CMDVoteShop;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class EnchantMethods implements CommandExecutor {
 
@@ -44,7 +42,6 @@ public class EnchantMethods implements CommandExecutor {
 
     private Methods m = Methods.getInstance();
     private final SettingsManager settings = SettingsManager.getInstance();
-
 
 
     public boolean isInt(String s) {
@@ -196,7 +193,7 @@ public class EnchantMethods implements CommandExecutor {
             }
         }
         int rank = RankupHandler.getInstance().getRank(p);
-        if (PlayerDataHandler.getPlayerData(p).getBoolean("Ethereal")) {
+        if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("Ethereal")) {
             rank = 1000;
         }
         // ResetHandler.setAIR(min, max, MineHandler.Blocks(rank/16));
@@ -237,7 +234,7 @@ public class EnchantMethods implements CommandExecutor {
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
         amountblocks = m.getBlocksLeft();
 
-        double lucky = PlayerDataHandler.getPlayerData(p).getDouble("LuckyBlock");
+        double lucky = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock");
         ResetHandler.resetMineWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), lucky);
 
 
@@ -359,17 +356,17 @@ public class EnchantMethods implements CommandExecutor {
         Random r = new Random();
 
         int xpboost = 1;
-        int skillxpboost = PlayerDataHandler.getPlayerData(p).getInt("SkillJunkpileXPBoost");
-        xpboost+=skillxpboost;
-        int fmin = 1000*xpboost;
-        int fmax = 2500*xpboost;
+        int skillxpboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillJunkpileXPBoost");
+        xpboost += skillxpboost;
+        int fmin = 1000 * xpboost;
+        int fmax = 2500 * xpboost;
         int xp = r.nextInt(fmax - fmin) + fmin;
 
         int multiboost = 1;
-        int skillmultiboost = PlayerDataHandler.getPlayerData(p).getInt("SkillJunkpileMultiBoost");
-        multiboost+=skillmultiboost;
-        double min = 0.1*multiboost;
-        double max = 0.5*multiboost;
+        int skillmultiboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillJunkpileMultiBoost");
+        multiboost += skillmultiboost;
+        double min = 0.1 * multiboost;
+        double max = 0.5 * multiboost;
         double multi = Math.round((min + (max - min) * r.nextDouble()) * 10) / 10.0;
 
 

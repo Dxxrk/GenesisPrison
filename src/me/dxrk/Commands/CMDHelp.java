@@ -137,10 +137,10 @@ public class CMDHelp implements Listener, CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if(cmd.getName().equalsIgnoreCase("help")) {
+        if (cmd.getName().equalsIgnoreCase("help")) {
             Player p = (Player) sender;
-            if(args.length == 1) {
-                if(args[0].equalsIgnoreCase("redeem")) {
+            if (args.length == 1) {
+                if (args[0].equalsIgnoreCase("redeem")) {
                     p.sendMessage(m.c("&a- &e/Redeem &bcan be used to reclaim the money you previously spent on the store."));
                     p.sendMessage(m.c("&a- &bThis comes in the form of a Coupon."));
                     p.sendMessage(m.c("&a- &bBecause the store has changed so much we figured this would make the most sense."));
@@ -158,9 +158,9 @@ public class CMDHelp implements Listener, CommandExecutor {
 
 
     @EventHandler
-    public void onClick(InventoryClickEvent e){
-        if(e.getClickedInventory() == null) return;
-        if(e.getClickedInventory().getName().equals(m.c("&6&lHelp:"))) {
+    public void onClick(InventoryClickEvent e) {
+        if (e.getClickedInventory() == null) return;
+        if (e.getClickedInventory().getName().equals(m.c("&6&lHelp:"))) {
             e.setCancelled(true);
         }
     }

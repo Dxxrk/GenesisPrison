@@ -10,8 +10,6 @@ import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
-import me.dxrk.Mines.Mine;
-import me.dxrk.Mines.MineSystem;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -43,12 +41,12 @@ public class PickXPHandler
 
 
     public double getXP(Player p) {
-        double xp = PlayerDataHandler.getPlayerData(p).getDouble("PickXP");
+        double xp = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("PickXP");
         return xp;
     }
 
     public int getLevel(Player p) {
-        int level = PlayerDataHandler.getPlayerData(p).getInt("PickLevel");
+        int level = PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickLevel");
         return level;
     }
 
@@ -56,17 +54,17 @@ public class PickXPHandler
     public void addXP(Player p, double add) {
         double xp = getXP(p);
 
-        PlayerDataHandler.getPlayerData(p).set("PickXP", (xp + add));
+        PlayerDataHandler.getInstance().getPlayerData(p).set("PickXP", (xp + add));
     }
 
     public void levelUp(Player p) {
         int level = getLevel(p);
-        int skillPoints = PlayerDataHandler.getPlayerData(p).getInt("PickaxeSkillPoints");
-        PlayerDataHandler.getPlayerData(p).set("PickLevel", level + 1);
+        int skillPoints = PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints");
+        PlayerDataHandler.getInstance().getPlayerData(p).set("PickLevel", level + 1);
         if (level >= 25) {
-            PlayerDataHandler.getPlayerData(p).set("PickaxeSkillPoints", skillPoints + 1);
+            PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkillPoints", skillPoints + 1);
         }
-        PlayerDataHandler.savePlayerData(p);
+        PlayerDataHandler.getInstance().savePlayerData(p);
     }
 
     public boolean canLevelUp(Player p) {

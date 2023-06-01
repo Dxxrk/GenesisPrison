@@ -9,13 +9,9 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.BukkitUtil;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldedit.regions.RegionOperationException;
-import me.dxrk.Main.Main;
 import org.bukkit.*;
-import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.Objects;
 
 
 public class MineWorldCreator {
@@ -25,31 +21,32 @@ public class MineWorldCreator {
     public static MineWorldCreator getInstance() {
         return instance;
     }
+
     private World world;
 
     public void unloadWorld(World world) {
         this.world = Bukkit.getWorld("");
-        if(!world.equals(null)) {
+        if (!world.equals(null)) {
             Bukkit.getServer().unloadWorld(world, true);
         }
     }
 
     public boolean deleteWorld(File path) {
-        if(path.exists()) {
+        if (path.exists()) {
             File files[] = path.listFiles();
-            for(int i=0; i<files.length; i++) {
-                if(files[i].isDirectory()) {
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
                     deleteWorld(files[i]);
                 } else {
                     files[i].delete();
                 }
             }
         }
-        return(path.delete());
+        return (path.delete());
     }
 
     public void createMineWorld(String name) {
-        if(Bukkit.getWorld(name) != null) {
+        if (Bukkit.getWorld(name) != null) {
             return;
         }
         World mineWorld = Bukkit.createWorld((new WorldCreator(name))

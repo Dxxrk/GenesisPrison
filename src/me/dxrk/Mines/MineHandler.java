@@ -174,7 +174,7 @@ public class MineHandler implements Listener, CommandExecutor {
         int start = rank / 16;
         List<ItemStack> blocks = Blocks(start);
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
-        if(PlayerDataHandler.getPlayerData(p).getItemStack("CustomBlock") == null) {
+        if (PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("CustomBlock") == null) {
             if (start == 0) {
                 m.setBlock1(new ItemStack(Material.COBBLESTONE));
                 m.setBlock2(new ItemStack(Material.COBBLESTONE));
@@ -185,13 +185,13 @@ public class MineHandler implements Listener, CommandExecutor {
                 m.setBlock3(blocks.get(2));
             }
         } else {
-            ItemStack block = PlayerDataHandler.getPlayerData(p).getItemStack("CustomBlock");
+            ItemStack block = PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("CustomBlock");
             m.setBlock1(block);
             m.setBlock2(block);
             m.setBlock3(block);
         }
         m.save();
-        double lucky = PlayerDataHandler.getPlayerData(p).getDouble("LuckyBlock");
+        double lucky = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock");
         ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), lucky);
 
     }
@@ -202,27 +202,6 @@ public class MineHandler implements Listener, CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmdd, String label, String[] args) {
         Player player = (Player) sender;
 
-        if (label.equalsIgnoreCase("removemine")) {
-            if (!player.hasPermission("staff.removemine")) return false;
-            if (args.length == 1) {
-                OfflinePlayer p = Bukkit.getOfflinePlayer(args[0]);
-                Mine m = MineSystem.getInstance().getMineByPlayer(player);
-                //add methods for mine delete
-                PlayerDataHandler.getPlayerData(p).set("HasMine", false);
-                m.delete();
-                MineSystem.getInstance().removeActiveMine(m);
-                if (p.isOnline()) {
-                    Player po = p.getPlayer();
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "spawn " + po.getName());
-                }
-                if (Bukkit.getWorld(p.getUniqueId().toString()) != null) {
-                    World world = Bukkit.getWorld(p.getUniqueId().toString());
-                    MineWorldCreator.getInstance().unloadWorld(world);
-                    File file = world.getWorldFolder();
-                    MineWorldCreator.getInstance().deleteWorld(file);
-                }
-            }
-        }
         if (label.equalsIgnoreCase("updatemine")) {
             if (args.length == 1) {
                 Player p = Bukkit.getPlayer(args[0]);
@@ -256,7 +235,8 @@ public class MineHandler implements Listener, CommandExecutor {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        if (PlayerDataHandler.getPlayerData(p).getBoolean("HasMine")) {
+        if (!p.hasPlayedBefore()) return;
+        if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("HasMine")) {
             Mine m = MineSystem.getInstance().getMineByPlayer(p);
             Location loc = new Location(m.getMineWorld(), m.getSpawnLocation().getX(), m.getSpawnLocation().getY(), m.getSpawnLocation().getZ(), -90, 0);
             p.teleport(loc);
@@ -300,6 +280,7 @@ public class MineHandler implements Listener, CommandExecutor {
             e.printStackTrace();
         }*/
     }
+
     /*
         CREATING THE MINE
      */
@@ -309,18 +290,18 @@ public class MineHandler implements Listener, CommandExecutor {
         World world = Bukkit.getWorld(mineworld);
         int mines = settings.getOptions().getInt("numberofmines");
 
-        File schematic = new File(Main.plugin.getDataFolder() + File.separator + "schematics", schem+".schematic");
-        Location paste = new Location(world, 0, 144, (mines*250));
+        File schematic = new File(Main.plugin.getDataFolder() + File.separator + "schematics", schem + ".schematic");
+        Location paste = new Location(world, 0, 144, (mines * 250));
         paste.setYaw(-90);
         pasteSchematic(Objects.requireNonNull(WESchematic.getSchematic(schematic)), paste);
 
-        Location pworld = new Location(world, 0.5, 100.5, (mines*250)+0.5, -90, 0);
-        PlayerDataHandler.getPlayerData(p).set("MineSize", 1);
+        Location pworld = new Location(world, 0.5, 100.5, (mines * 250) + 0.5, -90, 0);
+        PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 1);
         p.teleport(pworld);
 
         WorldBorder wb = new WorldBorder();
         wb.world = ((CraftWorld) world).getHandle();
-        wb.setCenter(34.5, (mines*250)+0.5);
+        wb.setCenter(34.5, (mines * 250) + 0.5);
         wb.setSize(83);
         wb.setWarningDistance(1);
         wb.setWarningTime(1);
@@ -329,11 +310,8 @@ public class MineHandler implements Listener, CommandExecutor {
         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutWorldBorder);
 
 
-
-
-
-        Location point1 = new Location(world, 15, 98, (mines*250)-16);
-        Location point2 = new Location(world, 47, 65, (mines*250)+16);
+        Location point1 = new Location(world, 15, 98, (mines * 250) - 16);
+        Location point2 = new Location(world, 47, 65, (mines * 250) + 16);
 
 
         //Creating the actual mine
@@ -344,13 +322,12 @@ public class MineHandler implements Listener, CommandExecutor {
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
 
 
-
         RegionManager regions = getWorldGuard().getRegionManager(world);
         if (regions.hasRegion(p.getName())) {
             regions.removeRegion(p.getName());
         }
-        if (regions.hasRegion(p.getName()+"outside")) {
-            regions.removeRegion(p.getName()+"outside");
+        if (regions.hasRegion(p.getName() + "outside")) {
+            regions.removeRegion(p.getName() + "outside");
         }
         //Create Mine region that allows the enchants to work only inside the mine
         ProtectedRegion region = new ProtectedCuboidRegion(p.getName(),
@@ -366,11 +343,11 @@ public class MineHandler implements Listener, CommandExecutor {
         region.setPriority(2);
         regions.addRegion(region);
 
-        Location g1 = new Location(world, -15, 255, (mines*250)+50);
-        Location g2 = new Location(world, 82, 0, (mines*250)-46);
+        Location g1 = new Location(world, -15, 255, (mines * 250) + 50);
+        Location g2 = new Location(world, 82, 0, (mines * 250) - 46);
 
         //Create region that allows building within limits.
-        ProtectedRegion outside = new ProtectedCuboidRegion(p.getName()+"outside",
+        ProtectedRegion outside = new ProtectedCuboidRegion(p.getName() + "outside",
                 new BlockVector(g1.getX(), g1.getY(), g1.getZ()),
                 new BlockVector(g2.getX(), g2.getY(), g2.getZ()));
         outside.setFlag(DefaultFlag.BLOCK_PLACE, StateFlag.State.DENY);
@@ -392,10 +369,10 @@ public class MineHandler implements Listener, CommandExecutor {
 
         regions.addRegion(outside);
 
-        double lucky = PlayerDataHandler.getPlayerData(p).getDouble("LuckyBlock");
+        double lucky = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock");
         ResetHandler.resetMineFullWorldEdit(m, point2, point1, lucky);
-        PlayerDataHandler.getPlayerData(p).set("HasMine", true);
-        settings.getOptions().set("numberofmines", (mines+1));
+        PlayerDataHandler.getInstance().getPlayerData(p).set("HasMine", true);
+        settings.getOptions().set("numberofmines", (mines + 1));
         settings.saveOptions();
     }
 }
