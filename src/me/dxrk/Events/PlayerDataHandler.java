@@ -145,12 +145,56 @@ public class PlayerDataHandler implements Listener {
                 pl.set("PickaxeSkill", "None");
 
             }
-            if (pl.get("PickaxeSkillLevel") == null) {
-                pl.set("PickaxeSkillLevel", 0);
+            if (pl.get("SkillLuckBoost") == null) {
+                pl.set("SkillLuckBoost", 0);
 
             }
-            if (pl.get("PickaxeSkillPoints") == null) {
-                pl.set("PickaxeSkillPoints", 0);
+            if (pl.get("SkillTokenBoost") == null) {
+                pl.set("SkillTokenBoost", 0);
+
+            }
+            if (pl.get("SkillFortuneBoost") == null) {
+                pl.set("SkillFortuneBoost", 0);
+
+            }
+            if (pl.get("SkillKeyBoost") == null) {
+                pl.set("SkillKeyBoost", 0);
+
+            }
+            if (pl.get("FortuneMaxLevelRaise") == null) {
+                pl.set("FortuneMaxLevelRaise", 0);
+
+            }
+            if (pl.get("FortuneMaxLevelRaise") == null) {
+                pl.set("FortuneMaxLevelRaise", 0);
+
+            }
+            if (pl.get("SkillFortuneBoost") == null) {
+                pl.set("SkillFortuneBoost", 0);
+
+            }
+            if (pl.get("SkillFortuneBoost") == null) {
+                pl.set("SkillFortuneBoost", 0);
+
+            }
+            if (pl.get("JunkpileMaxLevelRaise") == null) {
+                pl.set("JunkpileMaxLevelRaise", 0);
+
+            }
+            if (pl.get("SkillJunkpileMultiBoost") == null) {
+                pl.set("SkillJunkpileMultiBoost", 0);
+
+            }
+            if (pl.get("XPFMaxLevelRaise") == null) {
+                pl.set("XPFMaxLevelRaise", 0);
+
+            }
+            if (pl.get("SkillJunkpileXPBoost") == null) {
+                pl.set("SkillJunkpileXPBoost", 0);
+
+            }
+            if (pl.get("TFMaxLevelRaise") == null) {
+                pl.set("TFMaxLevelRaise", 0);
 
             }
             if (pl.get("PickaxeSkillPointsSpent") == null) {

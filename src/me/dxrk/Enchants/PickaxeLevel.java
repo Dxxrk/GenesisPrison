@@ -306,6 +306,14 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 lore.add(s);
             }
         }
+        PlayerDataHandler.getInstance().getPlayerData(p).set("PickXP", 0);
+        PlayerDataHandler.getInstance().getPlayerData(p).set("PickLevel", 0);
+        PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkill", "None");
+        PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkillLevel", 0);
+        PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkillPoints", 0);
+        PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkillPointsSpent", 0);
+        List<String> skills = new ArrayList<>();
+        PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkillsUnlocked", skills);
         nm.setDisplayName(pm.getDisplayName());
         nm.setLore(Lore(lore, p));
         newpick.setItemMeta(nm);
