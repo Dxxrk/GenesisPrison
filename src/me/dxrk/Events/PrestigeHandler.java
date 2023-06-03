@@ -24,6 +24,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
+
 public class PrestigeHandler implements Listener, CommandExecutor {
 
     Methods m = Methods.getInstance();
@@ -52,7 +54,15 @@ public class PrestigeHandler implements Listener, CommandExecutor {
             else
                 p.sendMessage(m.c("&cMust be level 1000 or higher."));
         }
-
+        if(label.equalsIgnoreCase("addprestige")){
+            if(sender.isOp()){
+                if(args.length==2){
+                    Player reciever = Bukkit.getPlayer(args[0]);
+                    int amount = parseInt(args[1]);
+                    addPrestiges(reciever,amount);
+                }
+            }
+        }
 
         return false;
     }

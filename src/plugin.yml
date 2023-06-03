@@ -11,6 +11,7 @@ commands:
   genesis:
   g:
   gang:
+  addprestige:
   coupon:
   coupons:
   updatemine:

@@ -214,27 +214,28 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         inv.setItem(slot, i);
     }
 
-
+    private static ItemStack SpacerWhite() {
+        ItemStack white = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 0);
+        ItemMeta wm = white.getItemMeta();
+        wm.setDisplayName(c(" "));
+        white.setItemMeta(wm);
+        return white;
+    }
     public void openenchantmenu(Player p) {
         Inventory enchantmenu = Bukkit.createInventory(null, 54, c("&d&lPurchase Enchants!"));
+        for(int i=0;i<45;i++)
+            enchantmenu.setItem(i,SpacerWhite());
 
-        setEnchantItem("Key Finder", Material.TRIPWIRE_HOOK, c("&bUpgrade Key Finder"), c("&7Chance to find a Key."), 1000, enchantmenu, 4, p, 1);
+        setEnchantItem("Key Finder", Material.TRIPWIRE_HOOK, c("&bUpgrade Key Finder"), c("&7Chance to find a Key."), 1000, enchantmenu, 10, p, 1);
         setEnchantItem("Token Finder", Material.PRISMARINE_CRYSTALS, c("&bUpgrade Token Finder"), c("&7Increase the amount of tokens randomly found."), 1000, enchantmenu, 12, p, 1);
-        setEnchantItem("Fortune", Material.NETHER_STAR, c("&bUpgrade Fortune"), c("&7Increases amount of blocks you sell."), 100, enchantmenu, 13, p, 1);
-        setEnchantItem("Explosion", Material.FIREBALL, c("&bUpgrade Explosion"), c("&7Chance to explode a large hole in the mine(5x5x5)."), 2500, enchantmenu, 14, p, 10);
-        setEnchantItem("XP Finder", Material.EXP_BOTTLE, c("&bUpgrade XP Finder"), c("&7Increases the amount of XP found while mining."), 3000, enchantmenu, 20, p, 15);
-        setEnchantItem("Dust Finder", Material.SUGAR, c("&bUpgrade Dust Finder"), c("&7Chance to find Trinket dust."), 2500, enchantmenu, 21, p, 25);
-        setEnchantItem("Wave", Material.GOLD_PLATE, c("&bUpgrade Wave"), c("&7Chance to break an entire layer of the mine."), 4500, enchantmenu, 22, p, 40);
-        setEnchantItem("Research", Material.REDSTONE, c("&bUpgrade Research"), c("&7Chance to grant you one level instantly."), 4000, enchantmenu, 23, p, 50);
+        setEnchantItem("Fortune", Material.NETHER_STAR, c("&bUpgrade Fortune"), c("&7Increases amount of blocks you sell."), 100, enchantmenu, 14, p, 1);
+        setEnchantItem("XP Finder", Material.EXP_BOTTLE, c("&bUpgrade XP Finder"), c("&7Increases the amount of XP found while mining."), 3000, enchantmenu, 16, p, 15);
+        setEnchantItem("Dust Finder", Material.SUGAR, c("&bUpgrade Dust Finder"), c("&7Chance to find Trinket dust."), 2500, enchantmenu, 20, p, 25);
+        setEnchantItem("Jackhammer", Material.GOLD_PLATE, c("&bUpgrade Jackhammer"), c("&7Chance to break an entire layer of the mine."), 4500, enchantmenu, 22, p, 40);
         setEnchantItem("Greed", Material.DIAMOND, c("&bUpgrade Greed"), c("&7Increases selling price for blocks."), 5000, enchantmenu, 24, p, 60);
-        setEnchantItem("Key Party", Material.EYE_OF_ENDER, c("&bUpgrade Key Party"), c("&7Chance to give everyone online a key."), 6000, enchantmenu, 29, p, 75);
-        setEnchantItem("Junkpile", Material.BUCKET, c("&bUpgrade Junkpile"), c("&7Chance to find random items while mining."), 7500, enchantmenu, 30, p, 85);
-        setEnchantItem("Booster", Material.POTION, c("&bUpgrade Booster"), c("&7Chance to find low timed boosts."), 8000, enchantmenu, 31, p, 100);
-        setEnchantItem("Karma", Material.RABBIT_FOOT, c("&bUpgrade Karma"), c("&7Boosts the chance of other enchants to proc."), 9000, enchantmenu, 32, p, 150);
-        setEnchantItem("Fortuity", Material.GOLD_INGOT, c("&bUpgrade Fortuity"), c("&7Boosts the effectiveness of Fortune."), 9750, enchantmenu, 33, p, 175);
-        setEnchantItem("Multiply", Material.EMERALD, c("&bUpgrade Multiply"), c("&7Chance to double the effectiveness of all currencies for 10s."), 10000, enchantmenu, 39, p, 200);
-        setEnchantItem("Laser", Material.BLAZE_ROD, c("&bUpgrade Laser"), c("&7Chance to summon a laser to obliterate blocks in its path."), 15000, enchantmenu, 40, p, 210);
-        setEnchantItem("Nuke", Material.TNT, c("&bUpgrade Nuke"), c("&7Low Chance to break the entire mine."), 20000, enchantmenu, 41, p, 220);
+        setEnchantItem("Key Party", Material.EYE_OF_ENDER, c("&bUpgrade Key Party"), c("&7Chance to give everyone online a key."), 6000, enchantmenu, 30, p, 75);
+        setEnchantItem("Junkpile", Material.BUCKET, c("&bUpgrade Junkpile"), c("&7Chance to find random items while mining."), 7500, enchantmenu, 32, p, 85);
+        setEnchantItem("Nuke", Material.TNT, c("&bUpgrade Nuke"), c("&7Low Chance to break the entire mine."), 20000, enchantmenu, 40, p, 220);
 
 
         ItemStack trinkets = new ItemStack(Material.GOLD_NUGGET);
@@ -266,15 +267,23 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         lore.add(c("&6Open skill enchant menu"));
         semeta.setLore(lore);
         skillenchants.setItemMeta(semeta);
-        enchantmenu.setItem(49, skillenchants);
+        enchantmenu.setItem(48, skillenchants);
+        lore.clear();
+
+        ItemStack etherealenchants = new ItemStack(Material.BEACON);
+        ItemMeta eemeta = etherealenchants.getItemMeta();
+        eemeta.setDisplayName(c("&b&lEthereal Enchants"));
+        lore.add(c("&6Open ethereal enchant menu"));
+        eemeta.setLore(lore);
+        etherealenchants.setItemMeta(eemeta);
+        enchantmenu.setItem(50,etherealenchants);
+        lore.clear();
 
         enchantmenu.setItem(45, Spacer());
         enchantmenu.setItem(47, Spacer());
-        enchantmenu.setItem(48, Spacer());
-        enchantmenu.setItem(50, Spacer());
+        enchantmenu.setItem(49, Spacer());
         enchantmenu.setItem(51, Spacer());
         enchantmenu.setItem(53, Spacer());
-
 
         p.openInventory(enchantmenu);
     }
@@ -617,9 +626,18 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
             case "Jackhammer":
             case "Fortuity":
+                i=1000;
+
+                break;
             case "Key Party":
             case "Charity":
+                i=1000;
+
+                break;
             case "Seismic Shock":
+                i=1000;
+
+                break;
             case "Calamity":
                 i = 1000;
 
@@ -633,6 +651,9 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
                 break;
             case "Booster":
+                i=1000;
+
+                break;
             case "Treasury":
                 i = 2500;
 
@@ -801,7 +822,74 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
         }
     }
+    public void setEnchantItemEthereal(String enchantName, Material mat, String name, String desc, int priceStart, Inventory inv, int slot, Player p) {
 
+        int enchantLevel = 0;
+
+        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
+            String s = p.getItemInHand().getItemMeta().getLore().get(x);
+            if (ChatColor.stripColor(s).contains(enchantName)) {
+                enchantLevel = getInt(p.getItemInHand().getItemMeta().getLore().get(x));
+            }
+        }
+        double price;
+        if (enchantLevel == 0) {
+            price = priceStart;
+        } else {
+            price = enchantPrice(enchantName, enchantLevel);
+        }
+
+        String cost;
+
+        if (enchantLevel != maxLevel(enchantName, p)) {
+            cost = c("&bCost: &e" + ((int) price) + "⛀");
+        } else {
+            cost = c("&bCost: &eMAX LEVEL!");
+        }
+
+
+        ItemStack i = new ItemStack(mat);
+        ItemMeta im = i.getItemMeta();
+        im.setDisplayName(name);
+        List<String> lore = new ArrayList<>();
+        lore.add(desc);
+        lore.add(" ");
+        lore.add(c("&bCurrent Level: &e" + enchantLevel));
+        lore.add(c("&bMax Level: &e" + maxLevel(enchantName, p)));
+        lore.add(cost);
+        lore.add(" ");
+        lore.add(c("&7&oLeft Click: Buy 1"));
+        lore.add(c("&7&oRight Click: Buy 10"));
+        lore.add(c("&7&oShift+Right Click: Buy 100"));
+        lore.add(c("&7&oShift+Left Click: Buy Max"));
+        boolean unlocked = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("Ethereal");
+        if (!unlocked) {
+            lore.clear();
+            lore.add(c("&cUnlocked at Ethereal."));
+        }
+
+        im.setLore(lore);
+        i.setItemMeta(im);
+        lore.clear();
+
+
+        inv.setItem(slot, i);
+    }
+    public void openEtherealEnchantsInv(Player p){
+        Inventory inv = Bukkit.createInventory(null,45,c("&bEthereal Enchants"));
+
+        for(int i=0;i<45;i++)
+            inv.setItem(i,SpacerWhite());
+
+        setEnchantItemEthereal("Booster", Material.POTION, c("&bUpgrade Booster"), c("&7Chance to find low timed boosts."), 8000, inv, 11, p);
+        setEnchantItemEthereal("Karma", Material.RABBIT_FOOT, c("&bUpgrade Karma"), c("&7Boosts the chance of other enchants to proc."), 9000, inv, 13, p);
+        setEnchantItemEthereal("Fortuity", Material.GOLD_INGOT, c("&bUpgrade Fortuity"), c("&7Boosts the effectiveness of Fortune."), 9750, inv, 15, p);
+        setEnchantItemEthereal("Multiply", Material.EMERALD, c("&bUpgrade Multiply"), c("&7Chance to double the effectiveness of all currencies for 10s."), 10000, inv, 21, p);
+        setEnchantItemEthereal("Seismic Shock", Material.DIAMOND_BLOCK, c("&bUpgrade Seismic Shock"), c("&7Creates a massive crater."), 10000, inv, 23, p);
+        setEnchantItemEthereal("Charity", Material.GOLD_BLOCK, c("&bUpgrade Charity"), c("&7Increases proc chance of enchants for a certain amount of time??"), 10000, inv, 31, p);
+
+        p.openInventory(inv);
+    }
     @EventHandler
     public void openSkillEnchantsInv(Player p) {
         Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, c("&6Pickaxe Skill Enchants"));
@@ -919,7 +1007,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             e.setCancelled(true);
             if (e.getClickedInventory().equals(p.getInventory())) return;
             if (e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return;
-            if (e.getCurrentItem().equals(Spacer())) return;
+            if (e.getCurrentItem().equals(Spacer()) || e.getCurrentItem().equals(SpacerWhite())) return;
 
             if (e.getSlot() == 46) {
                 if (PickXPHandler.getInstance().getLevel(p) < 25) {
@@ -946,8 +1034,12 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 TrinketHandler.getInstance().openTrinkets(p);
                 return;
             }
-            if (e.getSlot() == 49) {
+            if (e.getSlot() == 48) {
                 openSkillEnchantsInv(p);
+                return;
+            }
+            if(e.getSlot() == 50){
+                openEtherealEnchantsInv(p);
                 return;
             }
 
@@ -978,6 +1070,32 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             if (e.getClickedInventory().equals(p.getInventory())) return;
             if (e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return;
             //add upgrading for pickaxe skill enchants
+        }
+        else if(e.getInventory().getName().equals(c("&bEthereal Enchants"))) {
+            e.setCancelled(true);
+            if (e.getClickedInventory().equals(p.getInventory())) return;
+            if (e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return;
+            if (e.getCurrentItem().equals(SpacerWhite())) return;
+
+            String[] display = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).split("Upgrade ");
+            String name = display[1];
+
+            boolean unlocked = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("Ethereal");
+            if (unlocked){
+                if (e.getClick().equals(ClickType.LEFT)) {
+                    upgradeEnchant(p, p.getItemInHand(), name, 1, false);
+                } else if (e.getClick().equals(ClickType.RIGHT)) {
+                    upgradeEnchant(p, p.getItemInHand(), name, 10, false);
+                } else if (e.getClick().equals(ClickType.SHIFT_RIGHT)) {
+                    upgradeEnchant(p, p.getItemInHand(), name, 100, false);
+                } else if (e.getClick().equals(ClickType.SHIFT_LEFT)) {
+                    upgradeEnchant(p, p.getItemInHand(), name, 1, true);
+                }
+                p.updateInventory();
+                openEtherealEnchantsInv(p);
+            }
+            else
+                p.sendMessage(c("&b&lEthereal &8| &cYou have to be ethereal to upgrade this."));
         }
     }
 
