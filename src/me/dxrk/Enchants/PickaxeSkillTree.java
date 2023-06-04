@@ -1054,8 +1054,6 @@ public class PickaxeSkillTree implements Listener {
                 return;
             }
             if (e.getCurrentItem().getItemMeta().getDisplayName().equals(m.c("&a&lYes!"))) {
-                Tokens.getInstance().setTokens(p, 0);
-
                 String path = PlayerDataHandler.getInstance().getPlayerData(p).get("PickaxeSkill").toString();
                 List<String> completed = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("CompletedPaths");
                 completed.add(path);
@@ -1068,11 +1066,6 @@ public class PickaxeSkillTree implements Listener {
                 PlayerDataHandler.getInstance().savePlayerData(p);
 
                 p.closeInventory();
-                /*
-                Clear pickaxe enchants
-                Reset players pick level to 0
-                hopefully token/luck/fortune buffs stay
-                */
             }
         }
     }
