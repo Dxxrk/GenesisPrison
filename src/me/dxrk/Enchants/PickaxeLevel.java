@@ -599,12 +599,19 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
                 break;
             case "Calamity":
-                if (level == 0) {
-                    i = 12500;
-                    break;
-                }
-                i = 12500 + (12500 * (level * 0.125)); // 793 Million Level 1,000 MAX
-
+                i = 100000000;
+                break;
+            case "Tidal Wave":
+                i = 100000000;
+                break;
+            case "Euphoria":
+                i = 100000000;
+                break;
+            case "Battlecry":
+                i = 100000000;
+                break;
+            case "Infernum":
+                i = 100000000;
                 break;
         }
         return i;
@@ -639,8 +646,19 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
                 break;
             case "Calamity":
-                i = 1000;
-
+                i = 1;
+                break;
+            case "Euphoria":
+                i=1;
+                break;
+            case "Battlecry":
+                i=1;
+                break;
+            case "Infernum":
+                i=1;
+                break;
+            case "Tidal Wave":
+                i=1;
                 break;
             case "Token Finder":
                 int skillmaxleveltf = PlayerDataHandler.getInstance().getPlayerData(p).getInt("TFMaxLevelRaise");
@@ -906,11 +924,26 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             calamitymeta.setLore(calamitylore);
             calamity.setItemMeta(calamitymeta);
         } else {
+            ItemStack pitem = p.getItemInHand().clone();
+            ItemMeta pm = pitem.getItemMeta();
+            List<String> lore = pm.getLore();
+            boolean hasEnchant = false;
+            for (String s : lore) {
+                if (ChatColor.stripColor(s).contains("Trinket")) {
+                    continue;
+                }
+                if (ChatColor.stripColor(s).contains("Calamity")) {
+                    hasEnchant = true;
+                }
+            }
             calamity = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
             ItemMeta calamitymeta = calamity.getItemMeta();
             calamitymeta.setDisplayName(c("&bUpgrade Calamity"));
             List<String> calamitylore = new ArrayList<>();
-            calamitylore.add(c("&cTylar do your upgrading balances here"));
+            if(hasEnchant)
+                calamitylore.add(c("&aPurchased!"));
+            else
+                calamitylore.add(c("&bCost: &e100,000,000 ⛀"));
             calamitymeta.setLore(calamitylore);
             calamity.setItemMeta(calamitymeta);
         }
@@ -925,11 +958,26 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             infernummeta.setLore(infernumlore);
             infernum.setItemMeta(infernummeta);
         } else {
+            ItemStack pitem = p.getItemInHand().clone();
+            ItemMeta pm = pitem.getItemMeta();
+            List<String> lore = pm.getLore();
+            boolean hasEnchant = false;
+            for (String s : lore) {
+                if (ChatColor.stripColor(s).contains("Trinket")) {
+                    continue;
+                }
+                if (ChatColor.stripColor(s).contains("Infernum")) {
+                    hasEnchant = true;
+                }
+            }
             infernum = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
             ItemMeta infernummeta = infernum.getItemMeta();
             infernummeta.setDisplayName(c("&bUpgrade Infernum"));
             List<String> infernumlore = new ArrayList<>();
-            infernumlore.add(c("&cTylar do your upgrading balances here"));
+            if(hasEnchant)
+                infernumlore.add(c("&aPurchased!"));
+            else
+                infernumlore.add(c("&bCost: &e100,000,000 ⛀"));
             infernummeta.setLore(infernumlore);
             infernum.setItemMeta(infernummeta);
         }
@@ -944,11 +992,26 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             tidalwavemeta.setLore(tidalwavelore);
             tidalwave.setItemMeta(tidalwavemeta);
         } else {
+            ItemStack pitem = p.getItemInHand().clone();
+            ItemMeta pm = pitem.getItemMeta();
+            List<String> lore = pm.getLore();
+            boolean hasEnchant = false;
+            for (String s : lore) {
+                if (ChatColor.stripColor(s).contains("Trinket")) {
+                    continue;
+                }
+                if (ChatColor.stripColor(s).contains("Tidal Wave")) {
+                    hasEnchant = true;
+                }
+            }
             tidalwave = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
             ItemMeta tidalwavemeta = tidalwave.getItemMeta();
             tidalwavemeta.setDisplayName(c("&bUpgrade Tidal Wave"));
             List<String> tidalwavelore = new ArrayList<>();
-            tidalwavelore.add(c("&cTylar do your upgrading balances here"));
+            if(hasEnchant)
+                tidalwavelore.add(c("&aPurchased!"));
+            else
+                tidalwavelore.add(c("&bCost: &e100,000,000 ⛀"));
             tidalwavemeta.setLore(tidalwavelore);
             tidalwave.setItemMeta(tidalwavemeta);
         }
@@ -963,11 +1026,26 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             euphoriameta.setLore(euphorialore);
             euphoria.setItemMeta(euphoriameta);
         } else {
+            ItemStack pitem = p.getItemInHand().clone();
+            ItemMeta pm = pitem.getItemMeta();
+            List<String> lore = pm.getLore();
+            boolean hasEnchant = false;
+            for (String s : lore) {
+                if (ChatColor.stripColor(s).contains("Trinket")) {
+                    continue;
+                }
+                if (ChatColor.stripColor(s).contains("Euphoria")) {
+                    hasEnchant = true;
+                }
+            }
             euphoria = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
             ItemMeta euphoriameta = euphoria.getItemMeta();
             euphoriameta.setDisplayName(c("&bUpgrade Euphoria"));
             List<String> euphorialore = new ArrayList<>();
-            euphorialore.add(c("&cTylar do your upgrading balances here"));
+            if(hasEnchant)
+                euphorialore.add(c("&aPurchased!"));
+            else
+                euphorialore.add(c("&bCost: &e100,000,000 ⛀"));
             euphoriameta.setLore(euphorialore);
             euphoria.setItemMeta(euphoriameta);
         }
@@ -982,11 +1060,26 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             battlecrymeta.setLore(battlecrylore);
             battlecry.setItemMeta(battlecrymeta);
         } else {
+            ItemStack pitem = p.getItemInHand().clone();
+            ItemMeta pm = pitem.getItemMeta();
+            List<String> lore = pm.getLore();
+            boolean hasEnchant = false;
+            for (String s : lore) {
+                if (ChatColor.stripColor(s).contains("Trinket")) {
+                    continue;
+                }
+                if (ChatColor.stripColor(s).contains("Battlecry")) {
+                    hasEnchant = true;
+                }
+            }
             battlecry = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
             ItemMeta battlecrymeta = battlecry.getItemMeta();
             battlecrymeta.setDisplayName(c("&bUpgrade Battlecry"));
             List<String> battlecrylore = new ArrayList<>();
-            battlecrylore.add(c("&cTylar do your upgrading balances here"));
+            if(hasEnchant)
+                battlecrylore.add(c("&aPurchased!"));
+            else
+                battlecrylore.add(c("&bCost: &e100,000,000 ⛀"));
             battlecrymeta.setLore(battlecrylore);
             battlecry.setItemMeta(battlecrymeta);
         }
@@ -994,7 +1087,42 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
         p.openInventory(inv);
     }
+    public void upgradeSkillEnchant(Player p, ItemStack i, String Enchant) {
 
+        ItemStack pitem = i.clone();
+        ItemMeta pm = pitem.getItemMeta();
+        List<String> lore = pm.getLore();
+        boolean hasEnchant = false;
+
+
+        for (String s : lore) {
+            if (ChatColor.stripColor(s).contains("Trinket")) {
+                continue;
+            }
+            if (ChatColor.stripColor(s).contains(Enchant)) {
+                hasEnchant = true;
+            }
+        }
+        if (!hasEnchant) {
+            int level = 0;
+            int plus = level + 1;
+            int price = (int) enchantPrice(Enchant, level);
+            if (Tokens.getInstance().getTokens(p) >= price) {
+                if (plus > maxLevel(Enchant, p)) return;
+                lore.add(c("&c" + Enchant + " &e" + plus));
+                this.tokens.takeTokens(p, price);
+
+            } else {
+                p.sendMessage(c("&f&lTokens &8| &7Not enough Tokens."));
+                return;
+            }
+            pm.setLore(Lore(lore, p));
+            pitem.setItemMeta(pm);
+            p.setItemInHand(pitem);
+            p.updateInventory();
+            openSkillEnchantsInv(p);
+        }
+    }
     @EventHandler
     public void oninv(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
@@ -1069,7 +1197,15 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             e.setCancelled(true);
             if (e.getClickedInventory().equals(p.getInventory())) return;
             if (e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return;
-            //add upgrading for pickaxe skill enchants
+
+            String[] display = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).split("Upgrade ");
+            String name = display[1];
+
+            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 13){
+                if (e.getClick().equals(ClickType.LEFT)) {
+                    upgradeSkillEnchant(p, p.getItemInHand(), name);
+                }
+            }
         }
         else if(e.getInventory().getName().equals(c("&bEthereal Enchants"))) {
             e.setCancelled(true);
