@@ -321,7 +321,7 @@ public class KeysHandler implements Listener {
         for (x = 0; x < lore.size(); x++) {
             String s = lore.get(x);
             if (ChatColor.stripColor(s).contains("Key Finder")) {
-                keyFinder(p, s);
+                //keyFinder(p, s);
             }
 
         }

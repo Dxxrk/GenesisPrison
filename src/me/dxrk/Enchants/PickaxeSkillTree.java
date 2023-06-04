@@ -688,11 +688,11 @@ public class PickaxeSkillTree implements Listener {
                 PlayerDataHandler.getInstance().getPlayerData(p).set("KFMaxLevelRaise", maxlevel + maxleveladd);
             }
             if (firstword[0].equals("+20%")) {
-                double keyboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillKeyBoost");
+                int keyboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillKeyBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillKeyBoost", keyboost + 20);
             }
             if (firstword[0].equals("+30%")) {
-                double keyboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillKeyBoost");
+                int keyboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillKeyBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillKeyBoost", keyboost + 30);
             }
             if (skill.contains("Zeus")) {

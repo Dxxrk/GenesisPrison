@@ -499,7 +499,85 @@ public class EnchantMethods implements CommandExecutor {
         int gems = r.nextInt(max - min) + min;
         MinePouchHandler.addGems(p, gems);
     }
+    public void addKey(Player p, String key, int amt) {
+        int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + key.toLowerCase());
+        key = key.toLowerCase();
+        if (this.settings.getLocksmith().get(p.getUniqueId().toString() + "." + p.getName()) == null) {
+            this.settings.getLocksmith().set(p.getUniqueId().toString() + ".name", p.getName());
+            this.settings.saveLocksmith();
+        }
+        this.settings.getLocksmith().set(p.getUniqueId().toString() + "." + key, keys + amt);
+        this.settings.saveLocksmith();
+    }
+    public void KeyFinderMSG(Player p, String key, String color, String color2, int amt) {
+        String s;
 
+        s = ChatColor.translateAlternateColorCodes('&',
+                "&f&lKey Finder &8| &b+" + amt + " " + color + key + color2 + " &bKey");
+
+
+        if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Key-Finder-Messages")) {
+            p.sendMessage(s);
+        }
+        addKey(p, key, amt);
+        int keysfound = PlayerDataHandler.getInstance().getPlayerData(p).getInt("KeysFound");
+        PlayerDataHandler.getInstance().getPlayerData(p).set("KeysFound", (keysfound + amt));
+    }
+    public void Keyfinder(Player p) {
+        Random r = new Random();
+        int chance = 0;
+        List<String> lore = p.getItemInHand().getItemMeta().getLore();
+        for (String s : lore) {
+            if (ChatColor.stripColor(s).contains("Double Keys")) {
+                chance += m.getBlocks(s);
+            }
+        }
+        double event = SkillsEventsListener.getEventKeyFortune();
+        chance += event;
+        int keyboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillKeyBoost");
+        chance += keyboost;
+        int kf = r.nextInt(100);
+        int d = r.nextInt(100);
+        if (chance > 0 && d <= chance) {
+            if (kf <= 20) {
+                KeyFinderMSG(p, "Alpha", "&7&l", "", 2);
+            }
+            if (kf > 20 && kf <= 40) {
+                KeyFinderMSG(p, "Beta", "&c&l", "", 2);
+            }
+            if (kf > 40 && kf <= 60) {
+                KeyFinderMSG(p, "Omega", "&4&l", "", 2);
+            }
+            if (kf > 60 && kf <= 80) {
+                KeyFinderMSG(p, "Token", "&e&l", "", 2);
+            }
+            if (kf > 80 && kf <= 83) {
+                KeyFinderMSG(p, "Seasonal", "&4&l&ki&f&l", "&4&l&ki&r", 2);
+            }
+            if (kf > 83) {
+                KeyFinderMSG(p, "Community", "&5&l", "", 2);
+            }
+        } else {
+            if (kf <= 20) {
+                KeyFinderMSG(p, "Alpha", "&7&l", "", 1);
+            }
+            if (kf > 20 && kf <= 40) {
+                KeyFinderMSG(p, "Beta", "&c&l", "", 1);
+            }
+            if (kf > 40 && kf <= 60) {
+                KeyFinderMSG(p, "Omega", "&4&l", "", 1);
+            }
+            if (kf > 60 && kf <= 80) {
+                KeyFinderMSG(p, "Token", "&e&l", "", 1);
+            }
+            if (kf > 80 && kf <= 83) {
+                KeyFinderMSG(p, "Seasonal", "&4&l&ki&f&l", "&4&l&ki&r", 1);
+            }
+            if (kf > 83) {
+                KeyFinderMSG(p, "Community", "&5&l", "", 1);
+            }
+        }
+    }
     public double getEnchantChance(String Enchant, int level, Player p) {
         double lucky = Functions.Karma(p);
         double luck = Functions.luckBoost(p);
@@ -537,6 +615,10 @@ public class EnchantMethods implements CommandExecutor {
             case "Seismic Shock":
                 chance = 4000 - (0.80 * level * lucky * luck * skill);
                 procChance = (chance < 1100) ? 1100 : chance;
+                break;
+            case "Key Finder":
+                chance = 1000-(0.07*level*lucky*luck*skill);
+                procChance = (chance < 200) ? 200 : chance;
                 break;
         }
         return procChance;
@@ -576,6 +658,11 @@ public class EnchantMethods implements CommandExecutor {
                     lightning(p, b, level);
                 }
                 break;
+            case "Key Finder":
+                if(r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1){
+                    Keyfinder(p);
+                }
+                break;
         }
     }
 
@@ -588,6 +675,7 @@ public class EnchantMethods implements CommandExecutor {
         enchants.add("Jackhammer");
         enchants.add("Treasury");
         enchants.add("Smite");
+        enchants.add("Key Finder");
         return enchants;
     }
 
