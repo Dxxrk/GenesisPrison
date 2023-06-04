@@ -79,15 +79,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
     public void givePouch(Player p) {
         Random r = new Random();
         int chance = 2500;
-        boolean inInv = false;
-        for (ItemStack i : p.getInventory().getContents()) {
-            if (i != null && i.hasItemMeta() && i.getItemMeta().hasLore()) {
-                if (i.getItemMeta().getDisplayName().equals(m.c("&eGem Pouch"))) {
-                    inInv = true;
-                }
-            }
-        }
-        if (r.nextInt(chance) < 1 && inInv == false) {
+        if (r.nextInt(chance) < 1) {
             p.getInventory().addItem(minePouch());
         }
     }
