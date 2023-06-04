@@ -79,6 +79,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
     public void givePouch(Player p) {
         Random r = new Random();
         int chance = 2500;
+        //removed inInv thing
         if (r.nextInt(chance) < 1) {
             p.getInventory().addItem(minePouch());
         }
