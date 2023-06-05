@@ -293,7 +293,7 @@ public class PlayerDataHandler implements Listener {
             if (i.getType().equals(Material.WOOD_PICKAXE) || i.getType().equals(Material.STONE_PICKAXE) || i.getType().equals(Material.IRON_PICKAXE) || i.getType().equals(Material.GOLD_PICKAXE)
                     || i.getType().equals(Material.DIAMOND_PICKAXE)) {
                 ItemStack pickaxe = i;
-                getPlayerData(p).set(p.getUniqueId().toString() + ".Pickaxe", pickaxe);
+                getPlayerData(p).set("Pickaxe", pickaxe);
             }
         }
     }

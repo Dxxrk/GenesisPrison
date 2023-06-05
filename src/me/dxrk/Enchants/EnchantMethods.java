@@ -232,7 +232,7 @@ public class EnchantMethods implements CommandExecutor {
         int amountblocks = 0;
 
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
-        amountblocks = m.getBlocksLeft();
+        amountblocks = m.getTotalBlocks() - m.getBlocksMined();
 
         double lucky = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock");
         ResetHandler.resetMineWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), lucky);
@@ -266,12 +266,14 @@ public class EnchantMethods implements CommandExecutor {
 
     }
 
-    public void lightning(Player p, Block b, int level) {
+    public void calamity(Player p, Block b, int level) {
         ArrayList<ItemStack> sellblocks = new ArrayList<>();
         int blocks = 0;
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
-        b.getWorld().strikeLightningEffect(b.getLocation());
-        for (Block b1 : getBlocksAroundCenter(b.getLocation(), 10)) {
+
+        Location loc = b.getLocation();
+        b.getWorld().strikeLightningEffect(loc);
+        for (Block b1 : getBlocksAroundCenter(loc, 7)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     b1.setType(Material.AIR);
@@ -279,6 +281,47 @@ public class EnchantMethods implements CommandExecutor {
                 }
             }
         }
+        Location loc2 = new Location(b.getWorld(), b.getLocation().getX() + 10, b.getLocation().getY(), b.getLocation().getZ() + 10);
+        b.getWorld().strikeLightningEffect(loc2);
+        for (Block b1 : getBlocksAroundCenter(loc2, 7)) {
+            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+                    b1.setType(Material.AIR);
+                    blocks = blocks + 1;
+                }
+            }
+        }
+        Location loc3 = new Location(b.getWorld(), b.getLocation().getX() + 10, b.getLocation().getY(), b.getLocation().getZ() - 10);
+        b.getWorld().strikeLightningEffect(loc3);
+        for (Block b1 : getBlocksAroundCenter(loc3, 7)) {
+            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+                    b1.setType(Material.AIR);
+                    blocks = blocks + 1;
+                }
+            }
+        }
+        Location loc4 = new Location(b.getWorld(), b.getLocation().getX() - 10, b.getLocation().getY(), b.getLocation().getZ() + 10);
+        b.getWorld().strikeLightningEffect(loc4);
+        for (Block b1 : getBlocksAroundCenter(loc4, 7)) {
+            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+                    b1.setType(Material.AIR);
+                    blocks = blocks + 1;
+                }
+            }
+        }
+        Location loc5 = new Location(b.getWorld(), b.getLocation().getX() - 10, b.getLocation().getY(), b.getLocation().getZ() - 10);
+        b.getWorld().strikeLightningEffect(loc5);
+        for (Block b1 : getBlocksAroundCenter(loc5, 7)) {
+            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+                    b1.setType(Material.AIR);
+                    blocks = blocks + 1;
+                }
+            }
+        }
+
         double fortuity = Functions.Foruity(p);
         double skill = SkillsEventsListener.getSkillsBoostFortune(p);
         double event = SkillsEventsListener.getEventFortune();
@@ -291,17 +334,15 @@ public class EnchantMethods implements CommandExecutor {
         int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
 
-        double levelcap = 1 + (level / 1000);
-        int blocksInThirds = blocks / 3;
 
-        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds * fortune * levelcap)));
-        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocksInThirds * fortune * levelcap)));
-        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocksInThirds * fortune * levelcap)));
+        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune)));
+        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune)));
+        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocks * fortune)));
 
 
-        int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * levelcap);
+        int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks);
         Tokens.getInstance().addTokens(p, tokens);
-        SellHandler.getInstance().sellEnchant(p, sellblocks, "Smite", tokens);
+        SellHandler.getInstance().sellEnchant(p, sellblocks, "Calamity", tokens);
     }
 
     public void seismic(Player p, Block b, int level) {
@@ -499,6 +540,7 @@ public class EnchantMethods implements CommandExecutor {
         int gems = r.nextInt(max - min) + min;
         MinePouchHandler.addGems(p, gems);
     }
+
     public void addKey(Player p, String key, int amt) {
         int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + key.toLowerCase());
         key = key.toLowerCase();
@@ -509,6 +551,7 @@ public class EnchantMethods implements CommandExecutor {
         this.settings.getLocksmith().set(p.getUniqueId().toString() + "." + key, keys + amt);
         this.settings.saveLocksmith();
     }
+
     public void KeyFinderMSG(Player p, String key, String color, String color2, int amt) {
         String s;
 
@@ -523,6 +566,7 @@ public class EnchantMethods implements CommandExecutor {
         int keysfound = PlayerDataHandler.getInstance().getPlayerData(p).getInt("KeysFound");
         PlayerDataHandler.getInstance().getPlayerData(p).set("KeysFound", (keysfound + amt));
     }
+
     public void Keyfinder(Player p) {
         Random r = new Random();
         int chance = 0;
@@ -578,6 +622,7 @@ public class EnchantMethods implements CommandExecutor {
             }
         }
     }
+
     public double getEnchantChance(String Enchant, int level, Player p) {
         double lucky = Functions.Karma(p);
         double luck = Functions.luckBoost(p);
@@ -609,15 +654,14 @@ public class EnchantMethods implements CommandExecutor {
                 procChance = (chance < 600) ? 600 : chance;
                 break;
             case "Calamity":
-                chance = 3000 - (0.6 * level * lucky * luck * skill);
-                procChance = (chance < 1000) ? 1000 : chance;
+                procChance = 1000;
                 break;
             case "Seismic Shock":
                 chance = 4000 - (0.80 * level * lucky * luck * skill);
                 procChance = (chance < 1100) ? 1100 : chance;
                 break;
             case "Key Finder":
-                chance = 1000-(0.07*level*lucky*luck*skill);
+                chance = 1000 - (0.07 * level * lucky * luck * skill);
                 procChance = (chance < 200) ? 200 : chance;
                 break;
         }
@@ -655,11 +699,11 @@ public class EnchantMethods implements CommandExecutor {
                 break;
             case "Calamity":
                 if (r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
-                    lightning(p, b, level);
+                    calamity(p, b, level);
                 }
                 break;
             case "Key Finder":
-                if(r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1){
+                if (r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
                     Keyfinder(p);
                 }
                 break;
@@ -674,7 +718,7 @@ public class EnchantMethods implements CommandExecutor {
         enchants.add("Nuke");
         enchants.add("Jackhammer");
         enchants.add("Treasury");
-        enchants.add("Smite");
+        enchants.add("Calamity");
         enchants.add("Key Finder");
         return enchants;
     }

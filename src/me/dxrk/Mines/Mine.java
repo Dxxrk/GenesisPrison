@@ -28,23 +28,6 @@ public class Mine {
     private int Blocks;
 
 
-    //move this method to CreateMine
-   /* public void createMine(String name, Location corner1, Location corner2, Location spawn, World world) throws IOException {
-        File mine = new File(Main.plugin.getDataFolder()+File.separator+"mines", name+".yml");
-        FileConfiguration minefile = YamlConfiguration.loadConfiguration(mine);
-        minefile.set("mine_name", name);
-        minefile.set("mine_world", world.getName());
-        minefile.set("min_point", corner1);
-        minefile.set("max_point", corner2);
-        minefile.set("first_block", new ItemStack(Material.COBBLESTONE));
-        minefile.set("second_block", new ItemStack(Material.COBBLESTONE));
-        minefile.set("third_block", new ItemStack(Material.COBBLESTONE));
-        minefile.set("spawn_loc", spawn);
-        minefile.save(mine);
-        Mine m = new Mine(name, corner1, corner2, new ItemStack(Material.COBBLESTONE), new ItemStack(Material.COBBLESTONE), new ItemStack(Material.COBBLESTONE), spawn, world);
-        this.minesystem.addActiveMine(m);
-    }*/
-
     public Mine(String name, Location c1, Location c2, ItemStack b1, ItemStack b2, ItemStack b3, Location spawn, World world, double reset) {
         this.mineName = name;
         this.corner1 = c1;
@@ -102,10 +85,6 @@ public class Mine {
         return b;
     }
 
-    public int getBlocksLeft() {
-        return getLocationsInMineNotAir(this.corner1, this.corner2, this.mineWorld).size();
-    }
-
     public int getBlocksMined() {
         byte b = 0;
         Location location1 = getMinPoint();
@@ -126,7 +105,7 @@ public class Mine {
         int j = getTotalBlocks();
         if (i == 0)
             return 100.0F;
-        return 100.0F - i / j * 100.0F;
+        return 100.0F - (float) i / j * 100.0F;
     }
 
     public ItemStack getBlock1() {
@@ -200,50 +179,6 @@ public class Mine {
                 for (int z = minz; z <= maxz; z++) {
                     Location b = new Location(w, x, y, z);
                     blocks.add(b);
-                }
-            }
-        }
-
-        return blocks;
-    }
-
-    private List<Location> getLocationsInMineNotAir(Location loc1, Location loc2, World w) {
-        List<Location> blocks = new ArrayList<>();
-
-        int minx = Math.min(loc1.getBlockX(), loc2.getBlockX()),
-                miny = Math.min(loc1.getBlockY(), loc2.getBlockY()),
-                minz = Math.min(loc1.getBlockZ(), loc2.getBlockZ()),
-                maxx = Math.max(loc1.getBlockX(), loc2.getBlockX()),
-                maxy = Math.max(loc1.getBlockY(), loc2.getBlockY()),
-                maxz = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
-        for (int x = minx; x <= maxx; x++) {
-            for (int y = miny; y <= maxy; y++) {
-                for (int z = minz; z <= maxz; z++) {
-                    Location b = new Location(w, x, y, z);
-                    if (!w.getBlockAt(b).getType().equals(Material.AIR))
-                        blocks.add(b);
-                }
-            }
-        }
-
-        return blocks;
-    }
-
-    private List<Location> getLocationsInMineAir(Location loc1, Location loc2, World w) {
-        List<Location> blocks = new ArrayList<>();
-
-        int minx = Math.min(loc1.getBlockX(), loc2.getBlockX()),
-                miny = Math.min(loc1.getBlockY(), loc2.getBlockY()),
-                minz = Math.min(loc1.getBlockZ(), loc2.getBlockZ()),
-                maxx = Math.max(loc1.getBlockX(), loc2.getBlockX()),
-                maxy = Math.max(loc1.getBlockY(), loc2.getBlockY()),
-                maxz = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
-        for (int x = minx; x <= maxx; x++) {
-            for (int y = miny; y <= maxy; y++) {
-                for (int z = minz; z <= maxz; z++) {
-                    Location b = new Location(w, x, y, z);
-                    if (w.getBlockAt(b).getType().equals(Material.AIR))
-                        blocks.add(b);
                 }
             }
         }

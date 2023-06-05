@@ -111,13 +111,13 @@ public class KeysHandler implements Listener {
     }
 
 
-    public boolean findKey(int level) {
-        return this.r.nextInt(level) == 1;
+    public boolean findKey(double level) {
+        return this.r.nextInt((int) level) == 1;
     }
 
     public void dustFinder(Player p, String s) {
         int level = m.getBlocks(s);
-        int chance;
+        double chance;
         double lucky = Functions.Karma(p);
         double luck = Functions.luckBoost(p);
         double skill = SkillsEventsListener.getSkillsBoostLuck(p);
@@ -125,7 +125,7 @@ public class KeysHandler implements Listener {
         if (level == 1) {
             chance = (int) (1375 * lucky * luck * skill);
         } else {
-            chance = (int) ((1375 - (0.125 * level)) * lucky * luck * skill);
+            chance = 1375 - (0.125 * level * lucky * luck * skill);
             if (chance < 200) {
                 chance = 200;
             }
