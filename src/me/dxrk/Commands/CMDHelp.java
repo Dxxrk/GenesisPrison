@@ -37,6 +37,7 @@ public class CMDHelp implements Listener, CommandExecutor {
         mine.setItemMeta(mm);
         help.setItem(2, mine);
         lore.clear();
+
         ItemStack crates = new ItemStack(Material.CHEST);
         ItemMeta cm = crates.getItemMeta();
         cm.setDisplayName(m.c("&6&lCrates/Keys:"));
@@ -50,6 +51,7 @@ public class CMDHelp implements Listener, CommandExecutor {
         crates.setItemMeta(cm);
         help.setItem(6, crates);
         lore.clear();
+
         ItemStack mystery = new ItemStack(Material.ENDER_CHEST);
         ItemMeta mym = mystery.getItemMeta();
         mym.setDisplayName(m.c("&5&lMystery Crates:"));
@@ -59,6 +61,7 @@ public class CMDHelp implements Listener, CommandExecutor {
         mystery.setItemMeta(mym);
         help.setItem(20, mystery);
         lore.clear();
+
         ItemStack pickaxe = new ItemStack(Material.DIAMOND_PICKAXE);
         ItemMeta pm = pickaxe.getItemMeta();
         pm.setDisplayName(m.c("&c&lPickaxe:"));
@@ -70,18 +73,20 @@ public class CMDHelp implements Listener, CommandExecutor {
         pickaxe.setItemMeta(pm);
         help.setItem(24, pickaxe);
         lore.clear();
+
         ItemStack gems = new ItemStack(Material.INK_SACK);
         ItemMeta gm = gems.getItemMeta();
         gm.setDisplayName(m.c("&aGems:"));
         lore.add(m.c("&7Gems are acquired from Gem Pouches."));
         lore.add(m.c("&7Players have a chance to receive Gem Pouches randomly."));
-        lore.add(m.c("&7When you have a Gem Pouch, every block you break is +1 gem into the pouch."));
         lore.add(m.c("&7You can right click the pouch to receive all the gems it contains."));
+        lore.add(m.c("&7You can spend the gems in /gem shop."));
         lore.add(m.c("&7You can use '/gem withdraw' to withdraw gems to sell or trade."));
         gm.setLore(lore);
         gems.setItemMeta(gm);
         help.setItem(38, gems);
         lore.clear();
+
         ItemStack tokens = new ItemStack(Material.MAGMA_CREAM);
         ItemMeta tm = tokens.getItemMeta();
         tm.setDisplayName(m.c("&e&lTokens"));
@@ -93,6 +98,7 @@ public class CMDHelp implements Listener, CommandExecutor {
         tokens.setItemMeta(tm);
         help.setItem(42, tokens);
         lore.clear();
+
         ItemStack commands = new ItemStack(Material.PAPER);
         ItemMeta com = commands.getItemMeta();
         com.setDisplayName(m.c("&d&lExtra Commands:"));
@@ -108,6 +114,69 @@ public class CMDHelp implements Listener, CommandExecutor {
         commands.setItemMeta(com);
         help.setItem(22, commands);
         lore.clear();
+
+        //gangs, vote, new gems, path & skill enchants, ethereal & enchants, trinkets
+
+        ItemStack gangs = new ItemStack(Material.GOLD_INGOT);
+        ItemMeta gangsmeta = gangs.getItemMeta();
+        gangsmeta.setDisplayName(m.c("&c&lGangs:"));
+        lore.add(m.c("&7You can create a gang with /gang create <Name>"));
+        lore.add(m.c("&7After mining certain amounts of blocks you can unlock gang boosts."));
+        lore.add(m.c("&7You can invite people to your gang, the block milestone is teamwork."));
+        gangsmeta.setLore(lore);
+        gangs.setItemMeta(gangsmeta);
+        help.setItem(3,gangs);
+        lore.clear();
+
+        ItemStack vote = new ItemStack(Material.STICK);
+        ItemMeta votemeta = vote.getItemMeta();
+        votemeta.setDisplayName(m.c("&6&lVote:"));
+        lore.add(m.c("&7You can open the voting menu with /vote."));
+        lore.add(m.c("&7Each vote on a site is a votepoint added to your account."));
+        lore.add(m.c("&7With each vote you can open a single treasure chest in Treasury."));
+        lore.add(m.c("&7There are always at least 3 good rewards in each Treasury."));
+        votemeta.setLore(lore);
+        vote.setItemMeta(votemeta);
+        help.setItem(4,vote);
+        lore.clear();
+
+        ItemStack paths = new ItemStack(Material.POWERED_RAIL);
+        ItemMeta pathsmeta = paths.getItemMeta();
+        pathsmeta.setDisplayName(m.c("&a&lPaths:"));
+        lore.add(m.c("&7You can open the paths menu after you unlock level 25 on your pickaxe."));
+        lore.add(m.c("&7It is located in the enchanting menu on the wooden pickaxe."));
+        lore.add(m.c("&7You get a skillpoint for each level after 25 on your pickaxe."));
+        lore.add(m.c("&7Boosts in the path menu are permanent."));
+        lore.add(m.c("&7After you finish a path you unlock the path specific enchant by rebirthing your pickaxe."));
+        pathsmeta.setLore(lore);
+        paths.setItemMeta(pathsmeta);
+        help.setItem(5,paths);
+        lore.clear();
+
+        ItemStack ethereal = new ItemStack(Material.DIAMOND_BLOCK);
+        ItemMeta etherealmeta = ethereal.getItemMeta();
+        etherealmeta.setDisplayName(m.c("&b&lEthereal:"));
+        lore.add(m.c("&7Ethereal is reached after hitting Prestige 100 Level 1000."));
+        lore.add(m.c("&7With Ethereal you unlock Ethereal enchants located in the enchant menu."));
+        lore.add(m.c("&7After hitting Ethereal ranking up gets progressively harder."));
+        etherealmeta.setLore(lore);
+        ethereal.setItemMeta(etherealmeta);
+        help.setItem(39,ethereal);
+        lore.clear();
+
+        ItemStack trinkets = new ItemStack(Material.GOLD_NUGGET);
+        ItemMeta trinketsmeta = trinkets.getItemMeta();
+        trinketsmeta.setDisplayName(m.c("&6&lTrinkets:"));
+        lore.add(m.c("&7Trinkets provide a boost to enhance your pickaxe."));
+        lore.add(m.c("&7There are different types of trinkets(Token, Luck, Sell, XP)."));
+        lore.add(m.c("&7There are different tiers of trinkets(Common, Rare, Epic, Legendary, Heroic)."));
+        lore.add(m.c("&7You can smelt the trinkets in the /craft menu to get dust of higher quality."));
+        lore.add(m.c("&7Use 9 dust of the same type to craft the specified trinket."));
+        trinketsmeta.setLore(lore);
+        trinkets.setItemMeta(trinketsmeta);
+        help.setItem(41,trinkets);
+        lore.clear();
+
         help.setItem(0, PickaxeLevel.getInstance().Spacer());
         help.setItem(1, PickaxeLevel.getInstance().Spacer());
         help.setItem(7, PickaxeLevel.getInstance().Spacer());

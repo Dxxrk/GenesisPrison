@@ -160,11 +160,6 @@ public class KeysHandler implements Listener {
         double rand = this.r.nextInt(100);
         int chance = 0;
         List<String> lore = p.getItemInHand().getItemMeta().getLore();
-        for (String s : lore) {
-            if (ChatColor.stripColor(s).contains("Double Keys")) {
-                chance += m.getBlocks(s);
-            }
-        }
         double event = SkillsEventsListener.getEventKeyFortune();
         chance += event;
         double keyboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId() + "SkillKeyBoost");

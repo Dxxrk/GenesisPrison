@@ -366,7 +366,6 @@ public class PickaxeLevel implements Listener, CommandExecutor {
     private List<String> Trinkets() {
         List<String> list = new ArrayList<>();
         list.add("Token");
-        list.add("Double Keys");
         list.add("XP");
         list.add("Lucky");
         list.add("Sell");

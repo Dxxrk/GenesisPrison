@@ -749,7 +749,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
 
 
         if (rarity == 1) {
-            int rint = r.nextInt(5);
+            int rint = r.nextInt(4);
             if (rint == 0) {
                 int min = 3;
                 int max = 10;
@@ -783,23 +783,6 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 p.getInventory().addItem(trinket);
 
             } else if (rint == 2) {
-                int min = 2;
-                int max = 5;
-                int Key = r.nextInt(max - min) + min;
-                ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
-                ItemMeta tm = trinket.getItemMeta();
-                tm.setDisplayName(m.c("&bCommon Double Keys Trinket"));
-                lore.add(m.c("&b" + (Key) + "% &7Double Keys"));
-                lore.add(m.c("&7&o/Trinkets to apply"));
-                tm.setLore(lore);
-                trinket.setItemMeta(tm);
-                lore.clear();
-
-
-                p.getInventory().addItem(trinket);
-
-            } else if (rint == 3) {
                 int min = 5;
                 int max = 10;
                 int Luck = r.nextInt(max - min) + min;
@@ -832,7 +815,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
 
 
         } else if (rarity == 2) {
-            int rint = r.nextInt(5);
+            int rint = r.nextInt(4);
             if (rint == 0) {
                 int min = 10;
                 int max = 18;
@@ -866,23 +849,6 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 p.getInventory().addItem(trinket);
 
             } else if (rint == 2) {
-                int min = 5;
-                int max = 8;
-                int Key = r.nextInt(max - min) + min;
-                ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
-                ItemMeta tm = trinket.getItemMeta();
-                tm.setDisplayName(m.c("&9Rare Double Keys Trinket"));
-                lore.add(m.c("&9" + (Key) + "% &7Double Keys"));
-                lore.add(m.c("&7&o/Trinkets to apply"));
-                tm.setLore(lore);
-                trinket.setItemMeta(tm);
-                lore.clear();
-
-
-                p.getInventory().addItem(trinket);
-
-            } else if (rint == 3) {
                 int min = 10;
                 int max = 15;
                 int Luck = r.nextInt(max - min) + min;
@@ -918,7 +884,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
 
             }
         } else if (rarity == 3) {
-            int rint = r.nextInt(5);
+            int rint = r.nextInt(4);
             if (rint == 0) {
                 int min = 18;
                 int max = 25;
@@ -952,23 +918,6 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 p.getInventory().addItem(trinket);
 
             } else if (rint == 2) {
-                int min = 8;
-                int max = 11;
-                int Key = r.nextInt(max - min) + min;
-                ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
-                ItemMeta tm = trinket.getItemMeta();
-                tm.setDisplayName(m.c("&5Epic Double Keys Trinket"));
-                lore.add(m.c("&5" + (Key) + "% &7Double Keys"));
-                lore.add(m.c("&7&o/Trinkets to apply"));
-                tm.setLore(lore);
-                trinket.setItemMeta(tm);
-                lore.clear();
-
-
-                p.getInventory().addItem(trinket);
-
-            } else if (rint == 3) {
                 int min = 15;
                 int max = 20;
                 int Luck = r.nextInt(max - min) + min;
@@ -1004,7 +953,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
 
             }
         } else if (rarity == 4) {
-            int rint = r.nextInt(5);
+            int rint = r.nextInt(4);
             if (rint == 0) {
                 int min = 25;
                 int max = 40;
@@ -1038,23 +987,6 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 p.getInventory().addItem(trinket);
 
             } else if (rint == 2) {
-                int min = 11;
-                int max = 14;
-                int Key = r.nextInt(max - min) + min;
-                ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
-                ItemMeta tm = trinket.getItemMeta();
-                tm.setDisplayName(m.c("&6Legendary Double Keys Trinket"));
-                lore.add(m.c("&6" + (Key) + "% &7Double Keys"));
-                lore.add(m.c("&7&o/Trinkets to apply"));
-                tm.setLore(lore);
-                trinket.setItemMeta(tm);
-                lore.clear();
-
-
-                p.getInventory().addItem(trinket);
-
-            } else if (rint == 3) {
                 int min = 20;
                 int max = 25;
                 int Luck = r.nextInt(max - min) + min;
@@ -1090,7 +1022,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
 
             }
         } else if (rarity == 5) {
-            int rint = r.nextInt(5);
+            int rint = r.nextInt(4);
             if (rint == 0) {
                 int min = 45;
                 int max = 75;
@@ -1124,23 +1056,6 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 p.getInventory().addItem(trinket);
 
             } else if (rint == 2) {
-                int min = 14;
-                int max = 20;
-                int Key = r.nextInt(max - min) + min;
-                ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
-                ItemMeta tm = trinket.getItemMeta();
-                tm.setDisplayName(m.c("&4Heroic Double Keys Trinket"));
-                lore.add(m.c("&4" + (Key) + "% &7Double Keys"));
-                lore.add(m.c("&7&o/Trinkets to apply"));
-                tm.setLore(lore);
-                trinket.setItemMeta(tm);
-                lore.clear();
-
-
-                p.getInventory().addItem(trinket);
-
-            } else if (rint == 3) {
                 int min = 25;
                 int max = 35;
                 int Luck = r.nextInt(max - min) + min;
