@@ -447,7 +447,7 @@ public class EnchantMethods implements CommandExecutor {
 
     public void KeyParty(Player p) {
         Random r = new Random();
-        int i = r.nextInt(8);
+        int i = r.nextInt(9);
 
         if (i == 0 || i == 1) {
             for (Player pp : Bukkit.getOnlinePlayers()) {
@@ -538,6 +538,7 @@ public class EnchantMethods implements CommandExecutor {
         int min = 500;
         int max = 2500;
         int gems = r.nextInt(max - min) + min;
+        p.sendMessage(c("&f&lTreasury &8| &a+" + gems + " Gems"));
         MinePouchHandler.addGems(p, gems);
     }
 
@@ -705,6 +706,11 @@ public class EnchantMethods implements CommandExecutor {
             case "Key Finder":
                 if (r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
                     Keyfinder(p);
+                }
+                break;
+            case "Treasury":
+                if(r.nextInt((int) getEnchantChance(Enchant,level,p)) == 1){
+                    Treasury(p);
                 }
                 break;
         }
