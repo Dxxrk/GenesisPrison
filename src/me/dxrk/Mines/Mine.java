@@ -1,5 +1,6 @@
 package me.dxrk.Mines;
 
+import com.earth2me.essentials.Console;
 import me.dxrk.Main.Main;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -73,7 +74,7 @@ public class Mine {
     }
 
     public int getTotalBlocks() {
-        byte b = 0;
+        int b = 0;
         Location location1 = getMinPoint();
         Location location2 = getMaxPoint();
         for (int i = location1.getBlockX(); i <= location2.getBlockX(); i++) {
@@ -86,7 +87,7 @@ public class Mine {
     }
 
     public int getBlocksMined() {
-        byte b = 0;
+        int b = 0;
         Location location1 = getMinPoint();
         Location location2 = getMaxPoint();
         for (int i = location1.getBlockX(); i <= location2.getBlockX(); i++) {

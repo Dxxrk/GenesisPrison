@@ -881,7 +881,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         setEnchantItemEthereal("Fortuity", Material.GOLD_INGOT, c("&bUpgrade Fortuity"), c("&7Boosts the effectiveness of Fortune."), 9750, inv, 15, p);
         setEnchantItemEthereal("Multiply", Material.EMERALD, c("&bUpgrade Multiply"), c("&7Chance to double the effectiveness of all currencies for 10s."), 10000, inv, 21, p);
         setEnchantItemEthereal("Seismic Shock", Material.DIAMOND_BLOCK, c("&bUpgrade Seismic Shock"), c("&7Creates a massive crater."), 10000, inv, 23, p);
-        setEnchantItemEthereal("Charity", Material.GOLD_BLOCK, c("&bUpgrade Charity"), c("&7Increases proc chance of enchants for a certain amount of time??"), 10000, inv, 31, p);
+        setEnchantItemEthereal("Charity", Material.GOLD_BLOCK, c("&bUpgrade Charity"), c("&7Chance to find coupons to use on the store."), 10000, inv, 31, p);
 
         p.openInventory(inv);
     }

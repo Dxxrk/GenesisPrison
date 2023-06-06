@@ -727,6 +727,10 @@ public class EnchantMethods implements CommandExecutor {
                     Treasury(p);
                 }
                 break;
+            case "Seismic Shock":
+                if(r.nextInt((int) getEnchantChance(Enchant,level,p)) == 1){
+                    seismic(p,b,level);
+                }
         }
     }
 

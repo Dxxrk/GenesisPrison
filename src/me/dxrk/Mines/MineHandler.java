@@ -310,15 +310,15 @@ public class MineHandler implements Listener, CommandExecutor {
         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutWorldBorder);
 
 
-        Location point1 = new Location(world, 15, 98, (mines * 250) - 16);
-        Location point2 = new Location(world, 47, 65, (mines * 250) + 16);
+        Location point1 = new Location(world, 15, 65, (mines * 250) - 16);
+        Location point2 = new Location(world, 47, 98, (mines * 250) + 16);
 
 
         //Creating the actual mine
         //ResetHandler.api.createMine(p.getUniqueId().toString(), point1, point2);
 
 
-        createMine(p.getUniqueId().toString(), point2, point1, pworld, world, 25.0);
+        createMine(p.getUniqueId().toString(), point1, point2, pworld, world, 25.0);
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
 
 
