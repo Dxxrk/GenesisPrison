@@ -318,7 +318,7 @@ public class MineHandler implements Listener, CommandExecutor {
         //ResetHandler.api.createMine(p.getUniqueId().toString(), point1, point2);
 
 
-        createMine(p.getUniqueId().toString(), point1, point2, pworld, world, 25.0);
+        createMine(p.getUniqueId().toString(), point2, point1, pworld, world, 25.0);
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
 
 

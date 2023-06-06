@@ -600,17 +600,9 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
                 break;
             case "Calamity":
-                i = 100000000;
-                break;
             case "Tidal Wave":
-                i = 100000000;
-                break;
             case "Euphoria":
-                i = 100000000;
-                break;
             case "Battlecry":
-                i = 100000000;
-                break;
             case "Infernum":
                 i = 100000000;
                 break;
@@ -634,32 +626,19 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
             case "Jackhammer":
             case "Fortuity":
-                i=1000;
-
-                break;
+            case "Seismic Shock":
             case "Key Party":
             case "Charity":
                 i=1000;
 
                 break;
-            case "Seismic Shock":
-                i=1000;
 
-                break;
             case "Calamity":
-                i = 1;
-                break;
             case "Euphoria":
-                i=1;
-                break;
             case "Battlecry":
-                i=1;
-                break;
             case "Infernum":
-                i=1;
-                break;
             case "Tidal Wave":
-                i=1;
+                i = 1;
                 break;
             case "Token Finder":
                 int skillmaxleveltf = PlayerDataHandler.getInstance().getPlayerData(p).getInt("TFMaxLevelRaise");
@@ -670,11 +649,8 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
                 break;
             case "Booster":
-                i=1000;
-
-                break;
             case "Treasury":
-                i = 2500;
+                i=2500;
 
                 break;
 

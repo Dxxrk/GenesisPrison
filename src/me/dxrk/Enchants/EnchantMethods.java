@@ -349,14 +349,27 @@ public class EnchantMethods implements CommandExecutor {
         ArrayList<ItemStack> sellblocks = new ArrayList<>();
         int blocks = 0;
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
+        //first layer
         WaveEffect wave = null;
-        wave = new WaveEffect(b.getLocation(), 100);
+        wave = new WaveEffect(b.getLocation(), 25);
         WaveEffect finalWave = wave;
         Location finalLoc = b.getLocation();
+        //second layer
+        WaveEffect wave2 = null;
+        Location second = new Location(b.getWorld(), b.getLocation().getX(), b.getLocation().getY()-1, b.getLocation().getZ());
+        wave2 = new WaveEffect(second, 25);
+        WaveEffect finalWave2 = wave;
+        //third layer
+        WaveEffect wave3 = null;
+        Location third = new Location(b.getWorld(), b.getLocation().getX(), b.getLocation().getY()-2, b.getLocation().getZ());
+        wave3 = new WaveEffect(third, 25);
+        WaveEffect finalWave3 = wave;
         new BukkitRunnable() {
             @Override
             public void run() {
                 finalWave.stop();
+                finalWave2.stop();
+                finalWave3.stop();
                 for (Block b1 : getCircle(finalLoc, 25)) {
                     if (set(b1).allows(DefaultFlag.LIGHTER)) {
                         if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
@@ -364,32 +377,33 @@ public class EnchantMethods implements CommandExecutor {
                         }
                     }
                 }
+
+
+                double fortuity = Functions.Foruity(p);
+                double skill = SkillsEventsListener.getSkillsBoostFortune(p);
+                double event = SkillsEventsListener.getEventFortune();
+                int line = 0;
+                for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
+                    if (org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
+                        line = x;
+                    }
+                }
+                int fortune = (int) (getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
+                        (14));
+
+                double levelcap = 1 + (level / 100);
+                int blocksInThirds = blocks / 3;
+
+                sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds * fortune * levelcap)));
+                sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocksInThirds * fortune * levelcap)));
+                sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocksInThirds * fortune * levelcap)));
+
+
+                int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * levelcap);
+                Tokens.getInstance().addTokens(p, tokens);
+                SellHandler.getInstance().sellEnchant(p, sellblocks, "Seismic Shock", tokens);
             }
-        }.runTaskLater(Main.plugin, 100L);
-
-        double fortuity = Functions.Foruity(p);
-        double skill = SkillsEventsListener.getSkillsBoostFortune(p);
-        double event = SkillsEventsListener.getEventFortune();
-        int line = 0;
-        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
-            if (org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
-                line = x;
-            }
-        }
-        int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
-                (14));
-
-        double levelcap = 1 + (level / 100);
-        int blocksInThirds = blocks / 3;
-
-        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds * fortune * levelcap)));
-        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocksInThirds * fortune * levelcap)));
-        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocksInThirds * fortune * levelcap)));
-
-
-        int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * levelcap);
-        Tokens.getInstance().addTokens(p, tokens);
-        SellHandler.getInstance().sellEnchant(p, sellblocks, "Seismic Shock", tokens);
+        }.runTaskLater(Main.plugin, 25L);
     }
 
 
@@ -726,6 +740,7 @@ public class EnchantMethods implements CommandExecutor {
         enchants.add("Treasury");
         enchants.add("Calamity");
         enchants.add("Key Finder");
+        enchants.add("Seismic Shock");
         return enchants;
     }
 
