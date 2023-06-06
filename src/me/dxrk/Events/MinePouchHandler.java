@@ -36,8 +36,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
 
     private int randomGems() {
         Random r = new Random();
-        int min = 5000;
-        int max = 10000;
+        int min = 1000;
+        int max = 4000;
         return r.nextInt(max - min) + min;
     }
 

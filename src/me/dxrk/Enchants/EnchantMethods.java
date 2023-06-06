@@ -550,7 +550,7 @@ public class EnchantMethods implements CommandExecutor {
     public void Treasury(Player p) {
         Random r = new Random();
         int min = 500;
-        int max = 2500;
+        int max = 2000;
         int gems = r.nextInt(max - min) + min;
         p.sendMessage(c("&f&lTreasury &8| &a+" + gems + " Gems"));
         MinePouchHandler.addGems(p, gems);
