@@ -68,6 +68,7 @@ public class CMDOptions implements Listener, CommandExecutor {
         ops.setItem(19, option(p, "Speed-Effect"));
         ops.setItem(20, option(p, "Haste-Effect"));
         ops.setItem(21, option(p, "Night-Vision-Effect"));
+        ops.setItem(22, option(p, "LuckyBlock-Messages"));
         p.openInventory(ops);
     }
 
@@ -179,6 +180,7 @@ public class CMDOptions implements Listener, CommandExecutor {
             this.settings.getOptions().set(p.getUniqueId().toString() + ".Speed-Effect", true);
             this.settings.getOptions().set(p.getUniqueId().toString() + ".Haste-Effect", true);
             this.settings.getOptions().set(p.getUniqueId().toString() + ".Night-Vision-Effect", true);
+            this.settings.getOptions().set(p.getUniqueId().toString() + ".LuckyBlock-Messages", true);
             this.settings.saveOptions();
         }
         if (this.settings.getOptions().get(p.getUniqueId().toString() + ".GenesisColor") == null) {

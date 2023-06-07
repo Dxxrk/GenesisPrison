@@ -186,7 +186,7 @@ public class EnchantMethods implements CommandExecutor {
         Location max = new Location(p.getWorld(), m.getMaxPoint().getX(), b.getY(), m.getMaxPoint().getZ());
         for (Block b1 : blocksFromTwoPoints(min, max, p.getWorld())) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
-                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR && b1.getType() != Material.SEA_LANTERN) {
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
                 }
@@ -275,7 +275,7 @@ public class EnchantMethods implements CommandExecutor {
         b.getWorld().strikeLightningEffect(loc);
         for (Block b1 : getBlocksAroundCenter(loc, 7)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
-                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR && b1.getType() != Material.SEA_LANTERN) {
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
                 }
@@ -285,7 +285,7 @@ public class EnchantMethods implements CommandExecutor {
         b.getWorld().strikeLightningEffect(loc2);
         for (Block b1 : getBlocksAroundCenter(loc2, 7)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
-                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR && b1.getType() != Material.SEA_LANTERN) {
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
                 }
@@ -295,7 +295,7 @@ public class EnchantMethods implements CommandExecutor {
         b.getWorld().strikeLightningEffect(loc3);
         for (Block b1 : getBlocksAroundCenter(loc3, 7)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
-                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR && b1.getType() != Material.SEA_LANTERN) {
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
                 }
@@ -305,7 +305,7 @@ public class EnchantMethods implements CommandExecutor {
         b.getWorld().strikeLightningEffect(loc4);
         for (Block b1 : getBlocksAroundCenter(loc4, 7)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
-                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR && b1.getType() != Material.SEA_LANTERN) {
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
                 }
@@ -315,7 +315,7 @@ public class EnchantMethods implements CommandExecutor {
         b.getWorld().strikeLightningEffect(loc5);
         for (Block b1 : getBlocksAroundCenter(loc5, 7)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
-                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR && b1.getType() != Material.SEA_LANTERN) {
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
                 }
@@ -372,7 +372,7 @@ public class EnchantMethods implements CommandExecutor {
                 finalWave3.stop();
                 for (Block b1 : getCircle(finalLoc, 25)) {
                     if (set(b1).allows(DefaultFlag.LIGHTER)) {
-                        if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
+                        if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR && b1.getType() != Material.SEA_LANTERN) {
                             b1.setType(Material.AIR);
                         }
                     }
@@ -632,7 +632,47 @@ public class EnchantMethods implements CommandExecutor {
             }
         }
     }
+    public void Luckyblock(Player p){
+        Random r = new Random();
+        int rr=r.nextInt(309);
 
+        if(rr>=0 && rr<=150){
+            int tokens = 5000;
+            Tokens.getInstance().addTokens(p, tokens);
+            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                p.sendMessage(c("&f&lLuckyblock &8| &e+5000 Tokens"));
+        }
+        else if(rr>=151 && rr<=240){
+            addKey(p,"Beta", 1);
+            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                p.sendMessage(c("&f&lLuckyblock &8| &e+1 Beta Key"));
+        }
+        else if(rr>=241 && rr<=270){
+            addKey(p,"Omega",1);
+            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                p.sendMessage(c("&f&lLuckyblock &8| &e+1 Omega Key"));
+        }
+        else if(rr>=271 && rr<=285){
+            PickXPHandler.getInstance().addXP(p,2500);
+            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                p.sendMessage(c("&f&lLuckyblock &8| &e+2500 XP"));
+        }
+        else if(rr>=286 && rr<=300){
+            addKey(p,"Community",1);
+            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                p.sendMessage(c("&f&lLuckyblock &8| &e+1 Community Key"));
+        }
+        else if(rr==301){
+            addKey(p,"Rank",1);
+            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                p.sendMessage(c("&f&lLuckyblock &8| &e+1 Rank Key"));
+        }
+        else{
+            addKey(p,"Seasonal",1);
+            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                p.sendMessage(c("&f&lLuckyblock &8| &e+1 Seasonal Key"));
+        }
+    }
     public double getEnchantChance(String Enchant, int level, Player p) {
         double lucky = Functions.Karma(p);
         double luck = Functions.luckBoost(p);

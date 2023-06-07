@@ -12,12 +12,16 @@ import me.dxrk.Mines.MineSystem;
 import me.dxrk.Mines.ResetHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -120,7 +124,23 @@ public class Enchants implements Listener {
         }
         return false;
     }
-
+    @SuppressWarnings("deprecation")
+    @EventHandler
+    public void onLuckyBlockClick(PlayerInteractEvent e){
+        Player p = e.getPlayer();
+        if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK) || e.getAction().equals(Action.LEFT_CLICK_BLOCK)){
+            Block b = e.getClickedBlock();
+            if(b.getType().equals(Material.SEA_LANTERN)){
+                WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+                ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(b.getLocation());
+                LocalPlayer player = wg.wrapPlayer(p);
+                if (EnchantMethods.set(b).allows(DefaultFlag.LIGHTER) || set.isMemberOfAll(player)){
+                    b.setType(Material.AIR);
+                    EnchantMethods.getInstance().Luckyblock(p);
+                }
+            }
+        }
+    }
     @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBreak(BlockBreakEvent e) {
