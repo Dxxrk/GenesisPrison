@@ -170,7 +170,7 @@ public class CMDOptions implements Listener, CommandExecutor {
             this.settings.getOptions().set(p.getUniqueId().toString() + ".Explosion-Messages", true);
             this.settings.getOptions().set(p.getUniqueId().toString() + ".Wave-Messages", true);
             this.settings.getOptions().set(p.getUniqueId().toString() + ".Nuke-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Research-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId().toString() + ".Treasury-Messages", true);
             this.settings.getOptions().set(p.getUniqueId().toString() + ".Key-Party-Messages", true);
             this.settings.getOptions().set(p.getUniqueId().toString() + ".Booster-Messages", true);
             this.settings.getOptions().set(p.getUniqueId().toString() + ".Junkpile-Messages", true);

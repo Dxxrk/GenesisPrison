@@ -665,7 +665,8 @@ public class EnchantMethods implements CommandExecutor {
         int min = 500;
         int max = 2000;
         int gems = r.nextInt(max - min) + min;
-        p.sendMessage(c("&f&lTreasury &8| &a+" + gems + " Gems"));
+        if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Treasury-Messages"))
+            p.sendMessage(c("&f&lTreasury &8| &a+" + gems + " Gems"));
         MinePouchHandler.addGems(p, gems);
     }
 
