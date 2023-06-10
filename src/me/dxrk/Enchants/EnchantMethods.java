@@ -187,10 +187,9 @@ public class EnchantMethods implements CommandExecutor {
         int lowZ = (loc1.getBlockZ() < loc2.getBlockZ()) ? loc1.getBlockZ() : loc2.getBlockZ();
 
         ArrayList<Block> locs = new ArrayList<Block>();
-
-        for (int x = 0; x < Math.abs(loc1.getBlockX() - loc2.getBlockX()); x++) {
-            for (int y = 0; y < Math.abs(loc1.getBlockY() - loc2.getBlockY()); y++) {
-                for (int z = 0; z < Math.abs(loc1.getBlockZ() - loc2.getBlockZ()); z++) {
+        for (int x = 0; x <= Math.abs(loc1.getBlockX() - loc2.getBlockX()); x++) {
+            for (int y = 0; y <= Math.abs(loc1.getBlockY() - loc2.getBlockY()); y++) {
+                for (int z = 0; z <= Math.abs(loc1.getBlockZ() - loc2.getBlockZ()); z++) {
                     locs.add(new Location(loc1.getWorld(), lowX + x, lowY + y, lowZ + z).getBlock());
                 }
             }
