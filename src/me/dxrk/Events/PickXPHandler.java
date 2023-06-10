@@ -82,7 +82,7 @@ public class PickXPHandler
     }
 
     public double cost(int pick) {
-        return 1000 + (1000 * (pick * 0.3));
+        return 1000 + (1000 * (pick * 0.32));
     }
 
     public double totalXP() {

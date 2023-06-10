@@ -259,7 +259,7 @@ public class CMDMine implements CommandExecutor, Listener {
                     OfflinePlayer visit = Bukkit.getOfflinePlayer(args[1]);
                     UUID id = visit.getUniqueId();
 
-                    if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean(id.toString() + ".HasMine")) {
+                    if (PlayerDataHandler.getInstance().getPlayerData(visit.getUniqueId()).getBoolean("HasMine")) {
                         Mine m = MineSystem.getInstance().getMineByName(id.toString());
                         Location loc = new Location(m.getMineWorld(), m.getSpawnLocation().getX(), m.getSpawnLocation().getY(), m.getSpawnLocation().getZ(), -90, 0);
                         p.teleport(loc);

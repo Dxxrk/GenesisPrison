@@ -175,7 +175,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         if (enchantLevel == 0) {
             price = priceStart;
         } else {
-            price = enchantPrice(enchantName, enchantLevel);
+            price = enchantPrice(enchantName, enchantLevel) / EnchantMethods.getInstance().getEuphoria(p);
         }
 
         String cost;
@@ -229,14 +229,14 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         setEnchantItem("Key Finder", Material.TRIPWIRE_HOOK, c("&bUpgrade Key Finder"), c("&7Chance to find a Key."), 1000, enchantmenu, 4, p, 1);
         setEnchantItem("Token Finder", Material.PRISMARINE_CRYSTALS, c("&bUpgrade Token Finder"), c("&7Increase the amount of tokens randomly found."), 1000, enchantmenu, 10, p, 1);
         setEnchantItem("Fortune", Material.NETHER_STAR, c("&bUpgrade Fortune"), c("&7Increases amount of blocks you sell."), 100, enchantmenu, 12, p, 1);
-        setEnchantItem("XP Finder", Material.EXP_BOTTLE, c("&bUpgrade XP Finder"), c("&7Increases the amount of XP found while mining."), 3000, enchantmenu, 14, p, 15);
-        setEnchantItem("Dust Finder", Material.SUGAR, c("&bUpgrade Dust Finder"), c("&7Chance to find Trinket dust."), 2500, enchantmenu, 16, p, 25);
-        setEnchantItem("Jackhammer", Material.GOLD_PLATE, c("&bUpgrade Jackhammer"), c("&7Chance to break an entire layer of the mine."), 4500, enchantmenu, 20, p, 50);
+        setEnchantItem("Jackhammer", Material.GOLD_PLATE, c("&bUpgrade Jackhammer"), c("&7Chance to break an entire layer of the mine."), 4500, enchantmenu, 14, p, 10);
+        setEnchantItem("XP Finder", Material.EXP_BOTTLE, c("&bUpgrade XP Finder"), c("&7Increases the amount of XP found while mining."), 3000, enchantmenu, 16, p, 15);
+        setEnchantItem("Dust Finder", Material.SUGAR, c("&bUpgrade Dust Finder"), c("&7Chance to find Trinket dust."), 2500, enchantmenu, 20, p, 25);
         setEnchantItem("Treasury", Material.EMERALD, c("&bUpgrade Treasury"), c("&7Chance to randomly get gems."), 4500, enchantmenu, 22, p, 40);
         setEnchantItem("Greed", Material.DIAMOND, c("&bUpgrade Greed"), c("&7Increases selling price for blocks."), 5000, enchantmenu, 24, p, 60);
         setEnchantItem("Key Party", Material.EYE_OF_ENDER, c("&bUpgrade Key Party"), c("&7Chance to give everyone online a key."), 6000, enchantmenu, 30, p, 75);
-        setEnchantItem("Junkpile", Material.BUCKET, c("&bUpgrade Junkpile"), c("&7Chance to find random items while mining."), 7500, enchantmenu, 32, p, 85);
-        setEnchantItem("Nuke", Material.TNT, c("&bUpgrade Nuke"), c("&7Low Chance to break the entire mine."), 20000, enchantmenu, 40, p, 220);
+        setEnchantItem("Junkpile", Material.BUCKET, c("&bUpgrade Junkpile"), c("&7Chance to find random items while mining."), 7500, enchantmenu, 32, p, 100);
+        setEnchantItem("Nuke", Material.TNT, c("&bUpgrade Nuke"), c("&7Low Chance to break the entire mine."), 20000, enchantmenu, 40, p, 135);
 
 
         ItemStack trinkets = new ItemStack(Material.GOLD_NUGGET);
@@ -358,7 +358,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         list.add("Infernum");
         list.add("Calamity");
         list.add("Euphoria");
-        list.add("Battlecry");
+        list.add("Battle Cry");
         list.add("Tidal Wave");
         return list;
     }
@@ -601,7 +601,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             case "Calamity":
             case "Tidal Wave":
             case "Euphoria":
-            case "Battlecry":
+            case "Battle Cry":
             case "Infernum":
                 i = 100000000;
                 break;
@@ -634,7 +634,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
             case "Calamity":
             case "Euphoria":
-            case "Battlecry":
+            case "Battle Cry":
             case "Infernum":
             case "Tidal Wave":
                 i = 1;
@@ -710,7 +710,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             if (hasEnchant == false) {
                 int level = 0;
                 int plus = level + 1;
-                int price = (int) enchantPrice(Enchant, level);
+                int price = (int) (enchantPrice(Enchant, level) / EnchantMethods.getInstance().getEuphoria(p));
                 if (Tokens.getInstance().getTokens(p) >= price) {
                     if (plus > maxLevel(Enchant, p)) return;
                     lore.add(c("&c" + Enchant + " &e" + plus));
@@ -732,7 +732,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 for (int x = 0; x < num; x++) {
                     int level = getInt(lore.get(line));
                     int plus = level + 1;
-                    int price = (int) enchantPrice(Enchant, level);
+                    int price = (int) (enchantPrice(Enchant, level) / EnchantMethods.getInstance().getEuphoria(p));
                     if (Tokens.getInstance().getTokens(p) >= price) {
                         if (plus > maxLevel(Enchant, p)) return;
                         lore.set(line, c("&c" + Enchant + " &e" + plus));
@@ -755,7 +755,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             if (hasEnchant == false) {
                 int level = 0;
                 int plus = level + 1;
-                int price = (int) enchantPrice(Enchant, level);
+                int price = (int) (enchantPrice(Enchant, level) / EnchantMethods.getInstance().getEuphoria(p));
                 if (Tokens.getInstance().getTokens(p) >= price) {
                     if (plus > maxLevel(Enchant, p)) return;
                     lore.add(c("&c" + Enchant + " &e" + plus));
@@ -777,7 +777,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 for (int x = 0; x < (maxLevel(Enchant, p) - l); x++) {
                     int level = getInt(lore.get(line));
                     int plus = level + 1;
-                    int price = (int) enchantPrice(Enchant, level);
+                    int price = (int) (enchantPrice(Enchant, level) / EnchantMethods.getInstance().getEuphoria(p));
                     if (Tokens.getInstance().getTokens(p) >= price) {
                         if (plus > maxLevel(Enchant, p)) return;
                         lore.set(line, c("&c" + Enchant + " &e" + plus));
@@ -919,7 +919,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             if(hasEnchant)
                 calamitylore.add(c("&aPurchased!"));
             else
-                calamitylore.add(c("&bCost: &e100,000,000 ⛀"));
+                calamitylore.add(c("&bCost: &e100000000 ⛀"));
             calamitymeta.setLore(calamitylore);
             calamity.setItemMeta(calamitymeta);
         }
@@ -953,7 +953,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             if(hasEnchant)
                 infernumlore.add(c("&aPurchased!"));
             else
-                infernumlore.add(c("&bCost: &e100,000,000 ⛀"));
+                infernumlore.add(c("&bCost: &e100000000 ⛀"));
             infernummeta.setLore(infernumlore);
             infernum.setItemMeta(infernummeta);
         }
@@ -987,7 +987,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             if(hasEnchant)
                 tidalwavelore.add(c("&aPurchased!"));
             else
-                tidalwavelore.add(c("&bCost: &e100,000,000 ⛀"));
+                tidalwavelore.add(c("&bCost: &e100000000 ⛀"));
             tidalwavemeta.setLore(tidalwavelore);
             tidalwave.setItemMeta(tidalwavemeta);
         }
@@ -1021,7 +1021,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             if(hasEnchant)
                 euphorialore.add(c("&aPurchased!"));
             else
-                euphorialore.add(c("&bCost: &e100,000,000 ⛀"));
+                euphorialore.add(c("&bCost: &e100000000 ⛀"));
             euphoriameta.setLore(euphorialore);
             euphoria.setItemMeta(euphoriameta);
         }
@@ -1030,7 +1030,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         if (!completed.contains("Ares")) {
             battlecry = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
             ItemMeta battlecrymeta = battlecry.getItemMeta();
-            battlecrymeta.setDisplayName(c("&bUpgrade Battlecry"));
+            battlecrymeta.setDisplayName(c("&bUpgrade Battle Cry"));
             List<String> battlecrylore = new ArrayList<>();
             battlecrylore.add(c("&cUnlocks after finishing Ares Path."));
             battlecrymeta.setLore(battlecrylore);
@@ -1044,18 +1044,18 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 if (ChatColor.stripColor(s).contains("Trinket")) {
                     continue;
                 }
-                if (ChatColor.stripColor(s).contains("Battlecry")) {
+                if (ChatColor.stripColor(s).contains("Battle Cry")) {
                     hasEnchant = true;
                 }
             }
             battlecry = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
             ItemMeta battlecrymeta = battlecry.getItemMeta();
-            battlecrymeta.setDisplayName(c("&bUpgrade Battlecry"));
+            battlecrymeta.setDisplayName(c("&bUpgrade Battle Cry"));
             List<String> battlecrylore = new ArrayList<>();
             if(hasEnchant)
                 battlecrylore.add(c("&aPurchased!"));
             else
-                battlecrylore.add(c("&bCost: &e100,000,000 ⛀"));
+                battlecrylore.add(c("&bCost: &e100000000 ⛀"));
             battlecrymeta.setLore(battlecrylore);
             battlecry.setItemMeta(battlecrymeta);
         }
@@ -1099,6 +1099,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             openSkillEnchantsInv(p);
         }
     }
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void oninv(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();

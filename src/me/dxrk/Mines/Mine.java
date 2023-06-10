@@ -75,8 +75,8 @@ public class Mine {
 
     public int getTotalBlocks() {
         int b = 0;
-        Location location1 = getMinPoint();
-        Location location2 = getMaxPoint();
+        Location location1 = this.corner1;
+        Location location2 = this.corner2;
         for (int i = location1.getBlockX(); i <= location2.getBlockX(); i++) {
             for (int j = location1.getBlockZ(); j <= location2.getBlockZ(); j++) {
                 for (int k = location1.getBlockY(); k <= location2.getY(); k++)
@@ -88,8 +88,8 @@ public class Mine {
 
     public int getBlocksMined() {
         int b = 0;
-        Location location1 = getMinPoint();
-        Location location2 = getMaxPoint();
+        Location location1 = this.corner1;
+        Location location2 = this.corner2;
         for (int i = location1.getBlockX(); i <= location2.getBlockX(); i++) {
             for (int j = location1.getBlockZ(); j <= location2.getBlockZ(); j++) {
                 for (int k = location1.getBlockY(); k <= location2.getY(); k++) {
@@ -102,8 +102,8 @@ public class Mine {
     }
 
     public float getBlocksLeftPercentage() {
-        int i = getBlocksMined();
-        int j = getTotalBlocks();
+        int i = this.getBlocksMined();
+        int j = this.getTotalBlocks();
         if (i == 0)
             return 100.0F;
         return 100.0F - (float) i / j * 100.0F;

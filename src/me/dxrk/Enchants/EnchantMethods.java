@@ -21,13 +21,17 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -177,6 +181,24 @@ public class EnchantMethods implements CommandExecutor {
         return blocks;
     }
 
+    public ArrayList<Block> getBlocksInArea(Location loc1, Location loc2) {
+        int lowX = (loc1.getBlockX() < loc2.getBlockX()) ? loc1.getBlockX() : loc2.getBlockX();
+        int lowY = (loc1.getBlockY() < loc2.getBlockY()) ? loc1.getBlockY() : loc2.getBlockY();
+        int lowZ = (loc1.getBlockZ() < loc2.getBlockZ()) ? loc1.getBlockZ() : loc2.getBlockZ();
+
+        ArrayList<Block> locs = new ArrayList<Block>();
+
+        for (int x = 0; x < Math.abs(loc1.getBlockX() - loc2.getBlockX()); x++) {
+            for (int y = 0; y < Math.abs(loc1.getBlockY() - loc2.getBlockY()); y++) {
+                for (int z = 0; z < Math.abs(loc1.getBlockZ() - loc2.getBlockZ()); z++) {
+                    locs.add(new Location(loc1.getWorld(), lowX + x, lowY + y, lowZ + z).getBlock());
+                }
+            }
+        }
+
+        return locs;
+    }
+
 
     public void Jackhammer(Player p, Block b, int level) {
         ArrayList<ItemStack> sellblocks = new ArrayList<>();
@@ -184,7 +206,7 @@ public class EnchantMethods implements CommandExecutor {
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
         Location min = new Location(p.getWorld(), m.getMinPoint().getX(), b.getY(), m.getMinPoint().getZ());
         Location max = new Location(p.getWorld(), m.getMaxPoint().getX(), b.getY(), m.getMaxPoint().getZ());
-        for (Block b1 : blocksFromTwoPoints(min, max, p.getWorld())) {
+        for (Block b1 : getBlocksInArea(min, max)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR && b1.getType() != Material.SEA_LANTERN) {
                     b1.setType(Material.AIR);
@@ -193,10 +215,6 @@ public class EnchantMethods implements CommandExecutor {
             }
         }
         int rank = RankupHandler.getInstance().getRank(p);
-        if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("Ethereal")) {
-            rank = 1000;
-        }
-        // ResetHandler.setAIR(min, max, MineHandler.Blocks(rank/16));
         double fortuity = Functions.Foruity(p);
         double skill = SkillsEventsListener.getSkillsBoostFortune(p);
         double event = SkillsEventsListener.getEventFortune();
@@ -211,17 +229,16 @@ public class EnchantMethods implements CommandExecutor {
 
         double levelcap = 1 + (level / 1000);
 
-        int blocksInThirds = blocks / 3;
+        int blocksInThirds = blocks / 5;
 
         sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds * fortune * levelcap)));
         sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocksInThirds * fortune * levelcap)));
         sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocksInThirds * fortune * levelcap)));
 
-        int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * levelcap);
+        int tokens = (int) (KeysHandler.tokensPerBlock(p) * (blocks / 3) * levelcap);
         Tokens.getInstance().addTokens(p, tokens);
+        p.playSound(p.getLocation(), Sound.ANVIL_LAND, 0.8f, 1.0f);
         SellHandler.getInstance().sellEnchant(p, sellblocks, "Jackhammer", tokens);
-
-
     }
 
 
@@ -266,7 +283,7 @@ public class EnchantMethods implements CommandExecutor {
 
     }
 
-    public void calamity(Player p, Block b, int level) {
+    public void calamity(Player p, Block b) {
         ArrayList<ItemStack> sellblocks = new ArrayList<>();
         int blocks = 0;
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
@@ -340,14 +357,13 @@ public class EnchantMethods implements CommandExecutor {
         sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocks * fortune)));
 
 
-        int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks);
+        int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * 5);
         Tokens.getInstance().addTokens(p, tokens);
         SellHandler.getInstance().sellEnchant(p, sellblocks, "Calamity", tokens);
     }
 
     public void seismic(Player p, Block b, int level) {
         ArrayList<ItemStack> sellblocks = new ArrayList<>();
-        int blocks = 0;
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
         //first layer
         WaveEffect wave = null;
@@ -356,24 +372,26 @@ public class EnchantMethods implements CommandExecutor {
         Location finalLoc = b.getLocation();
         //second layer
         WaveEffect wave2 = null;
-        Location second = new Location(b.getWorld(), b.getLocation().getX(), b.getLocation().getY()-1, b.getLocation().getZ());
+        Location second = new Location(b.getWorld(), b.getLocation().getX(), b.getLocation().getY() - 1, b.getLocation().getZ());
         wave2 = new WaveEffect(second, 25);
         WaveEffect finalWave2 = wave;
         //third layer
         WaveEffect wave3 = null;
-        Location third = new Location(b.getWorld(), b.getLocation().getX(), b.getLocation().getY()-2, b.getLocation().getZ());
+        Location third = new Location(b.getWorld(), b.getLocation().getX(), b.getLocation().getY() - 2, b.getLocation().getZ());
         wave3 = new WaveEffect(third, 25);
         WaveEffect finalWave3 = wave;
         new BukkitRunnable() {
             @Override
             public void run() {
+                int blocks = 0;
                 finalWave.stop();
                 finalWave2.stop();
                 finalWave3.stop();
-                for (Block b1 : getCircle(finalLoc, 25)) {
+                for (Block b1 : getBlocksAroundCenter(finalLoc, 25)) {
                     if (set(b1).allows(DefaultFlag.LIGHTER)) {
                         if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR && b1.getType() != Material.SEA_LANTERN) {
                             b1.setType(Material.AIR);
+                            blocks = blocks + 1;
                         }
                     }
                 }
@@ -392,18 +410,113 @@ public class EnchantMethods implements CommandExecutor {
                         (14));
 
                 double levelcap = 1 + (level / 100);
-                int blocksInThirds = blocks / 3;
 
-                sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds * fortune * levelcap)));
-                sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocksInThirds * fortune * levelcap)));
-                sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocksInThirds * fortune * levelcap)));
+                sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune * levelcap)));
+                sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune * levelcap)));
+                sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocks * fortune * levelcap)));
 
 
-                int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * levelcap);
+                int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * levelcap * 5);
                 Tokens.getInstance().addTokens(p, tokens);
                 SellHandler.getInstance().sellEnchant(p, sellblocks, "Seismic Shock", tokens);
             }
         }.runTaskLater(Main.plugin, 25L);
+    }
+
+    public void TidalWave(Player p, Block b) {
+        ArrayList<ItemStack> sellblocks = new ArrayList<>();
+        int blocks = 0;
+        Mine m = MineSystem.getInstance().getMineByPlayer(p);
+        Location min = new Location(p.getWorld(), m.getMinPoint().getX(), b.getY() - 4, m.getMinPoint().getZ());
+        Location max = new Location(p.getWorld(), m.getMaxPoint().getX(), b.getY(), m.getMaxPoint().getZ());
+        for (Block b1 : getBlocksInArea(min, max)) {
+            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR && b1.getType() != Material.SEA_LANTERN) {
+                    b1.setType(Material.AIR);
+                    blocks = blocks + 1;
+                }
+            }
+        }
+        int rank = RankupHandler.getInstance().getRank(p);
+        double fortuity = Functions.Foruity(p);
+        double skill = SkillsEventsListener.getSkillsBoostFortune(p);
+        double event = SkillsEventsListener.getEventFortune();
+        int line = 0;
+        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
+            if (org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
+                line = x;
+            }
+        }
+        int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
+                (14));
+
+
+        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune)));
+        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune)));
+        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocks * fortune)));
+
+        int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks);
+        Tokens.getInstance().addTokens(p, tokens);
+        p.playSound(p.getLocation(), Sound.SPLASH, 0.8f, 1.0f);
+        SellHandler.getInstance().sellEnchant(p, sellblocks, "Tidal Wave", tokens);
+    }
+
+    public void Infernum(Player p, Block b) {
+        ArrayList<ItemStack> sellblocks = new ArrayList<>();
+        int blocks = 0;
+        Mine m = MineSystem.getInstance().getMineByPlayer(p);
+
+
+        Location min = new Location(p.getWorld(), b.getX() + 5, m.getMinPoint().getY(), b.getZ() + 5);
+        Location max = new Location(p.getWorld(), b.getX() - 5, b.getY(), b.getZ() - 5);
+        Location minn = new Location(p.getWorld(), b.getX() + 5, b.getY(), b.getZ() + 5);
+
+        for (Block b1 : getBlocksInArea(minn, max)) {
+            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR && b1.getType() != Material.SEA_LANTERN) {
+                    FallingBlock fb = p.getWorld().spawnFallingBlock(b1.getLocation(), Material.STATIONARY_LAVA, (byte) 0);
+                    fb.setVelocity(new Vector(0, -.3, 0));
+                    fb.setDropItem(false);
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            fb.remove();
+                        }
+                    }.runTaskLater(Main.plugin, 40L);
+                }
+            }
+        }
+
+        for (Block b1 : getBlocksInArea(min, max)) {
+            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+                if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR && b1.getType() != Material.SEA_LANTERN) {
+                    b1.setType(Material.AIR);
+                    blocks = blocks + 1;
+                }
+            }
+        }
+        int rank = RankupHandler.getInstance().getRank(p);
+        double fortuity = Functions.Foruity(p);
+        double skill = SkillsEventsListener.getSkillsBoostFortune(p);
+        double event = SkillsEventsListener.getEventFortune();
+        int line = 0;
+        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
+            if (org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
+                line = x;
+            }
+        }
+        int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
+                (14));
+
+
+        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune)));
+        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune)));
+        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocks * fortune)));
+
+        int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * 5);
+        Tokens.getInstance().addTokens(p, tokens);
+        p.playSound(p.getLocation(), Sound.LAVA_POP, 0.8f, 1.0f);
+        SellHandler.getInstance().sellEnchant(p, sellblocks, "Infernum", tokens);
     }
 
 
@@ -556,6 +669,49 @@ public class EnchantMethods implements CommandExecutor {
         MinePouchHandler.addGems(p, gems);
     }
 
+    public static HashMap<Player, Double> battlecry = new HashMap<>();
+
+    public void battlecry(Player p) {
+        if (!battlecry.containsKey(p)) {
+            battlecry.put(p, 1.5);
+            p.sendMessage(m.c("&c&lBattle Cry &8| &b1.5x Boosted proc chances for 20 seconds!"));
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    battlecry.remove(p);
+                    p.sendMessage(m.c("&c&lBattle Cry &8| &bBattlecry has ended"));
+                }
+            }.runTaskLater(Main.plugin, 20 * 20L);
+        }
+    }
+    public double getBattleCry(Player p) {
+        if(battlecry.containsKey(p)) {
+            return battlecry.get(p);
+        }
+        return 1;
+    }
+
+    public static List<Player> euphoria = new ArrayList<>();
+    public void Euphoria(Player p) {
+        if (!euphoria.contains(p)) {
+            euphoria.add(p);
+            p.sendMessage(m.c("&d&lEuphoria &8| &b50% off enchant prices for 10 Seconds!"));
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    euphoria.remove(p);
+                    p.sendMessage(m.c("&d&lEuphoria &8| &bEuphoria has ended"));
+                }
+            }.runTaskLater(Main.plugin, 20 * 10L);
+        }
+    }
+    public double getEuphoria(Player p) {
+        if(euphoria.contains(p)) {
+            return 1.5;
+        }
+        return 1;
+    }
+
     public void addKey(Player p, String key, int amt) {
         int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + key.toLowerCase());
         key = key.toLowerCase();
@@ -632,47 +788,43 @@ public class EnchantMethods implements CommandExecutor {
             }
         }
     }
-    public void Luckyblock(Player p){
-        Random r = new Random();
-        int rr=r.nextInt(309);
 
-        if(rr>=0 && rr<=150){
+    public void Luckyblock(Player p) {
+        Random r = new Random();
+        int rr = r.nextInt(309);
+
+        if (rr >= 0 && rr <= 150) {
             int tokens = 5000;
             Tokens.getInstance().addTokens(p, tokens);
             if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
                 p.sendMessage(c("&f&lLuckyblock &8| &e+5000 Tokens"));
-        }
-        else if(rr>=151 && rr<=240){
-            addKey(p,"Beta", 1);
+        } else if (rr >= 151 && rr <= 240) {
+            addKey(p, "Beta", 1);
             if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
                 p.sendMessage(c("&f&lLuckyblock &8| &e+1 Beta Key"));
-        }
-        else if(rr>=241 && rr<=270){
-            addKey(p,"Omega",1);
+        } else if (rr >= 241 && rr <= 270) {
+            addKey(p, "Omega", 1);
             if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
                 p.sendMessage(c("&f&lLuckyblock &8| &e+1 Omega Key"));
-        }
-        else if(rr>=271 && rr<=285){
-            PickXPHandler.getInstance().addXP(p,2500);
+        } else if (rr >= 271 && rr <= 285) {
+            PickXPHandler.getInstance().addXP(p, 2500);
             if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
                 p.sendMessage(c("&f&lLuckyblock &8| &e+2500 XP"));
-        }
-        else if(rr>=286 && rr<=300){
-            addKey(p,"Community",1);
+        } else if (rr >= 286 && rr <= 300) {
+            addKey(p, "Community", 1);
             if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
                 p.sendMessage(c("&f&lLuckyblock &8| &e+1 Community Key"));
-        }
-        else if(rr==301){
-            addKey(p,"Rank",1);
+        } else if (rr == 301) {
+            addKey(p, "Rank", 1);
             if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
                 p.sendMessage(c("&f&lLuckyblock &8| &e+1 Rank Key"));
-        }
-        else{
-            addKey(p,"Seasonal",1);
+        } else {
+            addKey(p, "Seasonal", 1);
             if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
                 p.sendMessage(c("&f&lLuckyblock &8| &e+1 Seasonal Key"));
         }
     }
+
     public double getEnchantChance(String Enchant, int level, Player p) {
         double lucky = Functions.Karma(p);
         double luck = Functions.luckBoost(p);
@@ -680,38 +832,50 @@ public class EnchantMethods implements CommandExecutor {
         double procChance = 0;
         switch (Enchant) {
             case "Booster":
-                double chance = 6300 - (0.65 * level * lucky * luck * skill);
+                double chance = 6300 - (0.65 * level * lucky * luck * skill * getBattleCry(p));
                 procChance = (chance < 300) ? 300 : chance;
                 break;
             case "Key Party":
-                chance = 3800 - (level * lucky * luck * skill);
+                chance = 3800 - (level * lucky * luck * skill * getBattleCry(p));
                 procChance = (chance < 400) ? 400 : chance;
                 break;
             case "Junkpile":
-                chance = 4400 - (0.85 * level * lucky * luck * skill);
+                chance = 4400 - (0.85 * level * lucky * luck * skill * getBattleCry(p));
                 procChance = (chance < 500) ? 500 : chance;
                 break;
             case "Nuke":
-                chance = 15000 - (20 * level * lucky * luck * skill);
+                chance = 15000 - (20 * level * lucky * luck * skill * getBattleCry(p));
                 procChance = (chance < 2000) ? 2000 : chance;
                 break;
             case "Jackhammer":
-                chance = 1750 - (1.5 * level * lucky * luck * skill);
+                chance = 1750 - (1.5 * level * lucky * luck * skill * getBattleCry(p));
                 procChance = (chance < 50) ? 50 : chance;
                 break;
             case "Treasury":
-                chance = 3000 - (0.80 * level * lucky * luck * skill);
+                chance = 3000 - (0.80 * level * lucky * luck * skill * getBattleCry(p));
                 procChance = (chance < 600) ? 600 : chance;
                 break;
             case "Calamity":
                 procChance = 1000;
                 break;
+            case "Battle Cry":
+                procChance = 1000;
+                break;
+            case "Tidal Wave":
+                procChance = 1000;
+                break;
+            case "Infernum":
+                procChance = 1000;
+                break;
+            case "Euphoria":
+                procChance = 1000;
+                break;
             case "Seismic Shock":
-                chance = 4000 - (0.80 * level * lucky * luck * skill);
+                chance = 4000 - (0.80 * level * lucky * luck * skill * getBattleCry(p));
                 procChance = (chance < 1100) ? 1100 : chance;
                 break;
             case "Key Finder":
-                chance = 1000 - (0.07 * level * lucky * luck * skill);
+                chance = 1000 - (0.07 * level * lucky * luck * skill * getBattleCry(p));
                 procChance = (chance < 200) ? 200 : chance;
                 break;
         }
@@ -749,7 +913,27 @@ public class EnchantMethods implements CommandExecutor {
                 break;
             case "Calamity":
                 if (r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
-                    calamity(p, b, level);
+                    calamity(p, b);
+                }
+                break;
+            case "Tidal Wave":
+                if (r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
+                    TidalWave(p, b);
+                }
+                break;
+            case "Infernum":
+                if (r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
+                    Infernum(p, b);
+                }
+                break;
+            case "Battle Cry":
+                if (r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
+                    battlecry(p);
+                }
+                break;
+            case "Euphoria":
+                if (r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
+                    Euphoria(p);
                 }
                 break;
             case "Key Finder":
@@ -758,13 +942,13 @@ public class EnchantMethods implements CommandExecutor {
                 }
                 break;
             case "Treasury":
-                if(r.nextInt((int) getEnchantChance(Enchant,level,p)) == 1){
+                if (r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
                     Treasury(p);
                 }
                 break;
             case "Seismic Shock":
-                if(r.nextInt((int) getEnchantChance(Enchant,level,p)) == 1){
-                    seismic(p,b,level);
+                if (r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
+                    seismic(p, b, level);
                 }
         }
     }
@@ -780,6 +964,10 @@ public class EnchantMethods implements CommandExecutor {
         enchants.add("Calamity");
         enchants.add("Key Finder");
         enchants.add("Seismic Shock");
+        enchants.add("Battle Cry");
+        enchants.add("Tidal Wave");
+        enchants.add("Infernum");
+        enchants.add("Euphoria");
         return enchants;
     }
 

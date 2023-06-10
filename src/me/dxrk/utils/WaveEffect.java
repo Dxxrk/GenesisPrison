@@ -25,6 +25,7 @@ public class WaveEffect {
                 fb.setVelocity(new Vector(0, .3, 0));
                 loc.getBlock().setType(Material.AIR);
                 fb.setDropItem(false);
+                fb.remove();
             }
             rad++;
             rad = (((rad % time) == 0) ? 1 : rad);

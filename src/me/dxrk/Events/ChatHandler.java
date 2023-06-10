@@ -313,8 +313,10 @@ public class ChatHandler implements Listener, CommandExecutor {
         String rank = "";
         if (p.getName().equalsIgnoreCase("Dxrk")) {
             rank = ChatColor.translateAlternateColorCodes('&', "&d&l&ki&f&lOwner&d&l&ki&r ");
-        } else if (p.hasPermission("Rank.Admin")) {
-            rank = ChatColor.translateAlternateColorCodes('&', "&0&k&l;&8&lAdmin&0&k&l;&r ");
+        } else if (p.getName().equalsIgnoreCase("_Lone_Ninja_")) {
+            rank = ChatColor.translateAlternateColorCodes('&', "&f&k&l;&c&lAdmin&f&k&l;&r ");
+        }else if (p.getName().equalsIgnoreCase("Pikashoo")) {
+            rank = ChatColor.translateAlternateColorCodes('&', "&f&k&l;&a&lDeveloper&f&k&l;&r ");
         } else if (p.hasPermission("Rank.Manager")) {
             rank = ChatColor.translateAlternateColorCodes('&', "&f&l&k;&5&lManager&f&l&k;&r ");
         } else if (p.hasPermission("Rank.Mod")) {
@@ -592,6 +594,28 @@ public class ChatHandler implements Listener, CommandExecutor {
                         chatFormat.then(sb.toString());
                     }
                 } else if (p.getName().equalsIgnoreCase("Kevin20230") || p.getName().equalsIgnoreCase("Dxrk")) {
+                    StringBuilder sb = new StringBuilder();
+                    byte b1;
+                    int j;
+                    char[] arrayOfChar1;
+                    for (j = (arrayOfChar1 = s.replace("[item]", "").toCharArray()).length, b1 = 0; b1 < j; ) {
+                        char ss = arrayOfChar1[b1];
+                        sb.append(ChatColor.WHITE + "" + ChatColor.BOLD).append(ss);
+                        b1 = (byte) (b1 + 1);
+                    }
+                    chatFormat.then(sb.toString());
+                }else if (p.getName().equalsIgnoreCase("Kevin20230") || p.getName().equalsIgnoreCase("_Lone_Ninja_")) {
+                    StringBuilder sb = new StringBuilder();
+                    byte b1;
+                    int j;
+                    char[] arrayOfChar1;
+                    for (j = (arrayOfChar1 = s.replace("[item]", "").toCharArray()).length, b1 = 0; b1 < j; ) {
+                        char ss = arrayOfChar1[b1];
+                        sb.append(ChatColor.RED + "" + ChatColor.BOLD).append(ss);
+                        b1 = (byte) (b1 + 1);
+                    }
+                    chatFormat.then(sb.toString());
+                }else if (p.getName().equalsIgnoreCase("Kevin20230") || p.getName().equalsIgnoreCase("Pikashoo")) {
                     StringBuilder sb = new StringBuilder();
                     byte b1;
                     int j;

@@ -312,6 +312,16 @@ public class MineHandler implements Listener, CommandExecutor {
 
         Location point1 = new Location(world, 15, 65, (mines * 250) - 16);
         Location point2 = new Location(world, 47, 98, (mines * 250) + 16);
+        if(mineworld.equals("secondmine")) {
+            //change for mine2's dimensions
+            point1 = new Location(world, 15, 65, (mines * 250) - 16);
+            point2 = new Location(world, 47, 98, (mines * 250) + 16);
+        }
+        if(mineworld.equals("thirdmine")) {
+            //change for mine3's dimensions
+            point1 = new Location(world, 15, 65, (mines * 250) - 16);
+            point2 = new Location(world, 47, 98, (mines * 250) + 16);
+        }
 
 
         //Creating the actual mine

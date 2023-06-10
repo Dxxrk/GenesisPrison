@@ -40,15 +40,23 @@ public class CMDVanish implements Listener, CommandExecutor {
                     for (Player people : Bukkit.getOnlinePlayers()) {
                         people.showPlayer(player);
                     }
-                    vanished.remove(player);
-                    player.sendMessage(m.c("&f&lVanish &8| &bYou are no longer vanished."));
+                    if (player.hasPermission("rank.helper")) {
+                        vanished.remove(player);
+                        player.sendMessage(m.c("&f&lVanish &8| &bYou are no longer vanished."));
+                    } else {
+                        player.sendMessage(m.c("&cNo Permission"));
+                    }
                 } else {
                     for (Player people : Bukkit.getOnlinePlayers()) {
                         if (people.hasPermission("rank.helper")) continue;
                         people.hidePlayer(player);
                     }
-                    vanished.add(player);
-                    player.sendMessage(m.c("&f&lVanish &8| &bYou are vanished!"));
+                    if (player.hasPermission("rank.helper")) {
+                        vanished.add(player);
+                        player.sendMessage(m.c("&f&lVanish &8| &bYou are vanished!"));
+                    } else {
+                        player.sendMessage(m.c("&cNo Permission"));
+                    }
                 }
             }
         }
