@@ -359,8 +359,6 @@ public class SellHandler implements Listener, CommandExecutor {
                             }
                             double lucky = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock");
                             ResetHandler.resetMineWorldEdit(mine, mine.getMinPoint(), mine.getMaxPoint(), lucky);
-                            if (mine.isInMine(p.getLocation()))
-                                p.teleport(mine.getSpawnLocation());
                             if (!p.isOp())
                                 reset.add(p.getUniqueId().toString());
                         }

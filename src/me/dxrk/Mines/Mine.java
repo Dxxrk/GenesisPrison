@@ -1,10 +1,10 @@
 package me.dxrk.Mines;
 
-import com.earth2me.essentials.Console;
 import me.dxrk.Main.Main;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -41,6 +41,22 @@ public class Mine {
         this.resetpercent = reset;
     }
 
+    public boolean isLocationInMine(Location paramLocation) {
+        if (paramLocation == null)
+            return false;
+        if (paramLocation.getWorld() == null)
+            return false;
+        if (getMineWorld() == null)
+            return false;
+        if (getMineWorld()
+                .equals(paramLocation.getWorld()) &&
+                paramLocation.getBlockY() >= this.getMinPoint().getBlockY() && paramLocation.getBlockY() <= this.getMaxPoint().getBlockY())
+            if (paramLocation.getBlockX() >= this.getMinPoint().getBlockX() && paramLocation.getBlockX() <= this.getMaxPoint().getBlockX() &&
+                    paramLocation.getBlockZ() >= this.getMinPoint().getBlockZ() && paramLocation.getBlockZ() <= this.getMaxPoint().getBlockZ())
+                return true;
+        return false;
+    }
+
     public String getMineName() {
         return this.mineName;
     }
@@ -69,9 +85,6 @@ public class Mine {
         this.resetpercent = reset;
     }
 
-    public boolean isInMine(Location l) {
-        return getLocationsInMine(this.corner1, this.corner2, this.mineWorld).contains(l);
-    }
 
     public int getTotalBlocks() {
         int b = 0;
@@ -165,27 +178,6 @@ public class Mine {
         }
     }
 
-
-    private List<Location> getLocationsInMine(Location loc1, Location loc2, World w) {
-        List<Location> blocks = new ArrayList<>();
-
-        int minx = Math.min(loc1.getBlockX(), loc2.getBlockX()),
-                miny = Math.min(loc1.getBlockY(), loc2.getBlockY()),
-                minz = Math.min(loc1.getBlockZ(), loc2.getBlockZ()),
-                maxx = Math.max(loc1.getBlockX(), loc2.getBlockX()),
-                maxy = Math.max(loc1.getBlockY(), loc2.getBlockY()),
-                maxz = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
-        for (int x = minx; x <= maxx; x++) {
-            for (int y = miny; y <= maxy; y++) {
-                for (int z = minz; z <= maxz; z++) {
-                    Location b = new Location(w, x, y, z);
-                    blocks.add(b);
-                }
-            }
-        }
-
-        return blocks;
-    }
 
     public boolean delete() {
         File file = new File(Main.plugin.getDataFolder() + File.separator + "mines", getMineName() + ".yml");

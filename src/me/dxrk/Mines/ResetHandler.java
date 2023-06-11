@@ -11,15 +11,21 @@ import com.sk89q.worldedit.function.mask.Mask;
 import com.sk89q.worldedit.function.pattern.RandomPattern;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Events.RankupHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class ResetHandler {
 
@@ -134,9 +140,13 @@ public class ResetHandler {
     public static void resetMineWorldEdit(Mine mine, Location loc1, Location loc2, double lucky) {
         WorldEditRegion miningRegion = new WorldEditRegion(toWEVector(loc1), toWEVector(loc2), loc1.getWorld());
         fillAIR(miningRegion, mine.getBlock1(), mine.getBlock2(), mine.getBlock3(), lucky);
-        for (Player pp : Bukkit.getOnlinePlayers()) {
-            if (mine.isInMine(pp.getLocation())) {
-                pp.teleport(mine.getSpawnLocation());
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if(mine.isLocationInMine(player.getLocation())) {
+                Location l = player.getLocation();
+                Location loc = new Location(player.getWorld(), l.getX(), mine.getMaxPoint().getY() + 1.5, l.getZ());
+                loc.setYaw(l.getYaw());
+                loc.setPitch(l.getPitch());
+                player.teleport(loc);
             }
         }
     }
@@ -144,9 +154,11 @@ public class ResetHandler {
     public static void resetMineFullWorldEdit(Mine mine, Location loc1, Location loc2, double lucky) {
         WorldEditRegion miningRegion = new WorldEditRegion(toWEVector(loc1), toWEVector(loc2), loc1.getWorld());
         fill(miningRegion, mine.getBlock1(), mine.getBlock2(), mine.getBlock3(), lucky);
-        for (Player pp : Bukkit.getOnlinePlayers()) {
-            if (mine.isInMine(pp.getLocation())) {
-                pp.teleport(mine.getSpawnLocation());
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if(mine.isLocationInMine(player.getLocation())) {
+                Location l = player.getLocation();
+                Location loc = new Location(player.getWorld(), l.getX(), mine.getMaxPoint().getY() + 1.5, l.getZ());
+                player.teleport(loc);
             }
         }
     }
