@@ -241,17 +241,16 @@ public class MineHandler implements Listener, CommandExecutor {
             Mine m = MineSystem.getInstance().getMineByPlayer(p);
             Location loc = new Location(m.getMineWorld(), m.getSpawnLocation().getX(), m.getSpawnLocation().getY(), m.getSpawnLocation().getZ(), -90, 0);
             p.teleport(loc);
-            WorldBorder wb = new WorldBorder();
-            wb.world = ((CraftWorld) m.getMineWorld()).getHandle();
-            wb.setCenter(34.5, m.getSpawnLocation().getZ());
-            wb.setSize(83);
-            wb.setWarningDistance(1);
-            wb.setWarningTime(1);
-            PacketPlayOutWorldBorder packetPlayOutWorldBorder = new PacketPlayOutWorldBorder(wb, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE);
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutWorldBorder);
+                    int minesize = PlayerDataHandler.getInstance().getPlayerData(p).getInt("MineSize");
+                    if(minesize == 1 || minesize == 2) {
+                        Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 83, 34.5, m.getSpawnLocation().getZ());
+                    }
+                    if(minesize == 3) {
+                        Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 103, 39.5, m.getSpawnLocation().getZ());
+                    }
                 }
             }.runTaskLater(Main.plugin, 20L);
 
@@ -392,5 +391,6 @@ public class MineHandler implements Listener, CommandExecutor {
         PlayerDataHandler.getInstance().getPlayerData(p).set("HasMine", true);
         settings.getOptions().set("numberofmines", (mines + 1));
         settings.saveOptions();
+        PlayerDataHandler.getInstance().savePlayerData(p);
     }
 }
