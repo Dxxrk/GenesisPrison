@@ -656,9 +656,9 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         this.settings.saveVote();
         for (UUID id : MomentumHandler.seconds.keySet()) {
             long seconds = MomentumHandler.seconds.get(id);
-            PlayerDataHandler.getInstance().getPlayerData(id).set(id + ".RestartMomentum", seconds);
+            PlayerDataHandler.getInstance().getPlayerData(id).set("RestartMomentum", seconds);
             ArrayList<Long> momentums = MomentumHandler.momentum.get(id);
-            PlayerDataHandler.getInstance().getPlayerData(id).set(id + ".RestartMomentumList", momentums);
+            PlayerDataHandler.getInstance().getPlayerData(id).set("RestartMomentumList", momentums);
             PlayerDataHandler.getInstance().savePlayerData(id);
         }
 

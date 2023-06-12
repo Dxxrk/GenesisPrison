@@ -8,24 +8,20 @@ import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.blocks.BlockID;
 import com.sk89q.worldedit.function.mask.BlockMask;
 import com.sk89q.worldedit.function.mask.Mask;
+import com.sk89q.worldedit.function.pattern.Pattern;
 import com.sk89q.worldedit.function.pattern.RandomPattern;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Events.RankupHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
+import java.util.Set;
 
 public class ResetHandler {
 
@@ -72,17 +68,6 @@ public class ResetHandler {
         return new WorldEditVector(vector.getX(), vector.getY(), vector.getZ());
     }
 
-    @SuppressWarnings("deprecation")
-    public static void setAIR(Location loc1, Location loc2, List<ItemStack> blocks) {
-        WorldEditRegion region = new WorldEditRegion(toWEVector(loc1), toWEVector(loc2), loc1.getWorld());
-        EditSession session = (new EditSessionBuilder(FaweAPI.getWorld(region.getWorld().getName()))).fastmode(Boolean.TRUE).build();
-        BaseBlock block = new BaseBlock(blocks.get(0).getTypeId(), blocks.get(0).getData().getData());
-        BaseBlock block2 = new BaseBlock(blocks.get(1).getTypeId(), blocks.get(1).getData().getData());
-        BaseBlock block3 = new BaseBlock(blocks.get(2).getTypeId(), blocks.get(2).getData().getData());
-        Mask mask = new BlockMask(session.getExtent(), block, block2, block3);
-        session.replaceBlocks(transform(region), mask, new BaseBlock(BlockID.AIR));
-        session.flushQueue();
-    }
 
     @SuppressWarnings("deprecation")
     public static void fillAIR(WorldEditRegion region, ItemStack i, ItemStack i2, ItemStack i3, double lucky) {
@@ -91,20 +76,20 @@ public class ResetHandler {
         BaseBlock block = new BaseBlock(i.getTypeId(), i.getData().getData());
         BaseBlock block2 = new BaseBlock(i2.getTypeId(), i2.getData().getData());
         BaseBlock block3 = new BaseBlock(i3.getTypeId(), i3.getData().getData());
-
+        ItemStack luckyblock = new ItemStack(Material.SEA_LANTERN);
+        BaseBlock block4 = new BaseBlock(luckyblock.getTypeId(), luckyblock.getData().getData());
         if (lucky != 0) {
-            ItemStack luckyblock = new ItemStack(Material.SEA_LANTERN);
-            BaseBlock block4 = new BaseBlock(luckyblock.getTypeId(), luckyblock.getData().getData());
             pat.add(block, 0.33);
-            pat.add(block2, 0.34 - lucky);
+            pat.add(block2, 0.34-(lucky/10000));
             pat.add(block3, 0.33);
-            pat.add(block4, lucky);
-            session.setBlocks(transform(region), pat);
+            pat.add(block4, lucky/10000);
+            Mask mask = new BlockMask(session.getExtent(), new BaseBlock(BlockID.AIR));
+            session.replaceBlocks(transform(region), mask, pat);
             session.flushQueue();
             return;
         }
         pat.add(block, 0.33);
-        pat.add(block2, 0.34);
+        pat.add(block2, 0.33);
         pat.add(block3, 0.33);
         Mask mask = new BlockMask(session.getExtent(), new BaseBlock(BlockID.AIR));
         session.replaceBlocks(transform(region), mask, pat);
@@ -118,20 +103,19 @@ public class ResetHandler {
         BaseBlock block = new BaseBlock(i.getTypeId(), i.getData().getData());
         BaseBlock block2 = new BaseBlock(i2.getTypeId(), i2.getData().getData());
         BaseBlock block3 = new BaseBlock(i3.getTypeId(), i3.getData().getData());
-
+        ItemStack luckyblock = new ItemStack(Material.SEA_LANTERN);
+        BaseBlock block4 = new BaseBlock(luckyblock.getTypeId(), luckyblock.getData().getData());
         if (lucky != 0) {
-            ItemStack luckyblock = new ItemStack(Material.SEA_LANTERN);
-            BaseBlock block4 = new BaseBlock(luckyblock.getTypeId(), luckyblock.getData().getData());
             pat.add(block, 0.33);
-            pat.add(block2, 0.34 - lucky);
+            pat.add(block2, 0.34-(lucky/10000));
             pat.add(block3, 0.33);
-            pat.add(block4, lucky);
+            pat.add(block4, lucky/10000);
             session.setBlocks(transform(region), pat);
             session.flushQueue();
             return;
         }
         pat.add(block, 0.33);
-        pat.add(block2, 0.34);
+        pat.add(block2, 0.33);
         pat.add(block3, 0.33);
         session.setBlocks(transform(region), pat);
         session.flushQueue();
@@ -158,6 +142,8 @@ public class ResetHandler {
             if(mine.isLocationInMine(player.getLocation())) {
                 Location l = player.getLocation();
                 Location loc = new Location(player.getWorld(), l.getX(), mine.getMaxPoint().getY() + 1.5, l.getZ());
+                loc.setYaw(l.getYaw());
+                loc.setPitch(l.getPitch());
                 player.teleport(loc);
             }
         }

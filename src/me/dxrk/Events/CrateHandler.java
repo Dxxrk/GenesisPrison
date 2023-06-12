@@ -613,6 +613,13 @@ public class CrateHandler implements Listener, CommandExecutor {
         this.settings.getLocksmith().set(p.getUniqueId().toString() + "." + key, keys - amt);
     }
 
+
+    public void openAlpha(Player p, int amount) {
+        Random r = new Random();
+        int ri = r.nextInt(10);
+
+    }
+
     public void openall(Player p, int alpha, int beta, int omega, int token, int seasonal, int rank, int community, int vote, List<String> rw, int t, double m) {
         takeKey(p, "Alpha", alpha);
         takeKey(p, "Beta", beta);

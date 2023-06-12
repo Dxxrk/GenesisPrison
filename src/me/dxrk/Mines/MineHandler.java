@@ -19,6 +19,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.RankupHandler;
 import me.dxrk.Main.Main;
+import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldBorder;
 import net.minecraft.server.v1_8_R3.WorldBorder;
@@ -294,33 +295,40 @@ public class MineHandler implements Listener, CommandExecutor {
         Location paste = new Location(world, 0, 144, (mines * 250));
         paste.setYaw(-90);
         pasteSchematic(Objects.requireNonNull(WESchematic.getSchematic(schematic)), paste);
-
-        Location pworld = new Location(world, 0.5, 100.5, (mines * 250) + 0.5, -90, 0);
-        PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 1);
+        Location pworld = null;
+        if(schem.equals("firstmine")) {
+            pworld = new Location(world, 0.5, 100.5, (mines * 250) + 0.5, -90, 0);
+            PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 1);
+        }
+        if(schem.equals("secondmine")) {
+            pworld = new Location(world, 0.5, 125.5, (mines * 250) + 0.5, -90, 0);
+            PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 2);
+        }
+        if(schem.equals("thirdmine")) {
+            pworld = new Location(world, 0.5, 125.5, (mines * 250) + 0.5, -90, 0);
+            PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 3);
+        }
         p.teleport(pworld);
 
-        WorldBorder wb = new WorldBorder();
-        wb.world = ((CraftWorld) world).getHandle();
-        wb.setCenter(34.5, (mines * 250) + 0.5);
-        wb.setSize(83);
-        wb.setWarningDistance(1);
-        wb.setWarningTime(1);
-        PacketPlayOutWorldBorder packetPlayOutWorldBorder = new PacketPlayOutWorldBorder(wb, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE);
 
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutWorldBorder);
 
 
         Location point1 = new Location(world, 15, 65, (mines * 250) - 16);
         Location point2 = new Location(world, 47, 98, (mines * 250) + 16);
-        if(mineworld.equals("secondmine")) {
-            //change for mine2's dimensions
-            point1 = new Location(world, 15, 65, (mines * 250) - 16);
-            point2 = new Location(world, 47, 98, (mines * 250) + 16);
+        if(schem.equals("firstmine")) {
+            Methods.getInstance().createWorldBorder(p, world,83, 34.5, (mines*250)+0.5);
         }
-        if(mineworld.equals("thirdmine")) {
+        if(schem.equals("secondmine")) {
+            //change for mine2's dimensions
+            point1 = new Location(world, 9, 75, (mines * 250) - 23);
+            point2 = new Location(world, 56, 123, (mines * 250) + 24);
+            Methods.getInstance().createWorldBorder(p, world,83, 34.5, (mines*250)+0.5);
+        }
+        if(schem.equals("thirdmine")) {
             //change for mine3's dimensions
-            point1 = new Location(world, 15, 65, (mines * 250) - 16);
-            point2 = new Location(world, 47, 98, (mines * 250) + 16);
+            point1 = new Location(world, 9, 59, (mines * 250) - 31);
+            point2 = new Location(world, 71, 123, (mines * 250) + 31);
+            Methods.getInstance().createWorldBorder(p, world,103, 39.5, (mines*250)+0.5);
         }
 
 
@@ -353,8 +361,8 @@ public class MineHandler implements Listener, CommandExecutor {
         region.setPriority(2);
         regions.addRegion(region);
 
-        Location g1 = new Location(world, -15, 255, (mines * 250) + 50);
-        Location g2 = new Location(world, 82, 0, (mines * 250) - 46);
+        Location g1 = new Location(world, -50, 255, (mines * 250) + 75);
+        Location g2 = new Location(world, 100, 0, (mines * 250) - 75);
 
         //Create region that allows building within limits.
         ProtectedRegion outside = new ProtectedCuboidRegion(p.getName() + "outside",
