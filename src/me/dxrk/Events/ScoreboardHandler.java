@@ -278,18 +278,34 @@ public class ScoreboardHandler implements Listener {
                 team.addPlayer(pp);
 
 
-            } else if (pp.hasPermission("rank.admin")) {
+            } else if (pp.getName().equalsIgnoreCase("_Lone_Ninja_")) {
                 if (NewBoard.getTeam("c" + name(pp)) == null)
                     NewBoard.registerNewTeam("c" + name(pp));
 
                 Team team = NewBoard.getTeam("c" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&4&lAdmin &8"));
-                    pp.setPlayerListName(c(prefix + "&4&lAdmin &8" + pp.getName()));
+                    team.setPrefix(prefix(pp) + c("&c&lAdmin &8"));
+                    pp.setPlayerListName(c(prefix + "&c&lAdmin &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c(prefix + "&4&lAdmin &f&l"));
-                    pp.setPlayerListName(c(prefix + "&4&lAdmin &f&l" + pp.getName()));
+                    team.setPrefix(prefix(pp) + c(prefix + "&c&lAdmin &f&l"));
+                    pp.setPlayerListName(c(prefix + "&c&lAdmin &f&l" + pp.getName()));
+                }
+                team.addPlayer(pp);
+
+
+            }else if (pp.getName().equalsIgnoreCase("Pikashoo")) {
+                if (NewBoard.getTeam("c" + name(pp)) == null)
+                    NewBoard.registerNewTeam("c" + name(pp));
+
+                Team team = NewBoard.getTeam("c" + name(pp));
+
+                if (isAFK(pp)) {
+                    team.setPrefix(prefix(pp) + c("&a&lDeveloper &8"));
+                    pp.setPlayerListName(c(prefix + "&a&lDeveloper &8" + pp.getName()));
+                } else {
+                    team.setPrefix(prefix(pp) + c(prefix + "&a&lDeveloper &f&l"));
+                    pp.setPlayerListName(c(prefix + "&a&lDeveloper &f&l" + pp.getName()));
                 }
                 team.addPlayer(pp);
 
