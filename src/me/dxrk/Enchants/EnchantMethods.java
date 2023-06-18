@@ -29,7 +29,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -124,7 +123,7 @@ public class EnchantMethods implements CommandExecutor {
             if (sender.isOp()) {
                 if (args.length == 1) {
                     Player p = (Player) sender;
-                    String enchant = args[0];
+                    String enchant = args[0] + " " + args[1];
                     p.getInventory().addItem(testenchant(enchant));
                 }
             }
@@ -142,7 +141,6 @@ public class EnchantMethods implements CommandExecutor {
         RegionManager regionManager = worldGuard.getRegionManager(b.getWorld());
         return regionManager.getApplicableRegions(b.getLocation());
     }
-
 
     public static ArrayList<Block> getBlocksAroundCenter(Location loc, int radius) {
         ArrayList<Block> blocks = new ArrayList<>();
@@ -373,12 +371,12 @@ public class EnchantMethods implements CommandExecutor {
         WaveEffect wave2 = null;
         Location second = new Location(b.getWorld(), b.getLocation().getX(), b.getLocation().getY() - 1, b.getLocation().getZ());
         wave2 = new WaveEffect(second, 25);
-        WaveEffect finalWave2 = wave;
+        WaveEffect finalWave2 = wave2;
         //third layer
         WaveEffect wave3 = null;
         Location third = new Location(b.getWorld(), b.getLocation().getX(), b.getLocation().getY() - 2, b.getLocation().getZ());
         wave3 = new WaveEffect(third, 25);
-        WaveEffect finalWave3 = wave;
+        WaveEffect finalWave3 = wave3;
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -419,7 +417,7 @@ public class EnchantMethods implements CommandExecutor {
                 Tokens.getInstance().addTokens(p, tokens);
                 SellHandler.getInstance().sellEnchant(p, sellblocks, "Seismic Shock", tokens);
             }
-        }.runTaskLater(Main.plugin, 25L);
+        }.runTaskLater(Main.plugin, 50L);
     }
 
     public void TidalWave(Player p, Block b) {
@@ -684,14 +682,16 @@ public class EnchantMethods implements CommandExecutor {
             }.runTaskLater(Main.plugin, 20 * 20L);
         }
     }
+
     public double getBattleCry(Player p) {
-        if(battlecry.containsKey(p)) {
+        if (battlecry.containsKey(p)) {
             return battlecry.get(p);
         }
         return 1;
     }
 
     public static List<Player> euphoria = new ArrayList<>();
+
     public void Euphoria(Player p) {
         if (!euphoria.contains(p)) {
             euphoria.add(p);
@@ -705,8 +705,9 @@ public class EnchantMethods implements CommandExecutor {
             }.runTaskLater(Main.plugin, 20 * 10L);
         }
     }
+
     public double getEuphoria(Player p) {
-        if(euphoria.contains(p)) {
+        if (euphoria.contains(p)) {
             return 1.5;
         }
         return 1;

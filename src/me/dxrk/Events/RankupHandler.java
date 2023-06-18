@@ -113,9 +113,9 @@ public class RankupHandler implements Listener, CommandExecutor {
         } else if (ranks >= 750) {
             return 12;
         } else if (ranks >= 500) {
-            return 8;
+            return 7;
         } else if (ranks >= 250) {
-            return 4;
+            return 3;
         }
 
 
@@ -157,15 +157,15 @@ public class RankupHandler implements Listener, CommandExecutor {
 
         if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("Ethereal")) {
             double start = 7.523828125E20D * 25;
-            double price = start * (rank * 1.75);
+            double price = start * (rank * 1.35);
             return price;
         }
 
-        double prestiges = getPrestiges(p) * 2.75;
+        double prestiges = getPrestiges(p) * 2;
         if (prestiges < 1) {
             prestiges = 1;
         }
-        double price = (1.25e12 * (rank * 1.75)) * priceJumpR(p) * prestiges * priceJumpP(p);
+        double price = (1.25e12 * (rank * 1.35)) * priceJumpR(p) * prestiges * priceJumpP(p);
 
         return price;
     }

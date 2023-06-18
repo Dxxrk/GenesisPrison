@@ -10,6 +10,7 @@ import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Mines.MineSystem;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -82,15 +83,7 @@ public class PickXPHandler
     }
 
     public double cost(int pick) {
-        return 1000 + (1000 * (pick * 0.32));
-    }
-
-    public double totalXP() {
-        double cost = 0;
-        for (int i = 0; i <= 300; i++) {
-            cost += cost(i);
-        }
-        return cost;
+        return 1000 + (1000 * (pick * 0.40));
     }
 
 
@@ -166,10 +159,7 @@ public class PickXPHandler
         if (p.getItemInHand() == null) return;
         if (!p.getItemInHand().hasItemMeta()) return;
         if (!p.getItemInHand().getItemMeta().hasLore()) return;
-        WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-        ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
-        ProtectedRegion region = wg.getRegionManager(p.getWorld()).getRegion(p.getName());
-        if (!set.getRegions().contains(region)) {
+        if(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
             e.setCancelled(true);
             return;
         }

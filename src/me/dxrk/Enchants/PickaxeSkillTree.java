@@ -695,7 +695,7 @@ public class PickaxeSkillTree implements Listener {
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillKeyBoost", keyboost + 30);
             }
             if (skill.contains("Zeus")) {
-                setType(p, findPickaxeType(p));
+                //setType(p, findPickaxeType(p));
 
                 ItemStack pitem = p.getItemInHand().clone();
                 ItemMeta pm = pitem.getItemMeta();
@@ -777,7 +777,7 @@ public class PickaxeSkillTree implements Listener {
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.12);
             }
             if (skill.contains("Poseidon")) {
-                setType(p, findPickaxeType(p));
+                //setType(p, findPickaxeType(p));
 
                 ItemStack pitem = p.getItemInHand().clone();
                 ItemMeta pm = pitem.getItemMeta();
@@ -859,7 +859,7 @@ public class PickaxeSkillTree implements Listener {
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillJunkpileMultiBoost", skilljunkpilemultiboost + 2);
             }
             if (skill.contains("Hades")) {
-                setType(p, findPickaxeType(p));
+                //setType(p, findPickaxeType(p));
 
                 ItemStack pitem = p.getItemInHand().clone();
                 ItemMeta pm = pitem.getItemMeta();
@@ -940,7 +940,7 @@ public class PickaxeSkillTree implements Listener {
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillJunkpileXPBoost", junkpilexpboost + 5);
             }
             if (skill.contains("Aphrodite")) {
-                setType(p, findPickaxeType(p));
+                //setType(p, findPickaxeType(p));
 
                 ItemStack pitem = p.getItemInHand().clone();
                 ItemMeta pm = pitem.getItemMeta();
@@ -1020,7 +1020,7 @@ public class PickaxeSkillTree implements Listener {
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillTokenBoost", tokenboost + 0.12);
             }
             if (skill.contains("Ares")) {
-                setType(p, findPickaxeType(p));
+                //setType(p, findPickaxeType(p));
 
                 ItemStack pitem = p.getItemInHand().clone();
                 ItemMeta pm = pitem.getItemMeta();

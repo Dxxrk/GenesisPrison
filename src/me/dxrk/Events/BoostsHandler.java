@@ -49,9 +49,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
     public static boolean sactive = false;
     public static boolean xactive = false;
     public static double sell = 1;
-    public static int xp = 1;
-    public static String sacname = "";
-    public static String xacname = "";
+    public static double xp = 1;
 
     public static ArrayList<String> nextUpsell = new ArrayList<>();
     public static ArrayList<String> nextUpxp = new ArrayList<>();
@@ -88,10 +86,10 @@ public class BoostsHandler implements Listener, CommandExecutor {
             ItemStack item = new ItemStack(Material.POTION, 1, (short) 8260);
             ItemMeta im = item.getItemMeta();
             im.addItemFlags(ItemFlag.values());
-            im.setDisplayName(c("&f&l" + split[3] + "x Currency Boost"));
+            im.setDisplayName(c("&f&l" + split[2] + "x Currency Boost"));
             List<String> lore = new ArrayList<>();
-            lore.add(c("&dActivated By: &f" + split[2]));
-            lore.add(c("&d" + timeFormat(Integer.parseInt(split[4]))));
+            lore.add(c("&dActivated By: &f" + split[1]));
+            lore.add(c("&d" + timeFormat(Integer.parseInt(split[3]))));
             im.setLore(lore);
             item.setItemMeta(im);
             queue.add(item);
@@ -108,10 +106,10 @@ public class BoostsHandler implements Listener, CommandExecutor {
             ItemStack item = new ItemStack(Material.EXP_BOTTLE);
             ItemMeta im = item.getItemMeta();
             im.addItemFlags(ItemFlag.values());
-            im.setDisplayName(c("&f&l" + split[3] + "x XP Boost"));
+            im.setDisplayName(c("&f&l" + split[2] + "x XP Boost"));
             List<String> lore = new ArrayList<>();
-            lore.add(c("&dActivated By: &f" + split[2]));
-            lore.add(c("&d" + timeFormat(Integer.parseInt(split[4]))));
+            lore.add(c("&dActivated By: &f" + split[1]));
+            lore.add(c("&d" + timeFormat(Integer.parseInt(split[3]))));
             im.setLore(lore);
             item.setItemMeta(im);
             queue.add(item);
@@ -211,100 +209,142 @@ public class BoostsHandler implements Listener, CommandExecutor {
     public static String stimeLeft = c("&d" + timeFormat(selltime));
     public static int xptime = 0;
     public static String xtimeLeft = c("&d" + timeFormat(xptime));
+    public static String names = "";
+    public static String namex = "";
 
+    Runnable selltimer = () -> {
+        if (sactive == false) {
+            selltime = 0;
+            stimeLeft = c("&d" + timeFormat(0));
+            sname = c("&a$&f1.0x");
+            selltime = 0;
+            stimeLeft = c("&d" + timeFormat(0));
+            sell = 1;
+            settings.getBoost().set("ActiveSell.Amp", 0);
+            settings.getBoost().set("ActiveSell.Duration", 0);
+            Bukkit.broadcastMessage(c("&f&lBoost &8| &aCurrency Boost has Ended!"));
+            cancelSell();
+            activeNextSellBoost();
+        }
+        if (selltime <= 0) {
+            sactive = false;
+            return;
+        }
+        selltime = selltime - 1;
+        stimeLeft = c("&d" + timeFormat(selltime));
+
+    };
+    private int sellId;
 
     public void sCountdown() {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (sactive == false) {
-                    selltime = 0;
-                    stimeLeft = c("&d" + timeFormat(0));
-                    this.cancel();
-                }
-                if (selltime <= 0) {
-                    return;
-                }
-                selltime = selltime - 1;
-                stimeLeft = c("&d" + timeFormat(selltime));
-
-            }
-        }.runTaskTimer(Main.plugin, 0L, 20L);
+        sellId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class), selltimer, 2, 20L);
+    }
+    public void cancelSell() {
+        Bukkit.getScheduler().cancelTask(sellId);
     }
 
-    public void xCountdown() {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (xactive == false) {
-                    xptime = 0;
-                    xtimeLeft = c("&d" + timeFormat(0));
-                    this.cancel();
-                }
-                if (xptime <= 0) {
-                    return;
-                }
-                xptime = xptime - 1;
-                xtimeLeft = c("&d" + timeFormat(xptime));
+    Runnable xptimer = () -> {
+        if (xactive == false) {
+            xptime = 0;
+            xtimeLeft = c("&d" + timeFormat(0));
+            xname = c("&a✴&f1x");
+            xptime = 0;
+            xtimeLeft = c("&d" + timeFormat(0));
+            xp = 1;
+            settings.getBoost().set("ActiveXP.Amp", 0);
+            settings.getBoost().set("ActiveXP.Duration", 0);
+            Bukkit.broadcastMessage(c("&f&lBoost &8| &aXP Boost has Ended!"));
+            cancelXP();
+            activeNextXPBoost();
+        }
+        if (xptime <= 0) {
+            xactive = false;
+            return;
+        }
+        xptime = xptime - 1;
+        xtimeLeft = c("&d" + timeFormat(xptime));
 
-            }
-        }.runTaskTimer(Main.plugin, 0L, 20L);
+    };
+    private int xpId;
+
+    public void xCountdown() {
+        xpId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class), xptimer, 2, 20L);
+    }
+    public void cancelXP() {
+        Bukkit.getScheduler().cancelTask(xpId);
     }
 
 
     public static String sname = c("&a$&f1.0x");
     public static String xname = c("&a✴&f1x");
 
+    public void orderQueueSell() {
+        SortedMap<Double, String> queuesell = new TreeMap<>(Collections.reverseOrder());
+        for (String s : nextUpsell) {
+            queuesell.put(Double.valueOf(s.split(" ")[2]), s);
+        }
+        nextUpsell.clear();
+        Set<Map.Entry<Double, String>> qsell = queuesell.entrySet();
+        List<Map.Entry<Double, String>> newqsell = new ArrayList<>(qsell);
+        for (Map.Entry<Double, String> doubleStringEntry : newqsell) {
+            nextUpsell.add(doubleStringEntry.getValue());
+        }
+    }
 
-    @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
+    public void orderQueueXP() {
+        SortedMap<Double, String> queuexp = new TreeMap<>(Collections.reverseOrder());
+        for (String s : nextUpxp) {
+            queuexp.put(Double.valueOf(s.split(" ")[2]), s);
+        }
+        nextUpxp.clear();
+        Set<Map.Entry<Double, String>> qxp = queuexp.entrySet();
+        List<Map.Entry<Double, String>> newqxp = new ArrayList<>(qxp);
+        for (Map.Entry<Double, String> doubleStringEntry : newqxp) {
+            nextUpxp.add(doubleStringEntry.getValue());
+        }
+    }
 
-        if (cmd.getName().equalsIgnoreCase("activeboost")) {
-            if (args.length == 4) {
-                if (!cs.hasPermission("rank.admin")) return false;
-                if (args[0].equalsIgnoreCase("sell")) {
-                    double amp = Double.parseDouble(args[2]);
-                    int dur = Integer.parseInt(args[3]);
-                    if (sactive == true) {
-                        if (nextUpsell.size() > 0) {
-                            String[] first = nextUpsell.get(0).split(" ");
-                            if (amp >= Double.parseDouble(first[3])) {
-                                ArrayList<String> hold = new ArrayList<>(nextUpsell);
-                                nextUpsell.clear();
-                                nextUpsell.add("activeboost sell " + args[1] + " " + amp + " " + dur);
-                                nextUpsell.addAll(hold);
-                            } else {
-                                nextUpsell.add("activeboost sell " + args[1] + " " + amp + " " + dur);
-                            }
-                        } else {
-                            nextUpsell.add("activeboost sell " + args[1] + " " + amp + " " + dur);
-                        }
-                        return false;
-                    }
+    public void activeNextSellBoost() {
+        if(nextUpsell.size() >0) {
+            String[] next = nextUpsell.get(0).split(" ");
+            activeBoost("sell", Double.parseDouble(next[2]), Integer.parseInt(next[3]), next[1]);
+            nextUpsell.remove(0);
+        }
+    }
+    public void activeNextXPBoost() {
+        if(nextUpxp.size() >0) {
+            String[] next = nextUpxp.get(0).split(" ");
+            activeBoost("xp", Double.parseDouble(next[2]), Integer.parseInt(next[3]), next[1]);
+            nextUpxp.remove(0);
+        }
+    }
 
-
+    public void activeBoost(String type, double amp, int dur, String name) {
+        if (type.equalsIgnoreCase("sell")) {
+            if (sactive == true) {
+                if (amp > sell) {
+                    Bukkit.getScheduler().cancelTask(sellId);
+                    nextUpsell.add("sell " + names + " " + sell + " " + selltime);
+                    orderQueueSell();
                     sactive = true;
 
                     sell = amp;
 
                     selltime = dur;
 
-                    sacname = args[1];
-                    sCountdown();
+                    names = name;
 
+                    sCountdown();
                     settings.getBoost().set("ActiveSell.Amp", amp);
                     settings.getBoost().set("ActiveSell.Duration", dur);
 
-                    settings.getBoost().set("ActivatorSell", args[1]);
-
-
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l" + args[1] + " &dhas activated a " + amp + "x Currency Boost!");
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &7Length: &b" + timeFormat(dur));
+                    Bukkit.broadcastMessage(c("&f&lBoost &8| &b&l" + name + " &dhas activated a " + amp + "x Currency Boost!"));
+                    Bukkit.broadcastMessage(c("&f&lBoost &8| &7Length: &b" + timeFormat(dur)));
 
                     TextChannel channel = jdaHandler.jda.getTextChannelById("1003031504278016051");
 
                     EmbedBuilder b = new EmbedBuilder();
-                    b.setTitle("__" + args[1] + " Activated a Currency Boost__");
+                    b.setTitle("__" + name + " Activated a Currency Boost__");
                     b.addField("Multiplier: " + amp + "x", "Length: " + timeFormat(dur), false);
                     b.setColor(Color.BLUE);
 
@@ -312,120 +352,139 @@ public class BoostsHandler implements Listener, CommandExecutor {
                     channel.sendMessageEmbeds(b.build()).queue();
 
                     sname = c("&a$&a" + amp + "x");
-
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(Main.plugin, () -> {
-                        if (sactive == true) {
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &f&l" + args[1] + "'s &d&l" + amp + "x Currency Boost has ended!");
-                        }
-                        sactive = false;
-                        sname = c("&a$&f1.0x");
-                        selltime = 0;
-                        stimeLeft = c("&d" + timeFormat(0));
-                        sell = 1;
-
-                        settings.getBoost().set("ActiveSell.Amp", 0);
-                        settings.getBoost().set("ActiveSell.Duration", 0);
-
-                        settings.getBoost().set("ActivatorSell", "");
-
-                        if (!nextUpsell.isEmpty()) {
-                            String next = nextUpsell.get(0);
-                            nextUpsell.remove(0);
-
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), next);
-                                }
-                            }.runTaskLater(Main.plugin, 40L);
-                        }
-
-                    }, dur * 20L);
-
+                    return;
                 }
-                if (args[0].equalsIgnoreCase("XP")) {
-                    int amp = Integer.parseInt(args[2]);
-                    int dur = Integer.parseInt(args[3]);
-                    if (xactive == true) {
-                        if (nextUpxp.size() > 0) {
-                            String[] first = nextUpxp.get(0).split(" ");
-                            if (amp >= Integer.parseInt(first[3])) {
-                                ArrayList<String> hold = new ArrayList<>(nextUpxp);
-                                nextUpxp.clear();
-                                nextUpxp.add("activeboost XP " + args[1] + " " + amp + " " + dur);
-                                nextUpxp.addAll(hold);
-                            } else {
-                                nextUpxp.add("activeboost XP " + args[1] + " " + amp + " " + dur);
-                            }
-                        } else {
-                            nextUpxp.add("activeboost XP " + args[1] + " " + amp + " " + dur);
-                        }
-                        return false;
+                if (nextUpsell.size() > 0) {
+                    String[] first = nextUpsell.get(0).split(" ");
+                    if (amp >= Double.parseDouble(first[3])) {
+                        ArrayList<String> hold = new ArrayList<>(nextUpsell);
+                        nextUpsell.clear();
+                        nextUpsell.add("activeboost sell " + name + " " + amp + " " + dur);
+                        nextUpsell.addAll(hold);
+                    } else {
+                        nextUpsell.add("activeboost sell " + name + " " + amp + " " + dur);
                     }
+                } else {
+                    nextUpsell.add("sell " + name + " " + amp + " " + dur);
+                }
+                return;
+            }
 
 
+            sactive = true;
+
+            sell = amp;
+
+            selltime = dur;
+
+            names = name;
+
+            sCountdown();
+
+            settings.getBoost().set("ActiveSell.Amp", amp);
+            settings.getBoost().set("ActiveSell.Duration", dur);
+
+            Bukkit.broadcastMessage(c("&f&lBoost &8| &b&l" + name + " &dhas activated a " + amp + "x Currency Boost!"));
+            Bukkit.broadcastMessage(c("&f&lBoost &8| &7Length: &b" + timeFormat(dur)));
+
+            TextChannel channel = jdaHandler.jda.getTextChannelById("1003031504278016051");
+
+            EmbedBuilder b = new EmbedBuilder();
+            b.setTitle("__" + name + " Activated a Currency Boost__");
+            b.addField("Multiplier: " + amp + "x", "Length: " + timeFormat(dur), false);
+            b.setColor(Color.BLUE);
+
+            assert channel != null;
+            channel.sendMessageEmbeds(b.build()).queue();
+
+            sname = c("&a$&a" + amp + "x");
+        }
+        if (type.equalsIgnoreCase("xp")) {
+            if (xactive == true) {
+                if (amp > xp) {
+                    Bukkit.getScheduler().cancelTask(xpId);
+                    nextUpxp.add("XP" + " " + namex + " " + xp + " " + xptime);
+                    orderQueueXP();
                     xactive = true;
 
                     xp = amp;
 
                     xptime = dur;
-                    xacname = args[1];
-                    xCountdown();
 
+                    namex = name;
+
+                    xCountdown();
                     settings.getBoost().set("ActiveXP.Amp", amp);
                     settings.getBoost().set("ActiveXP.Duration", dur);
 
-                    settings.getBoost().set("ActivatorXP", args[1]);
-
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l" + args[1] + " &dhas activated a " + amp + "x XP Boost!");
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &7Length: &b" + timeFormat(dur));
+                    Bukkit.broadcastMessage(c("&f&lBoost &8| &b&l" + name + " &dhas activated a " + amp + "x XP Boost!"));
+                    Bukkit.broadcastMessage(c("&f&lBoost &8| &7Length: &b" + timeFormat(dur)));
 
                     TextChannel channel = jdaHandler.jda.getTextChannelById("1003031504278016051");
+
                     EmbedBuilder b = new EmbedBuilder();
-                    b.setTitle("__" + args[1] + " Activated an XP Boost__");
+                    b.setTitle("__" + name + " Activated a XP Boost__");
                     b.addField("Multiplier: " + amp + "x", "Length: " + timeFormat(dur), false);
-                    b.setColor(Color.GREEN);
+                    b.setColor(Color.BLUE);
 
                     assert channel != null;
                     channel.sendMessageEmbeds(b.build()).queue();
 
-                    xname = c("&a✴&e" + amp + "x");
-
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(Main.plugin, () -> {
-                        if (xactive == true) {
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &f&l" + args[1] + "'s &d&l" + amp + "x XP Boost has ended!");
-                        }
-                        xactive = false;
-                        xname = c("&a✴&f1x");
-                        xptime = 0;
-                        xtimeLeft = c("&d" + timeFormat(0));
-                        xp = 1;
-
-                        settings.getBoost().set("ActiveXP.Amp", 0);
-                        settings.getBoost().set("ActiveXP.Duration", 0);
-
-                        settings.getBoost().set("ActivatorXP", "");
-                        if (!nextUpxp.isEmpty()) {
-                            String next = nextUpxp.get(0);
-                            nextUpxp.remove(0);
-
-
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), next);
-                                }
-                            }.runTaskLater(Main.plugin, 40L);
-                        }
-
-                    }, dur * 20L);
-
+                    xname = c("&a$&a" + amp + "x");
+                    return;
                 }
-
+                if (nextUpxp.size() > 0) {
+                    String[] first = nextUpxp.get(0).split(" ");
+                    if (amp >= Integer.parseInt(first[3])) {
+                        ArrayList<String> hold = new ArrayList<>(nextUpxp);
+                        nextUpxp.clear();
+                        nextUpxp.add("XP " + name + " " + amp + " " + dur);
+                        nextUpxp.addAll(hold);
+                    } else {
+                        nextUpxp.add("XP " + name + " " + amp + " " + dur);
+                    }
+                } else {
+                    nextUpxp.add("XP " + name + " " + amp + " " + dur);
+                }
+                return;
             }
-        }
-        settings.saveboosts();
 
+
+            xactive = true;
+
+            xp = amp;
+
+            xptime = dur;
+            xCountdown();
+
+            settings.getBoost().set("ActiveXP.Amp", amp);
+            settings.getBoost().set("ActiveXP.Duration", dur);
+
+
+            Bukkit.broadcastMessage(c("&f&lBoost &8| &b&l" + name + " &dhas activated a " + amp + "x XP Boost!"));
+            Bukkit.broadcastMessage(c("&f&lBoost &8| &7Length: &b" + timeFormat(dur)));
+
+            TextChannel channel = jdaHandler.jda.getTextChannelById("1003031504278016051");
+            EmbedBuilder b = new EmbedBuilder();
+            b.setTitle("__" + name + " Activated an XP Boost__");
+            b.addField("Multiplier: " + amp + "x", "Length: " + timeFormat(dur), false);
+            b.setColor(Color.GREEN);
+
+            assert channel != null;
+            channel.sendMessageEmbeds(b.build()).queue();
+
+            xname = c("&a✴&e" + amp + "x");
+        }
+    }
+
+    public void giveBoost(Player p, String type, double amp, int dur) {
+        if(type.equalsIgnoreCase("sell"))
+            boostsinv.get(p).add(BoostSell("&b" + amp + "x Currency Boost", "&d" + timeFormat(dur)));
+        if(type.equalsIgnoreCase("xp"))
+            boostsinv.get(p).add(BoostXP("&a" + amp + "x XP Boost", "&d" + timeFormat(dur)));
+    }
+    @Override
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("giveboost")) {
 
 
@@ -579,7 +638,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
 
                 int dur = toSeconds(e.getCurrentItem().getItemMeta().getLore().get(0));
 
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "activeboost Sell " + p.getName() + " " + amp + " " + dur);
+                activeBoost("sell", amp, dur, p.getName());
 
 
             } else if (e.getCurrentItem().getType().equals(Material.EXP_BOTTLE)) {
@@ -590,8 +649,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
 
 
                 int dur = toSeconds(e.getCurrentItem().getItemMeta().getLore().get(0));
-
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "activeboost XP " + p.getName() + " " + amp + " " + dur);
+                activeBoost("xp", amp, dur, p.getName());
 
             }
             boostsinv.get(p).remove(e.getSlot());

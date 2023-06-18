@@ -5,6 +5,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Mines.MineSystem;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -60,8 +61,8 @@ public class BlocksHandler implements CommandExecutor, Listener {
             return;
         WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
         ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
-        LocalPlayer player = wg.wrapPlayer(p);
-        if (!set.isMemberOfAll(player)) {
+        if(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
+            e.setCancelled(true);
             return;
         }
         if (!set.allows(DefaultFlag.LIGHTER))

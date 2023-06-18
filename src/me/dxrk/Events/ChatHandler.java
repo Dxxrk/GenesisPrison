@@ -317,6 +317,8 @@ public class ChatHandler implements Listener, CommandExecutor {
             rank = ChatColor.translateAlternateColorCodes('&', "&f&k&l;&c&lAdmin&f&k&l;&r ");
         }else if (p.getName().equalsIgnoreCase("Pikashoo")) {
             rank = ChatColor.translateAlternateColorCodes('&', "&f&k&l;&a&lDeveloper&f&k&l;&r ");
+        }else if (p.getName().equalsIgnoreCase("BakonStrip")) {
+            rank = CMDOptions.TagColor(settings.getOptions().getString(p.getUniqueId().toString() + ".GenesisColor")) + " ";
         } else if (p.hasPermission("Rank.Manager")) {
             rank = ChatColor.translateAlternateColorCodes('&', "&f&l&k;&5&lManager&f&l&k;&r ");
         } else if (p.hasPermission("Rank.Mod")) {
@@ -468,7 +470,7 @@ public class ChatHandler implements Listener, CommandExecutor {
         if (this.settings.getcolor().getString(p.getName() + ".Nickname") == null) {
             name = ChatColor.GRAY + p.getName();
         } else {
-            name = ChatColor.translateAlternateColorCodes('&', this.settings.getcolor().getString(p.getName() + ".Nickname"));
+            name = ChatColor.translateAlternateColorCodes('&', this.settings.getcolor().getString(p.getName() + ".Nickname")+"&r");
         }
         String suffix = null;
         if (this.settings.getData().contains(p.getUniqueId().toString() + ".Tag"))
@@ -672,7 +674,7 @@ public class ChatHandler implements Listener, CommandExecutor {
                 }
                 if (p.hasPermission("Rank.Owner")) {
                     chatFormat.color(ChatColor.DARK_RED);
-                } else if (p.getName().equalsIgnoreCase("BakonStirp")) {
+                } else if (p.getName().equalsIgnoreCase("BakonStrip")) {
                     chatFormat.color(ChatColor.DARK_PURPLE);
                 } else if (p.hasPermission("Rank.Admin")) {
                     chatFormat.color(ChatColor.RED).style(ChatColor.BOLD);

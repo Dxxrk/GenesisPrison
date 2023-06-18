@@ -1,5 +1,7 @@
 package me.dxrk.Events;
 
+import me.dxrk.Commands.CMDRanks;
+import me.dxrk.Commands.CMDTags;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Tokens.Tokens;
@@ -616,9 +618,236 @@ public class CrateHandler implements Listener, CommandExecutor {
 
     public void openAlpha(Player p, int amount) {
         Random r = new Random();
-        int ri = r.nextInt(10);
-
+        takeKey(p, "Alpha", amount);
+        for (int i = 0; i < amount; i++) {
+            int ri = r.nextInt(1000);
+            if (ri <= 500) {
+                Tokens.getInstance().addTokens(p, 50000);
+            }
+            if (ri > 500 && ri <= 750) {
+                addKey(p, "Token", 1);
+            }
+            if (ri > 750 && ri <= 850) {
+                addKey(p, "Beta", 1);
+            }
+            if (ri > 850) {
+                SellHandler.getInstance().setMulti(p, SellHandler.getInstance().getMulti(p) + 1.0);
+            }
+        }
     }
+
+    public void openToken(Player p, int amount) {
+        Random r = new Random();
+        takeKey(p, "Token", amount);
+        for (int i = 0; i < amount; i++) {
+            int min = 75000;
+            int max = 250000;
+            int tokens = r.nextInt(max - min) + min;
+            Tokens.getInstance().addTokens(p, tokens);
+        }
+    }
+
+    public void openBeta(Player p, int amount) {
+        Random r = new Random();
+        takeKey(p, "Beta", amount);
+        for (int i = 0; i < amount; i++) {
+            int ri = r.nextInt(1000);
+            if (ri <= 500) {
+                Tokens.getInstance().addTokens(p, 50000);
+            }
+            if (ri > 500 && ri <= 750) {
+                addKey(p, "Token", 2);
+            }
+            if (ri > 750 && ri <= 850) {
+                addKey(p, "Alpha", 2);
+            }
+            if (ri > 850 && ri <= 900) {
+                addKey(p, "Omega", 1);
+            }
+            if (ri > 900) {
+                SellHandler.getInstance().setMulti(p, SellHandler.getInstance().getMulti(p) + 1.5);
+            }
+        }
+    }
+
+    public void openOmega(Player p, int amount) {
+        Random r = new Random();
+        takeKey(p, "Omega", amount);
+        for (int i = 0; i < amount; i++) {
+            int ri = r.nextInt(1000);
+            if (ri <= 500) {
+                Tokens.getInstance().addTokens(p, 100000);
+            }
+            if (ri > 500 && ri <= 750) {
+                addKey(p, "Token", 2);
+            }
+            if (ri > 750 && ri <= 850) {
+                addKey(p, "Alpha", 2);
+            }
+            if (ri > 850 && ri <= 900) {
+                addKey(p, "Beta", 2);
+            }
+            if (ri > 900) {
+                SellHandler.getInstance().setMulti(p, SellHandler.getInstance().getMulti(p) + 3.0);
+            }
+        }
+    }
+
+    public void openVote(Player p, int amount) {
+        Random r = new Random();
+        takeKey(p, "Vote", amount);
+        for (int i = 0; i < amount; i++) {
+            int ri = r.nextInt(1000);
+            if (ri <= 400) {
+                int min = 100000;
+                int max = 500000;
+                int tokens = r.nextInt(max - min) + min;
+                Tokens.getInstance().addTokens(p, tokens);
+            }
+            if (ri > 400 && ri <= 650) {
+                addKey(p, "Token", 3);
+            }
+            if (ri > 650 && ri <= 800) {
+                addKey(p, "Seasonal", 1);
+            }
+            if (ri > 800 && ri <= 900) {
+                PickXPHandler.getInstance().addXP(p, 5000);
+            }
+            if (ri > 900 && ri <= 990) {
+                SellHandler.getInstance().setMulti(p, SellHandler.getInstance().getMulti(p) + 5.0);
+            }
+            if (ri > 990) {
+                addKey(p, "Rank", 1);
+            }
+        }
+    }
+
+    public void openSeasonal(Player p, int amount) {
+        Random r = new Random();
+        takeKey(p, "Seasonal", amount);
+        for (int i = 0; i < amount; i++) {
+            int ri = r.nextInt(1000);
+            if (ri <= 400) {
+                Tokens.getInstance().addTokens(p, 500000);
+            }
+            if (ri > 400 && ri <= 750) {
+                SellHandler.getInstance().setMulti(p, SellHandler.getInstance().getMulti(p) + 15.0);
+            }
+            if (ri > 750 && ri <= 990) {
+                p.getInventory().addItem(CrateFunctions.ContrabandCrate());
+            }
+            if (ri > 990) {
+                p.getInventory().addItem(CrateFunctions.GenesisCrate());
+            }
+
+        }
+    }
+
+    public void openRank(Player p, int amount) {
+        Random r = new Random();
+        takeKey(p, "Rank", amount);
+        for (int i = 0; i < amount; i++) {
+            int ri = r.nextInt(1000);
+            if (ri <= 150) {
+                p.getInventory().addItem(CMDRanks.rankItem("&b&lSponsor"));
+            }
+            if (ri > 150 && ri <= 300) {
+                p.getInventory().addItem(CMDRanks.rankItem("&a&lVIP"));
+            }
+            if (ri > 300 && ri <= 450) {
+                p.getInventory().addItem(CMDRanks.rankItem("&6&lMVP"));
+            }
+            if (ri > 450 && ri < 600) {
+                p.getInventory().addItem(CMDRanks.rankItem("&c&lHero"));
+            }
+            if (ri > 600 && ri < 800) {
+                p.getInventory().addItem(CMDRanks.rankItem("&5&lDemi-God"));
+            }
+            if (ri > 800 && ri < 925) {
+                p.getInventory().addItem(CMDRanks.rankItem("&3&lTitan"));
+            }
+            if (ri > 925 && ri < 975) {
+                p.getInventory().addItem(CMDRanks.rankItem("&d&lGod"));
+            }
+            if (ri > 975 && ri <= 997) {
+                p.getInventory().addItem(CMDRanks.rankItem("&e&lOlympian"));
+            }
+            if (ri > 997) {
+                p.getInventory().addItem(CMDRanks.rankItem("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls"));
+            }
+        }
+    }
+
+    public void openCommunity(Player p, int amount) {
+        Random r = new Random();
+        takeKey(p, "Community", amount);
+        for (int i = 0; i < amount; i++) {
+            int ri = r.nextInt(100);
+            if (ri <= 20) {
+                CMDTags.addRandomTag(p);
+            }
+            if (ri > 20 && ri < 36) {
+                BoostsHandler.getInstance().giveBoost(p, "sell", 2, 600);
+            }
+            if (ri > 37 && ri < 53) {
+                BoostsHandler.getInstance().giveBoost(p, "sell", 1.5, 900);
+            }
+            if (ri > 54 && ri < 69) {
+                BoostsHandler.getInstance().giveBoost(p, "xp", 1.5, 900);
+            }
+            if (ri > 69 && ri < 84) {
+                BoostsHandler.getInstance().giveBoost(p, "xp", 2, 600);
+            }
+            if (ri > 84 && ri <= 86) {
+                Main.perms.playerAdd(p, "ChatColor.White");
+            }
+            if (ri > 86 && ri <= 88) {
+                Main.perms.playerAdd(p, "ChatColor.Yellow");
+            }
+            if (ri > 88 && ri <= 90) {
+                Main.perms.playerAdd(p, "ChatColor.Blue");
+            }
+            if (ri > 90 && ri <= 92) {
+                Main.perms.playerAdd(p, "ChatColor.Green");
+            }
+            if (ri > 92 && ri <= 94) {
+                Main.perms.playerAdd(p, "ChatColor.Purple");
+            }
+            if (ri > 94 && ri <= 96) {
+                Main.perms.playerAdd(p, "ChatColor.Gold");
+            }
+            if (ri > 96 && ri <= 98) {
+                Main.perms.playerAdd(p, "ChatColor.Red");
+            }
+            if (ri > 98) {
+                Main.perms.playerAdd(p, "ChatColor.Lime");
+            }
+        }
+    }
+
+    public void openAll(Player p) {
+        String uuid = p.getUniqueId().toString();
+        int a = this.settings.getLocksmith().getInt(uuid + ".alpha");
+        int b = this.settings.getLocksmith().getInt(uuid + ".beta");
+        int o = this.settings.getLocksmith().getInt(uuid + ".omega");
+        int to = this.settings.getLocksmith().getInt(uuid + ".token");
+        int v = this.settings.getLocksmith().getInt(uuid + ".vote");
+        int s = this.settings.getLocksmith().getInt(uuid + ".seasonal");
+        int c = this.settings.getLocksmith().getInt(uuid + ".community");
+        int r = this.settings.getLocksmith().getInt(uuid + ".rank");
+        if (a == 0 && b == 0 && o == 0 && to == 0 && v == 0 && s == 0 && c == 0 && r == 0) return;
+        openAlpha(p, a);
+        openBeta(p, b);
+        openOmega(p, o);
+        openToken(p, to);
+        openVote(p, v);
+        openSeasonal(p, s);
+        openCommunity(p, c);
+        openRank(p, r);
+        settings.saveLocksmith();
+        openAll(p);
+    }
+
 
     public void openall(Player p, int alpha, int beta, int omega, int token, int seasonal, int rank, int community, int vote, List<String> rw, int t, double m) {
         takeKey(p, "Alpha", alpha);
@@ -973,17 +1202,7 @@ public class CrateHandler implements Listener, CommandExecutor {
         if (label.equalsIgnoreCase("openall")) {
             Player p = (Player) sender;
             if (p.hasPermission("command.openall")) {
-                String uuid = p.getUniqueId().toString();
-                int alpha = this.settings.getLocksmith().getInt(uuid + ".alpha");
-                int beta = this.settings.getLocksmith().getInt(uuid + ".beta");
-                int omega = this.settings.getLocksmith().getInt(uuid + ".omega");
-                int token = this.settings.getLocksmith().getInt(uuid + ".token");
-                int vote = this.settings.getLocksmith().getInt(uuid + ".vote");
-                int seasonal = this.settings.getLocksmith().getInt(uuid + ".seasonal");
-                int community = this.settings.getLocksmith().getInt(uuid + ".community");
-                int rank = this.settings.getLocksmith().getInt(uuid + ".rank");
-                List<String> rw = new ArrayList<>();
-                openall(p, alpha, beta, omega, token, seasonal, rank, community, vote, rw, 0, 0);
+                openAll(p);
             } else {
                 p.sendMessage(c("&f&lCrates &8| &bYou must be rank Hero+ to use /openall"));
             }

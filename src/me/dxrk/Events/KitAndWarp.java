@@ -90,56 +90,56 @@ public class KitAndWarp implements Listener {
             e.setCancelled(true);
             if (second.equalsIgnoreCase("demi-godkeys")) {
                 if (p.hasPermission("rank.demi-god")) {
-                    if (PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".KitDemiGodKeys") == 0 || p.hasPermission("rank.admin")) {
+                    if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitDemiGodKeys") == 0 || p.hasPermission("rank.admin")) {
                         LocksmithHandler.getInstance().addKey(p, "token", 5);
                         LocksmithHandler.getInstance().addKey(p, "omega", 5);
                         LocksmithHandler.getInstance().addKey(p, "beta", 5);
                         LocksmithHandler.getInstance().addKey(p, "alpha", 5);
-                        PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".KitDemiGodKeys", 604800);
+                        PlayerDataHandler.getInstance().getPlayerData(p).set("KitDemiGodKeys", 604800);
                         p.sendMessage(m.c("&f&lKits &8| &bDemi-GodKeys Claimed!"));
                     } else {
-                        p.sendMessage(m.c("&f&lKits &8| &bYou can use that kit again in " + Leaderboards.formatTime(PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".KitDemiGodKeys"))));
+                        p.sendMessage(m.c("&f&lKits &8| &bYou can use that kit again in " + Leaderboards.formatTime(PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitDemiGodKeys"))));
                     }
                 }
             }
             if (second.equalsIgnoreCase("titankeys")) {
                 if (p.hasPermission("rank.titan")) {
-                    if (PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".KitTitanKeys") == 0 || p.hasPermission("rank.admin")) {
+                    if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitTitanKeys") == 0 || p.hasPermission("rank.admin")) {
                         LocksmithHandler.getInstance().addKey(p, "token", 7);
                         LocksmithHandler.getInstance().addKey(p, "omega", 7);
                         LocksmithHandler.getInstance().addKey(p, "beta", 7);
                         LocksmithHandler.getInstance().addKey(p, "alpha", 7);
-                        PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".KitTitanKeys", 604800);
+                        PlayerDataHandler.getInstance().getPlayerData(p).set("KitTitanKeys", 604800);
                         p.sendMessage(m.c("&f&lKits &8| &bTitanKeys Claimed!"));
                     } else {
-                        p.sendMessage(m.c("&f&lKits &8| &bYou can use that kit again in " + Leaderboards.formatTime(PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".KitTitanKeys"))));
+                        p.sendMessage(m.c("&f&lKits &8| &bYou can use that kit again in " + Leaderboards.formatTime(PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitTitanKeys"))));
                     }
                 }
             }
             if (second.equalsIgnoreCase("godkeys")) {
                 if (p.hasPermission("rank.god")) {
-                    if (PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".KitGodKeys") == 0 || p.hasPermission("rank.admin")) {
+                    if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitGodKeys") == 0 || p.hasPermission("rank.admin")) {
                         LocksmithHandler.getInstance().addKey(p, "token", 9);
                         LocksmithHandler.getInstance().addKey(p, "omega", 9);
                         LocksmithHandler.getInstance().addKey(p, "beta", 9);
                         LocksmithHandler.getInstance().addKey(p, "alpha", 9);
                         LocksmithHandler.getInstance().addKey(p, "community", 4);
-                        PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".KitGodKeys", 604800);
+                        PlayerDataHandler.getInstance().getPlayerData(p).set("KitGodKeys", 604800);
                         p.sendMessage(m.c("&f&lKits &8| &bGodKeys Claimed!"));
                     } else {
-                        p.sendMessage(m.c("&f&lKits &8| &bYou can use that kit again in " + Leaderboards.formatTime(PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".KitGodKeys"))));
+                        p.sendMessage(m.c("&f&lKits &8| &bYou can use that kit again in " + Leaderboards.formatTime(PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitGodKeys"))));
                     }
                 }
             }
             if (second.equalsIgnoreCase("olympiankeys")) {
                 if (p.hasPermission("rank.olympian")) {
-                    if (PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".KitOlympianKeys") == 0 || p.hasPermission("rank.admin")) {
+                    if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitOlympianKeys") == 0 || p.hasPermission("rank.admin")) {
                         LocksmithHandler.getInstance().addKey(p, "token", 11);
                         LocksmithHandler.getInstance().addKey(p, "omega", 11);
                         LocksmithHandler.getInstance().addKey(p, "beta", 11);
                         LocksmithHandler.getInstance().addKey(p, "alpha", 11);
                         LocksmithHandler.getInstance().addKey(p, "community", 5);
-                        PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".KitOlympianKeys", 604800);
+                        PlayerDataHandler.getInstance().getPlayerData(p).set("KitOlympianKeys", 604800);
                         p.sendMessage(m.c("&f&lKits &8| &bOlympianKeys Claimed!"));
                     } else {
                         p.sendMessage(m.c("&f&lKits &8| &bYou can use that kit again in " + Leaderboards.formatTime(PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitOlympianKeys"))));
@@ -154,7 +154,7 @@ public class KitAndWarp implements Listener {
                         LocksmithHandler.getInstance().addKey(p, "beta", 13);
                         LocksmithHandler.getInstance().addKey(p, "alpha", 13);
                         LocksmithHandler.getInstance().addKey(p, "community", 6);
-                        PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".KitGenesisKeys", 604800);
+                        PlayerDataHandler.getInstance().getPlayerData(p).set("KitGenesisKeys", 604800);
                         p.sendMessage(m.c("&f&lKits &8| &bGenesisKeys Claimed!"));
                     } else {
                         p.sendMessage(m.c("&f&lKits &8| &bYou can use that kit again in " + Leaderboards.formatTime(PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitGenesisKeys"))));
@@ -163,9 +163,9 @@ public class KitAndWarp implements Listener {
             }
             if (second.equalsIgnoreCase("god")) {
                 if (p.hasPermission("rank.god")) {
-                    if (PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".KitGod") == 0 || p.hasPermission("rank.admin")) {
+                    if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitGod") == 0 || p.hasPermission("rank.admin")) {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate " + p.getName() + " contraband");
-                        PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".KitGod", 604800);
+                        PlayerDataHandler.getInstance().getPlayerData(p).set("KitGod", 604800);
                         p.sendMessage(m.c("&f&lKits &8| &bGod Claimed!"));
                     } else {
                         p.sendMessage(m.c("&f&lKits &8| &bYou can use that kit again in " + Leaderboards.formatTime(PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitGod"))));
@@ -174,10 +174,10 @@ public class KitAndWarp implements Listener {
             }
             if (second.equalsIgnoreCase("olympian")) {
                 if (p.hasPermission("rank.olympian")) {
-                    if (PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".KitOlympian") == 0 || p.hasPermission("rank.admin")) {
+                    if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitOlympian") == 0 || p.hasPermission("rank.admin")) {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate " + p.getName() + " contraband");
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate " + p.getName() + " contraband");
-                        PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".KitOlympian", 604800);
+                        PlayerDataHandler.getInstance().getPlayerData(p).set("KitOlympian", 604800);
                         p.sendMessage(m.c("&f&lKits &8| &bOlympian Claimed!"));
                     } else {
                         p.sendMessage(m.c("&f&lKits &8| &bYou can use that kit again in " + Leaderboards.formatTime(PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitOlympian"))));
@@ -186,10 +186,10 @@ public class KitAndWarp implements Listener {
             }
             if (second.equalsIgnoreCase("genesis")) {
                 if (p.hasPermission("rank.genesis")) {
-                    if (PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".KitGenesis") == 0 || p.hasPermission("rank.admin")) {
+                    if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitGenesis") == 0 || p.hasPermission("rank.admin")) {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate " + p.getName() + " contraband");
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate " + p.getName() + " genesis");
-                        PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".KitGenesis", 604800);
+                        PlayerDataHandler.getInstance().getPlayerData(p).set("KitGenesis", 604800);
                         p.sendMessage(m.c("&f&lKits &8| &bGenesis Claimed!"));
                     } else {
                         p.sendMessage(m.c("&f&lKits &8| &bYou can use that kit again in " + Leaderboards.formatTime(PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitGenesis"))));

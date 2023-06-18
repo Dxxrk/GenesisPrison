@@ -1,5 +1,6 @@
 package me.dxrk.Commands;
 
+import me.dxrk.Main.Main;
 import me.dxrk.Main.SettingsManager;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Random;
 
 public class CMDTags implements Listener, CommandExecutor {
-    SettingsManager settings = SettingsManager.getInstance();
+    static SettingsManager settings = SettingsManager.getInstance();
 
     public int getPage(String s) {
         StringBuilder lvl = new StringBuilder();
@@ -176,11 +177,14 @@ public class CMDTags implements Listener, CommandExecutor {
         }
     }
 
-    Random r = new Random();
+    static Random r = new Random();
 
-    public String randomTagName() {
-        List<String> names = new ArrayList<>(this.settings.getTags().getKeys(false));
-        return names.get(this.r.nextInt(names.size()));
+    public static String randomTagName() {
+        List<String> names = new ArrayList<>(settings.getTags().getKeys(false));
+        return names.get(r.nextInt(names.size()));
+    }
+    public static void addRandomTag(Player p) {
+        Main.perms.playerAdd(p, "Tag."+randomTagName());
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -193,8 +197,8 @@ public class CMDTags implements Listener, CommandExecutor {
             } else if (args.length == 1) {
                 Player p = (Player) sender;
                 if (args[0].equalsIgnoreCase("off")) {
-                    this.settings.getData().set(p.getUniqueId().toString() + ".Tag", "");
-                    this.settings.saveData();
+                    settings.getData().set(p.getUniqueId().toString() + ".Tag", "");
+                    settings.saveData();
                     p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Your tag has been removed!"));
                     return true;
                 }
@@ -205,12 +209,12 @@ public class CMDTags implements Listener, CommandExecutor {
                     sender.sendMessage(ChatColor.GOLD + "Player not found!");
                     return false;
                 }
+                String tag;
                 if (args[1].equalsIgnoreCase("random")) {
-                    String tag = randomTagName();
+                    tag = randomTagName();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "manuaddp " + give.getName() + " " + "Tag." + tag);
-                    give.sendMessage(ChatColor.GOLD + "You have been given the " + ChatColor.translateAlternateColorCodes('&', this.settings.getTags().getString(tag) + " &6tag!"));
                 } else {
-                    String tag = args[1];
+                    tag = args[1];
                     boolean real = false;
                     for (String s : this.settings.getTags().getKeys(false)) {
                         if (s.equalsIgnoreCase(tag)) {
@@ -223,8 +227,8 @@ public class CMDTags implements Listener, CommandExecutor {
                         return false;
                     }
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "manuaddp " + give.getName() + " Tag." + tag);
-                    give.sendMessage(ChatColor.GOLD + "You have been given the " + ChatColor.translateAlternateColorCodes('&', this.settings.getTags().getString(tag) + " &6tag!"));
                 }
+                give.sendMessage(ChatColor.GOLD + "You have been given the " + ChatColor.translateAlternateColorCodes('&', this.settings.getTags().getString(tag) + " &6tag!"));
             }
         return false;
     }

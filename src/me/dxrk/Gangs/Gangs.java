@@ -47,7 +47,7 @@ public class Gangs implements Listener {
         List<String> perks = new ArrayList<>();
         settings.getGangs().set(name + ".PerksUnlocked", perks);
         settings.saveGangs();
-        PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".Gang", name);
+        PlayerDataHandler.getInstance().getPlayerData(p).set("Gang", name);
         PlayerDataHandler.getInstance().savePlayerData(p);
     }
 
@@ -56,7 +56,7 @@ public class Gangs implements Listener {
         members.add(p.getUniqueId().toString());
         settings.getGangs().set(name + ".Members", members);
         settings.saveGangs();
-        PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".Gang", name);
+        PlayerDataHandler.getInstance().getPlayerData(p).set("Gang", name);
         PlayerDataHandler.getInstance().savePlayerData(p);
     }
 
@@ -65,7 +65,7 @@ public class Gangs implements Listener {
         members.remove(p.getUniqueId().toString());
         settings.getGangs().set(name + ".Members", members);
         settings.saveGangs();
-        PlayerDataHandler.getInstance().getPlayerData(p.getUniqueId()).set(p.getUniqueId().toString() + ".Gang", "");
+        PlayerDataHandler.getInstance().getPlayerData(p.getUniqueId()).set("Gang", "");
         PlayerDataHandler.getInstance().savePlayerData(p.getUniqueId());
     }
 

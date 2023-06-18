@@ -131,18 +131,15 @@ public class Enchants implements Listener {
         if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK) || e.getAction().equals(Action.LEFT_CLICK_BLOCK)){
             Block b = e.getClickedBlock();
             if(b.getType().equals(Material.SEA_LANTERN)){
-                WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-                ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(b.getLocation());
-                LocalPlayer player = wg.wrapPlayer(p);
-                if (EnchantMethods.set(b).allows(DefaultFlag.LIGHTER) || set.isMemberOfAll(player)){
+                Mine m = MineSystem.getInstance().getMineByPlayer(p);
+                if (m.isLocationInMine(b.getLocation())){
                     b.setType(Material.AIR);
                     EnchantMethods.getInstance().Luckyblock(p);
                 }
             }
         }
     }
-    @SuppressWarnings("deprecation")
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         Block b = e.getBlock();
@@ -153,10 +150,7 @@ public class Enchants implements Listener {
             return;
         if (!p.getItemInHand().getItemMeta().hasLore())
             return;
-        WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-        ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
-        LocalPlayer player = wg.wrapPlayer(p);
-        if (EnchantMethods.set(b).allows(DefaultFlag.LIGHTER) || set.isMemberOfAll(player)) {
+        if (MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(b.getLocation())) {
             for (String s : EnchantMethods.getInstance().Enchants()) {
                 if (hasEnchant(p, s))
                     EnchantMethods.getInstance().procEnchant(s, p, b);

@@ -76,16 +76,7 @@ public class SellHandler implements Listener, CommandExecutor {
     }
 
 
-    public double getMulti(Player p) {
-        double d = SettingsManager.getInstance().getMultiplier().getDouble(p.getUniqueId().toString());
 
-        if (d < 1.0) {
-            d = 1.0;
-        }
-        double dround = d * 10.0;
-        double drounded = Math.round(dround) / 10.0;
-        return drounded;
-    }
 
     public boolean isDbl(String s) {
         try {
@@ -109,9 +100,7 @@ public class SellHandler implements Listener, CommandExecutor {
     }
 
 
-    public void setMulti(Player p, double d) {
-        this.settings.getMultiplier().set(p.getUniqueId().toString(), d);
-    }
+
 
 
     private static Methods m = Methods.getInstance();
@@ -123,7 +112,7 @@ public class SellHandler implements Listener, CommandExecutor {
         double greed = Functions.greed(p);
         double sell = Functions.sellBoost(p);
         double miningboost = BoostsHandler.sell;
-        double multi = SellHandler.getInstance().getMulti(p) / 1.75;
+        double multi = getMulti(p) / 1.75;
         double momentum = MomentumHandler.getBonus(p.getUniqueId());
         if (multi < 1) {
             multi = 1;
@@ -180,7 +169,7 @@ public class SellHandler implements Listener, CommandExecutor {
         double greed = Functions.greed(p);
         double sell = Functions.sellBoost(p);
         double miningboost = BoostsHandler.sell;
-        double multi = SellHandler.getInstance().getMulti(p) / 1.75;
+        double multi = getMulti(p) / 1.75;
         double momentum = MomentumHandler.getBonus(p.getUniqueId());
         if (multi < 1) {
             multi = 1;
@@ -284,19 +273,19 @@ public class SellHandler implements Listener, CommandExecutor {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onBlockBreak(BlockBreakEvent event) {
-        Player p = event.getPlayer();
+    public void onBlockBreak(BlockBreakEvent e) {
+        Player p = e.getPlayer();
 
         WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
         ApplicableRegionSet set = wg.getRegionManager(p.getWorld())
-                .getApplicableRegions(event.getBlock().getLocation());
+                .getApplicableRegions(e.getBlock().getLocation());
         if (!set.allows(DefaultFlag.LIGHTER)) {
 
             if (p.isOp() && p.getItemInHand() != null &&
                     p.getItemInHand().getType() == Material.DIAMOND_PICKAXE || p.getItemInHand().getType() == Material.WOOD_PICKAXE
                     || p.getItemInHand().getType() == Material.STONE_PICKAXE || p.getItemInHand().getType() == Material.GOLD_PICKAXE
                     || p.getItemInHand().getType() == Material.IRON_PICKAXE)
-                event.setCancelled(true);
+                e.setCancelled(true);
             return;
         }
 
@@ -304,14 +293,13 @@ public class SellHandler implements Listener, CommandExecutor {
         double skill = SkillsEventsListener.getSkillsBoostFortune(p);
         double event1 = SkillsEventsListener.getEventFortune();
 
-        LocalPlayer player = wg.wrapPlayer(p);
-        if (!set.isMemberOfAll(player)) {
-            event.setCancelled(true);
+        if (!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
+            e.setCancelled(true);
             return;
         }
 
 
-        if (!event.isCancelled()) {
+        if (!e.isCancelled()) {
             if (p.getItemInHand() != null && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore()) {
 
                 int line = 0;
@@ -326,9 +314,9 @@ public class SellHandler implements Listener, CommandExecutor {
 
                 ArrayList<ItemStack> sellblocks = new ArrayList<>();
 
-                sellblocks.add(new ItemStack(event.getBlock().getType(), fortune));
-                event.getBlock().setType(Material.AIR);
-                event.setCancelled(true);
+                sellblocks.add(new ItemStack(e.getBlock().getType(), fortune));
+                e.getBlock().setType(Material.AIR);
+                e.setCancelled(true);
 
                 sell(p, sellblocks);
 
@@ -339,6 +327,20 @@ public class SellHandler implements Listener, CommandExecutor {
 
     private ArrayList<String> reset = new ArrayList<>();
 
+
+    public void setMulti(Player p, double d) {
+        PlayerDataHandler.getInstance().getPlayerData(p).set("Multi", d);
+    }
+    public double getMulti(Player p) {
+        double d = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("Multi");
+
+        if (d < 1.0) {
+            d = 1.0;
+        }
+        double dround = d * 10.0;
+        double drounded = Math.round(dround) / 10.0;
+        return drounded;
+    }
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
 
@@ -421,12 +423,11 @@ public class SellHandler implements Listener, CommandExecutor {
 
                         String Amount = args[2].replace("-", "");
                         double amnt = Double.parseDouble(Amount);
-                        double d = this.settings.getMultiplier().getDouble(reciever.getUniqueId().toString());
+                        double d = PlayerDataHandler.getInstance().getPlayerData(reciever).getDouble("Multi");
                         double newMulti = d + amnt;
 
 
-                        this.settings.getMultiplier().set(reciever.getUniqueId().toString(), newMulti);
-                        this.settings.saveMultiplier();
+                        PlayerDataHandler.getInstance().getPlayerData(reciever).set("Multi", newMulti);
 
 
                     }
@@ -441,8 +442,8 @@ public class SellHandler implements Listener, CommandExecutor {
 
                         String Amount = args[2].replace("-", "");
                         double amount = Double.parseDouble(Amount);
-                        this.settings.getMultiplier().set(reciever.getUniqueId().toString(), amount);
-                        this.settings.saveMultiplier();
+                        PlayerDataHandler.getInstance().getPlayerData(reciever).set("Multi", amount);
+
 
                     }
                 }

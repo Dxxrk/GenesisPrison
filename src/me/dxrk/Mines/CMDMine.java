@@ -437,7 +437,8 @@ public class CMDMine implements CommandExecutor, Listener {
                 MineSystem.getInstance().removeActiveMine(m);
                 m.delete();
                 MineHandler.getInstance().CreateMine(p, "secondmine", "minestwo");
-                Tokens.getInstance().takeTokens(p, 10e6);
+                Tokens.getInstance().takeTokens(p, 25e6);
+                ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock"));
                 openUpgradeInventory(p);
             }
             if (e.getSlot() == 6) {
@@ -447,6 +448,7 @@ public class CMDMine implements CommandExecutor, Listener {
                 MineSystem.getInstance().removeActiveMine(m);
                 m.delete();
                 MineHandler.getInstance().CreateMine(p, "thirdmine", "minesthree");
+                ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock"));
                 Tokens.getInstance().takeTokens(p, 250e6);
                 openUpgradeInventory(p);
             }

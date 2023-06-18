@@ -10,6 +10,7 @@ import me.dxrk.Gangs.Gangs;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Mines.MineSystem;
 import me.dxrk.Tokens.Tokens;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -296,11 +297,10 @@ public class KeysHandler implements Listener {
             return;
         if (!i.getItemMeta().hasLore())
             return;
-        WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-        ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
-        LocalPlayer player = wg.wrapPlayer(p);
-        if (!set.allows(DefaultFlag.LIGHTER) || !set.isMemberOfAll(player))
+        if(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
+            e.setCancelled(true);
             return;
+        }
 
         findTokens(p);
 

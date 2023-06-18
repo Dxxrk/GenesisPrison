@@ -66,6 +66,19 @@ public class WaveEffect {
         return locations;
     }
 
+    public static ArrayList<Location> getCircle1(Location loc, int radius) {
+        ArrayList<Location> blocks = new ArrayList<>();
+        for (int x = loc.getBlockX() - radius; x <= loc.getBlockX() + radius; x++) {
+            for (int z = loc.getBlockZ() - radius; z <= loc.getBlockZ() + radius; z++) {
+                Location l = new Location(loc.getWorld(), x, loc.getY(), z);
+                if (l.distance(loc) <= radius && !l.getBlock().getType().equals(Material.AIR))
+                    blocks.add(l);
+            }
+
+        }
+        return blocks;
+    }
+
     /**
      * Starts The Timer
      *

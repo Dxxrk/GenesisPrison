@@ -1,11 +1,14 @@
 package me.dxrk.Gangs;
 
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import me.dxrk.Enchants.EnchantMethods;
 import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.ScoreboardHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Mines.MineSystem;
 import me.dxrk.Tokens.Tokens;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -289,6 +292,11 @@ public class CMDGang implements Listener, CommandExecutor {
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
+        if(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
+            e.setCancelled(true);
+            return;
+        }
+        if(!EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;
         if (g.hasGang(p)) {
             String gang = g.getGang(p);
             List<String> perks = settings.getGangs().getStringList(gang + ".PerksUnlocked");

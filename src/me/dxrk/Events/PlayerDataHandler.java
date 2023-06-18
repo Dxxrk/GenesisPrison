@@ -132,6 +132,10 @@ public class PlayerDataHandler implements Listener {
                 pl.set("Tokens", 0.0D);
 
             }
+            if (pl.get("Multi") == null) {
+                pl.set("Multi", 0.0D);
+
+            }
             if (pl.get("Level") == null) {
                 pl.set("Level", 0.0D);
 
