@@ -15,6 +15,7 @@ import me.dxrk.Mines.ResetHandler;
 import me.dxrk.Tokens.Tokens;
 import me.dxrk.Vote.CMDVoteShop;
 import me.dxrk.utils.WaveEffect;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -205,16 +206,18 @@ public class EnchantMethods implements CommandExecutor {
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
         Location min = new Location(p.getWorld(), m.getMinPoint().getX(), b.getY(), m.getMinPoint().getZ());
         Location max = new Location(p.getWorld(), m.getMaxPoint().getX(), b.getY(), m.getMaxPoint().getZ());
+        byte lbs = 0;
         for (Block b1 : getBlocksInArea(min, max)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     if(b1.getType() == Material.SEA_LANTERN)
-                        Luckyblock(p);
+                        lbs++;
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
                 }
             }
         }
+        Luckyblock(p, lbs);
         int rank = RankupHandler.getInstance().getRank(p);
         double fortuity = Functions.Foruity(p);
         double skill = SkillsEventsListener.getSkillsBoostFortune(p);
@@ -288,14 +291,14 @@ public class EnchantMethods implements CommandExecutor {
         ArrayList<ItemStack> sellblocks = new ArrayList<>();
         int blocks = 0;
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
-
+        byte lbs=0;
         Location loc = b.getLocation();
         b.getWorld().strikeLightningEffect(loc);
         for (Block b1 : getBlocksAroundCenter(loc, 7)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     if(b1.getType() == Material.SEA_LANTERN)
-                        Luckyblock(p);
+                        lbs++;
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
                 }
@@ -307,7 +310,7 @@ public class EnchantMethods implements CommandExecutor {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     if(b1.getType() == Material.SEA_LANTERN)
-                        Luckyblock(p);
+                        lbs++;
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
                 }
@@ -319,7 +322,7 @@ public class EnchantMethods implements CommandExecutor {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     if(b1.getType() == Material.SEA_LANTERN)
-                        Luckyblock(p);
+                        lbs++;
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
                 }
@@ -331,7 +334,7 @@ public class EnchantMethods implements CommandExecutor {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     if(b1.getType() == Material.SEA_LANTERN)
-                        Luckyblock(p);
+                        lbs++;
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
                 }
@@ -343,13 +346,13 @@ public class EnchantMethods implements CommandExecutor {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     if(b1.getType() == Material.SEA_LANTERN)
-                        Luckyblock(p);
+                        lbs++;
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
                 }
             }
         }
-
+        Luckyblock(p, lbs);
         double fortuity = Functions.Foruity(p);
         double skill = SkillsEventsListener.getSkillsBoostFortune(p);
         double event = SkillsEventsListener.getEventFortune();
@@ -395,6 +398,7 @@ public class EnchantMethods implements CommandExecutor {
             @Override
             public void run() {
                 int blocks = 0;
+                byte lbs=0;
                 finalWave.stop();
                 finalWave2.stop();
                 finalWave3.stop();
@@ -402,13 +406,13 @@ public class EnchantMethods implements CommandExecutor {
                     if (set(b1).allows(DefaultFlag.LIGHTER)) {
                         if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                             if(b1.getType() == Material.SEA_LANTERN)
-                                Luckyblock(p);
+                                lbs++;
                             b1.setType(Material.AIR);
                             blocks = blocks + 1;
                         }
                     }
                 }
-
+                Luckyblock(p,lbs);
 
                 double fortuity = Functions.Foruity(p);
                 double skill = SkillsEventsListener.getSkillsBoostFortune(p);
@@ -439,6 +443,7 @@ public class EnchantMethods implements CommandExecutor {
     public void TidalWave(Player p, Block b) {
         ArrayList<ItemStack> sellblocks = new ArrayList<>();
         int blocks = 0;
+        byte lbs=0;
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
         Location min = new Location(p.getWorld(), m.getMinPoint().getX(), b.getY() - 4, m.getMinPoint().getZ());
         Location max = new Location(p.getWorld(), m.getMaxPoint().getX(), b.getY(), m.getMaxPoint().getZ());
@@ -446,12 +451,13 @@ public class EnchantMethods implements CommandExecutor {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     if(b1.getType() == Material.SEA_LANTERN)
-                        Luckyblock(p);
+                        lbs++;
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
                 }
             }
         }
+        Luckyblock(p, lbs);
         int rank = RankupHandler.getInstance().getRank(p);
         double fortuity = Functions.Foruity(p);
         double skill = SkillsEventsListener.getSkillsBoostFortune(p);
@@ -479,6 +485,7 @@ public class EnchantMethods implements CommandExecutor {
     public void Infernum(Player p, Block b) {
         ArrayList<ItemStack> sellblocks = new ArrayList<>();
         int blocks = 0;
+        byte lbs=0;
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
 
 
@@ -506,12 +513,13 @@ public class EnchantMethods implements CommandExecutor {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR && b1.getType() != Material.SEA_LANTERN) {
                     if(b1.getType() == Material.SEA_LANTERN)
-                        Luckyblock(p);
+                        lbs++;
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
                 }
             }
         }
+        Luckyblock(p, lbs);
         int rank = RankupHandler.getInstance().getRank(p);
         double fortuity = Functions.Foruity(p);
         double skill = SkillsEventsListener.getSkillsBoostFortune(p);
@@ -810,51 +818,135 @@ public class EnchantMethods implements CommandExecutor {
         }
     }
 
-    public void Luckyblock(Player p) {
-        Random r = new Random();
-        int rr = r.nextInt(309);
-        ItemStack pick = p.getItemInHand();
-        List<String> lore = pick.getItemMeta().getLore();
-        int x, level=0;
-        for (x = 0; x < lore.size(); x++) {
-            String s = lore.get(x);
-            if (ChatColor.stripColor(s).contains("Token Finder")) {
-                level = m.getBlocks(ChatColor.stripColor(s));
+    public void Luckyblock(Player p, byte lbs) {
+        if(lbs==1){
+            Random r = new Random();
+            int rr = r.nextInt(309);
+            ItemStack pick = p.getItemInHand();
+            int level = 0;
+            if(pick != null && (pick.getType().equals(Material.DIAMOND_PICKAXE) || pick.getType().equals(Material.GOLD_PICKAXE) || pick.getType().equals(Material.IRON_PICKAXE) || pick.getType().equals(Material.STONE_PICKAXE) || pick.getType().equals(Material.WOOD_PICKAXE)))
+            {
+                List<String> lore = pick.getItemMeta().getLore();
+                int x;
+                for (x = 0; x < lore.size(); x++) {
+                    String s = lore.get(x);
+                    if (ChatColor.stripColor(s).contains("Token Finder")) {
+                        level = m.getBlocks(ChatColor.stripColor(s));
+                    }
+                }
+            }
+            if (rr >= 0 && rr <= 150) {
+                int tokens;
+                if(level==0)
+                    tokens = 5000;
+                else
+                    tokens = 5000+5*level;
+                Tokens.getInstance().addTokens(p, tokens);
+                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                    p.sendMessage(c("&f&lLuckyblock &8| &e+" + tokens + " Tokens"));
+            } else if (rr >= 151 && rr <= 240) {
+                addKey(p, "Beta", 1);
+                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                    p.sendMessage(c("&f&lLuckyblock &8| &e+1 Beta Key"));
+            } else if (rr >= 241 && rr <= 270) {
+                addKey(p, "Omega", 1);
+                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                    p.sendMessage(c("&f&lLuckyblock &8| &e+1 Omega Key"));
+            } else if (rr >= 271 && rr <= 285) {
+                PickXPHandler.getInstance().addXP(p, 2500);
+                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                    p.sendMessage(c("&f&lLuckyblock &8| &e+2500 XP"));
+            } else if (rr >= 286 && rr <= 300) {
+                addKey(p, "Community", 1);
+                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                    p.sendMessage(c("&f&lLuckyblock &8| &e+1 Community Key"));
+            } else if (rr == 301) {
+                addKey(p, "Rank", 1);
+                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                    p.sendMessage(c("&f&lLuckyblock &8| &e+1 Rank Key"));
+            } else {
+                addKey(p, "Seasonal", 1);
+                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                    p.sendMessage(c("&f&lLuckyblock &8| &e+1 Seasonal Key"));
             }
         }
-        if (rr >= 0 && rr <= 150) {
-            int tokens;
-            if(level==0)
-                tokens = 5000;
-            else
-                tokens = 5000+5*level;
-            Tokens.getInstance().addTokens(p, tokens);
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
-                p.sendMessage(c("&f&lLuckyblock &8| &e+" + tokens + " Tokens"));
-        } else if (rr >= 151 && rr <= 240) {
-            addKey(p, "Beta", 1);
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
-                p.sendMessage(c("&f&lLuckyblock &8| &e+1 Beta Key"));
-        } else if (rr >= 241 && rr <= 270) {
-            addKey(p, "Omega", 1);
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
-                p.sendMessage(c("&f&lLuckyblock &8| &e+1 Omega Key"));
-        } else if (rr >= 271 && rr <= 285) {
-            PickXPHandler.getInstance().addXP(p, 2500);
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
-                p.sendMessage(c("&f&lLuckyblock &8| &e+2500 XP"));
-        } else if (rr >= 286 && rr <= 300) {
-            addKey(p, "Community", 1);
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
-                p.sendMessage(c("&f&lLuckyblock &8| &e+1 Community Key"));
-        } else if (rr == 301) {
-            addKey(p, "Rank", 1);
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
-                p.sendMessage(c("&f&lLuckyblock &8| &e+1 Rank Key"));
-        } else {
-            addKey(p, "Seasonal", 1);
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
-                p.sendMessage(c("&f&lLuckyblock &8| &e+1 Seasonal Key"));
+        else {
+            int totaltokens=0;
+            byte totalbeta=0;
+            byte totalomega=0;
+            int totalxp=0;
+            byte totalcommunity=0;
+            byte totalrank=0;
+            byte totalseasonal=0;
+            for(byte i=0;i<lbs;i++){
+                Random r = new Random();
+                int rr = r.nextInt(309);
+                ItemStack pick = p.getItemInHand();
+                int level = 0;
+                if(pick != null && (pick.getType().equals(Material.DIAMOND_PICKAXE) || pick.getType().equals(Material.GOLD_PICKAXE) || pick.getType().equals(Material.IRON_PICKAXE) || pick.getType().equals(Material.STONE_PICKAXE) || pick.getType().equals(Material.WOOD_PICKAXE)))
+                {
+                    List<String> lore = pick.getItemMeta().getLore();
+                    int x;
+                    for (x = 0; x < lore.size(); x++) {
+                        String s = lore.get(x);
+                        if (ChatColor.stripColor(s).contains("Token Finder")) {
+                            level = m.getBlocks(ChatColor.stripColor(s));
+                        }
+                    }
+                }
+                if (rr >= 0 && rr <= 150) {
+                    int tokens;
+                    if(level==0)
+                        tokens = 5000;
+                    else
+                        tokens = 5000+5*level;
+                    Tokens.getInstance().addTokens(p, tokens);
+                    totaltokens+=tokens;
+                } else if (rr >= 151 && rr <= 240) {
+                    addKey(p, "Beta", 1);
+                    totalbeta++;
+                } else if (rr >= 241 && rr <= 270) {
+                    addKey(p, "Omega", 1);
+                    totalomega++;
+                } else if (rr >= 271 && rr <= 285) {
+                    PickXPHandler.getInstance().addXP(p, 2500);
+                    totalxp+=2500;
+                } else if (rr >= 286 && rr <= 300) {
+                    addKey(p, "Community", 1);
+                    totalcommunity++;
+                } else if (rr == 301) {
+                    addKey(p, "Rank", 1);
+                    totalrank++;
+                } else {
+                    addKey(p, "Seasonal", 1);
+                    totalseasonal++;
+                }
+            }
+            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages")) {
+                FancyMessage msg = new FancyMessage(c("&f&lLuckyblocks &8| &7(hover)"));
+                msg.color(ChatColor.WHITE);
+                msg.style(ChatColor.BOLD);
+                ArrayList<String> tooltip = new ArrayList<>();
+                tooltip.add(c("&7Rewards:"));
+                msg.tooltip(tooltip);
+                if(totaltokens>0) {
+                    tooltip.add(c("&eTokens: +" + totaltokens));
+                }if(totalbeta>0) {
+                    tooltip.add(c("&cBeta: +" + totalbeta));
+                }if(totalomega>0){
+                    tooltip.add(c("&4Omega:  +" + totalomega));
+                }if(totalxp>0){
+                    tooltip.add(c("&bXP: +" + totalxp));
+                }if(totalcommunity>0){
+                    tooltip.add(c("&5Community: +" + totalcommunity));
+                }if(totalrank>0){
+                    tooltip.add(c("&3Rank: +" + totalrank));
+                }if(totalseasonal>0){
+                    tooltip.add(c("&fSeasonal: +" + totalseasonal));
+                }
+                msg.tooltip(tooltip);
+                msg.send(p);
+            }
         }
     }
 

@@ -130,16 +130,11 @@ public class Enchants implements Listener {
         Player p = e.getPlayer();
         if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK) || e.getAction().equals(Action.LEFT_CLICK_BLOCK)){
             Block b = e.getClickedBlock();
-            ItemStack pick = e.getItem();
-            if(pick == null)
-                return;
             if(b.getType().equals(Material.SEA_LANTERN)){
-                if(pick.getType().equals(Material.DIAMOND_PICKAXE) || pick.getType().equals(Material.GOLD_PICKAXE) || pick.getType().equals(Material.IRON_PICKAXE) || pick.getType().equals(Material.STONE_PICKAXE) || pick.getType().equals(Material.WOOD_PICKAXE)){
-                    Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                    if (m.isLocationInMine(b.getLocation())){
-                        b.setType(Material.AIR);
-                        EnchantMethods.getInstance().Luckyblock(p);
-                    }
+                Mine m = MineSystem.getInstance().getMineByPlayer(p);
+                if (m.isLocationInMine(b.getLocation())){
+                    b.setType(Material.AIR);
+                    EnchantMethods.getInstance().Luckyblock(p, (byte)1);
                 }
             }
         }
