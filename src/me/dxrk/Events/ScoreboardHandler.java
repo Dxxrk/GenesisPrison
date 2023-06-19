@@ -301,11 +301,11 @@ public class ScoreboardHandler implements Listener {
                 Team team = NewBoard.getTeam("c" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&a&lDeveloper &8"));
-                    pp.setPlayerListName(c(prefix + "&a&lDeveloper &8" + pp.getName()));
+                    team.setPrefix(prefix(pp) + c("&a&lDev &8"));
+                    pp.setPlayerListName(c(prefix + "&a&lDev &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c(prefix + "&a&lDeveloper &f&l"));
-                    pp.setPlayerListName(c(prefix + "&a&lDeveloper &f&l" + pp.getName()));
+                    team.setPrefix(prefix(pp) + c(prefix + "&a&lDev &f&l"));
+                    pp.setPlayerListName(c(prefix + "&a&lDev &f&l" + pp.getName()));
                 }
                 team.addPlayer(pp);
 
