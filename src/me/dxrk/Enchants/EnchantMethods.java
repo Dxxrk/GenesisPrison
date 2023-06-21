@@ -730,7 +730,7 @@ public class EnchantMethods implements CommandExecutor {
                     euphoria.remove(p);
                     p.sendMessage(m.c("&d&lEuphoria &8| &bEuphoria has ended"));
                 }
-            }.runTaskLater(Main.plugin, 20 * 10L);
+            }.runTaskLater(Main.getPlugin(Main.class), 20 * 10L);
         }
     }
 

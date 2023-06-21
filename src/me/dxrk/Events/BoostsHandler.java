@@ -359,10 +359,10 @@ public class BoostsHandler implements Listener, CommandExecutor {
                     if (amp >= Double.parseDouble(first[3])) {
                         ArrayList<String> hold = new ArrayList<>(nextUpsell);
                         nextUpsell.clear();
-                        nextUpsell.add("activeboost sell " + name + " " + amp + " " + dur);
+                        nextUpsell.add("sell " + name + " " + amp + " " + dur);
                         nextUpsell.addAll(hold);
                     } else {
-                        nextUpsell.add("activeboost sell " + name + " " + amp + " " + dur);
+                        nextUpsell.add("sell " + name + " " + amp + " " + dur);
                     }
                 } else {
                     nextUpsell.add("sell " + name + " " + amp + " " + dur);

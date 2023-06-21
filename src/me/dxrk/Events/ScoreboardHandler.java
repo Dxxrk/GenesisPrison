@@ -305,7 +305,7 @@ public class ScoreboardHandler implements Listener {
                     pp.setPlayerListName(c(prefix + "&a&lDev &8" + pp.getName()));
                 } else {
                     team.setPrefix(prefix(pp) + c(prefix + "&a&lDev &f&l"));
-                    pp.setPlayerListName(c(prefix + "&a&lDev &f&l" + pp.getName()));
+                    pp.setPlayerListName(c(prefix + "&a&lDeveloper &f&l" + pp.getName()));
                 }
                 team.addPlayer(pp);
 
