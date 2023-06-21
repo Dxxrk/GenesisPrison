@@ -102,7 +102,7 @@ public class CMDStats implements Listener, CommandExecutor {
 
         ItemStack multi = new ItemStack(Material.NETHER_STAR);
         ItemMeta mm = multi.getItemMeta();
-        mm.setDisplayName(m.c("&7Multi: &b" + settings.getMultiplier().getInt(uuid)));
+        mm.setDisplayName(m.c("&7Multi: &b" + PlayerDataHandler.getInstance().getPlayerData(p.getUniqueId()).getDouble("Multi")));
         multi.setItemMeta(mm);
         stats.setItem(21, multi);
 

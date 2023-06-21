@@ -32,6 +32,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
 
+import static java.lang.Double.parseDouble;
+
 public class BoostsHandler implements Listener, CommandExecutor {
     static String c(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
@@ -307,14 +309,14 @@ public class BoostsHandler implements Listener, CommandExecutor {
     public void activeNextSellBoost() {
         if(nextUpsell.size() >0) {
             String[] next = nextUpsell.get(0).split(" ");
-            activeBoost("sell", Double.parseDouble(next[2]), Integer.parseInt(next[3]), next[1]);
+            activeBoost("sell", parseDouble(next[2]), Integer.parseInt(next[3]), next[1]);
             nextUpsell.remove(0);
         }
     }
     public void activeNextXPBoost() {
         if(nextUpxp.size() >0) {
             String[] next = nextUpxp.get(0).split(" ");
-            activeBoost("xp", Double.parseDouble(next[2]), Integer.parseInt(next[3]), next[1]);
+            activeBoost("xp", parseDouble(next[2]), Integer.parseInt(next[3]), next[1]);
             nextUpxp.remove(0);
         }
     }
@@ -356,7 +358,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
                 }
                 if (nextUpsell.size() > 0) {
                     String[] first = nextUpsell.get(0).split(" ");
-                    if (amp >= Double.parseDouble(first[3])) {
+                    if (amp >= parseDouble(first[3])) {
                         ArrayList<String> hold = new ArrayList<>(nextUpsell);
                         nextUpsell.clear();
                         nextUpsell.add("activeboost sell " + name + " " + amp + " " + dur);
@@ -492,7 +494,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
                 Player p = Bukkit.getPlayer(args[1]);
 
                 if (args[0].equalsIgnoreCase("sell")) {
-                    double amp = Double.parseDouble(args[2]);
+                    double amp = parseDouble(args[2]);
                     int dur = Integer.parseInt(args[3]);
 
                     boostsinv.get(p).add(BoostSell("&b" + amp + "x Currency Boost", "&d" + timeFormat(dur)));
@@ -633,7 +635,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
 
                 String[] amps = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).split("x");
 
-                double amp = Double.parseDouble(amps[0]);
+                double amp = parseDouble(amps[0]);
 
 
                 int dur = toSeconds(e.getCurrentItem().getItemMeta().getLore().get(0));
@@ -645,7 +647,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
                 String[] amps = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).split("x");
 
 
-                int amp = Integer.parseInt(amps[0]);
+                double amp = parseDouble(amps[0]);
 
 
                 int dur = toSeconds(e.getCurrentItem().getItemMeta().getLore().get(0));
