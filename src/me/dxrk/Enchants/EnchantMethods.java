@@ -230,7 +230,8 @@ public class EnchantMethods implements CommandExecutor {
         }
         int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
-
+        if(fortune==0)
+            fortune=1;
         double levelcap = 1 + (level / 1000);
 
         int blocksInThirds = blocks / 5;
@@ -270,6 +271,9 @@ public class EnchantMethods implements CommandExecutor {
         }
         int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
+
+        if(fortune==0)
+            fortune=1;
 
         double levelcap = 1 + (level / 500);
 
@@ -365,6 +369,8 @@ public class EnchantMethods implements CommandExecutor {
         int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
 
+        if(fortune==0)
+            fortune=1;
 
         sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune)));
         sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune)));
@@ -426,6 +432,9 @@ public class EnchantMethods implements CommandExecutor {
                 int fortune = (int) (getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                         (14));
 
+                if(fortune==0)
+                    fortune=1;
+
                 double levelcap = 1 + (level / 100);
 
                 sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune * levelcap)));
@@ -471,6 +480,8 @@ public class EnchantMethods implements CommandExecutor {
         int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
 
+        if(fortune==0)
+            fortune=1;
 
         sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune)));
         sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune)));
@@ -533,6 +544,8 @@ public class EnchantMethods implements CommandExecutor {
         int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
 
+        if(fortune==0)
+            fortune=1;
 
         sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune)));
         sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune)));
