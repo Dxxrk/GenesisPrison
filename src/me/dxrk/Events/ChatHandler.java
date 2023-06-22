@@ -366,7 +366,7 @@ public class ChatHandler implements Listener, CommandExecutor {
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fName &7" + p.getName()));
         List<String> lore = new ArrayList<>();
-        lore.add(c("&fPrestiges &7" + PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".Prestiges")));
+        lore.add(c("&fPrestiges &7" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("Prestiges")));
         lore.add(ChatColor.translateAlternateColorCodes('&', "&fLevel &7» " + RankupHandler.getInstance().getRank(p)));
         if (prefix(p) != null) {
             lore.add(ChatColor.translateAlternateColorCodes('&', "&fRank &7» " + prefix(p)));
