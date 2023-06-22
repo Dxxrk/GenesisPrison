@@ -88,10 +88,9 @@ public class PickXPHandler
 
 
     public double findPercent(Player p) {
-        double percent = (getXP(p) / calculateXPNeeded(getLevel(p))) * 100;
+        double percent = ((getXP(p)-calculateXPNeeded(getLevel(p)-1))/(calculateXPNeeded(getLevel(p))-calculateXPNeeded(getLevel(p)-1)))*100;
         double dmultiply = percent * 10.0;
         double dround = Math.round(dmultiply) / 10.0;
-
         return dround;
     }
 
