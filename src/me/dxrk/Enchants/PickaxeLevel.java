@@ -226,7 +226,8 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         for(int i=0;i<45;i++)
             enchantmenu.setItem(i,SpacerWhite());
 
-        setEnchantItem("Key Finder", Material.TRIPWIRE_HOOK, c("&bUpgrade Key Finder"), c("&7Chance to find a Key."), 1000, enchantmenu, 4, p, 1);
+        setEnchantItem("Key Finder", Material.TRIPWIRE_HOOK, c("&bUpgrade Key Finder"), c("&7Chance to find a Key."), 1000, enchantmenu, 2, p, 1);
+        setEnchantItem("LuckyBlock", Material.TRIPWIRE_HOOK, c("&bUpgrade LuckyBlock"), c("&7Chance to spawn a LuckyBlock."), 1000, enchantmenu, 6, p, 1);
         setEnchantItem("Token Finder", Material.PRISMARINE_CRYSTALS, c("&bUpgrade Token Finder"), c("&7Increase the amount of tokens randomly found."), 1000, enchantmenu, 10, p, 1);
         setEnchantItem("Fortune", Material.NETHER_STAR, c("&bUpgrade Fortune"), c("&7Increases amount of blocks you sell."), 100, enchantmenu, 12, p, 1);
         setEnchantItem("Jackhammer", Material.GOLD_PLATE, c("&bUpgrade Jackhammer"), c("&7Chance to break an entire layer of the mine."), 4500, enchantmenu, 14, p, 10);
@@ -350,6 +351,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         list.add("Charity");
         list.add("Treasury");
         list.add("Seismic Shock");
+        list.add("LuckyBlock");
         return list;
     }
 
@@ -468,6 +470,14 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                     break;
                 }
                 i = 1000 + (1000 * (level * 0.0036)); // 50 Million Level 5,000 MAX
+
+                break;
+            case "LuckyBlock":
+                if (level == 0) {
+                    i = 4500;
+                    break;
+                }
+                i = 4500 + (4500 * (level * 0.09141)); // 225 Million Level 1,000 MAX
 
                 break;
             case "Dust Finder":
@@ -616,6 +626,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 int skillmaxlevelkf = PlayerDataHandler.getInstance().getPlayerData(p).getInt("KFMaxLevelRaise");
                 i = 5000 + skillmaxlevelkf;
                 break;
+            case "LuckyBlock":
             case "Dust Finder":
             case "Prestige Finder":
             case "Karma":

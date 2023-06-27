@@ -830,6 +830,26 @@ public class EnchantMethods implements CommandExecutor {
             }
         }
     }
+    public Location lbloc(int x, int y, int z, Player p){
+        Location loc;
+        Random r = new Random();
+        int x1 = r.nextInt(10)-5;
+        int z1 = r.nextInt(10)-5;
+        loc=new Location(p.getWorld(),x+x1,y,z+z1);
+        return loc;
+    }
+    public void LuckyBlockSpawn(Player p, Block b){
+        Location location = lbloc(b.getX(), b.getY(), b.getZ(), p);
+        int i=0;
+        while(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(location)){
+            location = lbloc(b.getX(), b.getY(), b.getZ(), p);
+            i++;
+            if(i>25)
+                return;
+        }
+        location.getBlock().setType(Material.SEA_LANTERN);
+        p.sendMessage(m.c("&f&lLuckyblock | Spawned."));
+    }
 
     public void Luckyblock(Player p, byte lbs) {
         if(lbs==1){
@@ -1016,6 +1036,10 @@ public class EnchantMethods implements CommandExecutor {
                 chance = 1000 - (0.07 * level * lucky * luck * skill * getBattleCry(p));
                 procChance = (chance < 200) ? 200 : chance;
                 break;
+            case "LuckyBlock":
+                chance = 1750 - (1.5 * level * lucky * luck * skill * getBattleCry(p));
+                procChance = (chance < 100) ? 100 : chance;
+                break;
         }
         return procChance;
     }
@@ -1088,6 +1112,10 @@ public class EnchantMethods implements CommandExecutor {
                 if (r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
                     seismic(p, b, level);
                 }
+            case "LuckyBlock":
+                if (r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
+                    LuckyBlockSpawn(p, b);
+                }
         }
     }
 
@@ -1106,6 +1134,7 @@ public class EnchantMethods implements CommandExecutor {
         enchants.add("Tidal Wave");
         enchants.add("Infernum");
         enchants.add("Euphoria");
+        enchants.add("LuckyBlock");
         return enchants;
     }
 
