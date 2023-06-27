@@ -44,9 +44,10 @@ public class PickaxeSkillTree implements Listener {
         if (skillsUnlocked.contains(name)) {
             if (name.equals("Zeus (Level 5)") || name.equals("Poseidon (Level 5)") || name.equals("Hades (Level 5)") || name.equals("Ares (Level 5)") || name.equals("Aphrodite (Level 5)")) {
                 skill = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 1);
-                sm.setDisplayName(m.c("&6Rebirth Pickaxe"));
+                sm.setDisplayName(m.c("&6Change Pickaxe Path"));
                 List<String> confirm = new ArrayList<>();
-                confirm.add(m.c("&aClick if you want to rebirth your pickaxe"));
+                confirm.add(m.c("&aClick if you want to change your pickaxe path"));
+                confirm.add(m.c("&aContinue your journey and unlock an enchant"));
                 sm.setLore(confirm);
                 skill.setItemMeta(sm);
                 return skill;
@@ -360,7 +361,7 @@ public class PickaxeSkillTree implements Listener {
         zeus.setItem(42, skillItem(p, "+20% chance for x2 keys", m.c("&7Each of these skills raises the chance of finding 2x keys."), 17));
         zeus.setItem(26, skillItem(p, "500 raise in max level of keyfinder", m.c("&7Each of these skills raises the max level of keyfinder."), 21));
         zeus.setItem(35, skillItem(p, "+30% chance for x2 keys", m.c("&7Each of these skills raises the chance of finding 2x keys."), 25));
-        zeus.setItem(44, skillItem(p, "750 raise in max level of keyfinder", m.c("&7Each of these skills raises the max level of keyfinder."), 35));
+        zeus.setItem(44, skillItem(p, "750 raise in max level of keyfinder", m.c("&7Each of these skills raises the max level of keyfinder."), 30));
         //Level ups / abilities
         zeus.setItem(0, skillItem(p, "Unlocked Zeus", m.c("&7Chose the Zeus path. Unlocks Thunderstorm and ThunderBolt Events."), 0));
         zeus.setItem(36, skillItem(p, "Zeus (Level 2)", m.c("&7Upgrades Zeus Events."), 0));
@@ -399,7 +400,7 @@ public class PickaxeSkillTree implements Listener {
         poseidon.setItem(42, skillItem(p, "8% Fortune Boost", m.c("&7Each of these skills gives an additional fortune bonus."), 17));
         poseidon.setItem(26, skillItem(p, "1500 raise in max level of fortune", m.c("&7Each of these skills raises the max level of fortune."), 21));
         poseidon.setItem(35, skillItem(p, "12% Fortune Boost", m.c("&7Each of these skills gives an additional fortune bonus."), 25));
-        poseidon.setItem(44, skillItem(p, "1750 raise in max level of fortune", m.c("&7Each of these skills raises the max level of fortune."), 35));
+        poseidon.setItem(44, skillItem(p, "1750 raise in max level of fortune", m.c("&7Each of these skills raises the max level of fortune."), 30));
         //Level ups / abilities
         poseidon.setItem(0, skillItem(p, "Unlocked Poseidon", m.c("&7Chose the Poseidon path. Unlocks Tsunami and Typhoon Events."), 0));
         poseidon.setItem(36, skillItem(p, "Poseidon (Level 2)", m.c("&7Upgrades Poseidon Events."), 0));
@@ -438,7 +439,7 @@ public class PickaxeSkillTree implements Listener {
         hades.setItem(42, skillItem(p, "+100% Junkpile Multi Gain", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 17));
         hades.setItem(26, skillItem(p, "250 raise in max level of junkpile", m.c("&7Each of these skills raises the max level of junkpile."), 21));
         hades.setItem(35, skillItem(p, "+200% Junkpile Multi Gain", m.c("&7Each of these skills raises the chance to find Coupons to use on the store."), 25));
-        hades.setItem(44, skillItem(p, "350 raise in max level of junkpile", m.c("&7Each of these skills raises the max level of junkpile."), 35));
+        hades.setItem(44, skillItem(p, "350 raise in max level of junkpile", m.c("&7Each of these skills raises the max level of junkpile."), 30));
         //Level ups / abilities
         hades.setItem(0, skillItem(p, "Unlocked Hades", m.c("&7Chose the Hades path. Unlocks Meteor Shower and Scorched Earth Events."), 0));
         hades.setItem(36, skillItem(p, "Hades (Level 2)", m.c("&7Upgrades Hades Events."), 0));
@@ -477,7 +478,7 @@ public class PickaxeSkillTree implements Listener {
         ares.setItem(42, skillItem(p, "8% Token Boost", m.c("&7Each of these skills gives an additional token bonus."), 17));
         ares.setItem(26, skillItem(p, "300 raise in max level of token finder", m.c("&7Each of these skills raises the max level of token finder."), 21));
         ares.setItem(35, skillItem(p, "12% Token Boost", m.c("&7Each of these skills gives an additional token bonus."), 25));
-        ares.setItem(44, skillItem(p, "500 raise in max level of token finder", m.c("&7Each of these skills raises the max level of token finder."), 35));
+        ares.setItem(44, skillItem(p, "500 raise in max level of token finder", m.c("&7Each of these skills raises the max level of token finder."), 30));
         //Level ups / abilities
         ares.setItem(0, skillItem(p, "Unlocked Ares", m.c("&7Chose the ares path. Unlocks War Torn and Bloodshed Events."), 0));
         ares.setItem(36, skillItem(p, "Ares (Level 2)", m.c("&7Upgrades Ares Events."), 0));
@@ -516,7 +517,7 @@ public class PickaxeSkillTree implements Listener {
         aphrodite.setItem(42, skillItem(p, "+300% Junkpile XP Gain", m.c("&7Each of these skills raises the amount of XP given by junkpile."), 17));
         aphrodite.setItem(26, skillItem(p, "1000 raise in max level of xp finder", m.c("&7Each of these skills raises the max level of xp finder."), 21));
         aphrodite.setItem(35, skillItem(p, "+500% Junkpile XP Gain", m.c("&7Each of these skills raises the amount of XP given by junkpile."), 25));
-        aphrodite.setItem(44, skillItem(p, "1500 raise in max level of xp finder", m.c("&7Each of these skills raises the max level of xp finder."), 35));
+        aphrodite.setItem(44, skillItem(p, "1500 raise in max level of xp finder", m.c("&7Each of these skills raises the max level of xp finder."), 30));
         //Level ups / abilities
         aphrodite.setItem(0, skillItem(p, "Unlocked Aphrodite", m.c("&7Chose the aphrodite path. Unlocks Allure and Strong Desire Events."), 0));
         aphrodite.setItem(36, skillItem(p, "Aphrodite (Level 2)", m.c("&7Upgrades Aphrodite Events."), 0));
@@ -593,13 +594,12 @@ public class PickaxeSkillTree implements Listener {
 
         ItemStack info = new ItemStack(Material.PAPER, 1);
         ItemMeta infometa = info.getItemMeta();
-        infometa.setDisplayName(m.c("&6Rebirth:"));
+        infometa.setDisplayName(m.c("&6Changing Pickaxe Path:"));
         List<String> lore = new ArrayList<>();
-        lore.add(m.c("&cRebirthing your pickaxe removes all your enchants."));
-        lore.add(m.c("&cResets your tokens to 0."));
-        lore.add(m.c("&cResets your pickaxe level back to 0."));
+        lore.add(m.c("&cChanging your pickaxe path keeps the boosts unlocked."));
+        lore.add(m.c("&cAnd you may choose another path to continue your journey."));
+        lore.add(m.c("&cBy choosing another path you can unlock other boosts."));
         lore.add(m.c("&cUnlocks a brand new enchant depending on your path."));
-        lore.add(m.c("&cAnd you may choose another path again."));
         infometa.setLore(lore);
         info.setItemMeta(infometa);
         inv.setItem(2, info);
@@ -1058,8 +1058,6 @@ public class PickaxeSkillTree implements Listener {
                 completed.add(path);
                 PlayerDataHandler.getInstance().getPlayerData(p).set("CompletedPaths", completed);
                 PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkill", "None");
-                PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkillPoints", 0);
-                PickaxeLevel.getInstance().resetPickaxe(p);
                 List<String> skills = new ArrayList<>();
                 PlayerDataHandler.getInstance().getPlayerData(p).set("PickaxeSkillsUnlocked", skills);
                 PlayerDataHandler.getInstance().savePlayerData(p);
