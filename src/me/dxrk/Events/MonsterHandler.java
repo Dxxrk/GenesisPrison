@@ -31,6 +31,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.lang.reflect.Field;
 import java.util.*;
 
+import static java.lang.Integer.parseInt;
+
 public class MonsterHandler implements Listener, CommandExecutor {
     private HeadDatabaseAPI api = new HeadDatabaseAPI();
     private static Methods m = Methods.getInstance();
@@ -48,11 +50,11 @@ public class MonsterHandler implements Listener, CommandExecutor {
                         String lore = ChatColor.stripColor(i.getItemMeta().getLore().get(loreline));
                         String first = lore.split("%")[0];
                         String percent = first.split(" ")[1];
-                        boost += (Integer.parseInt(percent)) / 100.0;
+                        boost += (parseInt(percent)) / 100.0;
                     } else {
                         String lore = ChatColor.stripColor(i.getItemMeta().getLore().get(loreline).replace(" ", ""));
                         String first = lore.split("%")[0];
-                        boost += (Integer.parseInt(first)) / 100.0;
+                        boost += (parseInt(first)) / 100.0;
                     }
                 }
             }
@@ -89,6 +91,13 @@ public class MonsterHandler implements Listener, CommandExecutor {
                 if (args.length == 1) {
                     Player p = Bukkit.getPlayer(args[0]);
                     p.getInventory().addItem(egg());
+                }
+                else if(args.length == 2){
+                    if(m.isInt(args[1])){
+                        Player p = Bukkit.getPlayer(args[0]);
+                        for(int i=0;i<parseInt(args[1]);i++)
+                            p.getInventory().addItem(egg());
+                    }
                 }
             }
         }
@@ -213,7 +222,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
         upgrade.setItem(4, info);
         ItemStack up = new ItemStack(Material.INK_SACK, 1, (short) 10);
         ItemMeta um = up.getItemMeta();
-        int level = Integer.parseInt(ChatColor.stripColor(info.getItemMeta().getLore().get(3)).split(" ")[1]);
+        int level = parseInt(ChatColor.stripColor(info.getItemMeta().getLore().get(3)).split(" ")[1]);
         String rarity = ChatColor.stripColor(info.getItemMeta().getLore().get(2)).split(" ")[1];
         um.setDisplayName(m.c("&aUpgrade to Level " + (level + 1)));
         List<String> lore = new ArrayList<>();
