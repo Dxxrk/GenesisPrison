@@ -255,6 +255,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("g").setExecutor(new CMDGang());
         getCommand("genesis").setExecutor(new CMDOptions());
         getCommand("giveegg").setExecutor(new MonsterHandler());
+        getCommand("spawncrate").setExecutor(new MonsterHandler());
         getCommand("testenchant").setExecutor(new EnchantMethods());
         getCommand("wave").setExecutor(new EnchantMethods());
         getCommand("setskillpoints").setExecutor(new PickaxeLevel());

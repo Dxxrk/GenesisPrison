@@ -11,7 +11,6 @@ import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Mines.Mine;
 import me.dxrk.Mines.MineSystem;
-import me.dxrk.Mines.ResetHandler;
 import me.dxrk.Tokens.Tokens;
 import me.dxrk.Vote.CMDVoteShop;
 import me.dxrk.utils.WaveEffect;
@@ -187,7 +186,7 @@ public class EnchantMethods implements CommandExecutor {
         int lowY = (loc1.getBlockY() < loc2.getBlockY()) ? loc1.getBlockY() : loc2.getBlockY();
         int lowZ = (loc1.getBlockZ() < loc2.getBlockZ()) ? loc1.getBlockZ() : loc2.getBlockZ();
 
-        ArrayList<Block> locs = new ArrayList<Block>();
+        ArrayList<Block> locs = new ArrayList<>();
         for (int x = 0; x <= Math.abs(loc1.getBlockX() - loc2.getBlockX()); x++) {
             for (int y = 0; y <= Math.abs(loc1.getBlockY() - loc2.getBlockY()); y++) {
                 for (int z = 0; z <= Math.abs(loc1.getBlockZ() - loc2.getBlockZ()); z++) {
@@ -256,8 +255,7 @@ public class EnchantMethods implements CommandExecutor {
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
         amountblocks = m.getTotalBlocks() - m.getBlocksMined();
 
-        double lucky = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock");
-        ResetHandler.resetMineWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), lucky);
+        m.reset();
 
 
         double fortuity = Functions.Foruity(p);

@@ -1,19 +1,21 @@
 package me.dxrk.Events;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R3.util.CraftMagicNumbers;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -23,7 +25,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.material.EnderChest;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -33,9 +35,15 @@ import java.util.Random;
 
 public class MysteryBoxHandler implements Listener, CommandExecutor {
 
-    Methods m = Methods.getInstance();
+    static Methods m = Methods.getInstance();
 
     public static HashMap<Player, List<Location>> placed = new HashMap<>();
+
+    public static MysteryBoxHandler instance = new MysteryBoxHandler();
+
+    public static MysteryBoxHandler getInstance() {
+        return instance;
+    }
 
 
     public void spawnItem(ItemStack i, Location loc) {
@@ -108,6 +116,8 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
         if (p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&f&l&k[&7&l*&f&l&k]&r &9&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r")) && p.getItemInHand().getType().equals(Material.ENDER_CHEST)) {
             e.setCancelled(true);
+            if (!p.getWorld().getBlockAt(e.getClickedBlock().getLocation().clone().add(0, 3, 0)).getType().equals(Material.AIR))
+                return;
             if (placed.get(p) == null) {
                 List<Location> place = new ArrayList<>();
                 place.add(loc);
@@ -120,7 +130,8 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
                     placed.get(p).add(loc);
                 }
             }
-            displayRewards(Main.getInstance(), "genesis", "&f&l&k[&7&l*&f&l&k]&r &9&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r", loc, stands, p);
+
+            doChestAnimation(p, e.getClickedBlock().getLocation(), "genesis");
             if (p.getItemInHand().getAmount() > 1) {
                 int i = p.getItemInHand().getAmount();
                 p.getItemInHand().setAmount(i - 1);
@@ -130,10 +141,10 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
             p.updateInventory();
             return;
         }
-        if (p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&c&lContraband Crate")) && p.getItemInHand().getType().equals(Material.ENDER_CHEST)) {
+        if (p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&f&l• &c&lC&6&lo&e&ln&a&lt&3&lr&9&la&5&lb&c&la&6&ln&e&ld &3&lC&9&lr&5&la&c&lt&6&le &f&l•")) && p.getItemInHand().getType().equals(Material.ENDER_CHEST)) {
             e.setCancelled(true);
-            Location l = new Location(Bukkit.getWorld("world_the_end"), 28, 58, -14);
-            if (loc.equals(l)) return;
+            if (!p.getWorld().getBlockAt(e.getClickedBlock().getLocation().clone().add(0, 3, 0)).getType().equals(Material.AIR))
+                return;
             if (placed.get(p) == null) {
                 List<Location> place = new ArrayList<>();
                 place.add(loc);
@@ -146,7 +157,8 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
                     placed.get(p).add(loc);
                 }
             }
-            displayRewards(Main.getInstance(), "contraband", "&c&lContraband Crate", loc, stands, p);
+
+            doChestAnimation(p, e.getClickedBlock().getLocation(), "contraband");
             if (p.getItemInHand().getAmount() > 1) {
                 int i = p.getItemInHand().getAmount();
                 p.getItemInHand().setAmount(i - 1);
@@ -158,6 +170,8 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
         }
         if (p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&f&l&k[&7&l*&f&l&k]&r &b&lApril Crate &f&l&k[&7&l*&f&l&k]&r")) && p.getItemInHand().getType().equals(Material.ENDER_CHEST)) {
             e.setCancelled(true);
+            if (!p.getWorld().getBlockAt(e.getClickedBlock().getLocation().clone().add(0, 3, 0)).getType().equals(Material.AIR))
+                return;
             if (placed.get(p) == null) {
                 List<Location> place = new ArrayList<>();
                 place.add(loc);
@@ -170,7 +184,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
                     placed.get(p).add(loc);
                 }
             }
-            displayRewards(Main.getInstance(), "april", "&f&l&k[&7&l*&f&l&k]&r &b&lApril Crate &f&l&k[&7&l*&f&l&k]&r", loc, stands, p);
+            doChestAnimation(p, e.getClickedBlock().getLocation(), "april");
             if (p.getItemInHand().getAmount() > 1) {
                 int i = p.getItemInHand().getAmount();
                 p.getItemInHand().setAmount(i - 1);
@@ -182,111 +196,321 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
         }
 
     }
-    //Add local ArrayList inside Interact Event to get called inside spawnItem Function to make sure other players items do not get interrupted.
-    //Create a Runnable Task inside spawnItem to make the item go up a little and stop to reveal the item obtained. This will be called in a for loop with an Integer from the loop being a parameter.
-    //Add particles directly above the opened chest block that spawns when interacted. After 1-2 seconds have the particles pop. Revealing the item at that location + Name.
-    //Use finishOpen function to run the necessary events to remove the chest, remove the holograms, and remove the armorstands.
 
-
-    private float rad = 0.261799f;
-
-    private Location getLocationInCircle(Location center, double angle) {
-        double x = center.getX() + 0.397 * Math.cos(angle) + 0.505 * Math.sin(angle);
-        double z = center.getZ() + 0.397 * Math.sin(angle) - 0.505 * Math.cos(angle);
-
-        return new Location(center.getWorld(), x, center.getY(), z, (float) Math.toDegrees(angle), 0);
+    @EventHandler
+    public void onInt(PlayerArmorStandManipulateEvent e) {
+        e.setCancelled(true);
     }
 
+    public String getRarity() {
+        String rarity = "";
+        Random r = new Random();
+        int ri = r.nextInt(100);
+        if (ri <= 60) {
+            rarity = "Common";
+        }
+        if (ri > 60 && ri <= 90) {
+            rarity = "Rare";
+        }
+        if (ri > 90) {
+            rarity = "Epic";
+        }
 
-    public void rotateStand(ArmorStand stand, Location place) {
+        return rarity;
+    }
+    @SuppressWarnings("deprecation")
+    public void startAnimation(Player p, String crate, Location loc) {
+        Location block = loc.clone();
+        WorldServer s = ((CraftWorld) loc.getWorld()).getHandle();
+        BlockPosition bp = new BlockPosition(loc.getX(), loc.getY(), loc.getZ());
+        PacketPlayOutBlockChange change = new PacketPlayOutBlockChange(s, bp);
+        if (Yaw.getYaw(p).equals(Yaw.NORTH)) {
+            change.block = CraftMagicNumbers.getBlock(Material.ENDER_CHEST).fromLegacyData(new EnderChest(BlockFace.SOUTH).getData());
+        }
+        if (Yaw.getYaw(p).equals(Yaw.EAST)) {
+            change.block = CraftMagicNumbers.getBlock(Material.ENDER_CHEST).fromLegacyData(new EnderChest(BlockFace.WEST).getData());
+        }
+        if (Yaw.getYaw(p).equals(Yaw.SOUTH)) {
+            change.block = CraftMagicNumbers.getBlock(Material.ENDER_CHEST).fromLegacyData(new EnderChest(BlockFace.NORTH).getData());
+        }
+        if (Yaw.getYaw(p).equals(Yaw.WEST)) {
+            change.block = CraftMagicNumbers.getBlock(Material.ENDER_CHEST).fromLegacyData(new EnderChest(BlockFace.EAST).getData());
+        }
+
+        PacketPlayOutTileEntityData data = new PacketPlayOutTileEntityData();
+        PacketPlayOutBlockAction open = new PacketPlayOutBlockAction(bp, Blocks.ENDER_CHEST, 1, 1);
+
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(change);
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(open);
+
+        p.playSound(p.getLocation(), Sound.EXPLODE, 1.0f, 2f);
         new BukkitRunnable() {
-            int tick = 0;
-
             @Override
             public void run() {
-                if (stand == null || stand.isDead()) cancel();
-                ++tick;
-
-
-                Location loc = getLocationInCircle(place, rad * tick);
-                assert stand != null;
-                stand.teleport(loc);
-
-
+                //block.getWorld().getBlockAt(block).setType(Material.AIR);
+                PacketPlayOutBlockChange change = new PacketPlayOutBlockChange(s, bp);
+                change.block = net.minecraft.server.v1_8_R3.Block.getByCombinedId(Material.AIR.getId());
+                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(change);
             }
-        }.runTaskTimer(Main.getInstance(), 0L, 1L);
+        }.runTaskLater(Main.plugin, 227);
+
+        if (Yaw.getYaw(p).equals(Yaw.WEST)) {
+            //DO Z CHANGE
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "east", 5, 63, 114, 40, "Legendary");//187
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "east", 15, 55, 92, 60, getRarity());//167
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "east", 25, 47, 80, 70, getRarity());//157
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "east", 35, 39, 68, 80, getRarity());//147
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "east", 45, 31, 56, 90, getRarity());//137
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "east", 55, 23, 44, 100, getRarity());//127
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "east", 65, 15, 32, 110, getRarity());//117
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "east", 75, 7, 20, 120, getRarity()); //replaces at 107 ticks
+        }
+        if (Yaw.getYaw(p).equals(Yaw.EAST)) {
+            //DO Z CHANGE
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "west", 5, 63, 114, 40, "Legendary");//187
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "west", 15, 55, 92, 60, getRarity());//167
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "west", 25, 47, 80, 70, getRarity());//157
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "west", 35, 39, 68, 80, getRarity());//147
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "west", 45, 31, 56, 90, getRarity());//137
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "west", 55, 23, 44, 100, getRarity());//127
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "west", 65, 15, 32, 110, getRarity());//117
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "west", 75, 7, 20, 120, getRarity()); //replaces at 107 ticks
+        }
+        if (Yaw.getYaw(p).equals(Yaw.NORTH)) {
+            //DO X CHANGE
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "south", 5, 63, 114, 40, "Legendary");//222
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "south", 15, 55, 92, 60, getRarity());//202
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "south", 25, 47, 80, 70, getRarity());//192
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "south", 35, 39, 68, 80, getRarity());//182
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "south", 45, 31, 56, 90, getRarity());//172
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "south", 55, 23, 44, 100, getRarity());//162
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "south", 65, 15, 32, 110, getRarity());//152
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "south", 75, 7, 20, 120, getRarity()); //replaces at 142 ticks
+        }
+        if (Yaw.getYaw(p).equals(Yaw.SOUTH)) {
+            //DO X CHANGE
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "north", 5, 63, 114, 40, "Legendary");//222
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "north", 15, 55, 92, 60, getRarity());//202
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "north", 25, 47, 80, 70, getRarity());//192
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "north", 35, 39, 68, 80, getRarity());//182
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "north", 45, 31, 56, 90, getRarity());//172
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "north", 55, 23, 44, 100, getRarity());//162
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "north", 65, 15, 32, 110, getRarity());//152
+            MysteryBoxHandler.getInstance().rotateAnimation(p, crate, loc, "north", 75, 7, 20, 120, getRarity()); //replaces at 142 ticks
+        }
     }
 
-
-    public void spawnArmorStand(JavaPlugin plugin, Location place, List<ArmorStand> stands, List<ItemStack> items, List<Item> it, List<Hologram> holos, String crate, Player p, int time) {
-
-
+    public void doChestAnimation(Player p, Location loc, String crate) {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (!p.isOnline()) return;
+                placed.get(p).remove(loc);
+            }
+        }.runTaskLater(Main.plugin, 240);   //REPLACE WITH PACKET STAND
+        Location center = loc.clone().add(0.5, 0.85, 0.5);
+        HeadDatabaseAPI api = new HeadDatabaseAPI();
+        ItemStack item = api.getItemHead("1491");
+        WorldServer s = ((CraftWorld) loc.getWorld()).getHandle();
+        EntityArmorStand stand = new EntityArmorStand(s, center.getX(), center.getY(), center.getZ());
+        stand.setGravity(false);
+        stand.setInvisible(true);
+        stand.setSmall(true);
+        PacketPlayOutSpawnEntityLiving spawnP = new PacketPlayOutSpawnEntityLiving(stand);
+        PacketPlayOutEntityEquipment EquipP = new PacketPlayOutEntityEquipment(stand.getId(), 4, CraftItemStack.asNMSCopy(item));
+
+        PacketPlayOutEntityMetadata metadatap = new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true);
+
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(spawnP);
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(EquipP);
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(metadatap);
+        new BukkitRunnable() {
+            int up = 0;
+            float rotate = 0f;
+            @Override
+            public void run() {
+                if (up == 25) {
+                    PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(stand.getId());
+                    ((CraftPlayer) p).getHandle().playerConnection.sendPacket(destroy);
+                    startAnimation(p, crate, loc.clone().add(0, 3, 0));
+                    cancel();
+                }
+                double y = (double) up / 10;
+                Location l = new Location(loc.getWorld(), center.getX(), center.getY(), center.getZ(), rotate, 0);
+                stand.setLocation(center.getX(), center.getY() + y, center.getZ(), l.getYaw(), 0);
+                Vector3f v = new Vector3f(0, rotate, 0);
+                stand.setHeadPose(v);
+                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityTeleport(stand));
+                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true));
+
+                up++;
+                rotate += 6f;
+            }
+        }.runTaskTimer(Main.plugin, 0, 1);
+    }
+
+    public void removeRewards(Player p, EntityArmorStand stand, ItemStack reward, EntityItem item) {
+        stand.getBukkitEntity().setPassenger(null);
+        PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(stand.getId(), item.getId());
+        PacketPlayOutEntityDestroy destroy2 = new PacketPlayOutEntityDestroy(item.getId());
+        PacketPlayOutEntityMetadata metadatap = new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true);
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(metadatap);
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(destroy);
+        if (reward.getItemMeta().hasLore()) {
+            String s = reward.getItemMeta().getLore().get(0).replace("%PLAYER%", p.getName());
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s);
+        } else {
+            p.getInventory().addItem(reward);
+            p.updateInventory();
+        }
+
+    }
+
+    public void replaceReward(Player p, String crate, EntityArmorStand stand, int remove, String rarity) {
+        Location place = stand.getBukkitEntity().getLocation().clone();
+        //Location place = stand.getEyeLocation().clone().add(0, -0.3, 0);
+        ItemStack reward = CrateFunctions.Reward(crate, rarity).clone();
+        //Item item = place.getWorld().dropItem(place, reward);           //REPLACE WITH NORMAL STAND OR FIND A WAY TO PUT ITEM ON STAND
+        WorldServer s = ((CraftWorld) place.getWorld()).getHandle();
+        EntityItem item = new EntityItem(s, place.getX(), place.getY(), place.getZ(), CraftItemStack.asNMSCopy(reward));
+        item.pickupDelay = 6000;
+        stand.setCustomName(reward.getItemMeta().getDisplayName());
+        Location loc = place.clone().add(0, -0.5, 0);
+        stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), 0, 0);
+        PacketPlayOutEntityEquipment EquipP = new PacketPlayOutEntityEquipment(stand.getId(), 4, null);
+        PacketPlayOutEntityMetadata metadatap = new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true);
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntity(item, 2, 100));
+        PacketPlayOutAttachEntity attach = new PacketPlayOutAttachEntity(0, item, stand);
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityMetadata(item.getId(), item.getDataWatcher(), true));
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(EquipP);
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(metadatap);
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityTeleport(stand));
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(attach);
 
 
-                ItemStack reward = CrateFunctions.Reward(crate).clone();
-                Item item = place.getWorld().dropItem(place, reward);
-                item.setTicksLived(5635 + time);
-                item.setPickupDelay(6000);
+        //DIFFERENT SOUNDS FOR RARITY
+        if (rarity.equals("Common"))
+            p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 2f);
+        if (rarity.equals("Rare"))
+            p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.5f);
+        if (rarity.equals("Epic"))
+            p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
+        if (rarity.equals("Legendary"))
+            p.playSound(p.getLocation(), Sound.EXPLODE, 1.0f, 1.0f);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                removeRewards(p, stand, reward, item);
+            }
+        }.runTaskLater(Main.plugin, remove);
+    }
 
+    public void animation(Player p, String crate, Location center, EntityArmorStand stand, String dir, int end, int replace, int remove, String rarity) {
+        new BukkitRunnable() {
 
-                //Location faceSouth = new Location(place.getWorld(), place.getX(), place.getY(), place.getZ(), 0f, 0f);
+            float angle = 0f;
+            final double RADIUS = 1.3;
+            int stop = 0;
 
-                final ArmorStand stand = place.getWorld().spawn(place, ArmorStand.class);
-                stand.setPassenger(item);
+            @Override
+            public void run() {
+                if (stop == end) {
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            replaceReward(p, crate, stand, remove, rarity);
+                        }
+                    }.runTaskLater(Main.plugin, replace);
+                    cancel();
+                }
+                //double angle = a * Math.PI / 180;
+                double z = RADIUS * Math.sin(angle);
+                double x = RADIUS * Math.sin(angle);
+                double y = RADIUS * Math.cos(angle);
 
+                angle += 0.1;
+                switch (dir) {
+                    case "west": {
+                        //stand.teleport(center.clone().add(x, y, 0));
+                        Location l = center.clone().add(0, y, -z);
+                        stand.setLocation(l.getX(), l.getY(), l.getZ(), 0, 0);
+                        break;
+                    }
+                    case "east": {                        //CHANGE THESE TO ENTITY TELEPORT PACKETS
+                        //stand.teleport(center.clone().add(0, y, z));
+                        Location l = center.clone().add(0, y, z);
+                        stand.setLocation(l.getX(), l.getY(), l.getZ(), 0, 0);
+                        break;
+                    }
+                    case "north": {                        //CHANGE THESE TO ENTITY TELEPORT PACKETS
+                        //stand.teleport(center.clone().add(0, y, z));
+                        Location l = center.clone().add(x, y, 0);
+                        stand.setLocation(l.getX(), l.getY(), l.getZ(), 0, 0);
+                        break;
+                    }
+                    case "south": {                        //CHANGE THESE TO ENTITY TELEPORT PACKETS
+                        //stand.teleport(center.clone().add(0, y, z));
+                        Location l = center.clone().add(-x, y, 0);
+                        stand.setLocation(l.getX(), l.getY(), l.getZ(), 0, 0);
+                        break;
+                    }
+                }
+                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityTeleport(stand));
+
+                stop++;
+            }
+        }.runTaskTimer(Main.plugin, 0, 1);
+    }
+
+    public void rotateAnimation(Player p, String crate, Location loc, String dir, int time, int end, int replace, int remove, String rarity) {
+        Location center = loc.clone().add(0.5, -0.4, 0.5);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                HeadDatabaseAPI api = new HeadDatabaseAPI();
+                ItemStack item = api.getItemHead("30503");
+                if(rarity.equals("Common"))
+                    item = api.getItemHead("30507");
+                if(rarity.equals("Rare"))
+                    item = api.getItemHead("30506");
+                if(rarity.equals("Epic"))
+                    item = api.getItemHead("30505");
+                if(rarity.equals("Legendary"))
+                    item = api.getItemHead("28582");
+                WorldServer s = ((CraftWorld) loc.getWorld()).getHandle();
+                EntityArmorStand stand = new EntityArmorStand(s, center.getX(), center.getY() - 0.2, center.getZ());
+                stand.setCustomName(m.c("&e&l&kOOOOOO"));
+                stand.setCustomNameVisible(true);
                 stand.setGravity(false);
-                stand.setVisible(false);
+                stand.setInvisible(true);
+                stand.setSmall(true);
 
-                Location holo = new Location(place.getWorld(), place.getX(), place.getY() + 2.5, place.getZ());
-                Hologram name = HologramsAPI.createHologram(plugin, holo);
-                name.appendTextLine(reward.getItemMeta().getDisplayName());
+                PacketPlayOutSpawnEntityLiving spawnP = new PacketPlayOutSpawnEntityLiving(stand);
+                PacketPlayOutEntityEquipment EquipP = new PacketPlayOutEntityEquipment(stand.getId(), 4, CraftItemStack.asNMSCopy(item));
 
+                PacketPlayOutEntityMetadata metadatap = new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true);
 
-                rotateStand(stand, place);
+                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(spawnP);
+                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(EquipP);
+                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(metadatap);
+                new BukkitRunnable() {
+                    int up = 0;
 
-
-                stands.add(stand);
-                items.add(reward);
-                it.add(item);
-                holos.add(name);
-                p.playSound(p.getLocation(), Sound.CHICKEN_EGG_POP, 1.0f, 1.0f);
-
+                    @Override
+                    public void run() {
+                        if (up == 5) {
+                            animation(p, crate, center, stand, dir, end, replace, remove, rarity);
+                            cancel();
+                        }
+                        double y = (double) up / 10;
+                        //stand.teleport(center.clone().add(0, y, 0));
+                        Location l = center.clone().add(0, y, 0);
+                        stand.setLocation(l.getX(), l.getY(), l.getZ(), 0, 0);
+                        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityTeleport(stand));
+                        up++;
+                    }
+                }.runTaskTimer(Main.plugin, 0, 1);
             }
-        }.runTaskLater(plugin, 60L);
-    }
-
-    public void playSound(JavaPlugin plugin, Player p, Sound s, int time) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                p.playSound(p.getLocation(), s, 1.0F, 1.0F);
-            }
-        }.runTaskLater(plugin, time);
-    }
-
-    public void startAnimation(JavaPlugin plugin, String crate, Location loc, List<ArmorStand> stands, List<ItemStack> items, List<Item> item, List<Hologram> holos, Player p, int time, double x, double y, double z) {
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                if (!p.isOnline()) return;
-                Location place = new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y + 1, loc.getZ() + z);
-
-                for (int i = 0; i < 40; i++)
-                    playSound(plugin, p, Sound.NOTE_PIANO, i);
-
-                // Try to use a SingleTask - Check GitHub
-
-
-                spawnArmorStand(plugin, place, stands, items, item, holos, crate, p, time);
-
-
-            }
-        }.runTaskLater(plugin, time);
+        }.runTaskLater(Main.plugin, time);
     }
 
     public enum Yaw {
@@ -305,126 +529,6 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
                 return Yaw.SOUTH;
             }
         }
-    }
-
-    public void displayRewards(JavaPlugin plugin, String crate, String name, Location loc, List<ArmorStand> stands, Player p) {
-
-        Location block = new Location(loc.getWorld(), loc.getX(), loc.getY() + 3, loc.getZ());
-
-
-        block.getWorld().getBlockAt(block).setType(Material.ENDER_CHEST);
-        m.changeChestState(block, true);
-        Block b = block.getWorld().getBlockAt(block);
-        BlockState state = b.getState();
-
-
-        //FACE WEST == 45 - 135
-        //FACE EAST == 225 - 315
-        //FACE SOUTH == 315 - 45 on opposite side
-        //FACE NORTH (-)135 - 225(+)
-
-
-        if (Yaw.getYaw(p).equals(Yaw.NORTH)) {
-            org.bukkit.material.EnderChest c = new org.bukkit.material.EnderChest(BlockFace.SOUTH);
-            state.setData(c);
-            state.update();
-        }
-        if (Yaw.getYaw(p).equals(Yaw.EAST)) {
-            org.bukkit.material.EnderChest c = new org.bukkit.material.EnderChest(BlockFace.WEST);
-            state.setData(c);
-            state.update();
-        }
-        if (Yaw.getYaw(p).equals(Yaw.SOUTH)) {
-            org.bukkit.material.EnderChest c = new org.bukkit.material.EnderChest(BlockFace.NORTH);
-            state.setData(c);
-            state.update();
-        }
-        if (Yaw.getYaw(p).equals(Yaw.WEST)) {
-            org.bukkit.material.EnderChest c = new org.bukkit.material.EnderChest(BlockFace.EAST);
-            state.setData(c);
-            state.update();
-        }
-
-
-        List<ItemStack> items = new ArrayList<>();
-        List<Hologram> holos = new ArrayList<>();
-        List<Item> item = new ArrayList<>();
-
-
-        //WEST and EAST = Z coord || NORTH and SOUTH = X coord
-        if ((Yaw.getYaw(p).equals(Yaw.NORTH) || Yaw.getYaw(p).equals(Yaw.SOUTH))) { //SOUTH AND NORTH
-            Location holo = new Location(loc.getWorld(), loc.getX() + 0.5, loc.getY() + 4.5, loc.getZ() + 0.25);
-            Hologram chest = HologramsAPI.createHologram(plugin, holo);
-            chest.appendTextLine(m.c(name));
-            holos.add(chest);
-
-            startAnimation(plugin, crate, loc, stands, items, item, holos, p, 20, 0.5, 2.5, 0.25); // Adjust by +-0.5 to account for block coords not being in the center of the block
-            startAnimation(plugin, crate, loc, stands, items, item, holos, p, 65, 1.75, 2.25, 0.25);
-            startAnimation(plugin, crate, loc, stands, items, item, holos, p, 110, 2.0, 0.75, 0.25);
-            startAnimation(plugin, crate, loc, stands, items, item, holos, p, 155, 1.75, -0.75, 0.25);
-            startAnimation(plugin, crate, loc, stands, items, item, holos, p, 200, 0.5, -1.0, 0.25);
-            startAnimation(plugin, crate, loc, stands, items, item, holos, p, 245, -0.75, -0.75, 0.25);
-            startAnimation(plugin, crate, loc, stands, items, item, holos, p, 290, -1.0, 0.75, 0.25);
-            startAnimation(plugin, crate, loc, stands, items, item, holos, p, 335, -0.75, 2.25, 0.25);
-        }
-        if ((Yaw.getYaw(p).equals(Yaw.WEST) || Yaw.getYaw(p).equals(Yaw.EAST))) { //WEST AND EAST
-            Location holo = new Location(loc.getWorld(), loc.getX() + 0.25, loc.getY() + 4.5, loc.getZ() + 0.5);
-            Hologram chest = HologramsAPI.createHologram(plugin, holo);
-            chest.appendTextLine(m.c(name));
-            holos.add(chest);
-
-            startAnimation(plugin, crate, loc, stands, items, item, holos, p, 20, 0.25, 2.5, 0.5);
-            startAnimation(plugin, crate, loc, stands, items, item, holos, p, 65, 0.25, 2.25, 1.75);
-            startAnimation(plugin, crate, loc, stands, items, item, holos, p, 110, 0.25, 0.75, 2.0);
-            startAnimation(plugin, crate, loc, stands, items, item, holos, p, 155, 0.25, -0.75, 1.75);
-            startAnimation(plugin, crate, loc, stands, items, item, holos, p, 200, 0.25, -1.0, 0.5);
-            startAnimation(plugin, crate, loc, stands, items, item, holos, p, 245, 0.25, -0.75, -0.75);
-            startAnimation(plugin, crate, loc, stands, items, item, holos, p, 290, 0.25, 0.75, -1.0);
-            startAnimation(plugin, crate, loc, stands, items, item, holos, p, 335, 0.25, 2.25, -0.75);
-        }
-        finishOpen(plugin, block, p, stands, items, item, holos, 420);
-
-
-    }
-
-
-    public void finishOpen(JavaPlugin plugin, Location loc, Player p, List<ArmorStand> stands, List<ItemStack> items, List<Item> item, List<Hologram> holos, int time) {
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (!p.isOnline()) return;
-
-                for (ArmorStand s : stands) {
-                    s.remove();
-
-                }
-                for (Item i : item) {
-                    i.remove();
-                }
-                for (Hologram h : holos) {
-                    h.delete();
-                }
-
-                loc.getWorld().getBlockAt(loc).setType(Material.AIR);
-
-                for (ItemStack item : items) {
-                    if (item.getItemMeta().hasLore()) {
-                        String s = item.getItemMeta().getLore().get(0).replace("%PLAYER%", p.getName());
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s);
-                    } else {
-                        p.getInventory().addItem(item);
-                        p.updateInventory();
-                    }
-                }
-                if (placed.get(p) != null) {
-                    Location block = new Location(loc.getWorld(), loc.getX(), loc.getY() - 3, loc.getZ());
-                    placed.get(p).remove(block);
-                }
-            }
-        }.runTaskLater(plugin, time);
-
-
     }
 
 

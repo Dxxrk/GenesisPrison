@@ -410,7 +410,7 @@ public class CMDMine implements CommandExecutor, Listener {
                 if (Tokens.getInstance().getTokens(p) < 2E6) return;
                 PlayerDataHandler.getInstance().getPlayerData(p).set("LuckyBlock", 1);
                 Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock"));
+                m.reset();
                 Tokens.getInstance().takeTokens(p, 2e6);
                 openUpgradeInventory(p);
             }
@@ -418,7 +418,7 @@ public class CMDMine implements CommandExecutor, Listener {
                 if (Tokens.getInstance().getTokens(p) < 100E6) return;
                 PlayerDataHandler.getInstance().getPlayerData(p).set("LuckyBlock", 3);
                 Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock"));
+                m.reset();
                 Tokens.getInstance().takeTokens(p, 100e6);
                 openUpgradeInventory(p);
             }
@@ -426,7 +426,7 @@ public class CMDMine implements CommandExecutor, Listener {
                 if (Tokens.getInstance().getTokens(p) < 500E6) return;
                 PlayerDataHandler.getInstance().getPlayerData(p).set("LuckyBlock", 8);
                 Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock"));
+                m.reset();
                 Tokens.getInstance().takeTokens(p, 500e6);
                 openUpgradeInventory(p);
             }
@@ -438,7 +438,7 @@ public class CMDMine implements CommandExecutor, Listener {
                 m.delete();
                 MineHandler.getInstance().CreateMine(p, "secondmine", "minestwo");
                 Tokens.getInstance().takeTokens(p, 25e6);
-                ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock"));
+                m.reset();
                 openUpgradeInventory(p);
             }
             if (e.getSlot() == 6) {
@@ -448,7 +448,7 @@ public class CMDMine implements CommandExecutor, Listener {
                 MineSystem.getInstance().removeActiveMine(m);
                 m.delete();
                 MineHandler.getInstance().CreateMine(p, "thirdmine", "minesthree");
-                ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock"));
+                m.reset();
                 Tokens.getInstance().takeTokens(p, 250e6);
                 openUpgradeInventory(p);
             }

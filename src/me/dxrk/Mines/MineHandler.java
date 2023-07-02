@@ -104,35 +104,36 @@ public class MineHandler implements Listener, CommandExecutor {
         mineblocks.add(new ItemStack(Material.HARD_CLAY));
         mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 0));
         mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 1));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 2));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 3));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 4));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 5));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 6));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 7));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 8));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 9));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 10));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 11));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 12));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 13));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 14));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 15));
         mineblocks.add(new ItemStack(Material.BRICK));
+        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 15));
         mineblocks.add(new ItemStack(Material.COAL_ORE));
+        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 14));
         mineblocks.add(new ItemStack(Material.COAL_BLOCK));
+        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 13));
         mineblocks.add(new ItemStack(Material.IRON_ORE));
+        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 12));
         mineblocks.add(new ItemStack(Material.IRON_BLOCK));
+        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 11));
         mineblocks.add(new ItemStack(Material.GOLD_ORE));
+        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 11));
         mineblocks.add(new ItemStack(Material.GOLD_BLOCK));
+        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 10));
         mineblocks.add(new ItemStack(Material.REDSTONE_ORE));
+        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 9));
         mineblocks.add(new ItemStack(Material.REDSTONE_BLOCK));
+        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 8));
         mineblocks.add(new ItemStack(Material.LAPIS_ORE));
+        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 7));
         mineblocks.add(new ItemStack(Material.LAPIS_BLOCK));
+        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 6));
         mineblocks.add(new ItemStack(Material.DIAMOND_ORE));
+        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 5));
         mineblocks.add(new ItemStack(Material.DIAMOND_BLOCK));
+        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 4));
         mineblocks.add(new ItemStack(Material.EMERALD_ORE));
+        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 3));
         mineblocks.add(new ItemStack(Material.EMERALD_BLOCK));
+        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 2));
         mineblocks.add(new ItemStack(Material.NETHERRACK));
         mineblocks.add(new ItemStack(Material.NETHER_BRICK));
         mineblocks.add(new ItemStack(Material.QUARTZ_ORE));
@@ -149,11 +150,7 @@ public class MineHandler implements Listener, CommandExecutor {
 
     public static List<ItemStack> Blocks(int start) {
         List<ItemStack> blocks = new ArrayList<>();
-        if (start == 0) {
-            blocks.add(mineBlocks().get(0));
-            blocks.add(mineBlocks().get(0));
-            blocks.add(mineBlocks().get(0));
-        } else if (start >= 62) {
+        if (start >= 62) {
             blocks.add(mineBlocks().get(62));
             blocks.add(mineBlocks().get(62));
             blocks.add(mineBlocks().get(62));
@@ -167,12 +164,11 @@ public class MineHandler implements Listener, CommandExecutor {
 
 
     @SuppressWarnings("deprecation")
-    public void updateMine(Player p, int rank) {
-        int start = rank / 16;
-        List<ItemStack> blocks = Blocks(start);
+    public void updateMine(Player p, int prestige) {
+        List<ItemStack> blocks = Blocks(prestige);
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
         if (PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("CustomBlock") == null) {
-            if (start == 0) {
+            if (prestige == 0) {
                 m.setBlock1(new ItemStack(Material.COBBLESTONE));
                 m.setBlock2(new ItemStack(Material.COBBLESTONE));
                 m.setBlock3(new ItemStack(Material.COBBLESTONE));
@@ -188,8 +184,7 @@ public class MineHandler implements Listener, CommandExecutor {
             m.setBlock3(block);
         }
         m.save();
-        double lucky = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock");
-        ResetHandler.resetMineFullWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), lucky);
+        m.reset();
 
     }
 
@@ -326,11 +321,6 @@ public class MineHandler implements Listener, CommandExecutor {
             Methods.getInstance().createWorldBorder(p, world,103, 39.5, (mines*250)+0.5);
         }
 
-
-        //Creating the actual mine
-        //ResetHandler.api.createMine(p.getUniqueId().toString(), point1, point2);
-
-
         createMine(p.getUniqueId().toString(), point1, point2, pworld, world, 25.0);
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
 
@@ -382,8 +372,7 @@ public class MineHandler implements Listener, CommandExecutor {
 
         regions.addRegion(outside);
 
-        double lucky = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock");
-        ResetHandler.resetMineFullWorldEdit(m, point2, point1, lucky);
+        m.reset();
         PlayerDataHandler.getInstance().getPlayerData(p).set("HasMine", true);
         settings.getOptions().set("numberofmines", (mines + 1));
         settings.saveOptions();

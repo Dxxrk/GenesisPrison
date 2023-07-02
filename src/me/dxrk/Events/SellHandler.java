@@ -1,6 +1,5 @@
 package me.dxrk.Events;
 
-import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
@@ -13,7 +12,6 @@ import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Mines.Mine;
 import me.dxrk.Mines.MineSystem;
-import me.dxrk.Mines.ResetHandler;
 import me.dxrk.Tokens.Tokens;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -294,7 +292,7 @@ public class SellHandler implements Listener, CommandExecutor {
         double event1 = SkillsEventsListener.getEventFortune();
 
         if (!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
-            e.setCancelled(true);
+            //e.setCancelled(true);
             return;
         }
 
@@ -359,8 +357,7 @@ public class SellHandler implements Listener, CommandExecutor {
                             if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("Ethereal")) {
                                 rank = 1000;
                             }
-                            double lucky = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock");
-                            ResetHandler.resetMineWorldEdit(mine, mine.getMinPoint(), mine.getMaxPoint(), lucky);
+                            mine.reset();
                             if (!p.isOp())
                                 reset.add(p.getUniqueId().toString());
                         }

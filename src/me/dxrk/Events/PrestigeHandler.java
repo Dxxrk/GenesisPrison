@@ -1,8 +1,6 @@
 package me.dxrk.Events;
 
 import com.connorlinfoot.titleapi.TitleAPI;
-import me.dxrk.Enchants.EnchantMethods;
-import me.dxrk.Enchants.Enchants;
 import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Enchants.PickaxeSkillTree;
 import me.dxrk.Main.Main;
@@ -15,7 +13,6 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -55,12 +52,12 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         if (label.equalsIgnoreCase("prestige")) {
             openInv(p);
         }
-        if(label.equalsIgnoreCase("addprestige")){
-            if(sender.isOp()){
-                if(args.length==2){
+        if (label.equalsIgnoreCase("addprestige")) {
+            if (sender.isOp()) {
+                if (args.length == 2) {
                     Player reciever = Bukkit.getPlayer(args[0]);
                     int amount = parseInt(args[1]);
-                    addPrestiges(reciever,amount);
+                    addPrestiges(reciever, amount);
                 }
             }
         }
@@ -82,8 +79,8 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         String uuid = p.getUniqueId().toString();
         int prestiges = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Prestiges");
         if (prestiges >= 100) {
-            for(int i=0;i<5;i++)
-                prestige.setItem(i,PickaxeSkillTree.Spacer());
+            for (int i = 0; i < 5; i++)
+                prestige.setItem(i, PickaxeSkillTree.Spacer());
             lore.clear();
             lore.add(m.c("&c&lMAX LEVEL"));
             prestige.setItem(2, prestigeItem(lore, m.c("&6&lYou did it!")));
@@ -103,18 +100,19 @@ public class PrestigeHandler implements Listener, CommandExecutor {
 
 
     }
-    public void openPrestigeTree(Player p){
+
+    public void openPrestigeTree(Player p) {
         int prestigepoints = PlayerDataHandler.getInstance().getPlayerData(p).getInt("PrestigePoints");
         Inventory inv = Bukkit.createInventory(null, 9, m.c("&aPrestige Tree: (Prestige Points: " + prestigepoints + ")"));
-        for(int i=0;i<9;i++){
+        for (int i = 0; i < 9; i++) {
             inv.setItem(i, PickaxeSkillTree.Spacer());
         }
         List<String> lore = new ArrayList<>();
         ItemStack tokenstar = new ItemStack(Material.NETHER_STAR);
         ItemMeta tokenmeta = tokenstar.getItemMeta();
         int tokenboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("PrestigeTreeTokenBoost");
-        if(!(tokenboost==0))
-            tokenmeta.setDisplayName(m.c("&e&lToken Boost (Level: ")+tokenboost/2+")");
+        if (!(tokenboost == 0))
+            tokenmeta.setDisplayName(m.c("&e&lToken Boost (Level: ") + tokenboost / 2 + ")");
         else
             tokenmeta.setDisplayName(m.c("&e&lToken Boost (Level: 0)"));
         lore.add(" ");
@@ -127,8 +125,8 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         ItemStack fortunestar = new ItemStack(Material.NETHER_STAR);
         ItemMeta fortunemeta = fortunestar.getItemMeta();
         int fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("PrestigeTreeFortuneBoost");
-        if(!(fortuneboost==0))
-            fortunemeta.setDisplayName(m.c("&b&lFortune Boost (Level: ")+fortuneboost/2+")");
+        if (!(fortuneboost == 0))
+            fortunemeta.setDisplayName(m.c("&b&lFortune Boost (Level: ") + fortuneboost / 2 + ")");
         else
             fortunemeta.setDisplayName(m.c("&b&lFortune Boost (Level: 0)"));
         lore.add(" ");
@@ -141,8 +139,8 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         ItemStack gemstar = new ItemStack(Material.NETHER_STAR);
         ItemMeta gemmeta = gemstar.getItemMeta();
         int gemboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("PrestigeTreeGemBoost");
-        if(!(gemboost==0))
-            gemmeta.setDisplayName(m.c("&a&lGem Boost (Level: ")+gemboost/2+")");
+        if (!(gemboost == 0))
+            gemmeta.setDisplayName(m.c("&a&lGem Boost (Level: ") + gemboost / 2 + ")");
         else
             gemmeta.setDisplayName(m.c("&a&lGem Boost (Level: 0)"));
         lore.add(" ");
@@ -155,8 +153,8 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         ItemStack luckstar = new ItemStack(Material.NETHER_STAR);
         ItemMeta luckmeta = luckstar.getItemMeta();
         double luckboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("PrestigeTreeLuckBoost");
-        if(!(luckboost==0))
-            luckmeta.setDisplayName(m.c("&6&lLuck Boost (Level: ")+(int)(luckboost/0.5)+")");
+        if (!(luckboost == 0))
+            luckmeta.setDisplayName(m.c("&6&lLuck Boost (Level: ") + (int) (luckboost / 0.5) + ")");
         else
             luckmeta.setDisplayName(m.c("&6&lLuck Boost (Level: 0)"));
         lore.add(" ");
@@ -182,7 +180,7 @@ public class PrestigeHandler implements Listener, CommandExecutor {
             e.setCancelled(true);
 
             if (e.getSlot() == 1) {
-                if (RankupHandler.getInstance().getRank(p) >= 1000) {
+                if (RankupHandler.getInstance().getRank(p) >= 100) {
                     String uuid = p.getUniqueId().toString();
                     int prestiges = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Prestiges");
                     if (prestiges >= 100) {
@@ -210,12 +208,10 @@ public class PrestigeHandler implements Listener, CommandExecutor {
                     sure.setItem(2, PickaxeLevel.getInstance().Spacer());
                     sure.setItem(4, PickaxeLevel.getInstance().Spacer());
                     p.openInventory(sure);
+                } else {
+                    p.sendMessage(m.c("&cYou have to be level 100 to prestige."));
                 }
-                else{
-                    p.sendMessage(m.c("&cYou have to be level 1000 to prestige."));
-                }
-            }
-            else if(e.getSlot() == 3){
+            } else if (e.getSlot() == 3) {
                 int prestiges = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Prestiges");
                 if (prestiges >= 100) {
                     return;
@@ -234,33 +230,33 @@ public class PrestigeHandler implements Listener, CommandExecutor {
                 p.closeInventory();
             }
         }
-        if(e.getClickedInventory().getName().contains(m.c("&aPrestige Tree:"))){
+        if (e.getClickedInventory().getName().contains(m.c("&aPrestige Tree:"))) {
             e.setCancelled(true);
             int prestigepoints = PlayerDataHandler.getInstance().getPlayerData(p).getInt("PrestigePoints");
-            if(prestigepoints==0)
+            if (prestigepoints == 0)
                 return;
-            if(e.getSlot()==1){
+            if (e.getSlot() == 1) {
                 int tokenboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("PrestigeTreeTokenBoost");
-                PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigeTreeTokenBoost", tokenboost+2);
-                PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigePoints", prestigepoints-1);
+                PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigeTreeTokenBoost", tokenboost + 2);
+                PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigePoints", prestigepoints - 1);
                 openPrestigeTree(p);
                 PlayerDataHandler.getInstance().savePlayerData(p);
-            }else if(e.getSlot()==3){
+            } else if (e.getSlot() == 3) {
                 int fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("PrestigeTreeFortuneBoost");
-                PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigeTreeFortuneBoost", fortuneboost+2);
-                PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigePoints", prestigepoints-1);
+                PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigeTreeFortuneBoost", fortuneboost + 2);
+                PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigePoints", prestigepoints - 1);
                 openPrestigeTree(p);
                 PlayerDataHandler.getInstance().savePlayerData(p);
-            }else if(e.getSlot()==5){
+            } else if (e.getSlot() == 5) {
                 int gemboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("PrestigeTreeGemBoost");
-                PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigeTreeGemBoost", gemboost+2);
-                PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigePoints", prestigepoints-1);
+                PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigeTreeGemBoost", gemboost + 2);
+                PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigePoints", prestigepoints - 1);
                 openPrestigeTree(p);
                 PlayerDataHandler.getInstance().savePlayerData(p);
-            }else if(e.getSlot()==7){
+            } else if (e.getSlot() == 7) {
                 double luckboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("PrestigeTreeLuckBoost");
-                PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigeTreeLuckBoost", luckboost+0.5);
-                PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigePoints", prestigepoints-1);
+                PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigeTreeLuckBoost", luckboost + 0.5);
+                PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigePoints", prestigepoints - 1);
                 openPrestigeTree(p);
                 PlayerDataHandler.getInstance().savePlayerData(p);
             }
@@ -282,8 +278,10 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         CMDVoteShop.addCoupon(p, 0.25);
         LocksmithHandler.getInstance().addKey(p, "Seasonal", 1);
         int prestigepoints = PlayerDataHandler.getInstance().getPlayerData(p).getInt("PrestigePoints");
-        PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigePoints", prestigepoints+1);
+        PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigePoints", prestigepoints + 1);
         settings.saveRankupPrices();
+        prestiges++;
+        MineHandler.getInstance().updateMine(p, prestiges);
     }
 
     public static void addPrestiges(Player p, int amt) {

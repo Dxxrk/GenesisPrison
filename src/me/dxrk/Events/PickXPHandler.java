@@ -159,7 +159,6 @@ public class PickXPHandler
         if (!p.getItemInHand().hasItemMeta()) return;
         if (!p.getItemInHand().getItemMeta().hasLore()) return;
         if(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
-            e.setCancelled(true);
             return;
         }
         if (!set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;

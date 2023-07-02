@@ -170,7 +170,6 @@ public class SkillsEventsListener implements Listener {
         Player p = e.getPlayer();
         Random r = new Random();
         if(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
-            e.setCancelled(true);
             return;
         }
         if (!EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;

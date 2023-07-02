@@ -1,17 +1,17 @@
 package me.dxrk.Mines;
 
 import me.dxrk.Main.Main;
+import me.dxrk.utils.BlockChanger;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Mine {
     private String mineName;
@@ -56,6 +56,7 @@ public class Mine {
                 return true;
         return false;
     }
+
 
     public String getMineName() {
         return this.mineName;
@@ -175,6 +176,16 @@ public class Mine {
             System.out.println("ERROR SAVING MINE: " + getMineName());
             System.out.println("ERROR SAVING MINE: " + getMineName());
             System.out.println(e.getMessage());
+        }
+    }
+
+    public void reset() {
+        BlockChanger.setCuboidAsynchronously(this.getMinPoint(), this.getMaxPoint(), this.getBlock1(), this.getBlock2(), this.getBlock3(), false);
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            if(this.isLocationInMine(p.getLocation())) {
+                Location l = new Location(this.getMineWorld(), p.getLocation().getX(), this.getMaxPoint().getY(), p.getLocation().getZ());
+                p.teleport(l);
+            }
         }
     }
 

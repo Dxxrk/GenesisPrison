@@ -293,7 +293,6 @@ public class CMDGang implements Listener, CommandExecutor {
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         if(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
-            e.setCancelled(true);
             return;
         }
         if(!EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;

@@ -1,8 +1,6 @@
 package me.dxrk.Events;
 
-import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -127,379 +125,211 @@ public class CrateFunctions {
     public static ItemStack ContrabandCrate() {
         ItemStack gcrate = new ItemStack(Material.ENDER_CHEST);
         ItemMeta gm = gcrate.getItemMeta();
-        gm.setDisplayName(m.c("&c&lContraband Crate"));
+        gm.setDisplayName(m.c("&f&l• &c&lC&6&lo&e&ln&a&lt&3&lr&9&la&5&lb&c&la&6&ln&e&ld &3&lC&9&lr&5&la&c&lt&6&le &f&l•"));
         List<String> lore = new ArrayList<>();
         lore.add(m.c("&7Upon placing this item, you will recieve 8 random items"));
-        lore.add(m.c("&7From the list below, all rewards are randomly selected."));
-        lore.add(m.c("&a&lRewards:"));
+        lore.add(m.c("&7These will be Common, Rare, or Epic and 1 guaranteed Legendary"));
+        lore.add(m.c("&a&lCommon Rewards:"));
+        lore.add(m.c("&a• &e⛀50,000 Tokens"));
+        lore.add(m.c("&a• &a⬥2,500 Gems"));
+        lore.add(m.c("&a• &e5x &7&lAlpha &7Keys"));
+        lore.add(m.c("&a• &e3x &c&lBeta &7Keys"));
+        lore.add(m.c("&a• &e1x &4&lOmega &7Key"));
+        lore.add(m.c("&a• &b&lSponsor Rank"));
         lore.add(m.c(" "));
-        lore.add(m.c("&f&l&m--&f&lTokens&m--"));
-        lore.add(m.c("&e⛀500,000-1,000,000"));
+        lore.add(m.c("&b&lRare Rewards:"));
+        lore.add(m.c("&b• &e⛀100,000 Tokens"));
+        lore.add(m.c("&b• &a⬥5,000 Gems"));
+        lore.add(m.c("&b• &e5x &c&lBeta &7Keys"));
+        lore.add(m.c("&b• &e3x &4&lOmega &7Keys"));
+        lore.add(m.c("&b• &e1x &4&l&l&ki&f&lSeasonal&4&l&ki&r &7Key"));
+        lore.add(m.c("&b• &a&lVIP Rank"));
         lore.add(m.c(" "));
-        lore.add(m.c("&f&l&m--&f&lKeys&m--"));
-        lore.add(m.c("&e1-5x &7Random Keys"));
-        lore.add(m.c("&e1x &3&lRank &7Key"));
+        lore.add(m.c("&5&lEpic Rewards:"));
+        lore.add(m.c("&5• &e⛀250,000 Tokens"));
+        lore.add(m.c("&5• &e3x &4&l&l&ki&f&lSeasonal&4&l&ki&r &7Keys"));
+        lore.add(m.c("&5• &e1.5x Token Boost"));
+        lore.add(m.c("&5• &6&lMVP Rank"));
+        lore.add(m.c("&5• &c&lHero Rank"));
         lore.add(m.c(" "));
-        lore.add(m.c("&f&l&m--&f&lRanks&m--"));
-        lore.add(m.c("&a&lVIP Rank"));
-        lore.add(m.c("&6&lMVP Rank"));
-        lore.add(m.c("&c&lHero Rank"));
-        lore.add(m.c(" "));
-        lore.add(m.c("&f&l&m--&f&lItems&m--"));
-        lore.add(m.c("&e1-3x &bCommon Trinkets"));
-        lore.add(m.c("&e1x &9Rare Trinkets"));
-        lore.add(m.c(" "));
-        lore.add(m.c("&f&l&m--&f&lMisc.&m--"));
-        lore.add(m.c("&dItem Rename"));
-        lore.add(m.c("&b1.5x Currency Boost"));
-        lore.add(m.c("&a2x XP Boost"));
-        lore.add(m.c("&b2x Currency Boost"));
-        lore.add(m.c("&d1.5-2.5 Multi"));
+        lore.add(m.c("&f&l&kii&6&lLegendary Rewards&f&l&kii&r"));
+        lore.add(m.c("&6• &e⛀500,000 Tokens"));
+        lore.add(m.c("&6• &e2.0x Token Boost"));
+        lore.add(m.c("&6• &e1x &3&lRank &7Key"));
+        lore.add(m.c("&6• &e2.0x Sell Boost"));
+        lore.add(m.c("&6• &c&lMonster &7&lEgg"));
+        lore.add(m.c("&6• &d&lGod Rank"));
+
         gm.setLore(lore);
         gcrate.setItemMeta(gm);
 
         return gcrate;
     }
 
-    public static ItemStack Reward(String crate) {
+    public static ItemStack Reward(String crate, String rarity) {
         ItemStack reward = new ItemStack(Material.PAPER);
         ItemMeta rm = reward.getItemMeta();
-        if (crate.equals("april")) {
-            Random r = new Random();
-            int ri = r.nextInt(600);
-
-            if (ri <= 90) {
-                int tmin = 3000000;
-                int tmax = 10000000;
-                int tokens = r.nextInt(tmax - tmin) + tmin;
-                rm.setDisplayName(m.c("&b" + Main.formatAmt(tokens) + " Tokens"));
-                reward.setType(Material.PRISMARINE_CRYSTALS);
-                List<String> lore = new ArrayList<>();
-                lore.add("tokens add %PLAYER% " + tokens);
-                rm.setLore(lore);
-            }
-            if (ri > 90 && ri <= 350) {
-                int tmin = 1;
-                int tmax = 20;
-                int keys = r.nextInt(tmax - tmin) + tmin;
-                rm.setDisplayName(m.c("&e" + keys + "x ") + randomKey());
-                reward.setType(Material.TRIPWIRE_HOOK);
-                List<String> lore = new ArrayList<>();
-                String key = ChatColor.stripColor(rm.getDisplayName()).split(" ")[1];
-                if (key.contains("Seasonal")) {
-                    lore.add("cratekey %PLAYER% seasonal " + keys);
-                } else {
-                    lore.add("cratekey %PLAYER% " + key + " " + keys);
-                }
-                rm.setLore(lore);
-            }
-            if (ri > 350 && ri <= 370) {
-                rm.setDisplayName(m.c("&e3x &3&lRank &7Key"));
-                reward.setType(Material.TRIPWIRE_HOOK);
-                List<String> lore = new ArrayList<>();
-                lore.add("cratekey %PLAYER% rank 3");
-                rm.setLore(lore);
-            }
-            if (ri > 370 && ri <= 450) {
-                int tmin = 1;
-                int tmax = 5;
-                int trinkets = r.nextInt(tmax - tmin) + tmin;
-                rm.setDisplayName(m.c("&e" + trinkets + "x &6Legendary Trinket"));
-                reward.setType(Material.GOLD_NUGGET);
-                List<String> lore = new ArrayList<>();
-                lore.add("givetrinket %PLAYER% legendary " + trinkets);
-                rm.setLore(lore);
-            }
-            if (ri > 450 && ri <= 500) {
-                rm.setDisplayName(m.c("&c&lMonster &7&lEgg"));
-                reward.setType(Material.MONSTER_EGG);
-                List<String> lore = new ArrayList<>();
-                lore.add("giveegg %PLAYER%");
-                rm.setLore(lore);
-            }
-            if (ri > 500 && ri <= 503) {
-                rm.setDisplayName(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank"));
-                reward.setType(Material.NETHER_STAR);
-                List<String> lore = new ArrayList<>();
-                lore.add("giverank %PLAYER% &4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank");
-                rm.setLore(lore);
-            }
-            if (ri > 503 && ri <= 509) {
-                rm.setDisplayName(m.c("&e&lOlympian Rank"));
-                reward.setType(Material.NETHER_STAR);
-                List<String> lore = new ArrayList<>();
-                lore.add("giverank %PLAYER% &e&lOlympian Rank");
-                rm.setLore(lore);
-            }
-            if (ri > 509 && ri <= 521) {
-                rm.setDisplayName(m.c("&d&lGod Rank"));
-                reward.setType(Material.NETHER_STAR);
-                List<String> lore = new ArrayList<>();
-                lore.add("giverank %PLAYER% &d&lGod Rank");
-                rm.setLore(lore);
-            }
-            if (ri > 521) {
-                Random misc = new Random();
-                int misci = misc.nextInt(6);
-                List<String> lore = new ArrayList<>();
-                switch (misci) {
-                    case 0:
-                    case 1:
-                    case 2:
-                    case 3:
-                        ItemStack sellBoost = new ItemStack(Material.POTION, 1, (short) 8260);
-                        ItemMeta sm = sellBoost.getItemMeta();
-                        sm.setDisplayName(m.c("&f&l3x Currency Boost"));
-                        lore.add("giveboost sell %PLAYER% 3 900");
-                        sm.setLore(lore);
-                        sellBoost.setItemMeta(sm);
-                        lore.clear();
-                        return sellBoost;
-                    case 4:
-                    case 5:
-                        reward.setType(Material.EXP_BOTTLE);
-                        rm.setDisplayName(m.c("&f&l2x XP Boost"));
-                        lore.add("giveboost xp %PLAYER% 2 1800");
-                        rm.setLore(lore);
-                        lore.clear();
-
-
-                }
-            }
-
-        }
-        if (crate.equals("genesis")) {
-            Random r = new Random();
-            int ri = r.nextInt(600);
-
-            if (ri <= 90) {
-                int tmin = 2000000;
-                int tmax = 5000000;
-                int tokens = r.nextInt(tmax - tmin) + tmin;
-                rm.setDisplayName(m.c("&b" + Main.formatAmt(tokens) + " Tokens"));
-                reward.setType(Material.PRISMARINE_CRYSTALS);
-                List<String> lore = new ArrayList<>();
-                lore.add("tokens add %PLAYER% " + tokens);
-                rm.setLore(lore);
-            }
-            if (ri > 90 && ri <= 300) {
-                int tmin = 1;
-                int tmax = 10;
-                int keys = r.nextInt(tmax - tmin) + tmin;
-                rm.setDisplayName(m.c("&e" + keys + "x ") + randomKey());
-                reward.setType(Material.TRIPWIRE_HOOK);
-                List<String> lore = new ArrayList<>();
-                String key = ChatColor.stripColor(rm.getDisplayName()).split(" ")[1];
-                if (key.contains("Seasonal")) {
-                    lore.add("cratekey %PLAYER% seasonal " + keys);
-                } else {
-                    lore.add("cratekey %PLAYER% " + key + " " + keys);
-                }
-                rm.setLore(lore);
-            }
-            if (ri > 300 && ri <= 305) {
-                rm.setDisplayName(m.c("&e3x &3&lRank &7Key"));
-                reward.setType(Material.TRIPWIRE_HOOK);
-                List<String> lore = new ArrayList<>();
-                lore.add("cratekey %PLAYER% rank 3");
-                rm.setLore(lore);
-            }
-            if (ri > 305 && ri <= 375) {
-                rm.setDisplayName(m.c("&e1x &6Legendary Trinket"));
-                reward.setType(Material.GOLD_NUGGET);
-                List<String> lore = new ArrayList<>();
-                lore.add("givetrinket %PLAYER% legendary 1");
-                rm.setLore(lore);
-            }
-            if (ri > 375 && ri <= 475) {
-                int tmin = 1;
-                int tmax = 3;
-                int trinkets = r.nextInt(tmax - tmin) + tmin;
-                rm.setDisplayName(m.c("&e" + trinkets + "x &5Epic Trinket"));
-                reward.setType(Material.GOLD_NUGGET);
-                List<String> lore = new ArrayList<>();
-                lore.add("givetrinket %PLAYER% epic " + trinkets);
-                rm.setLore(lore);
-            }
-            if (ri > 475 && ri <= 525) {
-                rm.setDisplayName(m.c("&c&lMonster &7&lEgg"));
-                reward.setType(Material.MONSTER_EGG);
-                List<String> lore = new ArrayList<>();
-                lore.add("giveegg %PLAYER%");
-                rm.setLore(lore);
-            }
-            if (ri > 525 && ri <= 527) {
-                rm.setDisplayName(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank"));
-                reward.setType(Material.NETHER_STAR);
-                List<String> lore = new ArrayList<>();
-                lore.add("giverank %PLAYER% &4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank");
-                rm.setLore(lore);
-            }
-            if (ri > 527) {
-                Random misc = new Random();
-                int misci = misc.nextInt(4);
-                List<String> lore = new ArrayList<>();
-                switch (misci) {
-                    case 0:
-                        ItemStack sellBoost = new ItemStack(Material.POTION, 1, (short) 8260);
-                        ItemMeta sm = sellBoost.getItemMeta();
-                        sm.setDisplayName(m.c("&f&l3x Currency Boost"));
-                        lore.add("giveboost sell %PLAYER% 3 300");
-                        sm.setLore(lore);
-                        sellBoost.setItemMeta(sm);
-                        lore.clear();
-                        return sellBoost;
-                    case 1:
-                        ItemStack sellBoost1 = new ItemStack(Material.POTION, 1, (short) 8260);
-                        ItemMeta sm1 = sellBoost1.getItemMeta();
-                        sm1.setDisplayName(m.c("&f&l2x Currency Boost"));
-                        lore.add("giveboost sell %PLAYER% 2 600");
-                        sm1.setLore(lore);
-                        sellBoost1.setItemMeta(sm1);
-                        lore.clear();
-                        return sellBoost1;
-                    case 2:
-                        reward.setType(Material.EXP_BOTTLE);
-                        rm.setDisplayName(m.c("&f&l2x XP Boost"));
-                        lore.add("giveboost xp %PLAYER% 2 900");
-                        rm.setLore(lore);
-                        lore.clear();
-                    case 3:
-                        reward.setType(Material.PAPER);
-                        rm.setDisplayName(m.c("&bRename Paper"));
-                        lore.add("renamepaper %PLAYER%");
-                        rm.setLore(lore);
-                        lore.clear();
-
-
-                }
-            }
-
-        }
+        Random r = new Random();
+        List<String> lore = new ArrayList<>();
         if (crate.equals("contraband")) {
-            Random r = new Random();
-            int ri = r.nextInt(100);
-
-            if (ri <= 15) {
-                int tmin = 500000;
-                int tmax = 1000000;
-                int tokens = r.nextInt(tmax - tmin) + tmin;
-                rm.setDisplayName(m.c("&b" + Main.formatAmt(tokens) + " Tokens"));
-                reward.setType(Material.PRISMARINE_CRYSTALS);
-                List<String> lore = new ArrayList<>();
-                lore.add("tokens add %PLAYER% " + tokens);
-                rm.setLore(lore);
-            }
-            if (ri > 15 && ri <= 55) {
-                int tmin = 1;
-                int tmax = 5;
-                int keys = r.nextInt(tmax - tmin) + tmin;
-                rm.setDisplayName(m.c("&e" + keys + "x ") + randomKey2());
-                reward.setType(Material.TRIPWIRE_HOOK);
-                List<String> lore = new ArrayList<>();
-                String key = ChatColor.stripColor(rm.getDisplayName()).split(" ")[1];
-                if (key.contains("Seasonal")) {
-                    lore.add("cratekey %PLAYER% seasonal " + keys);
-                } else {
-                    lore.add("cratekey %PLAYER% " + key + " " + keys);
+            if (rarity.equals("Common")) {
+                int i = r.nextInt(121);
+                if (i <= 20) {
+                    rm.setDisplayName(m.c("&e50,000 Tokens"));
+                    reward.setType(Material.MAGMA_CREAM);
+                    lore.add("tokens add %PLAYER% 50000");
+                    rm.setLore(lore);
                 }
-                rm.setLore(lore);
-            }
-            if (ri == 56) {
-                rm.setDisplayName(m.c("&e1x &3&lRank &7Key"));
-                reward.setType(Material.TRIPWIRE_HOOK);
-                List<String> lore = new ArrayList<>();
-                lore.add("cratekey %PLAYER% rank 1");
-                rm.setLore(lore);
-            }
-            if (ri > 56 && ri <= 71) {
-                int tmin = 1;
-                int tmax = 3;
-                int trinkets = r.nextInt(tmax - tmin) + tmin;
-                rm.setDisplayName(m.c("&e" + trinkets + "x &bCommon Trinket"));
-                reward.setType(Material.GOLD_NUGGET);
-                List<String> lore = new ArrayList<>();
-                lore.add("givetrinket %PLAYER% common " + trinkets);
-                rm.setLore(lore);
-            }
-            if (ri > 71 && ri <= 81) {
-
-                rm.setDisplayName(m.c("&e1x &9Rare Trinket"));
-                reward.setType(Material.GOLD_NUGGET);
-                List<String> lore = new ArrayList<>();
-                lore.add("givetrinket %PLAYER% rare 1");
-                rm.setLore(lore);
-            }
-            if (ri > 81 && ri <= 85) {
-                rm.setDisplayName(m.c("&a&lVIP Rank"));
-                reward.setType(Material.NETHER_STAR);
-                List<String> lore = new ArrayList<>();
-                lore.add("giverank %PLAYER% &a&lVIP Rank");
-                rm.setLore(lore);
-            }
-            if (ri > 85 && ri <= 88) {
-                rm.setDisplayName(m.c("&6&lMVP Rank"));
-                reward.setType(Material.NETHER_STAR);
-                List<String> lore = new ArrayList<>();
-                lore.add("giverank %PLAYER% &6&lMVP Rank");
-                rm.setLore(lore);
-            }
-            if (ri > 88 && ri <= 93) {
-                rm.setDisplayName(m.c("&c&lHero Rank"));
-                reward.setType(Material.NETHER_STAR);
-                List<String> lore = new ArrayList<>();
-                lore.add("giverank %PLAYER% &c&lHero Rank");
-                rm.setLore(lore);
-            }
-            if (ri > 93) {
-                Random misc = new Random();
-                int misci = misc.nextInt(5);
-                List<String> lore = new ArrayList<>();
-                switch (misci) {
-                    case 0:
-                        ItemStack sellBoost = new ItemStack(Material.POTION, 1, (short) 8260);
-                        ItemMeta sm = sellBoost.getItemMeta();
-                        sm.setDisplayName(m.c("&f&l1.5x Currency Boost"));
-                        lore.add("giveboost sell %PLAYER% 1.5 600");
-                        sm.setLore(lore);
-                        sellBoost.setItemMeta(sm);
-                        lore.clear();
-                        return sellBoost;
-                    case 1:
-                        ItemStack sellBoost1 = new ItemStack(Material.POTION, 1, (short) 8260);
-                        ItemMeta sm1 = sellBoost1.getItemMeta();
-                        sm1.setDisplayName(m.c("&f&l2x Currency Boost"));
-                        lore.add("giveboost sell %PLAYER% 2 300");
-                        sm1.setLore(lore);
-                        sellBoost1.setItemMeta(sm1);
-                        lore.clear();
-                        return sellBoost1;
-                    case 2:
-                        reward.setType(Material.EXP_BOTTLE);
-                        rm.setDisplayName(m.c("&f&l2x XP Boost"));
-                        lore.add("giveboost xp %PLAYER% 2 300");
-                        rm.setLore(lore);
-                        lore.clear();
-                    case 3:
-                        reward.setType(Material.PAPER);
-                        rm.setDisplayName(m.c("&bRename Paper"));
-                        lore.add("renamepaper %PLAYER%");
-                        rm.setLore(lore);
-                        lore.clear();
-                    case 4:
-                        double min = 1.5;
-                        double max = 2.5;
-                        double multi = Math.round((min + (max - min) * r.nextDouble()) * 10) / 10.0;
-                        reward.setType(Material.EMERALD);
-                        rm.setDisplayName(m.c("&a" + multi + " Multi"));
-                        lore.add("multi add %PLAYER% " + multi);
-                        rm.setLore(lore);
-                        lore.clear();
-
+                else if (i <=40) {
+                    rm.setDisplayName(m.c("&e5x &7&lAlpha &7Keys"));
+                    reward.setType(Material.TRIPWIRE_HOOK);
+                    lore.add("cratekey %PLAYER% alpha 5");
+                    rm.setLore(lore);
+                }
+                else if (i <=60) {
+                    rm.setDisplayName(m.c("&e3x &c&lBeta &7Keys"));
+                    reward.setType(Material.TRIPWIRE_HOOK);
+                    lore.add("cratekey %PLAYER% beta 3");
+                    rm.setLore(lore);
+                }
+                else if (i <=80) {
+                    rm.setDisplayName(m.c("&e1x &4&lOmega &7Key"));
+                    reward.setType(Material.TRIPWIRE_HOOK);
+                    lore.add("cratekey %PLAYER% omega 1");
+                    rm.setLore(lore);
+                }
+                else if (i <=100) {
+                    rm.setDisplayName(m.c("&b&lSponsor Rank"));
+                    reward.setType(Material.NETHER_STAR);
+                    lore.add("giverank %PLAYER% &b&lSponsor Rank");
+                    rm.setLore(lore);
+                }
+                else {
+                    rm.setDisplayName(m.c("&a⬥2,500 Gems"));
+                    reward.setType(Material.EMERALD);
+                    lore.add("gems add %PLAYER% 2500");
+                    rm.setLore(lore);
                 }
             }
+            if (rarity.equals("Rare")) {
+                int i = r.nextInt(121);
+                if (i <= 20) {
+                    rm.setDisplayName(m.c("&e100,000 Tokens"));
+                    reward.setType(Material.MAGMA_CREAM);
+                    lore.add("tokens add %PLAYER% 100000");
+                    rm.setLore(lore);
+                }
+                else if (i <=40) {
+                    rm.setDisplayName(m.c("&e5x &c&lBeta &7Keys"));
+                    reward.setType(Material.TRIPWIRE_HOOK);
+                    lore.add("cratekey %PLAYER% beta 5");
+                    rm.setLore(lore);
+                }
+                else if (i <=60) {
+                    rm.setDisplayName(m.c("&e3x &c&lOmega &7Keys"));
+                    reward.setType(Material.TRIPWIRE_HOOK);
+                    lore.add("cratekey %PLAYER% omega 3");
+                    rm.setLore(lore);
+                }
+                else if (i <=80) {
+                    rm.setDisplayName(m.c("&e1x &4&l&l&ki&f&lSeasonal&4&l&ki&r &7Key"));
+                    reward.setType(Material.TRIPWIRE_HOOK);
+                    lore.add("cratekey %PLAYER% seasonal 1");
+                    rm.setLore(lore);
+                }
+                else if (i <=100) {
+                    rm.setDisplayName(m.c("&a&lVIP Rank"));
+                    reward.setType(Material.NETHER_STAR);
+                    lore.add("giverank %PLAYER% &a&lVIP Rank");
+                    rm.setLore(lore);
+                }
+                else {
+                    rm.setDisplayName(m.c("&a⬥5,000 Gems"));
+                    reward.setType(Material.EMERALD);
+                    lore.add("gems add %PLAYER% 5000");
+                    rm.setLore(lore);
+                }
+            }
+            if (rarity.equals("Epic")) {
+                int i = r.nextInt(101);
+                if (i <= 20) {
+                    rm.setDisplayName(m.c("&e250,000 Tokens"));
+                    reward.setType(Material.MAGMA_CREAM);
+                    lore.add("tokens add %PLAYER% 250000");
+                    rm.setLore(lore);
+                }
+                else if (i <=40) {
+                    ItemStack reward1 = new ItemStack(Material.POTION, 1, (short) 8227);
+                    ItemMeta rm1 = reward1.getItemMeta();
+                    rm1.setDisplayName(m.c("&e1.5x Token Boost"));
+                    lore.add("giveboost %PLAYER% token 1.5");
+                    rm1.setLore(lore);
+                    return reward1;
+                }
+                else if (i <=60) {
+                    rm.setDisplayName(m.c("&a&lVIP Rank"));
+                    reward.setType(Material.NETHER_STAR);
+                    lore.add("giverank %PLAYER% &a&lVIP Rank");
+                    rm.setLore(lore);
+                }
+                else if (i <=80) {
+                    rm.setDisplayName(m.c("&e3x &4&l&l&ki&f&lSeasonal&4&l&ki&r &7Key"));
+                    reward.setType(Material.TRIPWIRE_HOOK);
+                    lore.add("cratekey %PLAYER% seasonal 3");
+                    rm.setLore(lore);
+                }
+                else {
+                    rm.setDisplayName(m.c("&a&lVIP Rank"));
+                    reward.setType(Material.NETHER_STAR);
+                    lore.add("giverank %PLAYER% &a&lVIP Rank");
+                    rm.setLore(lore);
+                }
+            }
+            if (rarity.equals("Legendary")) {
+                int i = r.nextInt(121);
+                if (i <= 65) {
+                    rm.setDisplayName(m.c("&e500,000 Tokens"));
+                    reward.setType(Material.MAGMA_CREAM);
+                    lore.add("tokens add %PLAYER% 500000");
+                    rm.setLore(lore);
+                }
+                else if (i <=80) {
+                    ItemStack reward1 = new ItemStack(Material.POTION, 1, (short) 8227);
+                    ItemMeta rm1 = reward1.getItemMeta();
+                    rm1.setDisplayName(m.c("&e2.0x Token Boost"));
+                    lore.add("giveboost %PLAYER% token 2.0");
+                    rm1.setLore(lore);
+                    return reward1;
+                }
+                else if (i <=95) {
+                    ItemStack reward1 = new ItemStack(Material.POTION, 1, (short) 8228);
+                    ItemMeta rm1 = reward1.getItemMeta();
+                    rm1.setDisplayName(m.c("&e2.0x Sell Boost"));
+                    lore.add("giveboost %PLAYER% sell 2.0");
+                    rm1.setLore(lore);
+                    return reward1;
+                }
+                else if (i <=110) {
+                    rm.setDisplayName(m.c("&c&lMonster &7&lEgg"));
+                    reward.setType(Material.MONSTER_EGG);
+                    lore.add("giveegg %PLAYER%");
+                    rm.setLore(lore);
+                }
+                else if (i <=117) {
+                    rm.setDisplayName(m.c("&e1x &3&lRank &7Key"));
+                    reward.setType(Material.TRIPWIRE_HOOK);
+                    lore.add("cratekey %PLAYER% Rank 1");
+                    rm.setLore(lore);
+                }
+                else {
+                    rm.setDisplayName(m.c("&d&lGod Rank"));
+                    reward.setType(Material.NETHER_STAR);
+                    lore.add("giverank %PLAYER% &d&lGod Rank");
+                    rm.setLore(lore);
+                }
+            }
+
         }
-
 
         reward.setItemMeta(rm);
         return reward;

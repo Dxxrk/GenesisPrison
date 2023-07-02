@@ -5,6 +5,7 @@ description: "The features!"
 depend: [ProtocolLib, DiscordBotAPI, SignGUI, HeadDatabase]
 load: POSTWORLD
 commands:
+  spawncrate:
   wave:
   testenchant:
   giveegg:

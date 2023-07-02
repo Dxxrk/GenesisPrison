@@ -207,7 +207,7 @@ public class Methods {
 
     @SuppressWarnings("deprecation")
     public static double getSellPrice(int rank) {
-        int block = rank / 16;
+        double block = rank / 1.6;
         if (block < 1)
             block = 1;
         return block * 500000;

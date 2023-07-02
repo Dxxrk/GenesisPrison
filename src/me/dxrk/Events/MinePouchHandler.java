@@ -8,6 +8,7 @@ import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Gangs.Gangs;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Mines.MineSystem;
 import me.dxrk.Tokens.Tokens;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -89,10 +90,9 @@ public class MinePouchHandler implements Listener, CommandExecutor {
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
-        WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-        ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
-        LocalPlayer player = wg.wrapPlayer(p);
-        if (!set.isMemberOfAll(player)) return;
+        if(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
+            return;
+        }
         givePouch(p);
     }
 
@@ -336,8 +336,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("gems") || cmd.getName().equalsIgnoreCase("gem")) {
-            Player p = (Player) sender;
             if (args.length == 1) {
+                Player p = (Player) sender;
                 if (args[0].equalsIgnoreCase("withdraw")) {
                     p.sendMessage(m.c("&cError: Please specify an amount"));
                     return false;
@@ -348,6 +348,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 }
             }
             if (args.length == 2) {
+                Player p = (Player) sender;
                 if (args[0].equalsIgnoreCase("withdraw")) {
                     int gems = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Gems");
                     int amount = Integer.parseInt(args[1]);
@@ -357,6 +358,13 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                     }
                     removeGems(p, amount);
                     p.getInventory().addItem(gemVoucher(amount));
+                }
+            }
+            if(args.length == 3) {
+                if(args[0].equalsIgnoreCase("add")) {
+                    Player player = Bukkit.getPlayer(args[1]);
+                    int gems = Integer.parseInt(args[2]);
+                    addGems(player, gems);
                 }
             }
         }

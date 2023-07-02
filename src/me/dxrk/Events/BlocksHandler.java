@@ -62,7 +62,6 @@ public class BlocksHandler implements CommandExecutor, Listener {
         WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
         ApplicableRegionSet set = wg.getRegionManager(p.getWorld()).getApplicableRegions(e.getBlock().getLocation());
         if(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
-            e.setCancelled(true);
             return;
         }
         if (!set.allows(DefaultFlag.LIGHTER))

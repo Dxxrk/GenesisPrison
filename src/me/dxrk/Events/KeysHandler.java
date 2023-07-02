@@ -298,7 +298,6 @@ public class KeysHandler implements Listener {
         if (!i.getItemMeta().hasLore())
             return;
         if(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
-            e.setCancelled(true);
             return;
         }
 

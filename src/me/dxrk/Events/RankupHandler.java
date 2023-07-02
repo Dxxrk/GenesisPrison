@@ -108,13 +108,11 @@ public class RankupHandler implements Listener, CommandExecutor {
     public double priceJumpR(Player p) {
         int ranks = getRank(p);
 
-        if (ranks >= 1000) {
-            return 25;
-        } else if (ranks >= 750) {
+        if (ranks >= 75) {
             return 12;
-        } else if (ranks >= 500) {
+        } else if (ranks >= 50) {
             return 7;
-        } else if (ranks >= 250) {
+        } else if (ranks >= 25) {
             return 3;
         }
 
@@ -151,21 +149,21 @@ public class RankupHandler implements Listener, CommandExecutor {
         return 1;
     }
 
-
+    //100 Prestiges 100 Ranks
     public double rankPrice(Player p) {
         int rank = getRank(p);
 
         if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("Ethereal")) {
-            double start = 7.523828125E20D * 25;
-            double price = start * (rank * 1.35);
+            double start = 7.523828125E20D * 15;
+            double price = start * (rank * 1.45);
             return price;
         }
 
-        double prestiges = getPrestiges(p) * 2;
+        double prestiges = getPrestiges(p);
         if (prestiges < 1) {
             prestiges = 1;
         }
-        double price = (1.25e12 * (rank * 1.35)) * priceJumpR(p) * prestiges * priceJumpP(p);
+        double price = (7.25e11 * (rank * 1.45)) * priceJumpR(p) * prestiges * priceJumpP(p);
 
         return price;
     }
@@ -204,8 +202,6 @@ public class RankupHandler implements Listener, CommandExecutor {
         }
         Main.econ.withdrawPlayer(p, rankPrice(p));
         upRank(p);
-        if ((getRank(p) % 16 == 0) && getRank(p) < 1000)
-            MineHandler.getInstance().updateMine(p, getRank(p));
         p.getScoreboard().getTeam("prank").setSuffix(c("&b" + getRank(p)));
         double percents;
         p.getScoreboard().getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
@@ -251,9 +247,6 @@ public class RankupHandler implements Listener, CommandExecutor {
         while (Main.econ.getBalance(p) > rankPrice(p)) {
             Main.econ.withdrawPlayer(p, rankPrice(p));
             upRank(p);
-            if ((getRank(p) % 16 == 0) && getRank(p) < 1000)
-                MineHandler.getInstance().updateMine(p, getRank(p));
-
         }
         p.getScoreboard().getTeam("prank").setSuffix(c("&b" + getRank(p)));
         double percents;

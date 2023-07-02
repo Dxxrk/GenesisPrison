@@ -224,13 +224,13 @@ public class ScoreboardHandler implements Listener {
         //gems
         int gems = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Gems");
         NewBoard.getTeam("gems").setPrefix(c("&7Gems: "));
-        NewBoard.getTeam("gems").setSuffix(c("&a" + gems));
+        NewBoard.getTeam("gems").setSuffix(c("&a⬥" + gems));
 
 
         for (Player pp : Bukkit.getOnlinePlayers()) {
 
             String prefix = "";
-            if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("NitroBoosting"))
+            if (PlayerDataHandler.getInstance().getPlayerData(pp).getBoolean("NitroBoosting"))
                 prefix = c("&d&l♦ ");
 
             if (pp.getName().equalsIgnoreCase("Dxrk")) {
@@ -239,10 +239,10 @@ public class ScoreboardHandler implements Listener {
 
                 Team team = NewBoard.getTeam("a" + name(pp));
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&d&lOwner &8"));
+                    team.setPrefix(c("&d&lOwner &8"));
                     pp.setPlayerListName(c(prefix + "&d&lOwner &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c("&d&lOwner &f&l"));
+                    team.setPrefix(c("&d&lOwner &f&l"));
                     pp.setPlayerListName(c(prefix + "&d&lOwner &f&l" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -255,10 +255,10 @@ public class ScoreboardHandler implements Listener {
                 Team team = NewBoard.getTeam("f" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&f&lGenesis &8"));
+                    team.setPrefix(c("&f&lGenesis &8"));
                     pp.setPlayerListName(c(prefix + CMDOptions.TagColor(settings.getOptions().getString(pp.getUniqueId().toString() + ".GenesisColor")) + " &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c("&f&lGenesis &7"));
+                    team.setPrefix(c("&f&lGenesis &7"));
                     pp.setPlayerListName(c(prefix + CMDOptions.TagColor(settings.getOptions().getString(pp.getUniqueId().toString() + ".GenesisColor")) + " &7" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -269,10 +269,10 @@ public class ScoreboardHandler implements Listener {
 
                 Team team = NewBoard.getTeam("b" + name(pp));
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&5&lManager &8"));
+                    team.setPrefix(c("&5&lManager &8"));
                     pp.setPlayerListName(c(prefix + "&5&lManager &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c(prefix + "&5&lManager &f&l"));
+                    team.setPrefix(c(prefix + "&5&lManager &f&l"));
                     pp.setPlayerListName(c(prefix + "&5&lManager &f&l" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -285,10 +285,10 @@ public class ScoreboardHandler implements Listener {
                 Team team = NewBoard.getTeam("c" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&c&lAdmin &8"));
+                    team.setPrefix(c("&c&lAdmin &8"));
                     pp.setPlayerListName(c(prefix + "&c&lAdmin &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c(prefix + "&c&lAdmin &f&l"));
+                    team.setPrefix(c(prefix + "&c&lAdmin &f&l"));
                     pp.setPlayerListName(c(prefix + "&c&lAdmin &f&l" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -301,10 +301,10 @@ public class ScoreboardHandler implements Listener {
                 Team team = NewBoard.getTeam("c" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&a&lDev &8"));
-                    pp.setPlayerListName(c(prefix + "&a&lDev &8" + pp.getName()));
+                    team.setPrefix(c("&a&lDev &8"));
+                    pp.setPlayerListName(c(prefix + "&a&lDeveloper &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c(prefix + "&a&lDev &f&l"));
+                    team.setPrefix(c(prefix + "&a&lDev &f&l"));
                     pp.setPlayerListName(c(prefix + "&a&lDeveloper &f&l" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -317,10 +317,10 @@ public class ScoreboardHandler implements Listener {
                 Team team = NewBoard.getTeam("e" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&a&lBuilder &8"));
+                    team.setPrefix(c("&a&lBuilder &8"));
                     pp.setPlayerListName(c(prefix + "&a&lBuilder &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c("&a&lBuilder &2&l"));
+                    team.setPrefix(c("&a&lBuilder &2&l"));
                     pp.setPlayerListName(c(prefix + "&a&lBuilder &2&l" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -333,10 +333,10 @@ public class ScoreboardHandler implements Listener {
                 Team team = NewBoard.getTeam("d" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&9&lMod &8"));
+                    team.setPrefix(c("&9&lMod &8"));
                     pp.setPlayerListName(c(prefix + "&9&lMod &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c("&9&lMod &b&l"));
+                    team.setPrefix(c("&9&lMod &b&l"));
                     pp.setPlayerListName(c(prefix + "&9&lMod &b&l" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -349,10 +349,10 @@ public class ScoreboardHandler implements Listener {
                 Team team = NewBoard.getTeam("f" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&f&lGenesis &8"));
+                    team.setPrefix(c("&f&lGenesis &8"));
                     pp.setPlayerListName(c(prefix + CMDOptions.TagColor(settings.getOptions().getString(pp.getUniqueId().toString() + ".GenesisColor")) + " &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c("&f&lGenesis &7"));
+                    team.setPrefix(c("&f&lGenesis &7"));
                     pp.setPlayerListName(c(prefix + CMDOptions.TagColor(settings.getOptions().getString(pp.getUniqueId().toString() + ".GenesisColor")) + " &7" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -366,10 +366,10 @@ public class ScoreboardHandler implements Listener {
                 Team team = NewBoard.getTeam("g" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&e&lOlympian &8"));
+                    team.setPrefix(c("&e&lOlympian &8"));
                     pp.setPlayerListName(c(prefix + "&6&ki&e&lOlympian&6&ki&r &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c("&e&lOlympian &7"));
+                    team.setPrefix(c("&e&lOlympian &7"));
                     pp.setPlayerListName(c(prefix + "&6&ki&e&lOlympian&6&ki&r &7" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -383,10 +383,10 @@ public class ScoreboardHandler implements Listener {
                 Team team = NewBoard.getTeam("h" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&d&lGod &8"));
+                    team.setPrefix(c("&d&lGod &8"));
                     pp.setPlayerListName(c(prefix + "&d&lGod &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c("&d&lGod &7"));
+                    team.setPrefix(c("&d&lGod &7"));
                     pp.setPlayerListName(c(prefix + "&d&lGod &7" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -399,10 +399,10 @@ public class ScoreboardHandler implements Listener {
                 Team team = NewBoard.getTeam("i" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&3&lTitan &8"));
+                    team.setPrefix(c("&3&lTitan &8"));
                     pp.setPlayerListName(c(prefix + "&3&lTitan &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c("&3&lTitan &7"));
+                    team.setPrefix(c("&3&lTitan &7"));
                     pp.setPlayerListName(c(prefix + "&3&lTitan &7" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -415,10 +415,10 @@ public class ScoreboardHandler implements Listener {
                 Team team = NewBoard.getTeam("j" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&5&lDemi-God &8"));
+                    team.setPrefix(c("&5&lDemi-God &8"));
                     pp.setPlayerListName(c(prefix + "&5&lDemi-God &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c("&5&lDemi-God &7"));
+                    team.setPrefix(c("&5&lDemi-God &7"));
                     pp.setPlayerListName(c(prefix + "&5&lDemi-God &7" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -431,10 +431,10 @@ public class ScoreboardHandler implements Listener {
                 Team team = NewBoard.getTeam("k" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&c&lHero &8"));
+                    team.setPrefix(c("&c&lHero &8"));
                     pp.setPlayerListName(c(prefix + "&c&lHero &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c("&c&lHero &7"));
+                    team.setPrefix(c("&c&lHero &7"));
                     pp.setPlayerListName(c(prefix + "&c&lHero &7" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -447,10 +447,10 @@ public class ScoreboardHandler implements Listener {
                 Team team = NewBoard.getTeam("l" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&6&lMVP &8"));
+                    team.setPrefix(c("&6&lMVP &8"));
                     pp.setPlayerListName(c(prefix + "&6&lMVP &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c("&6&lMVP &7"));
+                    team.setPrefix(c("&6&lMVP &7"));
                     pp.setPlayerListName(c(prefix + "&6&lMVP &7" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -463,10 +463,10 @@ public class ScoreboardHandler implements Listener {
                 Team team = NewBoard.getTeam("m" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&a&lVIP &8"));
+                    team.setPrefix(c("&a&lVIP &8"));
                     pp.setPlayerListName(c(prefix + "&a&lVIP &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c("&a&lVIP &7"));
+                    team.setPrefix(c("&a&lVIP &7"));
                     pp.setPlayerListName(c(prefix + "&a&lVIP &7" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -479,10 +479,10 @@ public class ScoreboardHandler implements Listener {
                 Team team = NewBoard.getTeam("n" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&b&lSponsor &8"));
+                    team.setPrefix(c("&b&lSponsor &8"));
                     pp.setPlayerListName(c(prefix + "&b&lSponsor &8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c("&b&lSponsor &7"));
+                    team.setPrefix(c("&b&lSponsor &7"));
                     pp.setPlayerListName(c(prefix + "&b&lSponsor &7" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -495,10 +495,10 @@ public class ScoreboardHandler implements Listener {
                 Team team = NewBoard.getTeam("o" + name(pp));
 
                 if (isAFK(pp)) {
-                    team.setPrefix(prefix(pp) + c("&8"));
+                    team.setPrefix(c("&8"));
                     pp.setPlayerListName(c(prefix + "&8" + pp.getName()));
                 } else {
-                    team.setPrefix(prefix(pp) + c("&7"));
+                    team.setPrefix(c("&7"));
                     pp.setPlayerListName(c(prefix + "&7" + pp.getName()));
                 }
                 team.addPlayer(pp);
@@ -635,7 +635,7 @@ public class ScoreboardHandler implements Listener {
 
         //tokens
         NewBoard.getTeam("tokens").setPrefix(c("&7Tokens: "));
-        NewBoard.getTeam("tokens").setSuffix(c("&e" + Main.formatAmt(Tokens.getInstance().getTokens(p)) + "⛀"));
+        NewBoard.getTeam("tokens").setSuffix(c("&e⛀" + Main.formatAmt(Tokens.getInstance().getTokens(p))));
 
         //multi
         NewBoard.getTeam("multi").setPrefix(c("&7Multi: "));
@@ -644,7 +644,7 @@ public class ScoreboardHandler implements Listener {
         //gems
         int gems = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Gems");
         NewBoard.getTeam("gems").setPrefix(c("&7Gems: "));
-        NewBoard.getTeam("gems").setSuffix(c("&a" + gems));
+        NewBoard.getTeam("gems").setSuffix(c("&a⬥" + gems));
 
         //PickLevel
         NewBoard.getTeam("PickLevel").setPrefix(c("&7Level: "));

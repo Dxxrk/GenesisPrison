@@ -1,23 +1,14 @@
 package me.dxrk.Enchants;
 
-import com.sk89q.worldguard.LocalPlayer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Mines.Mine;
 import me.dxrk.Mines.MineSystem;
-import me.dxrk.Mines.ResetHandler;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -158,8 +149,7 @@ public class Enchants implements Listener {
             Functions.Multiply(p);
             Mine m = MineSystem.getInstance().getMineByPlayer(p);
             if (m.getBlocksLeftPercentage() < m.getResetPercent()) {
-                double lucky = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock");
-                ResetHandler.resetMineWorldEdit(m, m.getMinPoint(), m.getMaxPoint(), lucky);
+                m.reset();
             }
         }
     }

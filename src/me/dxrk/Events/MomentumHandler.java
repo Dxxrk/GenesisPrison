@@ -143,7 +143,6 @@ public class MomentumHandler implements Listener {
         Player p = e.getPlayer();
         UUID id = p.getUniqueId();
         if(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
-            e.setCancelled(true);
             return;
         }
         if (EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) {
