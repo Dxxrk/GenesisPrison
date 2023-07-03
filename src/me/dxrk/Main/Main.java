@@ -188,7 +188,6 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("workmode").setExecutor(this);
         getCommand("prestige").setExecutor(new PrestigeHandler());
         getCommand("giveenchant").setExecutor(new DonorItems());
-        getCommand("activeboost").setExecutor(new BoostsHandler());
         getCommand("boost").setExecutor(new BoostsHandler());
         getCommand("giveboost").setExecutor(new BoostsHandler());
         getCommand("blockstop").setExecutor(new Leaderboards());
@@ -462,10 +461,6 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             if (re != null && re.getResult().getType() == Material.GOLDEN_APPLE)
                 it.remove();
         }
-        BoostsHandler.nextUpsell.clear();
-        BoostsHandler.nextUpsell.addAll(this.settings.getBoost().getStringList("nextUpSell"));
-        BoostsHandler.nextUpxp.clear();
-        BoostsHandler.nextUpxp.addAll(this.settings.getBoost().getStringList("nextUpXP"));
 
         if (this.settings.getBoost().getDouble("ActiveSell.Amp") != 0.0D) {
             int timeleft = this.settings.getBoost().getInt("TimeLeftSell");
@@ -637,21 +632,10 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             pdata.save();
         }
 
-        if (settings.getBoost().getDouble("ActiveSell.Amp") != 0.0D) {
-            this.settings.getBoost().set("TimeLeftSell", BoostsHandler.selltime);
-        }
-        if (settings.getBoost().getDouble("ActiveXP.Amp") != 0.0D) {
-            this.settings.getBoost().set("TimeLeftXP", BoostsHandler.xptime);
-        }
         for (Player p : Bukkit.getOnlinePlayers()) {
-            BoostsHandler.getInstance().saveBinv(p);
-            BoostsHandler.boostsinv.remove(p);
             MonsterHandler.forceDeactivate(p);
         }
 
-        this.settings.getBoost().set("nextUpSell", BoostsHandler.nextUpsell);
-        this.settings.getBoost().set("nextUpXP", BoostsHandler.nextUpxp);
-        this.settings.saveboosts();
 
         this.settings.getVote().set("VoteShopLog", CMDVoteShop.votelog);
         this.settings.saveVote();

@@ -698,6 +698,25 @@ public class ScoreboardHandler implements Listener {
                 int community = settings.getLocksmith().getInt(uuid + ".community");
                 int rank = settings.getLocksmith().getInt(uuid + ".rank");
 
+                String boost = c("&7No Boost Active");
+                if(BoostsHandler.tokens.containsKey(p.getUniqueId())) {
+                    boost = c("&eToken Boost: &7"+BoostsHandler.tokens.get(p.getUniqueId()));
+                }
+                if(BoostsHandler.sell.containsKey(p.getUniqueId())) {
+                    boost = c("&2Sell Boost: &7"+BoostsHandler.sell.get(p.getUniqueId()));
+                }
+                if(BoostsHandler.enchant.containsKey(p.getUniqueId())) {
+                    boost = c("&dEnchant Boost: &7"+BoostsHandler.enchant.get(p.getUniqueId()));
+                }
+                if(BoostsHandler.gems.containsKey(p.getUniqueId())) {
+                    boost = c("&aGem Boost: &7"+BoostsHandler.gems.get(p.getUniqueId()));
+                }
+                if(BoostsHandler.xp.containsKey(p.getUniqueId())) {
+                    boost = c("&cXP Boost: &7"+BoostsHandler.xp.get(p.getUniqueId()));
+                }
+                String timer = null;
+                timer = c("&d"+BoostsHandler.timeFormat(BoostsHandler.time.getOrDefault(p.getUniqueId(), 0)));
+
                 if (titlechanged == false) {
                     //Add keys, stock market, event, and websites into tablist
 
@@ -715,9 +734,8 @@ public class ScoreboardHandler implements Listener {
                             c("&7&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" +
                                     "\n&f" + vote + "&b/&7" + alpha + "&b/&c" + beta + "&b/&4" + omega + "&b/&e" + token + "&b/&5" + community + "&b/&4&ki&f" + seasonal + "&4&ki&b/&3" + rank +
                                     "\n\n&eActive Events: &e" + SkillsEventsListener.events +
-                                    "\n\n&6Boosts" +
-                                    "\n" + BoostsHandler.sname + "&7/" + BoostsHandler.xname + "" +
-                                    "\n" + BoostsHandler.stimeLeft + "&7/" + BoostsHandler.xtimeLeft + "" +
+                                    "\n" + boost +
+                                    "\n" + timer +
                                     "\n\n" + store));
                     titlechanged = true;
                 } else {
@@ -734,9 +752,8 @@ public class ScoreboardHandler implements Listener {
                             c("&8&m=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" +
                                     "\n&f" + vote + "&b/&7" + alpha + "&b/&c" + beta + "&b/&4" + omega + "&b/&e" + token + "&b/&5" + community + "&b/&4&ki&f" + seasonal + "&4&ki&b/&3" + rank +
                                     "\n\n&eActive Events: &e" + SkillsEventsListener.events +
-                                    "\n\n&6Boosts" +
-                                    "\n" + BoostsHandler.sname + "&7/" + BoostsHandler.xname + "" +
-                                    "\n" + BoostsHandler.stimeLeft + "&7/" + BoostsHandler.xtimeLeft + "" +
+                                    "\n" + boost +
+                                    "\n" + timer +
                                     "\n\n" + store));
                     titlechanged = false;
                 }

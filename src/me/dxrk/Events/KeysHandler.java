@@ -253,7 +253,7 @@ public class KeysHandler implements Listener {
         double skill = SkillsEventsListener.getSkillsBoostToken(p);
         double event = SkillsEventsListener.getEventToken();
         double tboost = Functions.tokenBoost(p);
-        double miningboost = BoostsHandler.sell;
+        double miningboost = BoostsHandler.tokens.getOrDefault(p.getUniqueId(), 1.0);
         String gang = Gangs.getInstance().getGang(p);
         double unity = CMDGang.getInstance().getUnityLevel(gang);
         //double momentum =

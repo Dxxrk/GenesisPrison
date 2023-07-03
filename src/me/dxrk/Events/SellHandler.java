@@ -109,7 +109,7 @@ public class SellHandler implements Listener, CommandExecutor {
         int amountotal = 0;
         double greed = Functions.greed(p);
         double sell = Functions.sellBoost(p);
-        double miningboost = BoostsHandler.sell;
+        double miningboost = BoostsHandler.sell.getOrDefault(p.getUniqueId(), 1.0);
         double multi = getMulti(p) / 1.75;
         double momentum = MomentumHandler.getBonus(p.getUniqueId());
         if (multi < 1) {
@@ -166,7 +166,7 @@ public class SellHandler implements Listener, CommandExecutor {
         int amountotal = 0;
         double greed = Functions.greed(p);
         double sell = Functions.sellBoost(p);
-        double miningboost = BoostsHandler.sell;
+        double miningboost = BoostsHandler.sell.getOrDefault(p.getUniqueId(), 1.0);
         double multi = getMulti(p) / 1.75;
         double momentum = MomentumHandler.getBonus(p.getUniqueId());
         if (multi < 1) {
