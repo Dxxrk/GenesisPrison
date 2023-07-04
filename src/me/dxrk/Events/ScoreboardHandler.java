@@ -699,22 +699,22 @@ public class ScoreboardHandler implements Listener {
                 int rank = settings.getLocksmith().getInt(uuid + ".rank");
 
                 String boost = c("&7No Boost Active");
-                if(BoostsHandler.tokens.containsKey(p.getUniqueId())) {
-                    boost = c("&eToken Boost: &7"+BoostsHandler.tokens.get(p.getUniqueId()));
+                if(BoostsHandler.token.containsKey(p.getUniqueId())) {
+                    boost = c("&eToken Boost: &7"+BoostsHandler.token.get(p.getUniqueId())+"x");
                 }
                 if(BoostsHandler.sell.containsKey(p.getUniqueId())) {
-                    boost = c("&2Sell Boost: &7"+BoostsHandler.sell.get(p.getUniqueId()));
+                    boost = c("&2Sell Boost: &7"+BoostsHandler.sell.get(p.getUniqueId())+"x");
                 }
                 if(BoostsHandler.enchant.containsKey(p.getUniqueId())) {
-                    boost = c("&dEnchant Boost: &7"+BoostsHandler.enchant.get(p.getUniqueId()));
+                    boost = c("&dEnchant Boost: &7"+BoostsHandler.enchant.get(p.getUniqueId())+"x");
                 }
                 if(BoostsHandler.gems.containsKey(p.getUniqueId())) {
-                    boost = c("&aGem Boost: &7"+BoostsHandler.gems.get(p.getUniqueId()));
+                    boost = c("&aGem Boost: &7"+BoostsHandler.gems.get(p.getUniqueId())+"x");
                 }
                 if(BoostsHandler.xp.containsKey(p.getUniqueId())) {
-                    boost = c("&cXP Boost: &7"+BoostsHandler.xp.get(p.getUniqueId()));
+                    boost = c("&cXP Boost: &7"+BoostsHandler.xp.get(p.getUniqueId())+"x");
                 }
-                String timer = null;
+                String timer;
                 timer = c("&d"+BoostsHandler.timeFormat(BoostsHandler.time.getOrDefault(p.getUniqueId(), 0)));
 
                 if (titlechanged == false) {
