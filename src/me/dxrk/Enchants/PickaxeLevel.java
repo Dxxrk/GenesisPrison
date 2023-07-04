@@ -214,7 +214,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         inv.setItem(slot, i);
     }
 
-    private static ItemStack SpacerWhite() {
+    public ItemStack SpacerWhite() {
         ItemStack white = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 0);
         ItemMeta wm = white.getItemMeta();
         wm.setDisplayName(c(" "));

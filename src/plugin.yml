@@ -24,6 +24,7 @@ commands:
   help:
   gem:
   gems:
+  sellfish:
   auctionhouse:
   ah:
   stats:

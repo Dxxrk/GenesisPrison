@@ -259,6 +259,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("wave").setExecutor(new EnchantMethods());
         getCommand("setskillpoints").setExecutor(new PickaxeLevel());
         getCommand("resetpickaxe").setExecutor(new PickaxeLevel());
+        getCommand("sellfish").setExecutor(new FishingHandler());
         registerEvents(this, new Listener[]{new MonsterHandler()});
         registerEvents(this, new Listener[]{new CMDVanish()});
         registerEvents(this, new Listener[]{new MomentumHandler()});
@@ -307,6 +308,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         registerEvents(this, new Listener[]{new MysteryBoxHandler()});
         registerEvents(this, new Listener[]{new PrestigeHandler()});
         registerEvents(this, new Listener[]{new PickaxeSkillTree()});
+        registerEvents(this, new Listener[]{new FishingHandler()});
         registerEvents(this, new Listener[]{this});
         // For when sale is active, use this ||
         //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "motdchange sale 20");
