@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -45,21 +46,34 @@ public class BoostsHandler implements Listener, CommandExecutor {
     }
 
     public static boolean hasActiveBoost(Player p) {
-        return tokens.containsKey(p.getUniqueId()) || sell.containsKey(p.getUniqueId()) || enchant.containsKey(p.getUniqueId()) || gems.containsKey(p.getUniqueId())
+        return token.containsKey(p.getUniqueId()) || sell.containsKey(p.getUniqueId()) || enchant.containsKey(p.getUniqueId()) || gems.containsKey(p.getUniqueId())
                 || xp.containsKey(p.getUniqueId());
     }
+
+    private void removeBoost(Player p) {
+        token.remove(p.getUniqueId());
+        sell.remove(p.getUniqueId());
+        enchant.remove(p.getUniqueId());
+        gems.remove(p.getUniqueId());
+        xp.remove(p.getUniqueId());
+    }
+
 
     public void startBoostCount(Player p, String type, int duration) {
         new BukkitRunnable(){
             int count = duration;
             @Override
             public void run() {
-                if(count == 0){
+                if(count <= 0){
+                    removeBoost(p);
+                    time.put(p.getUniqueId(), 0);
                     time.remove(p.getUniqueId());
+                    ScoreboardHandler.updateSB(p);
                     if(p.isOnline()) {
-                        p.sendMessage(m.c("&f&lBoost &8| &bYour "+type+" boost has ended."));
+                        p.sendMessage(m.c("&f&lBoost &8| &bYour "+type.substring(0, 1).toUpperCase()+type.substring(1)+" Boost has ended."));
                     }
                     cancel();
+                    return;
                 }
                 count--;
                 time.put(p.getUniqueId(), count);
@@ -67,7 +81,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
         }.runTaskTimer(Main.plugin, 0, 20L);
     }
 
-    public static HashMap<UUID, Double> tokens = new HashMap<>();
+    public static HashMap<UUID, Double> token = new HashMap<>();
     public static HashMap<UUID, Double> sell = new HashMap<>();
     public static HashMap<UUID, Double> enchant = new HashMap<>();
     public static HashMap<UUID, Double> gems = new HashMap<>();
@@ -77,8 +91,8 @@ public class BoostsHandler implements Listener, CommandExecutor {
 
     public void activeBoost(Player p, String type, double power, int duration) {
         switch(type) {
-            case "tokens":
-                tokens.put(p.getUniqueId(), power);
+            case "token":
+                token.put(p.getUniqueId(), power);
                 time.put(p.getUniqueId(), duration);
                 startBoostCount(p, type, duration);
                 break;
@@ -108,7 +122,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
     
     public void giveBoost(Player p, String type, double power, int duration) {
         switch(type) {
-            case "tokens":
+            case "token":
                 p.getInventory().addItem(Boost((short)8227, m.c("&e&lToken Boost"), power, duration));
                 break;
             case "sell":
@@ -142,8 +156,8 @@ public class BoostsHandler implements Listener, CommandExecutor {
             Player p = (Player)sender;
             if(hasActiveBoost(p)) {
                 String boost = m.c("&7No Boost Active");
-                if(BoostsHandler.tokens.containsKey(p.getUniqueId())) {
-                    boost = m.c("&eToken Boost: &7"+BoostsHandler.tokens.get(p.getUniqueId()));
+                if(BoostsHandler.token.containsKey(p.getUniqueId())) {
+                    boost = m.c("&eToken Boost: &7"+BoostsHandler.token.get(p.getUniqueId()));
                 }
                 if(BoostsHandler.sell.containsKey(p.getUniqueId())) {
                     boost = m.c("&2Sell Boost: &7"+BoostsHandler.sell.get(p.getUniqueId()));
@@ -174,10 +188,17 @@ public class BoostsHandler implements Listener, CommandExecutor {
 
         if(p.getItemInHand().getType().equals(Material.POTION)) {
             String type = ChatColor.stripColor(p.getItemInHand().getItemMeta().getDisplayName()).split(" ")[0];
-            double power = Double.parseDouble(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(0)));
+            double power = Double.parseDouble(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(0)).split(" ")[1]);
             int seconds = toSeconds(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(1)).split(" ")[1]);
             if(!hasActiveBoost(p)) {
                 activeBoost(p, type.toLowerCase(), power, seconds);
+                int amount = p.getItemInHand().getAmount();
+                if(amount > 1) {
+                    p.getItemInHand().setAmount(amount-1);
+                } else {
+                    p.setItemInHand(null);
+                }
+                p.updateInventory();
             } else {
                 p.sendMessage(m.c("&f&lBoost &8| &bYou already have a boost active."));
             }
@@ -196,6 +217,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
         bm.setLore(lore);
         bm.addEnchant(Enchantment.DURABILITY, 0, false);
         bm.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        bm.addItemFlags(ItemFlag.values());
         boost.setItemMeta(bm);
         boost.removeEnchantment(Enchantment.DURABILITY);
         return boost;

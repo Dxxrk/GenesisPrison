@@ -1,9 +1,5 @@
 package me.dxrk.Events;
 
-import com.sk89q.worldguard.LocalPlayer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Gangs.Gangs;
@@ -253,7 +249,7 @@ public class KeysHandler implements Listener {
         double skill = SkillsEventsListener.getSkillsBoostToken(p);
         double event = SkillsEventsListener.getEventToken();
         double tboost = Functions.tokenBoost(p);
-        double miningboost = BoostsHandler.tokens.getOrDefault(p.getUniqueId(), 1.0);
+        double miningboost = BoostsHandler.token.getOrDefault(p.getUniqueId(), 1.0);
         String gang = Gangs.getInstance().getGang(p);
         double unity = CMDGang.getInstance().getUnityLevel(gang);
         //double momentum =
