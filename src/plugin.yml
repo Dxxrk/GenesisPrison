@@ -25,6 +25,7 @@ commands:
   gem:
   gems:
   sellfish:
+  rod:
   auctionhouse:
   ah:
   stats:
