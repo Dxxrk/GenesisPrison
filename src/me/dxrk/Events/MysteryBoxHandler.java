@@ -77,6 +77,10 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
                     p.getInventory().addItem(CrateFunctions.AprilCrate());
                     p.updateInventory();
                 }
+                if (args[1].equalsIgnoreCase("fishing")){
+                    p.getInventory().addItem(CrateFunctions.FishingCrate());
+                    p.updateInventory();
+                }
             }
         }
         if (label.equalsIgnoreCase("givexp")) {
@@ -185,6 +189,32 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
                 }
             }
             doChestAnimation(p, e.getClickedBlock().getLocation(), "april");
+            if (p.getItemInHand().getAmount() > 1) {
+                int i = p.getItemInHand().getAmount();
+                p.getItemInHand().setAmount(i - 1);
+            } else {
+                p.setItemInHand(null);
+            }
+            p.updateInventory();
+
+        }
+        if (p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&b&l💧 Fishing &f&lCrate &b&l💧")) && p.getItemInHand().getType().equals(Material.ENDER_CHEST)) {
+            e.setCancelled(true);
+            if (!p.getWorld().getBlockAt(e.getClickedBlock().getLocation().clone().add(0, 3, 0)).getType().equals(Material.AIR))
+                return;
+            if (placed.get(p) == null) {
+                List<Location> place = new ArrayList<>();
+                place.add(loc);
+                placed.put(p, place);
+            } else {
+                List<Location> place = placed.get(p);
+                if (place.contains(loc)) {
+                    return;
+                } else {
+                    placed.get(p).add(loc);
+                }
+            }
+            doChestAnimation(p, e.getClickedBlock().getLocation(), "fishing");
             if (p.getItemInHand().getAmount() > 1) {
                 int i = p.getItemInHand().getAmount();
                 p.getItemInHand().setAmount(i - 1);

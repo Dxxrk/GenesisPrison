@@ -95,6 +95,36 @@ public class FishingHandler implements Listener, CommandExecutor {
                     p.sendMessage(m.c("&f&lKey Fisher &8| &7") + key + " Key");
                 }
             }
+            int treasurehunterlevel = getEnchantLevel(p, "Treasure Hunter");
+            if(treasurehunterlevel>0){
+                int chance = 110-treasurehunterlevel;
+                if(r.nextInt(chance)==1){
+                    int rr = r.nextInt(54);
+                    if(rr>=0 && rr<=46){
+                        p.getInventory().addItem(CrateFunctions.FishingCrate());
+                        p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Fishing Crate"));
+                    }else if(rr>=47 && rr<=48){
+                        p.getInventory().addItem(MonsterHandler.egg());
+                        p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Monster Egg"));
+                    }else if(rr>=49 && rr<=50){
+                        p.getInventory().addItem(CrateFunctions.ContrabandCrate());
+                        p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Contraband Crate"));
+                    }else if(rr>=51 && rr<=52){
+                        p.getInventory().addItem(CrateFunctions.GenesisCrate());
+                        p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Genesis Crate"));
+                    }else{
+                        p.getInventory().addItem(CrateFunctions.AprilCrate());
+                        p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Monthly Crate"));
+                    }
+                }
+            }
+            int xpfinderlevel = getEnchantLevel(p, "XP Finder");
+            if(xpfinderlevel>0){
+                int rr=r.nextInt(5);
+                if(rr==1){
+                    PickXPHandler.getInstance().addXP(p, 5000+50*xpfinderlevel);
+                }
+            }
 
             List<String> lore = new ArrayList<>();
             lore.add(m.c("&7Sell this in /sellfish to gain Crystals"));
@@ -235,7 +265,7 @@ public class FishingHandler implements Listener, CommandExecutor {
                     i = 50;
                     break;
                 }
-                i = 50 + 5 * level;
+                i = 25 + 2.5 * level;
                 break;
             case "XP Finder":
                 if(level==0) {
@@ -399,6 +429,27 @@ public class FishingHandler implements Listener, CommandExecutor {
                 openEnchantInv(p);
             else
                 p.sendMessage(m.c("&cHold a Fishing Rod in your hand to open the Menu."));
+        }else if(command.getName().equalsIgnoreCase("crystals") || command.getName().equalsIgnoreCase("crystal")){
+            if(strings.length==0){
+                Player p = (Player) commandSender;
+                p.sendMessage(m.c("&f&lCrystals &8 | &b" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("Crystals")));
+            }
+            if(strings.length==1){
+                if(strings[0].equalsIgnoreCase("shop")){
+                    Player p = (Player) commandSender;
+                    //open crystal shop
+                }
+            }else if(strings.length==3) {
+                if (strings[0].equalsIgnoreCase("give")) {
+                    if (commandSender.isOp()) {
+                        Player reciever = Bukkit.getPlayer(strings[1]);
+                        int crystals = parseInt(strings[2]);
+                        int previouscrystals = PlayerDataHandler.getInstance().getPlayerData(reciever).getInt("Crystals");
+                        PlayerDataHandler.getInstance().getPlayerData(reciever).set("Crystals", previouscrystals + crystals);
+                    }
+                }
+            }
+
         }
         return true;
     }
@@ -476,7 +527,7 @@ public class FishingHandler implements Listener, CommandExecutor {
             openEnchantInv(p);
         }
     }
-    @Deprecated
+    @SuppressWarnings("deprecation")
     public short getFishCount(Player p, byte a){
         short count = 0;
         for(ItemStack item : p.getInventory().getContents()){

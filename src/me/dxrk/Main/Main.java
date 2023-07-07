@@ -261,6 +261,8 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("resetpickaxe").setExecutor(new PickaxeLevel());
         getCommand("sellfish").setExecutor(new FishingHandler());
         getCommand("rod").setExecutor(new FishingHandler());
+        getCommand("crystals").setExecutor(new FishingHandler());
+
         registerEvents(this, new Listener[]{new MonsterHandler()});
         registerEvents(this, new Listener[]{new CMDVanish()});
         registerEvents(this, new Listener[]{new MomentumHandler()});

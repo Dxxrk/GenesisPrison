@@ -193,6 +193,51 @@ public class CrateFunctions {
         return gcrate;
     }
 
+    public static ItemStack FishingCrate() {
+        ItemStack gcrate = new ItemStack(Material.ENDER_CHEST);
+        ItemMeta gm = gcrate.getItemMeta();
+        gm.setDisplayName(m.c("&b&l💧 Fishing &f&lCrate &b&l💧"));
+        List<String> lore = new ArrayList<>();
+
+
+        lore.add(m.c("&7Upon placing this item, you will recieve 8 random items"));
+        lore.add(m.c("&7These will be Common, Rare, or Epic and 1 guaranteed Legendary"));
+        lore.add(m.c("&a&lCommon Rewards:"));
+        lore.add(m.c("&a• &e⛀10,000 Tokens"));
+        lore.add(m.c("&a• &a⬥1,000 Gems"));
+        lore.add(m.c("&a• &e3x &7&lAlpha &7Keys"));
+        lore.add(m.c("&a• &e2x &c&lBeta &7Keys"));
+        lore.add(m.c("&a• &e1x &4&lOmega &7Key"));
+        lore.add(m.c("&a• &b&l500 Crystals"));
+        lore.add(m.c(" "));
+        lore.add(m.c("&b&lRare Rewards:"));
+        lore.add(m.c("&b• &e⛀20,000 Tokens"));
+        lore.add(m.c("&b• &a⬥2,000 Gems"));
+        lore.add(m.c("&b• &e3x &c&lBeta &7Keys"));
+        lore.add(m.c("&b• &e2x &4&lOmega &7Keys"));
+        lore.add(m.c("&b• &e1x &4&l&l&ki&f&lSeasonal&4&l&ki&r &7Key"));
+        lore.add(m.c("&a• &b&l750 Crystals"));
+        lore.add(m.c(" "));
+        lore.add(m.c("&5&lEpic Rewards:"));
+        lore.add(m.c("&5• &e⛀40,000 Tokens"));
+        lore.add(m.c("&5• &e2x &4&l&l&ki&f&lSeasonal&4&l&ki&r &7Keys"));
+        lore.add(m.c("&5• &e1.5x Token Boost"));
+        lore.add(m.c("&a• &b&l1,000 Crystals"));
+        lore.add(m.c(" "));
+        lore.add(m.c("&f&l&kii&6&lLegendary Rewards&f&l&kii&r"));
+        lore.add(m.c("&6• &e⛀100,000 Tokens"));
+        lore.add(m.c("&6• &e2.0x Token Boost"));
+        lore.add(m.c("&6• &e2.0x Sell Boost"));
+        lore.add(m.c("&6• &c&lMonster &7&lEgg"));
+        lore.add(m.c("&a• &b&l2,000 Crystals"));
+
+
+        gm.setLore(lore);
+        gcrate.setItemMeta(gm);
+
+        return gcrate;
+    }
+
     public static ItemStack Reward(String crate, String rarity) {
         ItemStack reward = new ItemStack(Material.PAPER);
         ItemMeta rm = reward.getItemMeta();
@@ -668,6 +713,151 @@ public class CrateFunctions {
                     rm.setDisplayName(m.c("&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank"));
                     reward.setType(Material.NETHER_STAR);
                     lore.add("giverank %PLAYER% &4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank");
+                    rm.setLore(lore);
+                }
+            }
+
+        }else if (crate.equals("fishing")) {
+            if (rarity.equals("Common")) {
+                int i = r.nextInt(121);
+                if (i <= 20) {
+                    rm.setDisplayName(m.c("&e10,000 Tokens"));
+                    reward.setType(Material.MAGMA_CREAM);
+                    lore.add("tokens add %PLAYER% 10000");
+                    rm.setLore(lore);
+                }
+                else if (i <=40) {
+                    rm.setDisplayName(m.c("&e3x &7&lAlpha &7Keys"));
+                    reward.setType(Material.TRIPWIRE_HOOK);
+                    lore.add("cratekey %PLAYER% alpha 3");
+                    rm.setLore(lore);
+                }
+                else if (i <=60) {
+                    rm.setDisplayName(m.c("&e2x &c&lBeta &7Keys"));
+                    reward.setType(Material.TRIPWIRE_HOOK);
+                    lore.add("cratekey %PLAYER% beta 2");
+                    rm.setLore(lore);
+                }
+                else if (i <=80) {
+                    rm.setDisplayName(m.c("&e1x &4&lOmega &7Key"));
+                    reward.setType(Material.TRIPWIRE_HOOK);
+                    lore.add("cratekey %PLAYER% omega 1");
+                    rm.setLore(lore);
+                }
+                else if (i <=100) {
+                    rm.setDisplayName(m.c("&b500 Crystals"));
+                    reward.setType(Material.NETHER_STAR);
+                    lore.add("crystals give %PLAYER% 500");
+                    rm.setLore(lore);
+                }
+                else {
+                    rm.setDisplayName(m.c("&a⬥1,000 Gems"));
+                    reward.setType(Material.EMERALD);
+                    lore.add("gems add %PLAYER% 1000");
+                    rm.setLore(lore);
+                }
+            }
+            if (rarity.equals("Rare")) {
+                int i = r.nextInt(121);
+                if (i <= 20) {
+                    rm.setDisplayName(m.c("&e20,000 Tokens"));
+                    reward.setType(Material.MAGMA_CREAM);
+                    lore.add("tokens add %PLAYER% 20000");
+                    rm.setLore(lore);
+                }
+                else if (i <=40) {
+                    rm.setDisplayName(m.c("&e3x &c&lBeta &7Keys"));
+                    reward.setType(Material.TRIPWIRE_HOOK);
+                    lore.add("cratekey %PLAYER% beta 3");
+                    rm.setLore(lore);
+                }
+                else if (i <=60) {
+                    rm.setDisplayName(m.c("&e2x &c&lOmega &7Keys"));
+                    reward.setType(Material.TRIPWIRE_HOOK);
+                    lore.add("cratekey %PLAYER% omega 2");
+                    rm.setLore(lore);
+                }
+                else if (i <=80) {
+                    rm.setDisplayName(m.c("&e1x &4&l&l&ki&f&lSeasonal&4&l&ki&r &7Key"));
+                    reward.setType(Material.TRIPWIRE_HOOK);
+                    lore.add("cratekey %PLAYER% seasonal 1");
+                    rm.setLore(lore);
+                }
+                else if (i <=100) {
+                    rm.setDisplayName(m.c("&b750 Crystals"));
+                    reward.setType(Material.NETHER_STAR);
+                    lore.add("crystals give %PLAYER% 750");
+                    rm.setLore(lore);
+                }
+                else {
+                    rm.setDisplayName(m.c("&a⬥2,000 Gems"));
+                    reward.setType(Material.EMERALD);
+                    lore.add("gems add %PLAYER% 2000");
+                    rm.setLore(lore);
+                }
+            }
+            if (rarity.equals("Epic")) {
+                int i = r.nextInt(81);
+                if (i <= 20) {
+                    rm.setDisplayName(m.c("&e40,000 Tokens"));
+                    reward.setType(Material.MAGMA_CREAM);
+                    lore.add("tokens add %PLAYER% 40000");
+                    rm.setLore(lore);
+                }
+                else if (i <=40) {
+                    ItemStack reward1 = new ItemStack(Material.POTION, 1, (short) 8227);
+                    ItemMeta rm1 = reward1.getItemMeta();
+                    rm1.setDisplayName(m.c("&e1.5x Token Boost"));
+                    lore.add("giveboost %PLAYER% token 1.5");
+                    rm1.setLore(lore);
+                    return reward1;
+                }
+                else if (i <=60) {
+                    rm.setDisplayName(m.c("&b1,000 Crystals"));
+                    reward.setType(Material.NETHER_STAR);
+                    lore.add("crystals give %PLAYER% 1000");
+                    rm.setLore(lore);
+                }
+                else{
+                    rm.setDisplayName(m.c("&e2x &4&l&l&ki&f&lSeasonal&4&l&ki&r &7Key"));
+                    reward.setType(Material.TRIPWIRE_HOOK);
+                    lore.add("cratekey %PLAYER% seasonal 2");
+                    rm.setLore(lore);
+                }
+            }
+            if (rarity.equals("Legendary")) {
+                int i = r.nextInt(115);
+                if (i <= 65) {
+                    rm.setDisplayName(m.c("&e100,000 Tokens"));
+                    reward.setType(Material.MAGMA_CREAM);
+                    lore.add("tokens add %PLAYER% 100000");
+                    rm.setLore(lore);
+                }
+                else if (i <=80) {
+                    ItemStack reward1 = new ItemStack(Material.POTION, 1, (short) 8227);
+                    ItemMeta rm1 = reward1.getItemMeta();
+                    rm1.setDisplayName(m.c("&e2.0x Token Boost"));
+                    lore.add("giveboost %PLAYER% token 2.0");
+                    rm1.setLore(lore);
+                    return reward1;
+                }
+                else if (i <=95) {
+                    ItemStack reward1 = new ItemStack(Material.POTION, 1, (short) 8228);
+                    ItemMeta rm1 = reward1.getItemMeta();
+                    rm1.setDisplayName(m.c("&e2.0x Sell Boost"));
+                    lore.add("giveboost %PLAYER% sell 2.0");
+                    rm1.setLore(lore);
+                    return reward1;
+                }
+                else if (i <=110) {
+                    rm.setDisplayName(m.c("&c&l1x Monster &7&lEgg"));
+                    reward.setType(Material.MONSTER_EGG);
+                    lore.add("giveegg %PLAYER% 1");
+                    rm.setLore(lore);
+                }else {
+                    rm.setDisplayName(m.c("&b2,000 Crystals"));
+                    reward.setType(Material.NETHER_STAR);
+                    lore.add("crystals give %PLAYER% 2000");
                     rm.setLore(lore);
                 }
             }

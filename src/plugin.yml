@@ -109,6 +109,7 @@ commands:
   resetpickaxe:
   setskillpoints:
   givevotepoints:
+  crystals:
   evanish:
   pick:
   pickaxe:
