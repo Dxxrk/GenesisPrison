@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.FishHook;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -21,6 +22,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -242,10 +244,11 @@ public class FishingHandler implements Listener, CommandExecutor {
         switch (Enchant) {
             case "Bait":
                 if(level==0){
-                    i = 5;
+                    i = 25;
                     break;
                 }
-                i = 5 + 5 * level;
+                i = 25 + 25 * level;
+                break;
             case "Key Fisher":
                 if(level==0) {
                     i = 10;
@@ -262,7 +265,7 @@ public class FishingHandler implements Listener, CommandExecutor {
                 break;
             case "Treasure Hunter":
                 if(level==0) {
-                    i = 50;
+                    i = 25;
                     break;
                 }
                 i = 25 + 2.5 * level;
@@ -281,7 +284,7 @@ public class FishingHandler implements Listener, CommandExecutor {
         int i = 0;
         switch (Enchant) {
             case "Bait":
-                i = 20;
+                i = 3;
                 break;
             case "Key Fisher":
                 i = 10;
@@ -349,11 +352,11 @@ public class FishingHandler implements Listener, CommandExecutor {
         for(int i=0;i<9;i++)
             inv.setItem(i, PickaxeLevel.getInstance().SpacerWhite());
 
-        setEnchantItemRod("Bait", Material.STRING, "Upgrade Bait", "Lowers the max wait time for fish", 5, inv, 0, p);
+        setEnchantItemRod("Bait", Material.STRING, "Upgrade Bait", "Lowers the max wait time for fish", 25, inv, 0, p);
         setEnchantItemRod("Key Fisher", Material.TRIPWIRE_HOOK, "Upgrade Key Fisher", "Chance to find keys while fishing", 10, inv, 2, p);
-        setEnchantItemRod("Multiplier", Material.EMERALD, "Upgrade Multiplier", "Raise the chance to catch multiple fish while fishing", 5, inv, 4, p);
+        setEnchantItemRod("Multiplier", Material.EMERALD, "Upgrade Multiplier", "Raise the chance to catch multiple fish while fishing", 2, inv, 4, p);
         setEnchantItemRod("XP Finder", Material.EXP_BOTTLE, "Upgrade XP Finder", "Chance to Pickaxe XP while fishing", 5, inv, 6, p);
-        setEnchantItemRod("Treasure Hunter", Material.GOLD_BLOCK, "Upgrade Treasure Hunter", "Chance to find loot while fishing", 50, inv, 8, p);
+        setEnchantItemRod("Treasure Hunter", Material.GOLD_BLOCK, "Upgrade Treasure Hunter", "Chance to find loot while fishing", 25, inv, 8, p);
 
         p.openInventory(inv);
     }
@@ -381,7 +384,11 @@ public class FishingHandler implements Listener, CommandExecutor {
                 if (plus > maxLevel(Enchant, p)) return;
                 lore.add(m.c("&c" + Enchant + " &e" + plus));
                 PlayerDataHandler.getInstance().getPlayerData(p).set("Crystals", crystals-price);
-
+                int previouslevel = getEnchantLevel(p, "Bait");
+                if(Enchant.equalsIgnoreCase("Bait") && previouslevel<=2){
+                    pm.removeEnchant(Enchantment.LURE);
+                    pm.addEnchant(Enchantment.LURE, previouslevel+1, true);
+                }
             } else {
                 p.sendMessage(m.c("&f&lCrystals &8| &7Not enough Crystals."));
                 return;
@@ -403,6 +410,11 @@ public class FishingHandler implements Listener, CommandExecutor {
                     if (plus > maxLevel(Enchant, p)) return;
                     lore.set(line, m.c("&c" + Enchant + " &e" + plus));
                     PlayerDataHandler.getInstance().getPlayerData(p).set("Crystals", crystals-price);
+                    int previouslevel = getEnchantLevel(p, "Bait");
+                    if(Enchant.equalsIgnoreCase("Bait") && previouslevel<=2){
+                        pm.removeEnchant(Enchantment.LURE);
+                        pm.addEnchant(Enchantment.LURE, previouslevel+1, true);
+                    }
                 } else {
                     p.sendMessage(m.c("&f&lCrystals &8| &7Not enough Crystals."));
                     break;
@@ -412,6 +424,7 @@ public class FishingHandler implements Listener, CommandExecutor {
 
         }
         pm.setLore(lore);
+        pm.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         pitem.setItemMeta(pm);
         p.setItemInHand(pitem);
         p.updateInventory();
