@@ -135,7 +135,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             settings.getOptions().set("DiscordToken", "");
         }
 
-
+        AuctionHouseHandler.getInstance().loadAH();
         TrinketHandler t = new TrinketHandler();
         t.customDustCommon();
         t.customDustRare();
@@ -240,7 +240,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("updatemine").setExecutor(new MineHandler());
         getCommand("redeem").setExecutor(new BuycraftUtil());
         getCommand("stats").setExecutor(new CMDStats());
-        //getCommand("ah").setExecutor(new AuctionHouseHandler());
+        getCommand("ah").setExecutor(new AuctionHouseHandler());
         getCommand("auctionhouse").setExecutor(new AuctionHouseHandler());
         getCommand("gems").setExecutor(new MinePouchHandler());
         getCommand("gem").setExecutor(new MinePouchHandler());
@@ -640,6 +640,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         for (Player p : Bukkit.getOnlinePlayers()) {
             MonsterHandler.forceDeactivate(p);
         }
+        AuctionHouseHandler.getInstance().saveAH();
 
 
         this.settings.getVote().set("VoteShopLog", CMDVoteShop.votelog);

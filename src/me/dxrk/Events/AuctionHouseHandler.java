@@ -24,25 +24,61 @@ import java.io.File;
 import java.util.*;
 
 public class AuctionHouseHandler implements Listener, CommandExecutor {
+
+    public static AuctionHouseHandler instance = new AuctionHouseHandler();
+    public static AuctionHouseHandler getInstance() {
+        return instance;
+    }
+
+
     SettingsManager settings = SettingsManager.getInstance();
     Methods m = Methods.getInstance();
     Tokens tokens = Tokens.getInstance();
 
     private HashMap<Player, String> ahorder = new HashMap<>();
+    public static HashMap<UUID, List<ItemStack>> personalItems = new HashMap<>();
+    //public static List<ItemStack> ahitems = new ArrayList<>();
+
+
+    public void saveAH() {
+        for(UUID p : personalItems.keySet()) {
+            PlayerDataHandler.getInstance().getPlayerData(p).set("AHListings", personalItems.get(p));
+        }
+    }
+    public void loadAH() {
+        File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
+        File[] var = mineFiles;
+        assert mineFiles != null;
+        int amountOfMines = mineFiles.length;
+        for (int i = 0; i < amountOfMines; ++i) {
+            File mineFile = var[i];
+            String name = mineFile.getName().split("\\.")[0];
+            UUID id = UUID.fromString(name);
+            personalItems.put(id, (List<ItemStack>) PlayerDataHandler.getInstance().getPlayerData(id).get("AHListings"));
+        }
+    }
+
+    public void addItems(List<ItemStack> ahitems) {
+        ahitems.clear();
+        for(UUID p : personalItems.keySet()) {
+            ahitems.addAll(personalItems.get(p));
+        }
+    }
+    public boolean ahHasItem(ItemStack item) {
+        List<ItemStack> ahitems = new ArrayList<>();
+        addItems(ahitems);
+        return ahitems.contains(item);
+    }
 
     public void openAuctionHouse(Player p, int page, String sortMethod) {
+        List<ItemStack> ahitems = new ArrayList<>();
+        addItems(ahitems);
         Inventory ah = Bukkit.createInventory(null, 54, m.c("&c&lAuction House Page " + page));
         ahorder.put(p, sortMethod);
         switch (sortMethod) {
             case "none":
-                List<ItemStack> items = new ArrayList<>();
-                for (int i = 0; i < 500; i++) {
-                    ItemStack item = settings.getAH().getItemStack("Items." + i);
-                    if (item == null) break;
-                    items.add(item);
-                }
                 if (page > 1) {
-                    if (items.size() <= (page - 1) * 45) {
+                    if (ahitems.size() <= (page - 1) * 45) {
                         return;
                     }
                 }
@@ -53,14 +89,14 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                             continue;
                         }
                     }
-                    if (items.size() >= i + 1)
-                        ah.setItem(i, items.get(i));
+                    if (ahitems.size() >= i + 1)
+                        ah.setItem(i, ahitems.get(i));
                 }
                 break;
             case "hightolow": {
                 SortedMap<Double, ItemStack> orderhightolow = new TreeMap<>(Collections.reverseOrder());
                 for (int i = 0; i < 500; i++) {
-                    ItemStack item = settings.getAH().getItemStack("Items." + i);
+                    ItemStack item = ahitems.get(i);
                     if (item == null) break;
                     int line = 0;
                     for (int ii = 0; ii < item.getItemMeta().getLore().size(); ii++) {
@@ -94,7 +130,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
             case "lowtohigh": {
                 SortedMap<Double, ItemStack> orderlowtohigh = new TreeMap<>();
                 for (int i = 0; i < 500; i++) {
-                    ItemStack item = settings.getAH().getItemStack("Items." + i);
+                    ItemStack item = ahitems.get(i);
                     if (item == null) break;
                     int line = 0;
                     for (int ii = 0; ii < item.getItemMeta().getLore().size(); ii++) {
@@ -171,9 +207,9 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
     }
 
     public void openSelling(Player p) {
-        Inventory selling = Bukkit.createInventory(null, 45, m.c("&c&lYour Items:"));
+        Inventory selling = Bukkit.createInventory(null, 9, m.c("&c&lYour Items:"));
         List<ItemStack> items = new ArrayList<>();
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 9; i++) {
             ItemStack item = settings.getAH().getItemStack("Items." + i);
             if (item == null) break;
             if (ChatColor.stripColor(item.getItemMeta().getLore().get(4)).split(" ")[1].equals(p.getName())) {
@@ -230,17 +266,17 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
         lore.add(m.c("&cCost: &e⛀" + cost * 10));
         bm10.setLore(lore);
         buy10.setItemMeta(bm10);
-        confirm.setItem(4, buy10);
+        confirm.setItem(5, buy10);
         lore.clear();
 
         ItemStack buyA = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
         ItemMeta bmA = buyA.getItemMeta();
-        bmA.setDisplayName(m.c("&aBuy A"));
+        bmA.setDisplayName(m.c("&aBuy All"));
         int amount = Integer.parseInt(ChatColor.stripColor(item.getItemMeta().getLore().get(2)).split(" ")[1]);
         lore.add(m.c("&cCost: &e⛀" + cost * amount));
         bmA.setLore(lore);
         buyA.setItemMeta(bmA);
-        confirm.setItem(4, buyA);
+        confirm.setItem(6, buyA);
         lore.clear();
 
         p.openInventory(confirm);
@@ -277,6 +313,12 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
     public void onClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         if (e.getClickedInventory() == null) return;
+        if(e.getCurrentItem() == null) return;
+
+        if(e.getInventory().getName().equals(m.c("&c&lYour Items:"))) {
+
+        }
+
 
         if (e.getInventory().getName().contains(m.c("&c&lAuction House Page "))) {
             e.setCancelled(true);
@@ -304,7 +346,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                     openAuctionHouse(p, 1, "hightolow");
                 }
                 if (e.getSlot() == 49) {
-
+                    openSelling(p);
                 }
                 if (e.getSlot() == 50) {
                     ahorder.put(p, "lowtohigh");
@@ -327,19 +369,19 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
             if (e.getSlot() == 3) {
                 openAuctionHouse(p, 1, ahorder.getOrDefault(p, "none"));
             }
-            if (e.getSlot() == 1) {
+            if (e.getSlot() == 2) {
                 ItemStack item = e.getInventory().getItem(0).clone();
+                if(!ahHasItem(item)) {
+                    p.closeInventory();
+                    p.sendMessage(m.c("&f&lAuctionHouse &8| &bListing No longer exists"));
+                    return;
+                }
                 double tokens = this.tokens.getTokens(p);
                 int line = 0;
                 for (int i = 0; i < item.getItemMeta().getLore().size(); i++) {
                     if (ChatColor.stripColor(item.getItemMeta().getLore().get(i)).contains("Cost:")) {
                         line = i;
                     }
-                }
-                String seller = ChatColor.stripColor(item.getItemMeta().getLore().get(4)).split(" ")[1];
-                if (seller.equals(p.getName())) {
-                    openSelling(p);
-                    return;
                 }
                 String s = ChatColor.stripColor(item.getItemMeta().getLore().get(line)).split("⛀")[1];
                 double price = Double.parseDouble(s);
@@ -348,27 +390,20 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                     p.closeInventory();
                     return;
                 }
-                this.tokens.takeTokens(p, price);
-
-                for (int i = 0; i < 500; i++) {
-                    ItemStack ah = settings.getAH().getItemStack("Items." + i);
-                    if (ah == null) continue;
-                    if (ah.isSimilar(item)) {
-                        settings.getAH().set("Items." + i, null);
-                        orderConfig();
-                        break;
-                    }
-                }
-
-                ItemMeta im = item.getItemMeta();
-                List<String> lore = im.getLore();
-                lore.remove(line);
-                for (int i = 0; i < lore.size(); i++) {
-                    if (ChatColor.stripColor(lore.get(i)).contains("Seller:")) {
+                line = 0;
+                for (int i = 0; i < item.getItemMeta().getLore().size(); i++) {
+                    if (ChatColor.stripColor(item.getItemMeta().getLore().get(i)).contains("Seller:")) {
                         line = i;
                     }
                 }
-                String ss = ChatColor.stripColor(lore.get(line)).split(" ")[1];
+                String seller = ChatColor.stripColor(item.getItemMeta().getLore().get(line)).split(" ")[1];
+                if (seller.equals(p.getName())) {
+                    openSelling(p);
+                    return;
+                }
+
+                this.tokens.takeTokens(p, price);
+
                 File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
                 File[] var = mineFiles;
                 assert mineFiles != null;
@@ -378,22 +413,54 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                     String name = mineFile.getName().split("\\.")[0];
                     UUID id = UUID.fromString(name);
                     OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(name));
-                    if (player.getName().equalsIgnoreCase(ss)) {
+                    if (player.getName().equalsIgnoreCase(seller)) {
                         giveTokens(UUID.fromString(name), price);
                     }
                 }
+                for(UUID player : personalItems.keySet()) {
+                    List<ItemStack> items = personalItems.get(player);
+                    items.remove(item);
+                    ItemStack newItem = item.clone();
+                    int newline = 0;
+                    for (int i = 0; i < newItem.getItemMeta().getLore().size(); i++) {
+                        if (ChatColor.stripColor(newItem.getItemMeta().getLore().get(i)).contains("Amount:")) {
+                            newline = i;
+                        }
+                    }
+                    int amount = Integer.parseInt(ChatColor.stripColor(newItem.getItemMeta().getLore().get(newline)).split(" ")[1]);
+                    if(amount > 1) {
+                        ItemMeta nim = newItem.getItemMeta();
+                        List<String> lore = nim.getLore();
+                        lore.set(newline, m.c("&7Amount: &b"+(amount-1)));
+                        nim.setLore(lore);
+                        newItem.setItemMeta(nim);
+                        items.add(newItem);
+                        personalItems.put(m.getPlayer(seller).getUniqueId(), items);
+                    }
+                }
+                ItemMeta im = item.getItemMeta();
+                List<String> lore = im.getLore();
 
-
-                lore.remove(line);
                 for (int i = 0; i < lore.size(); i++) {
                     if (ChatColor.stripColor(lore.get(i)).equals(" ")) {
                         line = i;
                         lore.remove(line);
                     }
                 }
-
                 for (int i = 0; i < lore.size(); i++) {
                     if (ChatColor.stripColor(lore.get(i)).contains("Amount:")) {
+                        line = i;
+                        lore.remove(line);
+                    }
+                }
+                for (int i = 0; i < lore.size(); i++) {
+                    if (ChatColor.stripColor(lore.get(i)).contains("Seller:")) {
+                        line = i;
+                        lore.remove(line);
+                    }
+                }
+                for (int i = 0; i < lore.size(); i++) {
+                    if (ChatColor.stripColor(lore.get(i)).contains("Cost:")) {
                         line = i;
                         lore.remove(line);
                     }
@@ -404,7 +471,6 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                 p.getInventory().addItem(item);
                 ahorder.remove(p);
                 p.closeInventory();
-                settings.saveAH();
 
 
             }
@@ -467,12 +533,16 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                     im.setLore(lore);
                     item.setItemMeta(im);
 
-                    for (int i = 0; i < 500; i++) {
-                        if (settings.getAH().contains("Items." + i) == false || settings.getAH().get("Items." + i) == null) {
-                            settings.getAH().set("Items." + i, item);
-                            settings.saveAH();
-                            break;
-                        }
+                    //ADD ITEM TO PERSONAL ITEMS TO THEN GET ADDED
+                    List<ItemStack> items = new ArrayList<>();
+                    if(personalItems.containsKey(p.getUniqueId())) {
+                        items = personalItems.get(p.getUniqueId());
+                    }
+                    if(items.size() >=3) {
+                        items.add(item);
+                    } else {
+                        p.sendMessage(m.c("&f&lAuctionHouse &8| &bYou cannot list anymore items"));
+                        return false;
                     }
                     if (amt == pamt) {
                         p.setItemInHand(null);
