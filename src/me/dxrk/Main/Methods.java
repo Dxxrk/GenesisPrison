@@ -9,6 +9,7 @@ import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Chest;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -18,8 +19,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Calendar;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class Methods {
@@ -183,6 +186,23 @@ public class Methods {
         } catch (Exception e1) {
             return false;
         }
+    }
+
+    public OfflinePlayer getPlayer(String name) {
+        File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
+        File[] var = mineFiles;
+        assert mineFiles != null;
+        int amountOfMines = mineFiles.length;
+        for (int i = 0; i < amountOfMines; ++i) {
+            File mineFile = var[i];
+            String s = mineFile.getName().split("\\.")[0];
+            UUID id = UUID.fromString(s);
+            OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(s));
+            if(player.getName().equals(name)) {
+                return player;
+            }
+        }
+        return null;
     }
 
 

@@ -1,5 +1,6 @@
 package me.dxrk.Commands;
 
+import me.dxrk.Main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -56,12 +58,12 @@ public class CMDDp implements CommandExecutor {
                     this.online.remove(p);
                 }
             if (args.length == 0) {
-                sender.sendMessage("�b�lGenesis�d�lDP�7 Please type /dp help for more info.");
+                sender.sendMessage("&c&lGenesis&b&lDP&7 Please type /dp help for more info.");
                 return false;
             }
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("refresh")) {
-                    sender.sendMessage("�b�lGenesis�d�lDP�7 DP Queue has been refreshed!");
+                    sender.sendMessage("&c&lGenesis&b&lDP&7 DP Queue has been refreshed!");
                     for (Player p : Bukkit.getOnlinePlayers()) {
                         if (!p.isOp()) {
                             if (p.isOnline()) {
@@ -75,11 +77,11 @@ public class CMDDp implements CommandExecutor {
                     }
                 }
                 if (args[0].equalsIgnoreCase("help")) {
-                    sender.sendMessage("�7�l�m---------------<�b�lGenesis�d�lDP�7�l�m>---------------");
-                    sender.sendMessage("�7/Dp hand  to give away the item in your hand.");
-                    sender.sendMessage("�7/Dp hand* to give away the item in your hand to everyone!");
-                    sender.sendMessage("�7/Dp command (name) (command)");
-                    sender.sendMessage("�7�l�m---------------<�b�lGenesis�d�lDP�7�l�m>---------------");
+                    sender.sendMessage("&7&l&m---------------<&c&lGenesis&b&lDP&7&l&m>---------------");
+                    sender.sendMessage("&7/Dp hand  to give away the item in your hand.");
+                    sender.sendMessage("&7/Dp hand* to give away the item in your hand to everyone!");
+                    sender.sendMessage("&7/Dp command (name) (command)");
+                    sender.sendMessage("&7&l&m---------------<&c&lGenesis&b&lDP&7&l&m>---------------");
                 }
                 if (args[0].equalsIgnoreCase("hand") &&
                         sender instanceof Player) {
@@ -87,17 +89,31 @@ public class CMDDp implements CommandExecutor {
                     if (p.getItemInHand() == null)
                         return false;
                     ItemStack i = p.getItemInHand();
-                    Bukkit.broadcastMessage("�7�l�m---------------<�b�lGenesis�d�lDP�7�l�m>---------------");
+                    Bukkit.broadcastMessage("&7&l&m---------------<&c&lGenesis&b&lDP&7&l&m>---------------");
+                    Bukkit.broadcastMessage(" ");
                     if (i.hasItemMeta() && i.getItemMeta().hasDisplayName()) {
-                        Bukkit.broadcastMessage("�bComing up: �7" + i.getItemMeta().getDisplayName());
+                        Bukkit.broadcastMessage("&bNext Item: &7" + i.getItemMeta().getDisplayName());
+                        Bukkit.broadcastMessage(" ");
+                        Bukkit.broadcastMessage("&7&l&m---------------<&c&lGenesis&b&lDP&7&l&m>---------------");
                     } else {
-                        Bukkit.broadcastMessage("�bComing up: �7" + i.getType().toString().toLowerCase());
+                        Bukkit.broadcastMessage("&bNext Item: &7" + i.getType().toString().toLowerCase());
+                        Bukkit.broadcastMessage(" ");
+                        Bukkit.broadcastMessage("&7&l&m---------------<&c&lGenesis&b&lDP&7&l&m>---------------");
                     }
-                    Player win = selectPlayer();
-                    Bukkit.broadcastMessage("�bGoes to�7: �c" + win.getName());
-                    Bukkit.broadcastMessage("�7�l�m---------------<�b�lGenesis�d�lDP�7�l�m>---------------");
-                    win.getInventory().addItem(new ItemStack[]{i});
-                    win.updateInventory();
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            Player win = selectPlayer();
+                            Bukkit.broadcastMessage("&7&l&m---------------<&c&lGenesis&b&lDP&7&l&m>---------------");
+                            Bukkit.broadcastMessage(" ");
+                            Bukkit.broadcastMessage("&bGoes to&7: &c" + win.getName());
+                            Bukkit.broadcastMessage(" ");
+                            Bukkit.broadcastMessage("&7&l&m---------------<&c&lGenesis&b&lDP&7&l&m>---------------");
+                            win.getInventory().addItem(i);
+                            win.updateInventory();
+                        }
+
+                    }.runTaskLater(Main.plugin, 40L);
                     return true;
                 }
                 if (args[0].equalsIgnoreCase("hand*") &&
@@ -106,18 +122,18 @@ public class CMDDp implements CommandExecutor {
                     if (p.getItemInHand() == null)
                         return false;
                     ItemStack i = p.getItemInHand();
-                    Bukkit.broadcastMessage("�7�l�m---------------<�b�lGenesis�d�lDP�7�l�m>---------------");
+                    Bukkit.broadcastMessage("&7&l&m---------------<&c&lGenesis&b&lDP&7&l&m>---------------");
                     if (i.hasItemMeta() && i.getItemMeta().hasDisplayName()) {
-                        Bukkit.broadcastMessage("�bComing up: �7" + i.getItemMeta().getDisplayName());
-                        Bukkit.broadcastMessage("�bGoes to�7: �cAll Online Players!");
-                        Bukkit.broadcastMessage("�7�l�m---------------<�b�lGenesis�d�lDP�7�l�m>---------------");
+                        Bukkit.broadcastMessage("&bNext Item: &7" + i.getItemMeta().getDisplayName());
+                        Bukkit.broadcastMessage("&bGoes to&7: &cAll Online Players!");
+                        Bukkit.broadcastMessage("&7&l&m---------------<&c&lGenesis&b&lDP&7&l&m>---------------");
                     } else {
-                        Bukkit.broadcastMessage("�bComing up: �7" + i.getType().toString().toLowerCase());
-                        Bukkit.broadcastMessage("�bGoes to�7: �cAll Online Players!");
-                        Bukkit.broadcastMessage("�7�l�m---------------<�b�lGenesis�d�lDP�7�l�m>---------------");
+                        Bukkit.broadcastMessage("&bComing up: &7" + i.getType().toString().toLowerCase());
+                        Bukkit.broadcastMessage("&bGoes to&7: &cAll Online Players!");
+                        Bukkit.broadcastMessage("&7&l&m---------------<&c&lGenesis&b&lDP&7&l&m>---------------");
                     }
                     for (Player win : Bukkit.getOnlinePlayers()) {
-                        win.getInventory().addItem(new ItemStack[]{i});
+                        win.getInventory().addItem(i);
                         win.updateInventory();
                     }
                     return true;
@@ -128,11 +144,11 @@ public class CMDDp implements CommandExecutor {
                 Player win = selectPlayer();
                 String name = ChatColor.translateAlternateColorCodes('&', args[1]);
                 String command = args[2].replace("_", " ").replace("#p", win.getName());
-                Bukkit.broadcastMessage("�7�l�m---------------<�b�lGenesis�d�lDP�7�l�m>---------------");
+                Bukkit.broadcastMessage("&7&l&m---------------<&c&lGenesis&b&lDP&7&l&m>---------------");
                 Bukkit.broadcastMessage(ChatColor.AQUA + "Coming up" + ChatColor.GRAY + ": " + name);
                 Bukkit.broadcastMessage(ChatColor.AQUA + "Goes to" + ChatColor.GRAY + ":" + ChatColor.RED + " " + win.getName());
-                Bukkit.broadcastMessage("�7�l�m---------------<�b�lGenesis�d�lDP�7�l�m>---------------");
-                Bukkit.getServer().dispatchCommand((CommandSender) Bukkit.getServer().getConsoleSender(), command);
+                Bukkit.broadcastMessage("&7&l&m---------------<&c&lGenesis&b&lDP&7&l&m>---------------");
+                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
                 return true;
             }
         }
