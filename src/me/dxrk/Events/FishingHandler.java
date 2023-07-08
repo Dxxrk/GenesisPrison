@@ -37,6 +37,12 @@ public class FishingHandler implements Listener, CommandExecutor {
 
     public Methods m = Methods.getInstance();
 
+    public static FishingHandler instance = new FishingHandler();
+
+    public static FishingHandler getInstance() {
+        return instance;
+    }
+
     @EventHandler
     public void onFish(PlayerFishEvent e){
         Player p = e.getPlayer();
@@ -346,6 +352,20 @@ public class FishingHandler implements Listener, CommandExecutor {
 
         inv.setItem(slot, i);
     }
+
+    public ItemStack defaultRod(){
+        ItemStack rod = new ItemStack(Material.FISHING_ROD);
+        ItemMeta meta = rod.getItemMeta();
+        meta.setDisplayName(m.c("&cStarter Rod"));
+        meta.addEnchant(Enchantment.DURABILITY, 32000, true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        List<String> lore = new ArrayList<>();
+        lore.add(m.c("&b&m-<>-§aEnchants&b&m-<>-"));
+        meta.setLore(lore);
+        rod.setItemMeta(meta);
+        return rod;
+    }
+
     public void openEnchantInv(Player p){
         int crystals = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Crystals");
         Inventory inv = Bukkit.createInventory(null, 9, m.c("&cRod Enchants &8| &bCrystals: ")+crystals);
@@ -429,6 +449,74 @@ public class FishingHandler implements Listener, CommandExecutor {
         p.setItemInHand(pitem);
         p.updateInventory();
 
+    }
+    public void saveRod(Player p) {
+        ItemStack[] inv = p.getInventory().getContents();
+
+        for (ItemStack i : inv) {
+            if (i == null) continue;
+            if (i.getType() == null) continue;
+            if (i.getType().equals(Material.FISHING_ROD)) {
+                ItemStack rod = i;
+                PlayerDataHandler.getInstance().getPlayerData(p).set("Rod", rod);
+                PlayerDataHandler.getInstance().savePlayerData(p);
+            }
+        }
+    }
+
+    public int getPickSlot(Player p) {
+        ItemStack[] inv = p.getInventory().getContents();
+        int slot;
+        for(int i=0;i<inv.length;i++){
+            ItemStack item = inv[i];
+            if (item == null) continue;
+            if (item.getType() == null) continue;
+            if (item.getType().equals(Material.WOOD_PICKAXE) || item.getType().equals(Material.STONE_PICKAXE) || item.getType().equals(Material.IRON_PICKAXE) || item.getType().equals(Material.GOLD_PICKAXE)
+                    || item.getType().equals(Material.DIAMOND_PICKAXE)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int getRodSlot(Player p) {
+        ItemStack[] inv = p.getInventory().getContents();
+        int slot;
+        for(int i=0;i<inv.length;i++){
+            ItemStack item = inv[i];
+            if (item == null) continue;
+            if (item.getType() == null) continue;
+            if (item.getType().equals(Material.FISHING_ROD)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public boolean hasRod(Player p){
+        ItemStack[] inv = p.getInventory().getContents();
+
+        for (ItemStack i : inv) {
+            if (i == null) continue;
+            if (i.getType() == null) continue;
+            if (i.getType().equals(Material.FISHING_ROD)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean hasPick(Player p){
+        ItemStack[] inv = p.getInventory().getContents();
+
+        for (ItemStack i : inv) {
+            if (i == null) continue;
+            if (i.getType() == null) continue;
+            if (i.getType().equals(Material.WOOD_PICKAXE) || i.getType().equals(Material.STONE_PICKAXE) || i.getType().equals(Material.IRON_PICKAXE) || i.getType().equals(Material.GOLD_PICKAXE)
+                    || i.getType().equals(Material.DIAMOND_PICKAXE)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package me.dxrk.Mines;
 
+import me.dxrk.Events.FishingHandler;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.RankupHandler;
 import me.dxrk.Main.Methods;
@@ -147,6 +148,11 @@ public class CMDMine implements CommandExecutor, Listener {
         blocks.setItem(12, invBlock(Material.STAINED_CLAY, (short) 10, "god", "Purple Stained Clay", p));
         blocks.setItem(14, invBlock(Material.STAINED_CLAY, (short) 13, "olympian", "Green Stained Clay", p));
         blocks.setItem(16, invBlock(Material.STAINED_CLAY, (short) 7, "genesis", "Gray Stained Clay", p));
+        ItemStack block = new ItemStack(Material.WATER_BUCKET, 1);
+        ItemMeta bm = block.getItemMeta();
+        bm.setDisplayName(c("&7Choose " + "Water"));
+        block.setItemMeta(bm);
+        blocks.setItem(22, block);
         p.openInventory(blocks);
     }
 
@@ -332,46 +338,90 @@ public class CMDMine implements CommandExecutor, Listener {
                 if (!p.hasPermission("rank.sponsor")) return;
                 PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.SMOOTH_BRICK));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+                if(FishingHandler.getInstance().hasRod(p)){
+                    FishingHandler.getInstance().saveRod(p);
+                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
+                }
             }
             if (e.getSlot() == 2) {
                 if (!p.hasPermission("rank.vip")) return;
                 PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.COAL_BLOCK));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+                if(FishingHandler.getInstance().hasRod(p)){
+                    FishingHandler.getInstance().saveRod(p);
+                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
+                }
             }
             if (e.getSlot() == 4) {
                 if (!p.hasPermission("rank.mvp")) return;
                 PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.NETHERRACK));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+                if(FishingHandler.getInstance().hasRod(p)){
+                    FishingHandler.getInstance().saveRod(p);
+                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
+                }
             }
             if (e.getSlot() == 6) {
                 if (!p.hasPermission("rank.hero")) return;
                 PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.PRISMARINE, 1, (short) 2));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+                if(FishingHandler.getInstance().hasRod(p)){
+                    FishingHandler.getInstance().saveRod(p);
+                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
+                }
             }
             if (e.getSlot() == 8) {
                 if (!p.hasPermission("rank.demi-god")) return;
                 PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.NETHER_BRICK));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+                if(FishingHandler.getInstance().hasRod(p)){
+                    FishingHandler.getInstance().saveRod(p);
+                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
+                }
             }
             if (e.getSlot() == 10) {
                 if (!p.hasPermission("rank.titan")) return;
                 PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short) 0));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+                if(FishingHandler.getInstance().hasRod(p)){
+                    FishingHandler.getInstance().saveRod(p);
+                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
+                }
             }
             if (e.getSlot() == 12) {
                 if (!p.hasPermission("rank.god")) return;
                 PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short) 10));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+                if(FishingHandler.getInstance().hasRod(p)){
+                    FishingHandler.getInstance().saveRod(p);
+                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
+                }
             }
             if (e.getSlot() == 14) {
                 if (!p.hasPermission("rank.olympian")) return;
                 PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short) 13));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+                if(FishingHandler.getInstance().hasRod(p)){
+                    FishingHandler.getInstance().saveRod(p);
+                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
+                }
             }
             if (e.getSlot() == 16) {
                 if (!p.hasPermission("rank.genesis")) return;
                 PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short) 7));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+                if(FishingHandler.getInstance().hasRod(p)){
+                    FishingHandler.getInstance().saveRod(p);
+                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
+                }
+            }
+            if (e.getSlot() == 22){
+                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.WATER, 1));
+                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
+                if(FishingHandler.getInstance().hasPick(p)) {
+                    PlayerDataHandler.getInstance().savePickaxe(p);
+                    p.getInventory().setItem(FishingHandler.getInstance().getPickSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Rod"));
+                }
             }
         }
         if (e.getInventory().getName().equals(c("&c&lChange Reset Percentage"))) {

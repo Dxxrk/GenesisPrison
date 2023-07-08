@@ -275,6 +275,9 @@ public class PlayerDataHandler implements Listener {
             if (pl.get("CustomBlock") == null) {
                 pl.set("CustomBlock", null);
             }
+            if (pl.get("Rod") == null){
+                pl.set("Rod", FishingHandler.getInstance().defaultRod());
+            }
             pl.save(pdata);
             PlayerData playerdata = new PlayerData(p.getUniqueId());
             PlayerDataList.put(p.getUniqueId(), playerdata);
