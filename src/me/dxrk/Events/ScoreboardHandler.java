@@ -294,7 +294,7 @@ public class ScoreboardHandler implements Listener {
                 team.addPlayer(pp);
 
 
-            }else if (pp.getName().equalsIgnoreCase("Pikashoo")) {
+            } else if (pp.getName().equalsIgnoreCase("Pikashoo")) {
                 if (NewBoard.getTeam("c" + name(pp)) == null)
                     NewBoard.registerNewTeam("c" + name(pp));
 
@@ -699,23 +699,23 @@ public class ScoreboardHandler implements Listener {
                 int rank = settings.getLocksmith().getInt(uuid + ".rank");
 
                 String boost = c("&7No Boost Active");
-                if(BoostsHandler.token.containsKey(p.getUniqueId())) {
-                    boost = c("&eToken Boost: &b"+BoostsHandler.token.get(p.getUniqueId())+"x");
+                if (BoostsHandler.token.containsKey(p.getUniqueId())) {
+                    boost = c("&eToken Boost: &b" + BoostsHandler.token.get(p.getUniqueId()) + "x");
                 }
-                if(BoostsHandler.sell.containsKey(p.getUniqueId())) {
-                    boost = c("&2Sell Boost: &b"+BoostsHandler.sell.get(p.getUniqueId())+"x");
+                if (BoostsHandler.sell.containsKey(p.getUniqueId())) {
+                    boost = c("&2Sell Boost: &b" + BoostsHandler.sell.get(p.getUniqueId()) + "x");
                 }
-                if(BoostsHandler.enchant.containsKey(p.getUniqueId())) {
-                    boost = c("&dEnchant Boost: &b"+BoostsHandler.enchant.get(p.getUniqueId())+"x");
+                if (BoostsHandler.enchant.containsKey(p.getUniqueId())) {
+                    boost = c("&dEnchant Boost: &b" + BoostsHandler.enchant.get(p.getUniqueId()) + "x");
                 }
-                if(BoostsHandler.gems.containsKey(p.getUniqueId())) {
-                    boost = c("&aGem Boost: &b"+BoostsHandler.gems.get(p.getUniqueId())+"x");
+                if (BoostsHandler.gems.containsKey(p.getUniqueId())) {
+                    boost = c("&aGem Boost: &b" + BoostsHandler.gems.get(p.getUniqueId()) + "x");
                 }
-                if(BoostsHandler.xp.containsKey(p.getUniqueId())) {
-                    boost = c("&cXP Boost: &b"+BoostsHandler.xp.get(p.getUniqueId())+"x");
+                if (BoostsHandler.xp.containsKey(p.getUniqueId())) {
+                    boost = c("&cXP Boost: &b" + BoostsHandler.xp.get(p.getUniqueId()) + "x");
                 }
                 String timer;
-                timer = c("&d"+BoostsHandler.timeFormat(BoostsHandler.time.getOrDefault(p.getUniqueId(), 0)));
+                timer = c("&d" + BoostsHandler.timeFormat(BoostsHandler.time.getOrDefault(p.getUniqueId(), 0)));
 
                 if (titlechanged == false) {
                     //Add keys, stock market, event, and websites into tablist

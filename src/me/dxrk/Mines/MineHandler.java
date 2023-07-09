@@ -236,10 +236,10 @@ public class MineHandler implements Listener, CommandExecutor {
                 @Override
                 public void run() {
                     int minesize = PlayerDataHandler.getInstance().getPlayerData(p).getInt("MineSize");
-                    if(minesize == 1 || minesize == 2) {
+                    if (minesize == 1 || minesize == 2) {
                         Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 83, 34.5, m.getSpawnLocation().getZ());
                     }
-                    if(minesize == 3) {
+                    if (minesize == 3) {
                         Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 103, 39.5, m.getSpawnLocation().getZ());
                     }
                 }
@@ -286,39 +286,37 @@ public class MineHandler implements Listener, CommandExecutor {
         paste.setYaw(-90);
         pasteSchematic(Objects.requireNonNull(WESchematic.getSchematic(schematic)), paste);
         Location pworld = null;
-        if(schem.equals("firstmine")) {
+        if (schem.equals("firstmine")) {
             pworld = new Location(world, 0.5, 100.5, (mines * 250) + 0.5, -90, 0);
             PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 1);
         }
-        if(schem.equals("secondmine")) {
+        if (schem.equals("secondmine")) {
             pworld = new Location(world, 0.5, 125.5, (mines * 250) + 0.5, -90, 0);
             PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 2);
         }
-        if(schem.equals("thirdmine")) {
+        if (schem.equals("thirdmine")) {
             pworld = new Location(world, 0.5, 125.5, (mines * 250) + 0.5, -90, 0);
             PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 3);
         }
         p.teleport(pworld);
 
 
-
-
         Location point1 = new Location(world, 15, 65, (mines * 250) - 16);
         Location point2 = new Location(world, 47, 98, (mines * 250) + 16);
-        if(schem.equals("firstmine")) {
-            Methods.getInstance().createWorldBorder(p, world,83, 34.5, (mines*250)+0.5);
+        if (schem.equals("firstmine")) {
+            Methods.getInstance().createWorldBorder(p, world, 83, 34.5, (mines * 250) + 0.5);
         }
-        if(schem.equals("secondmine")) {
+        if (schem.equals("secondmine")) {
             //change for mine2's dimensions
             point1 = new Location(world, 9, 75, (mines * 250) - 23);
             point2 = new Location(world, 56, 123, (mines * 250) + 24);
-            Methods.getInstance().createWorldBorder(p, world,83, 34.5, (mines*250)+0.5);
+            Methods.getInstance().createWorldBorder(p, world, 83, 34.5, (mines * 250) + 0.5);
         }
-        if(schem.equals("thirdmine")) {
+        if (schem.equals("thirdmine")) {
             //change for mine3's dimensions
             point1 = new Location(world, 9, 59, (mines * 250) - 31);
             point2 = new Location(world, 71, 123, (mines * 250) + 31);
-            Methods.getInstance().createWorldBorder(p, world,103, 39.5, (mines*250)+0.5);
+            Methods.getInstance().createWorldBorder(p, world, 103, 39.5, (mines * 250) + 0.5);
         }
 
         createMine(p.getUniqueId().toString(), point1, point2, pworld, world, 25.0);

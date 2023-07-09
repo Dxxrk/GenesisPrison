@@ -74,8 +74,6 @@ public class SellHandler implements Listener, CommandExecutor {
     }
 
 
-
-
     public boolean isDbl(String s) {
         try {
             Double.parseDouble(s);
@@ -96,9 +94,6 @@ public class SellHandler implements Listener, CommandExecutor {
         int prestiges = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Prestiges");
         return prestiges;
     }
-
-
-
 
 
     private static Methods m = Methods.getInstance();
@@ -291,8 +286,8 @@ public class SellHandler implements Listener, CommandExecutor {
         double skill = SkillsEventsListener.getSkillsBoostFortune(p);
         double event1 = SkillsEventsListener.getEventFortune();
 
-        if (!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
-            //e.setCancelled(true);
+        if (!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation()) && !p.isOp()) {
+            e.setCancelled(true);
             return;
         }
 
@@ -329,6 +324,7 @@ public class SellHandler implements Listener, CommandExecutor {
     public void setMulti(Player p, double d) {
         PlayerDataHandler.getInstance().getPlayerData(p).set("Multi", d);
     }
+
     public double getMulti(Player p) {
         double d = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("Multi");
 

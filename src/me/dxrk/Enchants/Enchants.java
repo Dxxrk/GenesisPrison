@@ -115,21 +115,23 @@ public class Enchants implements Listener {
         }
         return false;
     }
+
     @SuppressWarnings("deprecation")
     @EventHandler
-    public void onLuckyBlockClick(PlayerInteractEvent e){
+    public void onLuckyBlockClick(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK) || e.getAction().equals(Action.LEFT_CLICK_BLOCK)){
+        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) || e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             Block b = e.getClickedBlock();
-            if(b.getType().equals(Material.SEA_LANTERN)){
+            if (b.getType().equals(Material.SEA_LANTERN)) {
                 Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                if (m.isLocationInMine(b.getLocation())){
+                if (m.isLocationInMine(b.getLocation())) {
                     b.setType(Material.AIR);
-                    EnchantMethods.getInstance().Luckyblock(p, (byte)1);
+                    EnchantMethods.getInstance().Luckyblock(p, (byte) 1);
                 }
             }
         }
     }
+
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();

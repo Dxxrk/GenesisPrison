@@ -26,7 +26,7 @@ public class BuycraftUtil implements Listener, CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (label.equalsIgnoreCase("buymsg")) {
-            if(!sender.isOp()) return false;
+            if (!sender.isOp()) return false;
             if (args.length >= 3) {
                 String name = args[0];
                 String price = args[1];
@@ -49,7 +49,7 @@ public class BuycraftUtil implements Listener, CommandExecutor {
             }
         }
         if (label.equalsIgnoreCase("createcoupon")) {
-            if(!sender.isOp()) return false;
+            if (!sender.isOp()) return false;
             if (args.length == 2) {
                 Player p = Bukkit.getPlayer(args[0]);
                 double amount = Double.parseDouble(args[1]);

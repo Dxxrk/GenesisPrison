@@ -209,7 +209,7 @@ public class EnchantMethods implements CommandExecutor {
         for (Block b1 : getBlocksInArea(min, max)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-                    if(b1.getType() == Material.SEA_LANTERN)
+                    if (b1.getType() == Material.SEA_LANTERN)
                         lbs++;
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
@@ -229,8 +229,8 @@ public class EnchantMethods implements CommandExecutor {
         }
         int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
-        if(fortune==0)
-            fortune=1;
+        if (fortune == 0)
+            fortune = 1;
         double levelcap = 1 + (level / 1000);
 
         int blocksInThirds = blocks / 5;
@@ -270,8 +270,8 @@ public class EnchantMethods implements CommandExecutor {
         int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
 
-        if(fortune==0)
-            fortune=1;
+        if (fortune == 0)
+            fortune = 1;
 
         double levelcap = 1 + (level / 500);
 
@@ -293,13 +293,13 @@ public class EnchantMethods implements CommandExecutor {
         ArrayList<ItemStack> sellblocks = new ArrayList<>();
         int blocks = 0;
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
-        byte lbs=0;
+        byte lbs = 0;
         Location loc = b.getLocation();
         b.getWorld().strikeLightningEffect(loc);
         for (Block b1 : getBlocksAroundCenter(loc, 7)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-                    if(b1.getType() == Material.SEA_LANTERN)
+                    if (b1.getType() == Material.SEA_LANTERN)
                         lbs++;
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
@@ -311,7 +311,7 @@ public class EnchantMethods implements CommandExecutor {
         for (Block b1 : getBlocksAroundCenter(loc2, 7)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-                    if(b1.getType() == Material.SEA_LANTERN)
+                    if (b1.getType() == Material.SEA_LANTERN)
                         lbs++;
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
@@ -323,7 +323,7 @@ public class EnchantMethods implements CommandExecutor {
         for (Block b1 : getBlocksAroundCenter(loc3, 7)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-                    if(b1.getType() == Material.SEA_LANTERN)
+                    if (b1.getType() == Material.SEA_LANTERN)
                         lbs++;
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
@@ -335,7 +335,7 @@ public class EnchantMethods implements CommandExecutor {
         for (Block b1 : getBlocksAroundCenter(loc4, 7)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-                    if(b1.getType() == Material.SEA_LANTERN)
+                    if (b1.getType() == Material.SEA_LANTERN)
                         lbs++;
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
@@ -347,7 +347,7 @@ public class EnchantMethods implements CommandExecutor {
         for (Block b1 : getBlocksAroundCenter(loc5, 7)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-                    if(b1.getType() == Material.SEA_LANTERN)
+                    if (b1.getType() == Material.SEA_LANTERN)
                         lbs++;
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
@@ -367,8 +367,8 @@ public class EnchantMethods implements CommandExecutor {
         int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
 
-        if(fortune==0)
-            fortune=1;
+        if (fortune == 0)
+            fortune = 1;
 
         sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune)));
         sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune)));
@@ -402,21 +402,21 @@ public class EnchantMethods implements CommandExecutor {
             @Override
             public void run() {
                 int blocks = 0;
-                byte lbs=0;
+                byte lbs = 0;
                 finalWave.stop();
                 finalWave2.stop();
                 finalWave3.stop();
                 for (Block b1 : getBlocksAroundCenter(finalLoc, 25)) {
                     if (set(b1).allows(DefaultFlag.LIGHTER)) {
                         if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-                            if(b1.getType() == Material.SEA_LANTERN)
+                            if (b1.getType() == Material.SEA_LANTERN)
                                 lbs++;
                             b1.setType(Material.AIR);
                             blocks = blocks + 1;
                         }
                     }
                 }
-                Luckyblock(p,lbs);
+                Luckyblock(p, lbs);
 
                 double fortuity = Functions.Foruity(p);
                 double skill = SkillsEventsListener.getSkillsBoostFortune(p);
@@ -430,8 +430,8 @@ public class EnchantMethods implements CommandExecutor {
                 int fortune = (int) (getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                         (14));
 
-                if(fortune==0)
-                    fortune=1;
+                if (fortune == 0)
+                    fortune = 1;
 
                 double levelcap = 1 + (level / 100);
 
@@ -450,14 +450,14 @@ public class EnchantMethods implements CommandExecutor {
     public void TidalWave(Player p, Block b) {
         ArrayList<ItemStack> sellblocks = new ArrayList<>();
         int blocks = 0;
-        byte lbs=0;
+        byte lbs = 0;
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
         Location min = new Location(p.getWorld(), m.getMinPoint().getX(), b.getY() - 4, m.getMinPoint().getZ());
         Location max = new Location(p.getWorld(), m.getMaxPoint().getX(), b.getY(), m.getMaxPoint().getZ());
         for (Block b1 : getBlocksInArea(min, max)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-                    if(b1.getType() == Material.SEA_LANTERN)
+                    if (b1.getType() == Material.SEA_LANTERN)
                         lbs++;
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
@@ -478,8 +478,8 @@ public class EnchantMethods implements CommandExecutor {
         int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
 
-        if(fortune==0)
-            fortune=1;
+        if (fortune == 0)
+            fortune = 1;
 
         sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune)));
         sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune)));
@@ -494,7 +494,7 @@ public class EnchantMethods implements CommandExecutor {
     public void Infernum(Player p, Block b) {
         ArrayList<ItemStack> sellblocks = new ArrayList<>();
         int blocks = 0;
-        byte lbs=0;
+        byte lbs = 0;
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
 
 
@@ -521,7 +521,7 @@ public class EnchantMethods implements CommandExecutor {
         for (Block b1 : getBlocksInArea(min, max)) {
             if (set(b1).allows(DefaultFlag.LIGHTER)) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR && b1.getType() != Material.SEA_LANTERN) {
-                    if(b1.getType() == Material.SEA_LANTERN)
+                    if (b1.getType() == Material.SEA_LANTERN)
                         lbs++;
                     b1.setType(Material.AIR);
                     blocks = blocks + 1;
@@ -542,8 +542,8 @@ public class EnchantMethods implements CommandExecutor {
         int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
 
-        if(fortune==0)
-            fortune=1;
+        if (fortune == 0)
+            fortune = 1;
 
         sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune)));
         sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune)));
@@ -828,21 +828,23 @@ public class EnchantMethods implements CommandExecutor {
             }
         }
     }
-    public Location lbloc(int x, int y, int z, Player p){
+
+    public Location lbloc(int x, int y, int z, Player p) {
         Location loc;
         Random r = new Random();
-        int x1 = r.nextInt(10)-5;
-        int z1 = r.nextInt(10)-5;
-        loc=new Location(p.getWorld(),x+x1,y,z+z1);
+        int x1 = r.nextInt(10) - 5;
+        int z1 = r.nextInt(10) - 5;
+        loc = new Location(p.getWorld(), x + x1, y, z + z1);
         return loc;
     }
-    public void LuckyBlockSpawn(Player p, Block b){
+
+    public void LuckyBlockSpawn(Player p, Block b) {
         Location location = lbloc(b.getX(), b.getY(), b.getZ(), p);
-        int i=0;
-        while(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(location)){
+        int i = 0;
+        while (!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(location)) {
             location = lbloc(b.getX(), b.getY(), b.getZ(), p);
             i++;
-            if(i>25)
+            if (i > 25)
                 return;
         }
         location.getBlock().setType(Material.SEA_LANTERN);
@@ -850,13 +852,12 @@ public class EnchantMethods implements CommandExecutor {
     }
 
     public void Luckyblock(Player p, byte lbs) {
-        if(lbs==1){
+        if (lbs == 1) {
             Random r = new Random();
             int rr = r.nextInt(309);
             ItemStack pick = p.getItemInHand();
             int level = 0;
-            if(pick != null && (pick.getType().equals(Material.DIAMOND_PICKAXE) || pick.getType().equals(Material.GOLD_PICKAXE) || pick.getType().equals(Material.IRON_PICKAXE) || pick.getType().equals(Material.STONE_PICKAXE) || pick.getType().equals(Material.WOOD_PICKAXE)))
-            {
+            if (pick != null && (pick.getType().equals(Material.DIAMOND_PICKAXE) || pick.getType().equals(Material.GOLD_PICKAXE) || pick.getType().equals(Material.IRON_PICKAXE) || pick.getType().equals(Material.STONE_PICKAXE) || pick.getType().equals(Material.WOOD_PICKAXE))) {
                 List<String> lore = pick.getItemMeta().getLore();
                 int x;
                 for (x = 0; x < lore.size(); x++) {
@@ -868,10 +869,10 @@ public class EnchantMethods implements CommandExecutor {
             }
             if (rr >= 0 && rr <= 150) {
                 int tokens;
-                if(level==0)
+                if (level == 0)
                     tokens = 5000;
                 else
-                    tokens = 5000+5*level;
+                    tokens = 5000 + 5 * level;
                 Tokens.getInstance().addTokens(p, tokens);
                 if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
                     p.sendMessage(c("&f&lLuckyblock &8| &e+" + tokens + " Tokens"));
@@ -900,22 +901,20 @@ public class EnchantMethods implements CommandExecutor {
                 if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
                     p.sendMessage(c("&f&lLuckyblock &8| &e+1 Seasonal Key"));
             }
-        }
-        else {
-            int totaltokens=0;
-            byte totalbeta=0;
-            byte totalomega=0;
-            int totalxp=0;
-            byte totalcommunity=0;
-            byte totalrank=0;
-            byte totalseasonal=0;
-            for(byte i=0;i<lbs;i++){
+        } else {
+            int totaltokens = 0;
+            byte totalbeta = 0;
+            byte totalomega = 0;
+            int totalxp = 0;
+            byte totalcommunity = 0;
+            byte totalrank = 0;
+            byte totalseasonal = 0;
+            for (byte i = 0; i < lbs; i++) {
                 Random r = new Random();
                 int rr = r.nextInt(309);
                 ItemStack pick = p.getItemInHand();
                 int level = 0;
-                if(pick != null && (pick.getType().equals(Material.DIAMOND_PICKAXE) || pick.getType().equals(Material.GOLD_PICKAXE) || pick.getType().equals(Material.IRON_PICKAXE) || pick.getType().equals(Material.STONE_PICKAXE) || pick.getType().equals(Material.WOOD_PICKAXE)))
-                {
+                if (pick != null && (pick.getType().equals(Material.DIAMOND_PICKAXE) || pick.getType().equals(Material.GOLD_PICKAXE) || pick.getType().equals(Material.IRON_PICKAXE) || pick.getType().equals(Material.STONE_PICKAXE) || pick.getType().equals(Material.WOOD_PICKAXE))) {
                     List<String> lore = pick.getItemMeta().getLore();
                     int x;
                     for (x = 0; x < lore.size(); x++) {
@@ -927,12 +926,12 @@ public class EnchantMethods implements CommandExecutor {
                 }
                 if (rr >= 0 && rr <= 150) {
                     int tokens;
-                    if(level==0)
+                    if (level == 0)
                         tokens = 5000;
                     else
-                        tokens = 5000+5*level;
+                        tokens = 5000 + 5 * level;
                     Tokens.getInstance().addTokens(p, tokens);
-                    totaltokens+=tokens;
+                    totaltokens += tokens;
                 } else if (rr >= 151 && rr <= 240) {
                     addKey(p, "Beta", 1);
                     totalbeta++;
@@ -941,7 +940,7 @@ public class EnchantMethods implements CommandExecutor {
                     totalomega++;
                 } else if (rr >= 271 && rr <= 285) {
                     PickXPHandler.getInstance().addXP(p, 2500);
-                    totalxp+=2500;
+                    totalxp += 2500;
                 } else if (rr >= 286 && rr <= 300) {
                     addKey(p, "Community", 1);
                     totalcommunity++;
@@ -960,19 +959,25 @@ public class EnchantMethods implements CommandExecutor {
                 ArrayList<String> tooltip = new ArrayList<>();
                 tooltip.add(c("&7Rewards:"));
                 msg.tooltip(tooltip);
-                if(totaltokens>0) {
+                if (totaltokens > 0) {
                     tooltip.add(c("&eTokens: +" + totaltokens));
-                }if(totalbeta>0) {
+                }
+                if (totalbeta > 0) {
                     tooltip.add(c("&cBeta: +" + totalbeta));
-                }if(totalomega>0){
+                }
+                if (totalomega > 0) {
                     tooltip.add(c("&4Omega:  +" + totalomega));
-                }if(totalxp>0){
+                }
+                if (totalxp > 0) {
                     tooltip.add(c("&bXP: +" + totalxp));
-                }if(totalcommunity>0){
+                }
+                if (totalcommunity > 0) {
                     tooltip.add(c("&5Community: +" + totalcommunity));
-                }if(totalrank>0){
+                }
+                if (totalrank > 0) {
                     tooltip.add(c("&3Rank: +" + totalrank));
-                }if(totalseasonal>0){
+                }
+                if (totalseasonal > 0) {
                     tooltip.add(c("&fSeasonal: +" + totalseasonal));
                 }
                 msg.tooltip(tooltip);

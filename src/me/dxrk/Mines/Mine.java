@@ -181,8 +181,8 @@ public class Mine {
 
     public void reset() {
         BlockChanger.setCuboidAsynchronously(this.getMinPoint(), this.getMaxPoint(), this.getBlock1(), this.getBlock2(), this.getBlock3(), false);
-        for(Player p : Bukkit.getOnlinePlayers()) {
-            if(this.isLocationInMine(p.getLocation())) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (this.isLocationInMine(p.getLocation())) {
                 Location l = new Location(this.getMineWorld(), p.getLocation().getX(), this.getMaxPoint().getY(), p.getLocation().getZ());
                 p.teleport(l);
             }

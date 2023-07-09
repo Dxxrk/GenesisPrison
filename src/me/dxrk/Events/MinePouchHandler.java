@@ -1,8 +1,5 @@
 package me.dxrk.Events;
 
-import com.sk89q.worldguard.LocalPlayer;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Gangs.Gangs;
@@ -90,7 +87,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
-        if(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
+        if (!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
             return;
         }
         givePouch(p);
@@ -360,8 +357,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                     p.getInventory().addItem(gemVoucher(amount));
                 }
             }
-            if(args.length == 3) {
-                if(args[0].equalsIgnoreCase("add")) {
+            if (args.length == 3) {
+                if (args[0].equalsIgnoreCase("add")) {
                     Player player = Bukkit.getPlayer(args[1]);
                     int gems = Integer.parseInt(args[2]);
                     addGems(player, gems);

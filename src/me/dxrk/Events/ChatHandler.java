@@ -315,9 +315,9 @@ public class ChatHandler implements Listener, CommandExecutor {
             rank = ChatColor.translateAlternateColorCodes('&', "&d&l&ki&f&lOwner&d&l&ki&r ");
         } else if (p.getName().equalsIgnoreCase("_Lone_Ninja_")) {
             rank = ChatColor.translateAlternateColorCodes('&', "&f&k&l;&c&lAdmin&f&k&l;&r ");
-        }else if (p.getName().equalsIgnoreCase("Pikashoo")) {
+        } else if (p.getName().equalsIgnoreCase("Pikashoo")) {
             rank = ChatColor.translateAlternateColorCodes('&', "&f&k&l;&a&lDeveloper&f&k&l;&r ");
-        }else if (p.getName().equalsIgnoreCase("BakonStrip")) {
+        } else if (p.getName().equalsIgnoreCase("BakonStrip")) {
             rank = CMDOptions.TagColor(settings.getOptions().getString(p.getUniqueId().toString() + ".GenesisColor")) + " ";
         } else if (p.hasPermission("Rank.Manager")) {
             rank = ChatColor.translateAlternateColorCodes('&', "&f&l&k;&5&lManager&f&l&k;&r ");
@@ -470,7 +470,7 @@ public class ChatHandler implements Listener, CommandExecutor {
         if (this.settings.getcolor().getString(p.getName() + ".Nickname") == null) {
             name = ChatColor.GRAY + p.getName();
         } else {
-            name = ChatColor.translateAlternateColorCodes('&', this.settings.getcolor().getString(p.getName() + ".Nickname")+"&r");
+            name = ChatColor.translateAlternateColorCodes('&', this.settings.getcolor().getString(p.getName() + ".Nickname") + "&r");
         }
         String suffix = null;
         if (this.settings.getData().contains(p.getUniqueId().toString() + ".Tag"))
@@ -606,7 +606,7 @@ public class ChatHandler implements Listener, CommandExecutor {
                         b1 = (byte) (b1 + 1);
                     }
                     chatFormat.then(sb.toString());
-                }else if (p.getName().equalsIgnoreCase("Kevin20230") || p.getName().equalsIgnoreCase("_Lone_Ninja_")) {
+                } else if (p.getName().equalsIgnoreCase("Kevin20230") || p.getName().equalsIgnoreCase("_Lone_Ninja_")) {
                     StringBuilder sb = new StringBuilder();
                     byte b1;
                     int j;
@@ -617,7 +617,7 @@ public class ChatHandler implements Listener, CommandExecutor {
                         b1 = (byte) (b1 + 1);
                     }
                     chatFormat.then(sb.toString());
-                }else if (p.getName().equalsIgnoreCase("Kevin20230") || p.getName().equalsIgnoreCase("Pikashoo")) {
+                } else if (p.getName().equalsIgnoreCase("Kevin20230") || p.getName().equalsIgnoreCase("Pikashoo")) {
                     StringBuilder sb = new StringBuilder();
                     byte b1;
                     int j;

@@ -4,7 +4,6 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Main.Functions;
@@ -88,7 +87,7 @@ public class PickXPHandler
 
 
     public double findPercent(Player p) {
-        double percent = ((getXP(p)-calculateXPNeeded(getLevel(p)-1))/(calculateXPNeeded(getLevel(p))-calculateXPNeeded(getLevel(p)-1)))*100;
+        double percent = ((getXP(p) - calculateXPNeeded(getLevel(p) - 1)) / (calculateXPNeeded(getLevel(p)) - calculateXPNeeded(getLevel(p) - 1))) * 100;
         double dmultiply = percent * 10.0;
         double dround = Math.round(dmultiply) / 10.0;
         return dround;
@@ -158,7 +157,7 @@ public class PickXPHandler
         if (p.getItemInHand() == null) return;
         if (!p.getItemInHand().hasItemMeta()) return;
         if (!p.getItemInHand().getItemMeta().hasLore()) return;
-        if(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
+        if (!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
             return;
         }
         if (!set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;

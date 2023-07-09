@@ -2,10 +2,7 @@ package me.dxrk.Events;
 
 import com.connorlinfoot.actionbarapi.ActionBarAPI;
 import com.connorlinfoot.titleapi.TitleAPI;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Enchants.EnchantMethods;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
@@ -142,7 +139,7 @@ public class MomentumHandler implements Listener {
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         UUID id = p.getUniqueId();
-        if(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
+        if (!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
             return;
         }
         if (EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) {

@@ -125,7 +125,7 @@ public class CMDHelp implements Listener, CommandExecutor {
         lore.add(m.c("&7You can invite people to your gang, the block milestone is teamwork."));
         gangsmeta.setLore(lore);
         gangs.setItemMeta(gangsmeta);
-        help.setItem(3,gangs);
+        help.setItem(3, gangs);
         lore.clear();
 
         ItemStack vote = new ItemStack(Material.STICK);
@@ -137,7 +137,7 @@ public class CMDHelp implements Listener, CommandExecutor {
         lore.add(m.c("&7There are always at least 3 good rewards in each Treasury."));
         votemeta.setLore(lore);
         vote.setItemMeta(votemeta);
-        help.setItem(4,vote);
+        help.setItem(4, vote);
         lore.clear();
 
         ItemStack paths = new ItemStack(Material.POWERED_RAIL);
@@ -150,7 +150,7 @@ public class CMDHelp implements Listener, CommandExecutor {
         lore.add(m.c("&7After you finish a path you unlock the path specific enchant by rebirthing your pickaxe."));
         pathsmeta.setLore(lore);
         paths.setItemMeta(pathsmeta);
-        help.setItem(5,paths);
+        help.setItem(5, paths);
         lore.clear();
 
         ItemStack ethereal = new ItemStack(Material.DIAMOND_BLOCK);
@@ -161,7 +161,7 @@ public class CMDHelp implements Listener, CommandExecutor {
         lore.add(m.c("&7After hitting Ethereal ranking up gets progressively harder."));
         etherealmeta.setLore(lore);
         ethereal.setItemMeta(etherealmeta);
-        help.setItem(39,ethereal);
+        help.setItem(39, ethereal);
         lore.clear();
 
         ItemStack trinkets = new ItemStack(Material.GOLD_NUGGET);
@@ -174,7 +174,7 @@ public class CMDHelp implements Listener, CommandExecutor {
         lore.add(m.c("&7Use 9 dust of the same type to craft the specified trinket."));
         trinketsmeta.setLore(lore);
         trinkets.setItemMeta(trinketsmeta);
-        help.setItem(41,trinkets);
+        help.setItem(41, trinkets);
         lore.clear();
 
         help.setItem(0, PickaxeLevel.getInstance().Spacer());

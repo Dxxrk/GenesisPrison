@@ -7,7 +7,6 @@ import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.NBTTagDouble;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -91,11 +90,10 @@ public class MonsterHandler implements Listener, CommandExecutor {
                 if (args.length == 1) {
                     Player p = Bukkit.getPlayer(args[0]);
                     p.getInventory().addItem(egg());
-                }
-                else if(args.length == 2){
-                    if(m.isInt(args[1])){
+                } else if (args.length == 2) {
+                    if (m.isInt(args[1])) {
                         Player p = Bukkit.getPlayer(args[0]);
-                        for(int i=0;i<parseInt(args[1]);i++)
+                        for (int i = 0; i < parseInt(args[1]); i++)
                             p.getInventory().addItem(egg());
                     }
                 }

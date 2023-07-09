@@ -141,8 +141,13 @@ public class PlayerDataHandler implements Listener {
 
             }
             if (pl.get("Trinkets") == null) {
-                List<String> Trinkets = new ArrayList<>();
-                pl.set("Trinkets", Trinkets);
+                List<String> trinkets = new ArrayList<>();
+                pl.set("Trinkets", trinkets);
+
+            }
+            if (pl.get("AHListings") == null) {
+                List<String> ah = new ArrayList<>();
+                pl.set("AHListings", ah);
 
             }
             if (pl.get("PickaxeSkill") == null) {
@@ -275,7 +280,7 @@ public class PlayerDataHandler implements Listener {
             if (pl.get("CustomBlock") == null) {
                 pl.set("CustomBlock", null);
             }
-            if (pl.get("Rod") == null){
+            if (pl.get("Rod") == null) {
                 pl.set("Rod", FishingHandler.getInstance().defaultRod());
             }
             pl.save(pdata);
@@ -311,8 +316,8 @@ public class PlayerDataHandler implements Listener {
         Player p = e.getPlayer();
         if (!p.hasPlayedBefore()) {
             Bukkit.broadcastMessage(m.c("&dWelcome &f&l" + p.getName() + "&d to &c&lGenesis &b&lPrison!"));
-            createPlayerData(p);
         }
+        createPlayerData(p);
 
         new BukkitRunnable() {
             @Override

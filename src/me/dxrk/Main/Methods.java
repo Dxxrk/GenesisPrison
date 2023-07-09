@@ -198,7 +198,7 @@ public class Methods {
             String s = mineFile.getName().split("\\.")[0];
             UUID id = UUID.fromString(s);
             OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(s));
-            if(player.getName().equals(name)) {
+            if (player.getName().equals(name)) {
                 return player;
             }
         }

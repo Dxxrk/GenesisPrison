@@ -17,7 +17,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Scoreboard;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -37,6 +36,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
         return df.format(d);
     }
+
     private int toSeconds(String s) {
         String[] format = ChatColor.stripColor(s).split(":");
         int hour = Integer.parseInt(format[0]);
@@ -60,17 +60,18 @@ public class BoostsHandler implements Listener, CommandExecutor {
 
 
     public void startBoostCount(Player p, String type, int duration) {
-        new BukkitRunnable(){
+        new BukkitRunnable() {
             int count = duration;
+
             @Override
             public void run() {
-                if(count <= 0){
+                if (count <= 0) {
                     removeBoost(p);
                     time.put(p.getUniqueId(), 0);
                     time.remove(p.getUniqueId());
                     ScoreboardHandler.updateSB(p);
-                    if(p.isOnline()) {
-                        p.sendMessage(m.c("&f&lBoost &8| &bYour "+type.substring(0, 1).toUpperCase()+type.substring(1)+" Boost has ended."));
+                    if (p.isOnline()) {
+                        p.sendMessage(m.c("&f&lBoost &8| &bYour " + type.substring(0, 1).toUpperCase() + type.substring(1) + " Boost has ended."));
                     }
                     cancel();
                     return;
@@ -90,7 +91,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
 
 
     public void activeBoost(Player p, String type, double power, int duration) {
-        switch(type) {
+        switch (type) {
             case "token":
                 token.put(p.getUniqueId(), power);
                 time.put(p.getUniqueId(), duration);
@@ -117,34 +118,34 @@ public class BoostsHandler implements Listener, CommandExecutor {
                 startBoostCount(p, type, duration);
                 break;
         }
-        p.sendMessage(m.c("&f&lBoost &8| &bActivated a &a"+power+" "+type.substring(0, 1).toUpperCase()+type.substring(1)+" Boost &bfor &d"+timeFormat(duration)));
+        p.sendMessage(m.c("&f&lBoost &8| &bActivated a &a" + power + " " + type.substring(0, 1).toUpperCase() + type.substring(1) + " Boost &bfor &d" + timeFormat(duration)));
     }
-    
+
     public void giveBoost(Player p, String type, double power, int duration) {
-        switch(type) {
+        switch (type) {
             case "token":
-                p.getInventory().addItem(Boost((short)8227, m.c("&e&lToken Boost"), power, duration));
+                p.getInventory().addItem(Boost((short) 8227, m.c("&e&lToken Boost"), power, duration));
                 break;
             case "sell":
-                p.getInventory().addItem(Boost((short)8226, m.c("&2&lSell Boost"), power, duration));
+                p.getInventory().addItem(Boost((short) 8226, m.c("&2&lSell Boost"), power, duration));
                 break;
             case "enchant":
-                p.getInventory().addItem(Boost((short)8229, m.c("&d&lEnchant Boost"), power, duration));
+                p.getInventory().addItem(Boost((short) 8229, m.c("&d&lEnchant Boost"), power, duration));
                 break;
             case "gems":
-                p.getInventory().addItem(Boost((short)8225, m.c("&a&lGem Boost"), power, duration));
+                p.getInventory().addItem(Boost((short) 8225, m.c("&a&lGem Boost"), power, duration));
                 break;
             case "xp":
-                p.getInventory().addItem(Boost((short)8228, m.c("&c&lXP Boost"), power, duration));
+                p.getInventory().addItem(Boost((short) 8228, m.c("&c&lXP Boost"), power, duration));
                 break;
         }
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if(cmd.getName().equalsIgnoreCase("giveboost")) {
-            if(!sender.isOp()) return false;
-            if(args.length == 4) {
+        if (cmd.getName().equalsIgnoreCase("giveboost")) {
+            if (!sender.isOp()) return false;
+            if (args.length == 4) {
                 Player p = Bukkit.getPlayer(args[0]);
                 String type = args[1];
                 double power = Double.parseDouble(args[2]);
@@ -152,27 +153,27 @@ public class BoostsHandler implements Listener, CommandExecutor {
                 giveBoost(p, type, power, duration);
             }
         }
-        if(cmd.getName().equalsIgnoreCase("boost")) {
-            Player p = (Player)sender;
-            if(hasActiveBoost(p)) {
+        if (cmd.getName().equalsIgnoreCase("boost")) {
+            Player p = (Player) sender;
+            if (hasActiveBoost(p)) {
                 String boost = m.c("&7No Boost Active");
-                if(BoostsHandler.token.containsKey(p.getUniqueId())) {
-                    boost = m.c("&eToken Boost: &7"+BoostsHandler.token.get(p.getUniqueId()));
+                if (BoostsHandler.token.containsKey(p.getUniqueId())) {
+                    boost = m.c("&eToken Boost: &7" + BoostsHandler.token.get(p.getUniqueId()));
                 }
-                if(BoostsHandler.sell.containsKey(p.getUniqueId())) {
-                    boost = m.c("&2Sell Boost: &7"+BoostsHandler.sell.get(p.getUniqueId()));
+                if (BoostsHandler.sell.containsKey(p.getUniqueId())) {
+                    boost = m.c("&2Sell Boost: &7" + BoostsHandler.sell.get(p.getUniqueId()));
                 }
-                if(BoostsHandler.enchant.containsKey(p.getUniqueId())) {
-                    boost = m.c("&dEnchant Boost: &7"+BoostsHandler.enchant.get(p.getUniqueId()));
+                if (BoostsHandler.enchant.containsKey(p.getUniqueId())) {
+                    boost = m.c("&dEnchant Boost: &7" + BoostsHandler.enchant.get(p.getUniqueId()));
                 }
-                if(BoostsHandler.gems.containsKey(p.getUniqueId())) {
-                    boost = m.c("&aGem Boost: &7"+BoostsHandler.gems.get(p.getUniqueId()));
+                if (BoostsHandler.gems.containsKey(p.getUniqueId())) {
+                    boost = m.c("&aGem Boost: &7" + BoostsHandler.gems.get(p.getUniqueId()));
                 }
-                if(BoostsHandler.xp.containsKey(p.getUniqueId())) {
-                    boost = m.c("&cXP Boost: &7"+BoostsHandler.xp.get(p.getUniqueId()));
+                if (BoostsHandler.xp.containsKey(p.getUniqueId())) {
+                    boost = m.c("&cXP Boost: &7" + BoostsHandler.xp.get(p.getUniqueId()));
                 }
-                p.sendMessage(m.c("&f&lBoost &8| "+boost));
-                p.sendMessage(m.c("&f&lBoost &8| &d"+timeFormat(time.get(p.getUniqueId()))));
+                p.sendMessage(m.c("&f&lBoost &8| " + boost));
+                p.sendMessage(m.c("&f&lBoost &8| &d" + timeFormat(time.get(p.getUniqueId()))));
             } else {
                 p.sendMessage(m.c("&f&lBoost &8| &bNo Active Boost"));
             }
@@ -184,17 +185,17 @@ public class BoostsHandler implements Listener, CommandExecutor {
     @EventHandler
     public void onInt(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if(p.getItemInHand() == null) return;
+        if (p.getItemInHand() == null) return;
 
-        if(p.getItemInHand().getType().equals(Material.POTION)) {
+        if (p.getItemInHand().getType().equals(Material.POTION)) {
             String type = ChatColor.stripColor(p.getItemInHand().getItemMeta().getDisplayName()).split(" ")[0];
             double power = Double.parseDouble(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(0)).split(" ")[1]);
             int seconds = toSeconds(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(1)).split(" ")[1]);
-            if(!hasActiveBoost(p)) {
+            if (!hasActiveBoost(p)) {
                 activeBoost(p, type.toLowerCase(), power, seconds);
                 int amount = p.getItemInHand().getAmount();
-                if(amount > 1) {
-                    p.getItemInHand().setAmount(amount-1);
+                if (amount > 1) {
+                    p.getItemInHand().setAmount(amount - 1);
                 } else {
                     p.setItemInHand(null);
                 }
@@ -206,14 +207,13 @@ public class BoostsHandler implements Listener, CommandExecutor {
     }
 
 
-
     public ItemStack Boost(short data, String type, double power, int duration) {
         ItemStack boost = new ItemStack(Material.POTION, 1, data);
         ItemMeta bm = boost.getItemMeta();
         bm.setDisplayName(type);
         List<String> lore = new ArrayList<>();
-        lore.add(m.c("&bPower: &a"+power));
-        lore.add(m.c("&bLength: &a"+timeFormat(duration)));
+        lore.add(m.c("&bPower: &a" + power));
+        lore.add(m.c("&bLength: &a" + timeFormat(duration)));
         bm.setLore(lore);
         bm.addEnchant(Enchantment.DURABILITY, 0, false);
         bm.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -222,8 +222,6 @@ public class BoostsHandler implements Listener, CommandExecutor {
         boost.removeEnchantment(Enchantment.DURABILITY);
         return boost;
     }
-
-
 
 
 }

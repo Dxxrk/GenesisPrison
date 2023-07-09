@@ -221,10 +221,11 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         white.setItemMeta(wm);
         return white;
     }
+
     public void openenchantmenu(Player p) {
         Inventory enchantmenu = Bukkit.createInventory(null, 54, c("&d&lPurchase Enchants!"));
-        for(int i=0;i<45;i++)
-            enchantmenu.setItem(i,SpacerWhite());
+        for (int i = 0; i < 45; i++)
+            enchantmenu.setItem(i, SpacerWhite());
 
         setEnchantItem("Key Finder", Material.TRIPWIRE_HOOK, c("&bUpgrade Key Finder"), c("&7Chance to find a Key."), 1000, enchantmenu, 2, p, 1);
         setEnchantItem("LuckyBlock", Material.TRIPWIRE_HOOK, c("&bUpgrade LuckyBlock"), c("&7Chance to spawn a LuckyBlock."), 1000, enchantmenu, 6, p, 1);
@@ -278,7 +279,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         lore.add(c("&6Open ethereal enchant menu"));
         eemeta.setLore(lore);
         etherealenchants.setItemMeta(eemeta);
-        enchantmenu.setItem(50,etherealenchants);
+        enchantmenu.setItem(50, etherealenchants);
         lore.clear();
 
         enchantmenu.setItem(45, Spacer());
@@ -639,7 +640,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             case "Seismic Shock":
             case "Key Party":
             case "Charity":
-                i=1000;
+                i = 1000;
 
                 break;
 
@@ -660,7 +661,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 break;
             case "Booster":
             case "Treasury":
-                i=2500;
+                i = 2500;
 
                 break;
 
@@ -827,6 +828,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
         }
     }
+
     public void setEnchantItemEthereal(String enchantName, Material mat, String name, String desc, int priceStart, Inventory inv, int slot, Player p) {
 
         int enchantLevel = 0;
@@ -880,11 +882,12 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
         inv.setItem(slot, i);
     }
-    public void openEtherealEnchantsInv(Player p){
-        Inventory inv = Bukkit.createInventory(null,45,c("&bEthereal Enchants"));
 
-        for(int i=0;i<45;i++)
-            inv.setItem(i,SpacerWhite());
+    public void openEtherealEnchantsInv(Player p) {
+        Inventory inv = Bukkit.createInventory(null, 45, c("&bEthereal Enchants"));
+
+        for (int i = 0; i < 45; i++)
+            inv.setItem(i, SpacerWhite());
 
         setEnchantItemEthereal("Booster", Material.POTION, c("&bUpgrade Booster"), c("&7Chance to find low timed boosts."), 8000, inv, 11, p);
         setEnchantItemEthereal("Karma", Material.RABBIT_FOOT, c("&bUpgrade Karma"), c("&7Boosts the chance of other enchants to proc."), 9000, inv, 13, p);
@@ -895,6 +898,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
         p.openInventory(inv);
     }
+
     @EventHandler
     public void openSkillEnchantsInv(Player p) {
         Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, c("&6Pickaxe Skill Enchants"));
@@ -927,7 +931,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             ItemMeta calamitymeta = calamity.getItemMeta();
             calamitymeta.setDisplayName(c("&bUpgrade Calamity"));
             List<String> calamitylore = new ArrayList<>();
-            if(hasEnchant)
+            if (hasEnchant)
                 calamitylore.add(c("&aPurchased!"));
             else
                 calamitylore.add(c("&bCost: &e100000000 ⛀"));
@@ -961,7 +965,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             ItemMeta infernummeta = infernum.getItemMeta();
             infernummeta.setDisplayName(c("&bUpgrade Infernum"));
             List<String> infernumlore = new ArrayList<>();
-            if(hasEnchant)
+            if (hasEnchant)
                 infernumlore.add(c("&aPurchased!"));
             else
                 infernumlore.add(c("&bCost: &e100000000 ⛀"));
@@ -995,7 +999,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             ItemMeta tidalwavemeta = tidalwave.getItemMeta();
             tidalwavemeta.setDisplayName(c("&bUpgrade Tidal Wave"));
             List<String> tidalwavelore = new ArrayList<>();
-            if(hasEnchant)
+            if (hasEnchant)
                 tidalwavelore.add(c("&aPurchased!"));
             else
                 tidalwavelore.add(c("&bCost: &e100000000 ⛀"));
@@ -1029,7 +1033,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             ItemMeta euphoriameta = euphoria.getItemMeta();
             euphoriameta.setDisplayName(c("&bUpgrade Euphoria"));
             List<String> euphorialore = new ArrayList<>();
-            if(hasEnchant)
+            if (hasEnchant)
                 euphorialore.add(c("&aPurchased!"));
             else
                 euphorialore.add(c("&bCost: &e100000000 ⛀"));
@@ -1063,7 +1067,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             ItemMeta battlecrymeta = battlecry.getItemMeta();
             battlecrymeta.setDisplayName(c("&bUpgrade Battle Cry"));
             List<String> battlecrylore = new ArrayList<>();
-            if(hasEnchant)
+            if (hasEnchant)
                 battlecrylore.add(c("&aPurchased!"));
             else
                 battlecrylore.add(c("&bCost: &e100000000 ⛀"));
@@ -1074,6 +1078,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
         p.openInventory(inv);
     }
+
     public void upgradeSkillEnchant(Player p, ItemStack i, String Enchant) {
 
         ItemStack pitem = i.clone();
@@ -1110,6 +1115,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             openSkillEnchantsInv(p);
         }
     }
+
     @SuppressWarnings("deprecation")
     @EventHandler
     public void oninv(InventoryClickEvent e) {
@@ -1154,7 +1160,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 openSkillEnchantsInv(p);
                 return;
             }
-            if(e.getSlot() == 50){
+            if (e.getSlot() == 50) {
                 openEtherealEnchantsInv(p);
                 return;
             }
@@ -1189,13 +1195,12 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             String[] display = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).split("Upgrade ");
             String name = display[1];
 
-            if(e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 13){
+            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 13) {
                 if (e.getClick().equals(ClickType.LEFT)) {
                     upgradeSkillEnchant(p, p.getItemInHand(), name);
                 }
             }
-        }
-        else if(e.getInventory().getName().equals(c("&bEthereal Enchants"))) {
+        } else if (e.getInventory().getName().equals(c("&bEthereal Enchants"))) {
             e.setCancelled(true);
             if (e.getClickedInventory().equals(p.getInventory())) return;
             if (e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return;
@@ -1205,7 +1210,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             String name = display[1];
 
             boolean unlocked = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("Ethereal");
-            if (unlocked){
+            if (unlocked) {
                 if (e.getClick().equals(ClickType.LEFT)) {
                     upgradeEnchant(p, p.getItemInHand(), name, 1, false);
                 } else if (e.getClick().equals(ClickType.RIGHT)) {
@@ -1217,8 +1222,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 }
                 p.updateInventory();
                 openEtherealEnchantsInv(p);
-            }
-            else
+            } else
                 p.sendMessage(c("&b&lEthereal &8| &cYou have to be ethereal to upgrade this."));
         }
     }

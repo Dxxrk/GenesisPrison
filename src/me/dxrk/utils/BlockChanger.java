@@ -1022,11 +1022,11 @@ public class BlockChanger {
             location.setY(baseY + y3);
             location.setZ(baseZ + z3);
             int r = new Random().nextInt(3);
-            if(r == 0)
+            if (r == 0)
                 workloadRunnable.addWorkload(workload);
-            if(r == 1)
+            if (r == 1)
                 workloadRunnable.addWorkload(workload2);
-            if(r == 2)
+            if (r == 2)
                 workloadRunnable.addWorkload(workload3);
         }
         workloadRunnable.whenComplete(() -> {

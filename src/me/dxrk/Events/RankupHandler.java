@@ -3,7 +3,6 @@ package me.dxrk.Events;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
-import me.dxrk.Mines.MineHandler;
 import me.dxrk.Tokens.Tokens;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

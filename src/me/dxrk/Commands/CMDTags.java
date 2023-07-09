@@ -183,8 +183,9 @@ public class CMDTags implements Listener, CommandExecutor {
         List<String> names = new ArrayList<>(settings.getTags().getKeys(false));
         return names.get(r.nextInt(names.size()));
     }
+
     public static void addRandomTag(Player p) {
-        Main.perms.playerAdd(p, "Tag."+randomTagName());
+        Main.perms.playerAdd(p, "Tag." + randomTagName());
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

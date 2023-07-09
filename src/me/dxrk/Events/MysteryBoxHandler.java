@@ -77,7 +77,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
                     p.getInventory().addItem(CrateFunctions.AprilCrate());
                     p.updateInventory();
                 }
-                if (args[1].equalsIgnoreCase("fishing")){
+                if (args[1].equalsIgnoreCase("fishing")) {
                     p.getInventory().addItem(CrateFunctions.FishingCrate());
                     p.updateInventory();
                 }
@@ -248,6 +248,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
         return rarity;
     }
+
     @SuppressWarnings("deprecation")
     public void startAnimation(Player p, String crate, Location loc) {
         Location block = loc.clone();
@@ -356,6 +357,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
         new BukkitRunnable() {
             int up = 0;
             float rotate = 0f;
+
             @Override
             public void run() {
                 if (up == 25) {
@@ -498,13 +500,13 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
             public void run() {
                 HeadDatabaseAPI api = new HeadDatabaseAPI();
                 ItemStack item = api.getItemHead("30503");
-                if(rarity.equals("Common"))
+                if (rarity.equals("Common"))
                     item = api.getItemHead("30507");
-                if(rarity.equals("Rare"))
+                if (rarity.equals("Rare"))
                     item = api.getItemHead("30506");
-                if(rarity.equals("Epic"))
+                if (rarity.equals("Epic"))
                     item = api.getItemHead("30505");
-                if(rarity.equals("Legendary"))
+                if (rarity.equals("Legendary"))
                     item = api.getItemHead("28582");
                 WorldServer s = ((CraftWorld) loc.getWorld()).getHandle();
                 EntityArmorStand stand = new EntityArmorStand(s, center.getX(), center.getY() - 0.2, center.getZ());

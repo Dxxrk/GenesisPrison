@@ -292,10 +292,10 @@ public class CMDGang implements Listener, CommandExecutor {
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
-        if(!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
+        if (!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
             return;
         }
-        if(!EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;
+        if (!EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;
         if (g.hasGang(p)) {
             String gang = g.getGang(p);
             List<String> perks = settings.getGangs().getStringList(gang + ".PerksUnlocked");

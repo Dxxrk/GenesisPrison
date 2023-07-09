@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -26,6 +27,7 @@ import java.util.*;
 public class AuctionHouseHandler implements Listener, CommandExecutor {
 
     public static AuctionHouseHandler instance = new AuctionHouseHandler();
+
     public static AuctionHouseHandler getInstance() {
         return instance;
     }
@@ -41,10 +43,12 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
 
 
     public void saveAH() {
-        for(UUID p : personalItems.keySet()) {
+        for (UUID p : personalItems.keySet()) {
             PlayerDataHandler.getInstance().getPlayerData(p).set("AHListings", personalItems.get(p));
+            PlayerDataHandler.getInstance().savePlayerData(p);
         }
     }
+
     public void loadAH() {
         File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
         File[] var = mineFiles;
@@ -54,16 +58,19 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
             File mineFile = var[i];
             String name = mineFile.getName().split("\\.")[0];
             UUID id = UUID.fromString(name);
-            personalItems.put(id, (List<ItemStack>) PlayerDataHandler.getInstance().getPlayerData(id).get("AHListings"));
+            if (PlayerDataHandler.getInstance().getPlayerData(id).get("AHListings") != null && !((List<ItemStack>) PlayerDataHandler.getInstance().getPlayerData(id).get("AHListings")).isEmpty())
+                personalItems.put(id, (List<ItemStack>) PlayerDataHandler.getInstance().getPlayerData(id).get("AHListings"));
         }
     }
 
     public void addItems(List<ItemStack> ahitems) {
         ahitems.clear();
-        for(UUID p : personalItems.keySet()) {
-            ahitems.addAll(personalItems.get(p));
+        for (UUID p : personalItems.keySet()) {
+            if (p != null)
+                ahitems.addAll(personalItems.get(p));
         }
     }
+
     public boolean ahHasItem(ItemStack item) {
         List<ItemStack> ahitems = new ArrayList<>();
         addItems(ahitems);
@@ -95,8 +102,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                 break;
             case "hightolow": {
                 SortedMap<Double, ItemStack> orderhightolow = new TreeMap<>(Collections.reverseOrder());
-                for (int i = 0; i < 500; i++) {
-                    ItemStack item = ahitems.get(i);
+                for (ItemStack item : ahitems) {
                     if (item == null) break;
                     int line = 0;
                     for (int ii = 0; ii < item.getItemMeta().getLore().size(); ii++) {
@@ -129,8 +135,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
             }
             case "lowtohigh": {
                 SortedMap<Double, ItemStack> orderlowtohigh = new TreeMap<>();
-                for (int i = 0; i < 500; i++) {
-                    ItemStack item = ahitems.get(i);
+                for (ItemStack item : ahitems) {
                     if (item == null) break;
                     int line = 0;
                     for (int ii = 0; ii < item.getItemMeta().getLore().size(); ii++) {
@@ -208,15 +213,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
 
     public void openSelling(Player p) {
         Inventory selling = Bukkit.createInventory(null, 9, m.c("&c&lYour Items:"));
-        List<ItemStack> items = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
-            ItemStack item = settings.getAH().getItemStack("Items." + i);
-            if (item == null) break;
-            if (ChatColor.stripColor(item.getItemMeta().getLore().get(4)).split(" ")[1].equals(p.getName())) {
-                items.add(item);
-            }
-        }
-        for (ItemStack i : items) {
+        for (ItemStack i : personalItems.get(p.getUniqueId())) {
             selling.addItem(i);
         }
         p.openInventory(selling);
@@ -233,7 +230,14 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
         confirm.setItem(7, spacer);
         confirm.setItem(8, item);
 
-        double cost = Double.parseDouble(ChatColor.stripColor(item.getItemMeta().getLore().get(2)).split("⛀")[1]);
+        int line = 0;
+        for (int i = 0; i < item.getItemMeta().getLore().size(); i++) {
+            if (ChatColor.stripColor(item.getItemMeta().getLore().get(i)).contains("Cost:")) {
+                line = i;
+            }
+        }
+
+        double cost = Double.parseDouble(ChatColor.stripColor(item.getItemMeta().getLore().get(line)).split("⛀")[1]);
 
         ItemStack buy1 = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
         ItemMeta bm1 = buy1.getItemMeta();
@@ -272,7 +276,13 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
         ItemStack buyA = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
         ItemMeta bmA = buyA.getItemMeta();
         bmA.setDisplayName(m.c("&aBuy All"));
-        int amount = Integer.parseInt(ChatColor.stripColor(item.getItemMeta().getLore().get(2)).split(" ")[1]);
+
+        for (int i = 0; i < item.getItemMeta().getLore().size(); i++) {
+            if (ChatColor.stripColor(item.getItemMeta().getLore().get(i)).contains("Amount:")) {
+                line = i;
+            }
+        }
+        int amount = Integer.parseInt(ChatColor.stripColor(item.getItemMeta().getLore().get(line)).split(" ")[1]);
         lore.add(m.c("&cCost: &e⛀" + cost * amount));
         bmA.setLore(lore);
         buyA.setItemMeta(bmA);
@@ -313,10 +323,41 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
     public void onClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         if (e.getClickedInventory() == null) return;
-        if(e.getCurrentItem() == null) return;
+        if (e.getCurrentItem() == null) return;
 
-        if(e.getInventory().getName().equals(m.c("&c&lYour Items:"))) {
-
+        if (e.getInventory().getName().equals(m.c("&c&lYour Items:"))) {
+            e.setCancelled(true);
+            if (personalItems.get(p.getUniqueId()).contains(e.getCurrentItem())) {
+                Inventory remove = Bukkit.createInventory(null, InventoryType.HOPPER, m.c("&c&lRemove Listing?"));
+                ItemStack spacer = new ItemStack(Material.IRON_FENCE);
+                ItemMeta sm = spacer.getItemMeta();
+                sm.setDisplayName(m.c("&c&lGenesis &b&lPrison"));
+                spacer.setItemMeta(sm);
+                remove.setItem(0, spacer);
+                remove.setItem(2, e.getCurrentItem());
+                remove.setItem(4, spacer);
+                ItemStack yes = new ItemStack(Material.WOOL, 1, (short) 5);
+                ItemMeta ym = yes.getItemMeta();
+                ym.setDisplayName(m.c("&a&lYes"));
+                yes.setItemMeta(ym);
+                remove.setItem(1, yes);
+                ItemStack no = new ItemStack(Material.WOOL, 1, (short) 14);
+                ItemMeta nm = no.getItemMeta();
+                nm.setDisplayName(m.c("&c&lNo"));
+                no.setItemMeta(nm);
+                remove.setItem(3, no);
+                p.openInventory(remove);
+            }
+        }
+        if (e.getInventory().getName().equals(m.c("&c&lRemove Listing?"))) {
+            e.setCancelled(true);
+            if (e.getSlot() == 1) {
+                personalItems.get(p.getUniqueId()).remove(e.getClickedInventory().getItem(2));
+                openSelling(p);
+            }
+            if (e.getSlot() == 3) {
+                openSelling(p);
+            }
         }
 
 
@@ -334,7 +375,6 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                     } else {
                         int page = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getInventory().getName()));
                         openAuctionHouse(p, page - 1, ahorder.get(p));
-
                     }
                 }
                 if (e.getSlot() == 52) {
@@ -356,6 +396,18 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                 ItemStack item = e.getCurrentItem();
                 if (item == null) return;
                 if (item.getType().equals(Material.AIR)) return;
+
+                int line = 0;
+                for (int i = 0; i < item.getItemMeta().getLore().size(); i++) {
+                    if (ChatColor.stripColor(item.getItemMeta().getLore().get(i)).contains("Seller:")) {
+                        line = i;
+                    }
+                }
+                String name = ChatColor.stripColor(item.getItemMeta().getLore().get(line)).split(" ")[1];
+                if (p.getName().equals(name)) {
+                    openSelling(p);
+                    return;
+                }
                 openConfirm(p, item);
 
             }
@@ -366,12 +418,12 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                 e.setCancelled(true);
                 return;
             }
-            if (e.getSlot() == 3) {
+            if (e.getSlot() == 4) {
                 openAuctionHouse(p, 1, ahorder.getOrDefault(p, "none"));
             }
             if (e.getSlot() == 2) {
                 ItemStack item = e.getInventory().getItem(0).clone();
-                if(!ahHasItem(item)) {
+                if (!ahHasItem(item)) {
                     p.closeInventory();
                     p.sendMessage(m.c("&f&lAuctionHouse &8| &bListing No longer exists"));
                     return;
@@ -417,7 +469,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                         giveTokens(UUID.fromString(name), price);
                     }
                 }
-                for(UUID player : personalItems.keySet()) {
+                for (UUID player : personalItems.keySet()) {
                     List<ItemStack> items = personalItems.get(player);
                     items.remove(item);
                     ItemStack newItem = item.clone();
@@ -428,10 +480,10 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                         }
                     }
                     int amount = Integer.parseInt(ChatColor.stripColor(newItem.getItemMeta().getLore().get(newline)).split(" ")[1]);
-                    if(amount > 1) {
+                    if (amount > 1) {
                         ItemMeta nim = newItem.getItemMeta();
                         List<String> lore = nim.getLore();
-                        lore.set(newline, m.c("&7Amount: &b"+(amount-1)));
+                        lore.set(newline, m.c("&7Amount: &b" + (amount - 1)));
                         nim.setLore(lore);
                         newItem.setItemMeta(nim);
                         items.add(newItem);
@@ -466,6 +518,321 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                     }
                 }
 
+                im.setLore(lore);
+                item.setItemMeta(im);
+                p.getInventory().addItem(item);
+                ahorder.remove(p);
+                p.closeInventory();
+
+
+            }
+            if (e.getSlot() == 2) {
+                ItemStack item = e.getInventory().getItem(0).clone();
+                if (!ahHasItem(item)) {
+                    p.closeInventory();
+                    p.sendMessage(m.c("&f&lAuctionHouse &8| &bListing No longer exists"));
+                    return;
+                }
+                double tokens = this.tokens.getTokens(p);
+                int line = 0;
+                for (int i = 0; i < item.getItemMeta().getLore().size(); i++) {
+                    if (ChatColor.stripColor(item.getItemMeta().getLore().get(i)).contains("Cost:")) {
+                        line = i;
+                    }
+                }
+                String s = ChatColor.stripColor(item.getItemMeta().getLore().get(line)).split("⛀")[1];
+                double price = Double.parseDouble(s);
+                if (tokens < price) {
+                    p.sendMessage(m.c("&cError: Not Enough Tokens"));
+                    p.closeInventory();
+                    return;
+                }
+                line = 0;
+                for (int i = 0; i < item.getItemMeta().getLore().size(); i++) {
+                    if (ChatColor.stripColor(item.getItemMeta().getLore().get(i)).contains("Seller:")) {
+                        line = i;
+                    }
+                }
+                String seller = ChatColor.stripColor(item.getItemMeta().getLore().get(line)).split(" ")[1];
+                if (seller.equals(p.getName())) {
+                    openSelling(p);
+                    return;
+                }
+
+                this.tokens.takeTokens(p, price);
+
+                File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
+                File[] var = mineFiles;
+                assert mineFiles != null;
+                int amountOfMines = mineFiles.length;
+                for (int i = 0; i < amountOfMines; ++i) {
+                    File mineFile = var[i];
+                    String name = mineFile.getName().split("\\.")[0];
+                    UUID id = UUID.fromString(name);
+                    OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(name));
+                    if (player.getName().equalsIgnoreCase(seller)) {
+                        giveTokens(UUID.fromString(name), price);
+                    }
+                }
+                for (UUID player : personalItems.keySet()) {
+                    List<ItemStack> items = personalItems.get(player);
+                    items.remove(item);
+                    ItemStack newItem = item.clone();
+                    int newline = 0;
+                    for (int i = 0; i < newItem.getItemMeta().getLore().size(); i++) {
+                        if (ChatColor.stripColor(newItem.getItemMeta().getLore().get(i)).contains("Amount:")) {
+                            newline = i;
+                        }
+                    }
+                    int amount = Integer.parseInt(ChatColor.stripColor(newItem.getItemMeta().getLore().get(newline)).split(" ")[1]);
+                    if (amount > 5) {
+                        ItemMeta nim = newItem.getItemMeta();
+                        List<String> lore = nim.getLore();
+                        lore.set(newline, m.c("&7Amount: &b" + (amount - 5)));
+                        nim.setLore(lore);
+                        newItem.setItemMeta(nim);
+                        items.add(newItem);
+                        personalItems.put(m.getPlayer(seller).getUniqueId(), items);
+                    }
+                }
+                ItemMeta im = item.getItemMeta();
+                List<String> lore = im.getLore();
+
+                for (int i = 0; i < lore.size(); i++) {
+                    if (ChatColor.stripColor(lore.get(i)).equals(" ")) {
+                        line = i;
+                        lore.remove(line);
+                    }
+                }
+                for (int i = 0; i < lore.size(); i++) {
+                    if (ChatColor.stripColor(lore.get(i)).contains("Amount:")) {
+                        line = i;
+                        lore.remove(line);
+                    }
+                }
+                for (int i = 0; i < lore.size(); i++) {
+                    if (ChatColor.stripColor(lore.get(i)).contains("Seller:")) {
+                        line = i;
+                        lore.remove(line);
+                    }
+                }
+                for (int i = 0; i < lore.size(); i++) {
+                    if (ChatColor.stripColor(lore.get(i)).contains("Cost:")) {
+                        line = i;
+                        lore.remove(line);
+                    }
+                }
+                item.setAmount(5);
+                im.setLore(lore);
+                item.setItemMeta(im);
+                p.getInventory().addItem(item);
+                ahorder.remove(p);
+                p.closeInventory();
+
+
+            }
+            if (e.getSlot() == 5) {
+                ItemStack item = e.getInventory().getItem(0).clone();
+                if (!ahHasItem(item)) {
+                    p.closeInventory();
+                    p.sendMessage(m.c("&f&lAuctionHouse &8| &bListing No longer exists"));
+                    return;
+                }
+                double tokens = this.tokens.getTokens(p);
+                int line = 0;
+                for (int i = 0; i < item.getItemMeta().getLore().size(); i++) {
+                    if (ChatColor.stripColor(item.getItemMeta().getLore().get(i)).contains("Cost:")) {
+                        line = i;
+                    }
+                }
+                String s = ChatColor.stripColor(item.getItemMeta().getLore().get(line)).split("⛀")[1];
+                double price = Double.parseDouble(s);
+                if (tokens < price) {
+                    p.sendMessage(m.c("&cError: Not Enough Tokens"));
+                    p.closeInventory();
+                    return;
+                }
+                line = 0;
+                for (int i = 0; i < item.getItemMeta().getLore().size(); i++) {
+                    if (ChatColor.stripColor(item.getItemMeta().getLore().get(i)).contains("Seller:")) {
+                        line = i;
+                    }
+                }
+                String seller = ChatColor.stripColor(item.getItemMeta().getLore().get(line)).split(" ")[1];
+                if (seller.equals(p.getName())) {
+                    openSelling(p);
+                    return;
+                }
+
+                this.tokens.takeTokens(p, price);
+
+                File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
+                File[] var = mineFiles;
+                assert mineFiles != null;
+                int amountOfMines = mineFiles.length;
+                for (int i = 0; i < amountOfMines; ++i) {
+                    File mineFile = var[i];
+                    String name = mineFile.getName().split("\\.")[0];
+                    UUID id = UUID.fromString(name);
+                    OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(name));
+                    if (player.getName().equalsIgnoreCase(seller)) {
+                        giveTokens(UUID.fromString(name), price);
+                    }
+                }
+                for (UUID player : personalItems.keySet()) {
+                    List<ItemStack> items = personalItems.get(player);
+                    items.remove(item);
+                    ItemStack newItem = item.clone();
+                    int newline = 0;
+                    for (int i = 0; i < newItem.getItemMeta().getLore().size(); i++) {
+                        if (ChatColor.stripColor(newItem.getItemMeta().getLore().get(i)).contains("Amount:")) {
+                            newline = i;
+                        }
+                    }
+                    int amount = Integer.parseInt(ChatColor.stripColor(newItem.getItemMeta().getLore().get(newline)).split(" ")[1]);
+                    if (amount > 10) {
+                        ItemMeta nim = newItem.getItemMeta();
+                        List<String> lore = nim.getLore();
+                        lore.set(newline, m.c("&7Amount: &b" + (amount - 10)));
+                        nim.setLore(lore);
+                        newItem.setItemMeta(nim);
+                        items.add(newItem);
+                        personalItems.put(m.getPlayer(seller).getUniqueId(), items);
+                    }
+                }
+                ItemMeta im = item.getItemMeta();
+                List<String> lore = im.getLore();
+
+                for (int i = 0; i < lore.size(); i++) {
+                    if (ChatColor.stripColor(lore.get(i)).equals(" ")) {
+                        line = i;
+                        lore.remove(line);
+                    }
+                }
+                for (int i = 0; i < lore.size(); i++) {
+                    if (ChatColor.stripColor(lore.get(i)).contains("Amount:")) {
+                        line = i;
+                        lore.remove(line);
+                    }
+                }
+                for (int i = 0; i < lore.size(); i++) {
+                    if (ChatColor.stripColor(lore.get(i)).contains("Seller:")) {
+                        line = i;
+                        lore.remove(line);
+                    }
+                }
+                for (int i = 0; i < lore.size(); i++) {
+                    if (ChatColor.stripColor(lore.get(i)).contains("Cost:")) {
+                        line = i;
+                        lore.remove(line);
+                    }
+                }
+                item.setAmount(10);
+                im.setLore(lore);
+                item.setItemMeta(im);
+                p.getInventory().addItem(item);
+                ahorder.remove(p);
+                p.closeInventory();
+
+
+            }
+            if (e.getSlot() == 6) {
+                ItemStack item = e.getInventory().getItem(0).clone();
+                if (!ahHasItem(item)) {
+                    p.closeInventory();
+                    p.sendMessage(m.c("&f&lAuctionHouse &8| &bListing No longer exists"));
+                    return;
+                }
+                double tokens = this.tokens.getTokens(p);
+                int line = 0;
+                for (int i = 0; i < item.getItemMeta().getLore().size(); i++) {
+                    if (ChatColor.stripColor(item.getItemMeta().getLore().get(i)).contains("Cost:")) {
+                        line = i;
+                    }
+                }
+                String s = ChatColor.stripColor(item.getItemMeta().getLore().get(line)).split("⛀")[1];
+                double price = Double.parseDouble(s);
+                if (tokens < price) {
+                    p.sendMessage(m.c("&cError: Not Enough Tokens"));
+                    p.closeInventory();
+                    return;
+                }
+                line = 0;
+                for (int i = 0; i < item.getItemMeta().getLore().size(); i++) {
+                    if (ChatColor.stripColor(item.getItemMeta().getLore().get(i)).contains("Seller:")) {
+                        line = i;
+                    }
+                }
+                String seller = ChatColor.stripColor(item.getItemMeta().getLore().get(line)).split(" ")[1];
+                if (seller.equals(p.getName())) {
+                    openSelling(p);
+                    return;
+                }
+
+                this.tokens.takeTokens(p, price);
+
+                File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "playerdata")).listFiles();
+                File[] var = mineFiles;
+                assert mineFiles != null;
+                int amountOfMines = mineFiles.length;
+                for (int i = 0; i < amountOfMines; ++i) {
+                    File mineFile = var[i];
+                    String name = mineFile.getName().split("\\.")[0];
+                    UUID id = UUID.fromString(name);
+                    OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(name));
+                    if (player.getName().equalsIgnoreCase(seller)) {
+                        giveTokens(UUID.fromString(name), price);
+                    }
+                }
+                for (UUID player : personalItems.keySet()) {
+                    List<ItemStack> items = personalItems.get(player);
+                    items.remove(item);
+                    ItemStack newItem = item.clone();
+                    int newline = 0;
+                    for (int i = 0; i < newItem.getItemMeta().getLore().size(); i++) {
+                        if (ChatColor.stripColor(newItem.getItemMeta().getLore().get(i)).contains("Amount:")) {
+                            newline = i;
+                        }
+                    }
+                    int amount = Integer.parseInt(ChatColor.stripColor(newItem.getItemMeta().getLore().get(newline)).split(" ")[1]);
+                    if (amount > 50) {
+                        ItemMeta nim = newItem.getItemMeta();
+                        List<String> lore = nim.getLore();
+                        lore.set(newline, m.c("&7Amount: &b" + (amount - 50)));
+                        nim.setLore(lore);
+                        newItem.setItemMeta(nim);
+                        items.add(newItem);
+                        personalItems.put(m.getPlayer(seller).getUniqueId(), items);
+                    }
+                }
+                ItemMeta im = item.getItemMeta();
+                List<String> lore = im.getLore();
+
+                for (int i = 0; i < lore.size(); i++) {
+                    if (ChatColor.stripColor(lore.get(i)).equals(" ")) {
+                        line = i;
+                        lore.remove(line);
+                    }
+                }
+                for (int i = 0; i < lore.size(); i++) {
+                    if (ChatColor.stripColor(lore.get(i)).contains("Amount:")) {
+                        line = i;
+                        lore.remove(line);
+                    }
+                }
+                for (int i = 0; i < lore.size(); i++) {
+                    if (ChatColor.stripColor(lore.get(i)).contains("Seller:")) {
+                        line = i;
+                        lore.remove(line);
+                    }
+                }
+                for (int i = 0; i < lore.size(); i++) {
+                    if (ChatColor.stripColor(lore.get(i)).contains("Cost:")) {
+                        line = i;
+                        lore.remove(line);
+                    }
+                }
+                item.setAmount(50);
                 im.setLore(lore);
                 item.setItemMeta(im);
                 p.getInventory().addItem(item);
@@ -535,11 +902,13 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
 
                     //ADD ITEM TO PERSONAL ITEMS TO THEN GET ADDED
                     List<ItemStack> items = new ArrayList<>();
-                    if(personalItems.containsKey(p.getUniqueId())) {
+                    if (personalItems.containsKey(p.getUniqueId())) {
                         items = personalItems.get(p.getUniqueId());
                     }
-                    if(items.size() >=3) {
+                    if (items.size() <= 3) {
                         items.add(item);
+                        personalItems.put(p.getUniqueId(), items);
+                        p.sendMessage(m.c("&f&lAuctionHouse &8| &bItem(s) Listed"));
                     } else {
                         p.sendMessage(m.c("&f&lAuctionHouse &8| &bYou cannot list anymore items"));
                         return false;
