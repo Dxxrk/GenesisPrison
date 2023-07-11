@@ -159,7 +159,7 @@ public class KeysHandler implements Listener {
         List<String> lore = p.getItemInHand().getItemMeta().getLore();
         double event = SkillsEventsListener.getEventKeyFortune();
         chance += event;
-        double keyboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId() + "SkillKeyBoost");
+        double keyboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillKeyBoost");
         chance += keyboost;
         int kf = this.r.nextInt(100);
         int d = this.r.nextInt(100);

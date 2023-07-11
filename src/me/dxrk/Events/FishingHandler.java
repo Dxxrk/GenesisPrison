@@ -1,7 +1,9 @@
 package me.dxrk.Events;
 
 import me.dxrk.Enchants.PickaxeLevel;
+import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Main.Methods;
+import me.dxrk.Main.SettingsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -38,6 +40,8 @@ public class FishingHandler implements Listener, CommandExecutor {
         return instance;
     }
 
+    public SettingsManager settings = SettingsManager.getInstance();
+
     @EventHandler
     public void onFish(PlayerFishEvent e) {
         Player p = e.getPlayer();
@@ -53,7 +57,8 @@ public class FishingHandler implements Listener, CommandExecutor {
             int amount = 1;
             if (r.nextInt(103 - multiplierlevel) == 1) {
                 amount = 2;
-                p.sendMessage(m.c("&f&lMultiplier &8| &bExtra fish."));
+                if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Multiplier-Messages"))
+                    p.sendMessage(m.c("&f&lMultiplier &8| &bExtra fish."));
             }
             if (number <= 40) {
                 reward = new ItemStack(Material.RAW_FISH, amount, (short) 0);
@@ -76,6 +81,15 @@ public class FishingHandler implements Listener, CommandExecutor {
             int keyfisherlevel = getEnchantLevel(p, "Key Fisher");
             if (keyfisherlevel > 0) {
                 int chance = 105 - 10 * keyfisherlevel;
+                int amt = 1;
+                double event = SkillsEventsListener.getEventKeyFortune();
+                double doublekeychance = 0;
+                doublekeychance+=event;
+                double keyboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillKeyBoost");
+                doublekeychance+=keyboost;
+                int dd = r.nextInt(100);
+                if(doublekeychance > 0 && dd <= doublekeychance)
+                    amt++;
                 if (r.nextInt(chance) == 1) {
                     int rr = r.nextInt(7);
                     String key;
@@ -91,8 +105,46 @@ public class FishingHandler implements Listener, CommandExecutor {
                         key = "Community";
                     else
                         key = "Seasonal";
-                    KeysHandler.getInstance().addKey(p, key, 1);
-                    p.sendMessage(m.c("&f&lKey Fisher &8| &7") + key + " Key");
+                    KeysHandler.getInstance().addKey(p, key, amt);
+                    if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Key-Fisher-Messages"))
+                        p.sendMessage(m.c("&f&lKey Fisher &8| &7+") + amt + " " + key + " Key");
+                }
+            }
+
+            int treasurehunterlevel = getEnchantLevel(p, "Treasure Hunter");
+            if(treasurehunterlevel>0){
+                int chance = 110-treasurehunterlevel;
+                if(r.nextInt(chance)==1){
+                    int rr = r.nextInt(54);
+                    if(rr>=0 && rr<=46){
+                        p.getInventory().addItem(CrateFunctions.FishingCrate());
+                        if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Treasure-Hunter-Messages"))
+                            p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Fishing Crate"));
+                    }else if(rr>=47 && rr<=48){
+                        p.getInventory().addItem(MonsterHandler.egg());
+                        if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Treasure-Hunter-Messages"))
+                            p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Monster Egg"));
+                    }else if(rr>=49 && rr<=50){
+                        p.getInventory().addItem(CrateFunctions.ContrabandCrate());
+                        if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Treasure-Hunter-Messages"))
+                            p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Contraband Crate"));
+                    }else if(rr>=51 && rr<=52){
+                        p.getInventory().addItem(CrateFunctions.GenesisCrate());
+                        if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Treasure-Hunter-Messages"))
+                            p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Genesis Crate"));
+                    }else{
+                        p.getInventory().addItem(CrateFunctions.AprilCrate());
+                        if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Treasure-Hunter-Messages"))
+                            p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Monthly Crate"));
+                    }
+                }
+            }
+            int xpfinderlevel = getEnchantLevel(p, "XP Finder");
+            if(xpfinderlevel>0){
+                int rr=r.nextInt(5);
+                if(rr==1){
+                    if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Fishing-XPFinder-Messages"))
+                        PickXPHandler.getInstance().addXP(p, 5000+50*xpfinderlevel);
                 }
             }
 
@@ -492,14 +544,55 @@ public class FishingHandler implements Listener, CommandExecutor {
         if (command.getName().equalsIgnoreCase("sellfish")) {
             Player p = (Player) commandSender;
             openSellInv(p);
-        } else if (command.getName().equalsIgnoreCase("rod")) {
+        }else if (command.getName().equalsIgnoreCase("rod")) {
             Player p = (Player) commandSender;
             if (p.getItemInHand().getType().equals(Material.FISHING_ROD))
                 openEnchantInv(p);
             else
                 p.sendMessage(m.c("&cHold a Fishing Rod in your hand to open the Menu."));
+        }else if(command.getName().equalsIgnoreCase("crystals") || command.getName().equalsIgnoreCase("crystal")) {
+            if (strings.length == 0) {
+                Player p = (Player) commandSender;
+                p.sendMessage(m.c("&f&lCrystals &8 | &b" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("Crystals")));
+            }
+            if (strings.length == 1) {
+                if (strings[0].equalsIgnoreCase("shop")) {
+                    Player p = (Player) commandSender;
+                    openFishingShop(p);
+                }
+            } else if (strings.length == 3) {
+                if (strings[0].equalsIgnoreCase("give")) {
+                    if (commandSender.isOp()) {
+                        Player reciever = Bukkit.getPlayer(strings[1]);
+                        int crystals = parseInt(strings[2]);
+                        int previouscrystals = PlayerDataHandler.getInstance().getPlayerData(reciever).getInt("Crystals");
+                        PlayerDataHandler.getInstance().getPlayerData(reciever).set("Crystals", previouscrystals + crystals);
+                    }
+                }
+            }
         }
         return true;
+    }
+
+    public ItemStack ShopItem(Material mat, String name, int price){
+        ItemStack item = new ItemStack(mat);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(name);
+        List<String> lore = new ArrayList<>();
+        lore.add(m.c("&c&lCost: &b&l") + price + " Crystals");
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        return item;
+    }
+    public void openFishingShop(Player p){
+        Inventory inv = Bukkit.createInventory(null, 27, m.c("&b&lCrystal Shop:"));
+        for(int i=0;i<27;i++)
+            inv.setItem(i, PickaxeLevel.getInstance().SpacerWhite());
+        inv.setItem(16, ShopItem(Material.ENDER_CHEST, m.c("&c&lMonthly Crate"), 3000));
+        inv.setItem(14, ShopItem(Material.PAPER, m.c("&a&l$5 Coupon"), 5000));
+        inv.setItem(12, ShopItem(Material.GOLD_NUGGET, m.c("&6&lLegendary Trinket"), 500));
+        inv.setItem(10, ShopItem(Material.GLASS_BOTTLE, m.c("&b&l2.0 XP Booster"), 250));
+        p.openInventory(inv);
     }
 
     @EventHandler

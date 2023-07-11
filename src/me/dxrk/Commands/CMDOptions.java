@@ -70,6 +70,10 @@ public class CMDOptions implements Listener, CommandExecutor {
         ops.setItem(21, option(p, "Night-Vision-Effect"));
         ops.setItem(22, option(p, "LuckyBlock-Messages"));
         ops.setItem(23, option(p, "Tidal-Wave-Messages"));
+        ops.setItem(24, option(p, "Key-Fisher-Messages"));
+        ops.setItem(25, option(p, "Treasure-Hunter-Messages"));
+        ops.setItem(28, option(p, "Multiplier-Messages"));
+        ops.setItem(29, option(p, "Fishing-XPFinder-Messages"));
         p.openInventory(ops);
     }
 
@@ -183,6 +187,10 @@ public class CMDOptions implements Listener, CommandExecutor {
             this.settings.getOptions().set(p.getUniqueId().toString() + ".Night-Vision-Effect", true);
             this.settings.getOptions().set(p.getUniqueId().toString() + ".LuckyBlock-Messages", true);
             this.settings.getOptions().set(p.getUniqueId().toString() + ".Tidal-Wave-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId().toString() + ".Key-Fisher-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId().toString() + ".Treasure-Hunter-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId().toString() + ".Fishing-XPFinder-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId().toString() + ".Multiplier-Messages", true);
             this.settings.saveOptions();
         }
         if (this.settings.getOptions().get(p.getUniqueId().toString() + ".GenesisColor") == null) {
