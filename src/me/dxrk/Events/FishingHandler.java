@@ -4,6 +4,7 @@ import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
+import me.dxrk.Vote.CMDVoteShop;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -666,6 +667,37 @@ public class FishingHandler implements Listener, CommandExecutor {
 
             p.updateInventory();
             openEnchantInv(p);
+        } else if (e.getClickedInventory().getName().equals(m.c("&b&lCrystal Shop:"))){
+            e.setCancelled(true);
+            if (e.getClickedInventory().equals(p.getInventory())) return;
+            if (e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return;
+            if (e.getCurrentItem().equals(PickaxeLevel.getInstance().SpacerWhite())) return;
+
+            int crystals = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Crystals");
+            if(e.getSlot()==16){
+                if(crystals<3000)
+                    return;
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate " + p.getName() + " april");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("Crystals", crystals-3000);
+                PlayerDataHandler.getInstance().savePlayerData(p);
+                p.sendMessage(m.c("&f&lCrystal Shop &8| &7+1 Monthly crate"));
+            }else if(e.getSlot()==14){
+                if(crystals<5000)
+                    return;
+                CMDVoteShop.addCoupon(p, 5.00);
+                p.sendMessage(m.c("&f&lCrystal Shop &8| &7+$5 Coupons"));
+            }else if(e.getSlot()==12){
+                if(crystals<500)
+                    return;
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givetrinket " + p.getName() + " legendary");
+                p.sendMessage(m.c("&f&lCrystal Shop &8| &7+1 Legendary Trinket"));
+            }else if(e.getSlot()==10){
+                if(crystals<250)
+                    return;
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveboost " + p.getName() + " xp 2.0 3600");
+                p.sendMessage(m.c("&f&lCrystal Shop &8| &7+2x XP Boost"));
+            }
+
         }
     }
 
