@@ -189,6 +189,10 @@ public class Mine {
         }
     }
 
+    public void expandMine(int i) {
+
+    }
+
 
     public boolean delete() {
         File file = new File(Main.plugin.getDataFolder() + File.separator + "mines", getMineName() + ".yml");

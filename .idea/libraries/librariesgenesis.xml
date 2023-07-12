@@ -8,7 +8,6 @@
       <root url="jar://$USER_HOME$/asdfasdf/GroupManager.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/HolographicDisplays.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/nuvotifier.jar!/" />
-      <root url="jar://$USER_HOME$/asdfasdf/patched_1.8.8.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/ProtocolLib.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/TitleAPI-1.8.1.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/WorldEdit.jar!/" />
@@ -19,6 +18,7 @@
       <root url="jar://$USER_HOME$/asdfasdf/Vault.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/BossBarAPI_v2.4.1.jar!/" />
       <root url="jar://$USER_HOME$/asdfasdf/HeadDatabase-4.17.0.jar!/" />
+      <root url="jar://$USER_HOME$/asdfasdf/patched_1.8.8.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

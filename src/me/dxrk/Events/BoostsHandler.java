@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -67,7 +68,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
             public void run() {
                 if (count <= 0) {
                     removeBoost(p);
-                    time.put(p.getUniqueId(), 0);
+                    //time.put(p.getUniqueId(), 0);
                     time.remove(p.getUniqueId());
                     ScoreboardHandler.updateSB(p);
                     if (p.isOnline()) {
@@ -204,6 +205,11 @@ public class BoostsHandler implements Listener, CommandExecutor {
                 p.sendMessage(m.c("&f&lBoost &8| &bYou already have a boost active."));
             }
         }
+    }
+
+    @EventHandler
+    public void onDrink(PlayerItemConsumeEvent e){
+        if(e.getItem().getType().equals(Material.POTION)) e.setCancelled(true);
     }
 
 
