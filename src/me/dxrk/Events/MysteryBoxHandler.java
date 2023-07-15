@@ -196,7 +196,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
                 p.setItemInHand(null);
             }
             p.updateInventory();
-
+            return;
         }
         if (p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&b&l💧 Fishing &f&lCrate &b&l💧")) && p.getItemInHand().getType().equals(Material.ENDER_CHEST)) {
             e.setCancelled(true);
@@ -222,7 +222,6 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
                 p.setItemInHand(null);
             }
             p.updateInventory();
-
         }
 
     }
