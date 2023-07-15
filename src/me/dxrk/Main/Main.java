@@ -262,6 +262,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("sellfish").setExecutor(new FishingHandler());
         getCommand("rod").setExecutor(new FishingHandler());
         getCommand("crystals").setExecutor(new FishingHandler());
+        getCommand("buildmode").setExecutor(new BuildModeHandler());
 
         registerEvents(this, new Listener[]{new MonsterHandler()});
         registerEvents(this, new Listener[]{new CMDVanish()});
@@ -312,6 +313,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         registerEvents(this, new Listener[]{new PrestigeHandler()});
         registerEvents(this, new Listener[]{new PickaxeSkillTree()});
         registerEvents(this, new Listener[]{new FishingHandler()});
+        registerEvents(this, new Listener[]{new BuildModeHandler()});
         registerEvents(this, new Listener[]{this});
         // For when sale is active, use this ||
         //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "motdchange sale 20");

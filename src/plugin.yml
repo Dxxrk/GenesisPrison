@@ -120,6 +120,7 @@ commands:
   activeboost:
   boost:
   giveboost:
+  buildmode:
   EpsilonDp:
     description: Epsilon Drop Party!
   Sbtoggle:
