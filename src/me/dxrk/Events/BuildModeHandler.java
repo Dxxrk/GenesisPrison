@@ -15,7 +15,9 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class BuildModeHandler implements Listener, CommandExecutor {
@@ -44,10 +46,11 @@ public class BuildModeHandler implements Listener, CommandExecutor {
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode")) {
-            ItemStack[] items = (ItemStack[]) PlayerDataHandler.getInstance().getPlayerData(p).get("InvItems");
+            ArrayList<ItemStack> items = (ArrayList<ItemStack>) PlayerDataHandler.getInstance().getPlayerData(p).get("InvItems");
             p.setGameMode(GameMode.SURVIVAL);
             p.getInventory().clear();
-            p.getInventory().setContents(items);
+            for(int i=0;i<36;i++)
+                p.getInventory().setItem(i, items.get(i));
             playersinbm.remove(p.getUniqueId());
             p.setAllowFlight(true);
             PlayerDataHandler.getInstance().getPlayerData(p).set("BuildMode", false);
