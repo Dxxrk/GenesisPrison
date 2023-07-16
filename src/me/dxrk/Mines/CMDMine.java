@@ -258,6 +258,10 @@ public class CMDMine implements CommandExecutor, Listener {
                 if (args[0].equalsIgnoreCase("upgrade")) {
                     openUpgradeInventory(p);
                 }
+                if(args[0].equalsIgnoreCase("expand")) {
+                    Mine m = MineSystem.getInstance().getMineByPlayer(p);
+                    m.expandMine(1);
+                }
             }
             if (args.length == 2) {
                 Player p = (Player) sender;

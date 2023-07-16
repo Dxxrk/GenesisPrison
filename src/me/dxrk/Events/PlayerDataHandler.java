@@ -283,6 +283,13 @@ public class PlayerDataHandler implements Listener {
             if (pl.get("Rod") == null) {
                 pl.set("Rod", FishingHandler.getInstance().defaultRod());
             }
+            if (pl.get("BuildMode") == null) {
+                pl.set("BuildMode", false);
+            }
+            if (pl.get("InvItems") == null) {
+                ItemStack[] items = new ItemStack[0];
+                pl.set("InvItems", items);
+            }
             pl.save(pdata);
             PlayerData playerdata = new PlayerData(p.getUniqueId());
             PlayerDataList.put(p.getUniqueId(), playerdata);

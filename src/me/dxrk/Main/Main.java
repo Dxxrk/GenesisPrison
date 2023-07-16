@@ -564,7 +564,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     }
 
 
-    private String motd = c("&3&lSeason 3!   &c&lGenesis &b&lPrison!   &e&l[1.8.x-1.19.x]\n                        &c&l>> &a&lJoin Now! &c&l<<");
+    private String motd = c("&3&lSeason 4!   &c&lGenesis &b&lPrison!   &e&l[1.8.x-1.19.x]\n                        &c&l>> &a&lJoin Now! &c&l<<");
     private String savemotd = "";
 
     @Override
@@ -575,7 +575,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             if (args.length == 2) {
                 if (args[0].equalsIgnoreCase("sale")) {
 
-                    motd = c("&3&lSeason 3!   &c&lGenesis &b&lPrison!   &e&l[1.8.x-1.19.x]\n                    &c&l>> &a&l" + args[1] + "% Sale Now! &c&l<<");
+                    motd = c("&3&lSeason 4!   &c&lGenesis &b&lPrison!   &e&l[1.8.x-1.19.x]\n                    &c&l>> &a&l" + args[1] + "% Sale Now! &c&l<<");
                 }
             }
         }

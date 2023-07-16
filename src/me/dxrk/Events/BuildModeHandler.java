@@ -9,11 +9,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.*;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.InventoryView;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -26,12 +26,12 @@ public class BuildModeHandler implements Listener, CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if(commandSender instanceof Player){
+        if (commandSender instanceof Player) {
             Player p = (Player) commandSender;
-            if(command.getName().equalsIgnoreCase("buildmode")){
-                if(!playersinbm.containsKey(p.getUniqueId())){
+            if (command.getName().equalsIgnoreCase("buildmode")) {
+                if (!playersinbm.containsKey(p.getUniqueId())) {
                     BMPutPlayer(p);
-                }else{
+                } else {
                     BMRemovePlayer(p);
                 }
             }
@@ -39,13 +39,38 @@ public class BuildModeHandler implements Listener, CommandExecutor {
         return true;
     }
 
-    public void BMPutPlayer(Player p){
-        playersinbm.put(p.getUniqueId(), p.getInventory().getContents());
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode")) {
+            ItemStack[] items = (ItemStack[]) PlayerDataHandler.getInstance().getPlayerData(p).get("InvItems");
+            p.setGameMode(GameMode.SURVIVAL);
+            p.getInventory().clear();
+            p.getInventory().setContents(items);
+            playersinbm.remove(p.getUniqueId());
+            p.setAllowFlight(true);
+            PlayerDataHandler.getInstance().getPlayerData(p).set("BuildMode", false);
+            PlayerDataHandler.getInstance().getPlayerData(p).set("InvItems", null);
+            PlayerDataHandler.getInstance().savePlayerData(p);
+        }
+    }
+
+    public void BMPutPlayer(Player p) {
+        ItemStack[] items = p.getInventory().getContents();
+        PlayerDataHandler.getInstance().getPlayerData(p).set("BuildMode", true);
+        PlayerDataHandler.getInstance().getPlayerData(p).set("InvItems", items);
+        PlayerDataHandler.getInstance().savePlayerData(p);
+        playersinbm.put(p.getUniqueId(), items);
         p.getInventory().clear();
         p.setGameMode(GameMode.CREATIVE);
     }
 
-    public void BMRemovePlayer(Player p){
+    public void BMRemovePlayer(Player p) {
+        PlayerDataHandler.getInstance().getPlayerData(p).set("BuildMode", false);
+        PlayerDataHandler.getInstance().getPlayerData(p).set("InvItems", null);
+        PlayerDataHandler.getInstance().savePlayerData(p);
+        p.getInventory().clear();
         p.getInventory().setContents(playersinbm.get(p.getUniqueId()));
         playersinbm.remove(p.getUniqueId());
         p.setGameMode(GameMode.SURVIVAL);
@@ -53,21 +78,21 @@ public class BuildModeHandler implements Listener, CommandExecutor {
     }
 
     private boolean isRedstoneItem(Player p, Material material) {
-        if(p.isOp())
+        if (p.isOp())
             return false;
         p.sendMessage(material.name());
         return material.equals(Material.REDSTONE) ||
                 material.equals(Material.REDSTONE_BLOCK) ||
                 material.equals(Material.DIODE) ||
                 material.equals(Material.REDSTONE_COMPARATOR) ||
-                material.equals(Material.DISPENSER)  ||
-                material.equals(Material.DROPPER)  ||
-                material.equals(Material.PISTON_BASE)  ||
-                material.equals(Material.PISTON_STICKY_BASE)  ||
+                material.equals(Material.DISPENSER) ||
+                material.equals(Material.DROPPER) ||
+                material.equals(Material.PISTON_BASE) ||
+                material.equals(Material.PISTON_STICKY_BASE) ||
                 material.equals(Material.TNT);
     }
 
-    public void removeRedstoneItems(Player p){
+    public void removeRedstoneItems(Player p) {
         ItemStack[] inventoryContents = p.getInventory().getContents();
         for (int i = 0; i < inventoryContents.length; i++) {
             if (inventoryContents[i] != null && isRedstoneItem(p, inventoryContents[i].getType())) {
@@ -78,7 +103,7 @@ public class BuildModeHandler implements Listener, CommandExecutor {
     }
 
     @EventHandler
-    public void onCreativeInventoryTake(InventoryClickEvent e){
+    public void onCreativeInventoryTake(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         if (p.getGameMode().equals(GameMode.CREATIVE)) {
             if (e.getAction() == InventoryAction.HOTBAR_SWAP ||

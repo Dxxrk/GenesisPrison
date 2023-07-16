@@ -255,21 +255,19 @@ public class MineHandler implements Listener, CommandExecutor {
     }
 
     public void pasteSchematic(Schematic schematic, Location location) {
-        Clipboard clipboard = schematic.getClipboard();
-        if (clipboard == null)
-            throw new IllegalStateException("Schematic does not have a Clipboard! This should never happen!");
-        EditSession session = (new EditSessionBuilder(FaweAPI.getWorld(location.getWorld().getName()))).fastmode(Boolean.TRUE).build();
-        location.setY(clipboard.getOrigin().getBlockY());
-        Vector centerVector = BukkitUtil.toVector(location);
-        schematic.paste(session, centerVector, false, false, null);
-        session.flushQueue();
-        Region region = clipboard.getRegion();
-        region.setWorld(FaweAPI.getWorld(location.getWorld().getName()));
-        /*try {
-            region.shift(centerVector.subtract(clipboard.getOrigin()));
-        } catch (RegionOperationException e) {
-            e.printStackTrace();
-        }*/
+        Bukkit.getScheduler().runTaskAsynchronously(Main.plugin,
+                () -> {
+                    Clipboard clipboard = schematic.getClipboard();
+                    if (clipboard == null)
+                        throw new IllegalStateException("Schematic does not have a Clipboard! This should never happen!");
+                    EditSession session = (new EditSessionBuilder(FaweAPI.getWorld(location.getWorld().getName()))).fastmode(Boolean.TRUE).build();
+                    location.setY(clipboard.getOrigin().getBlockY());
+                    Vector centerVector = BukkitUtil.toVector(location);
+                    schematic.paste(session, centerVector, false, false, null);
+                    session.flushQueue();
+                    Region region = clipboard.getRegion();
+                    region.setWorld(FaweAPI.getWorld(location.getWorld().getName()));
+                });
     }
 
     /*
