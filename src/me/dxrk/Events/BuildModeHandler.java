@@ -83,7 +83,6 @@ public class BuildModeHandler implements Listener, CommandExecutor {
     private boolean isRedstoneItem(Player p, Material material) {
         if (p.isOp())
             return false;
-        p.sendMessage(material.name());
         return material.equals(Material.REDSTONE) ||
                 material.equals(Material.REDSTONE_BLOCK) ||
                 material.equals(Material.DIODE) ||

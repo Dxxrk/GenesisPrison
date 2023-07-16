@@ -165,8 +165,8 @@ public class PickXPHandler
         int fmin = 1;
         int fmax = 4;
         int xp = r.nextInt(fmax - fmin) + fmin;
-        double xpToAdd = xp * Functions.xpBoost(p) * Functions.XPEnchant(p) * BoostsHandler.xp.getOrDefault(p.getUniqueId(), 0.0) * SkillsEventsListener.getEventXP();
-        double xpToAdd2 = Functions.xpBoost(p) * Functions.XPEnchant(p) * BoostsHandler.xp.getOrDefault(p.getUniqueId(), 0.0) * SkillsEventsListener.getEventXP();
+        double xpToAdd = xp * Functions.xpBoost(p) * Functions.XPEnchant(p) * BoostsHandler.xp.getOrDefault(p.getUniqueId(), 1.0) * SkillsEventsListener.getEventXP();
+        double xpToAdd2 = Functions.xpBoost(p) * Functions.XPEnchant(p) * BoostsHandler.xp.getOrDefault(p.getUniqueId(), 1.0) * SkillsEventsListener.getEventXP();
         if (getLevel(p) < 16)
             addXP(p, xpToAdd);
         else {
