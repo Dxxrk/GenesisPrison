@@ -140,6 +140,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
                 p.getInventory().addItem(Boost((short) 8228, m.c("&c&lXP Boost"), power, duration));
                 break;
         }
+        p.sendMessage("is this happening twice");
     }
 
     @Override
@@ -188,7 +189,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
         Player p = e.getPlayer();
         if (p.getItemInHand() == null) return;
 
-        if (p.getItemInHand().getType().equals(Material.POTION)) {
+        if (p.getItemInHand().getType().equals(Material.BONE)) {
             String type = ChatColor.stripColor(p.getItemInHand().getItemMeta().getDisplayName()).split(" ")[0];
             double power = Double.parseDouble(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(0)).split(" ")[1]);
             int seconds = toSeconds(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(1)).split(" ")[1]);
