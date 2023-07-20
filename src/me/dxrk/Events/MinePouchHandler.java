@@ -109,6 +109,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
             }
         }
 
+        double skilltreeboost = 1 + PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillGemBoost");
 
         if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             ItemStack item = p.getItemInHand();
@@ -118,6 +119,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 } else if (MonsterHandler.activeMonster.containsKey(p) && ChatColor.stripColor(MonsterHandler.activeMonster.get(p).getItemMeta().getDisplayName()).split(" ")[0].equals("Medusa")) {
                     gem *= MonsterHandler.getMonsterBoost(p, 5);
                 }
+                gem *= skilltreeboost;
                 int gems = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(item.getItemMeta().getLore().get(0)));
                 addGems(p, (int) (gems * gem));
                 p.sendMessage(m.c("&f&lGems &8| &a+" + (int) (gems * gem)));

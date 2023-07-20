@@ -42,7 +42,7 @@ public class PickaxeSkillTree implements Listener {
         lore.add(" ");
         List<String> skillsUnlocked = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("PickaxeSkillsUnlocked");
         if (skillsUnlocked.contains(name)) {
-            if (name.equals("Zeus (Level 5)") || name.equals("Poseidon (Level 5)") || name.equals("Hades (Level 5)") || name.equals("Ares (Level 5)") || name.equals("Aphrodite (Level 5)")) {
+            if (name.contains("Ending")) {
                 skill = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 1);
                 sm.setDisplayName(m.c("&6Change Pickaxe Path"));
                 List<String> confirm = new ArrayList<>();
@@ -149,7 +149,7 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 1)");
         skills.add("Luck Boost (Level 1)");
         skills.add("Fortune Boost (Level 1)");
-        skills.add("Zeus (Level 2)");
+        skills.add("Gem Boost (Level 1)");
         skills.add("Token Bonus (Level 2)");
         skills.add("Luck Boost (Level 2)");
         skills.add("Token Bonus (Level 3)");
@@ -157,7 +157,7 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Fortune Boost (Level 2)");
         skills.add("Luck Boost (Level 3)");
         skills.add("Token Bonus (Level 4)");
-        skills.add("Zeus (Level 3)");
+        skills.add("Gem Boost (Level 2)");
         skills.add("Token Bonus (Level 5)");
         skills.add("Luck Boost (Level 4)");
         skills.add("Fortune Boost (Level 3)");
@@ -166,11 +166,11 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Luck Boost (Level 5)");
         skills.add("Token Bonus (Level 6)");
         skills.add("Fortune Boost (Level 5)");
-        skills.add("Zeus (Level 4)");
+        skills.add("Gem Boost (Level 3)");
         skills.add("500 raise in max level of keyfinder");
         skills.add("+30% chance for x2 keys");
         skills.add("750 raise in max level of keyfinder");
-        skills.add("Zeus (Level 5)");
+        skills.add("Zeus Ending");
 
         return skills;
     }
@@ -181,7 +181,7 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 1)");
         skills.add("Luck Boost (Level 1)");
         skills.add("Fortune Boost (Level 1)");
-        skills.add("Poseidon (Level 2)");
+        skills.add("Gem Boost (Level 1)");
         skills.add("Token Bonus (Level 2)");
         skills.add("Luck Boost (Level 2)");
         skills.add("Token Bonus (Level 3)");
@@ -189,7 +189,7 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Fortune Boost (Level 2)");
         skills.add("Luck Boost (Level 3)");
         skills.add("Token Bonus (Level 4)");
-        skills.add("Poseidon (Level 3)");
+        skills.add("Gem Boost (Level 2)");
         skills.add("Token Bonus (Level 5)");
         skills.add("Luck Boost (Level 4)");
         skills.add("Fortune Boost (Level 3)");
@@ -198,11 +198,11 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Luck Boost (Level 5)");
         skills.add("Token Bonus (Level 6)");
         skills.add("Fortune Boost (Level 5)");
-        skills.add("Poseidon (Level 4)");
+        skills.add("Gem Boost (Level 3)");
         skills.add("1500 raise in max level of fortune");
         skills.add("12% Fortune Boost");
         skills.add("1750 raise in max level of fortune");
-        skills.add("Poseidon (Level 5)");
+        skills.add("Poseidon Ending");
 
         return skills;
     }
@@ -213,7 +213,7 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 1)");
         skills.add("Luck Boost (Level 1)");
         skills.add("Fortune Boost (Level 1)");
-        skills.add("Hades (Level 2)");
+        skills.add("Gem Boost (Level 1)");
         skills.add("Token Bonus (Level 2)");
         skills.add("Luck Boost (Level 2)");
         skills.add("Token Bonus (Level 3)");
@@ -221,7 +221,7 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Fortune Boost (Level 2)");
         skills.add("Luck Boost (Level 3)");
         skills.add("Token Bonus (Level 4)");
-        skills.add("Hades (Level 3)");
+        skills.add("Gem Boost (Level 2)");
         skills.add("Token Bonus (Level 5)");
         skills.add("Luck Boost (Level 4)");
         skills.add("Fortune Boost (Level 3)");
@@ -230,11 +230,11 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Luck Boost (Level 5)");
         skills.add("Token Bonus (Level 6)");
         skills.add("Fortune Boost (Level 5)");
-        skills.add("Hades (Level 4)");
+        skills.add("Gem Boost (Level 3)");
         skills.add("250 raise in max level of junkpile");
         skills.add("+200% Junkpile Multi Gain");
         skills.add("350 raise in max level of junkpile");
-        skills.add("Hades (Level 5)");
+        skills.add("Hades Ending");
 
         return skills;
     }
@@ -245,7 +245,7 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 1)");
         skills.add("Luck Boost (Level 1)");
         skills.add("Fortune Boost (Level 1)");
-        skills.add("Aphrodite (Level 2)");
+        skills.add("Gem Boost (Level 1)");
         skills.add("Token Bonus (Level 2)");
         skills.add("Luck Boost (Level 2)");
         skills.add("Token Bonus (Level 3)");
@@ -253,7 +253,7 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Fortune Boost (Level 2)");
         skills.add("Luck Boost (Level 3)");
         skills.add("Token Bonus (Level 4)");
-        skills.add("Aphrodite (Level 3)");
+        skills.add("Gem Boost (Level 2)");
         skills.add("Token Bonus (Level 5)");
         skills.add("Luck Boost (Level 4)");
         skills.add("Fortune Boost (Level 3)");
@@ -262,11 +262,11 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Luck Boost (Level 5)");
         skills.add("Token Bonus (Level 6)");
         skills.add("Fortune Boost (Level 5)");
-        skills.add("Aphrodite (Level 4)");
+        skills.add("Gem Boost (Level 3)");
         skills.add("1000 raise in max level of xp finder");
         skills.add("+500% Junkpile XP Gain");
         skills.add("1500 raise in max level of xp finder");
-        skills.add("Aphrodite (Level 5)");
+        skills.add("Aphrodite Ending");
 
         return skills;
     }
@@ -277,7 +277,7 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Token Bonus (Level 1)");
         skills.add("Luck Boost (Level 1)");
         skills.add("Fortune Boost (Level 1)");
-        skills.add("Ares (Level 2)");
+        skills.add("Gem Boost (Level 1)");
         skills.add("Token Bonus (Level 2)");
         skills.add("Luck Boost (Level 2)");
         skills.add("Token Bonus (Level 3)");
@@ -285,7 +285,7 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Fortune Boost (Level 2)");
         skills.add("Luck Boost (Level 3)");
         skills.add("Token Bonus (Level 4)");
-        skills.add("Ares (Level 3)");
+        skills.add("Gem Boost (Level 2)");
         skills.add("Token Bonus (Level 5)");
         skills.add("Luck Boost (Level 4)");
         skills.add("Fortune Boost (Level 3)");
@@ -294,11 +294,11 @@ public class PickaxeSkillTree implements Listener {
         skills.add("Luck Boost (Level 5)");
         skills.add("Token Bonus (Level 6)");
         skills.add("Fortune Boost (Level 5)");
-        skills.add("Ares (Level 4)");
+        skills.add("Gem Boost (Level 3)");
         skills.add("300 raise in max level of token finder");
         skills.add("12% Token Boost");
         skills.add("500 raise in max level of token finder");
-        skills.add("Ares (Level 5)");
+        skills.add("Ares Ending");
 
         return skills;
     }
@@ -364,10 +364,10 @@ public class PickaxeSkillTree implements Listener {
         zeus.setItem(44, skillItem(p, "750 raise in max level of keyfinder", m.c("&7Each of these skills raises the max level of keyfinder."), 30));
         //Level ups / abilities
         zeus.setItem(0, skillItem(p, "Unlocked Zeus", m.c("&7Chose the Zeus path. Unlocks Thunderstorm and ThunderBolt Events."), 0));
-        zeus.setItem(36, skillItem(p, "Zeus (Level 2)", m.c("&7Upgrades Zeus Events."), 0));
-        zeus.setItem(22, skillItem(p, "Zeus (Level 3)", m.c("&7Upgrades Zeus Events."), 0));
-        zeus.setItem(17, skillItem(p, "Zeus (Level 4)", m.c("&7Upgrades Zeus Events."), 0));
-        zeus.setItem(53, skillItem(p, "Zeus (Level 5)", m.c("&7Upgrades Zeus Events and Unlocks an enchant."), 0));
+        zeus.setItem(36, skillItem(p, "Gem Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% gem bonus."), 4));
+        zeus.setItem(22, skillItem(p, "Gem Boost (Level 2)", m.c("&7Each of these skills gives an additional 5% gem bonus."), 6));
+        zeus.setItem(17, skillItem(p, "Gem Boost (Level 3)", m.c("&7Each of these skills gives an additional 5% gem bonus."), 10));
+        zeus.setItem(53, skillItem(p, "Zeus Ending", m.c("&7Upgrades Zeus Events and Unlocks an enchant."), 0));
         p.openInventory(zeus);
     }
 
@@ -403,10 +403,10 @@ public class PickaxeSkillTree implements Listener {
         poseidon.setItem(44, skillItem(p, "1750 raise in max level of fortune", m.c("&7Each of these skills raises the max level of fortune."), 30));
         //Level ups / abilities
         poseidon.setItem(0, skillItem(p, "Unlocked Poseidon", m.c("&7Chose the Poseidon path. Unlocks Tsunami and Typhoon Events."), 0));
-        poseidon.setItem(36, skillItem(p, "Poseidon (Level 2)", m.c("&7Upgrades Poseidon Events."), 0));
-        poseidon.setItem(22, skillItem(p, "Poseidon (Level 3)", m.c("&7Upgrades Poseidon Events."), 0));
-        poseidon.setItem(17, skillItem(p, "Poseidon (Level 4)", m.c("&7Upgrades Poseidon Events."), 0));
-        poseidon.setItem(53, skillItem(p, "Poseidon (Level 5)", m.c("&7Upgrades Poseidon Events and Unlocks an enchant."), 0));
+        poseidon.setItem(36, skillItem(p, "Gem Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% gem bonus."), 4));
+        poseidon.setItem(22, skillItem(p, "Gem Boost (Level 2)", m.c("&7Each of these skills gives an additional 5% gem bonus."), 6));
+        poseidon.setItem(17, skillItem(p, "Gem Boost (Level 3)", m.c("&7Each of these skills gives an additional 5% gem bonus."), 10));
+        poseidon.setItem(53, skillItem(p, "Poseidon Ending", m.c("&7Upgrades Poseidon Events and Unlocks an enchant."), 0));
         p.openInventory(poseidon);
     }
 
@@ -442,10 +442,10 @@ public class PickaxeSkillTree implements Listener {
         hades.setItem(44, skillItem(p, "350 raise in max level of junkpile", m.c("&7Each of these skills raises the max level of junkpile."), 30));
         //Level ups / abilities
         hades.setItem(0, skillItem(p, "Unlocked Hades", m.c("&7Chose the Hades path. Unlocks Meteor Shower and Scorched Earth Events."), 0));
-        hades.setItem(36, skillItem(p, "Hades (Level 2)", m.c("&7Upgrades Hades Events."), 0));
-        hades.setItem(22, skillItem(p, "Hades (Level 3)", m.c("&7Upgrades Hades Events."), 0));
-        hades.setItem(17, skillItem(p, "Hades (Level 4)", m.c("&7Upgrades Hades Events."), 0));
-        hades.setItem(53, skillItem(p, "Hades (Level 5)", m.c("&7Upgrades Hades Events and Unlocks an enchant."), 0));
+        hades.setItem(36, skillItem(p, "Gem Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% gem bonus."), 4));
+        hades.setItem(22, skillItem(p, "Gem Boost (Level 2)", m.c("&7Each of these skills gives an additional 5% gem bonus."), 6));
+        hades.setItem(17, skillItem(p, "Gem Boost (Level 3)", m.c("&7Each of these skills gives an additional 5% gem bonus."), 10));
+        hades.setItem(53, skillItem(p, "Hades Ending", m.c("&7Upgrades Hades Events and Unlocks an enchant."), 0));
         p.openInventory(hades);
     }
 
@@ -481,10 +481,10 @@ public class PickaxeSkillTree implements Listener {
         ares.setItem(44, skillItem(p, "500 raise in max level of token finder", m.c("&7Each of these skills raises the max level of token finder."), 30));
         //Level ups / abilities
         ares.setItem(0, skillItem(p, "Unlocked Ares", m.c("&7Chose the ares path. Unlocks War Torn and Bloodshed Events."), 0));
-        ares.setItem(36, skillItem(p, "Ares (Level 2)", m.c("&7Upgrades Ares Events."), 0));
-        ares.setItem(22, skillItem(p, "Ares (Level 3)", m.c("&7Upgrades Ares Events."), 0));
-        ares.setItem(17, skillItem(p, "Ares (Level 4)", m.c("&7Upgrades Ares Events."), 0));
-        ares.setItem(53, skillItem(p, "Ares (Level 5)", m.c("&7Upgrades Ares Events and Unlocks an enchant."), 0));
+        ares.setItem(36, skillItem(p, "Gem Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% gem bonus."), 4));
+        ares.setItem(22, skillItem(p, "Gem Boost (Level 2)", m.c("&7Each of these skills gives an additional 5% gem bonus."), 6));
+        ares.setItem(17, skillItem(p, "Gem Boost (Level 3)", m.c("&7Each of these skills gives an additional 5% gem bonus."), 10));
+        ares.setItem(53, skillItem(p, "Ares Ending", m.c("&7Upgrades Ares Events and Unlocks an enchant."), 0));
         p.openInventory(ares);
     }
 
@@ -520,10 +520,10 @@ public class PickaxeSkillTree implements Listener {
         aphrodite.setItem(44, skillItem(p, "1500 raise in max level of xp finder", m.c("&7Each of these skills raises the max level of xp finder."), 30));
         //Level ups / abilities
         aphrodite.setItem(0, skillItem(p, "Unlocked Aphrodite", m.c("&7Chose the aphrodite path. Unlocks Allure and Strong Desire Events."), 0));
-        aphrodite.setItem(36, skillItem(p, "Aphrodite (Level 2)", m.c("&7Upgrades Aphrodite Events."), 0));
-        aphrodite.setItem(22, skillItem(p, "Aphrodite (Level 3)", m.c("&7Upgrades Aphrodite Events."), 0));
-        aphrodite.setItem(17, skillItem(p, "Aphrodite (Level 4)", m.c("&7Upgrades Aphrodite Events."), 0));
-        aphrodite.setItem(53, skillItem(p, "Aphrodite (Level 5)", m.c("&7Upgrades Aphrodite Events and Unlocks an enchant."), 0));
+        aphrodite.setItem(36, skillItem(p, "Gem Boost (Level 1)", m.c("&7Each of these skills gives an additional 5% gem bonus."), 4));
+        aphrodite.setItem(22, skillItem(p, "Gem Boost (Level 2)", m.c("&7Each of these skills gives an additional 5% gem bonus."), 6));
+        aphrodite.setItem(17, skillItem(p, "Gem Boost (Level 3)", m.c("&7Each of these skills gives an additional 5% gem bonus."), 10));
+        aphrodite.setItem(53, skillItem(p, "Aphrodite Ending", m.c("&7Upgrades Aphrodite Events and Unlocks an enchant."), 0));
         p.openInventory(aphrodite);
     }
 
@@ -681,6 +681,10 @@ public class PickaxeSkillTree implements Listener {
                 double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillFortuneBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.02);
             }
+            if(firstword[0].equals("Gem")) {
+                double gemboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillGemBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillGemBoost", gemboost + 0.05);
+            }
             if (firstword[0].equals("250") || firstword[0].equals("500") || firstword[0].equals("750")) {
                 int maxlevel = PlayerDataHandler.getInstance().getPlayerData(p).getInt("KFMaxLevelRaise");
                 int maxleveladd = parseInt(firstword[0]);
@@ -762,6 +766,10 @@ public class PickaxeSkillTree implements Listener {
             if (firstword[0].equals("Fortune")) {
                 double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillFortuneBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.02);
+            }
+            if(firstword[0].equals("Gem")) {
+                double gemboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillGemBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillGemBoost", gemboost + 0.05);
             }
             if (firstword[0].equals("1250") || firstword[0].equals("1500") || firstword[0].equals("1750")) {
                 int maxlevel = PlayerDataHandler.getInstance().getPlayerData(p).getInt("FortuneMaxLevelRaise");
@@ -845,6 +853,10 @@ public class PickaxeSkillTree implements Listener {
                 double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillFortuneBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.02);
             }
+            if(firstword[0].equals("Gem")) {
+                double gemboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillGemBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillGemBoost", gemboost + 0.05);
+            }
             if (firstword[0].equals("150") || firstword[0].equals("250") || firstword[0].equals("350")) {
                 int maxlevel = PlayerDataHandler.getInstance().getPlayerData(p).getInt("JunkpileMaxLevelRaise");
                 int maxleveladd = parseInt(firstword[0]);
@@ -926,6 +938,10 @@ public class PickaxeSkillTree implements Listener {
                 double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillFortuneBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.02);
             }
+            if(firstword[0].equals("Gem")) {
+                double gemboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillGemBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillGemBoost", gemboost + 0.05);
+            }
             if (firstword[0].equals("500") || firstword[0].equals("1000") || firstword[0].equals("1500")) {
                 int maxlevel = PlayerDataHandler.getInstance().getPlayerData(p).getInt("XPFMaxLevelRaise");
                 int maxleveladd = parseInt(firstword[0]);
@@ -1005,6 +1021,10 @@ public class PickaxeSkillTree implements Listener {
             if (firstword[0].equals("Fortune")) {
                 double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillFortuneBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.02);
+            }
+            if(firstword[0].equals("Gem")) {
+                double gemboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillGemBoost");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("SkillGemBoost", gemboost + 0.05);
             }
             if (firstword[0].equals("200") || firstword[0].equals("300") || firstword[0].equals("500")) {
                 int maxlevel = PlayerDataHandler.getInstance().getPlayerData(p).getInt("TFMaxLevelRaise");
