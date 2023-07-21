@@ -285,6 +285,16 @@ public class CMDMine implements CommandExecutor, Listener {
                     }
 
                 }
+                if(args[0].equalsIgnoreCase("delete")) {
+                    if(!p.isOp()) return false;
+                    OfflinePlayer delete = Bukkit.getOfflinePlayer(args[1]);
+                    UUID id = delete.getUniqueId();
+                    if (PlayerDataHandler.getInstance().getPlayerData(delete.getUniqueId()).getBoolean("HasMine")) {
+                        Mine m = MineSystem.getInstance().getMineByName(id.toString());
+                        m.delete();
+                        p.performCommand("spawn");
+                    }
+                }
             }
 
         }

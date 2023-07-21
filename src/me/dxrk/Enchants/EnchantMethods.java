@@ -656,6 +656,9 @@ public class EnchantMethods implements CommandExecutor {
 
 
     }
+    public void charity(Player p) {
+
+    }
 
 
     public void Booster(Player p) {
@@ -693,7 +696,6 @@ public class EnchantMethods implements CommandExecutor {
                 p.sendMessage(Methods.getInstance().c("&f&lBooster &8| &b+10 minute 2x XP Boost!"));
             }
         }
-
     }
 
     public void Treasury(Player p) {

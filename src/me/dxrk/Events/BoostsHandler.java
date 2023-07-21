@@ -125,19 +125,19 @@ public class BoostsHandler implements Listener, CommandExecutor {
     public void giveBoost(Player p, String type, double power, int duration) {
         switch (type) {
             case "token":
-                p.getInventory().addItem(Boost((short) 8227, m.c("&e&lToken Boost"), power, duration));
+                p.getInventory().addItem(Boost((short) 11, m.c("&e&lToken Boost"), power, duration));
                 break;
             case "sell":
-                p.getInventory().addItem(Boost((short) 8226, m.c("&2&lSell Boost"), power, duration));
+                p.getInventory().addItem(Boost((short) 12, m.c("&b&lSell Boost"), power, duration));
                 break;
             case "enchant":
-                p.getInventory().addItem(Boost((short) 8229, m.c("&d&lEnchant Boost"), power, duration));
+                p.getInventory().addItem(Boost((short) 5, m.c("&d&lEnchant Boost"), power, duration));
                 break;
             case "gems":
-                p.getInventory().addItem(Boost((short) 8225, m.c("&a&lGem Boost"), power, duration));
+                p.getInventory().addItem(Boost((short) 10, m.c("&a&lGem Boost"), power, duration));
                 break;
             case "xp":
-                p.getInventory().addItem(Boost((short) 8228, m.c("&c&lXP Boost"), power, duration));
+                p.getInventory().addItem(Boost((short) 1, m.c("&c&lXP Boost"), power, duration));
                 break;
         }
     }
@@ -162,7 +162,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
                     boost = m.c("&eToken Boost: &7" + BoostsHandler.token.get(p.getUniqueId()));
                 }
                 if (BoostsHandler.sell.containsKey(p.getUniqueId())) {
-                    boost = m.c("&2Sell Boost: &7" + BoostsHandler.sell.get(p.getUniqueId()));
+                    boost = m.c("&bSell Boost: &7" + BoostsHandler.sell.get(p.getUniqueId()));
                 }
                 if (BoostsHandler.enchant.containsKey(p.getUniqueId())) {
                     boost = m.c("&dEnchant Boost: &7" + BoostsHandler.enchant.get(p.getUniqueId()));
@@ -188,7 +188,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
         Player p = e.getPlayer();
         if (p.getItemInHand() == null) return;
 
-        if (p.getItemInHand().getType().equals(Material.BONE)) {
+        if (p.getItemInHand().getType().equals(Material.INK_SACK)) {
             String type = ChatColor.stripColor(p.getItemInHand().getItemMeta().getDisplayName()).split(" ")[0];
             double power = Double.parseDouble(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(0)).split(" ")[1]);
             int seconds = toSeconds(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(1)).split(" ")[1]);
@@ -198,7 +198,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
                 if (amount > 1) {
                     p.getItemInHand().setAmount(amount - 1);
                 } else {
-                    p.setItemInHand(null);
+                    p.setItemInHand(new ItemStack(Material.AIR));
                 }
                 p.updateInventory();
             } else {
@@ -214,7 +214,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
 
 
     public ItemStack Boost(short data, String type, double power, int duration) {
-        ItemStack boost = new ItemStack(Material.POTION, 1, data);
+        ItemStack boost = new ItemStack(Material.INK_SACK, 1, data);
         ItemMeta bm = boost.getItemMeta();
         bm.setDisplayName(type);
         List<String> lore = new ArrayList<>();

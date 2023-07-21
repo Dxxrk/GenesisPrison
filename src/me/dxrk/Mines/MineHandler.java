@@ -296,7 +296,12 @@ public class MineHandler implements Listener, CommandExecutor {
             pworld = new Location(world, 0.5, 125.5, (mines * 250) + 0.5, -90, 0);
             PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 3);
         }
-        p.teleport(pworld);
+        Location finalPworld = pworld;
+        Bukkit.getScheduler().runTaskLater(Main.plugin,
+                () -> {
+                    p.teleport(finalPworld);
+                }, 40L);
+
 
 
         Location point1 = new Location(world, 15, 65, (mines * 250) - 16);

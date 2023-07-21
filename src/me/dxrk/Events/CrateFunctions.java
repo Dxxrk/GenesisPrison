@@ -56,12 +56,12 @@ public class CrateFunctions {
     public static ItemStack GenesisCrate() {
         ItemStack gcrate = new ItemStack(Material.ENDER_CHEST);
         ItemMeta gm = gcrate.getItemMeta();
-        gm.setDisplayName(m.c("&f&l&k[&7&l*&f&l&k]&r &9&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r"));
+        gm.setDisplayName(m.c("&f&l&k[&7&l*&f&l&k]&r &c&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r"));
         List<String> lore = new ArrayList<>();
 
 
         lore.add(m.c("&7Upon placing this item, you will recieve 8 random items"));
-        lore.add(m.c("&7These will be Common, Rare, or Epic and 1 guaranteed Legendary"));
+        lore.add(m.c("&7These can be Common, Rare, or Epic and 1 guaranteed Legendary"));
         lore.add(m.c("&a&lCommon Rewards:"));
         lore.add(m.c("&a• &e⛀250,000 Tokens"));
         lore.add(m.c("&a• &a⬥12,500 Gems"));
@@ -108,7 +108,7 @@ public class CrateFunctions {
 
 
         lore.add(m.c("&7Upon placing this item, you will recieve 8 random items"));
-        lore.add(m.c("&7These will be Common, Rare, or Epic and 1 guaranteed Legendary"));
+        lore.add(m.c("&7These can be Common, Rare, or Epic and 1 guaranteed Legendary"));
         lore.add(m.c("&a&lCommon Rewards:"));
         lore.add(m.c("&a• &e⛀500,000 Tokens"));
         lore.add(m.c("&a• &a⬥30,000 Gems"));
@@ -154,7 +154,7 @@ public class CrateFunctions {
 
 
         lore.add(m.c("&7Upon placing this item, you will recieve 8 random items"));
-        lore.add(m.c("&7These will be Common, Rare, or Epic and 1 guaranteed Legendary"));
+        lore.add(m.c("&7These can be Common, Rare, or Epic and 1 guaranteed Legendary"));
         lore.add(m.c("&a&lCommon Rewards:"));
         lore.add(m.c("&a• &e⛀50,000 Tokens"));
         lore.add(m.c("&a• &a⬥2,500 Gems"));
@@ -201,7 +201,7 @@ public class CrateFunctions {
 
 
         lore.add(m.c("&7Upon placing this item, you will recieve 8 random items"));
-        lore.add(m.c("&7These will be Common, Rare, or Epic and 1 guaranteed Legendary"));
+        lore.add(m.c("&7These can be Common, Rare, or Epic and 1 guaranteed Legendary"));
         lore.add(m.c("&a&lCommon Rewards:"));
         lore.add(m.c("&a• &e⛀10,000 Tokens"));
         lore.add(m.c("&a• &a⬥1,000 Gems"));

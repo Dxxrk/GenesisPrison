@@ -703,7 +703,7 @@ public class ScoreboardHandler implements Listener {
                     boost = c("&eToken Boost: &b" + BoostsHandler.token.get(p.getUniqueId()) + "x");
                 }
                 if (BoostsHandler.sell.containsKey(p.getUniqueId())) {
-                    boost = c("&2Sell Boost: &b" + BoostsHandler.sell.get(p.getUniqueId()) + "x");
+                    boost = c("&bSell Boost: &b" + BoostsHandler.sell.get(p.getUniqueId()) + "x");
                 }
                 if (BoostsHandler.enchant.containsKey(p.getUniqueId())) {
                     boost = c("&dEnchant Boost: &b" + BoostsHandler.enchant.get(p.getUniqueId()) + "x");

@@ -1,17 +1,20 @@
 package me.dxrk.Mines;
 
+import com.sk89q.worldedit.BlockVector;
+import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Main.Main;
 import me.dxrk.utils.BlockChanger;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
+import java.util.UUID;
 
 public class Mine {
     private String mineName;
@@ -218,6 +221,10 @@ public class Mine {
                     BlockChanger.setCuboidAsynchronously(wallfour1, wallfour2, new ItemStack(Material.BEDROCK), false);
                 });
         //BlockChanger.setCuboidAsynchronously(this.getMinPoint().clone().add(-i+1, 0, -i+1), this.getMaxPoint().clone().add(i+1, 0, i+1), new ItemStack(Material.BEDROCK), false);
+        OfflinePlayer player = Bukkit.getPlayer(UUID.fromString(this.mineName));
+        ProtectedCuboidRegion mineRegion = (ProtectedCuboidRegion) ((WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard")).getRegionManager(this.mineWorld).getRegion(this.mineName);
+        mineRegion.setMinimumPoint(new BlockVector(mineRegion.getMinimumPoint().getX()-i, mineRegion.getMinimumPoint().getY()-i, mineRegion.getMinimumPoint().getZ()-i));
+        mineRegion.setMaximumPoint(new BlockVector(mineRegion.getMaximumPoint().getX()+i, 0, mineRegion.getMaximumPoint().getZ()+i));
         this.save();
         this.reset();
 
