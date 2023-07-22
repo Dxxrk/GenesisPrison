@@ -3,6 +3,7 @@ package me.dxrk.Vote;
 import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.model.VotifierEvent;
 import me.dxrk.Events.LocksmithHandler;
+import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.ScoreboardHandler;
 import me.dxrk.Events.SellHandler;
 import me.dxrk.Main.Main;
@@ -422,6 +423,11 @@ public class CMDVote implements Listener, CommandExecutor {
 
         if (cmd.getName().equalsIgnoreCase("Vote")) {
             Player p = (Player) sender;
+            boolean b = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode");
+            if(b){
+                p.sendMessage(m.c("&cYou can't access this while in buildmode."));
+                return false;
+            }
             if (args.length == 0) {
                 openNewVotingInv(p);
             }

@@ -91,7 +91,8 @@ public class BuildModeHandler implements Listener, CommandExecutor {
                 material.equals(Material.DROPPER) ||
                 material.equals(Material.PISTON_BASE) ||
                 material.equals(Material.PISTON_STICKY_BASE) ||
-                material.equals(Material.TNT);
+                material.equals(Material.TNT) ||
+                material.equals(Material.ANVIL);
     }
 
     public void removeRedstoneItems(Player p) {

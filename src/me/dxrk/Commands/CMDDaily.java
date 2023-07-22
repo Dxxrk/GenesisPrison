@@ -2,6 +2,7 @@ package me.dxrk.Commands;
 
 import me.dxrk.Events.LocksmithHandler;
 import me.dxrk.Events.PickXPHandler;
+import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Tokens.Tokens;
@@ -123,6 +124,11 @@ public class CMDDaily implements Listener, CommandExecutor {
 
         if (label.equalsIgnoreCase("daily")) {
             Player p = (Player) sender;
+            boolean b = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode");
+            if(b){
+                p.sendMessage(m.c("&cYou can't access this while in buildmode."));
+                return false;
+            }
             openDaily(p);
 
         }

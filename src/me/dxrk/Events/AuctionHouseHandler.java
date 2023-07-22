@@ -847,9 +847,13 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-
         if (cmd.getName().equalsIgnoreCase("ah") || cmd.getName().equalsIgnoreCase("auctionhouse")) {
             Player p = (Player) sender;
+            boolean b = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode");
+            if(b){
+                p.sendMessage(m.c("&cYou can't access this while in buildmode."));
+                return false;
+            }
             if (args.length == 0) {
                 ahorder.put(p, "none");
                 openAuctionHouse(p, 1, "none");

@@ -114,6 +114,11 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
             if (label.equalsIgnoreCase("pick")) {
                 if (!p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)) {
+                    boolean b = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode");
+                    if(b){
+                        p.sendMessage(c("&cYou can't access this while in buildmode."));
+                        return false;
+                    }
                     p.sendMessage(c("&cPlease Hold a Pickaxe!"));
                     return true;
                 }

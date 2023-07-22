@@ -1,5 +1,6 @@
 package me.dxrk.Tokens;
 
+import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.SellHandler;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
@@ -126,6 +127,11 @@ public class TokensCMD implements CommandExecutor, Listener {
                     } else if (args[0].equalsIgnoreCase("Balance") || args[0].equalsIgnoreCase("Bal")) {
                         prefixMsg(p, "&e⛀" + this.tokens.getTokens(p));
                     } else if (args[0].equalsIgnoreCase("WithDraw")) {
+                        boolean b = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode");
+                        if(b){
+                            p.sendMessage(m.c("&cYou can't access this while in buildmode."));
+                            return false;
+                        }
                         if (args.length != 2) return false;
 
                         double tokens = this.tokens.getTokens(p);

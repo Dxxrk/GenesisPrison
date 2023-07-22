@@ -1,6 +1,7 @@
 package me.dxrk.Commands;
 
 import me.dxrk.Enchants.PickaxeLevel;
+import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import org.bukkit.Bukkit;
@@ -186,6 +187,11 @@ public class CMDTrade implements Listener, CommandExecutor {
 
         if (cmd.getName().equalsIgnoreCase("trade")) {
             Player p = (Player) sender;
+            boolean b = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode");
+            if(b){
+                p.sendMessage(m.c("&cYou can't access this while in buildmode."));
+                return false;
+            }
             if (args.length == 0) {
                 p.sendMessage(m.c("&cPlease specify another player"));
                 return false;

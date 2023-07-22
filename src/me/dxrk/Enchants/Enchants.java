@@ -1,5 +1,6 @@
 package me.dxrk.Enchants;
 
+import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Mines.Mine;
@@ -125,6 +126,11 @@ public class Enchants implements Listener {
             if (b.getType().equals(Material.SEA_LANTERN)) {
                 Mine m = MineSystem.getInstance().getMineByPlayer(p);
                 if (m.isLocationInMine(b.getLocation())) {
+                    boolean z = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode");
+                    if(z){
+                        p.sendMessage(c("&cYou can't break this while in buildmode."));
+                        return;
+                    }
                     b.setType(Material.AIR);
                     EnchantMethods.getInstance().Luckyblock(p, (byte) 1);
                 }

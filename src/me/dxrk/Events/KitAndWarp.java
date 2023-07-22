@@ -75,6 +75,11 @@ public class KitAndWarp implements Listener {
         assert first != null;
         if ((first.equalsIgnoreCase("/kit") || first.equalsIgnoreCase("/kits")) &&
                 second == null) {
+            boolean z = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode");
+            if(z){
+                p.sendMessage(m.c("&cYou can't access this while in buildmode."));
+                return;
+            }
             e.setCancelled(true);
             p.sendMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "Kits:");
             FancyMessage donorkits = new FancyMessage("");
@@ -88,6 +93,11 @@ public class KitAndWarp implements Listener {
             donorkits.send(p);
         } else if ((first.equalsIgnoreCase("/kit") || first.equalsIgnoreCase("/kits")) && second != null) {
             e.setCancelled(true);
+            boolean z = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode");
+            if(z){
+                p.sendMessage(m.c("&cYou can't access this while in buildmode."));
+                return;
+            }
             if (second.equalsIgnoreCase("demi-godkeys")) {
                 if (p.hasPermission("rank.demi-god")) {
                     if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitDemiGodKeys") == 0 || p.hasPermission("rank.admin")) {
