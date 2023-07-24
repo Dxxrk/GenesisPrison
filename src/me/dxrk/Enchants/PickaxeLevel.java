@@ -232,16 +232,15 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         for (int i = 0; i < 45; i++)
             enchantmenu.setItem(i, SpacerWhite());
 
-        setEnchantItem("Key Finder", Material.TRIPWIRE_HOOK, c("&bUpgrade Key Finder"), c("&7Chance to find a Key."), 1000, enchantmenu, 2, p, 1);
-        setEnchantItem("LuckyBlock", Material.TRIPWIRE_HOOK, c("&bUpgrade LuckyBlock"), c("&7Chance to spawn a LuckyBlock."), 1000, enchantmenu, 6, p, 1);
-        setEnchantItem("Token Finder", Material.PRISMARINE_CRYSTALS, c("&bUpgrade Token Finder"), c("&7Increase the amount of tokens randomly found."), 1000, enchantmenu, 10, p, 1);
-        setEnchantItem("Fortune", Material.NETHER_STAR, c("&bUpgrade Fortune"), c("&7Increases amount of blocks you sell."), 100, enchantmenu, 12, p, 1);
-        setEnchantItem("Jackhammer", Material.GOLD_PLATE, c("&bUpgrade Jackhammer"), c("&7Chance to break an entire layer of the mine."), 4500, enchantmenu, 14, p, 10);
-        setEnchantItem("XP Finder", Material.EXP_BOTTLE, c("&bUpgrade XP Finder"), c("&7Increases the amount of XP found while mining."), 3000, enchantmenu, 16, p, 15);
-        setEnchantItem("Dust Finder", Material.SUGAR, c("&bUpgrade Dust Finder"), c("&7Chance to find Trinket dust."), 2500, enchantmenu, 20, p, 25);
-        setEnchantItem("Treasury", Material.EMERALD, c("&bUpgrade Treasury"), c("&7Chance to randomly get gems."), 4500, enchantmenu, 22, p, 40);
-        setEnchantItem("Greed", Material.DIAMOND, c("&bUpgrade Greed"), c("&7Increases selling price for blocks."), 5000, enchantmenu, 24, p, 60);
-        setEnchantItem("Key Party", Material.EYE_OF_ENDER, c("&bUpgrade Key Party"), c("&7Chance to give everyone online a key."), 6000, enchantmenu, 30, p, 75);
+        setEnchantItem("Key Finder", Material.TRIPWIRE_HOOK, c("&bUpgrade Key Finder"), c("&7Chance to find a Key."), 1000, enchantmenu, 4, p, 1);
+        setEnchantItem("LuckyBlock", Material.SEA_LANTERN, c("&bUpgrade LuckyBlock"), c("&7Chance to spawn a LuckyBlock."), 1000, enchantmenu, 10, p, 1);
+        setEnchantItem("Token Finder", Material.PRISMARINE_CRYSTALS, c("&bUpgrade Token Finder"), c("&7Increase the amount of tokens randomly found."), 1000, enchantmenu, 12, p, 1);
+        setEnchantItem("Fortune", Material.NETHER_STAR, c("&bUpgrade Fortune"), c("&7Increases amount of blocks you sell."), 100, enchantmenu, 14, p, 1);
+        setEnchantItem("Jackhammer", Material.GOLD_PLATE, c("&bUpgrade Jackhammer"), c("&7Chance to break an entire layer of the mine."), 4500, enchantmenu, 16, p, 10);
+        setEnchantItem("XP Finder", Material.EXP_BOTTLE, c("&bUpgrade XP Finder"), c("&7Increases the amount of XP found while mining."), 3000, enchantmenu, 20, p, 15);
+        setEnchantItem("Dust Finder", Material.SUGAR, c("&bUpgrade Dust Finder"), c("&7Chance to find Trinket dust."), 2500, enchantmenu, 22, p, 25);
+        setEnchantItem("Treasury", Material.EMERALD, c("&bUpgrade Treasury"), c("&7Chance to randomly get gems."), 4500, enchantmenu, 24, p, 40);
+        setEnchantItem("Greed", Material.DIAMOND, c("&bUpgrade Greed"), c("&7Increases selling price for blocks."), 5000, enchantmenu, 30, p, 60);
         setEnchantItem("Junkpile", Material.BUCKET, c("&bUpgrade Junkpile"), c("&7Chance to find random items while mining."), 7500, enchantmenu, 32, p, 100);
         setEnchantItem("Nuke", Material.TNT, c("&bUpgrade Nuke"), c("&7Low Chance to break the entire mine."), 20000, enchantmenu, 40, p, 135);
 
@@ -633,6 +632,8 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 i = 5000 + skillmaxlevelkf;
                 break;
             case "LuckyBlock":
+                i = 10;
+                break;
             case "Dust Finder":
             case "Prestige Finder":
             case "Karma":
