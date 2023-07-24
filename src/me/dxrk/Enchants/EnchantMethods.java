@@ -1,9 +1,5 @@
 package me.dxrk.Enchants;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.managers.RegionManager;
 import me.dxrk.Events.*;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.Main;
@@ -138,11 +134,6 @@ public class EnchantMethods implements CommandExecutor {
     }
 
 
-    public static ApplicableRegionSet set(Block b) {
-        WorldGuardPlugin worldGuard = WorldGuardPlugin.inst();
-        RegionManager regionManager = worldGuard.getRegionManager(b.getWorld());
-        return regionManager.getApplicableRegions(b.getLocation());
-    }
 
     public static ArrayList<Block> getBlocksAroundCenter(Location loc, int radius) {
         ArrayList<Block> blocks = new ArrayList<>();
@@ -207,7 +198,7 @@ public class EnchantMethods implements CommandExecutor {
         Location max = new Location(p.getWorld(), m.getMaxPoint().getX(), b.getY(), m.getMaxPoint().getZ());
         byte lbs = 0;
         for (Block b1 : getBlocksInArea(min, max)) {
-            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+            if (m.isLocationInMine(b1.getLocation())) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     if (b1.getType() == Material.SEA_LANTERN)
                         lbs++;
@@ -297,7 +288,7 @@ public class EnchantMethods implements CommandExecutor {
         Location loc = b.getLocation();
         b.getWorld().strikeLightningEffect(loc);
         for (Block b1 : getBlocksAroundCenter(loc, 7)) {
-            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+            if (m.isLocationInMine(b1.getLocation())) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     if (b1.getType() == Material.SEA_LANTERN)
                         lbs++;
@@ -309,7 +300,7 @@ public class EnchantMethods implements CommandExecutor {
         Location loc2 = new Location(b.getWorld(), b.getLocation().getX() + 10, b.getLocation().getY(), b.getLocation().getZ() + 10);
         b.getWorld().strikeLightningEffect(loc2);
         for (Block b1 : getBlocksAroundCenter(loc2, 7)) {
-            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+            if (m.isLocationInMine(b1.getLocation())) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     if (b1.getType() == Material.SEA_LANTERN)
                         lbs++;
@@ -321,7 +312,7 @@ public class EnchantMethods implements CommandExecutor {
         Location loc3 = new Location(b.getWorld(), b.getLocation().getX() + 10, b.getLocation().getY(), b.getLocation().getZ() - 10);
         b.getWorld().strikeLightningEffect(loc3);
         for (Block b1 : getBlocksAroundCenter(loc3, 7)) {
-            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+            if (m.isLocationInMine(b1.getLocation())) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     if (b1.getType() == Material.SEA_LANTERN)
                         lbs++;
@@ -333,7 +324,7 @@ public class EnchantMethods implements CommandExecutor {
         Location loc4 = new Location(b.getWorld(), b.getLocation().getX() - 10, b.getLocation().getY(), b.getLocation().getZ() + 10);
         b.getWorld().strikeLightningEffect(loc4);
         for (Block b1 : getBlocksAroundCenter(loc4, 7)) {
-            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+            if (m.isLocationInMine(b1.getLocation())) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     if (b1.getType() == Material.SEA_LANTERN)
                         lbs++;
@@ -345,7 +336,7 @@ public class EnchantMethods implements CommandExecutor {
         Location loc5 = new Location(b.getWorld(), b.getLocation().getX() - 10, b.getLocation().getY(), b.getLocation().getZ() - 10);
         b.getWorld().strikeLightningEffect(loc5);
         for (Block b1 : getBlocksAroundCenter(loc5, 7)) {
-            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+            if (m.isLocationInMine(b1.getLocation())) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     if (b1.getType() == Material.SEA_LANTERN)
                         lbs++;
@@ -385,18 +376,18 @@ public class EnchantMethods implements CommandExecutor {
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
         //first layer
         WaveEffect wave = null;
-        wave = new WaveEffect(b.getLocation(), 25);
+        wave = new WaveEffect(b.getLocation(), 25, p);
         WaveEffect finalWave = wave;
         Location finalLoc = b.getLocation();
         //second layer
         WaveEffect wave2 = null;
         Location second = new Location(b.getWorld(), b.getLocation().getX(), b.getLocation().getY() - 1, b.getLocation().getZ());
-        wave2 = new WaveEffect(second, 25);
+        wave2 = new WaveEffect(second, 25, p);
         WaveEffect finalWave2 = wave2;
         //third layer
         WaveEffect wave3 = null;
         Location third = new Location(b.getWorld(), b.getLocation().getX(), b.getLocation().getY() - 2, b.getLocation().getZ());
-        wave3 = new WaveEffect(third, 25);
+        wave3 = new WaveEffect(third, 25, p);
         WaveEffect finalWave3 = wave3;
         new BukkitRunnable() {
             @Override
@@ -407,7 +398,7 @@ public class EnchantMethods implements CommandExecutor {
                 finalWave2.stop();
                 finalWave3.stop();
                 for (Block b1 : getBlocksAroundCenter(finalLoc, 25)) {
-                    if (set(b1).allows(DefaultFlag.LIGHTER)) {
+                    if (m.isLocationInMine(b1.getLocation())) {
                         if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                             if (b1.getType() == Material.SEA_LANTERN)
                                 lbs++;
@@ -455,7 +446,7 @@ public class EnchantMethods implements CommandExecutor {
         Location min = new Location(p.getWorld(), m.getMinPoint().getX(), b.getY() - 4, m.getMinPoint().getZ());
         Location max = new Location(p.getWorld(), m.getMaxPoint().getX(), b.getY(), m.getMaxPoint().getZ());
         for (Block b1 : getBlocksInArea(min, max)) {
-            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+            if (m.isLocationInMine(b1.getLocation())) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     if (b1.getType() == Material.SEA_LANTERN)
                         lbs++;
@@ -503,7 +494,7 @@ public class EnchantMethods implements CommandExecutor {
         Location minn = new Location(p.getWorld(), b.getX() + 5, b.getY(), b.getZ() + 5);
 
         for (Block b1 : getBlocksInArea(minn, max)) {
-            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+            if (m.isLocationInMine(b1.getLocation())) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
                     FallingBlock fb = p.getWorld().spawnFallingBlock(b1.getLocation(), Material.STATIONARY_LAVA, (byte) 0);
                     fb.setVelocity(new Vector(0, -.3, 0));
@@ -519,7 +510,7 @@ public class EnchantMethods implements CommandExecutor {
         }
 
         for (Block b1 : getBlocksInArea(min, max)) {
-            if (set(b1).allows(DefaultFlag.LIGHTER)) {
+            if (m.isLocationInMine(b1.getLocation())) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR && b1.getType() != Material.SEA_LANTERN) {
                     if (b1.getType() == Material.SEA_LANTERN)
                         lbs++;

@@ -1,5 +1,6 @@
 package me.dxrk.Mines;
 
+import me.dxrk.Events.BuildModeHandler;
 import me.dxrk.Events.FishingHandler;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.RankupHandler;
@@ -75,9 +76,9 @@ public class CMDMine implements CommandExecutor, Listener {
         portal.setItemMeta(pm);
         mineMenu.setItem(2, portal);
 
-        ItemStack upgrade = new ItemStack(Material.DIAMOND);
+        ItemStack upgrade = new ItemStack(Material.GRASS);
         ItemMeta um = upgrade.getItemMeta();
-        um.setDisplayName(c("&aUpgrade Your Mine"));
+        um.setDisplayName(c("&aGo into Build Mode"));
         upgrade.setItemMeta(um);
         mineMenu.setItem(6, upgrade);
 
@@ -156,78 +157,6 @@ public class CMDMine implements CommandExecutor, Listener {
         p.openInventory(blocks);
     }
 
-    public void openUpgradeInventory(Player p) {
-        Inventory upgrade = Bukkit.createInventory(null, 27, c("&a&lUpgrade Your Mine"));
-
-        ItemStack lucky1 = new ItemStack(Material.SEA_LANTERN);
-        if (PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock") >= 1) {
-            lucky1.setType(Material.BARRIER);
-        }
-        ItemMeta l1 = lucky1.getItemMeta();
-        l1.setDisplayName(c("&aLucky Block Level 1"));
-        List<String> lore = new ArrayList<>();
-        lore.add(c("&7Lucky Blocks will randomly spawn in your mine"));
-        lore.add(c("&aCost: &e⛀2.0 Million"));
-        l1.setLore(lore);
-        lucky1.setItemMeta(l1);
-        upgrade.setItem(0, lucky1);
-        lore.clear();
-
-        ItemStack lucky2 = new ItemStack(Material.SEA_LANTERN);
-        if (PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock") >= 3) {
-            lucky2.setType(Material.BARRIER);
-        }
-        ItemMeta l2 = lucky2.getItemMeta();
-        l2.setDisplayName(c("&aLucky Block Level 2"));
-        lore.add(c("&7Increases Lucky Block Spawns"));
-        lore.add(c("&aCost: &e⛀100.0 Million"));
-        l2.setLore(lore);
-        lucky2.setItemMeta(l2);
-        upgrade.setItem(4, lucky2);
-        lore.clear();
-
-        ItemStack lucky3 = new ItemStack(Material.SEA_LANTERN);
-        if (PlayerDataHandler.getInstance().getPlayerData(p).getDouble("LuckyBlock") >= 8) {
-            lucky3.setType(Material.BARRIER);
-        }
-        ItemMeta l3 = lucky3.getItemMeta();
-        l3.setDisplayName(c("&aLucky Block Level 3"));
-        lore.add(c("&7Increases Lucky Block Spawns"));
-        lore.add(c("&aCost: &e⛀500.0 Million"));
-        l3.setLore(lore);
-        lucky3.setItemMeta(l3);
-        upgrade.setItem(8, lucky3);
-        lore.clear();
-
-        ItemStack size1 = new ItemStack(Material.DIAMOND_ORE);
-        if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("MineSize") >= 2) {
-            size1.setType(Material.BARRIER);
-        }
-        ItemMeta s1 = size1.getItemMeta();
-        s1.setDisplayName(c("&aMine Size Level 2"));
-        lore.add(c("&7Increases Mine to 50x50x50"));
-        lore.add(c("&aCost: &e⛀25.0 Million"));
-        s1.setLore(lore);
-        size1.setItemMeta(s1);
-        upgrade.setItem(2, size1);
-        lore.clear();
-
-        ItemStack size2 = new ItemStack(Material.DIAMOND_ORE);
-        if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("MineSize") >= 3) {
-            size2.setType(Material.BARRIER);
-        }
-        ItemMeta s2 = size2.getItemMeta();
-        s2.setDisplayName(c("&aMine Size Level 2"));
-        lore.add(c("&7Increases Mine to 65x65x65"));
-        lore.add(c("&aCost: &e⛀250.0 Million"));
-        s2.setLore(lore);
-        size2.setItemMeta(s2);
-        upgrade.setItem(6, size2);
-        lore.clear();
-
-        p.openInventory(upgrade);
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -254,9 +183,6 @@ public class CMDMine implements CommandExecutor, Listener {
                     } else {
                         p.sendMessage(c("&f&lMine &8| &7Unable to find your mine(/mine)."));
                     }
-                }
-                if (args[0].equalsIgnoreCase("upgrade")) {
-                    openUpgradeInventory(p);
                 }
                 if(args[0].equalsIgnoreCase("expand")) {
                     Mine m = MineSystem.getInstance().getMineByPlayer(p);
@@ -316,24 +242,18 @@ public class CMDMine implements CommandExecutor, Listener {
             e.setCancelled(true);
             if (e.getSlot() == 4) {
                 if (!PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("HasMine")) {
-                    MineHandler.getInstance().CreateMine(p, "firstmine", "mines");
+                    MineHandler.getInstance().CreateMine(p, "mineschem", "mines");
                 } else {
                     Mine m = MineSystem.getInstance().getMineByPlayer(p);
                     Location loc = new Location(m.getMineWorld(), m.getSpawnLocation().getX(), m.getSpawnLocation().getY(), m.getSpawnLocation().getZ(), -90, 0);
                     p.teleport(loc);
-                    net.minecraft.server.v1_8_R3.WorldBorder wb = new net.minecraft.server.v1_8_R3.WorldBorder();
-                    wb.world = ((CraftWorld) m.getMineWorld()).getHandle();
-                    wb.setCenter(34.5, m.getSpawnLocation().getZ());
-                    wb.setSize(83);
-                    wb.setWarningDistance(1);
-                    wb.setWarningTime(1);
-                    PacketPlayOutWorldBorder packetPlayOutWorldBorder = new PacketPlayOutWorldBorder(wb, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE);
-
-                    ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutWorldBorder);
+                    Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 119, 0.5, m.getSpawnLocation().getZ());
                 }
             }
             if (e.getSlot() == 6) {
-                openUpgradeInventory(p);
+                if(!BuildModeHandler.playersinbm.containsKey(p.getUniqueId()))
+                    BuildModeHandler.getInstance().BMPutPlayer(p);
+                else BuildModeHandler.getInstance().BMRemovePlayer(p);
             }
             if (e.getSlot() == 21) {
                 openResetInventory(p, MineSystem.getInstance().getMineByPlayer(p).getResetPercent());
@@ -459,64 +379,6 @@ public class CMDMine implements CommandExecutor, Listener {
                 m.save();
                 openResetInventory(p, m.getResetPercent());
             }
-        }
-        if (e.getInventory().getName().equals(c("&a&lUpgrade Your Mine"))) {
-            if (e.getClickedInventory().equals(p.getInventory())) {
-                e.setCancelled(true);
-                return;
-            }
-            e.setCancelled(true);
-            if (e.getCurrentItem().getType().equals(Material.BARRIER)) {
-                e.setCancelled(true);
-                return;
-            }
-            if (e.getSlot() == 0) {
-                if (Tokens.getInstance().getTokens(p) < 2E6) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("LuckyBlock", 1);
-                Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                m.reset();
-                Tokens.getInstance().takeTokens(p, 2e6);
-                openUpgradeInventory(p);
-            }
-            if (e.getSlot() == 4) {
-                if (Tokens.getInstance().getTokens(p) < 100E6) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("LuckyBlock", 3);
-                Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                m.reset();
-                Tokens.getInstance().takeTokens(p, 100e6);
-                openUpgradeInventory(p);
-            }
-            if (e.getSlot() == 8) {
-                if (Tokens.getInstance().getTokens(p) < 500E6) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("LuckyBlock", 8);
-                Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                m.reset();
-                Tokens.getInstance().takeTokens(p, 500e6);
-                openUpgradeInventory(p);
-            }
-            if (e.getSlot() == 2) {
-                if (Tokens.getInstance().getTokens(p) < 10E6) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 2);
-                Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                MineSystem.getInstance().removeActiveMine(m);
-                m.delete();
-                MineHandler.getInstance().CreateMine(p, "secondmine", "minestwo");
-                Tokens.getInstance().takeTokens(p, 25e6);
-                m.reset();
-                openUpgradeInventory(p);
-            }
-            if (e.getSlot() == 6) {
-                if (Tokens.getInstance().getTokens(p) < 250E6) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 3);
-                Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                MineSystem.getInstance().removeActiveMine(m);
-                m.delete();
-                MineHandler.getInstance().CreateMine(p, "thirdmine", "minesthree");
-                m.reset();
-                Tokens.getInstance().takeTokens(p, 250e6);
-                openUpgradeInventory(p);
-            }
-
         }
 
 

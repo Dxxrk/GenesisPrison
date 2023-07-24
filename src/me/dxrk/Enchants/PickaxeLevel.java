@@ -482,7 +482,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                     i = 4500;
                     break;
                 }
-                i = 4500 + (4500 * (level * 0.09141)); // 225 Million Level 1,000 MAX
+                i = 4500 + (4500 * (level * 0.09141)); // 10 Million Level 10 MAX
 
                 break;
             case "Dust Finder":
@@ -632,7 +632,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 i = 5000 + skillmaxlevelkf;
                 break;
             case "LuckyBlock":
-                i = 10;
+                i = 100;
                 break;
             case "Dust Finder":
             case "Prestige Finder":

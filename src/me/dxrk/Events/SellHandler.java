@@ -1,8 +1,5 @@
 package me.dxrk.Events;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Gangs.Gangs;
@@ -35,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-@SuppressWarnings("deprecation")
 public class SellHandler implements Listener, CommandExecutor {
 
 
@@ -257,10 +253,11 @@ public class SellHandler implements Listener, CommandExecutor {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
-        WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-        ApplicableRegionSet set = wg.getRegionManager(p.getWorld())
-                .getApplicableRegions(e.getBlock().getLocation());
-        if (set.allows(DefaultFlag.LIGHTER)) {
+        Mine m = MineSystem.getInstance().getMineByPlayer(p);
+        if (m.isLocationInMine(e.getBlock().getLocation())) {
+            e.setCancelled(true);
+        }
+        if (!m.isLocationInMine(e.getBlock().getLocation()) && !BuildModeHandler.playersinbm.containsKey(p.getUniqueId())) {
             e.setCancelled(true);
         }
     }
@@ -268,17 +265,18 @@ public class SellHandler implements Listener, CommandExecutor {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
-
-        WorldGuardPlugin wg = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-        ApplicableRegionSet set = wg.getRegionManager(p.getWorld())
-                .getApplicableRegions(e.getBlock().getLocation());
-        if (!set.allows(DefaultFlag.LIGHTER)) {
+        Mine m = MineSystem.getInstance().getMineByPlayer(p);
+        if (!m.isLocationInMine(e.getBlock().getLocation())) {
 
             if (p.isOp() && p.getItemInHand() != null &&
                     p.getItemInHand().getType() == Material.DIAMOND_PICKAXE || p.getItemInHand().getType() == Material.WOOD_PICKAXE
                     || p.getItemInHand().getType() == Material.STONE_PICKAXE || p.getItemInHand().getType() == Material.GOLD_PICKAXE
-                    || p.getItemInHand().getType() == Material.IRON_PICKAXE)
+                    || p.getItemInHand().getType() == Material.IRON_PICKAXE) {
                 e.setCancelled(true);
+            } else {
+                return;
+            }
+            e.setCancelled(true);
             return;
         }
 

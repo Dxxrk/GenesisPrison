@@ -99,8 +99,6 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         PlayerDataHandler.getInstance().loadPlayerData();
         System.out.println(MineSystem.getInstance().getActiveMines());
         MineWorldCreator.getInstance().createMineWorld("mines");
-        MineWorldCreator.getInstance().createMineWorld("minestwo");
-        MineWorldCreator.getInstance().createMineWorld("minesthree");
 
         ProtocolLibrary.getProtocolManager().addPacketListener(
 // I mark my listener as async, as I don't use the Bukkit API. Please note that

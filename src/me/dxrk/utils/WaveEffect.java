@@ -1,14 +1,14 @@
 package me.dxrk.utils;
 
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import me.dxrk.Enchants.EnchantMethods;
 import me.dxrk.Main.Main;
+import me.dxrk.Mines.MineSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class WaveEffect {
         public void run() {
             for (Location loc : getCircle(l, rad, (rad * ((int) (Math.PI * 2))))) {
                 Block b = loc.getBlock();
-                if (b.getType().equals(Material.BEDROCK) || !EnchantMethods.set(b).allows(DefaultFlag.LIGHTER))
+                if (b.getType().equals(Material.BEDROCK) || !MineSystem.getInstance().getMineByPlayer(player).isLocationInMine(b.getLocation()))
                     continue;
                 FallingBlock fb = loc.getWorld().spawnFallingBlock(loc, loc.getBlock().getType(), loc.getBlock().getData());
                 fb.setVelocity(new Vector(0, .3, 0));
@@ -36,10 +36,12 @@ public class WaveEffect {
     private int rad = 1;
     private int id;
     private int time;
+    private Player player;
 
-    public WaveEffect(Location l, int t) {
+    public WaveEffect(Location l, int t, Player p) {
         this.l = l;
         this.time = t;
+        this.player = p;
         start(2);
     }
 

@@ -1,7 +1,5 @@
 package me.dxrk.Gangs;
 
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import me.dxrk.Enchants.EnchantMethods;
 import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.ScoreboardHandler;
@@ -295,7 +293,6 @@ public class CMDGang implements Listener, CommandExecutor {
         if (!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
             return;
         }
-        if (!EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;
         if (g.hasGang(p)) {
             String gang = g.getGang(p);
             List<String> perks = settings.getGangs().getStringList(gang + ".PerksUnlocked");

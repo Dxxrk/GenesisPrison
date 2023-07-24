@@ -15,7 +15,6 @@ import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.RankupHandler;
 import me.dxrk.Main.Main;
@@ -280,53 +279,29 @@ public class MineHandler implements Listener, CommandExecutor {
         int mines = settings.getOptions().getInt("numberofmines");
 
         File schematic = new File(Main.plugin.getDataFolder() + File.separator + "schematics", schem + ".schematic");
-        Location paste = new Location(world, 0, 144, (mines * 250));
+        Location paste = new Location(world, 0, 81, (mines * 500));
         paste.setYaw(-90);
         pasteSchematic(Objects.requireNonNull(WESchematic.getSchematic(schematic)), paste);
-        Location pworld = null;
-        if (schem.equals("firstmine")) {
-            pworld = new Location(world, 0.5, 100.5, (mines * 250) + 0.5, -90, 0);
-            PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 1);
-        }
-        if (schem.equals("secondmine")) {
-            pworld = new Location(world, 0.5, 125.5, (mines * 250) + 0.5, -90, 0);
-            PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 2);
-        }
-        if (schem.equals("thirdmine")) {
-            pworld = new Location(world, 0.5, 125.5, (mines * 250) + 0.5, -90, 0);
-            PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 3);
-        }
+        Location pworld = new Location(world, 0.5, 144.5, (mines * 500) + 0.5, -90, 0);
+        PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 30);
+
         Location finalPworld = pworld;
         Bukkit.getScheduler().runTaskLater(Main.plugin,
                 () -> {
                     p.teleport(finalPworld);
+                    Methods.getInstance().createWorldBorder(p, world, 119, 0.5, (mines * 500) + 0.5);
                 }, 40L);
 
 
+        Location point1 = new Location(world, -15, 114, (mines * 500) - 15);
+        Location point2 = new Location(world, 15, 144, (mines * 500) + 15);
 
-        Location point1 = new Location(world, 15, 65, (mines * 250) - 16);
-        Location point2 = new Location(world, 47, 98, (mines * 250) + 16);
-        if (schem.equals("firstmine")) {
-            Methods.getInstance().createWorldBorder(p, world, 83, 34.5, (mines * 250) + 0.5);
-        }
-        if (schem.equals("secondmine")) {
-            //change for mine2's dimensions
-            point1 = new Location(world, 9, 75, (mines * 250) - 23);
-            point2 = new Location(world, 56, 123, (mines * 250) + 24);
-            Methods.getInstance().createWorldBorder(p, world, 83, 34.5, (mines * 250) + 0.5);
-        }
-        if (schem.equals("thirdmine")) {
-            //change for mine3's dimensions
-            point1 = new Location(world, 9, 59, (mines * 250) - 31);
-            point2 = new Location(world, 71, 123, (mines * 250) + 31);
-            Methods.getInstance().createWorldBorder(p, world, 103, 39.5, (mines * 250) + 0.5);
-        }
 
         createMine(p.getUniqueId().toString(), point1, point2, pworld, world, 25.0);
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
 
 
-        RegionManager regions = getWorldGuard().getRegionManager(world);
+        /*RegionManager regions = getWorldGuard().getRegionManager(world);
         if (regions.hasRegion(p.getName())) {
             regions.removeRegion(p.getName());
         }
@@ -334,24 +309,24 @@ public class MineHandler implements Listener, CommandExecutor {
             regions.removeRegion(p.getName() + "outside");
         }
         //Create Mine region that allows the enchants to work only inside the mine
-        ProtectedRegion region = new ProtectedCuboidRegion(p.getName(),
+        ProtectedCuboidRegion region = new ProtectedCuboidRegion(p.getUniqueId().toString(),
                 new BlockVector(point1.getX(), point1.getY(), point1.getZ()),
                 new BlockVector(point2.getX(), point2.getY(), point2.getZ()));
         region.setFlag(DefaultFlag.LIGHTER, StateFlag.State.ALLOW);
         region.setFlag(DefaultFlag.BLOCK_BREAK, StateFlag.State.ALLOW);
         region.setFlag(DefaultFlag.OTHER_EXPLOSION, StateFlag.State.ALLOW);
         region.setFlag(DefaultFlag.USE, StateFlag.State.ALLOW);
-        region.setFlag(DefaultFlag.INTERACT, StateFlag.State.ALLOW);
+        region.setFlag(DefaultFlag.INTERACT, StateFlag.State.DENY);
         DefaultDomain members = region.getMembers();
         members.addPlayer(p.getUniqueId());
         region.setPriority(2);
         regions.addRegion(region);
 
-        Location g1 = new Location(world, -50, 255, (mines * 250) + 75);
-        Location g2 = new Location(world, 100, 0, (mines * 250) - 75);
+        Location g1 = new Location(world, -50, 255, (mines * 500) + 75);
+        Location g2 = new Location(world, 100, 0, (mines * 500) - 75);
 
         //Create region that allows building within limits.
-        ProtectedRegion outside = new ProtectedCuboidRegion(p.getName() + "outside",
+        ProtectedCuboidRegion outside = new ProtectedCuboidRegion(p.getUniqueId().toString() + "outside",
                 new BlockVector(g1.getX(), g1.getY(), g1.getZ()),
                 new BlockVector(g2.getX(), g2.getY(), g2.getZ()));
         outside.setFlag(DefaultFlag.BLOCK_PLACE, StateFlag.State.DENY);
@@ -362,7 +337,7 @@ public class MineHandler implements Listener, CommandExecutor {
         outside.setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
         outside.setFlag(DefaultFlag.LIGHTER, StateFlag.State.DENY);
         outside.setFlag(DefaultFlag.USE, StateFlag.State.ALLOW);
-        outside.setFlag(DefaultFlag.INTERACT, StateFlag.State.ALLOW);
+        outside.setFlag(DefaultFlag.INTERACT, StateFlag.State.DENY);
         outside.setFlag(DefaultFlag.OTHER_EXPLOSION, StateFlag.State.DENY);
         outside.setFlag(DefaultFlag.MOB_SPAWNING, StateFlag.State.DENY);
         outside.setFlag(DefaultFlag.WEATHER_LOCK, WeatherType.CLEAR);
@@ -371,7 +346,7 @@ public class MineHandler implements Listener, CommandExecutor {
         omembers.addPlayer(p.getUniqueId());
         outside.setPriority(1);
 
-        regions.addRegion(outside);
+        regions.addRegion(outside);*/
 
         m.reset();
         PlayerDataHandler.getInstance().getPlayerData(p).set("HasMine", true);

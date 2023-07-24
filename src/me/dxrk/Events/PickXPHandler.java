@@ -2,7 +2,6 @@ package me.dxrk.Events;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Enchants.SkillsEventsListener;
@@ -160,7 +159,6 @@ public class PickXPHandler
         if (!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
             return;
         }
-        if (!set(e.getBlock()).allows(DefaultFlag.LIGHTER)) return;
         Random r = new Random();
         int fmin = 1;
         int fmax = 4;

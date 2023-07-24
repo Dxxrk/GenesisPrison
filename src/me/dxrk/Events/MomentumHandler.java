@@ -2,8 +2,6 @@ package me.dxrk.Events;
 
 import com.connorlinfoot.actionbarapi.ActionBarAPI;
 import com.connorlinfoot.titleapi.TitleAPI;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import me.dxrk.Enchants.EnchantMethods;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
@@ -142,13 +140,11 @@ public class MomentumHandler implements Listener {
         if (!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
             return;
         }
-        if (EnchantMethods.set(e.getBlock()).allows(DefaultFlag.LIGHTER)) {
-            ArrayList<Long> timeStamps = (momentum.get(id) == null) ? new ArrayList<>() : momentum.get(id);
-            timeStamps.add(System.currentTimeMillis());
-            momentum.put(id, timeStamps);
-            if (!seconds.containsKey(id))
-                seconds.put(id, 0);
-        }
+        ArrayList<Long> timeStamps = (momentum.get(id) == null) ? new ArrayList<>() : momentum.get(id);
+        timeStamps.add(System.currentTimeMillis());
+        momentum.put(id, timeStamps);
+        if (!seconds.containsKey(id))
+            seconds.put(id, 0);
     }
 
 

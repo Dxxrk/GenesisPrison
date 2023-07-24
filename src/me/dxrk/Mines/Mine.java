@@ -1,20 +1,17 @@
 package me.dxrk.Mines;
 
-import com.sk89q.worldedit.BlockVector;
-import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.dxrk.Main.Main;
 import me.dxrk.utils.BlockChanger;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.UUID;
 
 public class Mine {
     private String mineName;
@@ -79,6 +76,16 @@ public class Mine {
 
     public Location getMaxPoint() {
         return this.corner2;
+    }
+
+    public void setMinPoint(int x, int y, int z) {
+        Location loc = this.getMinPoint().clone().add(x, y, z);
+        this.corner1 = loc;
+    }
+
+    public void setMaxPoint(int x, int y, int z) {
+        Location loc = this.getMaxPoint().clone().add(x, y, z);
+        this.corner2 = loc;
     }
 
     public double getResetPercent() {
@@ -183,51 +190,45 @@ public class Mine {
     }
 
     public void reset() {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (this.isLocationInMine(p.getLocation())) {
+                Location l = new Location(this.getMineWorld(), p.getLocation().getX(), this.getMaxPoint().getY()+2, p.getLocation().getZ(), p.getLocation().getYaw(), p.getLocation().getPitch());
+                p.teleport(l);
+            }
+        }
         Bukkit.getScheduler().runTaskAsynchronously(Main.plugin,
                 () -> {
                     BlockChanger.setCuboidAsynchronously(this.getMinPoint(), this.getMaxPoint(), this.getBlock1(), this.getBlock2(), this.getBlock3(), false);
                 });
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            if (this.isLocationInMine(p.getLocation())) {
-                Location l = new Location(this.getMineWorld(), p.getLocation().getX(), this.getMaxPoint().getY(), p.getLocation().getZ());
-                p.teleport(l);
-            }
-        }
     }
 
     public void expandMine(int i) {
-        this.corner1 = this.getMinPoint().clone().add(-i, -i, -i);
-        this.corner2 = this.getMaxPoint().clone().add(i, 0, i);
+        this.setMinPoint(-i, -i, -i);
+        this.setMaxPoint(i, 0, i);
         Bukkit.getScheduler().runTaskAsynchronously(Main.plugin,
                 () -> {
-                    Location floor1 = new Location(this.getMineWorld(), this.getMinPoint().getX()-i, this.getMinPoint().getY()-i, this.getMinPoint().getZ()-i);
-                    Location floor2 = new Location(this.getMineWorld(), this.getMaxPoint().getX()+i, this.getMinPoint().getY()-i, this.getMaxPoint().getZ()+i);
+                    Location floor1 = new Location(this.getMineWorld(), this.getMinPoint().getX() - i, this.getMinPoint().getY() - i, this.getMinPoint().getZ() - i);
+                    Location floor2 = new Location(this.getMineWorld(), this.getMaxPoint().getX() + i, this.getMinPoint().getY() - i, this.getMaxPoint().getZ() + i);
                     BlockChanger.setCuboidAsynchronously(floor1, floor2, new ItemStack(Material.BEDROCK), false);
 
-                    Location wallone1 = new Location(this.getMineWorld(), this.getMinPoint().getX()-i, this.getMinPoint().getY()-i, this.getMinPoint().getZ()-i);
-                    Location wallone2 = new Location(this.getMineWorld(), this.getMinPoint().getX()-i, this.getMaxPoint().getY(), this.getMaxPoint().getZ()+i); // SOUTH WALL
+                    Location wallone1 = new Location(this.getMineWorld(), this.getMinPoint().getX() - i, this.getMinPoint().getY() - i, this.getMinPoint().getZ() - i);
+                    Location wallone2 = new Location(this.getMineWorld(), this.getMinPoint().getX() - i, this.getMaxPoint().getY(), this.getMaxPoint().getZ() + i); // SOUTH WALL
                     BlockChanger.setCuboidAsynchronously(wallone1, wallone2, new ItemStack(Material.BEDROCK), false);
 
-                    Location walltwo1 = new Location(this.getMineWorld(), this.getMinPoint().getX()-i, this.getMinPoint().getY()-i, this.getMinPoint().getZ()-i);
-                    Location walltwo2 = new Location(this.getMineWorld(), this.getMaxPoint().getX()+i, this.getMaxPoint().getY(), this.getMinPoint().getZ()-i); // EAST WALL
+                    Location walltwo1 = new Location(this.getMineWorld(), this.getMinPoint().getX() - i, this.getMinPoint().getY() - i, this.getMinPoint().getZ() - i);
+                    Location walltwo2 = new Location(this.getMineWorld(), this.getMaxPoint().getX() + i, this.getMaxPoint().getY(), this.getMinPoint().getZ() - i); // EAST WALL
                     BlockChanger.setCuboidAsynchronously(walltwo1, walltwo2, new ItemStack(Material.BEDROCK), false);
 
-                    Location wallthree1 = new Location(this.getMineWorld(), this.getMaxPoint().getX()+i, this.getMinPoint().getY()-i, this.getMinPoint().getZ()-i);
-                    Location wallthree2 = new Location(this.getMineWorld(), this.getMaxPoint().getX()+i, this.getMaxPoint().getY(), this.getMaxPoint().getZ()+i); // NORTH WALL
+                    Location wallthree1 = new Location(this.getMineWorld(), this.getMaxPoint().getX() + i, this.getMinPoint().getY() - i, this.getMinPoint().getZ() - i);
+                    Location wallthree2 = new Location(this.getMineWorld(), this.getMaxPoint().getX() + i, this.getMaxPoint().getY(), this.getMaxPoint().getZ() + i); // NORTH WALL
                     BlockChanger.setCuboidAsynchronously(wallthree1, wallthree2, new ItemStack(Material.BEDROCK), false);
 
-                    Location wallfour1 = new Location(this.getMineWorld(), this.getMinPoint().getX()-i, this.getMinPoint().getY()-i, this.getMaxPoint().getZ()+i);
-                    Location wallfour2 = new Location(this.getMineWorld(), this.getMaxPoint().getX()+i, this.getMaxPoint().getY(), this.getMaxPoint().getZ()+i); // WEST WALL
+                    Location wallfour1 = new Location(this.getMineWorld(), this.getMinPoint().getX() - i, this.getMinPoint().getY() - i, this.getMaxPoint().getZ() + i);
+                    Location wallfour2 = new Location(this.getMineWorld(), this.getMaxPoint().getX() + i, this.getMaxPoint().getY(), this.getMaxPoint().getZ() + i); // WEST WALL
                     BlockChanger.setCuboidAsynchronously(wallfour1, wallfour2, new ItemStack(Material.BEDROCK), false);
                 });
-        //BlockChanger.setCuboidAsynchronously(this.getMinPoint().clone().add(-i+1, 0, -i+1), this.getMaxPoint().clone().add(i+1, 0, i+1), new ItemStack(Material.BEDROCK), false);
-        OfflinePlayer player = Bukkit.getPlayer(UUID.fromString(this.mineName));
-        ProtectedCuboidRegion mineRegion = (ProtectedCuboidRegion) ((WorldGuardPlugin)Bukkit.getServer().getPluginManager().getPlugin("WorldGuard")).getRegionManager(this.mineWorld).getRegion(this.mineName);
-        mineRegion.setMinimumPoint(new BlockVector(mineRegion.getMinimumPoint().getX()-i, mineRegion.getMinimumPoint().getY()-i, mineRegion.getMinimumPoint().getZ()-i));
-        mineRegion.setMaximumPoint(new BlockVector(mineRegion.getMaximumPoint().getX()+i, 0, mineRegion.getMaximumPoint().getZ()+i));
         this.save();
         this.reset();
-
     }
 
 

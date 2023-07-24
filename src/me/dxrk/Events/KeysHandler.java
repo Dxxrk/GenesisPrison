@@ -71,6 +71,17 @@ public class KeysHandler implements Listener {
         int keysfound = PlayerDataHandler.getInstance().getPlayerData(p).getInt("KeysFound");
         PlayerDataHandler.getInstance().getPlayerData(p).set("KeysFound", (keysfound + amt));
     }
+    public void CommunityMSG(int amt) {
+        String s;
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            s = ChatColor.translateAlternateColorCodes('&',
+                    "&5&lCommunity &8| &b+" + amt + " &5&lCommunity &bKey");
+            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Key-Finder-Messages") == true) {
+                p.sendMessage(s);
+            }
+            addKey(p, "Community", amt);
+        }
+    }
 
     public void DustFinderMSG(Player p, String dust) {
         switch (dust) {
@@ -173,14 +184,16 @@ public class KeysHandler implements Listener {
             if (kf > 40 && kf <= 60) {
                 KeyFinderMSG(p, "Omega", "&4&l", "", 2);
             }
-            if (kf > 60 && kf <= 80) {
+            if (kf > 60 && kf <= 90) {
                 KeyFinderMSG(p, "Token", "&e&l", "", 2);
             }
-            if (kf > 80 && kf <= 83) {
+            if (kf > 90 && kf <= 93) {
                 KeyFinderMSG(p, "Seasonal", "&4&l&ki&f&l", "&4&l&ki&r", 2);
             }
-            if (kf > 83) {
-                KeyFinderMSG(p, "Community", "&5&l", "", 2);
+            if (kf > 93) {
+                CommunityMSG(1);
+                int keysfound = PlayerDataHandler.getInstance().getPlayerData(p).getInt("KeysFound");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("KeysFound", (keysfound + 2));
             }
         } else {
             if (kf <= 20) {
@@ -192,14 +205,16 @@ public class KeysHandler implements Listener {
             if (kf > 40 && kf <= 60) {
                 KeyFinderMSG(p, "Omega", "&4&l", "", 1);
             }
-            if (kf > 60 && kf <= 80) {
+            if (kf > 60 && kf <= 90) {
                 KeyFinderMSG(p, "Token", "&e&l", "", 1);
             }
-            if (kf > 80 && kf <= 83) {
+            if (kf > 90 && kf <= 93) {
                 KeyFinderMSG(p, "Seasonal", "&4&l&ki&f&l", "&4&l&ki&r", 1);
             }
-            if (kf > 83) {
-                KeyFinderMSG(p, "Community", "&5&l", "", 1);
+            if (kf > 93) {
+                CommunityMSG(1);
+                int keysfound = PlayerDataHandler.getInstance().getPlayerData(p).getInt("KeysFound");
+                PlayerDataHandler.getInstance().getPlayerData(p).set("KeysFound", (keysfound + 1));
             }
         }
     }

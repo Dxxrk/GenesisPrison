@@ -17,14 +17,20 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 public class BuildModeHandler implements Listener, CommandExecutor {
 
     Methods m = Methods.getInstance();
 
-    HashMap<UUID, ItemStack[]> playersinbm = new HashMap<>();
+    public static BuildModeHandler instance = new BuildModeHandler();
+
+    public static BuildModeHandler getInstance() {
+        return instance;
+    }
+
+
+    public static HashMap<UUID, ItemStack[]> playersinbm = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
