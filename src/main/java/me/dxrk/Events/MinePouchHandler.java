@@ -156,7 +156,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
     public ItemStack GenesisCrate() {
         ItemStack gcrate = new ItemStack(Material.ENDER_CHEST);
         ItemMeta gm = gcrate.getItemMeta();
-        gm.setDisplayName(m.c("&f&l&k[&7&l*&f&l&k]&r &9&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r &a100,000 gems"));
+        gm.setDisplayName(m.c("&f&l&k[&7&l*&f&l&k]&r &c&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r &a100,000 gems"));
         List<String> lore = new ArrayList<>();
         lore.add(m.c("&7Upon placing this item, you will recieve 8 random items"));
         lore.add(m.c("&7From the list below, all rewards are randomly selected."));

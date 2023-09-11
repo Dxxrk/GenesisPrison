@@ -196,10 +196,11 @@ public class Mine {
                 p.teleport(l);
             }
         }
-        Bukkit.getScheduler().runTaskAsynchronously(Main.plugin,
+        BlockChanger.setCuboidAsynchronously(this.getMinPoint(), this.getMaxPoint(), this.getBlock1(), this.getBlock2(), this.getBlock3(), false);
+        /*Bukkit.getScheduler().runTaskAsynchronously(Main.plugin,
                 () -> {
                     BlockChanger.setCuboidAsynchronously(this.getMinPoint(), this.getMaxPoint(), this.getBlock1(), this.getBlock2(), this.getBlock3(), false);
-                });
+                });*/
     }
 
     public void expandMine(int i) {

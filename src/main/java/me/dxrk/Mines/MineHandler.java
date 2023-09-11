@@ -52,15 +52,7 @@ public class MineHandler implements Listener, CommandExecutor {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
-    private WorldGuardPlugin getWorldGuard() {
-        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
 
-        if (!(plugin instanceof WorldGuardPlugin)) {
-            return null;
-        }
-
-        return (WorldGuardPlugin) plugin;
-    }
 
 
     private ArrayList<Player> list = new ArrayList<>();
@@ -234,13 +226,7 @@ public class MineHandler implements Listener, CommandExecutor {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    int minesize = PlayerDataHandler.getInstance().getPlayerData(p).getInt("MineSize");
-                    if (minesize == 1 || minesize == 2) {
-                        Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 83, 34.5, m.getSpawnLocation().getZ());
-                    }
-                    if (minesize == 3) {
-                        Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 103, 39.5, m.getSpawnLocation().getZ());
-                    }
+                    Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 119, 0.5, m.getSpawnLocation().getZ());
                 }
             }.runTaskLater(Main.plugin, 20L);
 
@@ -279,28 +265,27 @@ public class MineHandler implements Listener, CommandExecutor {
         int mines = settings.getOptions().getInt("numberofmines");
 
         File schematic = new File(Main.plugin.getDataFolder() + File.separator + "schematics", schem + ".schematic");
-        Location paste = new Location(world, 0, 81, (mines * 500));
+        Location paste = new Location(world, 0, 144, (mines * 500));
         paste.setYaw(-90);
         pasteSchematic(Objects.requireNonNull(WESchematic.getSchematic(schematic)), paste);
         Location pworld = new Location(world, 0.5, 144.5, (mines * 500) + 0.5, -90, 0);
         PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 30);
 
         Location finalPworld = pworld;
-        Bukkit.getScheduler().runTaskLater(Main.plugin,
-                () -> {
-                    p.teleport(finalPworld);
-                    Methods.getInstance().createWorldBorder(p, world, 119, 0.5, (mines * 500) + 0.5);
-                }, 40L);
 
-
-        Location point1 = new Location(world, -15, 114, (mines * 500) - 15);
-        Location point2 = new Location(world, 15, 144, (mines * 500) + 15);
+        Location point1 = new Location(world, -15, 114, (mines * 500) - 14);
+        Location point2 = new Location(world, 14, 143, (mines * 500) + 15);
 
 
         createMine(p.getUniqueId().toString(), point1, point2, pworld, world, 25.0);
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
-
-
+        p.sendMessage(Methods.getInstance().c("&f&lMine &8| &bLoading Mine.."));
+        Bukkit.getScheduler().runTaskLater(Main.plugin,
+                () -> {
+                    p.teleport(finalPworld);
+                    Methods.getInstance().createWorldBorder(p, world, 119, 0.5, (mines * 500) + 0.5);
+                    m.reset();
+                }, 50L);
         /*RegionManager regions = getWorldGuard().getRegionManager(world);
         if (regions.hasRegion(p.getName())) {
             regions.removeRegion(p.getName());
@@ -348,7 +333,7 @@ public class MineHandler implements Listener, CommandExecutor {
 
         regions.addRegion(outside);*/
 
-        m.reset();
+
         PlayerDataHandler.getInstance().getPlayerData(p).set("HasMine", true);
         settings.getOptions().set("numberofmines", (mines + 1));
         settings.saveOptions();

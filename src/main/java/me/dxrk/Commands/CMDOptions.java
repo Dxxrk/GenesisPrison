@@ -110,7 +110,7 @@ public class CMDOptions implements Listener, CommandExecutor {
         if (s.equalsIgnoreCase("white"))
             return m.c("&f&ki&f&lGenesis&f&ki&r");
         if (s.equalsIgnoreCase("blue"))
-            return m.c("&f&ki&9&lGenesis&f&ki&r");
+            return m.c("&f&ki&c&lGenesis&f&ki&r");
         if (s.equalsIgnoreCase("purple"))
             return m.c("&f&ki&5&lGenesis&f&ki&r");
         if (s.equalsIgnoreCase("thematic"))

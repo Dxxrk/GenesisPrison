@@ -117,19 +117,19 @@ public class FishingHandler implements Listener, CommandExecutor {
                 int chance = 110-treasurehunterlevel;
                 if(r.nextInt(chance)==1){
                     int rr = r.nextInt(54);
-                    if(rr>=0 && rr<=46){
+                    if(rr<=46){
                         p.getInventory().addItem(CrateFunctions.FishingCrate());
                         if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Treasure-Hunter-Messages"))
                             p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Fishing Crate"));
-                    }else if(rr>=47 && rr<=48){
+                    }else if(rr<=48){
                         p.getInventory().addItem(MonsterHandler.egg());
                         if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Treasure-Hunter-Messages"))
                             p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Monster Egg"));
-                    }else if(rr>=49 && rr<=50){
+                    }else if(rr<=50){
                         p.getInventory().addItem(CrateFunctions.ContrabandCrate());
                         if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Treasure-Hunter-Messages"))
                             p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Contraband Crate"));
-                    }else if(rr>=51 && rr<=52){
+                    }else if(rr<=52){
                         p.getInventory().addItem(CrateFunctions.GenesisCrate());
                         if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Treasure-Hunter-Messages"))
                             p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Genesis Crate"));

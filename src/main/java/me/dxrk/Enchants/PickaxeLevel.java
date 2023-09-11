@@ -482,7 +482,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                     i = 4500;
                     break;
                 }
-                i = 4500 + (4500 * (level * 0.09141)); // 10 Million Level 10 MAX
+                i = 4500 + (4500 * (level * 0.43)); // 10 Million Level 10 MAX
 
                 break;
             case "Dust Finder":
@@ -632,6 +632,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 i = 5000 + skillmaxlevelkf;
                 break;
             case "LuckyBlock":
+            case "Greed":
                 i = 100;
                 break;
             case "Dust Finder":
@@ -680,10 +681,6 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
                 break;
 
-            case "Greed":
-                i = 100;
-
-                break;
             case "Junkpile":
                 int skillmaxleveljunkpile = PlayerDataHandler.getInstance().getPlayerData(p).getInt("JunkpileMaxLevelRaise");
                 i = 2000 + skillmaxleveljunkpile;

@@ -8,6 +8,7 @@ import me.dxrk.Main.SettingsManager;
 import me.dxrk.Mines.Mine;
 import me.dxrk.Mines.MineSystem;
 import me.dxrk.Tokens.Tokens;
+import me.dxrk.Vote.BuycraftUtil;
 import me.dxrk.Vote.CMDVoteShop;
 import me.dxrk.utils.WaveEffect;
 import mkremins.fanciful.FancyMessage;
@@ -648,7 +649,8 @@ public class EnchantMethods implements CommandExecutor {
 
     }
     public void charity(Player p) {
-
+        double coupon = 0.1;
+        CMDVoteShop.addCoupon(p, coupon);
     }
 
 
@@ -1009,6 +1011,10 @@ public class EnchantMethods implements CommandExecutor {
                 chance = 3000 - (0.80 * level * lucky * luck * skill * getBattleCry(p));
                 procChance = (chance < 600) ? 600 : chance;
                 break;
+            case "Charity":
+                chance = 5000 - (level * lucky * luck * skill * getBattleCry(p));
+                procChance = (chance < 1500) ? 1500 : chance;
+                break;
             case "Calamity":
                 procChance = 1000;
                 break;
@@ -1072,6 +1078,11 @@ public class EnchantMethods implements CommandExecutor {
             case "Calamity":
                 if (r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
                     calamity(p, b);
+                }
+                break;
+            case "Charity":
+                if (r.nextInt((int) getEnchantChance(Enchant, level, p)) == 1) {
+                    charity(p);
                 }
                 break;
             case "Tidal Wave":

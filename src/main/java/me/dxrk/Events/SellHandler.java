@@ -257,7 +257,7 @@ public class SellHandler implements Listener, CommandExecutor {
         if (m.isLocationInMine(e.getBlock().getLocation())) {
             e.setCancelled(true);
         }
-        if (!m.isLocationInMine(e.getBlock().getLocation()) && !BuildModeHandler.playersinbm.containsKey(p.getUniqueId())) {
+        if (!m.isLocationInMine(e.getBlock().getLocation()) && !BuildModeHandler.playersinbm.containsKey(p.getUniqueId()) && !p.isOp()) {
             e.setCancelled(true);
         }
     }
@@ -266,17 +266,17 @@ public class SellHandler implements Listener, CommandExecutor {
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
-        if (!m.isLocationInMine(e.getBlock().getLocation())) {
-
-            if (p.isOp() && p.getItemInHand() != null &&
+        if (!m.isLocationInMine(e.getBlock().getLocation()) && !p.isOp()) {
+            e.setCancelled(true);
+            return;
+        }
+        if (!m.isLocationInMine(e.getBlock().getLocation()) && p.isOp()) {
+            if (p.getItemInHand() != null &&
                     p.getItemInHand().getType() == Material.DIAMOND_PICKAXE || p.getItemInHand().getType() == Material.WOOD_PICKAXE
                     || p.getItemInHand().getType() == Material.STONE_PICKAXE || p.getItemInHand().getType() == Material.GOLD_PICKAXE
                     || p.getItemInHand().getType() == Material.IRON_PICKAXE) {
                 e.setCancelled(true);
-            } else {
-                return;
             }
-            e.setCancelled(true);
             return;
         }
 

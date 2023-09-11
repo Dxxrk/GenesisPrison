@@ -118,7 +118,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
         List<ArmorStand> stands = new ArrayList<>();
 
 
-        if (p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&f&l&k[&7&l*&f&l&k]&r &9&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r")) && p.getItemInHand().getType().equals(Material.ENDER_CHEST)) {
+        if (p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&f&l&k[&7&l*&f&l&k]&r &c&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r")) && p.getItemInHand().getType().equals(Material.ENDER_CHEST)) {
             e.setCancelled(true);
             if (!p.getWorld().getBlockAt(e.getClickedBlock().getLocation().clone().add(0, 3, 0)).getType().equals(Material.AIR))
                 return;

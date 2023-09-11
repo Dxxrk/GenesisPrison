@@ -14,17 +14,16 @@ public class CMDSay implements CommandExecutor {
 
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        String prefix = c("&9&lGenesis&8» ");
+        String prefix = c("&c&lGenesis&b» &f&l");
         if (cmd.getName().equalsIgnoreCase("Say")) {
             if (sender.hasPermission("Epsilon.Say")) {
                 if (args.length == 0) {
-                    sender.sendMessage(String.valueOf(prefix) + ChatColor.RED + "Please enter a message!");
+                    sender.sendMessage(prefix + ChatColor.RED + "Please enter a message!");
                 } else {
-                    String message = "";
-                    for (int i = 0; i < args.length; i++)
-                        message = String.valueOf(message) + args[i] + " ";
-                    String Message1 = ChatColor.translateAlternateColorCodes('&', message);
-                    Bukkit.broadcastMessage(String.valueOf(prefix) + Message1);
+                    StringBuilder message = new StringBuilder();
+                    for (String arg : args) message.append(arg).append(" ");
+                    String Message1 = ChatColor.translateAlternateColorCodes('&', message.toString());
+                    Bukkit.broadcastMessage(prefix + Message1);
                 }
                 return true;
             }
