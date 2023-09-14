@@ -188,7 +188,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
         next.setItemMeta(nm);
         ah.setItem(52, next);
 
-        ItemStack hightolow = new ItemStack(Material.FIREBALL);
+        ItemStack hightolow = new ItemStack(Material.FIRE_CHARGE);
         ItemMeta hm = hightolow.getItemMeta();
         hm.setDisplayName(m.c("&3Sort: Price High to Low"));
         hightolow.setItemMeta(hm);
@@ -200,7 +200,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
         openSelling.setItemMeta(om);
         ah.setItem(49, openSelling);
 
-        ItemStack lowtohigh = new ItemStack(Material.FIREBALL);
+        ItemStack lowtohigh = new ItemStack(Material.FIRE_CHARGE);
         ItemMeta lm = lowtohigh.getItemMeta();
         lm.setDisplayName(m.c("&3Sort: Price Low to High"));
         lowtohigh.setItemMeta(lm);
@@ -258,7 +258,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
         confirm.setItem(3, buy5);
         lore.clear();
 
-        ItemStack cancel = new ItemStack(Material.INK_SACK, 1, (short) 1);
+        ItemStack cancel = new ItemStack(Material.INK_SAC, 1, (short) 1);
         ItemMeta cm = cancel.getItemMeta();
         cm.setDisplayName(m.c("&cCancel"));
         cancel.setItemMeta(cm);
@@ -370,7 +370,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
 
             if (e.getSlot() > 44) {
                 if (e.getSlot() == 46) {
-                    if (e.getInventory().getName().equals(m.c("&c&lAuction House Page 1"))) {
+                    if (e.getView().title().equals(m.c("&c&lAuction House Page 1"))) {
                         return;
                     } else {
                         int page = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getInventory().getName()));

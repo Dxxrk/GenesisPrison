@@ -41,16 +41,12 @@ public class jdaHandler extends ListenerAdapter {
     public static JDA jda;
 
     public void startBot() {
-        try {
-            jda = JDABuilder.createLight(token, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGE_REACTIONS
-                            , GatewayIntent.DIRECT_MESSAGE_REACTIONS)
-                    .setMemberCachePolicy(MemberCachePolicy.ALL)
-                    .setStatus(OnlineStatus.ONLINE)
-                    .setActivity(Activity.playing("MCGenesis.net"))
-                    .addEventListeners(new JDAEvents()).build();
-        } catch (LoginException e) {
-            e.printStackTrace();
-        }
+        jda = JDABuilder.createLight(token, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGE_REACTIONS
+                        , GatewayIntent.DIRECT_MESSAGE_REACTIONS)
+                .setMemberCachePolicy(MemberCachePolicy.ALL)
+                .setStatus(OnlineStatus.ONLINE)
+                .setActivity(Activity.playing("MCGenesis.net"))
+                .addEventListeners(new JDAEvents()).build();
     }
 
 

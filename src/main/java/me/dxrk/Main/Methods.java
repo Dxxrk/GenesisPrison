@@ -1,29 +1,22 @@
 package me.dxrk.Main;
 
-import net.ess3.nms.refl.ReflUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.world.level.border.WorldBorder;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Chest;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_8_R3.util.CraftMagicNumbers;
+import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.UUID;
-import java.util.logging.Level;
+
+import static net.kyori.adventure.text.Component.text;
+import static net.kyori.adventure.text.format.TextColor.color;
 
 public class Methods {
     public static Methods instance = new Methods();
@@ -38,20 +31,31 @@ public class Methods {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
-
-    public void playChestAction(Chest chest, boolean open) {
-        Location location = chest.getLocation();
-        World world = ((CraftWorld) location.getWorld()).getHandle();
-        BlockPosition position = new BlockPosition(location.getX(), location.getY(), location.getZ());
-        TileEntityEnderChest tileChest = (TileEntityEnderChest) world.getTileEntity(position);
-        world.playBlockAction(position, tileChest.w(), 1, open ? 1 : 0);
+    //Use with specific HEX codes needed.
+    public Component colorText(String s, TextColor color) { //for use with net.kyori.adventure.text.format.TextColor.color /// USAGE: color(0x<HEX CODE>)
+        final Component component = text()
+                .content(s).color(color)
+                .build();
+        return component;
     }
 
-    //@SuppressWarnings("deprecation")
-    public void changeChestState(Location loc, boolean open) {
-        int data = (open) ? 1 : 0;
+    //Use with simpler default colors provided for quick usage.
+    public Component colorText(String text, String color) {
+        TextColor var = switch (color) {
+            case "blue" -> color(0x0096FF);
+            case "red" -> color(0xD2042D);
+            case "green" -> color(0x32CD32);
+            case "purple" -> color(0x7F00FF);
+            case "yellow" -> color(0xE4D00A);
+            case "gold" -> color(0xFFD700);
+            case "gray" -> color(0x808080);
+            default -> null;
+        };
 
-        ((CraftWorld) loc.getWorld()).getHandle().playBlockAction(new BlockPosition(loc.getX(), loc.getY(), loc.getZ()), CraftMagicNumbers.getBlock(loc.getWorld().getBlockAt(loc)), 1, data);
+        final Component component = text()
+                .content(text).color(var)
+                .build();
+        return component;
     }
 
 
@@ -106,39 +110,6 @@ public class Methods {
         //24 hrs/day * 60 mins/hr * 60 secs/min * 20 ticks/sec = 1728000 ticks
     }
 
-
-    public String convertItemStackToJson(ItemStack itemStack) {
-        Object itemAsJsonObject;
-        Class<?> craftItemStackClazz = ReflUtil.getOBCClass("inventory.CraftItemStack");
-        Method asNMSCopyMethod = ReflUtil.getMethodCached(craftItemStackClazz, "asNMSCopy", ItemStack.class);
-        Class<?> nmsItemStackClazz = ReflUtil.getNMSClass("ItemStack");
-        Class<?> nbtTagCompoundClazz = ReflUtil.getNMSClass("NBTTagCompound");
-        Method saveNmsItemStackMethod = ReflUtil.getMethodCached(nmsItemStackClazz, "save", nbtTagCompoundClazz);
-        try {
-            Object nmsNbtTagCompoundObj = nbtTagCompoundClazz.newInstance();
-            Object nmsItemStackObj = asNMSCopyMethod.invoke(null, itemStack);
-            itemAsJsonObject = saveNmsItemStackMethod.invoke(nmsItemStackObj, nmsNbtTagCompoundObj);
-        } catch (Throwable t) {
-            Bukkit.getLogger().log(Level.SEVERE, "failed to serialize itemstack to nms item", t);
-            return null;
-        }
-        return itemAsJsonObject.toString();
-    }
-
-
-    public String convertItemStackToJsonRegular(ItemStack itemStack) {
-        net.minecraft.server.v1_8_R3.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
-        NBTTagCompound compound = new NBTTagCompound();
-        nmsItemStack.save(compound);
-        return compound.toString();
-    }
-
-    public TextComponent itemHover(String chat, ItemStack item) {
-        TextComponent test = new TextComponent(ChatColor.translateAlternateColorCodes('&', chat));
-        BaseComponent[] hoverEventComponents = {new TextComponent(convertItemStackToJson(new ItemStack(Material.DIAMOND, 1)))};
-        test.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, hoverEventComponents));
-        return test;
-    }
 
     public void createWorldBorder(Player p, org.bukkit.World world, double size, double x, double z) {
         WorldBorder wb = new WorldBorder();

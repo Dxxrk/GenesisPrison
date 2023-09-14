@@ -27,7 +27,7 @@ public class PickaxeSkillTree implements Listener {
 
 
     public static ItemStack Spacer() {
-        ItemStack white = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 0);
+        ItemStack white = new ItemStack(Material.STAINED, 1, (short) 0);
         ItemMeta wm = white.getItemMeta();
         wm.setDisplayName(m.c(" "));
         white.setItemMeta(wm);

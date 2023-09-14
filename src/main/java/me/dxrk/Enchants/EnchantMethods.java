@@ -14,6 +14,7 @@ import me.dxrk.utils.WaveEffect;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -83,7 +84,7 @@ public class EnchantMethods implements CommandExecutor {
     }
 
     public ItemStack testenchant(String Enchant) {
-        ItemStack a = new ItemStack(Material.WOOD_PICKAXE, 1, (short) 0);
+        ItemStack a = new ItemStack(Material.WOODEN_PICKAXE, 1, (short) 0);
         ItemMeta am = a.getItemMeta();
         List<String> lore = new ArrayList<>();
         am.setDisplayName(c("&cTest Pickaxe"));
@@ -233,7 +234,7 @@ public class EnchantMethods implements CommandExecutor {
 
         int tokens = (int) (KeysHandler.tokensPerBlock(p) * (blocks / 3) * levelcap);
         Tokens.getInstance().addTokens(p, tokens);
-        p.playSound(p.getLocation(), Sound.ANVIL_LAND, 0.8f, 1.0f);
+        p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.8f, 1.0f);
         SellHandler.getInstance().sellEnchant(p, sellblocks, "Jackhammer", tokens);
     }
 
@@ -479,7 +480,7 @@ public class EnchantMethods implements CommandExecutor {
 
         int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks);
         Tokens.getInstance().addTokens(p, tokens);
-        p.playSound(p.getLocation(), Sound.SPLASH, 0.8f, 1.0f);
+        p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SPLASH, 0.8f, 1.0f);
         SellHandler.getInstance().sellEnchant(p, sellblocks, "Tidal Wave", tokens);
     }
 
@@ -497,7 +498,8 @@ public class EnchantMethods implements CommandExecutor {
         for (Block b1 : getBlocksInArea(minn, max)) {
             if (m.isLocationInMine(b1.getLocation())) {
                 if (b1.getType() != Material.BEDROCK && b1.getType() != Material.AIR) {
-                    FallingBlock fb = p.getWorld().spawnFallingBlock(b1.getLocation(), Material.STATIONARY_LAVA, (byte) 0);
+                    BlockData lavadata = Material.LAVA.createBlockData();
+                    FallingBlock fb = p.getWorld().spawnFallingBlock(b1.getLocation(), lavadata);
                     fb.setVelocity(new Vector(0, -.3, 0));
                     fb.setDropItem(false);
                     new BukkitRunnable() {
@@ -541,9 +543,9 @@ public class EnchantMethods implements CommandExecutor {
         sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune)));
         sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocks * fortune)));
 
-        int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * 5);
+        int tokens = KeysHandler.tokensPerBlock(p) * blocks * 5;
         Tokens.getInstance().addTokens(p, tokens);
-        p.playSound(p.getLocation(), Sound.LAVA_POP, 0.8f, 1.0f);
+        p.playSound(p.getLocation(), Sound.BLOCK_LAVA_POP, 0.8f, 1.0f);
         SellHandler.getInstance().sellEnchant(p, sellblocks, "Infernum", tokens);
     }
 
@@ -852,7 +854,7 @@ public class EnchantMethods implements CommandExecutor {
             int rr = r.nextInt(309);
             ItemStack pick = p.getItemInHand();
             int level = 0;
-            if (pick != null && (pick.getType().equals(Material.DIAMOND_PICKAXE) || pick.getType().equals(Material.GOLD_PICKAXE) || pick.getType().equals(Material.IRON_PICKAXE) || pick.getType().equals(Material.STONE_PICKAXE) || pick.getType().equals(Material.WOOD_PICKAXE))) {
+            if (pick != null && (pick.getType().equals(Material.DIAMOND_PICKAXE) || pick.getType().equals(Material.GOLDEN_PICKAXE) || pick.getType().equals(Material.IRON_PICKAXE) || pick.getType().equals(Material.STONE_PICKAXE) || pick.getType().equals(Material.WOODEN_PICKAXE))) {
                 List<String> lore = pick.getItemMeta().getLore();
                 int x;
                 for (x = 0; x < lore.size(); x++) {
@@ -909,7 +911,7 @@ public class EnchantMethods implements CommandExecutor {
                 int rr = r.nextInt(309);
                 ItemStack pick = p.getItemInHand();
                 int level = 0;
-                if (pick != null && (pick.getType().equals(Material.DIAMOND_PICKAXE) || pick.getType().equals(Material.GOLD_PICKAXE) || pick.getType().equals(Material.IRON_PICKAXE) || pick.getType().equals(Material.STONE_PICKAXE) || pick.getType().equals(Material.WOOD_PICKAXE))) {
+                if (pick != null && (pick.getType().equals(Material.DIAMOND_PICKAXE) || pick.getType().equals(Material.GOLDEN_PICKAXE) || pick.getType().equals(Material.IRON_PICKAXE) || pick.getType().equals(Material.STONE_PICKAXE) || pick.getType().equals(Material.WOODEN_PICKAXE))) {
                     List<String> lore = pick.getItemMeta().getLore();
                     int x;
                     for (x = 0; x < lore.size(); x++) {

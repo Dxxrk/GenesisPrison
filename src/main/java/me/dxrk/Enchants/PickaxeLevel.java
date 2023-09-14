@@ -48,10 +48,10 @@ public class PickaxeLevel implements Listener, CommandExecutor {
     public SettingsManager settings = SettingsManager.getInstance();
 
     public ItemStack pickaxe() {
-        ItemStack a = new ItemStack(Material.WOOD_PICKAXE, 1, (short) 0);
+        ItemStack a = new ItemStack(Material.WOODEN_PICKAXE, 1, (short) 0);
         ItemMeta am = a.getItemMeta();
         List<String> lore = new ArrayList<>();
-        am.setDisplayName(c("&cStarter Pickaxe"));
+        am.setDisplayName("s");
         am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
         am.addEnchant(Enchantment.DURABILITY, 32000, true);
         am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -808,7 +808,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         }
         pm.setLore(Lore(lore, p));
         pitem.setItemMeta(pm);
-        p.setItemInHand(pitem);
+        p.getInventory().setItemInMainHand(pitem);
         p.updateInventory();
 
 
