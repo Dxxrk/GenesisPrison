@@ -1,8 +1,5 @@
 package me.dxrk.Events;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.managers.RegionManager;
 import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Main.Functions;
@@ -10,15 +7,12 @@ import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Mines.MineSystem;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.List;
@@ -96,10 +90,10 @@ public class PickXPHandler
     public void updatePickaxe(Player p) {
         int line = 0;
 
-        ItemStack pitem = p.getItemInHand().clone();
+        ItemStack pitem = p.getEquipment().getItemInMainHand().clone();
         ItemMeta pm = pitem.getItemMeta();
 
-        List<String> lore = p.getItemInHand().getItemMeta().getLore();
+        List<String> lore = p.getEquipment().getItemInMainHand().getItemMeta().getLore();
         for (int i = 0; i < lore.size(); i++) {
             if (ChatColor.stripColor(lore.get(i)).contains("Level:")) {
                 line = i;
@@ -134,28 +128,14 @@ public class PickXPHandler
     }
 
 
-    private WorldGuardPlugin getWorldGuard() {
-        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
 
-        if (!(plugin instanceof WorldGuardPlugin)) {
-            return null;
-        }
-
-        return (WorldGuardPlugin) plugin;
-    }
-
-    public static ApplicableRegionSet set(Block b) {
-        WorldGuardPlugin worldGuard = WorldGuardPlugin.inst();
-        RegionManager regionManager = worldGuard.getRegionManager(b.getWorld());
-        return regionManager.getApplicableRegions(b.getLocation());
-    }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
-        if (p.getItemInHand() == null) return;
-        if (!p.getItemInHand().hasItemMeta()) return;
-        if (!p.getItemInHand().getItemMeta().hasLore()) return;
+        if (p.getEquipment().getItemInMainHand() == null) return;
+        if (!p.getEquipment().getItemInMainHand().hasItemMeta()) return;
+        if (!p.getEquipment().getItemInMainHand().getItemMeta().hasLore()) return;
         if (!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
             return;
         }

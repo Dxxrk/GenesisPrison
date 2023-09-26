@@ -16,7 +16,6 @@ import me.dxrk.Enchants.*;
 import me.dxrk.Events.*;
 import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Mines.*;
-import me.dxrk.Tokens.TokenShop;
 import me.dxrk.Tokens.TokensCMD;
 import me.dxrk.Tokens.TokensListener;
 import me.dxrk.Vote.BuycraftUtil;
@@ -209,7 +208,6 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("ls").setExecutor(new LocksmithHandler());
         getCommand("keys").setExecutor(new LocksmithHandler());
         getCommand("clearchat").setExecutor(new CMDClearchat());
-        getCommand("dr").setExecutor(new CMDDr());
         getCommand("dp").setExecutor(new CMDDp());
         getCommand("multi").setExecutor(new SellHandler());
         getCommand("withdraw").setExecutor(new SellHandler());
@@ -279,9 +277,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         registerEvents(this, new Listener[]{new TokensCMD()});
         registerEvents(this, new Listener[]{new KitAndWarp()});
         registerEvents(this, new Listener[]{new CMDTags()});
-        registerEvents(this, new Listener[]{new CMDCoinflip()});
         registerEvents(this, new Listener[]{new ProtectOP()});
-        registerEvents(this, new Listener[]{new TokenShop()});
         registerEvents(this, new Listener[]{new BlocksHandler()});
         registerEvents(this, new Listener[]{new ChatHandler()});
         registerEvents(this, new Listener[]{new CMDVote()});
@@ -325,7 +321,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             public void run() {
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     //SPEED
-                    if (settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Speed-Effect")) {
+                    if (settings.getOptions().getBoolean(p.getUniqueId() + ".Speed-Effect")) {
                         if (!p.hasPotionEffect(PotionEffectType.SPEED)) {
                             p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999, 5));
                         }
@@ -335,7 +331,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
                         }
                     }
                     //HASTE
-                    if (settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Haste-Effect")) {
+                    if (settings.getOptions().getBoolean(p.getUniqueId() + ".Haste-Effect")) {
                         if (!p.hasPotionEffect(PotionEffectType.FAST_DIGGING)) {
                             p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 999999, 10));
                         }
@@ -345,7 +341,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
                         }
                     }
                     //NIGHT VISION
-                    if (settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Night-Vision-Effect")) {
+                    if (settings.getOptions().getBoolean(p.getUniqueId() + ".Night-Vision-Effect")) {
                         if (!p.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
                             p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 999999, 2));
                         }

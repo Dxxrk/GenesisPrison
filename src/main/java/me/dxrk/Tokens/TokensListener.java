@@ -18,13 +18,13 @@ public class TokensListener implements Listener {
     @EventHandler
     public void PointsRedeem(PlayerInteractEvent event) {
         Player p = event.getPlayer();
-        if (p.getItemInHand() == null)
+        if (p.getEquipment().getItemInMainHand() == null)
             return;
-        if (p.getItemInHand().getType() != Material.PRISMARINE_CRYSTALS)
+        if (p.getEquipment().getItemInMainHand().getType() != Material.PRISMARINE_CRYSTALS)
             return;
-        if (!p.getItemInHand().hasItemMeta())
+        if (!p.getEquipment().getItemInMainHand().hasItemMeta())
             return;
-        if (p.getItemInHand().getItemMeta().getDisplayName().contains(ChatColor.AQUA + "Token")) {
+        if (p.getEquipment().getItemInMainHand().getItemMeta().getDisplayName().contains(ChatColor.AQUA + "Token")) {
             int points = 0;
             for (int i = 0; i < 36; i++) {
                 if (p.getInventory().getItem(i) != null) {

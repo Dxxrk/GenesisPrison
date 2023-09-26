@@ -6,14 +6,10 @@ import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.RankupHandler;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
-import me.dxrk.Tokens.Tokens;
-import net.minecraft.server.v1_8_R3.PacketPlayOutWorldBorder;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -53,9 +49,9 @@ public class CMDMine implements CommandExecutor, Listener {
     }
 
     public ItemStack Head(Player p) {
-        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        meta.setOwner(p.getName());
+        meta.setOwningPlayer(p);
         skull.setItemMeta(meta);
 
         return skull;
@@ -64,7 +60,7 @@ public class CMDMine implements CommandExecutor, Listener {
     public void openMineInventory(Player p) {
         Inventory mineMenu = Bukkit.createInventory(null, 27, c("&a&lYour Mine!"));
 
-        ItemStack teleport = new ItemStack(Material.ENDER_PORTAL_FRAME);
+        ItemStack teleport = new ItemStack(Material.END_PORTAL_FRAME);
         ItemMeta tm = teleport.getItemMeta();
         tm.setDisplayName(c("&aTeleport to Your Mine (/mine home|tp)"));
         teleport.setItemMeta(tm);
@@ -82,7 +78,7 @@ public class CMDMine implements CommandExecutor, Listener {
         upgrade.setItemMeta(um);
         mineMenu.setItem(6, upgrade);
 
-        ItemStack reset = new ItemStack(Material.REDSTONE_TORCH_ON);
+        ItemStack reset = new ItemStack(Material.REDSTONE_WALL_TORCH);
         ItemMeta rm = reset.getItemMeta();
         rm.setDisplayName(c("&aMine Reset Settings"));
         reset.setItemMeta(rm);
@@ -100,7 +96,7 @@ public class CMDMine implements CommandExecutor, Listener {
     public void openResetInventory(Player p, double percent) {
         Inventory reset = Bukkit.createInventory(null, InventoryType.HOPPER, c("&c&lChange Reset Percentage"));
 
-        ItemStack r = new ItemStack(Material.REDSTONE_TORCH_ON);
+        ItemStack r = new ItemStack(Material.REDSTONE_WALL_TORCH);
         ItemMeta rm = r.getItemMeta();
         rm.setDisplayName(c("&aPercentage"));
         List<String> lore = new ArrayList<>();
@@ -140,15 +136,15 @@ public class CMDMine implements CommandExecutor, Listener {
 
     public void openBlockInventory(Player p) {
         Inventory blocks = Bukkit.createInventory(null, 27, c("&3&lChoose a Custom Block"));
-        blocks.setItem(0, invBlock(Material.SMOOTH_BRICK, (short) 0, "sponsor", "Stone Brick", p));
+        blocks.setItem(0, invBlock(Material.STONE_BRICKS, (short) 0, "sponsor", "Stone Brick", p));
         blocks.setItem(2, invBlock(Material.COAL_BLOCK, (short) 0, "vip", "Coal Block", p));
         blocks.setItem(4, invBlock(Material.NETHERRACK, (short) 0, "mvp", "Netherrack", p));
         blocks.setItem(6, invBlock(Material.PRISMARINE, (short) 2, "hero", "Dark Prismarine", p));
         blocks.setItem(8, invBlock(Material.NETHER_BRICK, (short) 0, "demi-god", "Nether Brick", p));
-        blocks.setItem(10, invBlock(Material.STAINED_CLAY, (short) 0, "titan", "White Stained Clay", p));
-        blocks.setItem(12, invBlock(Material.STAINED_CLAY, (short) 10, "god", "Purple Stained Clay", p));
-        blocks.setItem(14, invBlock(Material.STAINED_CLAY, (short) 13, "olympian", "Green Stained Clay", p));
-        blocks.setItem(16, invBlock(Material.STAINED_CLAY, (short) 7, "genesis", "Gray Stained Clay", p));
+        blocks.setItem(10, invBlock(Material.WHITE_TERRACOTTA, (short) 0, "titan", "White Stained Clay", p));
+        blocks.setItem(12, invBlock(Material.PURPLE_TERRACOTTA, (short) 10, "god", "Purple Stained Clay", p));
+        blocks.setItem(14, invBlock(Material.GREEN_TERRACOTTA, (short) 13, "olympian", "Green Stained Clay", p));
+        blocks.setItem(16, invBlock(Material.GRAY_TERRACOTTA, (short) 7, "genesis", "Gray Stained Clay", p));
         ItemStack block = new ItemStack(Material.WATER_BUCKET, 1);
         ItemMeta bm = block.getItemMeta();
         bm.setDisplayName(c("&7Choose " + "Water"));
@@ -234,10 +230,10 @@ public class CMDMine implements CommandExecutor, Listener {
 
         if (e.getClickedInventory() == null)
             return;
-        if (e.getClickedInventory().getName() == null)
+        if (e.getView().getTitle() == null)
             return;
 
-        if (e.getInventory().getName().equals(c("&a&lYour Mine!"))) {
+        if (e.getView().getTitle().equals(c("&a&lYour Mine!"))) {
             if (e.getClickedInventory().equals(p.getInventory())) return;
             e.setCancelled(true);
             if (e.getSlot() == 4) {
@@ -262,7 +258,7 @@ public class CMDMine implements CommandExecutor, Listener {
                 openBlockInventory(p);
             }
         }
-        if (e.getInventory().getName().equals(c("&3&lChoose a Custom Block"))) {
+        if (e.getView().getTitle().equals(c("&3&lChoose a Custom Block"))) {
             if (e.getClickedInventory().equals(p.getInventory())) {
                 e.setCancelled(true);
                 return;
@@ -270,7 +266,7 @@ public class CMDMine implements CommandExecutor, Listener {
             e.setCancelled(true);
             if (e.getSlot() == 0) {
                 if (!p.hasPermission("rank.sponsor")) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.SMOOTH_BRICK));
+                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.STONE_BRICKS));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
                 if (FishingHandler.getInstance().hasRod(p)) {
                     FishingHandler.getInstance().saveRod(p);
@@ -315,7 +311,7 @@ public class CMDMine implements CommandExecutor, Listener {
             }
             if (e.getSlot() == 10) {
                 if (!p.hasPermission("rank.titan")) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short) 0));
+                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.WHITE_TERRACOTTA, 1, (short) 0));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
                 if (FishingHandler.getInstance().hasRod(p)) {
                     FishingHandler.getInstance().saveRod(p);
@@ -324,7 +320,7 @@ public class CMDMine implements CommandExecutor, Listener {
             }
             if (e.getSlot() == 12) {
                 if (!p.hasPermission("rank.god")) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short) 10));
+                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.PURPLE_TERRACOTTA, 1, (short) 10));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
                 if (FishingHandler.getInstance().hasRod(p)) {
                     FishingHandler.getInstance().saveRod(p);
@@ -333,7 +329,7 @@ public class CMDMine implements CommandExecutor, Listener {
             }
             if (e.getSlot() == 14) {
                 if (!p.hasPermission("rank.olympian")) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short) 13));
+                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.GREEN_TERRACOTTA, 1, (short) 13));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
                 if (FishingHandler.getInstance().hasRod(p)) {
                     FishingHandler.getInstance().saveRod(p);
@@ -342,7 +338,7 @@ public class CMDMine implements CommandExecutor, Listener {
             }
             if (e.getSlot() == 16) {
                 if (!p.hasPermission("rank.genesis")) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.STAINED_CLAY, 1, (short) 7));
+                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.GRAY_TERRACOTTA, 1, (short) 7));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
                 if (FishingHandler.getInstance().hasRod(p)) {
                     FishingHandler.getInstance().saveRod(p);
@@ -358,7 +354,7 @@ public class CMDMine implements CommandExecutor, Listener {
                 }
             }
         }
-        if (e.getInventory().getName().equals(c("&c&lChange Reset Percentage"))) {
+        if (e.getView().getTitle().equals(c("&c&lChange Reset Percentage"))) {
             if (e.getClickedInventory().equals(p.getInventory())) {
                 e.setCancelled(true);
                 return;

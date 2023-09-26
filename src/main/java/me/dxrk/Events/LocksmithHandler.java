@@ -38,37 +38,37 @@ public class LocksmithHandler implements Listener, CommandExecutor {
     }
 
     public boolean hasKeys(Player p) {
-        if (settings.getLocksmith().getInt(p.getUniqueId().toString() + ".vote") > 0) return true;
-        else if (settings.getLocksmith().getInt(p.getUniqueId().toString() + ".alpha") > 0) return true;
-        else if (settings.getLocksmith().getInt(p.getUniqueId().toString() + ".beta") > 0) return true;
-        else if (settings.getLocksmith().getInt(p.getUniqueId().toString() + ".omega") > 0) return true;
-        else if (settings.getLocksmith().getInt(p.getUniqueId().toString() + ".token") > 0) return true;
-        else if (settings.getLocksmith().getInt(p.getUniqueId().toString() + ".seasonal") > 0) return true;
-        else if (settings.getLocksmith().getInt(p.getUniqueId().toString() + ".community") > 0) return true;
-        else return settings.getLocksmith().getInt(p.getUniqueId().toString() + ".rank") > 0;
+        if (settings.getLocksmith().getInt(p.getUniqueId() + ".vote") > 0) return true;
+        else if (settings.getLocksmith().getInt(p.getUniqueId() + ".alpha") > 0) return true;
+        else if (settings.getLocksmith().getInt(p.getUniqueId() + ".beta") > 0) return true;
+        else if (settings.getLocksmith().getInt(p.getUniqueId() + ".omega") > 0) return true;
+        else if (settings.getLocksmith().getInt(p.getUniqueId() + ".token") > 0) return true;
+        else if (settings.getLocksmith().getInt(p.getUniqueId() + ".seasonal") > 0) return true;
+        else if (settings.getLocksmith().getInt(p.getUniqueId() + ".community") > 0) return true;
+        else return settings.getLocksmith().getInt(p.getUniqueId() + ".rank") > 0;
     }
 
     public void addKey(Player p, String key, int amt) {
-        int keysfound = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".KeysFound");
-        PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".KeysFound", keysfound + amt);
-        int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + key.toLowerCase());
+        int keysfound = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId() + ".KeysFound");
+        PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId() + ".KeysFound", keysfound + amt);
+        int keys = this.settings.getLocksmith().getInt(p.getUniqueId() + "." + key.toLowerCase());
         key = key.toLowerCase();
-        if (this.settings.getLocksmith().get(p.getUniqueId().toString() + "." + p.getName()) == null) {
-            this.settings.getLocksmith().set(p.getUniqueId().toString() + ".name", p.getName());
+        if (this.settings.getLocksmith().get(p.getUniqueId() + "." + p.getName()) == null) {
+            this.settings.getLocksmith().set(p.getUniqueId() + ".name", p.getName());
             this.settings.saveLocksmith();
         }
-        this.settings.getLocksmith().set(p.getUniqueId().toString() + "." + key, keys + amt);
+        this.settings.getLocksmith().set(p.getUniqueId() + "." + key, keys + amt);
         this.settings.saveLocksmith();
     }
 
     public void takeKey(Player p, String key, int amt) {
-        int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + key.toLowerCase());
+        int keys = this.settings.getLocksmith().getInt(p.getUniqueId() + "." + key.toLowerCase());
         key = key.toLowerCase();
-        if (this.settings.getLocksmith().get(p.getUniqueId().toString() + "." + p.getName()) == null) {
-            this.settings.getLocksmith().set(p.getUniqueId().toString() + ".name", p.getName());
+        if (this.settings.getLocksmith().get(p.getUniqueId() + "." + p.getName()) == null) {
+            this.settings.getLocksmith().set(p.getUniqueId() + ".name", p.getName());
             this.settings.saveLocksmith();
         }
-        this.settings.getLocksmith().set(p.getUniqueId().toString() + "." + key, keys - amt);
+        this.settings.getLocksmith().set(p.getUniqueId() + "." + key, keys - amt);
         this.settings.saveLocksmith();
     }
 
@@ -179,7 +179,7 @@ public class LocksmithHandler implements Listener, CommandExecutor {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
-        if (!e.getInventory().getName().equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', "&bLocksmith")))
+        if (!e.getView().getTitle().equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', "&bLocksmith")))
             return;
         if (e.getCurrentItem() == null)
             return;

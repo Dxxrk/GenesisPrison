@@ -35,7 +35,7 @@ public class PickaxeSkillTree implements Listener {
     }
 
     private static ItemStack skillItem(Player p, String name, String desc, int price) {
-        ItemStack skill = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+        ItemStack skill = new ItemStack(Material.RED_STAINED_GLASS_PANE);
         ItemMeta sm = skill.getItemMeta();
         List<String> lore = new ArrayList<>();
         lore.add(desc);
@@ -43,7 +43,7 @@ public class PickaxeSkillTree implements Listener {
         List<String> skillsUnlocked = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("PickaxeSkillsUnlocked");
         if (skillsUnlocked.contains(name)) {
             if (name.contains("Ending")) {
-                skill = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 1);
+                skill = new ItemStack(Material.ORANGE_STAINED_GLASS_PANE);
                 sm.setDisplayName(m.c("&6Change Pickaxe Path"));
                 List<String> confirm = new ArrayList<>();
                 confirm.add(m.c("&aClick if you want to change your pickaxe path"));
@@ -52,7 +52,7 @@ public class PickaxeSkillTree implements Listener {
                 skill.setItemMeta(sm);
                 return skill;
             }
-            skill = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 5);
+            skill = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
             sm.setDisplayName(m.c("&a" + name));
             sm.setLore(lore);
             skill.setItemMeta(sm);
@@ -76,7 +76,7 @@ public class PickaxeSkillTree implements Listener {
 
         List<String> completed = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("CompletedPaths");
 
-        ItemStack zeus = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 4);
+        ItemStack zeus = new ItemStack(Material.YELLOW_STAINED_GLASS_PANE);
         ItemMeta zm = zeus.getItemMeta();
         zm.setDisplayName(m.c("&e&lZeus Path"));
         if (!completed.contains("Zeus")) {
@@ -89,7 +89,7 @@ public class PickaxeSkillTree implements Listener {
         skills.setItem(0, zeus);
         lore.clear();
 
-        ItemStack poseidon = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 11);
+        ItemStack poseidon = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
         ItemMeta pm = poseidon.getItemMeta();
         pm.setDisplayName(m.c("&9&lPoseidon Path"));
         if (!completed.contains("Poseidon")) {
@@ -102,7 +102,7 @@ public class PickaxeSkillTree implements Listener {
         skills.setItem(1, poseidon);
         lore.clear();
 
-        ItemStack hades = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+        ItemStack hades = new ItemStack(Material.RED_STAINED_GLASS_PANE);
         ItemMeta hm = hades.getItemMeta();
         hm.setDisplayName(m.c("&4&lHades Path"));
         if (!completed.contains("Hades")) {
@@ -115,7 +115,7 @@ public class PickaxeSkillTree implements Listener {
         skills.setItem(2, hades);
         lore.clear();
 
-        ItemStack aphrodite = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 6);
+        ItemStack aphrodite = new ItemStack(Material.PINK_STAINED_GLASS_PANE);
         ItemMeta am = aphrodite.getItemMeta();
         am.setDisplayName(m.c("&d&lAphrodite Path"));
         if (!completed.contains("Aphrodite")) {
@@ -128,7 +128,7 @@ public class PickaxeSkillTree implements Listener {
         skills.setItem(3, aphrodite);
         lore.clear();
 
-        ItemStack ares = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
+        ItemStack ares = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
         ItemMeta atm = ares.getItemMeta();
         atm.setDisplayName(m.c("&2&lAres Path"));
         if (!completed.contains("Ares")) {
@@ -304,11 +304,11 @@ public class PickaxeSkillTree implements Listener {
     }
 
     public int findPickaxeType(Player p) {
-        if (p.getItemInHand().getType().equals(Material.WOOD_PICKAXE)) return 1;
-        if (p.getItemInHand().getType().equals(Material.STONE_PICKAXE)) return 2;
-        if (p.getItemInHand().getType().equals(Material.GOLD_PICKAXE)) return 3;
-        if (p.getItemInHand().getType().equals(Material.IRON_PICKAXE)) return 4;
-        if (p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)) return 5;
+        if (p.getEquipment().getItemInMainHand().getType().equals(Material.WOODEN_PICKAXE)) return 1;
+        if (p.getEquipment().getItemInMainHand().getType().equals(Material.STONE_PICKAXE)) return 2;
+        if (p.getEquipment().getItemInMainHand().getType().equals(Material.GOLDEN_PICKAXE)) return 3;
+        if (p.getEquipment().getItemInMainHand().getType().equals(Material.IRON_PICKAXE)) return 4;
+        if (p.getEquipment().getItemInMainHand().getType().equals(Material.DIAMOND_PICKAXE)) return 5;
 
         return 1;
     }
@@ -316,16 +316,16 @@ public class PickaxeSkillTree implements Listener {
     public void setType(Player p, int i) {
         switch (i) {
             case 1:
-                p.getItemInHand().setType(Material.STONE_PICKAXE);
+                p.getEquipment().getItemInMainHand().setType(Material.STONE_PICKAXE);
                 break;
             case 2:
-                p.getItemInHand().setType(Material.GOLD_PICKAXE);
+                p.getEquipment().getItemInMainHand().setType(Material.GOLDEN_PICKAXE);
                 break;
             case 3:
-                p.getItemInHand().setType(Material.IRON_PICKAXE);
+                p.getEquipment().getItemInMainHand().setType(Material.IRON_PICKAXE);
                 break;
             case 4:
-                p.getItemInHand().setType(Material.DIAMOND_PICKAXE);
+                p.getEquipment().getItemInMainHand().setType(Material.DIAMOND_PICKAXE);
                 break;
         }
 
@@ -534,7 +534,7 @@ public class PickaxeSkillTree implements Listener {
     //The level ups (different pickaxe item dia, gold, etc) are free once available in the tree.
 
     public void selectPath(Player p, String path, String color) {
-        ItemStack pitem = p.getItemInHand().clone();
+        ItemStack pitem = p.getEquipment().getItemInMainHand().clone();
         ItemMeta pm = pitem.getItemMeta();
         List<String> lore = pm.getLore();
 
@@ -580,13 +580,13 @@ public class PickaxeSkillTree implements Listener {
         inv.setItem(1, Spacer());
         inv.setItem(3, Spacer());
 
-        ItemStack no = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+        ItemStack no = new ItemStack(Material.RED_STAINED_GLASS_PANE);
         ItemMeta nometa = no.getItemMeta();
         nometa.setDisplayName(m.c("&c&lNo!"));
         no.setItemMeta(nometa);
         inv.setItem(0, no);
 
-        ItemStack yes = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
+        ItemStack yes = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
         ItemMeta yesmeta = yes.getItemMeta();
         yesmeta.setDisplayName(m.c("&a&lYes!"));
         yes.setItemMeta(yesmeta);
@@ -613,11 +613,11 @@ public class PickaxeSkillTree implements Listener {
         Player p = (Player) e.getWhoClicked();
 
         if (e.getClickedInventory() == null) return;
-        if (e.getClickedInventory().getName() == null) return;
+        if (e.getView().getTitle() == null) return;
         if (e.getCurrentItem() == null) return;
         if (!e.getCurrentItem().hasItemMeta()) return;
 
-        if (e.getInventory().getName().equals(m.c("&cSelect a Path"))) {
+        if (e.getView().getTitle().equals(m.c("&cSelect a Path"))) {
             e.setCancelled(true);
             if (e.getClickedInventory().equals(p.getInventory())) return;
             List<String> completed = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("CompletedPaths");
@@ -638,7 +638,7 @@ public class PickaxeSkillTree implements Listener {
                 selectPath(p, "Ares", "&2");
             }
         }
-        if (e.getInventory().getName().equals(m.c("&e&lZeus Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
+        if (e.getView().getTitle().equals(m.c("&e&lZeus Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
             e.setCancelled(true);
             if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5)
                 return;
@@ -701,7 +701,7 @@ public class PickaxeSkillTree implements Listener {
             if (skill.contains("Zeus")) {
                 //setType(p, findPickaxeType(p));
 
-                ItemStack pitem = p.getItemInHand().clone();
+                ItemStack pitem = p.getEquipment().getItemInMainHand().clone();
                 ItemMeta pm = pitem.getItemMeta();
                 List<String> lore = pm.getLore();
 
@@ -724,7 +724,7 @@ public class PickaxeSkillTree implements Listener {
             PlayerDataHandler.getInstance().savePlayerData(p);
             openZeus(p);
         }
-        if (e.getClickedInventory().getName().equals(m.c("&9&lPoseidon Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
+        if (e.getView().getTitle().equals(m.c("&9&lPoseidon Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
             e.setCancelled(true);
             if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5)
                 return;
@@ -787,7 +787,7 @@ public class PickaxeSkillTree implements Listener {
             if (skill.contains("Poseidon")) {
                 //setType(p, findPickaxeType(p));
 
-                ItemStack pitem = p.getItemInHand().clone();
+                ItemStack pitem = p.getEquipment().getItemInMainHand().clone();
                 ItemMeta pm = pitem.getItemMeta();
                 List<String> lore = pm.getLore();
 
@@ -809,7 +809,7 @@ public class PickaxeSkillTree implements Listener {
             PlayerDataHandler.getInstance().savePlayerData(p);
             openPoseidon(p);
         }
-        if (e.getClickedInventory().getName().equals(m.c("&4&lHades Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
+        if (e.getView().getTitle().equals(m.c("&4&lHades Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
             e.setCancelled(true);
             if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5)
                 return;
@@ -873,7 +873,7 @@ public class PickaxeSkillTree implements Listener {
             if (skill.contains("Hades")) {
                 //setType(p, findPickaxeType(p));
 
-                ItemStack pitem = p.getItemInHand().clone();
+                ItemStack pitem = p.getEquipment().getItemInMainHand().clone();
                 ItemMeta pm = pitem.getItemMeta();
                 List<String> lore = pm.getLore();
 
@@ -895,7 +895,7 @@ public class PickaxeSkillTree implements Listener {
             PlayerDataHandler.getInstance().savePlayerData(p);
             openHades(p);
         }
-        if (e.getClickedInventory().getName().equals(m.c("&d&lAphrodite Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
+        if (e.getView().getTitle().equals(m.c("&d&lAphrodite Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
             e.setCancelled(true);
             if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5)
                 return;
@@ -958,7 +958,7 @@ public class PickaxeSkillTree implements Listener {
             if (skill.contains("Aphrodite")) {
                 //setType(p, findPickaxeType(p));
 
-                ItemStack pitem = p.getItemInHand().clone();
+                ItemStack pitem = p.getEquipment().getItemInMainHand().clone();
                 ItemMeta pm = pitem.getItemMeta();
                 List<String> lore = pm.getLore();
 
@@ -980,7 +980,7 @@ public class PickaxeSkillTree implements Listener {
             PlayerDataHandler.getInstance().savePlayerData(p);
             openAphrodite(p);
         }
-        if (e.getClickedInventory().getName().equals(m.c("&2&lAres Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
+        if (e.getView().getTitle().equals(m.c("&2&lAres Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
             e.setCancelled(true);
             if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5)
                 return;
@@ -1042,7 +1042,7 @@ public class PickaxeSkillTree implements Listener {
             if (skill.contains("Ares")) {
                 //setType(p, findPickaxeType(p));
 
-                ItemStack pitem = p.getItemInHand().clone();
+                ItemStack pitem = p.getEquipment().getItemInMainHand().clone();
                 ItemMeta pm = pitem.getItemMeta();
                 List<String> lore = pm.getLore();
 
@@ -1064,7 +1064,7 @@ public class PickaxeSkillTree implements Listener {
             PlayerDataHandler.getInstance().savePlayerData(p);
             openAres(p);
         }
-        if (e.getClickedInventory().getName().equals(m.c("&4&lAre you sure?"))) {
+        if (e.getView().getTitle().equals(m.c("&4&lAre you sure?"))) {
             e.setCancelled(true);
             if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0)
                 return;

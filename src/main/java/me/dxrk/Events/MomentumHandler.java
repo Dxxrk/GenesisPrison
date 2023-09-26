@@ -1,6 +1,6 @@
 package me.dxrk.Events;
 
-import com.connorlinfoot.actionbarapi.ActionBarAPI;
+
 import com.connorlinfoot.titleapi.TitleAPI;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
@@ -52,7 +52,7 @@ public class MomentumHandler implements Listener {
                         ActionBarAPI.sendActionBar(p, m.c("&d&lMomentum: ") + Leaderboards.formatTime(getSeconds(player)));
                     return;
                 } else {
-                    addSeconds(player);
+                    addSeconds(player);                                                                                             ////replace with packets?
                     if (p != null) {
                         ActionBarAPI.sendActionBar(p, m.c("&d&lMomentum: ") + Leaderboards.formatTime(getSeconds(player)));
                         sendTitleMomentum(p);

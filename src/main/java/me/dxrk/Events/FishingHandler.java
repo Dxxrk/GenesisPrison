@@ -58,23 +58,23 @@ public class FishingHandler implements Listener, CommandExecutor {
             int amount = 1;
             if (r.nextInt(103 - multiplierlevel) == 1) {
                 amount = 2;
-                if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Multiplier-Messages"))
+                if(this.settings.getOptions().getBoolean(p.getUniqueId() + ".Multiplier-Messages"))
                     p.sendMessage(m.c("&f&lMultiplier &8| &bExtra fish."));
             }
             if (number <= 40) {
-                reward = new ItemStack(Material.RAW_FISH, amount, (short) 0);
+                reward = new ItemStack(Material.TROPICAL_FISH, amount, (short) 0);
                 im = reward.getItemMeta();
                 im.setDisplayName(m.c("&6&lRaw Fish"));
             } else if (number <= 70) {
-                reward = new ItemStack(Material.RAW_FISH, amount, (short) 1);
+                reward = new ItemStack(Material.TROPICAL_FISH, amount, (short) 1);
                 im = reward.getItemMeta();
                 im.setDisplayName(m.c("&6&lRaw Salmon"));
             } else if (number <= 90) {
-                reward = new ItemStack(Material.RAW_FISH, amount, (short) 2);
+                reward = new ItemStack(Material.TROPICAL_FISH, amount, (short) 2);
                 im = reward.getItemMeta();
                 im.setDisplayName(m.c("&6&lClownfish"));
             } else {
-                reward = new ItemStack(Material.RAW_FISH, amount, (short) 3);
+                reward = new ItemStack(Material.TROPICAL_FISH, amount, (short) 3);
                 im = reward.getItemMeta();
                 im.setDisplayName(m.c("&6&lPufferfish"));
             }
@@ -107,7 +107,7 @@ public class FishingHandler implements Listener, CommandExecutor {
                     else
                         key = "Seasonal";
                     KeysHandler.getInstance().addKey(p, key, amt);
-                    if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Key-Fisher-Messages"))
+                    if(this.settings.getOptions().getBoolean(p.getUniqueId() + ".Key-Fisher-Messages"))
                         p.sendMessage(m.c("&f&lKey Fisher &8| &7+") + amt + " " + key + " Key");
                 }
             }
@@ -119,23 +119,23 @@ public class FishingHandler implements Listener, CommandExecutor {
                     int rr = r.nextInt(54);
                     if(rr<=46){
                         p.getInventory().addItem(CrateFunctions.FishingCrate());
-                        if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Treasure-Hunter-Messages"))
+                        if(this.settings.getOptions().getBoolean(p.getUniqueId() + ".Treasure-Hunter-Messages"))
                             p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Fishing Crate"));
                     }else if(rr<=48){
                         p.getInventory().addItem(MonsterHandler.egg());
-                        if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Treasure-Hunter-Messages"))
+                        if(this.settings.getOptions().getBoolean(p.getUniqueId() + ".Treasure-Hunter-Messages"))
                             p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Monster Egg"));
                     }else if(rr<=50){
                         p.getInventory().addItem(CrateFunctions.ContrabandCrate());
-                        if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Treasure-Hunter-Messages"))
+                        if(this.settings.getOptions().getBoolean(p.getUniqueId() + ".Treasure-Hunter-Messages"))
                             p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Contraband Crate"));
                     }else if(rr<=52){
                         p.getInventory().addItem(CrateFunctions.GenesisCrate());
-                        if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Treasure-Hunter-Messages"))
+                        if(this.settings.getOptions().getBoolean(p.getUniqueId() + ".Treasure-Hunter-Messages"))
                             p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Genesis Crate"));
                     }else{
                         p.getInventory().addItem(CrateFunctions.AprilCrate());
-                        if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Treasure-Hunter-Messages"))
+                        if(this.settings.getOptions().getBoolean(p.getUniqueId() + ".Treasure-Hunter-Messages"))
                             p.sendMessage(m.c("&f&lTreasure Hunter &8| &7+1 Monthly Crate"));
                     }
                 }
@@ -144,7 +144,7 @@ public class FishingHandler implements Listener, CommandExecutor {
             if(xpfinderlevel>0){
                 int rr=r.nextInt(5);
                 if(rr==1){
-                    if(this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Fishing-XPFinder-Messages"))
+                    if(this.settings.getOptions().getBoolean(p.getUniqueId() + ".Fishing-XPFinder-Messages"))
                         PickXPHandler.getInstance().addXP(p, 5000+50*xpfinderlevel);
                 }
             }
@@ -161,7 +161,7 @@ public class FishingHandler implements Listener, CommandExecutor {
     }
 
     public int getEnchantLevel(Player p, String enchant) {
-        ItemStack item = p.getItemInHand();
+        ItemStack item = p.getEquipment().getItemInMainHand();
         ItemMeta itemmeta = item.getItemMeta();
         List<String> lore = itemmeta.getLore();
         int x = 0;
@@ -179,7 +179,7 @@ public class FishingHandler implements Listener, CommandExecutor {
         for (int i = 0; i < 9; i++)
             inv.setItem(i, PickaxeLevel.getInstance().SpacerWhite());
         List<String> lore = new ArrayList<>();
-        ItemStack fish = new ItemStack(Material.RAW_FISH, 1, (short) 0);
+        ItemStack fish = new ItemStack(Material.TROPICAL_FISH, 1, (short) 0);
         ItemMeta fishmeta = fish.getItemMeta();
         fishmeta.setDisplayName(m.c("&6&lRaw Fish"));
         lore.add(m.c("&bSells for: 1 Crystal"));
@@ -191,7 +191,7 @@ public class FishingHandler implements Listener, CommandExecutor {
         inv.setItem(1, fish);
         lore.clear();
 
-        ItemStack salmon = new ItemStack(Material.RAW_FISH, 1, (short) 1);
+        ItemStack salmon = new ItemStack(Material.TROPICAL_FISH, 1, (short) 1);
         ItemMeta salmonmeta = salmon.getItemMeta();
         salmonmeta.setDisplayName(m.c("&6&lRaw Salmon"));
         lore.add(m.c("&bSells for: 2 Crystals"));
@@ -203,7 +203,7 @@ public class FishingHandler implements Listener, CommandExecutor {
         inv.setItem(3, salmon);
         lore.clear();
 
-        ItemStack clown = new ItemStack(Material.RAW_FISH, 1, (short) 2);
+        ItemStack clown = new ItemStack(Material.TROPICAL_FISH, 1, (short) 2);
         ItemMeta clownmeta = clown.getItemMeta();
         clownmeta.setDisplayName(m.c("&6&lClownfish"));
         lore.add(m.c("&bSells for: 3 Crystals"));
@@ -215,7 +215,7 @@ public class FishingHandler implements Listener, CommandExecutor {
         inv.setItem(5, clown);
         lore.clear();
 
-        ItemStack puffer = new ItemStack(Material.RAW_FISH, 1, (short) 3);
+        ItemStack puffer = new ItemStack(Material.TROPICAL_FISH, 1, (short) 3);
         ItemMeta puffermeta = puffer.getItemMeta();
         puffermeta.setDisplayName(m.c("&6&lPufferfish"));
         lore.add(m.c("&bSells for: 5 Crystals"));
@@ -330,10 +330,10 @@ public class FishingHandler implements Listener, CommandExecutor {
 
         int enchantLevel = 0;
 
-        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
-            String s = p.getItemInHand().getItemMeta().getLore().get(x);
+        for (int x = 0; x < p.getEquipment().getItemInMainHand().getItemMeta().getLore().size(); x++) {
+            String s = p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(x);
             if (ChatColor.stripColor(s).contains(enchantName)) {
-                enchantLevel = getInt(p.getItemInHand().getItemMeta().getLore().get(x));
+                enchantLevel = getInt(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(x));
             }
         }
         double price;
@@ -394,7 +394,7 @@ public class FishingHandler implements Listener, CommandExecutor {
         setEnchantItemRod("Bait", Material.STRING, "Upgrade Bait", "Lowers the max wait time for fish", 25, inv, 0, p);
         setEnchantItemRod("Key Fisher", Material.TRIPWIRE_HOOK, "Upgrade Key Fisher", "Chance to find keys while fishing", 10, inv, 2, p);
         setEnchantItemRod("Multiplier", Material.EMERALD, "Upgrade Multiplier", "Raise the chance to catch multiple fish while fishing", 2, inv, 4, p);
-        setEnchantItemRod("XP Finder", Material.EXP_BOTTLE, "Upgrade XP Finder", "Chance to Pickaxe XP while fishing", 5, inv, 6, p);
+        setEnchantItemRod("XP Finder", Material.EXPERIENCE_BOTTLE, "Upgrade XP Finder", "Chance to Pickaxe XP while fishing", 5, inv, 6, p);
         setEnchantItemRod("Treasure Hunter", Material.GOLD_BLOCK, "Upgrade Treasure Hunter", "Chance to find loot while fishing", 25, inv, 8, p);
 
         p.openInventory(inv);
@@ -491,7 +491,7 @@ public class FishingHandler implements Listener, CommandExecutor {
             ItemStack item = inv[i];
             if (item == null) continue;
             if (item.getType() == null) continue;
-            if (item.getType().equals(Material.WOOD_PICKAXE) || item.getType().equals(Material.STONE_PICKAXE) || item.getType().equals(Material.IRON_PICKAXE) || item.getType().equals(Material.GOLD_PICKAXE)
+            if (item.getType().equals(Material.WOODEN_PICKAXE) || item.getType().equals(Material.STONE_PICKAXE) || item.getType().equals(Material.IRON_PICKAXE) || item.getType().equals(Material.GOLDEN_PICKAXE)
                     || item.getType().equals(Material.DIAMOND_PICKAXE)) {
                 return i;
             }
@@ -532,7 +532,7 @@ public class FishingHandler implements Listener, CommandExecutor {
         for (ItemStack i : inv) {
             if (i == null) continue;
             if (i.getType() == null) continue;
-            if (i.getType().equals(Material.WOOD_PICKAXE) || i.getType().equals(Material.STONE_PICKAXE) || i.getType().equals(Material.IRON_PICKAXE) || i.getType().equals(Material.GOLD_PICKAXE)
+            if (i.getType().equals(Material.WOODEN_PICKAXE) || i.getType().equals(Material.STONE_PICKAXE) || i.getType().equals(Material.IRON_PICKAXE) || i.getType().equals(Material.GOLDEN_PICKAXE)
                     || i.getType().equals(Material.DIAMOND_PICKAXE)) {
                 return true;
             }
@@ -547,7 +547,7 @@ public class FishingHandler implements Listener, CommandExecutor {
             openSellInv(p);
         }else if (command.getName().equalsIgnoreCase("rod")) {
             Player p = (Player) commandSender;
-            if (p.getItemInHand().getType().equals(Material.FISHING_ROD))
+            if (p.getEquipment().getItemInMainHand().getType().equals(Material.FISHING_ROD))
                 openEnchantInv(p);
             else
                 p.sendMessage(m.c("&cHold a Fishing Rod in your hand to open the Menu."));
@@ -601,9 +601,9 @@ public class FishingHandler implements Listener, CommandExecutor {
         Player p = (Player) e.getWhoClicked();
 
         if (e.getClickedInventory() == null) return;
-        if (e.getClickedInventory().getName() == null) return;
+        if (e.getView().getTitle() == null) return;
 
-        if (e.getClickedInventory().getName().contains(m.c("&a&lSell Fish &8|"))) {
+        if (e.getView().getTitle().contains(m.c("&a&lSell Fish &8|"))) {
             e.setCancelled(true);
             if (e.getClickedInventory().equals(p.getInventory())) return;
             if (e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return;
@@ -650,7 +650,7 @@ public class FishingHandler implements Listener, CommandExecutor {
             }
             PlayerDataHandler.getInstance().savePlayerData(p);
             openSellInv(p);
-        } else if (e.getClickedInventory().getName().contains(m.c("&cRod Enchants "))) {
+        } else if (e.getView().getTitle().contains(m.c("&cRod Enchants "))) {
             e.setCancelled(true);
             if (e.getClickedInventory().equals(p.getInventory())) return;
             if (e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return;
@@ -660,14 +660,14 @@ public class FishingHandler implements Listener, CommandExecutor {
             String name = display[1];
 
             if (e.getClick().equals(ClickType.LEFT)) {
-                upgradeRodEnchant(p, p.getItemInHand(), name, 1);
+                upgradeRodEnchant(p, p.getEquipment().getItemInMainHand(), name, 1);
             } else if (e.getClick().equals(ClickType.RIGHT)) {
-                upgradeRodEnchant(p, p.getItemInHand(), name, 10);
+                upgradeRodEnchant(p, p.getEquipment().getItemInMainHand(), name, 10);
             }
 
             p.updateInventory();
             openEnchantInv(p);
-        } else if (e.getClickedInventory().getName().equals(m.c("&b&lCrystal Shop:"))){
+        } else if (e.getView().getTitle().equals(m.c("&b&lCrystal Shop:"))){
             e.setCancelled(true);
             if (e.getClickedInventory().equals(p.getInventory())) return;
             if (e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return;
@@ -706,7 +706,7 @@ public class FishingHandler implements Listener, CommandExecutor {
         short count = 0;
         for (ItemStack item : p.getInventory().getContents()) {
             if (item == null) continue;
-            if (item.getType() == Material.RAW_FISH && item.getData().getData() == a) {
+            if (item.getType() == Material.TROPICAL_FISH && item.getData().getData() == a) {
                 count += item.getAmount();
             }
         }

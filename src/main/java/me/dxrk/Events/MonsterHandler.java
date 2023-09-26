@@ -3,15 +3,16 @@ package me.dxrk.Events;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import net.minecraft.server.v1_8_R3.NBTTagDouble;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.DoubleTag;
+import net.minecraft.nbt.Tag;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -42,7 +43,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
     public static double getMonsterBoost(Player p, int loreline) {
         double boost = 1;
         for (ItemStack i : p.getInventory().getContents()) {
-            if (i != null && i.getType().equals(Material.SKULL_ITEM) && i.hasItemMeta() && i.getItemMeta().hasLore() && activeMonster.containsKey(p)) {
+            if (i != null && i.getType().equals(Material.PLAYER_HEAD) && i.hasItemMeta() && i.getItemMeta().hasLore() && activeMonster.containsKey(p)) {
                 String active = ChatColor.stripColor(i.getItemMeta().getDisplayName()).split(" ")[1];
                 if (active.equals("(Active)")) {
                     if (loreline <= 3) {
@@ -73,7 +74,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
 
 
     public static ItemStack egg() {
-        ItemStack egg = new ItemStack(Material.MONSTER_EGG);
+        ItemStack egg = new ItemStack(Material.ENDER_DRAGON_SPAWN_EGG);
         ItemMeta em = egg.getItemMeta();
         em.setDisplayName(m.c("&c&lMonster &7&lEgg"));
         List<String> lore = new ArrayList<>();
@@ -164,7 +165,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
         Player p = e.getPlayer();
         for (int i = 0; i < p.getInventory().getSize(); i++) {
             ItemStack it = p.getInventory().getItem(i);
-            if (it != null && it.getType().equals(Material.SKULL_ITEM) && it.hasItemMeta() && it.getItemMeta().getDisplayName().contains(" ") &&
+            if (it != null && it.getType().equals(Material.PLAYER_HEAD) && it.hasItemMeta() && it.getItemMeta().getDisplayName().contains(" ") &&
                     ChatColor.stripColor(it.getItemMeta().getDisplayName()).split(" ")[1].equals("(Active)")) {
                 ItemStack pitem = it.clone();
                 String[] name = pitem.getItemMeta().getDisplayName().split(" ");
@@ -188,7 +189,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
         Player p = (Player) e.getWhoClicked();
         if (e.getClickedInventory() == null)
             return;
-        if (e.getClickedInventory().getName() == null)
+        if (e.getView().getTitle() == null)
             return;
         if (activeMonster.containsKey(p) && e.getClick() == ClickType.NUMBER_KEY) {
             int slot = e.getHotbarButton();
@@ -218,7 +219,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
         upgrade.setItem(1, info);
         upgrade.setItem(3, info);
         upgrade.setItem(4, info);
-        ItemStack up = new ItemStack(Material.INK_SACK, 1, (short) 10);
+        ItemStack up = new ItemStack(Material.INK_SAC, 1, (short) 10);
         ItemMeta um = up.getItemMeta();
         int level = parseInt(ChatColor.stripColor(info.getItemMeta().getLore().get(3)).split(" ")[1]);
         String rarity = ChatColor.stripColor(info.getItemMeta().getLore().get(2)).split(" ")[1];
@@ -233,39 +234,39 @@ public class MonsterHandler implements Listener, CommandExecutor {
     @EventHandler
     public void openEgg(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if (p.getItemInHand() == null) return;
-        if (!p.getItemInHand().hasItemMeta()) return;
+        if (p.getEquipment().getItemInMainHand() == null) return;
+        if (!p.getEquipment().getItemInMainHand().hasItemMeta()) return;
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) || e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
             if (p.isSneaking()) {
 
                 return;
             }
-            if (p.getItemInHand().getType().equals(Material.MONSTER_EGG) && p.getItemInHand().getItemMeta().getDisplayName().equals(m.c("&c&lMonster &7&lEgg"))) {
+            if (p.getEquipment().getItemInMainHand().getType().equals(Material.ENDER_DRAGON_SPAWN_EGG) && p.getEquipment().getItemInMainHand().getItemMeta().getDisplayName().equals(m.c("&c&lMonster &7&lEgg"))) {
                 giveMonster(p);
-                int amount = p.getItemInHand().getAmount();
+                int amount = p.getEquipment().getItemInMainHand().getAmount();
                 if (amount == 1) {
                     p.setItemInHand(null);
                 } else {
-                    p.getItemInHand().setAmount(amount - 1);
+                    p.getEquipment().getItemInMainHand().setAmount(amount - 1);
                 }
                 return;
             }
-            if (p.getItemInHand().getType().equals(Material.SKULL_ITEM)) {
-                String active = ChatColor.stripColor(p.getItemInHand().getItemMeta().getDisplayName()).split(" ")[1];
-                if (p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore() && active.equals("(Inactive)")) {
+            if (p.getEquipment().getItemInMainHand().getType().equals(Material.PLAYER_HEAD)) {
+                String active = ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getDisplayName()).split(" ")[1];
+                if (p.getEquipment().getItemInMainHand().hasItemMeta() && p.getEquipment().getItemInMainHand().getItemMeta().hasLore() && active.equals("(Inactive)")) {
                     e.setCancelled(true);
                     if (activeMonster.containsKey(p)) {
                         p.sendMessage(m.c("&f&lMonsters &8| &7You have a monster active already."));
                         return;
                     }
-                    activateMonster(p, p.getItemInHand());
-                    activeMonster.put(p, p.getItemInHand());
+                    activateMonster(p, p.getEquipment().getItemInMainHand());
+                    activeMonster.put(p, p.getEquipment().getItemInMainHand());
                     return;
                 }
-                if (p.getItemInHand().getType().equals(Material.SKULL_ITEM) && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore() && active.equals("(Active)")) {
+                if (p.getEquipment().getItemInMainHand().getType().equals(Material.PLAYER_HEAD) && p.getEquipment().getItemInMainHand().hasItemMeta() && p.getEquipment().getItemInMainHand().getItemMeta().hasLore() && active.equals("(Active)")) {
                     e.setCancelled(true);
                     if (activeMonster.containsKey(p)) {
-                        deactivateMonster(p, p.getItemInHand());
+                        deactivateMonster(p, p.getEquipment().getItemInMainHand());
                         activeMonster.remove(p);
                     }
                 }
@@ -273,10 +274,9 @@ public class MonsterHandler implements Listener, CommandExecutor {
         }
     }
 
-    @EventHandler
-    public void setMaxStackSize(net.minecraft.server.v1_8_R3.Item getitem, int i) {
+    public void setMaxStackSize(net.minecraft.world.item.Item getitem, int i) {
         try {
-            Field field = net.minecraft.server.v1_8_R3.Item.class.getDeclaredField("maxStackSize");
+            Field field = net.minecraft.world.item.Item.class.getDeclaredField("maxStackSize");
             field.setAccessible(true);
             field.setInt(getitem, i);
         } catch (Exception ignored) {
@@ -295,9 +295,9 @@ public class MonsterHandler implements Listener, CommandExecutor {
         lore.add(m.c("&7Boost: &b" + bonusmoney + "% Income Boost"));
         lm.setLore(lore);
         ladon.setItemMeta(lm);
-        net.minecraft.server.v1_8_R3.ItemStack i2 = CraftItemStack.asNMSCopy(ladon);
-        NBTTagCompound itemcompound = (i2.hasTag()) ? i2.getTag() : new NBTTagCompound();
-        itemcompound.set("toStopStacking", new NBTTagDouble(new Random().nextDouble()));
+        net.minecraft.world.item.ItemStack i2 = CraftItemStack.asNMSCopy(ladon);
+        CompoundTag itemcompound = (i2.hasTag()) ? i2.getTag() : new CompoundTag();
+        itemcompound.put("toStopStacking", DoubleTag.valueOf(new Random().nextDouble()));
         i2.setTag(itemcompound);
         ladon = CraftItemStack.asBukkitCopy(i2);
         return ladon;
@@ -315,9 +315,9 @@ public class MonsterHandler implements Listener, CommandExecutor {
         lore.add(m.c("&7Boost: &e" + bonus + "% Token Boost"));
         im.setLore(lore);
         item.setItemMeta(im);
-        net.minecraft.server.v1_8_R3.ItemStack i2 = CraftItemStack.asNMSCopy(item);
-        NBTTagCompound itemcompound = (i2.hasTag()) ? i2.getTag() : new NBTTagCompound();
-        itemcompound.set("toStopStacking", new NBTTagDouble(new Random().nextDouble()));
+        net.minecraft.world.item.ItemStack i2 = CraftItemStack.asNMSCopy(item);
+        CompoundTag itemcompound = (i2.hasTag()) ? i2.getTag() : new CompoundTag();
+        itemcompound.put("toStopStacking", DoubleTag.valueOf(new Random().nextDouble()));
         i2.setTag(itemcompound);
         item = CraftItemStack.asBukkitCopy(i2);
         return item;
@@ -335,9 +335,9 @@ public class MonsterHandler implements Listener, CommandExecutor {
         lore.add(m.c("&7Boost: &a" + bonus + "% Gem Boost"));
         im.setLore(lore);
         item.setItemMeta(im);
-        net.minecraft.server.v1_8_R3.ItemStack i2 = CraftItemStack.asNMSCopy(item);
-        NBTTagCompound itemcompound = (i2.hasTag()) ? i2.getTag() : new NBTTagCompound();
-        itemcompound.set("toStopStacking", new NBTTagDouble(new Random().nextDouble()));
+        net.minecraft.world.item.ItemStack i2 = CraftItemStack.asNMSCopy(item);
+        CompoundTag itemcompound = (i2.hasTag()) ? i2.getTag() : new CompoundTag();
+        itemcompound.put("toStopStacking", DoubleTag.valueOf(new Random().nextDouble()));
         i2.setTag(itemcompound);
         item = CraftItemStack.asBukkitCopy(i2);
         return item;
@@ -356,9 +356,9 @@ public class MonsterHandler implements Listener, CommandExecutor {
         lore.add(m.c("             &e" + bonus2 + "% Token Boost"));
         im.setLore(lore);
         item.setItemMeta(im);
-        net.minecraft.server.v1_8_R3.ItemStack i2 = CraftItemStack.asNMSCopy(item);
-        NBTTagCompound itemcompound = (i2.hasTag()) ? i2.getTag() : new NBTTagCompound();
-        itemcompound.set("toStopStacking", new NBTTagDouble(new Random().nextDouble()));
+        net.minecraft.world.item.ItemStack i2 = CraftItemStack.asNMSCopy(item);
+        CompoundTag itemcompound = (i2.hasTag()) ? i2.getTag() : new CompoundTag();
+        itemcompound.put("toStopStacking", DoubleTag.valueOf(new Random().nextDouble()));
         i2.setTag(itemcompound);
         item = CraftItemStack.asBukkitCopy(i2);
         return item;
@@ -378,9 +378,9 @@ public class MonsterHandler implements Listener, CommandExecutor {
         lore.add(m.c("             &a" + bonus3 + "% Gem Boost"));
         im.setLore(lore);
         item.setItemMeta(im);
-        net.minecraft.server.v1_8_R3.ItemStack i2 = CraftItemStack.asNMSCopy(item);
-        NBTTagCompound itemcompound = (i2.hasTag()) ? i2.getTag() : new NBTTagCompound();
-        itemcompound.set("toStopStacking", new NBTTagDouble(new Random().nextDouble()));
+        net.minecraft.world.item.ItemStack i2 = CraftItemStack.asNMSCopy(item);
+        CompoundTag itemcompound = (i2.hasTag()) ? i2.getTag() : new CompoundTag();
+        itemcompound.put("toStopStacking", DoubleTag.valueOf(new Random().nextDouble()));
         i2.setTag(itemcompound);
         item = CraftItemStack.asBukkitCopy(i2);
         return item;

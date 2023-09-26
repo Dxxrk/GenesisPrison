@@ -35,24 +35,24 @@ public class KeysHandler implements Listener {
 
 
     public void addKey(Player p, String key, int amt) {
-        int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + key.toLowerCase());
+        int keys = this.settings.getLocksmith().getInt(p.getUniqueId() + "." + key.toLowerCase());
         key = key.toLowerCase();
-        if (this.settings.getLocksmith().get(p.getUniqueId().toString() + "." + p.getName()) == null) {
-            this.settings.getLocksmith().set(p.getUniqueId().toString() + ".name", p.getName());
+        if (this.settings.getLocksmith().get(p.getUniqueId() + "." + p.getName()) == null) {
+            this.settings.getLocksmith().set(p.getUniqueId() + ".name", p.getName());
             this.settings.saveLocksmith();
         }
-        this.settings.getLocksmith().set(p.getUniqueId().toString() + "." + key, keys + amt);
+        this.settings.getLocksmith().set(p.getUniqueId() + "." + key, keys + amt);
         this.settings.saveLocksmith();
     }
 
     public void takeKey(Player p, String key, int amt) {
-        int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + key.toLowerCase());
+        int keys = this.settings.getLocksmith().getInt(p.getUniqueId() + "." + key.toLowerCase());
         key = key.toLowerCase();
-        if (this.settings.getLocksmith().get(p.getUniqueId().toString() + "." + p.getName()) == null) {
-            this.settings.getLocksmith().set(p.getUniqueId().toString() + ".name", p.getName());
+        if (this.settings.getLocksmith().get(p.getUniqueId() + "." + p.getName()) == null) {
+            this.settings.getLocksmith().set(p.getUniqueId() + ".name", p.getName());
             this.settings.saveLocksmith();
         }
-        this.settings.getLocksmith().set(p.getUniqueId().toString() + "." + key, keys - amt);
+        this.settings.getLocksmith().set(p.getUniqueId() + "." + key, keys - amt);
         this.settings.saveLocksmith();
     }
 
@@ -64,7 +64,7 @@ public class KeysHandler implements Listener {
                 "&f&lKey Finder &8| &b+" + amt + " " + color + key + color2 + " &bKey");
 
 
-        if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Key-Finder-Messages") == true) {
+        if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Key-Finder-Messages") == true) {
             p.sendMessage(s);
         }
         addKey(p, key, amt);
@@ -76,7 +76,7 @@ public class KeysHandler implements Listener {
         for(Player p : Bukkit.getOnlinePlayers()) {
             s = ChatColor.translateAlternateColorCodes('&',
                     "&5&lCommunity &8| &b+" + amt + " &5&lCommunity &bKey");
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Key-Finder-Messages") == true) {
+            if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Key-Finder-Messages") == true) {
                 p.sendMessage(s);
             }
             addKey(p, "Community", amt);
@@ -87,31 +87,31 @@ public class KeysHandler implements Listener {
         switch (dust) {
             case "Common":
                 p.getInventory().addItem(TrinketHandler.getInstance().commonDust());
-                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Dust-Finder-Messages") == true) {
+                if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Dust-Finder-Messages") == true) {
                     p.sendMessage(m.c("&f&lDust Finder &8| &b+1 Common Trinket Dust"));
                 }
                 break;
             case "Rare":
                 p.getInventory().addItem(TrinketHandler.getInstance().rareDust());
-                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Dust-Finder-Messages") == true) {
+                if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Dust-Finder-Messages") == true) {
                     p.sendMessage(m.c("&f&lDust Finder &8| &9+1 Rare Trinket Dust"));
                 }
                 break;
             case "Epic":
                 p.getInventory().addItem(TrinketHandler.getInstance().epicDust());
-                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Dust-Finder-Messages") == true) {
+                if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Dust-Finder-Messages") == true) {
                     p.sendMessage(m.c("&f&lDust Finder &8| &5+1 Epic Trinket Dust"));
                 }
                 break;
             case "Legendary":
                 p.getInventory().addItem(TrinketHandler.getInstance().legDust());
-                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Dust-Finder-Messages") == true) {
+                if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Dust-Finder-Messages") == true) {
                     p.sendMessage(m.c("&f&lDust Finder &8| &6+1 Legendary Trinket Dust"));
                 }
                 break;
             case "Heroic":
                 p.getInventory().addItem(TrinketHandler.getInstance().herDust());
-                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Dust-Finder-Messages") == true) {
+                if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Dust-Finder-Messages") == true) {
                     p.sendMessage(m.c("&f&lDust Finder &8| &4+1 Heroic Trinket Dust"));
                 }
                 break;
@@ -167,7 +167,7 @@ public class KeysHandler implements Listener {
     public void giveKey(int kfLvL, Player p) {
         double rand = this.r.nextInt(100);
         int chance = 0;
-        List<String> lore = p.getItemInHand().getItemMeta().getLore();
+        List<String> lore = p.getEquipment().getItemInMainHand().getItemMeta().getLore();
         double event = SkillsEventsListener.getEventKeyFortune();
         chance += event;
         double keyboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillKeyBoost");
@@ -251,7 +251,7 @@ public class KeysHandler implements Listener {
     }
 
     public static int tokensPerBlock(Player p) {
-        List<String> lore = p.getItemInHand().getItemMeta().getLore();
+        List<String> lore = p.getEquipment().getItemInMainHand().getItemMeta().getLore();
         double tf = 1;
         int x;
         for (x = 0; x < lore.size(); x++) {
@@ -299,11 +299,11 @@ public class KeysHandler implements Listener {
     @SuppressWarnings("deprecation")
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
-        if (p.getItemInHand() == null)
+        if (p.getEquipment().getItemInMainHand() == null)
             return;
         if (e.isCancelled())
             return;
-        ItemStack i = p.getItemInHand();
+        ItemStack i = p.getEquipment().getItemInMainHand();
         if (!i.hasItemMeta())
             return;
         if (!i.getItemMeta().hasLore())

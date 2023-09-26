@@ -86,9 +86,9 @@ public class CMDDp implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("hand") &&
                         sender instanceof Player) {
                     Player p = (Player) sender;
-                    if (p.getItemInHand() == null)
+                    if (p.getEquipment().getItemInMainHand() == null)
                         return false;
-                    ItemStack i = p.getItemInHand();
+                    ItemStack i = p.getEquipment().getItemInMainHand();
                     Bukkit.broadcastMessage("&7&l&m---------------<&c&lGenesis&b&lDP&7&l&m>---------------");
                     Bukkit.broadcastMessage(" ");
                     if (i.hasItemMeta() && i.getItemMeta().hasDisplayName()) {
@@ -119,9 +119,9 @@ public class CMDDp implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("hand*") &&
                         sender instanceof Player) {
                     Player p = (Player) sender;
-                    if (p.getItemInHand() == null)
+                    if (p.getEquipment().getItemInMainHand() == null)
                         return false;
-                    ItemStack i = p.getItemInHand();
+                    ItemStack i = p.getEquipment().getItemInMainHand();
                     Bukkit.broadcastMessage("&7&l&m---------------<&c&lGenesis&b&lDP&7&l&m>---------------");
                     if (i.hasItemMeta() && i.getItemMeta().hasDisplayName()) {
                         Bukkit.broadcastMessage("&bNext Item: &7" + i.getItemMeta().getDisplayName());

@@ -370,7 +370,7 @@ public class CrateFunctions {
                         return reward1;
                     } else if (i <= 110) {
                         rm.setDisplayName(m.c("&c&lMonster &7&lEgg"));
-                        reward.setType(Material.MONSTER_EGG);
+                        reward.setType(Material.ENDER_DRAGON_SPAWN_EGG);
                         lore.add("giveegg %PLAYER%");
                         rm.setLore(lore);
                     } else if (i <= 117) {
@@ -513,7 +513,7 @@ public class CrateFunctions {
                         return reward1;
                     } else if (i <= 110) {
                         rm.setDisplayName(m.c("&c&l2x Monster &7&lEgg"));
-                        reward.setType(Material.MONSTER_EGG);
+                        reward.setType(Material.ENDER_DRAGON_SPAWN_EGG);
                         lore.add("giveegg %PLAYER% 2");
                         rm.setLore(lore);
                     } else if (i <= 117) {
@@ -655,7 +655,7 @@ public class CrateFunctions {
                         return reward1;
                     } else if (i <= 110) {
                         rm.setDisplayName(m.c("&c&l5x Monster &7&lEgg"));
-                        reward.setType(Material.MONSTER_EGG);
+                        reward.setType(Material.ENDER_DRAGON_SPAWN_EGG);
                         lore.add("giveegg %PLAYER% 5");
                         rm.setLore(lore);
                     } else if (i <= 117) {
@@ -793,7 +793,7 @@ public class CrateFunctions {
                         return reward1;
                     } else if (i <= 110) {
                         rm.setDisplayName(m.c("&c&l1x Monster &7&lEgg"));
-                        reward.setType(Material.MONSTER_EGG);
+                        reward.setType(Material.ENDER_DRAGON_SPAWN_EGG);
                         lore.add("giveegg %PLAYER% 1");
                         rm.setLore(lore);
                     } else {

@@ -186,17 +186,17 @@ public class BoostsHandler implements Listener, CommandExecutor {
     @EventHandler
     public void onInt(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if (p.getItemInHand() == null) return;
+        if (p.getEquipment().getItemInMainHand() == null) return;
 
-        if (p.getItemInHand().getType().equals(Material.INK_SACK)) {
-            String type = ChatColor.stripColor(p.getItemInHand().getItemMeta().getDisplayName()).split(" ")[0];
-            double power = Double.parseDouble(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(0)).split(" ")[1]);
-            int seconds = toSeconds(ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(1)).split(" ")[1]);
+        if (p.getEquipment().getItemInMainHand().getType().equals(Material.INK_SAC)) {
+            String type = ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getDisplayName()).split(" ")[0];
+            double power = Double.parseDouble(ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(0)).split(" ")[1]);
+            int seconds = toSeconds(ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(1)).split(" ")[1]);
             if (!hasActiveBoost(p)) {
                 activeBoost(p, type.toLowerCase(), power, seconds);
-                int amount = p.getItemInHand().getAmount();
+                int amount = p.getEquipment().getItemInMainHand().getAmount();
                 if (amount > 1) {
-                    p.getItemInHand().setAmount(amount - 1);
+                    p.getEquipment().getItemInMainHand().setAmount(amount - 1);
                 } else {
                     p.setItemInHand(new ItemStack(Material.AIR));
                 }
@@ -214,7 +214,7 @@ public class BoostsHandler implements Listener, CommandExecutor {
 
 
     public ItemStack Boost(short data, String type, double power, int duration) {
-        ItemStack boost = new ItemStack(Material.INK_SACK, 1, data);
+        ItemStack boost = new ItemStack(Material.INK_SAC, 1, data);
         ItemMeta bm = boost.getItemMeta();
         bm.setDisplayName(type);
         List<String> lore = new ArrayList<>();

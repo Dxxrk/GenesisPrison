@@ -1,10 +1,10 @@
 package me.dxrk.Events;
 
 import com.earth2me.essentials.Essentials;
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
+import me.filoghost.holographicdisplays.api.hologram.Hologram;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,9 +34,9 @@ public class Leaderboards implements Listener, CommandExecutor {
     static Essentials ess = (Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
 
     public ItemStack Head(OfflinePlayer p) {
-        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        meta.setOwner(p.getName());
+        meta.setOwningPlayer(p);
         skull.setItemMeta(meta);
         return skull;
     }
@@ -215,7 +215,7 @@ public class Leaderboards implements Listener, CommandExecutor {
     @EventHandler
     public void onInv(InventoryClickEvent e) {
         if (e.getClickedInventory() == null) return;
-        if (e.getClickedInventory().getName().equals(m.c("&6&lLeaderboards"))) {
+        if (e.getView().getTitle().equals(m.c("&6&lLeaderboards"))) {
             e.setCancelled(true);
         }
     }
@@ -329,18 +329,9 @@ public class Leaderboards implements Listener, CommandExecutor {
     }
 
 
-    public static void deleteIfOld(Hologram hologram) {
-
-        long tenMinutesMillis = 14 * 1000; // 14 seconds in milliseconds
-        long elapsedMillis = System.currentTimeMillis() - hologram.getCreationTimestamp(); // Milliseconds elapsed from the creation of the hologram
-
-        if (elapsedMillis > tenMinutesMillis) {
-            hologram.delete();
-        }
-    }
 
     public static int getVotes(OfflinePlayer p) {
-        return settings.getVote().getInt(p.getUniqueId().toString() + ".Votes");
+        return settings.getVote().getInt(p.getUniqueId() + ".Votes");
     }
 
 

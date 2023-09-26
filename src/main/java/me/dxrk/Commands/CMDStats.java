@@ -65,9 +65,9 @@ public class CMDStats implements Listener, CommandExecutor {
     }
 
     public ItemStack Head(OfflinePlayer p) {
-        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        meta.setOwner(p.getName());
+        meta.setOwningPlayer(p);
         skull.setItemMeta(meta);
         return skull;
     }
@@ -82,7 +82,7 @@ public class CMDStats implements Listener, CommandExecutor {
 
         Inventory stats = Bukkit.createInventory(null, 54, m.c("&c&lStats:"));
         for (int i = 0; i < 54; i++) {
-            ItemStack fence = new ItemStack(Material.IRON_FENCE);
+            ItemStack fence = new ItemStack(Material.IRON_BARS);
             ItemMeta fm = fence.getItemMeta();
             fm.setDisplayName(m.c("&c&lGenesis &b&lPrison"));
             fence.setItemMeta(fm);
@@ -112,7 +112,7 @@ public class CMDStats implements Listener, CommandExecutor {
         level.setItemMeta(lm);
         stats.setItem(23, level);
 
-        ItemStack prestiges = new ItemStack(Material.EYE_OF_ENDER);
+        ItemStack prestiges = new ItemStack(Material.ENDER_EYE);
         ItemMeta prm = prestiges.getItemMeta();
         prm.setDisplayName(m.c("&7Prestiges: &b" + PlayerDataHandler.getInstance().getPlayerData(p.getUniqueId()).getInt("Prestiges")));
         prestiges.setItemMeta(prm);
@@ -179,7 +179,7 @@ public class CMDStats implements Listener, CommandExecutor {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
-        if (e.getInventory().getName().equals(m.c("&c&lStats:")))
+        if (e.getView().getTitle().equals(m.c("&c&lStats:")))
             e.setCancelled(true);
     }
 

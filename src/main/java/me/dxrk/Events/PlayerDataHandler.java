@@ -81,7 +81,7 @@ public class PlayerDataHandler implements Listener {
     public void createPlayerData(Player p) {
         createFolder();
         try {
-            File pdata = new File(Main.plugin.getDataFolder() + File.separator + "playerdata", p.getUniqueId().toString() + ".yml");
+            File pdata = new File(Main.plugin.getDataFolder() + File.separator + "playerdata", p.getUniqueId() + ".yml");
             if (!pdata.exists()) {
                 pdata.createNewFile();
             }
@@ -309,7 +309,7 @@ public class PlayerDataHandler implements Listener {
         for (ItemStack i : inv) {
             if (i == null) continue;
             if (i.getType() == null) continue;
-            if (i.getType().equals(Material.WOOD_PICKAXE) || i.getType().equals(Material.STONE_PICKAXE) || i.getType().equals(Material.IRON_PICKAXE) || i.getType().equals(Material.GOLD_PICKAXE)
+            if (i.getType().equals(Material.WOODEN_PICKAXE) || i.getType().equals(Material.STONE_PICKAXE) || i.getType().equals(Material.IRON_PICKAXE) || i.getType().equals(Material.GOLDEN_PICKAXE)
                     || i.getType().equals(Material.DIAMOND_PICKAXE)) {
                 ItemStack pickaxe = i;
                 getPlayerData(p).set("Pickaxe", pickaxe);

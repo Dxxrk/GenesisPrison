@@ -4,12 +4,12 @@ public class randomenchant {
 	
 	/*public void randomEnchant(Player p) {
         Random r = new Random();
-        ItemStack i = p.getItemInHand().clone();
+        ItemStack i = p.getEquipment().getItemInMainHand().clone();
         ItemMeta im = i.getItemMeta();
         List<String> lore = im.getLore();
         
         
-        for(String l : p.getItemInHand().getItemMeta().getLore()) {
+        for(String l : p.getEquipment().getItemInMainHand().getItemMeta().getLore()) {
         
         int enc = r.nextInt(10);
         int x;

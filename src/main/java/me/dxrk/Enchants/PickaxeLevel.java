@@ -113,7 +113,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
 
             if (label.equalsIgnoreCase("pick")) {
-                if (!p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)) {
+                if (!p.getEquipment().getItemInMainHand().getType().equals(Material.DIAMOND_PICKAXE)) {
                     boolean b = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode");
                     if(b){
                         p.sendMessage(c("&cYou can't access this while in buildmode."));
@@ -158,7 +158,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
 
     public ItemStack Spacer() {
-        ItemStack i = new ItemStack(Material.IRON_FENCE);
+        ItemStack i = new ItemStack(Material.IRON_BARS);
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&lGenesis &b&lPrison"));
         i.setItemMeta(im);
@@ -170,10 +170,10 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
         int enchantLevel = 0;
 
-        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
-            String s = p.getItemInHand().getItemMeta().getLore().get(x);
+        for (int x = 0; x < p.getEquipment().getItemInMainHand().getItemMeta().getLore().size(); x++) {
+            String s = p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(x);
             if (ChatColor.stripColor(s).contains(enchantName)) {
-                enchantLevel = getInt(p.getItemInHand().getItemMeta().getLore().get(x));
+                enchantLevel = getInt(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(x));
             }
         }
         double price;
@@ -220,7 +220,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
     }
 
     public ItemStack SpacerWhite() {
-        ItemStack white = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 0);
+        ItemStack white = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
         ItemMeta wm = white.getItemMeta();
         wm.setDisplayName(c(" "));
         white.setItemMeta(wm);
@@ -236,8 +236,8 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         setEnchantItem("LuckyBlock", Material.SEA_LANTERN, c("&bUpgrade LuckyBlock"), c("&7Chance to spawn a LuckyBlock."), 1000, enchantmenu, 10, p, 1);
         setEnchantItem("Token Finder", Material.PRISMARINE_CRYSTALS, c("&bUpgrade Token Finder"), c("&7Increase the amount of tokens randomly found."), 1000, enchantmenu, 12, p, 1);
         setEnchantItem("Fortune", Material.NETHER_STAR, c("&bUpgrade Fortune"), c("&7Increases amount of blocks you sell."), 100, enchantmenu, 14, p, 1);
-        setEnchantItem("Jackhammer", Material.GOLD_PLATE, c("&bUpgrade Jackhammer"), c("&7Chance to break an entire layer of the mine."), 4500, enchantmenu, 16, p, 10);
-        setEnchantItem("XP Finder", Material.EXP_BOTTLE, c("&bUpgrade XP Finder"), c("&7Increases the amount of XP found while mining."), 3000, enchantmenu, 20, p, 15);
+        setEnchantItem("Jackhammer", Material.LIGHT_WEIGHTED_PRESSURE_PLATE, c("&bUpgrade Jackhammer"), c("&7Chance to break an entire layer of the mine."), 4500, enchantmenu, 16, p, 10);
+        setEnchantItem("XP Finder", Material.EXPERIENCE_BOTTLE, c("&bUpgrade XP Finder"), c("&7Increases the amount of XP found while mining."), 3000, enchantmenu, 20, p, 15);
         setEnchantItem("Dust Finder", Material.SUGAR, c("&bUpgrade Dust Finder"), c("&7Chance to find Trinket dust."), 2500, enchantmenu, 22, p, 25);
         setEnchantItem("Treasury", Material.EMERALD, c("&bUpgrade Treasury"), c("&7Chance to randomly get gems."), 4500, enchantmenu, 24, p, 40);
         setEnchantItem("Greed", Material.DIAMOND, c("&bUpgrade Greed"), c("&7Increases selling price for blocks."), 5000, enchantmenu, 30, p, 60);
@@ -255,7 +255,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         enchantmenu.setItem(52, trinkets);
         lore.clear();
 
-        ItemStack skills = new ItemStack(Material.WOOD_PICKAXE);
+        ItemStack skills = new ItemStack(Material.WOODEN_PICKAXE);
         ItemMeta sm = skills.getItemMeta();
         sm.setDisplayName(c("&6Pickaxe Skills"));
         if (PickXPHandler.getInstance().getLevel(p) < 25) {
@@ -297,7 +297,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
     public int lineOfEnchant(Player p, String Enchant) {
         int x = 0;
-        ItemStack pitem = p.getItemInHand().clone();
+        ItemStack pitem = p.getEquipment().getItemInMainHand().clone();
         List<String> lore = pitem.getItemMeta().getLore();
         for (int i = 0; i < lore.size(); i++) {
             String s = lore.get(i);
@@ -311,7 +311,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
 
     public void resetPickaxe(Player p) {
-        ItemStack pitem = p.getItemInHand().clone();
+        ItemStack pitem = p.getEquipment().getItemInMainHand().clone();
         ItemMeta pm = pitem.getItemMeta();
         List<String> plore = pm.getLore();
         ItemStack newpick = pickaxe().clone();
@@ -817,11 +817,11 @@ public class PickaxeLevel implements Listener, CommandExecutor {
     @EventHandler
     public void openMenu(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if (p.getItemInHand() == null)
+        if (p.getEquipment().getItemInMainHand() == null)
             return;
-        ItemStack item = p.getItemInHand();
-        if (item.getType().equals(Material.DIAMOND_PICKAXE) || item.getType().equals(Material.IRON_PICKAXE) || item.getType().equals(Material.GOLD_PICKAXE) || item.getType().equals(Material.STONE_PICKAXE)
-                || item.getType().equals(Material.WOOD_PICKAXE)) {
+        ItemStack item = p.getEquipment().getItemInMainHand();
+        if (item.getType().equals(Material.DIAMOND_PICKAXE) || item.getType().equals(Material.IRON_PICKAXE) || item.getType().equals(Material.GOLDEN_PICKAXE) || item.getType().equals(Material.STONE_PICKAXE)
+                || item.getType().equals(Material.WOODEN_PICKAXE)) {
             if (e.getAction().equals(Action.LEFT_CLICK_AIR) || e.getAction().equals(Action.LEFT_CLICK_BLOCK))
                 return;
             if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
@@ -836,10 +836,10 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
         int enchantLevel = 0;
 
-        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
-            String s = p.getItemInHand().getItemMeta().getLore().get(x);
+        for (int x = 0; x < p.getEquipment().getItemInMainHand().getItemMeta().getLore().size(); x++) {
+            String s = p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(x);
             if (ChatColor.stripColor(s).contains(enchantName)) {
-                enchantLevel = getInt(p.getItemInHand().getItemMeta().getLore().get(x));
+                enchantLevel = getInt(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(x));
             }
         }
         double price;
@@ -902,7 +902,6 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         p.openInventory(inv);
     }
 
-    @EventHandler
     public void openSkillEnchantsInv(Player p) {
         Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, c("&6Pickaxe Skill Enchants"));
 
@@ -910,7 +909,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
         ItemStack calamity;
         if (!completed.contains("Zeus")) {
-            calamity = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+            calamity = new ItemStack(Material.RED_STAINED_GLASS_PANE);
             ItemMeta calamitymeta = calamity.getItemMeta();
             calamitymeta.setDisplayName(c("&bUpgrade Calamity"));
             List<String> calamitylore = new ArrayList<>();
@@ -918,7 +917,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             calamitymeta.setLore(calamitylore);
             calamity.setItemMeta(calamitymeta);
         } else {
-            ItemStack pitem = p.getItemInHand().clone();
+            ItemStack pitem = p.getEquipment().getItemInMainHand().clone();
             ItemMeta pm = pitem.getItemMeta();
             List<String> lore = pm.getLore();
             boolean hasEnchant = false;
@@ -930,7 +929,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                     hasEnchant = true;
                 }
             }
-            calamity = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
+            calamity = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
             ItemMeta calamitymeta = calamity.getItemMeta();
             calamitymeta.setDisplayName(c("&bUpgrade Calamity"));
             List<String> calamitylore = new ArrayList<>();
@@ -944,7 +943,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         inv.setItem(0, calamity);
         ItemStack infernum;
         if (!completed.contains("Hades")) {
-            infernum = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+            infernum = new ItemStack(Material.RED_STAINED_GLASS_PANE);
             ItemMeta infernummeta = infernum.getItemMeta();
             infernummeta.setDisplayName(c("&bUpgrade Infernum"));
             List<String> infernumlore = new ArrayList<>();
@@ -952,7 +951,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             infernummeta.setLore(infernumlore);
             infernum.setItemMeta(infernummeta);
         } else {
-            ItemStack pitem = p.getItemInHand().clone();
+            ItemStack pitem = p.getEquipment().getItemInMainHand().clone();
             ItemMeta pm = pitem.getItemMeta();
             List<String> lore = pm.getLore();
             boolean hasEnchant = false;
@@ -964,7 +963,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                     hasEnchant = true;
                 }
             }
-            infernum = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
+            infernum = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
             ItemMeta infernummeta = infernum.getItemMeta();
             infernummeta.setDisplayName(c("&bUpgrade Infernum"));
             List<String> infernumlore = new ArrayList<>();
@@ -978,7 +977,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         inv.setItem(1, infernum);
         ItemStack tidalwave;
         if (!completed.contains("Poseidon")) {
-            tidalwave = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+            tidalwave = new ItemStack(Material.RED_STAINED_GLASS_PANE);
             ItemMeta tidalwavemeta = tidalwave.getItemMeta();
             tidalwavemeta.setDisplayName(c("&bUpgrade Tidal Wave"));
             List<String> tidalwavelore = new ArrayList<>();
@@ -986,7 +985,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             tidalwavemeta.setLore(tidalwavelore);
             tidalwave.setItemMeta(tidalwavemeta);
         } else {
-            ItemStack pitem = p.getItemInHand().clone();
+            ItemStack pitem = p.getEquipment().getItemInMainHand().clone();
             ItemMeta pm = pitem.getItemMeta();
             List<String> lore = pm.getLore();
             boolean hasEnchant = false;
@@ -998,7 +997,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                     hasEnchant = true;
                 }
             }
-            tidalwave = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
+            tidalwave = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
             ItemMeta tidalwavemeta = tidalwave.getItemMeta();
             tidalwavemeta.setDisplayName(c("&bUpgrade Tidal Wave"));
             List<String> tidalwavelore = new ArrayList<>();
@@ -1012,7 +1011,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         inv.setItem(2, tidalwave);
         ItemStack euphoria;
         if (!completed.contains("Aphrodite")) {
-            euphoria = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+            euphoria = new ItemStack(Material.RED_STAINED_GLASS_PANE);
             ItemMeta euphoriameta = euphoria.getItemMeta();
             euphoriameta.setDisplayName(c("&bUpgrade Euphoria"));
             List<String> euphorialore = new ArrayList<>();
@@ -1020,7 +1019,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             euphoriameta.setLore(euphorialore);
             euphoria.setItemMeta(euphoriameta);
         } else {
-            ItemStack pitem = p.getItemInHand().clone();
+            ItemStack pitem = p.getEquipment().getItemInMainHand().clone();
             ItemMeta pm = pitem.getItemMeta();
             List<String> lore = pm.getLore();
             boolean hasEnchant = false;
@@ -1032,7 +1031,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                     hasEnchant = true;
                 }
             }
-            euphoria = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
+            euphoria = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
             ItemMeta euphoriameta = euphoria.getItemMeta();
             euphoriameta.setDisplayName(c("&bUpgrade Euphoria"));
             List<String> euphorialore = new ArrayList<>();
@@ -1046,7 +1045,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         inv.setItem(3, euphoria);
         ItemStack battlecry;
         if (!completed.contains("Ares")) {
-            battlecry = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+            battlecry = new ItemStack(Material.RED_STAINED_GLASS_PANE);
             ItemMeta battlecrymeta = battlecry.getItemMeta();
             battlecrymeta.setDisplayName(c("&bUpgrade Battle Cry"));
             List<String> battlecrylore = new ArrayList<>();
@@ -1054,7 +1053,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             battlecrymeta.setLore(battlecrylore);
             battlecry.setItemMeta(battlecrymeta);
         } else {
-            ItemStack pitem = p.getItemInHand().clone();
+            ItemStack pitem = p.getEquipment().getItemInMainHand().clone();
             ItemMeta pm = pitem.getItemMeta();
             List<String> lore = pm.getLore();
             boolean hasEnchant = false;
@@ -1066,7 +1065,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                     hasEnchant = true;
                 }
             }
-            battlecry = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
+            battlecry = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
             ItemMeta battlecrymeta = battlecry.getItemMeta();
             battlecrymeta.setDisplayName(c("&bUpgrade Battle Cry"));
             List<String> battlecrylore = new ArrayList<>();
@@ -1125,10 +1124,9 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         Player p = (Player) e.getWhoClicked();
 
         if (e.getClickedInventory() == null) return;
-        if (e.getClickedInventory().getName() == null) return;
 
 
-        if (e.getInventory().getName().equals(c("&d&lPurchase Enchants!"))) {
+        if (e.getView().getTitle().equals(c("&d&lPurchase Enchants!"))) {
             e.setCancelled(true);
             if (e.getClickedInventory().equals(p.getInventory())) return;
             if (e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return;
@@ -1177,20 +1175,20 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
 
             if (e.getClick().equals(ClickType.LEFT)) {
-                upgradeEnchant(p, p.getItemInHand(), name, 1, false);
+                upgradeEnchant(p, p.getEquipment().getItemInMainHand(), name, 1, false);
             } else if (e.getClick().equals(ClickType.RIGHT)) {
-                upgradeEnchant(p, p.getItemInHand(), name, 10, false);
+                upgradeEnchant(p, p.getEquipment().getItemInMainHand(), name, 10, false);
             } else if (e.getClick().equals(ClickType.SHIFT_RIGHT)) {
-                upgradeEnchant(p, p.getItemInHand(), name, 100, false);
+                upgradeEnchant(p, p.getEquipment().getItemInMainHand(), name, 100, false);
             } else if (e.getClick().equals(ClickType.SHIFT_LEFT)) {
-                upgradeEnchant(p, p.getItemInHand(), name, 1, true);
+                upgradeEnchant(p, p.getEquipment().getItemInMainHand(), name, 1, true);
             }
 
             p.updateInventory();
             openenchantmenu(p);
 
 
-        } else if (e.getInventory().getName().equals(c("&6Pickaxe Skill Enchants"))) {
+        } else if (e.getView().getTitle().equals(c("&6Pickaxe Skill Enchants"))) {
             e.setCancelled(true);
             if (e.getClickedInventory().equals(p.getInventory())) return;
             if (e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return;
@@ -1200,10 +1198,10 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
             if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 13) {
                 if (e.getClick().equals(ClickType.LEFT)) {
-                    upgradeSkillEnchant(p, p.getItemInHand(), name);
+                    upgradeSkillEnchant(p, p.getEquipment().getItemInMainHand(), name);
                 }
             }
-        } else if (e.getInventory().getName().equals(c("&bEthereal Enchants"))) {
+        } else if (e.getView().getTitle().equals(c("&bEthereal Enchants"))) {
             e.setCancelled(true);
             if (e.getClickedInventory().equals(p.getInventory())) return;
             if (e.getCurrentItem().getType().equals(Material.AIR) || e.getCurrentItem() == null) return;
@@ -1215,13 +1213,13 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             boolean unlocked = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("Ethereal");
             if (unlocked) {
                 if (e.getClick().equals(ClickType.LEFT)) {
-                    upgradeEnchant(p, p.getItemInHand(), name, 1, false);
+                    upgradeEnchant(p, p.getEquipment().getItemInMainHand(), name, 1, false);
                 } else if (e.getClick().equals(ClickType.RIGHT)) {
-                    upgradeEnchant(p, p.getItemInHand(), name, 10, false);
+                    upgradeEnchant(p, p.getEquipment().getItemInMainHand(), name, 10, false);
                 } else if (e.getClick().equals(ClickType.SHIFT_RIGHT)) {
-                    upgradeEnchant(p, p.getItemInHand(), name, 100, false);
+                    upgradeEnchant(p, p.getEquipment().getItemInMainHand(), name, 100, false);
                 } else if (e.getClick().equals(ClickType.SHIFT_LEFT)) {
-                    upgradeEnchant(p, p.getItemInHand(), name, 1, true);
+                    upgradeEnchant(p, p.getEquipment().getItemInMainHand(), name, 1, true);
                 }
                 p.updateInventory();
                 openEtherealEnchantsInv(p);

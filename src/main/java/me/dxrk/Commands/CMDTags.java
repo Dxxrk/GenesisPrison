@@ -68,7 +68,7 @@ public class CMDTags implements Listener, CommandExecutor {
 
     public void fillInv(Inventory i, int page) {
         for (int x = 36; x < i.getSize(); x++) {
-            ItemStack spacer = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15);
+            ItemStack spacer = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
             ItemMeta im = spacer.getItemMeta();
             im.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7[&5&lTags&7]"));
             spacer.setItemMeta(im);
@@ -147,19 +147,19 @@ public class CMDTags implements Listener, CommandExecutor {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
-        if (e.getInventory().getName().contains(ChatColor.DARK_PURPLE + "Tags")) {
+        if (e.getView().getTitle().contains(ChatColor.DARK_PURPLE + "Tags")) {
             Player p = (Player) e.getWhoClicked();
             e.setCancelled(true);
             if (e.getRawSlot() == 45) {
-                if (getPage(e.getInventory().getName()) == 1)
+                if (getPage(e.getView().getTitle()) == 1)
                     return;
-                openTagInv(p, getPage(e.getInventory().getName()) - 1);
+                openTagInv(p, getPage(e.getView().getTitle()) - 1);
                 return;
             }
             if (e.getRawSlot() == 53) {
-                if (getPage(e.getInventory().getName()) == 3)
+                if (getPage(e.getView().getTitle()) == 3)
                     return;
-                openTagInv(p, getPage(e.getInventory().getName()) + 1);
+                openTagInv(p, getPage(e.getView().getTitle()) + 1);
                 return;
             }
             if (e.getRawSlot() == 47 || e.getRawSlot() == 47) {
@@ -170,7 +170,7 @@ public class CMDTags implements Listener, CommandExecutor {
             if (e.getCurrentItem() == null)
                 return;
             if (e.getCurrentItem().getType().equals(Material.PAPER)) {
-                this.settings.getData().set(p.getUniqueId().toString() + ".Tag", e.getCurrentItem().getItemMeta().getDisplayName());
+                this.settings.getData().set(p.getUniqueId() + ".Tag", e.getCurrentItem().getItemMeta().getDisplayName());
                 this.settings.saveData();
                 p.sendMessage(ChatColor.GRAY + "Tag set to " + ChatColor.translateAlternateColorCodes('&', e.getCurrentItem().getItemMeta().getDisplayName()));
             }
@@ -198,7 +198,7 @@ public class CMDTags implements Listener, CommandExecutor {
             } else if (args.length == 1) {
                 Player p = (Player) sender;
                 if (args[0].equalsIgnoreCase("off")) {
-                    settings.getData().set(p.getUniqueId().toString() + ".Tag", "");
+                    settings.getData().set(p.getUniqueId() + ".Tag", "");
                     settings.saveData();
                     p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Your tag has been removed!"));
                     return true;

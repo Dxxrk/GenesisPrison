@@ -74,7 +74,7 @@ public class CMDHelp implements Listener, CommandExecutor {
         help.setItem(24, pickaxe);
         lore.clear();
 
-        ItemStack gems = new ItemStack(Material.INK_SACK);
+        ItemStack gems = new ItemStack(Material.INK_SAC);
         ItemMeta gm = gems.getItemMeta();
         gm.setDisplayName(m.c("&aGems:"));
         lore.add(m.c("&7Gems are acquired from Gem Pouches."));
@@ -229,7 +229,7 @@ public class CMDHelp implements Listener, CommandExecutor {
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         if (e.getClickedInventory() == null) return;
-        if (e.getClickedInventory().getName().equals(m.c("&6&lHelp:"))) {
+        if (e.getView().getTitle().equals(m.c("&6&lHelp:"))) {
             e.setCancelled(true);
         }
     }

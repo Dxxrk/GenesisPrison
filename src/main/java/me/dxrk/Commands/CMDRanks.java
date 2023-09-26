@@ -86,18 +86,18 @@ public class CMDRanks implements Listener, CommandExecutor {
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if (p.getItemInHand() == null) return;
+        if (p.getEquipment().getItemInMainHand() == null) return;
 
-        if (p.getItemInHand().getType().equals(Material.NETHER_STAR)) {
-            if (p.getItemInHand().hasItemMeta()) {
-                if ((e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) && ranks().contains(ChatColor.stripColor(p.getItemInHand().getItemMeta().getDisplayName().split(" ")[0]))) {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "manuaddsub " + p.getName() + " " + ChatColor.stripColor(p.getItemInHand().getItemMeta().getDisplayName().split(" ")[0]));
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l" + p.getName() + " &f&lHas redeemed " + p.getItemInHand().getItemMeta().getDisplayName());
-                    if (p.getItemInHand().getAmount() == 1) {
+        if (p.getEquipment().getItemInMainHand().getType().equals(Material.NETHER_STAR)) {
+            if (p.getEquipment().getItemInMainHand().hasItemMeta()) {
+                if ((e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) && ranks().contains(ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getDisplayName().split(" ")[0]))) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "manuaddsub " + p.getName() + " " + ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getDisplayName().split(" ")[0]));
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l" + p.getName() + " &f&lHas redeemed " + p.getEquipment().getItemInMainHand().getItemMeta().getDisplayName());
+                    if (p.getEquipment().getItemInMainHand().getAmount() == 1) {
                         p.setItemInHand(null);
                     } else {
-                        int amount = p.getItemInHand().getAmount();
-                        p.getItemInHand().setAmount(amount - 1);
+                        int amount = p.getEquipment().getItemInMainHand().getAmount();
+                        p.getEquipment().getItemInMainHand().setAmount(amount - 1);
                     }
                 }
             }

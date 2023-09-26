@@ -51,11 +51,11 @@ public class CMDRename implements CommandExecutor {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (sender.hasPermission("epsilon.rename")) {
-                    if ((p.getItemInHand() != null && !p.getItemInHand().getType().equals(Material.AIR) && (p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)
-                            || p.getItemInHand().getType().equals(Material.IRON_PICKAXE) || p.getItemInHand().getType().equals(Material.GOLD_PICKAXE) || p.getItemInHand().getType().equals(Material.STONE_PICKAXE)
-                            || p.getItemInHand().getType().equals(Material.WOOD_PICKAXE))) || p.isOp()) {
+                    if ((p.getEquipment().getItemInMainHand() != null && !p.getEquipment().getItemInMainHand().getType().equals(Material.AIR) && (p.getEquipment().getItemInMainHand().getType().equals(Material.DIAMOND_PICKAXE)
+                            || p.getEquipment().getItemInMainHand().getType().equals(Material.IRON_PICKAXE) || p.getEquipment().getItemInMainHand().getType().equals(Material.GOLDEN_PICKAXE) || p.getEquipment().getItemInMainHand().getType().equals(Material.STONE_PICKAXE)
+                            || p.getEquipment().getItemInMainHand().getType().equals(Material.WOODEN_PICKAXE))) || p.isOp()) {
                         if (args.length >= 1) {
-                            ItemStack itemStack = p.getItemInHand();
+                            ItemStack itemStack = p.getEquipment().getItemInMainHand();
                             StringBuilder message = new StringBuilder();
                             for (String arg : args) message.append(arg).append(" ");
                             String Message1 = ChatColor.translateAlternateColorCodes('&', message.toString());
@@ -69,7 +69,7 @@ public class CMDRename implements CommandExecutor {
                     } else {
                         p.sendMessage(ChatColor.AQUA + "Error: " + ChatColor.RED + "You need an item in your hand!");
                     }
-                } else if (p.getItemInHand() != null && !p.getItemInHand().getType().equals(Material.AIR)) {
+                } else if (p.getEquipment().getItemInMainHand() != null && !p.getEquipment().getItemInMainHand().getType().equals(Material.AIR)) {
                     if (args.length >= 1) {
                         boolean hasPaper = false;
                         byte b;
@@ -95,7 +95,7 @@ public class CMDRename implements CommandExecutor {
                             p.sendMessage(ChatColor.GRAY + "You need a rename paper to rename!");
                             return false;
                         }
-                        ItemStack itemStack = p.getItemInHand();
+                        ItemStack itemStack = p.getEquipment().getItemInMainHand();
                         StringBuilder message = new StringBuilder();
                         for (String arg : args) message.append(arg).append(" ");
                         String Message1 = ChatColor.translateAlternateColorCodes('&', message.toString());
@@ -116,11 +116,11 @@ public class CMDRename implements CommandExecutor {
             if (sender instanceof Player) {
                 if (sender.hasPermission("Epsilon.Relore")) {
                     Player p = (Player) sender;
-                    if ((p.getItemInHand() != null && !p.getItemInHand().getType().equals(Material.AIR) && (p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)
-                            || p.getItemInHand().getType().equals(Material.IRON_PICKAXE) || p.getItemInHand().getType().equals(Material.GOLD_PICKAXE) || p.getItemInHand().getType().equals(Material.STONE_PICKAXE)
-                            || p.getItemInHand().getType().equals(Material.WOOD_PICKAXE))) || p.isOp()) {
+                    if ((p.getEquipment().getItemInMainHand() != null && !p.getEquipment().getItemInMainHand().getType().equals(Material.AIR) && (p.getEquipment().getItemInMainHand().getType().equals(Material.DIAMOND_PICKAXE)
+                            || p.getEquipment().getItemInMainHand().getType().equals(Material.IRON_PICKAXE) || p.getEquipment().getItemInMainHand().getType().equals(Material.GOLDEN_PICKAXE) || p.getEquipment().getItemInMainHand().getType().equals(Material.STONE_PICKAXE)
+                            || p.getEquipment().getItemInMainHand().getType().equals(Material.WOODEN_PICKAXE))) || p.isOp()) {
                         if (args.length >= 1) {
-                            ItemStack itemStack = p.getItemInHand();
+                            ItemStack itemStack = p.getEquipment().getItemInMainHand();
                             StringBuilder message = new StringBuilder();
                             for (String arg : args) message.append(arg).append(" ");
                             String Message1 = ChatColor.translateAlternateColorCodes('&', message.toString());

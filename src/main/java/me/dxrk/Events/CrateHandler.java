@@ -150,7 +150,7 @@ public class CrateHandler implements Listener, CommandExecutor {
         } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (hasKey(p, crate)) {
                 if (p.isSneaking()) {
-                    int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + crate.toLowerCase());
+                    int keys = this.settings.getLocksmith().getInt(p.getUniqueId() + "." + crate.toLowerCase());
                     openCrate(p, crate, keys);
                 } else {
                     openCrate(p, crate, 1);
@@ -162,28 +162,28 @@ public class CrateHandler implements Listener, CommandExecutor {
     }
 
     public boolean hasKey(Player p, String crate) {
-        return this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + crate.toLowerCase()) > 0;
+        return this.settings.getLocksmith().getInt(p.getUniqueId() + "." + crate.toLowerCase()) > 0;
     }
 
     public void addKey(Player p, String key, int amt) {
-        int keysfound = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId().toString() + ".KeysFound");
-        PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId().toString() + ".KeysFound", keysfound + amt);
-        int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + key.toLowerCase());
+        int keysfound = PlayerDataHandler.getInstance().getPlayerData(p).getInt(p.getUniqueId() + ".KeysFound");
+        PlayerDataHandler.getInstance().getPlayerData(p).set(p.getUniqueId() + ".KeysFound", keysfound + amt);
+        int keys = this.settings.getLocksmith().getInt(p.getUniqueId() + "." + key.toLowerCase());
         key = key.toLowerCase();
-        if (this.settings.getLocksmith().get(p.getUniqueId().toString() + "." + p.getName()) == null) {
-            this.settings.getLocksmith().set(p.getUniqueId().toString() + ".name", p.getName());
+        if (this.settings.getLocksmith().get(p.getUniqueId() + "." + p.getName()) == null) {
+            this.settings.getLocksmith().set(p.getUniqueId() + ".name", p.getName());
             this.settings.saveLocksmith();
         }
-        this.settings.getLocksmith().set(p.getUniqueId().toString() + "." + key, keys + amt);
+        this.settings.getLocksmith().set(p.getUniqueId() + "." + key, keys + amt);
     }
 
     public void takeKey(Player p, String key, int amt) {
-        int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + key.toLowerCase());
+        int keys = this.settings.getLocksmith().getInt(p.getUniqueId() + "." + key.toLowerCase());
         key = key.toLowerCase();
-        if (this.settings.getLocksmith().get(p.getUniqueId().toString() + "." + p.getName()) == null) {
-            this.settings.getLocksmith().set(p.getUniqueId().toString() + ".name", p.getName());
+        if (this.settings.getLocksmith().get(p.getUniqueId() + "." + p.getName()) == null) {
+            this.settings.getLocksmith().set(p.getUniqueId() + ".name", p.getName());
         }
-        this.settings.getLocksmith().set(p.getUniqueId().toString() + "." + key, keys - amt);
+        this.settings.getLocksmith().set(p.getUniqueId() + "." + key, keys - amt);
     }
 
     private ItemStack crateItem(String name, Material mat, double chance) {
@@ -237,7 +237,7 @@ public class CrateHandler implements Listener, CommandExecutor {
         if (crate.equals("Vote")) {
             items.add(crateItem(c("&e100,000-500,000 Tokens"), Material.MAGMA_CREAM, 40));
             items.add(crateItem(c("&e3x &e&lToken &7Key"), Material.TRIPWIRE_HOOK, 25));
-            items.add(crateItem(c("&a&l5,000 Pickaxe XP"), Material.EXP_BOTTLE, 15));
+            items.add(crateItem(c("&a&l5,000 Pickaxe XP"), Material.EXPERIENCE_BOTTLE, 15));
             items.add(crateItem(c("&a+5.0 Multi"), Material.EMERALD, 10));
             items.add(crateItem(c("&4&l&ki&f&lSeasonal&4&l&ki&r &7Key"), Material.TRIPWIRE_HOOK, 9));
             items.add(crateItem(c("&3&lRank &7Key"), Material.TRIPWIRE_HOOK, 1));
@@ -245,7 +245,7 @@ public class CrateHandler implements Listener, CommandExecutor {
         if (crate.equals("Seaosnal")) {
             items.add(crateItem(c("&e300,000 Tokens"), Material.MAGMA_CREAM, 40));
             items.add(crateItem(c("&a+15.0 Multi"), Material.EMERALD, 25));
-            items.add(crateItem(c("&a&l10,000 Pickaxe XP"), Material.EXP_BOTTLE, 20));
+            items.add(crateItem(c("&a&l10,000 Pickaxe XP"), Material.EXPERIENCE_BOTTLE, 20));
             items.add(crateItem(c("&f&l• &c&lC&6&lo&e&ln&a&lt&3&lr&9&la&5&lb&c&la&6&ln&e&ld &3&lC&9&lr&5&la&c&lt&6&le &f&l•"), Material.ENDER_CHEST, 12.5));
             items.add(crateItem(c("&3&lRank &7Key"), Material.TRIPWIRE_HOOK, 2));
             items.add(crateItem(c("&f&l&k[&7&l*&f&l&k]&r &c&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r"), Material.ENDER_CHEST, 0.5));
@@ -550,7 +550,7 @@ public class CrateHandler implements Listener, CommandExecutor {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
-        if (e.getInventory().getName().contains("Crate"))
+        if (e.getView().getTitle().contains("Crate"))
             e.setCancelled(true);
     }
 

@@ -1,10 +1,27 @@
 package me.dxrk.Main;
 
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
+import com.sk89q.worldedit.function.operation.Operation;
+import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.world.World;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.md_5.bungee.api.ChatColor;
+import net.minecraft.network.protocol.game.ClientboundInitializeBorderPacket;
+import net.minecraft.network.protocol.game.ClientboundSetBorderCenterPacket;
+import net.minecraft.network.protocol.game.ClientboundSetBorderSizePacket;
 import net.minecraft.world.level.border.WorldBorder;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer;
@@ -12,11 +29,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.UUID;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.TextColor.color;
+
 
 public class Methods {
     public static Methods instance = new Methods();
@@ -56,6 +76,47 @@ public class Methods {
                 .content(text).color(var)
                 .build();
         return component;
+    }
+
+    public String stripColor(Component c) {
+        return c.toString();
+    }
+
+    public void paste(Location location, File file) {
+
+        ClipboardFormat clipboardFormat = ClipboardFormats.findByFile(file);
+        Clipboard clipboard;
+
+        BlockVector3 blockVector3 = BlockVector3.at(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+
+        if (clipboardFormat != null) {
+            try (ClipboardReader clipboardReader = clipboardFormat.getReader(new FileInputStream(file))) {
+
+                if (location.getWorld() == null)
+                    throw new NullPointerException("Failed to paste schematic due to world being null");
+
+                World world = BukkitAdapter.adapt(location.getWorld());
+
+                EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder().world(world).build();
+
+                clipboard = clipboardReader.read();
+
+                Operation operation = new ClipboardHolder(clipboard)
+                        .createPaste(editSession)
+                        .to(blockVector3)
+                        .ignoreAirBlocks(true)
+                        .build();
+
+                try {
+                    Operations.complete(operation);
+                    editSession.close();
+                } catch (WorldEditException e) {
+                    e.printStackTrace();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -116,11 +177,11 @@ public class Methods {
         wb.world = ((CraftWorld) world).getHandle();
         wb.setCenter(x, z);
         wb.setSize(size);
-        wb.setWarningDistance(1);
+        wb.setWarningBlocks(1);
         wb.setWarningTime(1);
-        PacketPlayOutWorldBorder packetPlayOutWorldBorder = new PacketPlayOutWorldBorder(wb, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE);
-
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetPlayOutWorldBorder);
+        //PacketPlayOutWorldBorder packetPlayOutWorldBorder = new PacketPlayOutWorldBorder(wb, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE);
+        ClientboundInitializeBorderPacket packet = new ClientboundInitializeBorderPacket(wb);
+        ((CraftPlayer) p).getHandle().connection.send(packet);
     }
 
 

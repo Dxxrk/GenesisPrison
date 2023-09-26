@@ -215,12 +215,12 @@ public class EnchantMethods implements CommandExecutor {
         double skill = SkillsEventsListener.getSkillsBoostFortune(p);
         double event = SkillsEventsListener.getEventFortune();
         int line = 0;
-        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
-            if (org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
+        for (int x = 0; x < p.getEquipment().getItemInMainHand().getItemMeta().getLore().size(); x++) {
+            if (org.bukkit.ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
                 line = x;
             }
         }
-        int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
+        int fortune = (int) (this.getFortune(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
         if (fortune == 0)
             fortune = 1;
@@ -255,12 +255,12 @@ public class EnchantMethods implements CommandExecutor {
         double skill = SkillsEventsListener.getSkillsBoostFortune(p);
         double event = SkillsEventsListener.getEventFortune();
         int line = 0;
-        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
-            if (org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
+        for (int x = 0; x < p.getEquipment().getItemInMainHand().getItemMeta().getLore().size(); x++) {
+            if (org.bukkit.ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
                 line = x;
             }
         }
-        int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
+        int fortune = (int) (this.getFortune(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
 
         if (fortune == 0)
@@ -352,12 +352,12 @@ public class EnchantMethods implements CommandExecutor {
         double skill = SkillsEventsListener.getSkillsBoostFortune(p);
         double event = SkillsEventsListener.getEventFortune();
         int line = 0;
-        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
-            if (org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
+        for (int x = 0; x < p.getEquipment().getItemInMainHand().getItemMeta().getLore().size(); x++) {
+            if (org.bukkit.ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
                 line = x;
             }
         }
-        int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
+        int fortune = (int) (this.getFortune(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
 
         if (fortune == 0)
@@ -415,12 +415,12 @@ public class EnchantMethods implements CommandExecutor {
                 double skill = SkillsEventsListener.getSkillsBoostFortune(p);
                 double event = SkillsEventsListener.getEventFortune();
                 int line = 0;
-                for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
-                    if (org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
+                for (int x = 0; x < p.getEquipment().getItemInMainHand().getItemMeta().getLore().size(); x++) {
+                    if (org.bukkit.ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
                         line = x;
                     }
                 }
-                int fortune = (int) (getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
+                int fortune = (int) (getFortune(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                         (14));
 
                 if (fortune == 0)
@@ -463,12 +463,12 @@ public class EnchantMethods implements CommandExecutor {
         double skill = SkillsEventsListener.getSkillsBoostFortune(p);
         double event = SkillsEventsListener.getEventFortune();
         int line = 0;
-        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
-            if (org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
+        for (int x = 0; x < p.getEquipment().getItemInMainHand().getItemMeta().getLore().size(); x++) {
+            if (org.bukkit.ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
                 line = x;
             }
         }
-        int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
+        int fortune = (int) (this.getFortune(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
 
         if (fortune == 0)
@@ -528,12 +528,12 @@ public class EnchantMethods implements CommandExecutor {
         double skill = SkillsEventsListener.getSkillsBoostFortune(p);
         double event = SkillsEventsListener.getEventFortune();
         int line = 0;
-        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
-            if (org.bukkit.ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
+        for (int x = 0; x < p.getEquipment().getItemInMainHand().getItemMeta().getLore().size(); x++) {
+            if (org.bukkit.ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
                 line = x;
             }
         }
-        int fortune = (int) (this.getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
+        int fortune = (int) (this.getFortune(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(line)) * fortuity * skill * event /
                 (14));
 
         if (fortune == 0)
@@ -571,19 +571,19 @@ public class EnchantMethods implements CommandExecutor {
         int rr = r.nextInt(100);
         if (rr >= 0 && rr < 40) {
 
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Junkpile-Messages") == true) {
+            if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Junkpile-Messages") == true) {
                 p.sendMessage(c("&f&lJunkpile &8| &b+" + xp + " XP"));
             }
 
             PickXPHandler.getInstance().addXP(p, xp);
         } else if (rr >= 40 && rr < 75) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "multi add " + p.getName() + " " + multi);
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Junkpile-Messages") == true) {
+            if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Junkpile-Messages") == true) {
                 p.sendMessage(c("&f&lJunkpile &8| &b+" + multi + " Multi"));
             }
         } else if (rr >= 75 && rr < 77) {
             CMDVoteShop.addCoupon(p, 0.05);
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Junkpile-Messages") == true) {
+            if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Junkpile-Messages") == true) {
                 p.sendMessage(c("&f&lJunkpile &8| &b+$0.05 Coupon"));
             }
         } else if (rr >= 77) {
@@ -609,7 +609,7 @@ public class EnchantMethods implements CommandExecutor {
         if (i == 0 || i == 1) {
             for (Player pp : Bukkit.getOnlinePlayers()) {
                 if (ScoreboardHandler.isAFK(pp)) continue;
-                if (this.settings.getOptions().getBoolean(pp.getUniqueId().toString() + ".Key-Party-Messages") == true) {
+                if (this.settings.getOptions().getBoolean(pp.getUniqueId() + ".Key-Party-Messages") == true) {
                     pp.sendMessage(Methods.getInstance().c("&f&lKey Party &8| &bFrom &d" + p.getName() + " &b+1 &7&lAlpha &7Key!"));
                 }
                 KeysHandler.getInstance().addKey(pp, "Alpha", 1);
@@ -617,7 +617,7 @@ public class EnchantMethods implements CommandExecutor {
         } else if (i == 2 || i == 3) {
             for (Player pp : Bukkit.getOnlinePlayers()) {
                 if (ScoreboardHandler.isAFK(pp)) continue;
-                if (this.settings.getOptions().getBoolean(pp.getUniqueId().toString() + ".Key-Party-Messages") == true) {
+                if (this.settings.getOptions().getBoolean(pp.getUniqueId() + ".Key-Party-Messages") == true) {
                     pp.sendMessage(Methods.getInstance().c("&f&lKey Party &8| &bFrom &d" + p.getName() + " &b+1 &c&lBeta &7Key!"));
                 }
                 KeysHandler.getInstance().addKey(pp, "Beta", 1);
@@ -625,7 +625,7 @@ public class EnchantMethods implements CommandExecutor {
         } else if (i == 4 || i == 5) {
             for (Player pp : Bukkit.getOnlinePlayers()) {
                 if (ScoreboardHandler.isAFK(pp)) continue;
-                if (this.settings.getOptions().getBoolean(pp.getUniqueId().toString() + ".Key-Party-Messages") == true) {
+                if (this.settings.getOptions().getBoolean(pp.getUniqueId() + ".Key-Party-Messages") == true) {
                     pp.sendMessage(Methods.getInstance().c("&f&lKey Party &8| &bFrom &d" + p.getName() + " &b+1 &e&lToken &7Key!"));
                 }
                 KeysHandler.getInstance().addKey(pp, "Token", 1);
@@ -633,7 +633,7 @@ public class EnchantMethods implements CommandExecutor {
         } else if (i == 6 || i == 7) {
             for (Player pp : Bukkit.getOnlinePlayers()) {
                 if (ScoreboardHandler.isAFK(pp)) continue;
-                if (this.settings.getOptions().getBoolean(pp.getUniqueId().toString() + ".Key-Party-Messages") == true) {
+                if (this.settings.getOptions().getBoolean(pp.getUniqueId() + ".Key-Party-Messages") == true) {
                     pp.sendMessage(Methods.getInstance().c("&f&lKey Party &8| &bFrom &d" + p.getName() + " &b+1 &4&lOmega &7Key!"));
                 }
                 KeysHandler.getInstance().addKey(pp, "Omega", 1);
@@ -641,7 +641,7 @@ public class EnchantMethods implements CommandExecutor {
         } else if (i == 8) {
             for (Player pp : Bukkit.getOnlinePlayers()) {
                 if (ScoreboardHandler.isAFK(pp)) continue;
-                if (this.settings.getOptions().getBoolean(pp.getUniqueId().toString() + ".Key-Party-Messages") == true) {
+                if (this.settings.getOptions().getBoolean(pp.getUniqueId() + ".Key-Party-Messages") == true) {
                     pp.sendMessage(Methods.getInstance().c("&f&lKey Party &8| &bFrom &d" + p.getName() + " &b+1 &c&l&ki&d&lSeasonal&c&l&ki&r &7Key!"));
                 }
                 KeysHandler.getInstance().addKey(pp, "Seasonal", 1);
@@ -662,32 +662,32 @@ public class EnchantMethods implements CommandExecutor {
 
         if (i == 0) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveboost sell " + p.getName() + " 2.5 300");
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Booster-Messages") == true) {
+            if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Booster-Messages") == true) {
                 p.sendMessage(Methods.getInstance().c("&f&lBooster &8| &b+5 minute 2.5x Currency Boost!"));
             }
         } else if (i == 1) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveboost sell " + p.getName() + " 2.5 600");
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Booster-Messages") == true) {
+            if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Booster-Messages") == true) {
                 p.sendMessage(Methods.getInstance().c("&f&lBooster &8| &b+10 minute 2.5x Currency Boost!"));
             }
         } else if (i == 2) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveboost xp " + p.getName() + " 2 300");
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Booster-Messages") == true) {
+            if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Booster-Messages") == true) {
                 p.sendMessage(Methods.getInstance().c("&f&lBooster &8| &b+5 minute 2x XP Boost!"));
             }
         } else if (i == 3) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveboost sell " + p.getName() + " 3.0 300");
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Booster-Messages") == true) {
+            if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Booster-Messages") == true) {
                 p.sendMessage(Methods.getInstance().c("&f&lBooster &8| &b+5 minute 3.0x Currency Boost!"));
             }
         } else if (i == 4) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveboost sell " + p.getName() + " 3.0 600");
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Booster-Messages") == true) {
+            if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Booster-Messages") == true) {
                 p.sendMessage(Methods.getInstance().c("&f&lBooster &8| &b+10 minute 3.0x Currency Boost!"));
             }
         } else if (i == 5) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveboost xp " + p.getName() + " 2 600");
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Booster-Messages") == true) {
+            if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Booster-Messages") == true) {
                 p.sendMessage(Methods.getInstance().c("&f&lBooster &8| &b+10 minute 2x XP Boost!"));
             }
         }
@@ -698,7 +698,7 @@ public class EnchantMethods implements CommandExecutor {
         int min = 500;
         int max = 2000;
         int gems = r.nextInt(max - min) + min;
-        if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Treasury-Messages"))
+        if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Treasury-Messages"))
             p.sendMessage(c("&f&lTreasury &8| &a+" + gems + " Gems"));
         MinePouchHandler.addGems(p, gems);
     }
@@ -750,13 +750,13 @@ public class EnchantMethods implements CommandExecutor {
     }
 
     public void addKey(Player p, String key, int amt) {
-        int keys = this.settings.getLocksmith().getInt(p.getUniqueId().toString() + "." + key.toLowerCase());
+        int keys = this.settings.getLocksmith().getInt(p.getUniqueId() + "." + key.toLowerCase());
         key = key.toLowerCase();
-        if (this.settings.getLocksmith().get(p.getUniqueId().toString() + "." + p.getName()) == null) {
-            this.settings.getLocksmith().set(p.getUniqueId().toString() + ".name", p.getName());
+        if (this.settings.getLocksmith().get(p.getUniqueId() + "." + p.getName()) == null) {
+            this.settings.getLocksmith().set(p.getUniqueId() + ".name", p.getName());
             this.settings.saveLocksmith();
         }
-        this.settings.getLocksmith().set(p.getUniqueId().toString() + "." + key, keys + amt);
+        this.settings.getLocksmith().set(p.getUniqueId() + "." + key, keys + amt);
         this.settings.saveLocksmith();
     }
 
@@ -767,7 +767,7 @@ public class EnchantMethods implements CommandExecutor {
                 "&f&lKey Finder &8| &b+" + amt + " " + color + key + color2 + " &bKey");
 
 
-        if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Key-Finder-Messages")) {
+        if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Key-Finder-Messages")) {
             p.sendMessage(s);
         }
         addKey(p, key, amt);
@@ -778,7 +778,7 @@ public class EnchantMethods implements CommandExecutor {
     public void Keyfinder(Player p) {
         Random r = new Random();
         int chance = 0;
-        List<String> lore = p.getItemInHand().getItemMeta().getLore();
+        List<String> lore = p.getEquipment().getItemInMainHand().getItemMeta().getLore();
         double event = SkillsEventsListener.getEventKeyFortune();
         chance += event;
         int keyboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillKeyBoost");
@@ -852,7 +852,7 @@ public class EnchantMethods implements CommandExecutor {
         if (lbs == 1) {
             Random r = new Random();
             int rr = r.nextInt(309);
-            ItemStack pick = p.getItemInHand();
+            ItemStack pick = p.getEquipment().getItemInMainHand();
             int level = 0;
             if (pick != null && (pick.getType().equals(Material.DIAMOND_PICKAXE) || pick.getType().equals(Material.GOLDEN_PICKAXE) || pick.getType().equals(Material.IRON_PICKAXE) || pick.getType().equals(Material.STONE_PICKAXE) || pick.getType().equals(Material.WOODEN_PICKAXE))) {
                 List<String> lore = pick.getItemMeta().getLore();
@@ -871,31 +871,31 @@ public class EnchantMethods implements CommandExecutor {
                 else
                     tokens = 5000 + 5 * level;
                 Tokens.getInstance().addTokens(p, tokens);
-                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".LuckyBlock-Messages"))
                     p.sendMessage(c("&f&lLuckyblock &8| &e+" + tokens + " Tokens"));
             } else if (rr >= 151 && rr <= 240) {
                 addKey(p, "Beta", 1);
-                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".LuckyBlock-Messages"))
                     p.sendMessage(c("&f&lLuckyblock &8| &e+1 Beta Key"));
             } else if (rr >= 241 && rr <= 270) {
                 addKey(p, "Omega", 1);
-                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".LuckyBlock-Messages"))
                     p.sendMessage(c("&f&lLuckyblock &8| &e+1 Omega Key"));
             } else if (rr >= 271 && rr <= 285) {
                 PickXPHandler.getInstance().addXP(p, 2500);
-                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".LuckyBlock-Messages"))
                     p.sendMessage(c("&f&lLuckyblock &8| &e+2500 XP"));
             } else if (rr >= 286 && rr <= 300) {
                 addKey(p, "Community", 1);
-                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".LuckyBlock-Messages"))
                     p.sendMessage(c("&f&lLuckyblock &8| &e+1 Community Key"));
             } else if (rr == 301) {
                 addKey(p, "Rank", 1);
-                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".LuckyBlock-Messages"))
                     p.sendMessage(c("&f&lLuckyblock &8| &e+1 Rank Key"));
             } else {
                 addKey(p, "Seasonal", 1);
-                if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages"))
+                if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".LuckyBlock-Messages"))
                     p.sendMessage(c("&f&lLuckyblock &8| &e+1 Seasonal Key"));
             }
         } else {
@@ -909,7 +909,7 @@ public class EnchantMethods implements CommandExecutor {
             for (byte i = 0; i < lbs; i++) {
                 Random r = new Random();
                 int rr = r.nextInt(309);
-                ItemStack pick = p.getItemInHand();
+                ItemStack pick = p.getEquipment().getItemInMainHand();
                 int level = 0;
                 if (pick != null && (pick.getType().equals(Material.DIAMOND_PICKAXE) || pick.getType().equals(Material.GOLDEN_PICKAXE) || pick.getType().equals(Material.IRON_PICKAXE) || pick.getType().equals(Material.STONE_PICKAXE) || pick.getType().equals(Material.WOODEN_PICKAXE))) {
                     List<String> lore = pick.getItemMeta().getLore();
@@ -949,7 +949,7 @@ public class EnchantMethods implements CommandExecutor {
                     totalseasonal++;
                 }
             }
-            if (this.settings.getOptions().getBoolean(p.getUniqueId().toString() + ".LuckyBlock-Messages")) {
+            if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".LuckyBlock-Messages")) {
                 FancyMessage msg = new FancyMessage(c("&f&lLuckyblocks &8| &7(hover)"));
                 msg.color(ChatColor.WHITE);
                 msg.style(ChatColor.BOLD);
@@ -1150,10 +1150,10 @@ public class EnchantMethods implements CommandExecutor {
     public int getEnchantLevel(Player p, String Enchant) {
         int enchantLevel = 0;
 
-        for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
-            String s = p.getItemInHand().getItemMeta().getLore().get(x);
+        for (int x = 0; x < p.getEquipment().getItemInMainHand().getItemMeta().getLore().size(); x++) {
+            String s = p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(x);
             if (ChatColor.stripColor(s).contains(Enchant)) {
-                enchantLevel = PickaxeLevel.getInstance().getInt(p.getItemInHand().getItemMeta().getLore().get(x));
+                enchantLevel = PickaxeLevel.getInstance().getInt(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(x));
             }
         }
         return enchantLevel;

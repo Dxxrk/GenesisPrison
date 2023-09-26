@@ -1,20 +1,5 @@
 package me.dxrk.Mines;
 
-import com.boydti.fawe.FaweAPI;
-import com.boydti.fawe.object.schematic.Schematic;
-import com.boydti.fawe.util.EditSessionBuilder;
-import com.sk89q.worldedit.BlockVector;
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.bukkit.BukkitUtil;
-import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.domains.DefaultDomain;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.RankupHandler;
 import me.dxrk.Main.Main;
@@ -32,13 +17,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MineHandler implements Listener, CommandExecutor {
 
@@ -74,68 +57,68 @@ public class MineHandler implements Listener, CommandExecutor {
         List<ItemStack> mineblocks = new ArrayList<>();
         mineblocks.add(new ItemStack(Material.COBBLESTONE)); //0
         mineblocks.add(new ItemStack(Material.MOSSY_COBBLESTONE));
-        mineblocks.add(new ItemStack(Material.STONE, 1, (short) 0));
-        mineblocks.add(new ItemStack(Material.STONE, 1, (short) 1));
-        mineblocks.add(new ItemStack(Material.STONE, 1, (short) 2));
-        mineblocks.add(new ItemStack(Material.STONE, 1, (short) 3));
-        mineblocks.add(new ItemStack(Material.STONE, 1, (short) 4));
-        mineblocks.add(new ItemStack(Material.STONE, 1, (short) 5));
-        mineblocks.add(new ItemStack(Material.STONE, 1, (short) 6));
-        mineblocks.add(new ItemStack(Material.SMOOTH_BRICK, 1, (short) 0));
-        mineblocks.add(new ItemStack(Material.SMOOTH_BRICK, 1, (short) 1));
-        mineblocks.add(new ItemStack(Material.SMOOTH_BRICK, 1, (short) 2));
-        mineblocks.add(new ItemStack(Material.SMOOTH_BRICK, 1, (short) 3));
-        mineblocks.add(new ItemStack(Material.SMOOTH_BRICK, 1, (short) 0));
-        mineblocks.add(new ItemStack(Material.SANDSTONE, 1, (short) 0));
-        mineblocks.add(new ItemStack(Material.SANDSTONE, 1, (short) 1));
-        mineblocks.add(new ItemStack(Material.SANDSTONE, 1, (short) 2));
-        mineblocks.add(new ItemStack(Material.RED_SANDSTONE, 1, (short) 0));
-        mineblocks.add(new ItemStack(Material.RED_SANDSTONE, 1, (short) 1));
-        mineblocks.add(new ItemStack(Material.RED_SANDSTONE, 1, (short) 2));
-        mineblocks.add(new ItemStack(Material.HARD_CLAY));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 0));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 1));
+        mineblocks.add(new ItemStack(Material.STONE));
+        mineblocks.add(new ItemStack(Material.GRANITE));
+        mineblocks.add(new ItemStack(Material.POLISHED_GRANITE));
+        mineblocks.add(new ItemStack(Material.DIORITE));
+        mineblocks.add(new ItemStack(Material.POLISHED_DIORITE));
+        mineblocks.add(new ItemStack(Material.ANDESITE));
+        mineblocks.add(new ItemStack(Material.POLISHED_ANDESITE));
+        mineblocks.add(new ItemStack(Material.STONE_BRICKS));
+        mineblocks.add(new ItemStack(Material.MOSSY_STONE_BRICKS));
+        mineblocks.add(new ItemStack(Material.CRACKED_STONE_BRICKS));
+        mineblocks.add(new ItemStack(Material.CHISELED_STONE_BRICKS));
+        mineblocks.add(new ItemStack(Material.STONE_BRICKS)); // replace with another block
+        mineblocks.add(new ItemStack(Material.SANDSTONE));
+        mineblocks.add(new ItemStack(Material.CHISELED_SANDSTONE));
+        mineblocks.add(new ItemStack(Material.SMOOTH_SANDSTONE));
+        mineblocks.add(new ItemStack(Material.RED_SANDSTONE));
+        mineblocks.add(new ItemStack(Material.CHISELED_RED_SANDSTONE));
+        mineblocks.add(new ItemStack(Material.SMOOTH_RED_SANDSTONE));
+        mineblocks.add(new ItemStack(Material.TERRACOTTA));
+        mineblocks.add(new ItemStack(Material.WHITE_TERRACOTTA));
+        mineblocks.add(new ItemStack(Material.ORANGE_TERRACOTTA));
         mineblocks.add(new ItemStack(Material.BRICK));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 15));
+        mineblocks.add(new ItemStack(Material.BLACK_TERRACOTTA));
         mineblocks.add(new ItemStack(Material.COAL_ORE));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 14));
+        mineblocks.add(new ItemStack(Material.RED_TERRACOTTA));
         mineblocks.add(new ItemStack(Material.COAL_BLOCK));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 13));
+        mineblocks.add(new ItemStack(Material.GREEN_TERRACOTTA));
         mineblocks.add(new ItemStack(Material.IRON_ORE));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 12));
+        mineblocks.add(new ItemStack(Material.BROWN_TERRACOTTA));
         mineblocks.add(new ItemStack(Material.IRON_BLOCK));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 11));
+        mineblocks.add(new ItemStack(Material.BLUE_TERRACOTTA));
         mineblocks.add(new ItemStack(Material.GOLD_ORE));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 11));
+        mineblocks.add(new ItemStack(Material.PURPLE_TERRACOTTA)); //replace with another block
         mineblocks.add(new ItemStack(Material.GOLD_BLOCK));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 10));
+        mineblocks.add(new ItemStack(Material.PURPLE_TERRACOTTA));
         mineblocks.add(new ItemStack(Material.REDSTONE_ORE));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 9));
+        mineblocks.add(new ItemStack(Material.CYAN_TERRACOTTA));
         mineblocks.add(new ItemStack(Material.REDSTONE_BLOCK));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 8));
+        mineblocks.add(new ItemStack(Material.LIGHT_GRAY_TERRACOTTA));
         mineblocks.add(new ItemStack(Material.LAPIS_ORE));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 7));
+        mineblocks.add(new ItemStack(Material.GRAY_TERRACOTTA));
         mineblocks.add(new ItemStack(Material.LAPIS_BLOCK));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 6));
+        mineblocks.add(new ItemStack(Material.PINK_TERRACOTTA));
         mineblocks.add(new ItemStack(Material.DIAMOND_ORE));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 5));
+        mineblocks.add(new ItemStack(Material.LIME_TERRACOTTA));
         mineblocks.add(new ItemStack(Material.DIAMOND_BLOCK));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 4));
+        mineblocks.add(new ItemStack(Material.YELLOW_TERRACOTTA));
         mineblocks.add(new ItemStack(Material.EMERALD_ORE));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 3));
+        mineblocks.add(new ItemStack(Material.LIGHT_BLUE_TERRACOTTA));
         mineblocks.add(new ItemStack(Material.EMERALD_BLOCK));
-        mineblocks.add(new ItemStack(Material.STAINED_CLAY, 1, (short) 2));
+        mineblocks.add(new ItemStack(Material.MAGENTA_TERRACOTTA));
         mineblocks.add(new ItemStack(Material.NETHERRACK));
         mineblocks.add(new ItemStack(Material.NETHER_BRICK));
-        mineblocks.add(new ItemStack(Material.QUARTZ_ORE));
-        mineblocks.add(new ItemStack(Material.QUARTZ_BLOCK, 1, (short) 0));
-        mineblocks.add(new ItemStack(Material.QUARTZ_BLOCK, 1, (short) 1));
-        mineblocks.add(new ItemStack(Material.QUARTZ_BLOCK, 1, (short) 2));
-        mineblocks.add(new ItemStack(Material.PRISMARINE, 1, (short) 0));
-        mineblocks.add(new ItemStack(Material.PRISMARINE, 1, (short) 1));
-        mineblocks.add(new ItemStack(Material.PRISMARINE, 1, (short) 2));
+        mineblocks.add(new ItemStack(Material.NETHER_QUARTZ_ORE));
+        mineblocks.add(new ItemStack(Material.QUARTZ_BLOCK));
+        mineblocks.add(new ItemStack(Material.CHISELED_QUARTZ_BLOCK));
+        mineblocks.add(new ItemStack(Material.QUARTZ_PILLAR));
+        mineblocks.add(new ItemStack(Material.PRISMARINE));
+        mineblocks.add(new ItemStack(Material.PRISMARINE_BRICKS));
+        mineblocks.add(new ItemStack(Material.DARK_PRISMARINE));
         mineblocks.add(new ItemStack(Material.OBSIDIAN));
-        mineblocks.add(new ItemStack(Material.ENDER_STONE));
+        mineblocks.add(new ItemStack(Material.END_STONE));
         return mineblocks;
     }
 
@@ -182,7 +165,7 @@ public class MineHandler implements Listener, CommandExecutor {
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean onCommand(CommandSender sender, Command cmdd, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
 
         if (label.equalsIgnoreCase("updatemine")) {
@@ -196,9 +179,9 @@ public class MineHandler implements Listener, CommandExecutor {
 
     @EventHandler
     public void drop(PlayerDropItemEvent e) {
-        if (e.getItemDrop().getItemStack().getType().equals(Material.DIAMOND_PICKAXE) || e.getItemDrop().getItemStack().getType().equals(Material.WOOD_PICKAXE) ||
+        if (e.getItemDrop().getItemStack().getType().equals(Material.DIAMOND_PICKAXE) || e.getItemDrop().getItemStack().getType().equals(Material.WOODEN_PICKAXE) ||
                 e.getItemDrop().getItemStack().getType().equals(Material.STONE_PICKAXE) || e.getItemDrop().getItemStack().getType().equals(Material.IRON_PICKAXE) ||
-                e.getItemDrop().getItemStack().getType().equals(Material.GOLD_PICKAXE)) {
+                e.getItemDrop().getItemStack().getType().equals(Material.GOLDEN_PICKAXE)) {
             e.setCancelled(true);
             e.getPlayer().sendMessage(c("&cYou cannot drop your pickaxe!"));
         }
@@ -207,8 +190,7 @@ public class MineHandler implements Listener, CommandExecutor {
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
         Entity ent = event.getEntity();
-        if (ent instanceof Player) {
-            Player player = (Player) ent;
+        if (ent instanceof Player player) {
             if (event.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION)) {
                 event.setCancelled(true);
             }
@@ -239,21 +221,6 @@ public class MineHandler implements Listener, CommandExecutor {
         MineSystem.getInstance().addActiveMine(m);
     }
 
-    public void pasteSchematic(Schematic schematic, Location location) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.plugin,
-                () -> {
-                    Clipboard clipboard = schematic.getClipboard();
-                    if (clipboard == null)
-                        throw new IllegalStateException("Schematic does not have a Clipboard! This should never happen!");
-                    EditSession session = (new EditSessionBuilder(FaweAPI.getWorld(location.getWorld().getName()))).fastmode(Boolean.TRUE).build();
-                    location.setY(clipboard.getOrigin().getBlockY());
-                    Vector centerVector = BukkitUtil.toVector(location);
-                    schematic.paste(session, centerVector, false, false, null);
-                    session.flushQueue();
-                    Region region = clipboard.getRegion();
-                    region.setWorld(FaweAPI.getWorld(location.getWorld().getName()));
-                });
-    }
 
     /*
         CREATING THE MINE
@@ -267,7 +234,7 @@ public class MineHandler implements Listener, CommandExecutor {
         File schematic = new File(Main.plugin.getDataFolder() + File.separator + "schematics", schem + ".schematic");
         Location paste = new Location(world, 0, 144, (mines * 500));
         paste.setYaw(-90);
-        pasteSchematic(Objects.requireNonNull(WESchematic.getSchematic(schematic)), paste);
+        Methods.getInstance().paste(paste, schematic);
         Location pworld = new Location(world, 0.5, 144.5, (mines * 500) + 0.5, -90, 0);
         PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 30);
 
@@ -311,7 +278,7 @@ public class MineHandler implements Listener, CommandExecutor {
         Location g2 = new Location(world, 100, 0, (mines * 500) - 75);
 
         //Create region that allows building within limits.
-        ProtectedCuboidRegion outside = new ProtectedCuboidRegion(p.getUniqueId().toString() + "outside",
+        ProtectedCuboidRegion outside = new ProtectedCuboidRegion(p.getUniqueId() + "outside",
                 new BlockVector(g1.getX(), g1.getY(), g1.getZ()),
                 new BlockVector(g2.getX(), g2.getY(), g2.getZ()));
         outside.setFlag(DefaultFlag.BLOCK_PLACE, StateFlag.State.DENY);

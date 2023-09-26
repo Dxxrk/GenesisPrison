@@ -150,37 +150,37 @@ public class CMDDaily implements Listener, CommandExecutor {
             LocksmithHandler.getInstance().addKey(p, "Beta", 1);
             LocksmithHandler.getInstance().addKey(p, "Omega", 1);
             Tokens.getInstance().addTokens(p, 50000);
-            this.settings.getDaily().set(p.getUniqueId().toString() + ".FreeReward", getTodayDate());
+            this.settings.getDaily().set(p.getUniqueId() + ".FreeReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily Claimed!"));
         }
         if (rank.equals("sponsor")) {
             LocksmithHandler.getInstance().addKey(p, "Token", 3);
-            this.settings.getDaily().set(p.getUniqueId().toString() + ".SponsorReward", getTodayDate());
+            this.settings.getDaily().set(p.getUniqueId() + ".SponsorReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &b&lSponsor &bClaimed!"));
         }
         if (rank.equals("vip")) {
             LocksmithHandler.getInstance().addKey(p, "Token", 3);
             LocksmithHandler.getInstance().addKey(p, "Alpha", 5);
-            this.settings.getDaily().set(p.getUniqueId().toString() + ".VIPReward", getTodayDate());
+            this.settings.getDaily().set(p.getUniqueId() + ".VIPReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &a&lVIP &bClaimed!"));
         }
         if (rank.equals("mvp")) {
             Tokens.getInstance().addTokens(p, 100000);
             LocksmithHandler.getInstance().addKey(p, "Beta", 5);
-            this.settings.getDaily().set(p.getUniqueId().toString() + ".MVPReward", getTodayDate());
+            this.settings.getDaily().set(p.getUniqueId() + ".MVPReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &6&lMVP &bClaimed!"));
         }
         if (rank.equals("hero")) {
             LocksmithHandler.getInstance().addKey(p, "Community", 5);
             LocksmithHandler.getInstance().addKey(p, "Omega", 3);
-            this.settings.getDaily().set(p.getUniqueId().toString() + ".HeroReward", getTodayDate());
+            this.settings.getDaily().set(p.getUniqueId() + ".HeroReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &c&lHero &bClaimed!"));
         }
         if (rank.equals("demi-god")) {
             Tokens.getInstance().addTokens(p, 150000);
             LocksmithHandler.getInstance().addKey(p, "Omega", 5);
             LocksmithHandler.getInstance().addKey(p, "Seasonal", 1);
-            this.settings.getDaily().set(p.getUniqueId().toString() + ".Demi-GodReward", getTodayDate());
+            this.settings.getDaily().set(p.getUniqueId() + ".Demi-GodReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &5&lDemi-God &bClaimed!"));
         }
         if (rank.equals("titan")) {
@@ -188,26 +188,26 @@ public class CMDDaily implements Listener, CommandExecutor {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givetrinket " + p.getName() + " rare");
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givetrinket " + p.getName() + " epic");
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givetrinket " + p.getName() + " legendary");
-            this.settings.getDaily().set(p.getUniqueId().toString() + ".TitanReward", getTodayDate());
+            this.settings.getDaily().set(p.getUniqueId() + ".TitanReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &3&lTitan &bClaimed!"));
         }
         if (rank.equals("god")) {
             PickXPHandler.getInstance().addXP(p, 10000);
             LocksmithHandler.getInstance().addKey(p, "Token", 10);
-            this.settings.getDaily().set(p.getUniqueId().toString() + ".GodReward", getTodayDate());
+            this.settings.getDaily().set(p.getUniqueId() + ".GodReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &d&lGod &bClaimed!"));
         }
         if (rank.equals("olympian")) {
             LocksmithHandler.getInstance().addKey(p, "Omega", 10);
             LocksmithHandler.getInstance().addKey(p, "Community", 10);
             LocksmithHandler.getInstance().addKey(p, "Seasonal", 2);
-            this.settings.getDaily().set(p.getUniqueId().toString() + ".OlympianReward", getTodayDate());
+            this.settings.getDaily().set(p.getUniqueId() + ".OlympianReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &e&lOlympian &bClaimed!"));
         }
         if (rank.equals("genesis")) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate " + p.getName() + " genesis");
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveegg " + p.getName());
-            this.settings.getDaily().set(p.getUniqueId().toString() + ".GenesisReward", getTodayDate());
+            this.settings.getDaily().set(p.getUniqueId() + ".GenesisReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &bClaimed!"));
         }
     }
@@ -217,16 +217,16 @@ public class CMDDaily implements Listener, CommandExecutor {
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (!settings.getDaily().contains(p.getUniqueId().toString())) {
-            settings.getDaily().set(p.getUniqueId().toString() + ".FreeReward", "");
-            settings.getDaily().set(p.getUniqueId().toString() + ".SponsorReward", "");
-            settings.getDaily().set(p.getUniqueId().toString() + ".VIPReward", "");
-            settings.getDaily().set(p.getUniqueId().toString() + ".MVPReward", "");
-            settings.getDaily().set(p.getUniqueId().toString() + ".HeroReward", "");
-            settings.getDaily().set(p.getUniqueId().toString() + ".Demi-GodReward", "");
-            settings.getDaily().set(p.getUniqueId().toString() + ".TitanReward", "");
-            settings.getDaily().set(p.getUniqueId().toString() + ".GodReward", "");
-            settings.getDaily().set(p.getUniqueId().toString() + ".OlympianReward", "");
-            settings.getDaily().set(p.getUniqueId().toString() + ".GenesisReward", "");
+            settings.getDaily().set(p.getUniqueId() + ".FreeReward", "");
+            settings.getDaily().set(p.getUniqueId() + ".SponsorReward", "");
+            settings.getDaily().set(p.getUniqueId() + ".VIPReward", "");
+            settings.getDaily().set(p.getUniqueId() + ".MVPReward", "");
+            settings.getDaily().set(p.getUniqueId() + ".HeroReward", "");
+            settings.getDaily().set(p.getUniqueId() + ".Demi-GodReward", "");
+            settings.getDaily().set(p.getUniqueId() + ".TitanReward", "");
+            settings.getDaily().set(p.getUniqueId() + ".GodReward", "");
+            settings.getDaily().set(p.getUniqueId() + ".OlympianReward", "");
+            settings.getDaily().set(p.getUniqueId() + ".GenesisReward", "");
         }
         settings.saveDaily();
     }
@@ -238,14 +238,14 @@ public class CMDDaily implements Listener, CommandExecutor {
 
         if (e.getClickedInventory() == null)
             return;
-        if (e.getClickedInventory().getName() == null)
+        if (e.getView().getTitle() == null)
             return;
 
-        if (e.getClickedInventory().getName().equals(m.c("&e&lDaily Rewards:"))) {
+        if (e.getView().getTitle().equals(m.c("&e&lDaily Rewards:"))) {
             e.setCancelled(true);
 
             if (e.getSlot() == 3) {
-                if (this.settings.getDaily().get(p.getUniqueId().toString() + ".FreeReward").equals(getTodayDate())) {
+                if (this.settings.getDaily().get(p.getUniqueId() + ".FreeReward").equals(getTodayDate())) {
                     p.sendMessage(m.c("&cAlready Claimed Today!"));
                     return;
                 } else {
@@ -257,7 +257,7 @@ public class CMDDaily implements Listener, CommandExecutor {
                 openRank(p);
             }
         }
-        if (e.getClickedInventory().getName().equals(m.c("&e&lDaily Rank Rewards:"))) {
+        if (e.getView().getTitle().equals(m.c("&e&lDaily Rank Rewards:"))) {
             e.setCancelled(true);
 
             if (e.getSlot() == 0) {
@@ -265,7 +265,7 @@ public class CMDDaily implements Listener, CommandExecutor {
                     p.sendMessage(m.c("&cNo Permission!"));
                     return;
                 }
-                if (this.settings.getDaily().get(p.getUniqueId().toString() + ".SponsorReward").equals(getTodayDate())) {
+                if (this.settings.getDaily().get(p.getUniqueId() + ".SponsorReward").equals(getTodayDate())) {
                     p.sendMessage(m.c("&cAlready Claimed Today!"));
                     return;
                 } else {
@@ -277,7 +277,7 @@ public class CMDDaily implements Listener, CommandExecutor {
                     p.sendMessage(m.c("&cNo Permission!"));
                     return;
                 }
-                if (this.settings.getDaily().get(p.getUniqueId().toString() + ".VIPReward").equals(getTodayDate())) {
+                if (this.settings.getDaily().get(p.getUniqueId() + ".VIPReward").equals(getTodayDate())) {
                     p.sendMessage(m.c("&cAlready Claimed Today!"));
                     return;
                 } else {
@@ -289,7 +289,7 @@ public class CMDDaily implements Listener, CommandExecutor {
                     p.sendMessage(m.c("&cNo Permission!"));
                     return;
                 }
-                if (this.settings.getDaily().get(p.getUniqueId().toString() + ".MVPReward").equals(getTodayDate())) {
+                if (this.settings.getDaily().get(p.getUniqueId() + ".MVPReward").equals(getTodayDate())) {
                     p.sendMessage(m.c("&cAlready Claimed Today!"));
                     return;
                 } else {
@@ -301,7 +301,7 @@ public class CMDDaily implements Listener, CommandExecutor {
                     p.sendMessage(m.c("&cNo Permission!"));
                     return;
                 }
-                if (this.settings.getDaily().get(p.getUniqueId().toString() + ".HeroReward").equals(getTodayDate())) {
+                if (this.settings.getDaily().get(p.getUniqueId() + ".HeroReward").equals(getTodayDate())) {
                     p.sendMessage(m.c("&cAlready Claimed Today!"));
                     return;
                 } else {
@@ -313,7 +313,7 @@ public class CMDDaily implements Listener, CommandExecutor {
                     p.sendMessage(m.c("&cNo Permission!"));
                     return;
                 }
-                if (this.settings.getDaily().get(p.getUniqueId().toString() + ".Demi-GodReward").equals(getTodayDate())) {
+                if (this.settings.getDaily().get(p.getUniqueId() + ".Demi-GodReward").equals(getTodayDate())) {
                     p.sendMessage(m.c("&cAlready Claimed Today!"));
                     return;
                 } else {
@@ -325,7 +325,7 @@ public class CMDDaily implements Listener, CommandExecutor {
                     p.sendMessage(m.c("&cNo Permission!"));
                     return;
                 }
-                if (this.settings.getDaily().get(p.getUniqueId().toString() + ".TitanReward").equals(getTodayDate())) {
+                if (this.settings.getDaily().get(p.getUniqueId() + ".TitanReward").equals(getTodayDate())) {
                     p.sendMessage(m.c("&cAlready Claimed Today!"));
                     return;
                 } else {
@@ -337,7 +337,7 @@ public class CMDDaily implements Listener, CommandExecutor {
                     p.sendMessage(m.c("&cNo Permission!"));
                     return;
                 }
-                if (this.settings.getDaily().get(p.getUniqueId().toString() + ".GodReward").equals(getTodayDate())) {
+                if (this.settings.getDaily().get(p.getUniqueId() + ".GodReward").equals(getTodayDate())) {
                     p.sendMessage(m.c("&cAlready Claimed Today!"));
                     return;
                 } else {
@@ -349,7 +349,7 @@ public class CMDDaily implements Listener, CommandExecutor {
                     p.sendMessage(m.c("&cNo Permission!"));
                     return;
                 }
-                if (this.settings.getDaily().get(p.getUniqueId().toString() + ".OlympianReward").equals(getTodayDate())) {
+                if (this.settings.getDaily().get(p.getUniqueId() + ".OlympianReward").equals(getTodayDate())) {
                     p.sendMessage(m.c("&cAlready Claimed Today!"));
                     return;
                 } else {
@@ -361,7 +361,7 @@ public class CMDDaily implements Listener, CommandExecutor {
                     p.sendMessage(m.c("&cNo Permission!"));
                     return;
                 }
-                if (this.settings.getDaily().get(p.getUniqueId().toString() + ".GenesisReward").equals(getTodayDate())) {
+                if (this.settings.getDaily().get(p.getUniqueId() + ".GenesisReward").equals(getTodayDate())) {
                     p.sendMessage(m.c("&cAlready Claimed Today!"));
                     return;
                 } else {

@@ -46,7 +46,7 @@ public class RankupHandler implements Listener, CommandExecutor {
             PlayerDataHandler.getInstance().getPlayerData(p).set("Level", 1);
         }
         if (!aru.contains(p)) {
-            if (settings.getOptions().getBoolean(p.getUniqueId().toString() + ".Autorankup") == true) {
+            if (settings.getOptions().getBoolean(p.getUniqueId() + ".Autorankup") == true) {
                 aru.add(p);
             }
         }
@@ -297,11 +297,11 @@ public class RankupHandler implements Listener, CommandExecutor {
             if (!aru.contains(p)) {
                 aru.add(p);
                 p.sendMessage(c("&aAutoRankup Enabled!"));
-                settings.getOptions().set(p.getUniqueId().toString() + ".Autorankup", true);
+                settings.getOptions().set(p.getUniqueId() + ".Autorankup", true);
             } else {
                 aru.remove(p);
                 p.sendMessage(c("&cAutoRankup Disabled!"));
-                settings.getOptions().set(p.getUniqueId().toString() + ".Autorankup", false);
+                settings.getOptions().set(p.getUniqueId() + ".Autorankup", false);
             }
             settings.saveOptions();
             return true;

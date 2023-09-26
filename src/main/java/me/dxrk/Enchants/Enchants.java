@@ -106,7 +106,7 @@ public class Enchants implements Listener {
 
 
     private boolean hasEnchant(Player p, String enchant) {
-        List<String> lore = p.getItemInHand().getItemMeta().getLore();
+        List<String> lore = p.getEquipment().getItemInMainHand().getItemMeta().getLore();
         int x;
         for (x = 0; x < lore.size(); x++) {
             String s = lore.get(x);
@@ -143,11 +143,11 @@ public class Enchants implements Listener {
         Player p = e.getPlayer();
         Block b = e.getBlock();
 
-        if (p.getItemInHand() == null)
+        if (p.getEquipment().getItemInMainHand() == null)
             return;
-        if (!p.getItemInHand().hasItemMeta())
+        if (!p.getEquipment().getItemInMainHand().hasItemMeta())
             return;
-        if (!p.getItemInHand().getItemMeta().hasLore())
+        if (!p.getEquipment().getItemInMainHand().getItemMeta().hasLore())
             return;
         if (MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(b.getLocation())) {
             for (String s : EnchantMethods.getInstance().Enchants()) {

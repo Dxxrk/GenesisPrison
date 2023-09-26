@@ -33,7 +33,7 @@ public class PrestigeHandler implements Listener, CommandExecutor {
     static SettingsManager settings = SettingsManager.getInstance();
 
     private ItemStack prestigeItem(List<String> lore, String name) {
-        ItemStack item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 5);
+        ItemStack item = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
         ItemMeta im = item.getItemMeta();
         im.setDisplayName(name);
         im.setLore(lore);
@@ -173,10 +173,10 @@ public class PrestigeHandler implements Listener, CommandExecutor {
 
         if (e.getClickedInventory() == null)
             return;
-        if (e.getClickedInventory().getName() == null)
+        if (e.getView().getTitle() == null)
             return;
 
-        if (e.getClickedInventory().getName().contains(m.c("&cPrestige:"))) {
+        if (e.getView().getTitle().contains(m.c("&cPrestige:"))) {
             e.setCancelled(true);
 
             if (e.getSlot() == 1) {
@@ -188,7 +188,7 @@ public class PrestigeHandler implements Listener, CommandExecutor {
                     }
                     Inventory sure = Bukkit.createInventory(null, InventoryType.HOPPER, m.c("&c&lARE YOU SURE?"));
 
-                    ItemStack yes = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 5);
+                    ItemStack yes = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
                     ItemMeta ym = yes.getItemMeta();
                     List<String> lore = new ArrayList<>();
                     lore.add(m.c("&7&oThis Action is permanent."));
@@ -197,7 +197,7 @@ public class PrestigeHandler implements Listener, CommandExecutor {
                     yes.setItemMeta(ym);
                     lore.clear();
 
-                    ItemStack no = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+                    ItemStack no = new ItemStack(Material.RED_STAINED_GLASS_PANE);
                     ItemMeta nm = no.getItemMeta();
                     nm.setDisplayName(m.c("&c&lNO"));
                     no.setItemMeta(nm);
@@ -219,7 +219,7 @@ public class PrestigeHandler implements Listener, CommandExecutor {
                 openPrestigeTree(p);
             }
         }
-        if (e.getClickedInventory().getName().equals(m.c("&c&lARE YOU SURE?"))) {
+        if (e.getView().getTitle().equals(m.c("&c&lARE YOU SURE?"))) {
             e.setCancelled(true);
             if (e.getSlot() == 1) {
                 prestige(p);
@@ -230,7 +230,7 @@ public class PrestigeHandler implements Listener, CommandExecutor {
                 p.closeInventory();
             }
         }
-        if (e.getClickedInventory().getName().contains(m.c("&aPrestige Tree:"))) {
+        if (e.getView().getTitle().contains(m.c("&aPrestige Tree:"))) {
             e.setCancelled(true);
             int prestigepoints = PlayerDataHandler.getInstance().getPlayerData(p).getInt("PrestigePoints");
             if (prestigepoints == 0)

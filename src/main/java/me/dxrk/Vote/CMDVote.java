@@ -1,5 +1,6 @@
 package me.dxrk.Vote;
 
+
 import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.model.VotifierEvent;
 import me.dxrk.Events.LocksmithHandler;
@@ -86,7 +87,7 @@ public class CMDVote implements Listener, CommandExecutor {
     }
 
     public ItemStack VotePointsPaper(Player p) {
-        int votePoints = settings.getVote().getInt(p.getUniqueId().toString() + ".VotePoints");
+        int votePoints = settings.getVote().getInt(p.getUniqueId() + ".VotePoints");
         ItemStack paper = new ItemStack(Material.PAPER, 1);
         ItemMeta impaper = paper.getItemMeta();
         impaper.setDisplayName(ChatColor.WHITE + "Votepoints: " + votePoints);
@@ -114,12 +115,12 @@ public class CMDVote implements Listener, CommandExecutor {
         Player p = (Player) e.getWhoClicked();
         if (e.getClickedInventory() == null)
             return;
-        if (e.getClickedInventory().getName() == null)
+        if (e.getView().getTitle() == null)
             return;
         if (e.getCurrentItem() == null) {
             return;
         }
-        if (e.getInventory().getName().equals(ChatColor.AQUA + "Vote Now!")) {
+        if (e.getView().getTitle().equals(ChatColor.AQUA + "Vote Now!")) {
             e.setCancelled(true);
             if (e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Info:"))
                 return;
@@ -132,9 +133,9 @@ public class CMDVote implements Listener, CommandExecutor {
                 rankposition = r.nextInt(35);
             }
         }
-        if (e.getInventory().getName().equals(ChatColor.GOLD + "Treasury")) {
+        if (e.getView().getTitle().equals(ChatColor.GOLD + "Treasury")) {
             e.setCancelled(true);
-            int votePoints = settings.getVote().getInt(p.getUniqueId().toString() + ".VotePoints");
+            int votePoints = settings.getVote().getInt(p.getUniqueId() + ".VotePoints");
             if (votePoints <= 0)
                 return;
             if (!e.getCurrentItem().hasItemMeta())
@@ -156,7 +157,7 @@ public class CMDVote implements Listener, CommandExecutor {
                 im.setDisplayName(ChatColor.LIGHT_PURPLE + "2x Rank Keys");
                 rankkey.setItemMeta(im);
                 i.setItem(rankposition, rankkey);
-                settings.getVote().set(p.getUniqueId().toString() + ".VotePoints", votePoints - 1);
+                settings.getVote().set(p.getUniqueId() + ".VotePoints", votePoints - 1);
                 settings.saveVote();
                 i.setItem(35, VotePointsPaper(p));
                 LocksmithHandler.getInstance().addKey(p, "Rank", 2);
@@ -167,17 +168,17 @@ public class CMDVote implements Listener, CommandExecutor {
                 im.setDisplayName(ChatColor.BLUE + "1x Genesis Crate");
                 crate.setItemMeta(im);
                 i.setItem(crateposition, crate);
-                settings.getVote().set(p.getUniqueId().toString() + ".VotePoints", votePoints - 1);
+                settings.getVote().set(p.getUniqueId() + ".VotePoints", votePoints - 1);
                 settings.saveVote();
                 i.setItem(35, VotePointsPaper(p));
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate " + p.getName() + " genesis");
             } else if (e.getRawSlot() == eggposition) {
-                ItemStack egg = new ItemStack(Material.MONSTER_EGG, 1);
+                ItemStack egg = new ItemStack(Material.ENDER_DRAGON_SPAWN_EGG, 1);
                 ItemMeta im = egg.getItemMeta();
                 im.setDisplayName(ChatColor.WHITE + "1x Monster Egg");
                 egg.setItemMeta(im);
                 i.setItem(eggposition, egg);
-                settings.getVote().set(p.getUniqueId().toString() + ".VotePoints", votePoints - 1);
+                settings.getVote().set(p.getUniqueId() + ".VotePoints", votePoints - 1);
                 settings.saveVote();
                 i.setItem(35, VotePointsPaper(p));
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveegg " + p.getName());
@@ -189,7 +190,7 @@ public class CMDVote implements Listener, CommandExecutor {
                     im.setDisplayName(ChatColor.RED + "10x Beta Key");
                     betakey.setItemMeta(im);
                     i.setItem(e.getRawSlot(), betakey);
-                    settings.getVote().set(p.getUniqueId().toString() + ".VotePoints", votePoints - 1);
+                    settings.getVote().set(p.getUniqueId() + ".VotePoints", votePoints - 1);
                     settings.saveVote();
                     i.setItem(35, VotePointsPaper(p));
                     LocksmithHandler.getInstance().addKey(p, "Beta", 10);
@@ -200,7 +201,7 @@ public class CMDVote implements Listener, CommandExecutor {
                     im.setDisplayName(ChatColor.DARK_RED + "10x Omega Key");
                     omegakey.setItemMeta(im);
                     i.setItem(e.getRawSlot(), omegakey);
-                    settings.getVote().set(p.getUniqueId().toString() + ".VotePoints", votePoints - 1);
+                    settings.getVote().set(p.getUniqueId() + ".VotePoints", votePoints - 1);
                     settings.saveVote();
                     i.setItem(35, VotePointsPaper(p));
                     LocksmithHandler.getInstance().addKey(p, "Omega", 10);
@@ -211,7 +212,7 @@ public class CMDVote implements Listener, CommandExecutor {
                     im.setDisplayName(ChatColor.GRAY + "10x Multi");
                     multi.setItemMeta(im);
                     i.setItem(e.getRawSlot(), multi);
-                    settings.getVote().set(p.getUniqueId().toString() + ".VotePoints", votePoints - 1);
+                    settings.getVote().set(p.getUniqueId() + ".VotePoints", votePoints - 1);
                     settings.saveVote();
                     i.setItem(35, VotePointsPaper(p));
                     SellHandler.getInstance().setMulti(p, SellHandler.getInstance().getMulti(p) + 10);
@@ -287,7 +288,7 @@ public class CMDVote implements Listener, CommandExecutor {
 
     @EventHandler
     public void onInvClick(InventoryClickEvent e) {
-        if (e.getInventory().getName().equals(ChatColor.AQUA + "Vote!")) {
+        if (e.getView().getTitle().equals(ChatColor.AQUA + "Vote!")) {
             e.setCancelled(true);
             if (e.getRawSlot() < 9 &&
                     e.getCurrentItem() != null) {
@@ -322,7 +323,7 @@ public class CMDVote implements Listener, CommandExecutor {
     }
 
     public ItemStack voteItem(Player p, String serviceName) {
-        ItemStack i = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 5);
+        ItemStack i = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
         ItemMeta im = i.getItemMeta();
         if (canVote(p, serviceName)) {
             im.setDisplayName(ChatColor.GREEN + "Click to vote!");
@@ -341,13 +342,13 @@ public class CMDVote implements Listener, CommandExecutor {
     public boolean canVote(Player p, String serviceName) {
         if (!this.settings.getVote().contains(p.getUniqueId().toString()))
             return true;
-        long time = this.settings.getVote().getLong(p.getUniqueId().toString() + "." + serviceName);
+        long time = this.settings.getVote().getLong(p.getUniqueId() + "." + serviceName);
         long currentTime = (new Date()).getTime();
         return currentTime >= time;
     }
 
     public long getCooldownTime(Player p, String serviceName) {
-        long time = this.settings.getVote().getLong(p.getUniqueId().toString() + "." + serviceName);
+        long time = this.settings.getVote().getLong(p.getUniqueId() + "." + serviceName);
         long currentTime = (new Date()).getTime();
         return time - currentTime;
     }
@@ -438,8 +439,8 @@ public class CMDVote implements Listener, CommandExecutor {
         } else if (cmd.getName().equalsIgnoreCase("givevotepoints")) {
             if (sender.hasPermission("genesis.givevotepoints")) {
                 Player p = Bukkit.getPlayer(args[0]);
-                int votePoints = settings.getVote().getInt(p.getUniqueId().toString() + ".VotePoints");
-                settings.getVote().set(p.getUniqueId().toString() + ".VotePoints", votePoints + Integer.parseInt(args[1]));
+                int votePoints = settings.getVote().getInt(p.getUniqueId() + ".VotePoints");
+                settings.getVote().set(p.getUniqueId() + ".VotePoints", votePoints + Integer.parseInt(args[1]));
                 settings.saveVote();
             }
         }
@@ -447,11 +448,11 @@ public class CMDVote implements Listener, CommandExecutor {
     }
 
     public int getVotes(Player p) {
-        return this.settings.getVote().getInt(p.getUniqueId().toString() + ".Votes");
+        return this.settings.getVote().getInt(p.getUniqueId() + ".Votes");
     }
 
     public int getVotes(OfflinePlayer p) {
-        return this.settings.getVote().getInt(p.getUniqueId().toString() + ".Votes");
+        return this.settings.getVote().getInt(p.getUniqueId() + ".Votes");
     }
 
     public static ArrayList<ItemStack> rewards = new ArrayList<>();
@@ -529,16 +530,16 @@ public class CMDVote implements Listener, CommandExecutor {
         int servervotes = this.settings.getVote().getInt("ServerVotes");
         this.settings.getVote().set("ServerVotes", servervotes - 1);
         assert p != null;
-        int totalvotes = this.settings.getVote().getInt(p.getUniqueId().toString() + ".Votes");
+        int totalvotes = this.settings.getVote().getInt(p.getUniqueId() + ".Votes");
         int newtotalvotes = totalvotes + 1;
         long time = (new Date()).getTime() + 86400000L;
-        this.settings.getVote().set(p.getUniqueId().toString() + ".Votes", newtotalvotes);
+        this.settings.getVote().set(p.getUniqueId() + ".Votes", newtotalvotes);
         CMDVoteShop.addCoupon(p, 0.05);
-        this.settings.getVote().set(p.getUniqueId().toString() + "." + v.getServiceName(), time);
+        this.settings.getVote().set(p.getUniqueId() + "." + v.getServiceName(), time);
         this.settings.saveVote();
         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "tokens add " + p.getName() + " 50000");
         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "cratekey " + p.getName() + " vote");
-        this.settings.getVote().set(p.getUniqueId().toString() + ".HasVoted", getTodayDate());
+        this.settings.getVote().set(p.getUniqueId() + ".HasVoted", getTodayDate());
         this.settings.saveVote();
         p.sendMessage(m.c("&f&lVote &8| &b+1 Vote Key &e+⛀50,000"));
         if (servervotes < 2) {
@@ -546,7 +547,7 @@ public class CMDVote implements Listener, CommandExecutor {
             this.settings.saveVote();
             voteParty();
         }
-        int votePoints = settings.getVote().getInt(p.getUniqueId().toString() + ".VotePoints");
-        settings.getVote().set(p.getUniqueId().toString() + ".VotePoints", votePoints + 1);
+        int votePoints = settings.getVote().getInt(p.getUniqueId() + ".VotePoints");
+        settings.getVote().set(p.getUniqueId() + ".VotePoints", votePoints + 1);
     }
 }

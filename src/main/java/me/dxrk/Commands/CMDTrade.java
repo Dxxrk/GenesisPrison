@@ -75,7 +75,7 @@ public class CMDTrade implements Listener, CommandExecutor {
         trade.setItem(46, red());
         trade.setItem(49, cancel());
         trade.setItem(52, red());
-        p.playSound(p.getLocation(), Sound.ANVIL_USE, 1.0f, 1.0f);
+        p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 1.0f);
         p.openInventory(trade);
 
     }
@@ -252,7 +252,7 @@ public class CMDTrade implements Listener, CommandExecutor {
     }
 
     public ItemStack red() {
-        ItemStack red = new ItemStack(Material.INK_SACK, 1, (short) 1);
+        ItemStack red = new ItemStack(Material.INK_SAC, 1, (short) 1);
         ItemMeta rm = red.getItemMeta();
         rm.setDisplayName(m.c("&eConfirm Trade"));
         red.setItemMeta(rm);
@@ -260,7 +260,7 @@ public class CMDTrade implements Listener, CommandExecutor {
     }
 
     public ItemStack green() {
-        ItemStack green = new ItemStack(Material.INK_SACK, 1, (short) 10);
+        ItemStack green = new ItemStack(Material.INK_SAC, 1, (short) 10);
         ItemMeta gm = green.getItemMeta();
         gm.setDisplayName(m.c("&eTrade Confirmed"));
         green.setItemMeta(gm);
@@ -268,7 +268,7 @@ public class CMDTrade implements Listener, CommandExecutor {
     }
 
     public ItemStack cancel() {
-        ItemStack cancel = new ItemStack(Material.INK_SACK, 1, (short) 8);
+        ItemStack cancel = new ItemStack(Material.INK_SAC, 1, (short) 8);
         ItemMeta cm = cancel.getItemMeta();
         cm.setDisplayName(m.c("&eCancel Trade"));
         cancel.setItemMeta(cm);
@@ -283,7 +283,7 @@ public class CMDTrade implements Listener, CommandExecutor {
         Inventory inv = e.getInventory();
         if (updating.contains(p)) {
             updating.remove(p);
-        } else if (inv.getName().equals(m.c("&a&lTrade:"))) {
+        } else if (e.getView().getTitle().equals(m.c("&a&lTrade:"))) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -395,21 +395,21 @@ public class CMDTrade implements Listener, CommandExecutor {
     public void onInv(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         if (e.getClickedInventory() == null) return;
-        if (e.getInventory().getName().equals(m.c("&a&lTrade:"))) {
+        if (e.getView().getTitle().equals(m.c("&a&lTrade:"))) {
             e.setCancelled(true);
             ItemStack put = e.getCurrentItem();
 
-            if (e.getSlot() == 46 && e.getClickedInventory().getName().equals(m.c("&a&lTrade:"))) {
+            if (e.getSlot() == 46 && e.getView().getTitle().equals(m.c("&a&lTrade:"))) {
                 e.setCancelled(true);
                 clickConfirm(p);
                 return;
             }
-            if (e.getSlot() == 49 && e.getClickedInventory().getName().equals(m.c("&a&lTrade:"))) {
+            if (e.getSlot() == 49 && e.getView().getTitle().equals(m.c("&a&lTrade:"))) {
                 e.setCancelled(true);
                 clickCancel(p);
                 return;
             }
-            if (slots().contains(e.getSlot()) && e.getClickedInventory().getName().equals(m.c("&a&lTrade:"))) {
+            if (slots().contains(e.getSlot()) && e.getView().getTitle().equals(m.c("&a&lTrade:"))) {
                 e.setCancelled(true);
                 return;
             }
@@ -417,7 +417,7 @@ public class CMDTrade implements Listener, CommandExecutor {
                 if (e.getClick().equals(ClickType.RIGHT) || e.getClick().equals(ClickType.SHIFT_RIGHT)) return;
                 e.setCancelled(true);
                 String code = trading.get(p);
-                if (e.getCurrentItem().getType().equals(Material.WOOD_PICKAXE) || e.getCurrentItem().getType().equals(Material.STONE_PICKAXE) || e.getCurrentItem().getType().equals(Material.GOLD_PICKAXE) ||
+                if (e.getCurrentItem().getType().equals(Material.WOODEN_PICKAXE) || e.getCurrentItem().getType().equals(Material.STONE_PICKAXE) || e.getCurrentItem().getType().equals(Material.GOLDEN_PICKAXE) ||
                         e.getCurrentItem().getType().equals(Material.IRON_PICKAXE) || e.getCurrentItem().getType().equals(Material.DIAMOND_PICKAXE))
                     return;
 
@@ -437,11 +437,11 @@ public class CMDTrade implements Listener, CommandExecutor {
                         player1inv.get(code).add(put);
                         e.setCurrentItem(null);
                         p.updateInventory();
-                        p.playSound(p.getLocation(), Sound.ANVIL_LAND, 1.0f, 1.0f);
+                        p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_LAND, 1.0f, 1.0f);
                         updateTrade(p, player1inv.get(code), player2inv.get(code), red(), red());
                         for (Player pp : Bukkit.getOnlinePlayers()) {
                             if (trading.containsKey(pp) && trading.get(pp).equals(code) && !p.equals(pp)) {
-                                pp.playSound(p.getLocation(), Sound.ANVIL_LAND, 1.0f, 1.0f);
+                                pp.playSound(p.getLocation(), Sound.BLOCK_ANVIL_LAND, 1.0f, 1.0f);
                                 updateTrade(pp, player2inv.get(code), player1inv.get(code), red(), red());
                             }
                         }
@@ -453,11 +453,11 @@ public class CMDTrade implements Listener, CommandExecutor {
                         player2inv.get(code).add(put);
                         e.setCurrentItem(null);
                         p.updateInventory();
-                        p.playSound(p.getLocation(), Sound.ANVIL_LAND, 1.0f, 1.0f);
+                        p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_LAND, 1.0f, 1.0f);
                         updateTrade(p, player2inv.get(code), player1inv.get(code), red(), red());
                         for (Player pp : Bukkit.getOnlinePlayers()) {
                             if (trading.containsKey(pp) && trading.get(pp).equals(code) && !p.equals(pp)) {
-                                pp.playSound(p.getLocation(), Sound.ANVIL_LAND, 1.0f, 1.0f);
+                                pp.playSound(p.getLocation(), Sound.BLOCK_ANVIL_LAND, 1.0f, 1.0f);
                                 updateTrade(pp, player1inv.get(code), player2inv.get(code), red(), red());
                             }
                         }
@@ -480,11 +480,11 @@ public class CMDTrade implements Listener, CommandExecutor {
                         e.setCurrentItem(null);
                         p.getInventory().addItem(put);
                         p.updateInventory();
-                        p.playSound(p.getLocation(), Sound.FIRE_IGNITE, 1.0f, 1.0f);
+                        p.playSound(p.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 1.0f, 1.0f);
                         updateTrade(p, player1inv.get(code), player2inv.get(code), red(), red());
                         for (Player pp : Bukkit.getOnlinePlayers()) {
                             if (trading.containsKey(pp) && trading.get(pp).equals(code) && !p.equals(pp)) {
-                                pp.playSound(p.getLocation(), Sound.FIRE_IGNITE, 1.0f, 1.0f);
+                                pp.playSound(p.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 1.0f, 1.0f);
                                 updateTrade(pp, player2inv.get(code), player1inv.get(code), red(), red());
                             }
                         }
@@ -493,11 +493,11 @@ public class CMDTrade implements Listener, CommandExecutor {
                         e.setCurrentItem(null);
                         p.getInventory().addItem(put);
                         p.updateInventory();
-                        p.playSound(p.getLocation(), Sound.FIRE_IGNITE, 1.0f, 1.0f);
+                        p.playSound(p.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 1.0f, 1.0f);
                         updateTrade(p, player2inv.get(code), player1inv.get(code), red(), red());
                         for (Player pp : Bukkit.getOnlinePlayers()) {
                             if (trading.containsKey(pp) && trading.get(pp).equals(code) && !p.equals(pp)) {
-                                pp.playSound(p.getLocation(), Sound.FIRE_IGNITE, 1.0f, 1.0f);
+                                pp.playSound(p.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 1.0f, 1.0f);
                                 updateTrade(pp, player1inv.get(code), player2inv.get(code), red(), red());
                             }
                         }
@@ -522,8 +522,8 @@ public class CMDTrade implements Listener, CommandExecutor {
             player1inv.remove(code);
             player2.remove(p);
         }
-        p.playSound(p.getLocation(), Sound.FIREWORK_LARGE_BLAST, 1.0f, 1.0f);
-        p.playSound(p.getLocation(), Sound.FIREWORK_TWINKLE, 1.0f, 1.0f);
+        p.playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LARGE_BLAST, 1.0f, 1.0f);
+        p.playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 1.0f, 1.0f);
         waitingConfirm.remove(p);
         trading.remove(p);
         if (p.getOpenInventory() != null)
@@ -547,7 +547,7 @@ public class CMDTrade implements Listener, CommandExecutor {
             player2inv.remove(code);
             player2.remove(p);
         }
-        p.playSound(p.getLocation(), Sound.GLASS, 1.0f, 1.0f);
+        p.playSound(p.getLocation(), Sound.BLOCK_GLASS_BREAK, 1.0f, 1.0f);
         trading.remove(p);
         if (p.getOpenInventory() != null)
             p.closeInventory();

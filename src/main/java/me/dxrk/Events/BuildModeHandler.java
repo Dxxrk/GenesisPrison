@@ -91,12 +91,12 @@ public class BuildModeHandler implements Listener, CommandExecutor {
             return false;
         return material.equals(Material.REDSTONE) ||
                 material.equals(Material.REDSTONE_BLOCK) ||
-                material.equals(Material.DIODE) ||
-                material.equals(Material.REDSTONE_COMPARATOR) ||
+                material.equals(Material.REPEATER) ||
+                material.equals(Material.COMPARATOR) ||
                 material.equals(Material.DISPENSER) ||
                 material.equals(Material.DROPPER) ||
-                material.equals(Material.PISTON_BASE) ||
-                material.equals(Material.PISTON_STICKY_BASE) ||
+                material.equals(Material.PISTON) ||
+                material.equals(Material.STICKY_PISTON) ||
                 material.equals(Material.TNT) ||
                 material.equals(Material.ANVIL);
     }

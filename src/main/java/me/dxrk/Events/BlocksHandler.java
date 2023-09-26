@@ -2,8 +2,9 @@ package me.dxrk.Events;
 
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Mines.MineSystem;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -51,7 +52,7 @@ public class BlocksHandler implements CommandExecutor, Listener {
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
-        if (p.getItemInHand() == null)
+        if (p.getEquipment().getItemInMainHand().getType() == Material.AIR)
             return;
         if (e.isCancelled())
             return;
@@ -73,9 +74,8 @@ public class BlocksHandler implements CommandExecutor, Listener {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (label.equalsIgnoreCase("blocks")) {
-            if (!(sender instanceof Player))
+            if (!(sender instanceof Player p))
                 return false;
-            Player p = (Player) sender;
             int blocksbroken = PlayerDataHandler.getInstance().getPlayerData(p).getInt("BlocksBroken");
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b[&dBlocks&b] &bYou've broken &d&n" + blocksbroken + "&b blocks!"));
         }

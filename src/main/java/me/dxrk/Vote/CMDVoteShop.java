@@ -36,7 +36,7 @@ public class CMDVoteShop implements Listener, CommandExecutor {
 
 
     public ItemStack Spacer() {
-        ItemStack i = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 10);
+        ItemStack i = new ItemStack(Material.PURPLE_STAINED_GLASS_PANE);
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(m.c("&9Genesis&bVote"));
         im.addEnchant(Enchantment.DURABILITY, 3, true);
@@ -128,11 +128,11 @@ public class CMDVoteShop implements Listener, CommandExecutor {
         Player p = (Player) e.getWhoClicked();
         if (e.getClickedInventory() == null)
             return;
-        if (e.getClickedInventory().getName() == null)
+        if (e.getView().getTitle() == null)
             return;
         double amount = getCoupons(p);
         NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
-        if (e.getClickedInventory().getName().equals(m.c("&d&lCoupons: &a" + formatter.format(amount)))) {
+        if (e.getView().getTitle().equals(m.c("&d&lCoupons: &a" + formatter.format(amount)))) {
             e.setCancelled(true);
             if (e.getSlot() == 2) {
                 if (getCoupons(p) <= 0) return;
@@ -165,25 +165,25 @@ public class CMDVoteShop implements Listener, CommandExecutor {
 
 
     public static void addCoupon(Player p, double coupon) {
-        double vps = settings.getVote().getDouble(p.getUniqueId().toString() + ".Coupons");
+        double vps = settings.getVote().getDouble(p.getUniqueId() + ".Coupons");
         double newvps = vps + coupon;
 
-        settings.getVote().set(p.getUniqueId().toString() + ".Coupons", newvps);
+        settings.getVote().set(p.getUniqueId() + ".Coupons", newvps);
         settings.saveVote();
     }
 
     public double getCoupons(Player p) {
         if (!settings.getVote().contains(p.getUniqueId().toString()))
             return 0;
-        double coupons = settings.getVote().getDouble(p.getUniqueId().toString() + ".Coupons");
+        double coupons = settings.getVote().getDouble(p.getUniqueId() + ".Coupons");
         return coupons;
     }
 
     public void removeCoupons(Player p, double i) {
-        double vps = settings.getVote().getDouble(p.getUniqueId().toString() + ".Coupons");
+        double vps = settings.getVote().getDouble(p.getUniqueId() + ".Coupons");
         double newvps = vps - i;
 
-        settings.getVote().set(p.getUniqueId().toString() + ".Coupons", newvps);
+        settings.getVote().set(p.getUniqueId() + ".Coupons", newvps);
         settings.saveVote();
     }
 

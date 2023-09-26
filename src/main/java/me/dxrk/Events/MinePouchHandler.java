@@ -40,7 +40,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
     }
 
     public ItemStack minePouch() {
-        ItemStack pouch = new ItemStack(Material.INK_SACK);
+        ItemStack pouch = new ItemStack(Material.INK_SAC);
         ItemMeta pm = pouch.getItemMeta();
         pm.setDisplayName(m.c("&eGem Pouch"));
         List<String> lore = new ArrayList<>();
@@ -97,9 +97,9 @@ public class MinePouchHandler implements Listener, CommandExecutor {
     public void onClick(PlayerInteractEvent e) {
         Player p = e.getPlayer();
 
-        if (p.getItemInHand() == null) return;
-        if (!p.getItemInHand().hasItemMeta()) return;
-        if (!p.getItemInHand().getItemMeta().hasLore()) return;
+        if (p.getEquipment().getItemInMainHand() == null) return;
+        if (!p.getEquipment().getItemInMainHand().hasItemMeta()) return;
+        if (!p.getEquipment().getItemInMainHand().getItemMeta().hasLore()) return;
         String gang = Gangs.getInstance().getGang(p);
         double unity = CMDGang.getInstance().getUnityLevel(gang);
         double gem = 1;
@@ -112,8 +112,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
         double skilltreeboost = 1 + PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillGemBoost");
 
         if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            ItemStack item = p.getItemInHand();
-            if (item.getType().equals(Material.INK_SACK) && item.getItemMeta().getDisplayName().equals(m.c("&eGem Pouch"))) {
+            ItemStack item = p.getEquipment().getItemInMainHand();
+            if (item.getType().equals(Material.INK_SAC) && item.getItemMeta().getDisplayName().equals(m.c("&eGem Pouch"))) {
                 if (MonsterHandler.activeMonster.containsKey(p) && ChatColor.stripColor(MonsterHandler.activeMonster.get(p).getItemMeta().getDisplayName()).split(" ")[0].equals("Cerberus")) {
                     gem *= MonsterHandler.getMonsterBoost(p, 3);
                 } else if (MonsterHandler.activeMonster.containsKey(p) && ChatColor.stripColor(MonsterHandler.activeMonster.get(p).getItemMeta().getDisplayName()).split(" ")[0].equals("Medusa")) {
@@ -123,8 +123,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 int gems = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(item.getItemMeta().getLore().get(0)));
                 addGems(p, (int) (gems * gem));
                 p.sendMessage(m.c("&f&lGems &8| &a+" + (int) (gems * gem)));
-                if (p.getItemInHand().getAmount() > 1) {
-                    p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+                if (p.getEquipment().getItemInMainHand().getAmount() > 1) {
+                    p.getEquipment().getItemInMainHand().setAmount(p.getEquipment().getItemInMainHand().getAmount() - 1);
                 } else {
                     p.setItemInHand(null);
                 }
@@ -133,8 +133,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 int gems = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(item.getItemMeta().getLore().get(0)));
                 addGems(p, gems);
                 p.sendMessage(m.c("&f&lGems &8| &a+" + gems));
-                if (p.getItemInHand().getAmount() > 1) {
-                    p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+                if (p.getEquipment().getItemInMainHand().getAmount() > 1) {
+                    p.getEquipment().getItemInMainHand().setAmount(p.getEquipment().getItemInMainHand().getAmount() - 1);
                 } else {
                     p.setItemInHand(null);
                 }
@@ -143,8 +143,8 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 String s = ChatColor.stripColor(item.getItemMeta().getLore().get(0)).split("⛀")[1];
                 double tokens = Double.parseDouble(s);
                 Tokens.getInstance().addTokens(p, tokens);
-                if (p.getItemInHand().getAmount() > 1) {
-                    p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
+                if (p.getEquipment().getItemInMainHand().getAmount() > 1) {
+                    p.getEquipment().getItemInMainHand().setAmount(p.getEquipment().getItemInMainHand().getAmount() - 1);
                 } else {
                     p.setItemInHand(null);
                 }
@@ -211,7 +211,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
     }
 
     private ItemStack egg() {
-        ItemStack egg = new ItemStack(Material.MONSTER_EGG);
+        ItemStack egg = new ItemStack(Material.ENDER_DRAGON_SPAWN_EGG);
         ItemMeta em = egg.getItemMeta();
         em.setDisplayName(m.c("&c&lMonster &7&lEgg &a75,000 Gems"));
         List<String> lore = new ArrayList<>();
@@ -264,7 +264,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 }
             }
         }*/
-        if (e.getInventory().getName().equals(m.c("&a&lGem Shop"))) {
+        if (e.getView().getTitle().equals(m.c("&a&lGem Shop"))) {
             e.setCancelled(true);
             if (e.getClickedInventory().equals(p.getInventory())) {
                 e.setCancelled(true);

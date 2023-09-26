@@ -143,7 +143,7 @@ public class CMDGang implements Listener, CommandExecutor {
     public void onInv(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         String gang = g.getGang(p);
-        if (e.getInventory().getName().equals(m.c("&3&l" + gang + "'s &b&lUpgrades"))) {
+        if (e.getView().getTitle().equals(m.c("&3&l" + gang + "'s &b&lUpgrades"))) {
             e.setCancelled(true);
         }
 

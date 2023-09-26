@@ -50,11 +50,11 @@ public class ChatHandler implements Listener, CommandExecutor {
     }
 
     public boolean getOption(Player p, String s) {
-        if (!this.settings.getData().contains(p.getUniqueId().toString() + ".Chat." + s)) {
-            this.settings.getData().set(p.getUniqueId().toString() + ".Chat." + s, 0);
+        if (!this.settings.getData().contains(p.getUniqueId() + ".Chat." + s)) {
+            this.settings.getData().set(p.getUniqueId() + ".Chat." + s, 0);
             this.settings.saveData();
         }
-        return this.settings.getData().getInt(p.getUniqueId().toString() + ".Chat." + s) == 0;
+        return this.settings.getData().getInt(p.getUniqueId() + ".Chat." + s) == 0;
     }
 
     public String getChatColor(Player p) {
@@ -89,7 +89,7 @@ public class ChatHandler implements Listener, CommandExecutor {
     }
 
     private ItemStack dye(int color, String name) {
-        ItemStack i = new ItemStack(Material.INK_SACK, 1, (short) color);
+        ItemStack i = new ItemStack(Material.INK_SAC, 1, (short) color);
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         i.setItemMeta(im);
@@ -106,7 +106,7 @@ public class ChatHandler implements Listener, CommandExecutor {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
-        if (e.getInventory().getName().equals(ChatColor.AQUA + "Chat Color")) {
+        if (e.getView().getTitle().equals(ChatColor.AQUA + "Chat Color")) {
             e.setCancelled(true);
             Player p = (Player) e.getWhoClicked();
             if (e.getRawSlot() == 13)
@@ -211,17 +211,17 @@ public class ChatHandler implements Listener, CommandExecutor {
 
     public void switchOption(Player p, String s) {
         if (getOption(p, s)) {
-            this.settings.getData().set(p.getUniqueId().toString() + ".Chat." + s, 1);
+            this.settings.getData().set(p.getUniqueId() + ".Chat." + s, 1);
             this.settings.saveData();
         } else {
-            this.settings.getData().set(p.getUniqueId().toString() + ".Chat." + s, 0);
+            this.settings.getData().set(p.getUniqueId() + ".Chat." + s, 0);
             this.settings.saveData();
         }
     }
 
 
     public ItemStack optionItem(String name, boolean on) {
-        ItemStack i = new ItemStack(Material.INK_SACK, 1);
+        ItemStack i = new ItemStack(Material.INK_SAC, 1);
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(ChatColor.AQUA + name);
         List<String> lore = new ArrayList<>();
@@ -250,7 +250,7 @@ public class ChatHandler implements Listener, CommandExecutor {
 
     @EventHandler
     public void onClick1(InventoryClickEvent e) {
-        if (e.getInventory().getName().equals(ChatColor.AQUA + "Chat Options")) {
+        if (e.getView().getTitle().equals(ChatColor.AQUA + "Chat Options")) {
             e.setCancelled(true);
             Player p = (Player) e.getWhoClicked();
             if (e.getRawSlot() == 0)
@@ -318,7 +318,7 @@ public class ChatHandler implements Listener, CommandExecutor {
         } else if (p.getName().equalsIgnoreCase("Pikashoo")) {
             rank = ChatColor.translateAlternateColorCodes('&', "&f&k&l;&a&lDeveloper&f&k&l;&r ");
         } else if (p.getName().equalsIgnoreCase("BakonStrip")) {
-            rank = CMDOptions.TagColor(settings.getOptions().getString(p.getUniqueId().toString() + ".GenesisColor")) + " ";
+            rank = CMDOptions.TagColor(settings.getOptions().getString(p.getUniqueId() + ".GenesisColor")) + " ";
         } else if (p.hasPermission("Rank.Manager")) {
             rank = ChatColor.translateAlternateColorCodes('&', "&f&l&k;&5&lManager&f&l&k;&r ");
         } else if (p.hasPermission("Rank.Mod")) {
@@ -328,7 +328,7 @@ public class ChatHandler implements Listener, CommandExecutor {
         } else if (p.hasPermission("Rank.Helper")) {
             rank = ChatColor.translateAlternateColorCodes('&', "&6&l&k;&e&lHelper&6&l&k;&r ");
         } else if (p.hasPermission("Rank.genesis")) {
-            rank = CMDOptions.TagColor(settings.getOptions().getString(p.getUniqueId().toString() + ".GenesisColor")) + " ";
+            rank = CMDOptions.TagColor(settings.getOptions().getString(p.getUniqueId() + ".GenesisColor")) + " ";
         } else if (p.hasPermission("Rank.olympian")) {
             rank = ChatColor.translateAlternateColorCodes('&', "&6&ki&e&lOlympian&6&ki&r ");
         } else if (p.hasPermission("Rank.god")) {
@@ -432,7 +432,7 @@ public class ChatHandler implements Listener, CommandExecutor {
         if (event.getMessage().contains("@"))
             for (Player pp : Bukkit.getOnlinePlayers()) {
                 if (event.getMessage().contains("@" + pp.getName()))
-                    pp.playSound(pp.getLocation(), Sound.CLICK, 1.0F, 1.0F);
+                    pp.playSound(pp.getLocation(), Sound.BLOCK_LEVER_CLICK, 1.0F, 1.0F);
             }
         if (!p.hasPermission("rank.vip"))
             if (this.waiting.containsKey(event.getPlayer())) {
@@ -473,8 +473,8 @@ public class ChatHandler implements Listener, CommandExecutor {
             name = ChatColor.translateAlternateColorCodes('&', this.settings.getcolor().getString(p.getName() + ".Nickname") + "&r");
         }
         String suffix = null;
-        if (this.settings.getData().contains(p.getUniqueId().toString() + ".Tag"))
-            suffix = ChatColor.translateAlternateColorCodes('&', this.settings.getData().getString(p.getUniqueId().toString() + ".Tag"));
+        if (this.settings.getData().contains(p.getUniqueId() + ".Tag"))
+            suffix = ChatColor.translateAlternateColorCodes('&', this.settings.getData().getString(p.getUniqueId() + ".Tag"));
         String msg = event.getMessage();
         int caps = 0;
         byte b;
@@ -513,14 +513,14 @@ public class ChatHandler implements Listener, CommandExecutor {
             chatFormat.then(First).itemTooltip(getHover(p)).command("/stats " + p.getName());
             chatFormat.then(ChatColor.translateAlternateColorCodes('&', " &8» "));
 
-            if (ChatColor.stripColor(s).toLowerCase().contains("[item]") && p.getItemInHand() != null && p.getItemInHand().getType() != Material.AIR) {
+            if (ChatColor.stripColor(s).toLowerCase().contains("[item]") && p.getEquipment().getItemInMainHand() != null && p.getEquipment().getItemInMainHand().getType() != Material.AIR) {
                 String ss;
-                if (!p.getItemInHand().getItemMeta().hasDisplayName()) {
-                    ss = c("&7»&b" + p.getItemInHand().getType().toString().toLowerCase().replace("_", " ") + "&7«&ex" + p.getItemInHand().getAmount());
-                    chatFormat.then(ss).itemTooltip(p.getItemInHand());
+                if (!p.getEquipment().getItemInMainHand().getItemMeta().hasDisplayName()) {
+                    ss = c("&7»&b" + p.getEquipment().getItemInMainHand().getType().toString().toLowerCase().replace("_", " ") + "&7«&ex" + p.getEquipment().getItemInMainHand().getAmount());
+                    chatFormat.then(ss).itemTooltip(p.getEquipment().getItemInMainHand());
                 } else {
-                    ss = c("&7»" + p.getItemInHand().getItemMeta().getDisplayName() + "&7«&ex" + p.getItemInHand().getAmount());
-                    chatFormat.then(ss).itemTooltip(p.getItemInHand());
+                    ss = c("&7»" + p.getEquipment().getItemInMainHand().getItemMeta().getDisplayName() + "&7«&ex" + p.getEquipment().getItemInMainHand().getAmount());
+                    chatFormat.then(ss).itemTooltip(p.getEquipment().getItemInMainHand());
                 }
             }
 

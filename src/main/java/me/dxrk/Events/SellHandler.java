@@ -82,7 +82,7 @@ public class SellHandler implements Listener, CommandExecutor {
 
     @EventHandler
     public void invcl(InventoryClickEvent e) {
-        if (e.getInventory().getName().equals(ChatColor.RED + "Investments"))
+        if (e.getView().getTitle().equals(ChatColor.RED + "Investments"))
             e.setCancelled(true);
     }
 
@@ -137,7 +137,7 @@ public class SellHandler implements Listener, CommandExecutor {
             }
         }
         p.updateInventory();
-        if (SettingsManager.getInstance().getOptions().getBoolean(p.getUniqueId().toString() + "." + enchantName.replace(" ", "-") + "-Messages") == true) {
+        if (SettingsManager.getInstance().getOptions().getBoolean(p.getUniqueId() + "." + enchantName.replace(" ", "-") + "-Messages") == true) {
             p.sendMessage(c("&f&l" + enchantName + " &8| &b+$" + format(total * amountotal) + " &7& &e⛀" + format(tokens)));
         }
 
@@ -271,10 +271,10 @@ public class SellHandler implements Listener, CommandExecutor {
             return;
         }
         if (!m.isLocationInMine(e.getBlock().getLocation()) && p.isOp()) {
-            if (p.getItemInHand() != null &&
-                    p.getItemInHand().getType() == Material.DIAMOND_PICKAXE || p.getItemInHand().getType() == Material.WOOD_PICKAXE
-                    || p.getItemInHand().getType() == Material.STONE_PICKAXE || p.getItemInHand().getType() == Material.GOLD_PICKAXE
-                    || p.getItemInHand().getType() == Material.IRON_PICKAXE) {
+            if (p.getEquipment().getItemInMainHand() != null &&
+                    p.getEquipment().getItemInMainHand().getType() == Material.DIAMOND_PICKAXE || p.getEquipment().getItemInMainHand().getType() == Material.WOODEN_PICKAXE
+                    || p.getEquipment().getItemInMainHand().getType() == Material.STONE_PICKAXE || p.getEquipment().getItemInMainHand().getType() == Material.GOLDEN_PICKAXE
+                    || p.getEquipment().getItemInMainHand().getType() == Material.IRON_PICKAXE) {
                 e.setCancelled(true);
             }
             return;
@@ -291,15 +291,15 @@ public class SellHandler implements Listener, CommandExecutor {
 
 
         if (!e.isCancelled()) {
-            if (p.getItemInHand() != null && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore()) {
+            if (p.getEquipment().getItemInMainHand() != null && p.getEquipment().getItemInMainHand().hasItemMeta() && p.getEquipment().getItemInMainHand().getItemMeta().hasLore()) {
 
                 int line = 0;
-                for (int x = 0; x < p.getItemInHand().getItemMeta().getLore().size(); x++) {
-                    if (ChatColor.stripColor(p.getItemInHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
+                for (int x = 0; x < p.getEquipment().getItemInMainHand().getItemMeta().getLore().size(); x++) {
+                    if (ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(x)).contains("Fortune")) {
                         line = x;
                     }
                 }
-                int fortune = (int) (getFortune(p.getItemInHand().getItemMeta().getLore().get(line)) * fortuity * skill * event1 /
+                int fortune = (int) (getFortune(p.getEquipment().getItemInMainHand().getItemMeta().getLore().get(line)) * fortuity * skill * event1 /
                         (3.0));
 
 

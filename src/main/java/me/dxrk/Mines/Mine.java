@@ -51,9 +51,8 @@ public class Mine {
         if (getMineWorld()
                 .equals(paramLocation.getWorld()) &&
                 paramLocation.getBlockY() >= this.getMinPoint().getBlockY() && paramLocation.getBlockY() <= this.getMaxPoint().getBlockY())
-            if (paramLocation.getBlockX() >= this.getMinPoint().getBlockX() && paramLocation.getBlockX() <= this.getMaxPoint().getBlockX() &&
-                    paramLocation.getBlockZ() >= this.getMinPoint().getBlockZ() && paramLocation.getBlockZ() <= this.getMaxPoint().getBlockZ())
-                return true;
+            return paramLocation.getBlockX() >= this.getMinPoint().getBlockX() && paramLocation.getBlockX() <= this.getMaxPoint().getBlockX() &&
+                    paramLocation.getBlockZ() >= this.getMinPoint().getBlockZ() && paramLocation.getBlockZ() <= this.getMaxPoint().getBlockZ();
         return false;
     }
 

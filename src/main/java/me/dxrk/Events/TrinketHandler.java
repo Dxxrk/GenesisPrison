@@ -98,8 +98,8 @@ public class TrinketHandler implements Listener, CommandExecutor {
         }
         if (label.equalsIgnoreCase("trinket") || label.equalsIgnoreCase("trinkets")) {
             Player p = (Player) sender;
-            if (p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE) || p.getItemInHand().getType().equals(Material.IRON_PICKAXE) || p.getItemInHand().getType().equals(Material.GOLD_PICKAXE)
-                    || p.getItemInHand().getType().equals(Material.STONE_PICKAXE) || p.getItemInHand().getType().equals(Material.WOOD_PICKAXE)) {
+            if (p.getEquipment().getItemInMainHand().getType().equals(Material.DIAMOND_PICKAXE) || p.getEquipment().getItemInMainHand().getType().equals(Material.IRON_PICKAXE) || p.getEquipment().getItemInMainHand().getType().equals(Material.GOLDEN_PICKAXE)
+                    || p.getEquipment().getItemInMainHand().getType().equals(Material.STONE_PICKAXE) || p.getEquipment().getItemInMainHand().getType().equals(Material.WOODEN_PICKAXE)) {
                 openTrinkets(p);
             } else {
                 p.sendMessage(m.c("&f&lTrinkets &8| &7Please hold your pickaxe!"));
@@ -414,7 +414,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
     //Create Custom inventory for creating higher tier trinkets -- nevermind?
 
     public ItemStack Spacer() {
-        ItemStack i = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 8);
+        ItemStack i = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', "&9Genesis"));
         im.addEnchant(Enchantment.DURABILITY, 0, false);
@@ -505,13 +505,13 @@ public class TrinketHandler implements Listener, CommandExecutor {
 
         if (e.getClickedInventory() == null)
             return;
-        if (e.getClickedInventory().getName() == null)
+        if (e.getView().getTitle() == null)
             return;
         if (e.getCurrentItem() == null) {
             return;
         }
 
-        if (e.getClickedInventory().getName().equals(m.c("&a&lTrinkets:"))) {
+        if (e.getView().getTitle().equals(m.c("&a&lTrinkets:"))) {
             if (e.getSlot() == 1 || e.getSlot() == 3 || e.getSlot() == 5 || e.getSlot() == 7) {
                 e.setCancelled(true);
                 if (e.getCursor().getType().equals(Material.GOLD_NUGGET)) {
@@ -548,7 +548,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                         PlayerDataHandler.getInstance().getPlayerData(p).set("Trinkets", trinket);
                         e.setCursor(null);
                         openTrinkets(p);
-                        ItemStack pitem = p.getItemInHand().clone();
+                        ItemStack pitem = p.getEquipment().getItemInMainHand().clone();
                         ItemMeta pm = pitem.getItemMeta();
                         List<String> lore = pm.getLore();
                         pm.setLore(PickaxeLevel.getInstance().Lore(lore, p));
@@ -1098,40 +1098,40 @@ public class TrinketHandler implements Listener, CommandExecutor {
     public void clickTrinket(PlayerInteractEvent e) {
         Player p = e.getPlayer();
         if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            int amount = p.getItemInHand().getAmount();
-            if (p.getItemInHand().equals(commonTrinket(amount))) {
+            int amount = p.getEquipment().getItemInMainHand().getAmount();
+            if (p.getEquipment().getItemInMainHand().equals(commonTrinket(amount))) {
                 if (amount == 1) {
                     p.setItemInHand(null);
                 } else {
-                    p.getItemInHand().setAmount(amount - 1);
+                    p.getEquipment().getItemInMainHand().setAmount(amount - 1);
                 }
                 openTrinket(p, 1);
-            } else if (p.getItemInHand().equals(rareTrinket(amount))) {
+            } else if (p.getEquipment().getItemInMainHand().equals(rareTrinket(amount))) {
                 if (amount == 1) {
                     p.setItemInHand(null);
                 } else {
-                    p.getItemInHand().setAmount(amount - 1);
+                    p.getEquipment().getItemInMainHand().setAmount(amount - 1);
                 }
                 openTrinket(p, 2);
-            } else if (p.getItemInHand().equals(epicTrinket(amount))) {
+            } else if (p.getEquipment().getItemInMainHand().equals(epicTrinket(amount))) {
                 if (amount == 1) {
                     p.setItemInHand(null);
                 } else {
-                    p.getItemInHand().setAmount(amount - 1);
+                    p.getEquipment().getItemInMainHand().setAmount(amount - 1);
                 }
                 openTrinket(p, 3);
-            } else if (p.getItemInHand().equals(legTrinket(amount))) {
+            } else if (p.getEquipment().getItemInMainHand().equals(legTrinket(amount))) {
                 if (amount == 1) {
                     p.setItemInHand(null);
                 } else {
-                    p.getItemInHand().setAmount(amount - 1);
+                    p.getEquipment().getItemInMainHand().setAmount(amount - 1);
                 }
                 openTrinket(p, 4);
-            } else if (p.getItemInHand().equals(herTrinket(amount))) {
+            } else if (p.getEquipment().getItemInMainHand().equals(herTrinket(amount))) {
                 if (amount == 1) {
                     p.setItemInHand(null);
                 } else {
-                    p.getItemInHand().setAmount(amount - 1);
+                    p.getEquipment().getItemInMainHand().setAmount(amount - 1);
                 }
                 openTrinket(p, 5);
             }

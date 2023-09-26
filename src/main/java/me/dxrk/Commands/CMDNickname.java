@@ -82,7 +82,7 @@ public class CMDNickname implements CommandExecutor, Listener {
 
     @EventHandler
     public void invClick(InventoryClickEvent e) {
-        if (!e.getInventory().getName().contains("Current Letter"))
+        if (!e.getView().getTitle().contains("Current Letter"))
             return;
         Player p = (Player) e.getWhoClicked();
         if (this.max.get(p) == null) {
@@ -196,8 +196,8 @@ public class CMDNickname implements CommandExecutor, Listener {
         }
     }
 
-    public ItemStack invItem(Material mat, int shortnum, String name) {
-        ItemStack i = new ItemStack(mat, 1, (short) shortnum);
+    public ItemStack invItem(Material mat, String name) {
+        ItemStack i = new ItemStack(mat);
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         i.setItemMeta(im);
@@ -206,26 +206,26 @@ public class CMDNickname implements CommandExecutor, Listener {
 
     public void openEditInv(Player p, String letter) {
         Inventory inv = Bukkit.createInventory(null, 45, ChatColor.RED + letter + " | Current Letter");
-        inv.setItem(0, invItem(Material.WOOL, 11, "&1Dark Blue"));
-        inv.setItem(1, invItem(Material.WOOL, 13, "&2Dark Green"));
-        inv.setItem(2, invItem(Material.WOOL, 9, "&3Cyan"));
-        inv.setItem(3, invItem(Material.WOOL, 14, "&4Dark Red"));
-        inv.setItem(4, invItem(Material.WOOL, 10, "&5Purple"));
-        inv.setItem(5, invItem(Material.WOOL, 1, "&6Gold"));
-        inv.setItem(6, invItem(Material.WOOL, 8, "&7Light Gray"));
-        inv.setItem(7, invItem(Material.WOOL, 7, "&8Dark Gray"));
-        inv.setItem(8, invItem(Material.WOOL, 3, "&9Dark Aqua"));
-        inv.setItem(18, invItem(Material.STAINED_GLASS, 5, "&aLight Green"));
-        inv.setItem(19, invItem(Material.STAINED_GLASS, 3, "&bAqua"));
-        inv.setItem(20, invItem(Material.STAINED_GLASS, 14, "&cRed"));
-        inv.setItem(21, invItem(Material.STAINED_GLASS, 6, "&dPink"));
-        inv.setItem(22, invItem(Material.STAINED_GLASS, 4, "&eYellow"));
-        inv.setItem(23, invItem(Material.STAINED_GLASS, 0, "&fWhite"));
-        inv.setItem(36, invItem(Material.IRON_INGOT, 0, "&f&lBold"));
-        inv.setItem(37, invItem(Material.GOLD_INGOT, 0, "&f&nUnderline"));
-        inv.setItem(38, invItem(Material.DIAMOND, 0, "&f&mStrikethrough"));
-        inv.setItem(39, invItem(Material.EMERALD, 0, "&f&oItalic"));
-        inv.setItem(44, invItem(Material.NETHER_STAR, 0, "&c&lNext Letter"));
+        inv.setItem(0, invItem(Material.BLUE_WOOL, "&1Dark Blue"));
+        inv.setItem(1, invItem(Material.GREEN_WOOL, "&2Dark Green"));
+        inv.setItem(2, invItem(Material.CYAN_WOOL, "&3Cyan"));
+        inv.setItem(3, invItem(Material.RED_WOOL, "&4Dark Red"));
+        inv.setItem(4, invItem(Material.PURPLE_WOOL, "&5Purple"));
+        inv.setItem(5, invItem(Material.ORANGE_WOOL, "&6Gold"));
+        inv.setItem(6, invItem(Material.LIGHT_GRAY_WOOL, "&7Light Gray"));
+        inv.setItem(7, invItem(Material.GRAY_WOOL, "&8Dark Gray"));
+        inv.setItem(8, invItem(Material.LIGHT_BLUE_WOOL, "&bAqua"));
+        inv.setItem(18, invItem(Material.LIME_STAINED_GLASS, "&aLight Green"));
+        inv.setItem(19, invItem(Material.LIGHT_BLUE_STAINED_GLASS, "&bAqua"));
+        inv.setItem(20, invItem(Material.RED_STAINED_GLASS, "&cRed"));
+        inv.setItem(21, invItem(Material.PINK_STAINED_GLASS, "&dPink"));
+        inv.setItem(22, invItem(Material.YELLOW_STAINED_GLASS, "&eYellow"));
+        inv.setItem(23, invItem(Material.WHITE_STAINED_GLASS, "&fWhite"));
+        inv.setItem(36, invItem(Material.IRON_INGOT, "&f&lBold"));
+        inv.setItem(37, invItem(Material.GOLD_INGOT, "&f&nUnderline"));
+        inv.setItem(38, invItem(Material.DIAMOND, "&f&mStrikethrough"));
+        inv.setItem(39, invItem(Material.EMERALD, "&f&oItalic"));
+        inv.setItem(44, invItem(Material.NETHER_STAR, "&c&lNext Letter"));
         p.openInventory(inv);
     }
 }

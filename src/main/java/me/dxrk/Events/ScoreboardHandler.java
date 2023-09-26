@@ -10,8 +10,7 @@ import me.dxrk.Main.SettingsManager;
 import me.dxrk.Tokens.Tokens;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-import net.minecraft.server.v1_8_R3.MinecraftServer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerListHeaderFooter;
+import net.minecraft.server.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -256,10 +255,10 @@ public class ScoreboardHandler implements Listener {
 
                 if (isAFK(pp)) {
                     team.setPrefix(c("&f&lGenesis &8"));
-                    pp.setPlayerListName(c(prefix + CMDOptions.TagColor(settings.getOptions().getString(pp.getUniqueId().toString() + ".GenesisColor")) + " &8" + pp.getName()));
+                    pp.setPlayerListName(c(prefix + CMDOptions.TagColor(settings.getOptions().getString(pp.getUniqueId() + ".GenesisColor")) + " &8" + pp.getName()));
                 } else {
                     team.setPrefix(c("&f&lGenesis &7"));
-                    pp.setPlayerListName(c(prefix + CMDOptions.TagColor(settings.getOptions().getString(pp.getUniqueId().toString() + ".GenesisColor")) + " &7" + pp.getName()));
+                    pp.setPlayerListName(c(prefix + CMDOptions.TagColor(settings.getOptions().getString(pp.getUniqueId() + ".GenesisColor")) + " &7" + pp.getName()));
                 }
                 team.addPlayer(pp);
 
@@ -350,10 +349,10 @@ public class ScoreboardHandler implements Listener {
 
                 if (isAFK(pp)) {
                     team.setPrefix(c("&f&lGenesis &8"));
-                    pp.setPlayerListName(c(prefix + CMDOptions.TagColor(settings.getOptions().getString(pp.getUniqueId().toString() + ".GenesisColor")) + " &8" + pp.getName()));
+                    pp.setPlayerListName(c(prefix + CMDOptions.TagColor(settings.getOptions().getString(pp.getUniqueId() + ".GenesisColor")) + " &8" + pp.getName()));
                 } else {
                     team.setPrefix(c("&f&lGenesis &7"));
-                    pp.setPlayerListName(c(prefix + CMDOptions.TagColor(settings.getOptions().getString(pp.getUniqueId().toString() + ".GenesisColor")) + " &7" + pp.getName()));
+                    pp.setPlayerListName(c(prefix + CMDOptions.TagColor(settings.getOptions().getString(pp.getUniqueId() + ".GenesisColor")) + " &7" + pp.getName()));
                 }
                 team.addPlayer(pp);
 

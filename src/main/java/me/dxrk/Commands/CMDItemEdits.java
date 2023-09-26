@@ -24,7 +24,7 @@ public class CMDItemEdits implements CommandExecutor {
             if (!(sender instanceof Player))
                 return false;
             Player p = (Player) sender;
-            if (p.getItemInHand().getType().equals(Material.NETHER_STAR)) return false;
+            if (p.getEquipment().getItemInMainHand().getType().equals(Material.NETHER_STAR)) return false;
             if (!p.hasPermission("command.rename")) {
                 p.sendMessage(c("&c&ki&bExistor&c&ki&r &aNo permission."));
                 return false;
@@ -33,7 +33,7 @@ public class CMDItemEdits implements CommandExecutor {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&ki&bExistor&c&ki&r &c/rename <name>"));
                 return false;
             }
-            if (p.getItemInHand() == null) {
+            if (p.getEquipment().getItemInMainHand() == null) {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&ki&bExistor&c&ki&r &cYou must be holding an item!"));
                 return false;
             }
@@ -41,9 +41,9 @@ public class CMDItemEdits implements CommandExecutor {
             for (int i = 0; i < args.length; i++)
                 sb.append(args[i]).append(" ");
             String allArgs = sb.toString().trim();
-            ItemMeta am = p.getItemInHand().getItemMeta();
+            ItemMeta am = p.getEquipment().getItemInMainHand().getItemMeta();
             am.setDisplayName(ChatColor.translateAlternateColorCodes('&', allArgs));
-            p.getItemInHand().setItemMeta(am);
+            p.getEquipment().getItemInMainHand().setItemMeta(am);
             p.sendMessage(
                     ChatColor.translateAlternateColorCodes('&', "&c&ki&bExistor&c&ki&r &aYou have renamed your item to '" + allArgs + "&a'"));
         }
@@ -59,7 +59,7 @@ public class CMDItemEdits implements CommandExecutor {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&ki&bExistor&c&ki&r &c/addlore <lore>"));
                 return false;
             }
-            if (p.getItemInHand() == null) {
+            if (p.getEquipment().getItemInMainHand() == null) {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&ki&bExistor&c&ki&r &cYou must be holding an item!"));
                 return false;
             }
@@ -67,7 +67,7 @@ public class CMDItemEdits implements CommandExecutor {
             for (int i = 0; i < args.length; i++)
                 sb.append(args[i]).append(" ");
             String allArgs = sb.toString().trim();
-            ItemMeta am = p.getItemInHand().getItemMeta();
+            ItemMeta am = p.getEquipment().getItemInMainHand().getItemMeta();
             if (am.hasLore()) {
                 ArrayList<String> lore = new ArrayList<>();
                 lore.addAll(am.getLore());
@@ -76,7 +76,7 @@ public class CMDItemEdits implements CommandExecutor {
             } else {
                 am.setLore(Arrays.asList(new String[]{ChatColor.translateAlternateColorCodes('&', allArgs)}));
             }
-            p.getItemInHand().setItemMeta(am);
+            p.getEquipment().getItemInMainHand().setItemMeta(am);
             p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&c&ki&bExistor&c&ki&r &aYou have added '" + allArgs + "&a' to your items lore!"));
         }
@@ -92,18 +92,18 @@ public class CMDItemEdits implements CommandExecutor {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&ki&bExistor&c&ki&r &c/dellore <number>"));
                 return false;
             }
-            if (p.getItemInHand() == null) {
+            if (p.getEquipment().getItemInMainHand() == null) {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&ki&bExistor&c&ki&r &cYou must be holding an item!"));
                 return false;
             }
-            ItemMeta am = p.getItemInHand().getItemMeta();
+            ItemMeta am = p.getEquipment().getItemInMainHand().getItemMeta();
             if (!am.hasLore()) {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&ki&bExistor&c&ki&r &cYour item must have a lore!"));
                 return false;
             }
             ArrayList<String> lore = new ArrayList<>();
             lore.addAll(am.getLore());
-            p.getItemInHand().setItemMeta(am);
+            p.getEquipment().getItemInMainHand().setItemMeta(am);
             if (!this.methods.isInteger(args[0])) {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&ki&bExistor&c&ki&r &c/dellore <number>"));
                 return false;
@@ -112,7 +112,7 @@ public class CMDItemEdits implements CommandExecutor {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&ki&bExistor&c&ki&r &cYour item doesn't have this many lores!"));
             lore.remove(Integer.parseInt(args[0]));
             am.setLore(lore);
-            p.getItemInHand().setItemMeta(am);
+            p.getEquipment().getItemInMainHand().setItemMeta(am);
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&ki&bExistor&c&ki&r &aYou have removed a part of your items lore!"));
         }
         if (label.equalsIgnoreCase("relore")) {
@@ -127,7 +127,7 @@ public class CMDItemEdits implements CommandExecutor {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&ki&bExistor&c&ki&r &c/relore <lore>"));
                 return false;
             }
-            if (p.getItemInHand() == null) {
+            if (p.getEquipment().getItemInMainHand() == null) {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&ki&bExistor&c&ki&r &cYou must be holding an item!"));
                 return false;
             }
@@ -135,9 +135,9 @@ public class CMDItemEdits implements CommandExecutor {
             for (int i = 0; i < args.length; i++)
                 sb.append(args[i]).append(" ");
             String allArgs = sb.toString().trim();
-            ItemMeta am = p.getItemInHand().getItemMeta();
+            ItemMeta am = p.getEquipment().getItemInMainHand().getItemMeta();
             am.setLore(Arrays.asList(new String[]{ChatColor.translateAlternateColorCodes('&', allArgs)}));
-            p.getItemInHand().setItemMeta(am);
+            p.getEquipment().getItemInMainHand().setItemMeta(am);
             p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&c&ki&bExistor&c&ki&r &aYou have set your items lore to '" + allArgs + "&a'"));
         }

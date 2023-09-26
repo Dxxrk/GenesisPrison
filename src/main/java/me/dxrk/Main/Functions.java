@@ -19,13 +19,13 @@ public class Functions implements Listener {
 
     public static double XPEnchant(Player p) {
         double xp = 1;
-        if (p.getItemInHand() == null) return 1;
-        if (p.getItemInHand().getType().equals(Material.AIR)) return 1;
-        if (!p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE) && !p.getItemInHand().getType().equals(Material.IRON_PICKAXE) && !p.getItemInHand().getType().equals(Material.GOLD_PICKAXE)
-                && !p.getItemInHand().getType().equals(Material.STONE_PICKAXE) && !p.getItemInHand().getType().equals(Material.WOOD_PICKAXE))
+        if (p.getEquipment().getItemInMainHand() == null) return 1;
+        if (p.getEquipment().getItemInMainHand().getType().equals(Material.AIR)) return 1;
+        if (!p.getEquipment().getItemInMainHand().getType().equals(Material.DIAMOND_PICKAXE) && !p.getEquipment().getItemInMainHand().getType().equals(Material.IRON_PICKAXE) && !p.getEquipment().getItemInMainHand().getType().equals(Material.GOLDEN_PICKAXE)
+                && !p.getEquipment().getItemInMainHand().getType().equals(Material.STONE_PICKAXE) && !p.getEquipment().getItemInMainHand().getType().equals(Material.WOODEN_PICKAXE))
             return 1;
 
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
+        for (String s : p.getEquipment().getItemInMainHand().getItemMeta().getLore()) {
             if (ChatColor.stripColor(s).toLowerCase().contains("xp finder")) {
 
                 String[] n = ChatColor.stripColor(s).split(" ");
@@ -41,8 +41,8 @@ public class Functions implements Listener {
 
     public static double sellBoost(Player p) {
         double sell = 1;
-        if (!p.getItemInHand().hasItemMeta()) return 1;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
+        if (!p.getEquipment().getItemInMainHand().hasItemMeta()) return 1;
+        for (String s : p.getEquipment().getItemInMainHand().getItemMeta().getLore()) {
             if (ChatColor.stripColor(s).toLowerCase().contains("sell")) {
 
                 String[] n = ChatColor.stripColor(s).split("%");
@@ -58,8 +58,8 @@ public class Functions implements Listener {
 
     public static double xpBoost(Player p) {
         double xp = 1;
-        if (!p.getItemInHand().hasItemMeta()) return 1;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
+        if (!p.getEquipment().getItemInMainHand().hasItemMeta()) return 1;
+        for (String s : p.getEquipment().getItemInMainHand().getItemMeta().getLore()) {
             if (ChatColor.stripColor(s).toLowerCase().contains("xp trinket")) {
 
                 String[] n = ChatColor.stripColor(s).split("%");
@@ -75,8 +75,8 @@ public class Functions implements Listener {
 
     public static double tokenBoost(Player p) {
         double xp = 1;
-        if (!p.getItemInHand().hasItemMeta()) return 1;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
+        if (!p.getEquipment().getItemInMainHand().hasItemMeta()) return 1;
+        for (String s : p.getEquipment().getItemInMainHand().getItemMeta().getLore()) {
             if (ChatColor.stripColor(s).toLowerCase().contains("token trinket")) {
 
                 String[] n = ChatColor.stripColor(s).split("%");
@@ -93,8 +93,8 @@ public class Functions implements Listener {
 
     public static double luckBoost(Player p) {
         double luck = 1;
-        if (!p.getItemInHand().hasItemMeta()) return 1;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
+        if (!p.getEquipment().getItemInMainHand().hasItemMeta()) return 1;
+        for (String s : p.getEquipment().getItemInMainHand().getItemMeta().getLore()) {
             if (ChatColor.stripColor(s).toLowerCase().contains("lucky") && ChatColor.stripColor(s).toLowerCase().contains("%")) {
 
                 String[] n = ChatColor.stripColor(s).split("%");
@@ -111,8 +111,8 @@ public class Functions implements Listener {
 
     public static double greed(Player p) {
         double level = 0;
-        if (!p.getItemInHand().hasItemMeta()) return 1;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
+        if (!p.getEquipment().getItemInMainHand().hasItemMeta()) return 1;
+        for (String s : p.getEquipment().getItemInMainHand().getItemMeta().getLore()) {
 
             if (ChatColor.stripColor(s).contains("Greed")) {
                 level = m.getBlocks(s);
@@ -130,8 +130,8 @@ public class Functions implements Listener {
     public static double Foruity(Player p) {
 
         int level;
-        if (!p.getItemInHand().hasItemMeta()) return 1;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
+        if (!p.getEquipment().getItemInMainHand().hasItemMeta()) return 1;
+        for (String s : p.getEquipment().getItemInMainHand().getItemMeta().getLore()) {
 
             if (ChatColor.stripColor(s).contains("Fortuity")) {
                 level = m.getBlocks(s);
@@ -144,8 +144,8 @@ public class Functions implements Listener {
 
     public static double Karma(Player p) {
         int level;
-        if (!p.getItemInHand().hasItemMeta()) return 1;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
+        if (!p.getEquipment().getItemInMainHand().hasItemMeta()) return 1;
+        for (String s : p.getEquipment().getItemInMainHand().getItemMeta().getLore()) {
             if (ChatColor.stripColor(s).contains("Karma")) {
                 level = m.getBlocks(s);
                 return 1 + (level * 0.00007);
@@ -164,8 +164,8 @@ public class Functions implements Listener {
 
         int level = 0;
         int chance;
-        if (!p.getItemInHand().hasItemMeta()) return;
-        for (String s : p.getItemInHand().getItemMeta().getLore()) {
+        if (!p.getEquipment().getItemInMainHand().hasItemMeta()) return;
+        for (String s : p.getEquipment().getItemInMainHand().getItemMeta().getLore()) {
 
             if (ChatColor.stripColor(s).contains("Multiply")) {
                 level = m.getBlocks(s);

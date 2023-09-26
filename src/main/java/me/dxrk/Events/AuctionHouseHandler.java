@@ -239,7 +239,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
 
         double cost = Double.parseDouble(ChatColor.stripColor(item.getItemMeta().getLore().get(line)).split("⛀")[1]);
 
-        ItemStack buy1 = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+        ItemStack buy1 = new ItemStack(Material.RED_STAINED_GLASS_PANE);
         ItemMeta bm1 = buy1.getItemMeta();
         bm1.setDisplayName(m.c("&aBuy 1"));
         List<String> lore = new ArrayList<>();
@@ -249,7 +249,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
         confirm.setItem(2, buy1);
         lore.clear();
 
-        ItemStack buy5 = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+        ItemStack buy5 = new ItemStack(Material.RED_STAINED_GLASS_PANE);
         ItemMeta bm5 = buy5.getItemMeta();
         bm5.setDisplayName(m.c("&aBuy 5"));
         lore.add(m.c("&cCost: &e⛀" + cost * 5));
@@ -264,7 +264,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
         cancel.setItemMeta(cm);
         confirm.setItem(4, cancel);
 
-        ItemStack buy10 = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+        ItemStack buy10 = new ItemStack(Material.RED_STAINED_GLASS_PANE);
         ItemMeta bm10 = buy10.getItemMeta();
         bm10.setDisplayName(m.c("&aBuy 10"));
         lore.add(m.c("&cCost: &e⛀" + cost * 10));
@@ -273,7 +273,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
         confirm.setItem(5, buy10);
         lore.clear();
 
-        ItemStack buyA = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+        ItemStack buyA = new ItemStack(Material.RED_STAINED_GLASS_PANE);
         ItemMeta bmA = buyA.getItemMeta();
         bmA.setDisplayName(m.c("&aBuy All"));
 
@@ -325,7 +325,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
         if (e.getClickedInventory() == null) return;
         if (e.getCurrentItem() == null) return;
 
-        if (e.getInventory().getName().equals(m.c("&c&lYour Items:"))) {
+        if (e.getView().getTitle().equals(m.c("&c&lYour Items:"))) {
             e.setCancelled(true);
             if (personalItems.get(p.getUniqueId()).contains(e.getCurrentItem())) {
                 Inventory remove = Bukkit.createInventory(null, InventoryType.HOPPER, m.c("&c&lRemove Listing?"));
@@ -349,7 +349,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                 p.openInventory(remove);
             }
         }
-        if (e.getInventory().getName().equals(m.c("&c&lRemove Listing?"))) {
+        if (e.getView().getTitle().equals(m.c("&c&lRemove Listing?"))) {
             e.setCancelled(true);
             if (e.getSlot() == 1) {
                 personalItems.get(p.getUniqueId()).remove(e.getClickedInventory().getItem(2));
@@ -361,7 +361,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
         }
 
 
-        if (e.getInventory().getName().contains(m.c("&c&lAuction House Page "))) {
+        if (e.getView().getTitle().contains(m.c("&c&lAuction House Page "))) {
             e.setCancelled(true);
             if (e.getClickedInventory().equals(p.getInventory())) {
                 e.setCancelled(true);
@@ -373,12 +373,12 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                     if (e.getView().title().equals(m.c("&c&lAuction House Page 1"))) {
                         return;
                     } else {
-                        int page = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getInventory().getName()));
+                        int page = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getView().getTitle()));
                         openAuctionHouse(p, page - 1, ahorder.get(p));
                     }
                 }
                 if (e.getSlot() == 52) {
-                    int page = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getInventory().getName()));
+                    int page = PickaxeLevel.getInstance().getInt(ChatColor.stripColor(e.getView().getTitle()));
                     openAuctionHouse(p, page + 1, ahorder.getOrDefault(p, "none"));
                 }
                 if (e.getSlot() == 48) {
@@ -412,7 +412,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
 
             }
         }
-        if (e.getInventory().getName().equals(m.c("&c&lConfirm: How many do you want to purchase?"))) {
+        if (e.getView().getTitle().equals(m.c("&c&lConfirm: How many do you want to purchase?"))) {
             e.setCancelled(true);
             if (e.getClickedInventory().equals(p.getInventory())) {
                 e.setCancelled(true);
@@ -879,18 +879,18 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                         return false;
                     }
                     int amt = Integer.parseInt(args[1]);
-                    if (p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE) || p.getItemInHand().getType().equals(Material.IRON_PICKAXE) || p.getItemInHand().getType().equals(Material.GOLD_PICKAXE)
-                            || p.getItemInHand().getType().equals(Material.STONE_PICKAXE) || p.getItemInHand().getType().equals(Material.WOOD_PICKAXE)) {
+                    if (p.getEquipment().getItemInMainHand().getType().equals(Material.DIAMOND_PICKAXE) || p.getEquipment().getItemInMainHand().getType().equals(Material.IRON_PICKAXE) || p.getEquipment().getItemInMainHand().getType().equals(Material.GOLDEN_PICKAXE)
+                            || p.getEquipment().getItemInMainHand().getType().equals(Material.STONE_PICKAXE) || p.getEquipment().getItemInMainHand().getType().equals(Material.WOODEN_PICKAXE)) {
                         p.sendMessage(m.c("&cError: You cannot sell your pickaxe"));
                         return false;
                     }
-                    if (p.getItemInHand() == null || p.getItemInHand().getType().equals(Material.AIR)) return false;
-                    int pamt = p.getItemInHand().getAmount();
+                    if (p.getEquipment().getItemInMainHand() == null || p.getEquipment().getItemInMainHand().getType().equals(Material.AIR)) return false;
+                    int pamt = p.getEquipment().getItemInMainHand().getAmount();
                     if (pamt < amt) {
                         p.sendMessage(m.c("&cError: You do not have enough of that item."));
                         return false;
                     }
-                    ItemStack item = p.getItemInHand().clone();
+                    ItemStack item = p.getEquipment().getItemInMainHand().clone();
                     ItemMeta im = item.getItemMeta();
                     item.setAmount(1);
                     List<String> lore = new ArrayList<>();
@@ -921,7 +921,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                         p.setItemInHand(null);
                     }
                     if (amt < pamt) {
-                        p.getItemInHand().setAmount(p.getItemInHand().getAmount() - amt);
+                        p.getEquipment().getItemInMainHand().setAmount(p.getEquipment().getItemInMainHand().getAmount() - amt);
                     }
 
 

@@ -27,10 +27,10 @@ public class CMDOptions implements Listener, CommandExecutor {
 
 
     private ItemStack option(Player p, String option) {
-        ItemStack ops = new ItemStack(Material.INK_SACK);
+        ItemStack ops = new ItemStack(Material.INK_SAC);
         ItemMeta om = ops.getItemMeta();
         List<String> lore = new ArrayList<>();
-        if (settings.getOptions().getBoolean(p.getUniqueId().toString() + "." + option) == true) {
+        if (settings.getOptions().getBoolean(p.getUniqueId() + "." + option) == true) {
             ops.setDurability((short) 10);
             om.setDisplayName(m.c("&a" + option) + " Enabled");
             lore.add(m.c("&7Click to Disable"));
@@ -78,7 +78,7 @@ public class CMDOptions implements Listener, CommandExecutor {
     }
 
     private ItemStack tagColor(String name, short data) {
-        ItemStack item = new ItemStack(Material.INK_SACK, 1, data);
+        ItemStack item = new ItemStack(Material.INK_SAC, 1, data);
         ItemMeta im = item.getItemMeta();
         im.setDisplayName(name);
         List<String> lore = new ArrayList<>();
@@ -157,7 +157,7 @@ public class CMDOptions implements Listener, CommandExecutor {
     }
 
     public ItemStack Spacer() {
-        ItemStack i = new ItemStack(Material.IRON_FENCE);
+        ItemStack i = new ItemStack(Material.IRON_BARS);
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&lGenesis &b&lPrison"));
         i.setItemMeta(im);
@@ -168,37 +168,37 @@ public class CMDOptions implements Listener, CommandExecutor {
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (!p.hasPlayedBefore()) {
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Autorankup", false);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Tokens-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Dust-Finder-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Key-Finder-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Explosion-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Wave-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Nuke-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Treasury-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Key-Party-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Booster-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Junkpile-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Laser-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Daily-Reminder", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Vote-Reminder", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Speed-Effect", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Haste-Effect", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Night-Vision-Effect", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".LuckyBlock-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Tidal-Wave-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Key-Fisher-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Treasure-Hunter-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Fishing-XPFinder-Messages", true);
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".Multiplier-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Autorankup", false);
+            this.settings.getOptions().set(p.getUniqueId() + ".Tokens-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Dust-Finder-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Key-Finder-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Explosion-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Wave-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Nuke-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Treasury-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Key-Party-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Booster-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Junkpile-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Laser-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Daily-Reminder", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Vote-Reminder", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Speed-Effect", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Haste-Effect", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Night-Vision-Effect", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".LuckyBlock-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Tidal-Wave-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Key-Fisher-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Treasure-Hunter-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Fishing-XPFinder-Messages", true);
+            this.settings.getOptions().set(p.getUniqueId() + ".Multiplier-Messages", true);
             this.settings.saveOptions();
         }
-        if (this.settings.getOptions().get(p.getUniqueId().toString() + ".GenesisColor") == null) {
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".GenesisColor", "Default");
+        if (this.settings.getOptions().get(p.getUniqueId() + ".GenesisColor") == null) {
+            this.settings.getOptions().set(p.getUniqueId() + ".GenesisColor", "Default");
             this.settings.saveOptions();
         }
-        if (this.settings.getVote().get(p.getUniqueId().toString() + ".HasVoted") == null) {
-            this.settings.getVote().set(p.getUniqueId().toString() + ".HasVoted", "nope");
+        if (this.settings.getVote().get(p.getUniqueId() + ".HasVoted") == null) {
+            this.settings.getVote().set(p.getUniqueId() + ".HasVoted", "nope");
             this.settings.saveVote();
         }
     }
@@ -210,19 +210,19 @@ public class CMDOptions implements Listener, CommandExecutor {
 
         if (e.getClickedInventory() == null)
             return;
-        if (e.getClickedInventory().getName() == null)
+        if (e.getView().getTitle() == null)
             return;
 
-        if (e.getClickedInventory().getName().equals(m.c("&3&lOptions:"))) {
+        if (e.getView().getTitle().equals(m.c("&3&lOptions:"))) {
             e.setCancelled(true);
             if (e.getCurrentItem().equals(Spacer())) return;
-            if (e.getCurrentItem().getType().equals(Material.INK_SACK)) {
+            if (e.getCurrentItem().getType().equals(Material.INK_SAC)) {
                 String[] name = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).split(" ");
                 if (name[1].equals("Enabled")) {
-                    this.settings.getOptions().set(p.getUniqueId().toString() + "." + name[0], false);
+                    this.settings.getOptions().set(p.getUniqueId() + "." + name[0], false);
 
                 } else if (name[1].equals("Disabled")) {
-                    this.settings.getOptions().set(p.getUniqueId().toString() + "." + name[0], true);
+                    this.settings.getOptions().set(p.getUniqueId() + "." + name[0], true);
 
                 }
             }
@@ -230,11 +230,11 @@ public class CMDOptions implements Listener, CommandExecutor {
             this.settings.saveOptions();
 
         }
-        if (e.getClickedInventory().getName().equals(m.c("&cChange Tag Color"))) {
+        if (e.getView().getTitle().equals(m.c("&cChange Tag Color"))) {
             e.setCancelled(true);
             String color = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
             p.sendMessage(m.c("&7Prefix Changed to: " + e.getCurrentItem().getItemMeta().getDisplayName()));
-            this.settings.getOptions().set(p.getUniqueId().toString() + ".GenesisColor", color);
+            this.settings.getOptions().set(p.getUniqueId() + ".GenesisColor", color);
             this.settings.saveOptions();
 
         }
