@@ -1196,7 +1196,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             String[] display = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).split("Upgrade ");
             String name = display[1];
 
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 13) {
+            if (e.getCurrentItem().getType().equals(Material.GREEN_STAINED_GLASS_PANE)) {
                 if (e.getClick().equals(ClickType.LEFT)) {
                     upgradeSkillEnchant(p, p.getEquipment().getItemInMainHand(), name);
                 }

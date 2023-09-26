@@ -27,7 +27,7 @@ public class PickaxeSkillTree implements Listener {
 
 
     public static ItemStack Spacer() {
-        ItemStack white = new ItemStack(Material.STAINED, 1, (short) 0);
+        ItemStack white = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
         ItemMeta wm = white.getItemMeta();
         wm.setDisplayName(m.c(" "));
         white.setItemMeta(wm);
@@ -640,11 +640,11 @@ public class PickaxeSkillTree implements Listener {
         }
         if (e.getView().getTitle().equals(m.c("&e&lZeus Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
             e.setCancelled(true);
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5)
+            if (e.getCurrentItem().getType().equals(Material.LIME_STAINED_GLASS_PANE))
                 return;
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0)
+            if (e.getCurrentItem().getType().equals(Material.WHITE_STAINED_GLASS_PANE))
                 return;
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1) {
+            if (e.getCurrentItem().getType().equals(Material.ORANGE_STAINED_GLASS_PANE)) {
                 openConfirmation(p);
                 return;
             }
@@ -726,11 +726,11 @@ public class PickaxeSkillTree implements Listener {
         }
         if (e.getView().getTitle().equals(m.c("&9&lPoseidon Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
             e.setCancelled(true);
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5)
+            if (e.getCurrentItem().getType().equals(Material.LIME_STAINED_GLASS_PANE))
                 return;
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0)
+            if (e.getCurrentItem().getType().equals(Material.WHITE_STAINED_GLASS_PANE))
                 return;
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1) {
+            if (e.getCurrentItem().getType().equals(Material.ORANGE_STAINED_GLASS_PANE)) {
                 openConfirmation(p);
                 return;
             }
@@ -811,11 +811,11 @@ public class PickaxeSkillTree implements Listener {
         }
         if (e.getView().getTitle().equals(m.c("&4&lHades Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
             e.setCancelled(true);
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5)
+            if (e.getCurrentItem().getType().equals(Material.LIME_STAINED_GLASS_PANE))
                 return;
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0)
+            if (e.getCurrentItem().getType().equals(Material.WHITE_STAINED_GLASS_PANE))
                 return;
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1) {
+            if (e.getCurrentItem().getType().equals(Material.ORANGE_STAINED_GLASS_PANE)) {
                 openConfirmation(p);
                 return;
             }
@@ -897,11 +897,11 @@ public class PickaxeSkillTree implements Listener {
         }
         if (e.getView().getTitle().equals(m.c("&d&lAphrodite Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
             e.setCancelled(true);
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5)
+            if (e.getCurrentItem().getType().equals(Material.LIME_STAINED_GLASS_PANE))
                 return;
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0)
+            if (e.getCurrentItem().getType().equals(Material.WHITE_STAINED_GLASS_PANE))
                 return;
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1) {
+            if (e.getCurrentItem().getType().equals(Material.ORANGE_STAINED_GLASS_PANE)) {
                 openConfirmation(p);
                 return;
             }
@@ -982,11 +982,11 @@ public class PickaxeSkillTree implements Listener {
         }
         if (e.getView().getTitle().equals(m.c("&2&lAres Skill Tree: &a" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("PickaxeSkillPoints") + " Skill Points"))) {
             e.setCancelled(true);
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 5)
+            if (e.getCurrentItem().getType().equals(Material.LIME_STAINED_GLASS_PANE))
                 return;
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0)
+            if (e.getCurrentItem().getType().equals(Material.WHITE_STAINED_GLASS_PANE))
                 return;
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 1) {
+            if (e.getCurrentItem().getType().equals(Material.ORANGE_STAINED_GLASS_PANE)) {
                 openConfirmation(p);
                 return;
             }
@@ -1066,7 +1066,7 @@ public class PickaxeSkillTree implements Listener {
         }
         if (e.getView().getTitle().equals(m.c("&4&lAre you sure?"))) {
             e.setCancelled(true);
-            if (e.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE) && e.getCurrentItem().getData().getData() == 0)
+            if (e.getCurrentItem().getType().equals(Material.WHITE_STAINED_GLASS_PANE))
                 return;
             if (e.getCurrentItem().getItemMeta().getDisplayName().equals(m.c("&c&lNo!"))) {
                 p.closeInventory();

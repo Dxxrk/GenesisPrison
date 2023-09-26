@@ -86,9 +86,6 @@ public class ScoreboardHandler implements Listener {
     }
 
 
-    static PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter();
-
-
     private static Method getHandleMethod;
     private static Field pingField;
 

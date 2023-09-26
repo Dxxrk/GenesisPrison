@@ -167,7 +167,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                 break;
             }
         }
-        ItemStack spacer = new ItemStack(Material.IRON_FENCE);
+        ItemStack spacer = new ItemStack(Material.IRON_BARS);
         ItemMeta sm = spacer.getItemMeta();
         sm.setDisplayName(m.c("&c&lGenesis &b&lPrison"));
         spacer.setItemMeta(sm);
@@ -221,7 +221,7 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
 
     public void openConfirm(Player p, ItemStack item) {
         Inventory confirm = Bukkit.createInventory(null, 9, m.c("&c&lConfirm: How many do you want to purchase?"));
-        ItemStack spacer = new ItemStack(Material.IRON_FENCE);
+        ItemStack spacer = new ItemStack(Material.IRON_BARS);
         ItemMeta sm = spacer.getItemMeta();
         sm.setDisplayName(m.c("&c&lGenesis &b&lPrison"));
         spacer.setItemMeta(sm);
@@ -329,19 +329,19 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
             e.setCancelled(true);
             if (personalItems.get(p.getUniqueId()).contains(e.getCurrentItem())) {
                 Inventory remove = Bukkit.createInventory(null, InventoryType.HOPPER, m.c("&c&lRemove Listing?"));
-                ItemStack spacer = new ItemStack(Material.IRON_FENCE);
+                ItemStack spacer = new ItemStack(Material.IRON_BARS);
                 ItemMeta sm = spacer.getItemMeta();
                 sm.setDisplayName(m.c("&c&lGenesis &b&lPrison"));
                 spacer.setItemMeta(sm);
                 remove.setItem(0, spacer);
                 remove.setItem(2, e.getCurrentItem());
                 remove.setItem(4, spacer);
-                ItemStack yes = new ItemStack(Material.WOOL, 1, (short) 5);
+                ItemStack yes = new ItemStack(Material.LIME_WOOL);
                 ItemMeta ym = yes.getItemMeta();
                 ym.setDisplayName(m.c("&a&lYes"));
                 yes.setItemMeta(ym);
                 remove.setItem(1, yes);
-                ItemStack no = new ItemStack(Material.WOOL, 1, (short) 14);
+                ItemStack no = new ItemStack(Material.RED_WOOL);
                 ItemMeta nm = no.getItemMeta();
                 nm.setDisplayName(m.c("&c&lNo"));
                 no.setItemMeta(nm);
