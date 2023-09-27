@@ -2,9 +2,6 @@ package me.dxrk.Vote;
 
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
-import net.buycraft.plugin.client.ApiException;
-import net.buycraft.plugin.client.ProductionApiClient;
-import net.buycraft.plugin.data.Coupon;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -13,13 +10,18 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
 public class BuycraftUtil implements Listener, CommandExecutor {
-    private static String secret = "7a465d1d42b7fd30862bbf282961c869668c66bc";
+    @Override
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        return false;
+    }
+   /* private static String secret = "7a465d1d42b7fd30862bbf282961c869668c66bc";
     private static ProductionApiClient buycraft = new ProductionApiClient(secret);
     private static Methods m = Methods.getInstance();
 
@@ -231,7 +233,7 @@ public class BuycraftUtil implements Listener, CommandExecutor {
         p.sendMessage(m.c("&cYou can only use this command once! Do not lose the code!"));
 
 
-    }
+    }*/
 
 
 }

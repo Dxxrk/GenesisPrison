@@ -1,20 +1,13 @@
 package me.dxrk.Mines;
-
-
-import com.boydti.fawe.FaweAPI;
-import com.boydti.fawe.object.schematic.Schematic;
-import com.boydti.fawe.util.EditSessionBuilder;
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.bukkit.BukkitUtil;
-import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.world.weather.WeatherType;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.GlobalProtectedRegion;
-import jdk.nashorn.internal.objects.Global;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import org.bukkit.*;
 import org.bukkit.plugin.Plugin;
 
@@ -53,15 +46,6 @@ public class MineWorldCreator {
         return (path.delete());
     }
 
-    private WorldGuardPlugin getWorldGuard() {
-        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-
-        if (!(plugin instanceof WorldGuardPlugin)) {
-            return null;
-        }
-
-        return (WorldGuardPlugin) plugin;
-    }
 
     public void createMineWorld(String name) {
         if (Bukkit.getWorld(name) != null) {
@@ -72,21 +56,22 @@ public class MineWorldCreator {
                 .generator(new EmptyWorldGenerator()));
         mineWorld.setKeepSpawnInMemory(false);
         mineWorld.save();
-        RegionManager regions = Objects.requireNonNull(getWorldGuard()).getRegionManager(mineWorld);
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionManager regions = container.get(BukkitAdapter.adapt(mineWorld));
         GlobalProtectedRegion global = new GlobalProtectedRegion("__global__");
-        global.setFlag(DefaultFlag.BLOCK_PLACE, StateFlag.State.ALLOW);
-        global.setFlag(DefaultFlag.FALL_DAMAGE, StateFlag.State.DENY);
-        global.setFlag(DefaultFlag.FEED_AMOUNT, 100);
-        global.setFlag(DefaultFlag.FEED_DELAY, 1);
-        global.setFlag(DefaultFlag.BLOCK_BREAK, StateFlag.State.ALLOW);
-        global.setFlag(DefaultFlag.PVP, StateFlag.State.DENY);
-        global.setFlag(DefaultFlag.LIGHTER, StateFlag.State.DENY);
-        global.setFlag(DefaultFlag.USE, StateFlag.State.ALLOW);
-        global.setFlag(DefaultFlag.INTERACT, StateFlag.State.DENY);
-        global.setFlag(DefaultFlag.OTHER_EXPLOSION, StateFlag.State.DENY);
-        global.setFlag(DefaultFlag.MOB_SPAWNING, StateFlag.State.DENY);
-        global.setFlag(DefaultFlag.WEATHER_LOCK, WeatherType.CLEAR);
-        global.setFlag(DefaultFlag.TIME_LOCK, "6000");
+        global.setFlag(Flags.BLOCK_PLACE, StateFlag.State.ALLOW);
+        global.setFlag(Flags.FALL_DAMAGE, StateFlag.State.DENY);
+        global.setFlag(Flags.FEED_AMOUNT, 100);
+        global.setFlag(Flags.FEED_DELAY, 1);
+        global.setFlag(Flags.BLOCK_BREAK, StateFlag.State.ALLOW);
+        global.setFlag(Flags.PVP, StateFlag.State.DENY);
+        global.setFlag(Flags.LIGHTER, StateFlag.State.DENY);
+        global.setFlag(Flags.USE, StateFlag.State.ALLOW);
+        global.setFlag(Flags.INTERACT, StateFlag.State.DENY);
+        global.setFlag(Flags.OTHER_EXPLOSION, StateFlag.State.DENY);
+        global.setFlag(Flags.MOB_SPAWNING, StateFlag.State.DENY);
+        global.setFlag(Flags.WEATHER_LOCK, WeatherType.REGISTRY.get("clear"));
+        global.setFlag(Flags.TIME_LOCK, "6000");
         global.setPriority(0);
         regions.addRegion(global);
     }

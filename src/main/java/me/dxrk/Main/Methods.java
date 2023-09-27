@@ -1,5 +1,7 @@
 package me.dxrk.Main;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
@@ -22,10 +24,13 @@ import net.minecraft.network.protocol.game.ClientboundSetBorderSizePacket;
 import net.minecraft.world.level.border.WorldBorder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_20_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -182,6 +187,15 @@ public class Methods {
         //PacketPlayOutWorldBorder packetPlayOutWorldBorder = new PacketPlayOutWorldBorder(wb, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE);
         ClientboundInitializeBorderPacket packet = new ClientboundInitializeBorderPacket(wb);
         ((CraftPlayer) p).getHandle().connection.send(packet);
+    }
+
+    public ItemStack getHeadFromId(String texture) {
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta sm = (SkullMeta) skull.getItemMeta();
+        PlayerProfile profile = Bukkit.createProfile("head");
+        profile.getProperties().add(new ProfileProperty("textures", texture));
+        sm.setPlayerProfile(profile);
+        return skull;
     }
 
 

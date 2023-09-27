@@ -1,10 +1,9 @@
 package me.dxrk.Vote;
 
-import com.antarescraft.kloudy.signguilib.SignGUI;
-import com.antarescraft.kloudy.signguilib.SignGUIUpdateEvent;
+
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
-import net.buycraft.plugin.client.ApiException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -137,14 +136,14 @@ public class CMDVoteShop implements Listener, CommandExecutor {
             if (e.getSlot() == 2) {
                 if (getCoupons(p) <= 0) return;
                 String[] text = new String[]{"", "Enter the Amount", "You want to", "Withdraw"};
-                SignGUI.openSignEditor(p, text);
+                //SignGUI.openSignEditor(p, text);
             }
 
 
         }
     }
 
-    @EventHandler
+    /*@EventHandler
     public void signUpdate(SignGUIUpdateEvent e) throws IOException, ApiException {
         Player p = e.getPlayer();
         if (e.getSignText()[1].equals(m.c("Enter the Amount"))) {
@@ -161,7 +160,7 @@ public class CMDVoteShop implements Listener, CommandExecutor {
             removeCoupons(p, amount);
             settings.saveVote();
         }
-    }
+    }*/
 
 
     public static void addCoupon(Player p, double coupon) {

@@ -49,12 +49,12 @@ public class MomentumHandler implements Listener {
                 if (currentTimeStamp - lastTimeStamp >= 60000L) {
                     removeMomentum(player);
                     if (p != null)
-                        ActionBarAPI.sendActionBar(p, m.c("&d&lMomentum: ") + Leaderboards.formatTime(getSeconds(player)));
-                    return;
+                        //ActionBarAPI.sendActionBar(p, m.c("&d&lMomentum: ") + Leaderboards.formatTime(getSeconds(player)));
+                        return;
                 } else {
                     addSeconds(player);                                                                                             ////replace with packets?
                     if (p != null) {
-                        ActionBarAPI.sendActionBar(p, m.c("&d&lMomentum: ") + Leaderboards.formatTime(getSeconds(player)));
+                        //ActionBarAPI.sendActionBar(p, m.c("&d&lMomentum: ") + Leaderboards.formatTime(getSeconds(player)));
                         sendTitleMomentum(p);
                     }
                 }
