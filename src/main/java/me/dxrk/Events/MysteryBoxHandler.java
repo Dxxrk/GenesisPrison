@@ -1,6 +1,7 @@
 package me.dxrk.Events;
 
 
+import com.mojang.datafixers.util.Pair;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import net.minecraft.core.BlockPos;
@@ -350,22 +351,26 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
         }.runTaskLater(Main.plugin, 240);   //REPLACE WITH PACKET STAND
         Location center = loc.clone().add(0.5, 0.85, 0.5);
 
-        ItemStack item = m.getHeadFromId("374ee1542c4563fd6e7d72de26e737cf18fbd04ccab1b8b28353da87348ecfb");
+
+        ItemStack item = m.getSkull("http://textures.minecraft.net/texture/374ee1542c4563fd6e7d72de26e737cf18fbd04ccab1b8b28353da87348ecfb");
         BlockGetter s = ((CraftWorld) loc.getWorld()).getHandle();
         net.minecraft.world.entity.decoration.ArmorStand stand = new net.minecraft.world.entity.decoration.ArmorStand(((CraftWorld) loc.getWorld()).getHandle(), center.getX(), center.getY(), center.getZ());
         stand.setNoGravity(true);
         stand.setInvisible(true);
         stand.setSmall(true);
-        stand.setItemSlot(EquipmentSlot.HEAD, CraftItemStack.asNMSCopy(item));
+        //stand.setItemSlot(EquipmentSlot.HEAD, CraftItemStack.asNMSCopy(item));
         //PacketPlayOutSpawnEntityLiving spawnP = new PacketPlayOutSpawnEntityLiving(stand);
         ClientboundAddEntityPacket spawn = new ClientboundAddEntityPacket(stand);
         //PacketPlayOutEntityEquipment EquipP = new PacketPlayOutEntityEquipment(stand.getId(), 4, CraftItemStack.asNMSCopy(item));
-        //ClientboundSetEquipmentPacket equip = new ClientboundSetEquipmentPacket();
+        List<Pair<EquipmentSlot, net.minecraft.world.item.ItemStack>> list = new ArrayList<>();
+        list.add(new Pair<>(EquipmentSlot.HEAD, CraftItemStack.asNMSCopy(item)));
+        ClientboundSetEquipmentPacket equip = new ClientboundSetEquipmentPacket(stand.getId(), list);
 
         //PacketPlayOutEntityMetadata metadatap = new PacketPlayOutEntityMetadata(stand.getId(), stand.getDataWatcher(), true);
         //ClientboundSetEntityDataPacket data = new ClientboundSetEntityDataPacket()
 
         ((CraftPlayer) p).getHandle().connection.send(spawn);
+        ((CraftPlayer) p).getHandle().connection.send(equip);
         //((CraftPlayer) p).getHandle().playerConnection.sendPacket(EquipP);
         //((CraftPlayer) p).getHandle().playerConnection.sendPacket(metadatap);
         new BukkitRunnable() {
@@ -401,9 +406,9 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
     public void removeRewards(Player p, net.minecraft.world.entity.decoration.ArmorStand stand, ItemStack reward, ItemEntity item) {
         stand.getBukkitEntity().setPassenger(null);
         //PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(stand.getId(), item.getId());
+        //ClientboundSetEntityDataPacket metadatap = new ClientboundSetEntityDataPacket(stand.getId(), stand.getEntityData().packDirty());
         ClientboundRemoveEntitiesPacket remove = new ClientboundRemoveEntitiesPacket(stand.getId(), item.getId());
-        ClientboundSetEntityDataPacket metadatap = new ClientboundSetEntityDataPacket(stand.getId(), stand.getEntityData().packDirty());
-        ((CraftPlayer) p).getHandle().connection.send(metadatap);
+        //((CraftPlayer) p).getHandle().connection.send(metadatap);
         ((CraftPlayer) p).getHandle().connection.send(remove);
         if (reward.getItemMeta().hasLore()) {
             String s = reward.getItemMeta().getLore().get(0).replace("%PLAYER%", p.getName());
@@ -423,20 +428,26 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
         ServerLevel s = ((CraftWorld) place.getWorld()).getHandle();
         ItemEntity item = new ItemEntity(s, place.getX(), place.getY(), place.getZ(), CraftItemStack.asNMSCopy(reward));
         item.pickupDelay = 6000;
+        item.setNoGravity(true);
 
         stand.setCustomName(Component.literal(reward.getItemMeta().getDisplayName()));
         Location loc = place.clone().add(0, -0.5, 0);
         stand.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0, 0);
-        stand.setItemSlot(EquipmentSlot.HEAD, null);
+        stand.setItemSlot(EquipmentSlot.HEAD, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.AIR)));
         //PacketPlayOutEntityEquipment EquipP = new PacketPlayOutEntityEquipment(stand.getId(), 4, null);
+        List<Pair<EquipmentSlot, net.minecraft.world.item.ItemStack>> list = new ArrayList<>();
+        list.add(new Pair<>(EquipmentSlot.HEAD, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.AIR))));
+        ClientboundSetEquipmentPacket equip = new ClientboundSetEquipmentPacket(stand.getId(), list);
 
         ClientboundSetEntityDataPacket metadatap = new ClientboundSetEntityDataPacket(stand.getId(), stand.getEntityData().packDirty());
+
         ClientboundAddEntityPacket addItem = new ClientboundAddEntityPacket(item);
         //((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntity(item, 2, 100));
         ((CraftPlayer)p).getHandle().connection.send(addItem);
         //PacketPlayOutAttachEntity attach = new PacketPlayOutAttachEntity(0, item, stand);
         ClientboundSetEntityLinkPacket link = new ClientboundSetEntityLinkPacket(item, stand);
         ((CraftPlayer) p).getHandle().connection.send(new ClientboundSetEntityDataPacket(item.getId(), item.getEntityData().packDirty()));
+        ((CraftPlayer) p).getHandle().connection.send(equip);
         //((CraftPlayer) p).getHandle().playerConnection.sendPacket(EquipP);
         ((CraftPlayer) p).getHandle().connection.send(metadatap);
         ((CraftPlayer) p).getHandle().connection.send(new ClientboundTeleportEntityPacket(stand));
@@ -523,15 +534,15 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
             @Override
             public void run() {
 
-                ItemStack item = m.getHeadFromId("43d04dba51f892495834ff71a429a8a91015a5a786b856ffe9c024cdb52fbc8f");
+                ItemStack item = m.getSkull("http://textures.minecraft.net/texture/43d04dba51f892495834ff71a429a8a91015a5a786b856ffe9c024cdb52fbc8f");
                 if (rarity.equals("Common"))
-                    item = m.getHeadFromId("24343987b786964da60f55106a435ba53cb78ef00b10669433712afe4b6fb546");
+                    item = m.getSkull("http://textures.minecraft.net/texture/24343987b786964da60f55106a435ba53cb78ef00b10669433712afe4b6fb546");
                 if (rarity.equals("Rare"))
-                    item = m.getHeadFromId("be002d97723b8cc9802d30fe8e4cef361e56cf2e49ae91f274da72f478134118");
+                    item = m.getSkull("http://textures.minecraft.net/texture/be002d97723b8cc9802d30fe8e4cef361e56cf2e49ae91f274da72f478134118");
                 if (rarity.equals("Epic"))
-                    item = m.getHeadFromId("106ea104cb9be703cced1b1f565286752e271752c5ac85e8113b3e2dc4352c20");
+                    item = m.getSkull("http://textures.minecraft.net/texture/106ea104cb9be703cced1b1f565286752e271752c5ac85e8113b3e2dc4352c20");
                 if (rarity.equals("Legendary"))
-                    item = m.getHeadFromId("33f2cd9f81a2772bdc4864472e833362310485c8a6bc0b76b81703390a9b032e");
+                    item = m.getSkull("http://textures.minecraft.net/texture/33f2cd9f81a2772bdc4864472e833362310485c8a6bc0b76b81703390a9b032e");
                 ServerLevel s = ((CraftWorld) loc.getWorld()).getHandle();
                 net.minecraft.world.entity.decoration.ArmorStand stand = new net.minecraft.world.entity.decoration.ArmorStand(s, center.getX(), center.getY() - 0.2, center.getZ());
                 stand.setCustomName(Component.literal(m.c("&e&l&kOOOOOO")));
@@ -542,11 +553,14 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
                 stand.setItemSlot(EquipmentSlot.HEAD, CraftItemStack.asNMSCopy(item));
                 ClientboundAddEntityPacket spawnP = new ClientboundAddEntityPacket(stand);
                 //PacketPlayOutEntityEquipment EquipP = new PacketPlayOutEntityEquipment(stand.getId(), 4, CraftItemStack.asNMSCopy(item));
-
+                List<Pair<EquipmentSlot, net.minecraft.world.item.ItemStack>> list = new ArrayList<>();
+                list.add(new Pair<>(EquipmentSlot.HEAD, CraftItemStack.asNMSCopy(item)));
+                ClientboundSetEquipmentPacket equip = new ClientboundSetEquipmentPacket(stand.getId(), list);
 
                 ClientboundSetEntityDataPacket metadatap = new ClientboundSetEntityDataPacket(stand.getId(), stand.getEntityData().packDirty());
 
                 ((CraftPlayer) p).getHandle().connection.send(spawnP);
+                ((CraftPlayer) p).getHandle().connection.send(equip);
                 //((CraftPlayer) p).getHandle().connection.send(EquipP);
                 ((CraftPlayer) p).getHandle().connection.send(metadatap);
                 new BukkitRunnable() {

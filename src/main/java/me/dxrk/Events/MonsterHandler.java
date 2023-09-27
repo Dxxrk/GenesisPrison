@@ -282,7 +282,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
     }
 
     private ItemStack Ladon(String rarity, int bonusmoney) {
-        ItemStack ladon = m.getHeadFromId("66cee4565f7bb287dc391ba7fa53a1fcb078a8c1967dbebd18d6519648beb3dd");
+        ItemStack ladon = m.getSkull("http://textures.minecraft.net/texture/66cee4565f7bb287dc391ba7fa53a1fcb078a8c1967dbebd18d6519648beb3dd");
         ItemMeta lm = ladon.getItemMeta();
         lm.setDisplayName(m.c("&e&lLadon &7(&cInactive&7)"));
         List<String> lore = new ArrayList<>();
@@ -302,7 +302,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
     }
 
     private ItemStack Typhon(String rarity, int bonus) {
-        ItemStack item = m.getHeadFromId("ca8288c7041aaa9a89ab58db89e736e1141f4b79bc008eb0609374cff87295c0");
+        ItemStack item = m.getSkull("http://textures.minecraft.net/texture/ca8288c7041aaa9a89ab58db89e736e1141f4b79bc008eb0609374cff87295c0");
         ItemMeta im = item.getItemMeta();
         im.setDisplayName(m.c("&2&lTyphon &7(&cInactive&7)"));
         List<String> lore = new ArrayList<>();
@@ -322,7 +322,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
     }
 
     private ItemStack Cerberus(String rarity, int bonus) {
-        ItemStack item = m.getHeadFromId("b7c8bef6beb77e29af8627ecdc38d86aa2fea7ccd163dc73c00f9f258f9a1457");
+        ItemStack item = m.getSkull("http://textures.minecraft.net/texture/b7c8bef6beb77e29af8627ecdc38d86aa2fea7ccd163dc73c00f9f258f9a1457");
         ItemMeta im = item.getItemMeta();
         im.setDisplayName(m.c("&4&lCerberus &7(&cInactive&7)"));
         List<String> lore = new ArrayList<>();
@@ -342,7 +342,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
     }
 
     private ItemStack Phoenix(String rarity, int bonus, int bonus2) {
-        ItemStack item = m.getHeadFromId("23aaf7b1a778949696cb99d4f04ad1aa518ceee256c72e5ed65bfa5c2d88d9e");
+        ItemStack item = m.getSkull("http://textures.minecraft.net/texture/23aaf7b1a778949696cb99d4f04ad1aa518ceee256c72e5ed65bfa5c2d88d9e");
         ItemMeta im = item.getItemMeta();
         im.setDisplayName(m.c("&6&lPhoenix &7(&cInactive&7)"));
         List<String> lore = new ArrayList<>();
@@ -363,7 +363,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
     }
 
     private ItemStack Medusa(String rarity, int bonus, int bonus2, int bonus3) {
-        ItemStack item = m.getHeadFromId("ce27b4dd4a3039b71f7b65659b3bdcd7138289d3c6a3a69ba78bebcfc1de7");
+        ItemStack item = m.getSkull("http://textures.minecraft.net/texture/ce27b4dd4a3039b71f7b65659b3bdcd7138289d3c6a3a69ba78bebcfc1de7");
         ItemMeta im = item.getItemMeta();
         im.setDisplayName(m.c("&7&lMedusa &7(&cInactive&7)"));
         List<String> lore = new ArrayList<>();

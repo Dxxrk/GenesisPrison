@@ -228,13 +228,13 @@ public class MineHandler implements Listener, CommandExecutor {
     @SuppressWarnings("deprecation")
     public void CreateMine(Player p, String schem, String mineworld) {
         //Setting up the world
-        World world = Bukkit.getWorld(mineworld);
+        World world = Bukkit.getWorld("mines");
         int mines = settings.getOptions().getInt("numberofmines");
 
         File schematic = new File(Main.plugin.getDataFolder() + File.separator + "schematics", schem + ".schematic");
         Location paste = new Location(world, 0, 144, (mines * 500));
         paste.setYaw(-90);
-        Methods.getInstance().paste(paste, schematic);
+        Methods.getInstance().pasteSchematic(schematic, paste);
         Location pworld = new Location(world, 0.5, 144.5, (mines * 500) + 0.5, -90, 0);
         PlayerDataHandler.getInstance().getPlayerData(p).set("MineSize", 30);
 

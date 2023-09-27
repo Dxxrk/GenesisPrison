@@ -2,6 +2,9 @@ package me.dxrk.Main;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
+import com.fastasyncworldedit.core.FaweAPI;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
@@ -13,14 +16,13 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.World;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.network.protocol.game.ClientboundInitializeBorderPacket;
-import net.minecraft.network.protocol.game.ClientboundSetBorderCenterPacket;
-import net.minecraft.network.protocol.game.ClientboundSetBorderSizePacket;
 import net.minecraft.world.level.border.WorldBorder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -36,6 +38,8 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -124,6 +128,52 @@ public class Methods {
         }
     }
 
+    public void pasteSchem(Location loc, File file) {
+        World weWorld = FaweAPI.getWorld(loc.getWorld().getName());
+
+        if (file.exists() == false) {
+            return;
+        }
+        boolean allowUndo = false;
+        BlockVector3 vec = BlockVector3.at(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        try {
+            EditSession editSession = ClipboardFormats.findByFile(file)
+                    .load(file)
+                    .paste(weWorld, vec, allowUndo, false, null);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public void pasteSchematic(File file, Location location) {
+        Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {
+            try (Clipboard clipboard = ClipboardFormats.findByFile(file).getReader(new FileInputStream(file)).read()) {
+                if (clipboard == null)
+                    throw new IllegalStateException("Schematic does not have a Clipboard! This should never happen!");
+                EditSession session = WorldEdit.getInstance().newEditSessionBuilder().world(FaweAPI.getWorld(location.getWorld().getName())).fastMode(true).build();
+                BlockVector3 blockVector3 = BlockVector3.at(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+                //session.paste((World) session, centerVector, false, false, null);
+                Operation operation = new ClipboardHolder(clipboard)
+                        .createPaste(session)
+                        .to(blockVector3)
+                        .ignoreAirBlocks(true)
+                        .build();
+                session.flushQueue();
+                try {
+                    Operations.complete(operation);
+                    session.close();
+                } catch (WorldEditException e) {
+                    e.printStackTrace();
+                }
+                Region region = clipboard.getRegion();
+                region.setWorld(FaweAPI.getWorld(location.getWorld().getName()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
 
     /**
      * Schedules a task to run at a certain hour every day.
@@ -192,10 +242,34 @@ public class Methods {
     public ItemStack getHeadFromId(String texture) {
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta sm = (SkullMeta) skull.getItemMeta();
-        PlayerProfile profile = Bukkit.createProfile("head");
+        PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID(), "test");
         profile.getProperties().add(new ProfileProperty("textures", texture));
+        profile.complete();
         sm.setPlayerProfile(profile);
         return skull;
+    }
+    public ItemStack getSkull(String url) {
+        ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+        if(url.isEmpty())return item;
+
+
+        SkullMeta itemMeta = (SkullMeta) item.getItemMeta();
+        GameProfile profile = new GameProfile(UUID.randomUUID(), "test");
+        byte[] encodedData = Base64.getEncoder().encode(String.format("{textures:{SKIN:{url:\"%s\"}}}", url).getBytes());
+        profile.getProperties().put("textures", new Property("textures", new String(encodedData)));
+        Field profileField = null;
+        try
+        {
+            profileField = itemMeta.getClass().getDeclaredField("profile");
+            profileField.setAccessible(true);
+            profileField.set(itemMeta, profile);
+        }
+        catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
+        item.setItemMeta(itemMeta);
+        return item;
     }
 
 

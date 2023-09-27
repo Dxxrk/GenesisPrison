@@ -63,12 +63,12 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
-    @SuppressWarnings("deprecation")
+    //@SuppressWarnings("deprecation")
     private void handlePing(WrappedServerPing ping) {
         ping.setPlayers(Arrays.asList(
-                new WrappedGameProfile("id1", ChatColor.YELLOW + "store.mcgenesis.net"),
-                new WrappedGameProfile("id2", ""),
-                new WrappedGameProfile("id3", ChatColor.LIGHT_PURPLE + "Remember to Vote!")
+                new WrappedGameProfile(UUID.randomUUID(), ChatColor.YELLOW + "store.mcgenesis.net"),
+                new WrappedGameProfile(UUID.randomUUID(), ""),
+                new WrappedGameProfile(UUID.randomUUID(), ChatColor.LIGHT_PURPLE + "Remember to Vote!")
         ));
         ping.setPlayersOnline(ScoreboardHandler.getPlayersOnline());
     }
