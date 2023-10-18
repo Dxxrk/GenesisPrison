@@ -303,15 +303,6 @@ public class PickaxeSkillTree implements Listener {
         return skills;
     }
 
-    public int findPickaxeType(Player p) {
-        if (p.getEquipment().getItemInMainHand().getType().equals(Material.WOODEN_PICKAXE)) return 1;
-        if (p.getEquipment().getItemInMainHand().getType().equals(Material.STONE_PICKAXE)) return 2;
-        if (p.getEquipment().getItemInMainHand().getType().equals(Material.GOLDEN_PICKAXE)) return 3;
-        if (p.getEquipment().getItemInMainHand().getType().equals(Material.IRON_PICKAXE)) return 4;
-        if (p.getEquipment().getItemInMainHand().getType().equals(Material.DIAMOND_PICKAXE)) return 5;
-
-        return 1;
-    }
 
     public void setType(Player p, int i) {
         switch (i) {

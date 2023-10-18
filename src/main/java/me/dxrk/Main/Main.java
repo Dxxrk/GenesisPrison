@@ -134,20 +134,20 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
 
         AuctionHouseHandler.getInstance().loadAH();
         TrinketHandler t = new TrinketHandler();
-        t.customDustCommon();
-        t.customDustRare();
-        t.customDustEpic();
-        t.customDustLegendary();
-        t.customDustHeroic();
-        t.commonDusting();
-        t.rareDusting();
-        t.epicDusting();
-        t.legendaryDusting();
-        t.commonDustingOpened();
-        t.rareDustingOpened();
-        t.epicDustingOpened();
-        t.legendaryDustingOpened();
-        t.heroicDusting();
+        t.customShardCommon();
+        t.customShardRare();
+        t.customShardEpic();
+        t.customShardLegendary();
+        t.customShardHeroic();
+        t.commonSharding();
+        t.rareSharding();
+        t.epicSharding();
+        t.legendarySharding();
+        t.commonShardingOpened();
+        t.rareShardingOpened();
+        t.epicShardingOpened();
+        t.legendaryShardingOpened();
+        t.heroicSharding();
 
 
         getCommand("blocks").setExecutor(new BlocksHandler());
@@ -189,7 +189,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("giveboost").setExecutor(new BoostsHandler());
         getCommand("blockstop").setExecutor(new Leaderboards());
         getCommand("addprestige").setExecutor(new PrestigeHandler());
-        getCommand("givedust").setExecutor(new TrinketHandler());
+        getCommand("giveshard").setExecutor(new TrinketHandler());
         getCommand("givetrinket").setExecutor(new TrinketHandler());
         getCommand("trinket").setExecutor(new TrinketHandler());
         getCommand("trinkets").setExecutor(new TrinketHandler());
@@ -259,6 +259,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("rod").setExecutor(new FishingHandler());
         getCommand("crystals").setExecutor(new FishingHandler());
         getCommand("buildmode").setExecutor(new BuildModeHandler());
+        getCommand("giveflare").setExecutor(new EventFlareHandler());
 
         registerEvents(this, new Listener[]{new MonsterHandler()});
         registerEvents(this, new Listener[]{new CMDVanish()});
@@ -308,6 +309,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         registerEvents(this, new Listener[]{new PickaxeSkillTree()});
         registerEvents(this, new Listener[]{new FishingHandler()});
         registerEvents(this, new Listener[]{new BuildModeHandler()});
+        registerEvents(this, new Listener[]{new EventFlareHandler()});
         registerEvents(this, new Listener[]{this});
         // For when sale is active, use this ||
         //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "motdchange sale 20");

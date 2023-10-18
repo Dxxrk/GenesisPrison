@@ -4,6 +4,7 @@ import me.dxrk.Events.BuildModeHandler;
 import me.dxrk.Events.FishingHandler;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.RankupHandler;
+import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import org.bukkit.*;
@@ -19,6 +20,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -169,13 +171,19 @@ public class CMDMine implements CommandExecutor, Listener {
                         Mine m = MineSystem.getInstance().getMineByPlayer(p);
                         Location loc = new Location(m.getMineWorld(), m.getSpawnLocation().getX(), m.getSpawnLocation().getY(), m.getSpawnLocation().getZ(), -90, 0);
                         p.teleport(loc);
-                        int minesize = PlayerDataHandler.getInstance().getPlayerData(p).getInt("MineSize");
-                        if (minesize == 1 || minesize == 2) {
-                            Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 83, 34.5, m.getSpawnLocation().getZ());
-                        }
-                        if (minesize == 3) {
-                            Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 103, 39.5, m.getSpawnLocation().getZ());
-                        }
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                int minesize = PlayerDataHandler.getInstance().getPlayerData(p).getInt("MineSize");
+                                if (minesize == 1 || minesize == 2) {
+                                    Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 83, 34.5, m.getSpawnLocation().getZ());
+                                }
+                                if (minesize == 3) {
+                                    Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 103, 39.5, m.getSpawnLocation().getZ());
+                                }
+                            }
+                        }.runTaskLater(Main.plugin, 20L);
+
                     } else {
                         p.sendMessage(c("&f&lMine &8| &7Unable to find your mine(/mine)."));
                     }

@@ -1,11 +1,13 @@
 package me.dxrk.Events;
 
 import me.dxrk.Enchants.PickaxeLevel;
+import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -41,20 +43,20 @@ public class TrinketHandler implements Listener, CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if (label.equalsIgnoreCase("givedust")) {
+        if (label.equalsIgnoreCase("giveshard")) {
             if (sender.hasPermission("rank.owner")) {
                 if (args.length == 2) {
                     Player p = Bukkit.getPlayer(args[0]);
                     if (args[1].equalsIgnoreCase("Common")) {
-                        p.getInventory().addItem(commonDust());
+                        p.getInventory().addItem(commonShard());
                     } else if (args[1].equalsIgnoreCase("Rare")) {
-                        p.getInventory().addItem(rareDust());
+                        p.getInventory().addItem(rareShard());
                     } else if (args[1].equalsIgnoreCase("Epic")) {
-                        p.getInventory().addItem(epicDust());
+                        p.getInventory().addItem(epicShard());
                     } else if (args[1].equalsIgnoreCase("Legendary")) {
-                        p.getInventory().addItem(legDust());
+                        p.getInventory().addItem(legShard());
                     } else if (args[1].equalsIgnoreCase("Heroic")) {
-                        p.getInventory().addItem(herDust());
+                        p.getInventory().addItem(herShard());
                     }
 
                 }
@@ -111,120 +113,120 @@ public class TrinketHandler implements Listener, CommandExecutor {
     }
 
 
-    public ItemStack commonDust() {
+    public ItemStack commonShard() {
         ArrayList<String> lore = new ArrayList<>();
-        ItemStack dust = new ItemStack(Material.SUGAR);
-        ItemMeta dm = dust.getItemMeta();
-        dm.setDisplayName(m.c("&bCommon Trinket Dust"));
+        ItemStack Shard = new ItemStack(Material.DISC_FRAGMENT_5);
+        ItemMeta dm = Shard.getItemMeta();
+        dm.setDisplayName(m.c("&bCommon Trinket Shard"));
         lore.add(m.c("&7&oUse this to craft a &bCommon &7&oTrinket"));
         dm.setLore(lore);
-        dust.setItemMeta(dm);
-        return dust;
+        Shard.setItemMeta(dm);
+        return Shard;
     }
 
-    public ItemStack rareDust() {
+    public ItemStack rareShard() {
         ArrayList<String> lore = new ArrayList<>();
-        ItemStack dust = new ItemStack(Material.SUGAR);
-        ItemMeta dm = dust.getItemMeta();
-        dm.setDisplayName(m.c("&9Rare Trinket Dust"));
+        ItemStack Shard = new ItemStack(Material.DISC_FRAGMENT_5);
+        ItemMeta dm = Shard.getItemMeta();
+        dm.setDisplayName(m.c("&9Rare Trinket Shard"));
         lore.add(m.c("&7&oUse this to craft a &9Rare &7&oTrinket"));
         dm.setLore(lore);
-        dust.setItemMeta(dm);
-        return dust;
+        Shard.setItemMeta(dm);
+        return Shard;
     }
 
-    public ItemStack epicDust() {
+    public ItemStack epicShard() {
         ArrayList<String> lore = new ArrayList<>();
-        ItemStack dust = new ItemStack(Material.SUGAR);
-        ItemMeta dm = dust.getItemMeta();
-        dm.setDisplayName(m.c("&5Epic Trinket Dust"));
+        ItemStack Shard = new ItemStack(Material.DISC_FRAGMENT_5);
+        ItemMeta dm = Shard.getItemMeta();
+        dm.setDisplayName(m.c("&5Epic Trinket Shard"));
         lore.add(m.c("&7&oUse this to craft a &5Epic &7&oTrinket"));
         dm.setLore(lore);
-        dust.setItemMeta(dm);
-        return dust;
+        Shard.setItemMeta(dm);
+        return Shard;
     }
 
-    public ItemStack legDust() {
+    public ItemStack legShard() {
         ArrayList<String> lore = new ArrayList<>();
-        ItemStack dust = new ItemStack(Material.SUGAR);
-        ItemMeta dm = dust.getItemMeta();
-        dm.setDisplayName(m.c("&6Legendary Trinket Dust"));
+        ItemStack Shard = new ItemStack(Material.DISC_FRAGMENT_5);
+        ItemMeta dm = Shard.getItemMeta();
+        dm.setDisplayName(m.c("&6Legendary Trinket Shard"));
         lore.add(m.c("&7&oUse this to craft a &6Legendary &7&oTrinket"));
         dm.setLore(lore);
-        dust.setItemMeta(dm);
-        return dust;
+        Shard.setItemMeta(dm);
+        return Shard;
     }
 
-    public ItemStack herDust() {
+    public ItemStack herShard() {
         ArrayList<String> lore = new ArrayList<>();
-        ItemStack dust = new ItemStack(Material.SUGAR);
-        ItemMeta dm = dust.getItemMeta();
-        dm.setDisplayName(m.c("&4Heroic Trinket Dust"));
+        ItemStack Shard = new ItemStack(Material.DISC_FRAGMENT_5);
+        ItemMeta dm = Shard.getItemMeta();
+        dm.setDisplayName(m.c("&4Heroic Trinket Shard"));
         lore.add(m.c("&7&oUse this to craft a &4Heroic &7&oTrinket"));
         dm.setLore(lore);
-        dust.setItemMeta(dm);
-        return dust;
+        Shard.setItemMeta(dm);
+        return Shard;
     }
 
-    public ItemStack commonDust(int amt) {
+    public ItemStack commonShard(int amt) {
         ArrayList<String> lore = new ArrayList<>();
-        ItemStack dust = new ItemStack(Material.SUGAR, amt);
-        ItemMeta dm = dust.getItemMeta();
-        dm.setDisplayName(m.c("&bCommon Trinket Dust"));
+        ItemStack Shard = new ItemStack(Material.DISC_FRAGMENT_5, amt);
+        ItemMeta dm = Shard.getItemMeta();
+        dm.setDisplayName(m.c("&bCommon Trinket Shard"));
         lore.add(m.c("&7&oUse this to craft a &bCommon &7&oTrinket"));
         dm.setLore(lore);
-        dust.setItemMeta(dm);
-        return dust;
+        Shard.setItemMeta(dm);
+        return Shard;
     }
 
-    public ItemStack rareDust(int amt) {
+    public ItemStack rareShard(int amt) {
         ArrayList<String> lore = new ArrayList<>();
-        ItemStack dust = new ItemStack(Material.SUGAR, amt);
-        ItemMeta dm = dust.getItemMeta();
-        dm.setDisplayName(m.c("&9Rare Trinket Dust"));
+        ItemStack Shard = new ItemStack(Material.DISC_FRAGMENT_5, amt);
+        ItemMeta dm = Shard.getItemMeta();
+        dm.setDisplayName(m.c("&9Rare Trinket Shard"));
         lore.add(m.c("&7&oUse this to craft a &9Rare &7&oTrinket"));
         dm.setLore(lore);
-        dust.setItemMeta(dm);
-        return dust;
+        Shard.setItemMeta(dm);
+        return Shard;
     }
 
-    public ItemStack epicDust(int amt) {
+    public ItemStack epicShard(int amt) {
         ArrayList<String> lore = new ArrayList<>();
-        ItemStack dust = new ItemStack(Material.SUGAR, amt);
-        ItemMeta dm = dust.getItemMeta();
-        dm.setDisplayName(m.c("&5Epic Trinket Dust"));
+        ItemStack Shard = new ItemStack(Material.DISC_FRAGMENT_5, amt);
+        ItemMeta dm = Shard.getItemMeta();
+        dm.setDisplayName(m.c("&5Epic Trinket Shard"));
         lore.add(m.c("&7&oUse this to craft a &5Epic &7&oTrinket"));
         dm.setLore(lore);
-        dust.setItemMeta(dm);
-        return dust;
+        Shard.setItemMeta(dm);
+        return Shard;
     }
 
-    public ItemStack legDust(int amt) {
+    public ItemStack legShard(int amt) {
         ArrayList<String> lore = new ArrayList<>();
-        ItemStack dust = new ItemStack(Material.SUGAR, amt);
-        ItemMeta dm = dust.getItemMeta();
-        dm.setDisplayName(m.c("&6Legendary Trinket Dust"));
+        ItemStack Shard = new ItemStack(Material.DISC_FRAGMENT_5, amt);
+        ItemMeta dm = Shard.getItemMeta();
+        dm.setDisplayName(m.c("&6Legendary Trinket Shard"));
         lore.add(m.c("&7&oUse this to craft a &6Legendary &7&oTrinket"));
         dm.setLore(lore);
-        dust.setItemMeta(dm);
-        return dust;
+        Shard.setItemMeta(dm);
+        return Shard;
     }
 
-    public ItemStack herDust(int amt) {
+    public ItemStack herShard(int amt) {
         ArrayList<String> lore = new ArrayList<>();
-        ItemStack dust = new ItemStack(Material.SUGAR, amt);
-        ItemMeta dm = dust.getItemMeta();
-        dm.setDisplayName(m.c("&4Heroic Trinket Dust"));
+        ItemStack Shard = new ItemStack(Material.DISC_FRAGMENT_5, amt);
+        ItemMeta dm = Shard.getItemMeta();
+        dm.setDisplayName(m.c("&4Heroic Trinket Shard"));
         lore.add(m.c("&7&oUse this to craft a &4Heroic &7&oTrinket"));
         dm.setLore(lore);
-        dust.setItemMeta(dm);
-        return dust;
+        Shard.setItemMeta(dm);
+        return Shard;
     }
 
 
     public ItemStack commonTrinket(int amount) {
         ArrayList<String> lore = new ArrayList<>();
-        ItemStack trinket = new ItemStack(Material.GOLD_NUGGET, amount);
+        ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE, amount);
         ItemMeta dm = trinket.getItemMeta();
         dm.setDisplayName(m.c("&bCommon Trinket"));
         lore.add(m.c("&7&oRight Click to unveil"));
@@ -235,7 +237,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
 
     public ItemStack rareTrinket(int amount) {
         ArrayList<String> lore = new ArrayList<>();
-        ItemStack trinket = new ItemStack(Material.GOLD_NUGGET, amount);
+        ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE, amount);
         ItemMeta dm = trinket.getItemMeta();
         dm.setDisplayName(m.c("&9Rare Trinket"));
         lore.add(m.c("&7&oRight Click to unveil"));
@@ -246,7 +248,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
 
     public ItemStack epicTrinket(int amount) {
         ArrayList<String> lore = new ArrayList<>();
-        ItemStack trinket = new ItemStack(Material.GOLD_NUGGET, amount);
+        ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE, amount);
         ItemMeta dm = trinket.getItemMeta();
         dm.setDisplayName(m.c("&5Epic Trinket"));
         lore.add(m.c("&7&oRight Click to unveil"));
@@ -257,7 +259,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
 
     public ItemStack legTrinket(int amount) {
         ArrayList<String> lore = new ArrayList<>();
-        ItemStack trinket = new ItemStack(Material.GOLD_NUGGET, amount);
+        ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE, amount);
         ItemMeta dm = trinket.getItemMeta();
         dm.setDisplayName(m.c("&6Legendary Trinket"));
         lore.add(m.c("&7&oRight Click to unveil"));
@@ -268,7 +270,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
 
     public ItemStack herTrinket(int amount) {
         ArrayList<String> lore = new ArrayList<>();
-        ItemStack trinket = new ItemStack(Material.GOLD_NUGGET, amount);
+        ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE, amount);
         ItemMeta dm = trinket.getItemMeta();
         dm.setDisplayName(m.c("&4Heroic Trinket"));
         lore.add(m.c("&7&oRight Click to unveil"));
@@ -278,134 +280,135 @@ public class TrinketHandler implements Listener, CommandExecutor {
     }
 
 
-    public void customDustCommon() {
-        ShapedRecipe r = new ShapedRecipe(commonTrinket(1));
+    public void customShardCommon() {
+        ShapedRecipe r = new ShapedRecipe(new NamespacedKey(Main.plugin, "commonTrinket"), commonTrinket(1));
 
         r.shape("###", "%%%", "$$$");
-        r.setIngredient('#', Material.SUGAR);
-        r.setIngredient('%', Material.SUGAR);
-        r.setIngredient('$', Material.SUGAR);
+        r.setIngredient('#', commonShard());
+        r.setIngredient('%', commonShard());
+        r.setIngredient('$', commonShard());
 
         Bukkit.addRecipe(r);
 
     }
 
-    public void customDustRare() {
-        ShapedRecipe r = new ShapedRecipe(rareTrinket(1));
+    public void customShardRare() {
+        ShapedRecipe r = new ShapedRecipe(new NamespacedKey(Main.plugin, "rareTrinket"), rareTrinket(1));
 
         r.shape("##$", "%#%", "$%$");
-        r.setIngredient('#', Material.SUGAR);
-        r.setIngredient('%', Material.SUGAR);
-        r.setIngredient('$', Material.SUGAR);
+        r.setIngredient('#', rareShard());
+        r.setIngredient('%', rareShard());
+        r.setIngredient('$', rareShard());
 
         Bukkit.addRecipe(r);
 
     }
 
-    public void customDustEpic() {
-        ShapedRecipe r = new ShapedRecipe(epicTrinket(1));
+    public void customShardEpic() {
+        ShapedRecipe r = new ShapedRecipe(new NamespacedKey(Main.plugin, "epicTrinket"), epicTrinket(1));
 
         r.shape("%##", "$%%", "#$$");
-        r.setIngredient('#', Material.SUGAR);
-        r.setIngredient('%', Material.SUGAR);
-        r.setIngredient('$', Material.SUGAR);
+        r.setIngredient('#', epicShard());
+        r.setIngredient('%', epicShard());
+        r.setIngredient('$', epicShard());
 
         Bukkit.addRecipe(r);
 
     }
 
-    public void customDustLegendary() {
-        ShapedRecipe r = new ShapedRecipe(legTrinket(1));
+    public void customShardLegendary() {
+        ShapedRecipe r = new ShapedRecipe(new NamespacedKey(Main.plugin, "legendaryTrinket"), legTrinket(1));
 
         r.shape("#$#", "#%%", "$$%");
-        r.setIngredient('#', Material.SUGAR);
-        r.setIngredient('%', Material.SUGAR);
-        r.setIngredient('$', Material.SUGAR);
+        r.setIngredient('#', legShard());
+        r.setIngredient('%', legShard());
+        r.setIngredient('$', legShard());
 
         Bukkit.addRecipe(r);
 
     }
 
-    public void customDustHeroic() {
-        ShapedRecipe r = new ShapedRecipe(herTrinket(1));
+    public void customShardHeroic() {
+        ShapedRecipe r = new ShapedRecipe(new NamespacedKey(Main.plugin, "heroicTrinket"), herTrinket(1));
 
         r.shape("%##", "%%$", "$$#");
-        r.setIngredient('#', Material.SUGAR);
-        r.setIngredient('%', Material.SUGAR);
-        r.setIngredient('$', Material.SUGAR);
+        r.setIngredient('#', herShard());
+        r.setIngredient('%', herShard());
+        r.setIngredient('$', herShard());
 
         Bukkit.addRecipe(r);
 
     }
 
-    public void commonDusting() {
-        ShapelessRecipe r = new ShapelessRecipe(rareDust());
+    public void commonSharding() {
+        ShapelessRecipe r = new ShapelessRecipe(new NamespacedKey(Main.plugin, "rareShard"), rareShard());
 
-        r.addIngredient(1, Material.GOLD_NUGGET);
-
-        Bukkit.addRecipe(r);
-    }
-
-    public void rareDusting() {
-        ShapelessRecipe r = new ShapelessRecipe(epicDust());
-
-        r.addIngredient(1, Material.GOLD_NUGGET);
+        r.addIngredient(1, commonTrinket(1));
+        
 
         Bukkit.addRecipe(r);
     }
 
-    public void epicDusting() {
-        ShapelessRecipe r = new ShapelessRecipe(legDust());
+    public void rareSharding() {
+        ShapelessRecipe r = new ShapelessRecipe(new NamespacedKey(Main.plugin, "epicShard"), epicShard());
 
-        r.addIngredient(1, Material.GOLD_NUGGET);
-
-        Bukkit.addRecipe(r);
-    }
-
-    public void legendaryDusting() {
-        ShapelessRecipe r = new ShapelessRecipe(herDust());
-
-        r.addIngredient(1, Material.GOLD_NUGGET);
+        r.addIngredient(1, rareTrinket(1));
 
         Bukkit.addRecipe(r);
     }
 
-    public void heroicDusting() {
-        ShapelessRecipe r = new ShapelessRecipe(herDust(5));
+    public void epicSharding() {
+        ShapelessRecipe r = new ShapelessRecipe(new NamespacedKey(Main.plugin, "legendaryShard"), legShard());
 
-        r.addIngredient(1, Material.GOLD_NUGGET);
-
-        Bukkit.addRecipe(r);
-    }
-
-    public void legendaryDustingOpened() {
-        ShapelessRecipe r = new ShapelessRecipe(legDust(5));
-
-        r.addIngredient(1, Material.GOLD_NUGGET);
+        r.addIngredient(1, epicTrinket(1));
 
         Bukkit.addRecipe(r);
     }
 
-    public void epicDustingOpened() {
-        ShapelessRecipe r = new ShapelessRecipe(epicDust(5));
+    public void legendarySharding() {
+        ShapelessRecipe r = new ShapelessRecipe(new NamespacedKey(Main.plugin, "heroicShard"), herShard());
 
-        r.addIngredient(1, Material.GOLD_NUGGET);
-
-        Bukkit.addRecipe(r);
-    }
-
-    public void rareDustingOpened() {
-        ShapelessRecipe r = new ShapelessRecipe(rareDust(5));
-
-        r.addIngredient(1, Material.GOLD_NUGGET);
+        r.addIngredient(1, legTrinket(1));
 
         Bukkit.addRecipe(r);
     }
 
-    public void commonDustingOpened() {
-        ShapelessRecipe r = new ShapelessRecipe(commonDust(5));
+    public void heroicSharding() {
+        ShapelessRecipe r = new ShapelessRecipe(new NamespacedKey(Main.plugin, "heroicShard5"), herShard(5));
 
-        r.addIngredient(1, Material.GOLD_NUGGET);
+        r.addIngredient(1, Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
+
+        Bukkit.addRecipe(r);
+    }
+
+    public void legendaryShardingOpened() {
+        ShapelessRecipe r = new ShapelessRecipe(new NamespacedKey(Main.plugin, "legendaryShard5"), legShard(5));
+
+        r.addIngredient(1, Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
+
+        Bukkit.addRecipe(r);
+    }
+
+    public void epicShardingOpened() {
+        ShapelessRecipe r = new ShapelessRecipe(new NamespacedKey(Main.plugin, "epicShard5"), epicShard(5));
+
+        r.addIngredient(1, Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
+
+        Bukkit.addRecipe(r);
+    }
+
+    public void rareShardingOpened() {
+        ShapelessRecipe r = new ShapelessRecipe(new NamespacedKey(Main.plugin, "rareShard5"), rareShard(5));
+
+        r.addIngredient(1, Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
+
+        Bukkit.addRecipe(r);
+    }
+
+    public void commonShardingOpened() {
+        ShapelessRecipe r = new ShapelessRecipe(new NamespacedKey(Main.plugin, "commonShard5"), commonShard(5));
+
+        r.addIngredient(1, Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
 
         Bukkit.addRecipe(r);
     }
@@ -428,7 +431,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
 
         List<String> TrinketList = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("Trinkets");
 
-        ItemStack trinket1 = new ItemStack(Material.GOLD_NUGGET);
+        ItemStack trinket1 = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
         ItemMeta tm1 = trinket1.getItemMeta();
         List<String> lore = new ArrayList<>();
         if (TrinketList.size() > 0) {
@@ -444,7 +447,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
         trinket.setItem(1, trinket1);
         lore.clear();
 
-        ItemStack trinket2 = new ItemStack(Material.GOLD_NUGGET);
+        ItemStack trinket2 = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
         ItemMeta tm2 = trinket2.getItemMeta();
         if (TrinketList.size() > 1) {
             if (TrinketList.get(1) != null) {
@@ -459,7 +462,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
         trinket.setItem(3, trinket2);
         lore.clear();
 
-        ItemStack trinket3 = new ItemStack(Material.GOLD_NUGGET);
+        ItemStack trinket3 = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
         ItemMeta tm3 = trinket3.getItemMeta();
         if (TrinketList.size() > 2) {
             if (TrinketList.get(2) != null) {
@@ -474,7 +477,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
         trinket.setItem(5, trinket3);
         lore.clear();
 
-        ItemStack trinket4 = new ItemStack(Material.GOLD_NUGGET);
+        ItemStack trinket4 = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
         ItemMeta tm4 = trinket4.getItemMeta();
         if (TrinketList.size() > 3) {
             if (TrinketList.get(3) != null) {
@@ -514,7 +517,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
         if (e.getView().getTitle().equals(m.c("&a&lTrinkets:"))) {
             if (e.getSlot() == 1 || e.getSlot() == 3 || e.getSlot() == 5 || e.getSlot() == 7) {
                 e.setCancelled(true);
-                if (e.getCursor().getType().equals(Material.GOLD_NUGGET)) {
+                if (e.getCursor().getType().equals(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE)) {
                     if (ChatColor.stripColor(e.getCursor().getItemMeta().getDisplayName()).contains("Trinket")) {
                         List<String> trinket = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("Trinkets");
                         if (e.getSlot() == 1) {
@@ -567,7 +570,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
 
     @EventHandler
     public void afterCraft(PrepareItemCraftEvent e) {
-        if (e.getRecipe().getResult().equals(rareDust())) {
+        if (e.getRecipe().getResult().equals(rareShard())) {
             ItemStack[] items = e.getInventory().getMatrix();
             String common = m.c("&bCommon Trinket");
             String rare = m.c("&9Rare Trinket");
@@ -578,34 +581,34 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 if (items[i] != null && !items[i].getType().equals(Material.AIR) && items[i].hasItemMeta()) {
                     String[] name = ChatColor.stripColor(items[i].getItemMeta().getDisplayName()).split(" ");
                     if (items[i].getItemMeta().getDisplayName().equals(common)) {
-                        e.getInventory().setResult(rareDust());
+                        e.getInventory().setResult(rareShard());
                         break;
                     } else if (items[i].getItemMeta().getDisplayName().equals(rare)) {
-                        e.getInventory().setResult(epicDust());
+                        e.getInventory().setResult(epicShard());
                         break;
                     } else if (items[i].getItemMeta().getDisplayName().equals(epic)) {
-                        e.getInventory().setResult(legDust());
+                        e.getInventory().setResult(legShard());
                         break;
                     } else if (items[i].getItemMeta().getDisplayName().equals(legendary)) {
-                        e.getInventory().setResult(herDust());
+                        e.getInventory().setResult(herShard());
                         break;
                     } else if (items[i].getItemMeta().getDisplayName().equals(heroic)) {
                         e.getInventory().setResult(null);
                         break;
                     } else if (name.length >= 3 && name[0].equals("Common")) {
-                        e.getInventory().setResult(commonDust(5));
+                        e.getInventory().setResult(commonShard(5));
                         break;
                     } else if (name.length >= 3 && name[0].equals("Rare")) {
-                        e.getInventory().setResult(rareDust(5));
+                        e.getInventory().setResult(rareShard(5));
                         break;
                     } else if (name.length >= 3 && name[0].equals("Epic")) {
-                        e.getInventory().setResult(epicDust(5));
+                        e.getInventory().setResult(epicShard(5));
                         break;
                     } else if (name.length >= 3 && name[0].equals("Legendary")) {
-                        e.getInventory().setResult(legDust(5));
+                        e.getInventory().setResult(legShard(5));
                         break;
                     } else if (name.length >= 3 && name[0].equals("Heroic")) {
-                        e.getInventory().setResult(herDust(5));
+                        e.getInventory().setResult(herShard(5));
                         break;
                     } else {
                         e.getInventory().setResult(null);
@@ -619,13 +622,13 @@ public class TrinketHandler implements Listener, CommandExecutor {
         if (e.getRecipe().getResult().equals(new ItemStack(Material.GOLD_INGOT))) {
             e.getInventory().setResult(new ItemStack(Material.AIR));
         }
-			/*if(e.getRecipe().getResult().equals(commonDust(5))) {
+			/*if(e.getRecipe().getResult().equals(commonShard(5))) {
 				ItemStack[] items = e.getInventory().getMatrix();
 				for(int i = 0; i < 9; i++) {
 					if(items[i] != null && !items[i].getType().equals(Material.AIR) && items[i].hasItemMeta()) {
 						String[] name = ChatColor.stripColor(items[i].getItemMeta().getDisplayName()).split(" ");
 						if(name.length >2 && name[0].equals("Common")) {
-							e.getInventory().setResult(commonDust(5));
+							e.getInventory().setResult(commonShard(5));
 							break;
 						}
 					} else {
@@ -755,7 +758,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 10;
                 int Sell = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&bCommon Sell Trinket"));
                 lore.add(m.c("&b" + (Sell) + "% &7Sell Boost"));
@@ -770,7 +773,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 10;
                 int XP = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&bCommon XP Trinket"));
                 lore.add(m.c("&b" + (XP) + "% &7Bonus XP"));
@@ -787,7 +790,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 10;
                 int Luck = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&bCommon Lucky Trinket"));
                 lore.add(m.c("&b" + (Luck) + "% &7Additional Luck"));
@@ -802,7 +805,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 10;
                 int Luck = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&bCommon Token Trinket"));
                 lore.add(m.c("&b" + (Luck) + "% &7Extra Tokens"));
@@ -821,7 +824,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 18;
                 int Sell = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&9Rare Sell Trinket"));
                 lore.add(m.c("&9" + (Sell) + "% &7Sell Boost"));
@@ -836,7 +839,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 17;
                 int XP = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&9Rare XP Trinket"));
                 lore.add(m.c("&9" + (XP) + "% &7Bonus XP"));
@@ -853,7 +856,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 15;
                 int Luck = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&9Rare Lucky Trinket"));
                 lore.add(m.c("&9" + (Luck) + "% &7Additional Luck"));
@@ -870,7 +873,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 15;
                 int Luck = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&9Rare Token Trinket"));
                 lore.add(m.c("&9" + (Luck) + "% &7Extra Tokens"));
@@ -890,7 +893,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 25;
                 int Sell = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&5Epic Sell Trinket"));
                 lore.add(m.c("&5" + (Sell) + "% &7Sell Boost"));
@@ -905,7 +908,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 25;
                 int XP = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&5Epic XP Trinket"));
                 lore.add(m.c("&5" + (XP) + "% &7Bonus XP"));
@@ -922,7 +925,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 20;
                 int Luck = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&5Epic Lucky Trinket"));
                 lore.add(m.c("&5" + (Luck) + "% &7Additional Luck"));
@@ -939,7 +942,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 20;
                 int Luck = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&5Epic Token Trinket"));
                 lore.add(m.c("&5" + (Luck) + "% &7Extra Tokens"));
@@ -959,7 +962,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 40;
                 int Sell = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&6Legendary Sell Trinket"));
                 lore.add(m.c("&6" + (Sell) + "% &7Sell Boost"));
@@ -974,7 +977,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 35;
                 int XP = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&6Legendary XP Trinket"));
                 lore.add(m.c("&6" + (XP) + "% &7Bonus XP"));
@@ -991,7 +994,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 25;
                 int Luck = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&6Legendary Lucky Trinket"));
                 lore.add(m.c("&6" + (Luck) + "% &7Additional Luck"));
@@ -1008,7 +1011,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 25;
                 int Luck = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&6Legendary Token Trinket"));
                 lore.add(m.c("&6" + (Luck) + "% &7Extra Tokens"));
@@ -1028,7 +1031,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 75;
                 int Sell = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&4Heroic Sell Trinket"));
                 lore.add(m.c("&4" + (Sell) + "% &7Sell Boost"));
@@ -1043,7 +1046,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 100;
                 int XP = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&4Heroic XP Trinket"));
                 lore.add(m.c("&4" + (XP) + "% &7Bonus XP"));
@@ -1060,7 +1063,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 35;
                 int Luck = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&4Heroic Lucky Trinket"));
                 lore.add(m.c("&4" + (Luck) + "% &7Additional Luck"));
@@ -1077,7 +1080,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 int max = 35;
                 int Luck = r.nextInt(max - min) + min;
                 ArrayList<String> lore = new ArrayList<>();
-                ItemStack trinket = new ItemStack(Material.GOLD_NUGGET);
+                ItemStack trinket = new ItemStack(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE);
                 ItemMeta tm = trinket.getItemMeta();
                 tm.setDisplayName(m.c("&4Heroic Token Trinket"));
                 lore.add(m.c("&4" + (Luck) + "% &7Extra Tokens"));

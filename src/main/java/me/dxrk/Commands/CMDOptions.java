@@ -150,6 +150,11 @@ public class CMDOptions implements Listener, CommandExecutor {
                 openGenesis(p);
             else
                 p.sendMessage(m.c("&cNo Permission"));
+            if(p.isOp()) {
+                if(args[0].equalsIgnoreCase("reload")) {
+                    SettingsManager.getInstance().reloadConfig();
+                }
+            }
         }
 
 

@@ -589,15 +589,15 @@ public class EnchantMethods implements CommandExecutor {
         } else if (rr >= 77) {
             int rint = r.nextInt(4);
             if (rint == 0) {
-                p.getInventory().addItem(TrinketHandler.getInstance().commonDust());
+                p.getInventory().addItem(TrinketHandler.getInstance().commonShard());
             } else if (rint == 1) {
-                p.getInventory().addItem(TrinketHandler.getInstance().rareDust());
+                p.getInventory().addItem(TrinketHandler.getInstance().rareShard());
             } else if (rint == 2) {
-                p.getInventory().addItem(TrinketHandler.getInstance().epicDust());
+                p.getInventory().addItem(TrinketHandler.getInstance().epicShard());
             } else if (rint == 3) {
-                p.getInventory().addItem(TrinketHandler.getInstance().legDust());
+                p.getInventory().addItem(TrinketHandler.getInstance().legShard());
             } else if (rint == 4) {
-                p.getInventory().addItem(TrinketHandler.getInstance().herDust());
+                p.getInventory().addItem(TrinketHandler.getInstance().herShard());
             }
         }
     }

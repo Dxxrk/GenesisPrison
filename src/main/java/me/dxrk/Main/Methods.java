@@ -20,7 +20,10 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.World;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.network.protocol.game.ClientboundInitializeBorderPacket;
 import net.minecraft.world.level.border.WorldBorder;
@@ -60,16 +63,26 @@ public class Methods {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
+
+
     //Use with specific HEX codes needed.
-    public Component colorText(String s, TextColor color) { //for use with net.kyori.adventure.text.format.TextColor.color /// USAGE: color(0x<HEX CODE>)
-        final Component component = text()
+    public TextComponent colorText(String s, TextColor color, TextDecoration style, boolean on) { //for use with net.kyori.adventure.text.format.TextColor.color /// USAGE: color(0x<HEX CODE>)
+        final TextComponent component = text()
                 .content(s).color(color)
+                .decoration(style, on)
+                .build();
+        return component;
+    }
+    public TextComponent colorText(String s, NamedTextColor color, TextDecoration style, boolean on) {
+        final TextComponent component = text()
+                .content(s).color(color)
+                .decoration(style, on)
                 .build();
         return component;
     }
 
     //Use with simpler default colors provided for quick usage.
-    public Component colorText(String text, String color) {
+    public TextComponent colorText(String text, String color, TextDecoration style, boolean on) {
         TextColor var = switch (color) {
             case "blue" -> color(0x0096FF);
             case "red" -> color(0xD2042D);
@@ -81,8 +94,9 @@ public class Methods {
             default -> null;
         };
 
-        final Component component = text()
+        final TextComponent component = text()
                 .content(text).color(var)
+                .decoration(style, on)
                 .build();
         return component;
     }
@@ -141,7 +155,6 @@ public class Methods {
                     .load(file)
                     .paste(weWorld, vec, allowUndo, false, null);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

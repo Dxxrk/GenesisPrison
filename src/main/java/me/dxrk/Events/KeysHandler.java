@@ -86,31 +86,31 @@ public class KeysHandler implements Listener {
     public void DustFinderMSG(Player p, String dust) {
         switch (dust) {
             case "Common":
-                p.getInventory().addItem(TrinketHandler.getInstance().commonDust());
+                p.getInventory().addItem(TrinketHandler.getInstance().commonShard());
                 if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Dust-Finder-Messages") == true) {
                     p.sendMessage(m.c("&f&lDust Finder &8| &b+1 Common Trinket Dust"));
                 }
                 break;
             case "Rare":
-                p.getInventory().addItem(TrinketHandler.getInstance().rareDust());
+                p.getInventory().addItem(TrinketHandler.getInstance().rareShard());
                 if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Dust-Finder-Messages") == true) {
                     p.sendMessage(m.c("&f&lDust Finder &8| &9+1 Rare Trinket Dust"));
                 }
                 break;
             case "Epic":
-                p.getInventory().addItem(TrinketHandler.getInstance().epicDust());
+                p.getInventory().addItem(TrinketHandler.getInstance().epicShard());
                 if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Dust-Finder-Messages") == true) {
                     p.sendMessage(m.c("&f&lDust Finder &8| &5+1 Epic Trinket Dust"));
                 }
                 break;
             case "Legendary":
-                p.getInventory().addItem(TrinketHandler.getInstance().legDust());
+                p.getInventory().addItem(TrinketHandler.getInstance().legShard());
                 if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Dust-Finder-Messages") == true) {
                     p.sendMessage(m.c("&f&lDust Finder &8| &6+1 Legendary Trinket Dust"));
                 }
                 break;
             case "Heroic":
-                p.getInventory().addItem(TrinketHandler.getInstance().herDust());
+                p.getInventory().addItem(TrinketHandler.getInstance().herShard());
                 if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Dust-Finder-Messages") == true) {
                     p.sendMessage(m.c("&f&lDust Finder &8| &4+1 Heroic Trinket Dust"));
                 }

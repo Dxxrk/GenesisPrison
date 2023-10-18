@@ -122,7 +122,7 @@
             <dependency>
                 <groupId>com.intellectualsites.bom</groupId>
                 <artifactId>bom-newest</artifactId>
-                <version>1.37</version>
+                <version>1.38</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -166,7 +166,7 @@
         <dependency>
             <groupId>net.citizensnpcs</groupId>
             <artifactId>citizens-main</artifactId>
-            <version>2.0.32-SNAPSHOT</version>
+            <version>2.0.33-SNAPSHOT</version>
             <type>jar</type>
             <scope>provided</scope>
             <exclusions>

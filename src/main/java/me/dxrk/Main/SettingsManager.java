@@ -357,6 +357,10 @@ public class SettingsManager {
         this.auctionhouse = YamlConfiguration.loadConfiguration(this.ahfile);
         this.gangs = YamlConfiguration.loadConfiguration(this.gangfile);
     }
+    public void reloadConfig() {
+        setup(Main.plugin);
+    }
+
 
     public FileConfiguration getFileConfig(FileConfiguration fc) {
         return fc;
