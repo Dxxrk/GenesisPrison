@@ -1,5 +1,6 @@
 package me.dxrk.Enchants;
 
+import java.security.SecureRandom;
 import me.dxrk.Events.*;
 import me.dxrk.Main.Functions;
 import me.dxrk.Main.Main;
@@ -551,7 +552,7 @@ public class EnchantMethods implements CommandExecutor {
 
 
     public void Junkpile(Player p) {
-        Random r = new Random();
+        Random r = new SecureRandom();
 
         int xpboost = 1;
         int skillxpboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillJunkpileXPBoost");
@@ -603,7 +604,7 @@ public class EnchantMethods implements CommandExecutor {
     }
 
     public void KeyParty(Player p) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         int i = r.nextInt(9);
 
         if (i == 0 || i == 1) {
@@ -657,7 +658,7 @@ public class EnchantMethods implements CommandExecutor {
 
 
     public void Booster(Player p) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         int i = r.nextInt(5);
 
         if (i == 0) {
@@ -694,7 +695,7 @@ public class EnchantMethods implements CommandExecutor {
     }
 
     public void Treasury(Player p) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         int min = 500;
         int max = 2000;
         int gems = r.nextInt(max - min) + min;
@@ -776,7 +777,7 @@ public class EnchantMethods implements CommandExecutor {
     }
 
     public void Keyfinder(Player p) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         int chance = 0;
         List<String> lore = p.getEquipment().getItemInMainHand().getItemMeta().getLore();
         double event = SkillsEventsListener.getEventKeyFortune();
@@ -828,7 +829,7 @@ public class EnchantMethods implements CommandExecutor {
 
     public Location lbloc(int x, int y, int z, Player p) {
         Location loc;
-        Random r = new Random();
+        Random r = new SecureRandom();
         int x1 = r.nextInt(10) - 5;
         int z1 = r.nextInt(10) - 5;
         loc = new Location(p.getWorld(), x + x1, y, z + z1);
@@ -850,7 +851,7 @@ public class EnchantMethods implements CommandExecutor {
 
     public void Luckyblock(Player p, byte lbs) {
         if (lbs == 1) {
-            Random r = new Random();
+            Random r = new SecureRandom();
             int rr = r.nextInt(309);
             ItemStack pick = p.getEquipment().getItemInMainHand();
             int level = 0;
@@ -907,7 +908,7 @@ public class EnchantMethods implements CommandExecutor {
             byte totalrank = 0;
             byte totalseasonal = 0;
             for (byte i = 0; i < lbs; i++) {
-                Random r = new Random();
+                Random r = new SecureRandom();
                 int rr = r.nextInt(309);
                 ItemStack pick = p.getEquipment().getItemInMainHand();
                 int level = 0;
@@ -1049,7 +1050,7 @@ public class EnchantMethods implements CommandExecutor {
     }
 
     public void procEnchant(String Enchant, Player p, Block b) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         int level = getEnchantLevel(p, Enchant);
         switch (Enchant) {
             case "Booster":

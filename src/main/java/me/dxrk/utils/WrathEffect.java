@@ -1,5 +1,6 @@
 package me.dxrk.utils;
 
+import java.security.SecureRandom;
 import me.dxrk.Main.Main;
 import me.dxrk.Mines.MineSystem;
 import org.bukkit.Bukkit;
@@ -12,7 +13,7 @@ public class WrathEffect {
 
     Runnable timer = () -> {
         for (Player p : Bukkit.getOnlinePlayers()) {
-            Random r = new Random();
+            Random r = new SecureRandom();
             int i = r.nextInt(10);
             if(i == 0) {
                 p.getWorld().strikeLightningEffect(MineSystem.getInstance().getMineByPlayer(p).getSpawnLocation());

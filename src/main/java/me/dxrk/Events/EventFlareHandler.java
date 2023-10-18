@@ -1,5 +1,6 @@
 package me.dxrk.Events;
 
+import java.security.SecureRandom;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.utils.WrathEffect;
@@ -90,7 +91,7 @@ public class EventFlareHandler implements Listener, CommandExecutor {
 
     public void giveFlareItem(Player p, String flare, boolean random) {
         if(random) {
-            Random r = new Random();
+            Random r = new SecureRandom();
             p.getInventory().addItem(flareItem(m.colorText("Zeus' Wrath", TextColor.color(0xFFF363), TextDecoration.ITALIC, false)
                     ,m.colorText("Has a chance to summon Lightning in your mine; Enhancing the blocks", NamedTextColor.GRAY, TextDecoration.ITALIC, true)));
         }

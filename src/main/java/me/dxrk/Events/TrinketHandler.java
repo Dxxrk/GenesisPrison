@@ -1,5 +1,6 @@
 package me.dxrk.Events;
 
+import java.security.SecureRandom;
 import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
@@ -748,7 +749,7 @@ public class TrinketHandler implements Listener, CommandExecutor {
 
 
     public void openTrinket(Player p, int rarity) {
-        Random r = new Random();
+        Random r = new SecureRandom();
 
 
         if (rarity == 1) {

@@ -1,5 +1,6 @@
 package me.dxrk.Events;
 
+import java.security.SecureRandom;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
@@ -25,7 +26,7 @@ public class TagsHandler implements Listener, CommandExecutor {
 
         ArrayList<String> tags = new ArrayList<>();
         tags.addAll(settings.getTags().getKeys(false));
-        Random r = new Random();
+        Random r = new SecureRandom();
         int ri = r.nextInt(tags.size());
         if (p.hasPermission("tags." + tags.get(ri))) {
             repeat.put(p, repeat.get(p) + 1);

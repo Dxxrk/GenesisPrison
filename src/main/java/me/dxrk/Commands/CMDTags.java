@@ -1,5 +1,6 @@
 package me.dxrk.Commands;
 
+import java.security.SecureRandom;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.SettingsManager;
 import net.md_5.bungee.api.ChatColor;
@@ -177,7 +178,7 @@ public class CMDTags implements Listener, CommandExecutor {
         }
     }
 
-    static Random r = new Random();
+    static Random r = new SecureRandom();
 
     public static String randomTagName() {
         List<String> names = new ArrayList<>(settings.getTags().getKeys(false));

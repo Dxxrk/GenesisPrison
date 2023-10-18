@@ -3,6 +3,7 @@ package me.dxrk.Vote;
 
 import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.model.VotifierEvent;
+import java.security.SecureRandom;
 import me.dxrk.Events.LocksmithHandler;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.ScoreboardHandler;
@@ -457,7 +458,7 @@ public class CMDVote implements Listener, CommandExecutor {
 
     public static ArrayList<ItemStack> rewards = new ArrayList<>();
 
-    Random r = new Random();
+    Random r = new SecureRandom();
 
     int rand = 0;
 

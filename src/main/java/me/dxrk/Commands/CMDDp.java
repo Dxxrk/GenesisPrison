@@ -1,5 +1,6 @@
 package me.dxrk.Commands;
 
+import java.security.SecureRandom;
 import me.dxrk.Main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,7 +20,7 @@ public class CMDDp implements CommandExecutor {
     public ArrayList<Player> online = new ArrayList<>();
 
     public Player selectPlayer() {
-        Random r = new Random();
+        Random r = new SecureRandom();
         int i = r.nextInt(this.online.size());
         Player p = this.online.get(i);
         return p;

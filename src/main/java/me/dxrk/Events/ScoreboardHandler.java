@@ -2,6 +2,7 @@ package me.dxrk.Events;
 
 import com.connorlinfoot.titleapi.TitleAPI;
 import com.earth2me.essentials.Essentials;
+import java.security.SecureRandom;
 import me.dxrk.Commands.CMDOptions;
 import me.dxrk.Commands.CMDVanish;
 import me.dxrk.Enchants.SkillsEventsListener;
@@ -53,7 +54,7 @@ public class ScoreboardHandler implements Listener {
     }
 
     public static ChatColor rainbowSB() {
-        Random r = new Random();
+        Random r = new SecureRandom();
         int x = r.nextInt(5);
         if (x == 0)
             return ChatColor.AQUA;
@@ -68,7 +69,7 @@ public class ScoreboardHandler implements Listener {
 
 
     public static ChatColor randomColor() {
-        Random r = new Random();
+        Random r = new SecureRandom();
         int color = r.nextInt(6);
         switch (color) {
             case 0:

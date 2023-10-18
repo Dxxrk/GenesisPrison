@@ -1,5 +1,6 @@
 package me.dxrk.Events;
 
+import java.security.SecureRandom;
 import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Gangs.Gangs;
@@ -23,7 +24,7 @@ import java.util.Random;
 public class KeysHandler implements Listener {
     public SettingsManager settings = SettingsManager.getInstance();
 
-    Random r = new Random();
+    Random r = new SecureRandom();
 
     static KeysHandler instance = new KeysHandler();
 
@@ -314,7 +315,7 @@ public class KeysHandler implements Listener {
 
         findTokens(p);
 
-        Random o = new Random();
+        Random o = new SecureRandom();
         int ol = o.nextInt(500000);
         if (ol == 1) {
             Bukkit.broadcastMessage(Methods.getInstance().c("&f&l" + p.getName() + " &7Has found a &3&lRank &7Key!"));

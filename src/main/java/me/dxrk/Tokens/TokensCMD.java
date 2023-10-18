@@ -1,5 +1,6 @@
 package me.dxrk.Tokens;
 
+import java.security.SecureRandom;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.SellHandler;
 import me.dxrk.Main.Methods;
@@ -101,7 +102,7 @@ public class TokensCMD implements CommandExecutor, Listener {
                         return false;
                     }
                     if (isInt(args[2]) && isInt(args[3])) {
-                        Random r = new Random();
+                        Random r = new SecureRandom();
                         int min = Integer.parseInt(args[2]);
                         int max = Integer.parseInt(args[3]);
                         int tokens = r.nextInt(max - min) + min;

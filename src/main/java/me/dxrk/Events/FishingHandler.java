@@ -1,5 +1,6 @@
 package me.dxrk.Events;
 
+import java.security.SecureRandom;
 import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Main.Methods;
@@ -50,7 +51,7 @@ public class FishingHandler implements Listener, CommandExecutor {
         if (e.getState().equals(PlayerFishEvent.State.CAUGHT_FISH)) {
             Item caught = (Item) e.getCaught();
             caught.remove();
-            Random r = new Random();
+            Random r = new SecureRandom();
             ItemStack reward;
             ItemMeta im;
             int number = r.nextInt(101);

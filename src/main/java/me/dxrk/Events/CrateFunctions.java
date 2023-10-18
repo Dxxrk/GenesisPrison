@@ -1,5 +1,6 @@
 package me.dxrk.Events;
 
+import java.security.SecureRandom;
 import me.dxrk.Main.Methods;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -15,7 +16,7 @@ public class CrateFunctions {
 
 
     public static String randomKey() {
-        Random r = new Random();
+        Random r = new SecureRandom();
         int ri = r.nextInt(125);
         if (ri <= 25) {
             return m.c("&7&lAlpha &7Key");
@@ -33,7 +34,7 @@ public class CrateFunctions {
     }
 
     public static String randomKey2() {
-        Random r = new Random();
+        Random r = new SecureRandom();
         int ri = r.nextInt(5);
         switch (ri) {
             case 0:
@@ -241,7 +242,7 @@ public class CrateFunctions {
     public static ItemStack Reward(String crate, String rarity) {
         ItemStack reward = new ItemStack(Material.PAPER);
         ItemMeta rm = reward.getItemMeta();
-        Random r = new Random();
+        Random r = new SecureRandom();
         List<String> lore = new ArrayList<>();
         switch (crate) {
             case "contraband":

@@ -1,5 +1,6 @@
 package me.dxrk.Gangs;
 
+import java.security.SecureRandom;
 import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.ScoreboardHandler;
@@ -242,7 +243,7 @@ public class CMDGang implements Listener, CommandExecutor {
     }
 
     public void harmony(String gang) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         int ri = r.nextInt(15000 / getHarmonyLevel(gang));
         if (ri == 1) {
             if (harmony.contains(gang)) return;

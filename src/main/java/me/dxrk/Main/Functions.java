@@ -1,5 +1,6 @@
 package me.dxrk.Main;
 
+import java.security.SecureRandom;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -154,7 +155,7 @@ public class Functions implements Listener {
         return 1;
     }
 
-    private static Random r = new Random();
+    private static Random r = new SecureRandom();
 
     public static void Multiply(Player p) {
 

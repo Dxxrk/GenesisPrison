@@ -2,6 +2,7 @@ package me.dxrk.Events;
 
 
 import com.mojang.datafixers.util.Pair;
+import java.security.SecureRandom;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import net.minecraft.core.BlockPos;
@@ -100,7 +101,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
                 PickXPHandler.getInstance().addXP(p, xp);
             }
             if (args.length == 3) {
-                Random r = new Random();
+                Random r = new SecureRandom();
                 Player p = Bukkit.getPlayer(args[0]);
                 int xp1 = Integer.parseInt(args[1]);
                 int xp2 = Integer.parseInt(args[2]);
@@ -243,7 +244,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
     public String getRarity() {
         String rarity = "";
-        Random r = new Random();
+        Random r = new SecureRandom();
         int ri = r.nextInt(100);
         if (ri <= 60) {
             rarity = "Common";

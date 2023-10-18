@@ -1,5 +1,6 @@
 package me.dxrk.Events;
 
+import java.security.SecureRandom;
 import me.dxrk.Commands.CMDRanks;
 import me.dxrk.Commands.CMDTags;
 import me.dxrk.Main.Main;
@@ -309,7 +310,7 @@ public class CrateHandler implements Listener, CommandExecutor {
     }
 
     public void openAlpha(Player p, int amount) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         takeKey(p, "Alpha", amount);
         for (int i = 0; i < amount; i++) {
             int ri = r.nextInt(1000);
@@ -329,7 +330,7 @@ public class CrateHandler implements Listener, CommandExecutor {
     }
 
     public void openToken(Player p, int amount) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         takeKey(p, "Token", amount);
         for (int i = 0; i < amount; i++) {
             int min = 75000;
@@ -340,7 +341,7 @@ public class CrateHandler implements Listener, CommandExecutor {
     }
 
     public void openBeta(Player p, int amount) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         takeKey(p, "Beta", amount);
         for (int i = 0; i < amount; i++) {
             int ri = r.nextInt(1000);
@@ -363,7 +364,7 @@ public class CrateHandler implements Listener, CommandExecutor {
     }
 
     public void openOmega(Player p, int amount) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         takeKey(p, "Omega", amount);
         for (int i = 0; i < amount; i++) {
             int ri = r.nextInt(1000);
@@ -386,7 +387,7 @@ public class CrateHandler implements Listener, CommandExecutor {
     }
 
     public void openVote(Player p, int amount) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         takeKey(p, "Vote", amount);
         for (int i = 0; i < amount; i++) {
             int ri = r.nextInt(1000);
@@ -415,7 +416,7 @@ public class CrateHandler implements Listener, CommandExecutor {
     }
 
     public void openSeasonal(Player p, int amount) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         takeKey(p, "Seasonal", amount);
         for (int i = 0; i < amount; i++) {
             int ri = r.nextInt(1000);
@@ -441,7 +442,7 @@ public class CrateHandler implements Listener, CommandExecutor {
     }
 
     public void openRank(Player p, int amount) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         takeKey(p, "Rank", amount);
         for (int i = 0; i < amount; i++) {
             int ri = r.nextInt(1000);
@@ -476,7 +477,7 @@ public class CrateHandler implements Listener, CommandExecutor {
     }
 
     public void openCommunity(Player p, int amount) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         takeKey(p, "Community", amount);
         for (int i = 0; i < amount; i++) {
             int ri = r.nextInt(100);

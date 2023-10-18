@@ -1,5 +1,6 @@
 package me.dxrk.Events;
 
+import java.security.SecureRandom;
 import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Gangs.Gangs;
@@ -33,7 +34,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
     Methods m = Methods.getInstance();
 
     private int randomGems() {
-        Random r = new Random();
+        Random r = new SecureRandom();
         int min = 1000;
         int max = 4000;
         return r.nextInt(max - min) + min;
@@ -75,7 +76,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
     }
 
     public void givePouch(Player p) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         int chance = 2500;
         //removed inInv thing
         if (r.nextInt(chance) < 1) {

@@ -1,5 +1,6 @@
 package me.dxrk.Discord;
 
+import java.security.SecureRandom;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
@@ -91,7 +92,7 @@ public class JDAEvents extends ListenerAdapter implements Listener, CommandExecu
 
     }
 
-    private Random r = new Random();
+    private Random r = new SecureRandom();
 
     private String generateCode() {
         char[] cs = new char[7];

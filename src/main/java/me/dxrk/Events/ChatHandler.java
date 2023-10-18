@@ -1,5 +1,6 @@
 package me.dxrk.Events;
 
+import java.security.SecureRandom;
 import me.dxrk.Commands.CMDAc;
 import me.dxrk.Commands.CMDOptions;
 import me.dxrk.Gangs.CMDGang;
@@ -414,7 +415,7 @@ public class ChatHandler implements Listener, CommandExecutor {
         return false;
     }
 
-    static Random r = new Random();
+    static Random r = new SecureRandom();
 
 
     @EventHandler

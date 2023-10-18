@@ -1,5 +1,6 @@
 package me.dxrk.Events;
 
+import java.security.SecureRandom;
 import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Main.Functions;
@@ -139,7 +140,7 @@ public class PickXPHandler
         if (!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
             return;
         }
-        Random r = new Random();
+        Random r = new SecureRandom();
         int fmin = 1;
         int fmax = 4;
         int xp = r.nextInt(fmax - fmin) + fmin;

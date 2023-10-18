@@ -1,5 +1,6 @@
 package me.dxrk.utils;
 
+import java.security.SecureRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -1021,7 +1022,7 @@ public class BlockChanger {
             location.setX(baseX + x3);
             location.setY(baseY + y3);
             location.setZ(baseZ + z3);
-            int r = new Random().nextInt(3);
+            int r = new SecureRandom().nextInt(3);
             if (r == 0)
                 workloadRunnable.addWorkload(workload);
             if (r == 1)

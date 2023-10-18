@@ -1,6 +1,7 @@
 package me.dxrk.Events;
 
 
+import java.security.SecureRandom;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import net.minecraft.nbt.CompoundTag;
@@ -295,7 +296,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
         ladon.setItemMeta(lm);
         net.minecraft.world.item.ItemStack i2 = CraftItemStack.asNMSCopy(ladon);
         CompoundTag itemcompound = (i2.hasTag()) ? i2.getTag() : new CompoundTag();
-        itemcompound.put("toStopStacking", DoubleTag.valueOf(new Random().nextDouble()));
+        itemcompound.put("toStopStacking", DoubleTag.valueOf(new SecureRandom().nextDouble()));
         i2.setTag(itemcompound);
         ladon = CraftItemStack.asBukkitCopy(i2);
         return ladon;
@@ -315,7 +316,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
         item.setItemMeta(im);
         net.minecraft.world.item.ItemStack i2 = CraftItemStack.asNMSCopy(item);
         CompoundTag itemcompound = (i2.hasTag()) ? i2.getTag() : new CompoundTag();
-        itemcompound.put("toStopStacking", DoubleTag.valueOf(new Random().nextDouble()));
+        itemcompound.put("toStopStacking", DoubleTag.valueOf(new SecureRandom().nextDouble()));
         i2.setTag(itemcompound);
         item = CraftItemStack.asBukkitCopy(i2);
         return item;
@@ -335,7 +336,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
         item.setItemMeta(im);
         net.minecraft.world.item.ItemStack i2 = CraftItemStack.asNMSCopy(item);
         CompoundTag itemcompound = (i2.hasTag()) ? i2.getTag() : new CompoundTag();
-        itemcompound.put("toStopStacking", DoubleTag.valueOf(new Random().nextDouble()));
+        itemcompound.put("toStopStacking", DoubleTag.valueOf(new SecureRandom().nextDouble()));
         i2.setTag(itemcompound);
         item = CraftItemStack.asBukkitCopy(i2);
         return item;
@@ -356,7 +357,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
         item.setItemMeta(im);
         net.minecraft.world.item.ItemStack i2 = CraftItemStack.asNMSCopy(item);
         CompoundTag itemcompound = (i2.hasTag()) ? i2.getTag() : new CompoundTag();
-        itemcompound.put("toStopStacking", DoubleTag.valueOf(new Random().nextDouble()));
+        itemcompound.put("toStopStacking", DoubleTag.valueOf(new SecureRandom().nextDouble()));
         i2.setTag(itemcompound);
         item = CraftItemStack.asBukkitCopy(i2);
         return item;
@@ -378,7 +379,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
         item.setItemMeta(im);
         net.minecraft.world.item.ItemStack i2 = CraftItemStack.asNMSCopy(item);
         CompoundTag itemcompound = (i2.hasTag()) ? i2.getTag() : new CompoundTag();
-        itemcompound.put("toStopStacking", DoubleTag.valueOf(new Random().nextDouble()));
+        itemcompound.put("toStopStacking", DoubleTag.valueOf(new SecureRandom().nextDouble()));
         i2.setTag(itemcompound);
         item = CraftItemStack.asBukkitCopy(i2);
         return item;
@@ -386,7 +387,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
 
 
     private String rarity() {
-        Random r = new Random();
+        Random r = new SecureRandom();
         int ri = r.nextInt(100);
         if (ri <= 40) {
             return m.c("&bCommon");
@@ -401,7 +402,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
 
 
     private ItemStack type() {
-        Random r = new Random();
+        Random r = new SecureRandom();
         int ri = r.nextInt(100);
         String rarity = rarity();
         if (ri <= 30) {
@@ -418,7 +419,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
     }
 
     private int effect(String rarity) {
-        Random r = new Random();
+        Random r = new SecureRandom();
         if (rarity.equals(m.c("&bCommon"))) {
             int min = 5;
             int max = 15;

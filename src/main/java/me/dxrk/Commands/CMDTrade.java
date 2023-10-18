@@ -1,5 +1,6 @@
 package me.dxrk.Commands;
 
+import java.security.SecureRandom;
 import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Main.Main;
@@ -41,7 +42,7 @@ public class CMDTrade implements Listener, CommandExecutor {
     Methods m = Methods.getInstance();
 
     public String generateCode() {
-        Random random = new Random();
+        Random random = new SecureRandom();
         char[] cs = new char[9];
         for (int i = 0; i < cs.length; i++)
             cs[i] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".charAt(random.nextInt("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".length()));

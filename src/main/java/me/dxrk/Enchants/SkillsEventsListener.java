@@ -1,5 +1,6 @@
 package me.dxrk.Enchants;
 
+import java.security.SecureRandom;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
@@ -108,7 +109,7 @@ public class SkillsEventsListener implements Listener {
 
     public void couponBreak(Player p) {
         List<String> skills = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("PickaxeSkillsUnlocked");
-        Random r = new Random();
+        Random r = new SecureRandom();
         int level = 0;
         for (String s : skills) {
             if (s.contains("Coupon")) {
@@ -150,7 +151,7 @@ public class SkillsEventsListener implements Listener {
     }
 
     public void eventBreak(Player p, String event) {
-        Random r = new Random();
+        Random r = new SecureRandom();
 
         List<String> skillsUnlocked = PlayerDataHandler.getInstance().getPlayerData(p).getStringList("PickaxeSkillsUnlocked");
         for (String s : skillsUnlocked) {
@@ -164,7 +165,7 @@ public class SkillsEventsListener implements Listener {
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
-        Random r = new Random();
+        Random r = new SecureRandom();
         if (!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation())) {
             return;
         }

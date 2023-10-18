@@ -1,5 +1,6 @@
 package me.dxrk.Commands;
 
+import java.security.SecureRandom;
 import me.dxrk.Events.LocksmithHandler;
 import me.dxrk.Events.PickXPHandler;
 import me.dxrk.Events.PlayerDataHandler;
@@ -140,7 +141,7 @@ public class CMDDaily implements Listener, CommandExecutor {
 
     public void giveRewards(Player p, String rank) {
         if (rank.equals("free")) {
-            Random r = new Random();
+            Random r = new SecureRandom();
             if (r.nextInt(100) == 1) {
                 LocksmithHandler.getInstance().addKey(p, "Rank", 1);
                 p.sendMessage(m.c("&f&l You won the &3&lRank &7Key! &f&lCongratulations!"));
