@@ -245,7 +245,7 @@ public class CrateFunctions {
         List<String> lore = new ArrayList<>();
         switch (crate) {
             case "contraband":
-                if (rarity.equals("Common")) {
+                if ("Common".equals(rarity)) {
                     int i = r.nextInt(121);
                     if (i <= 20) {
                         rm.setDisplayName(m.c("&e50,000 Tokens"));
@@ -279,7 +279,7 @@ public class CrateFunctions {
                         rm.setLore(lore);
                     }
                 }
-                if (rarity.equals("Rare")) {
+                if ("Rare".equals(rarity)) {
                     int i = r.nextInt(121);
                     if (i <= 20) {
                         rm.setDisplayName(m.c("&e100,000 Tokens"));
@@ -313,7 +313,7 @@ public class CrateFunctions {
                         rm.setLore(lore);
                     }
                 }
-                if (rarity.equals("Epic")) {
+                if ("Epic".equals(rarity)) {
                     int i = r.nextInt(101);
                     if (i <= 20) {
                         rm.setDisplayName(m.c("&e250,000 Tokens"));
@@ -345,7 +345,7 @@ public class CrateFunctions {
                         rm.setLore(lore);
                     }
                 }
-                if (rarity.equals("Legendary")) {
+                if ("Legendary".equals(rarity)) {
                     int i = r.nextInt(121);
                     if (i <= 65) {
                         rm.setDisplayName(m.c("&e500,000 Tokens"));
@@ -388,7 +388,7 @@ public class CrateFunctions {
 
                 break;
             case "genesis":
-                if (rarity.equals("Common")) {
+                if ("Common".equals(rarity)) {
                     int i = r.nextInt(121);
                     if (i <= 20) {
                         rm.setDisplayName(m.c("&e250,000 Tokens"));
@@ -422,7 +422,7 @@ public class CrateFunctions {
                         rm.setLore(lore);
                     }
                 }
-                if (rarity.equals("Rare")) {
+                if ("Rare".equals(rarity)) {
                     int i = r.nextInt(121);
                     if (i <= 20) {
                         rm.setDisplayName(m.c("&e500,000 Tokens"));
@@ -456,7 +456,7 @@ public class CrateFunctions {
                         rm.setLore(lore);
                     }
                 }
-                if (rarity.equals("Epic")) {
+                if ("Epic".equals(rarity)) {
                     int i = r.nextInt(101);
                     if (i <= 20) {
                         rm.setDisplayName(m.c("&e1,000,000 Tokens"));
@@ -488,7 +488,7 @@ public class CrateFunctions {
                         rm.setLore(lore);
                     }
                 }
-                if (rarity.equals("Legendary")) {
+                if ("Legendary".equals(rarity)) {
                     int i = r.nextInt(121);
                     if (i <= 65) {
                         rm.setDisplayName(m.c("&e1,500,000 Tokens"));
@@ -531,7 +531,7 @@ public class CrateFunctions {
 
                 break;
             case "april":
-                if (rarity.equals("Common")) {
+                if ("Common".equals(rarity)) {
                     int i = r.nextInt(121);
                     if (i <= 20) {
                         rm.setDisplayName(m.c("&e500,000 Tokens"));
@@ -565,7 +565,7 @@ public class CrateFunctions {
                         rm.setLore(lore);
                     }
                 }
-                if (rarity.equals("Rare")) {
+                if ("Rare".equals(rarity)) {
                     int i = r.nextInt(121);
                     if (i <= 20) {
                         rm.setDisplayName(m.c("&e1,000,000 Tokens"));
@@ -599,7 +599,7 @@ public class CrateFunctions {
                         rm.setLore(lore);
                     }
                 }
-                if (rarity.equals("Epic")) {
+                if ("Epic".equals(rarity)) {
                     int i = r.nextInt(101);
                     if (i <= 20) {
                         rm.setDisplayName(m.c("&e1,500,000 Tokens"));
@@ -630,7 +630,7 @@ public class CrateFunctions {
                         rm.setLore(lore);
                     }
                 }
-                if (rarity.equals("Legendary")) {
+                if ("Legendary".equals(rarity)) {
                     int i = r.nextInt(121);
                     if (i <= 65) {
                         rm.setDisplayName(m.c("&e3,000,000 Tokens"));
@@ -673,7 +673,7 @@ public class CrateFunctions {
 
                 break;
             case "fishing":
-                if (rarity.equals("Common")) {
+                if ("Common".equals(rarity)) {
                     int i = r.nextInt(121);
                     if (i <= 20) {
                         rm.setDisplayName(m.c("&e10,000 Tokens"));
@@ -707,7 +707,7 @@ public class CrateFunctions {
                         rm.setLore(lore);
                     }
                 }
-                if (rarity.equals("Rare")) {
+                if ("Rare".equals(rarity)) {
                     int i = r.nextInt(121);
                     if (i <= 20) {
                         rm.setDisplayName(m.c("&e20,000 Tokens"));
@@ -741,7 +741,7 @@ public class CrateFunctions {
                         rm.setLore(lore);
                     }
                 }
-                if (rarity.equals("Epic")) {
+                if ("Epic".equals(rarity)) {
                     int i = r.nextInt(81);
                     if (i <= 20) {
                         rm.setDisplayName(m.c("&e40,000 Tokens"));
@@ -768,7 +768,7 @@ public class CrateFunctions {
                         rm.setLore(lore);
                     }
                 }
-                if (rarity.equals("Legendary")) {
+                if ("Legendary".equals(rarity)) {
                     int i = r.nextInt(115);
                     if (i <= 65) {
                         rm.setDisplayName(m.c("&e100,000 Tokens"));

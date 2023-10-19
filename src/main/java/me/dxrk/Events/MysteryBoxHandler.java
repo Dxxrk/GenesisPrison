@@ -71,29 +71,29 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if (label.equalsIgnoreCase("givecrate")) {
+        if ("givecrate".equalsIgnoreCase(label)) {
             if (!sender.isOp()) return false;
             if (args.length == 2) {
                 Player p = Bukkit.getPlayer(args[0]);
-                if (args[1].equalsIgnoreCase("genesis")) {
+                if ("genesis".equalsIgnoreCase(args[1])) {
                     p.getInventory().addItem(CrateFunctions.GenesisCrate());
                     p.updateInventory();
                 }
-                if (args[1].equalsIgnoreCase("contraband")) {
+                if ("contraband".equalsIgnoreCase(args[1])) {
                     p.getInventory().addItem(CrateFunctions.ContrabandCrate());
                     p.updateInventory();
                 }
-                if (args[1].equalsIgnoreCase("april")) {
+                if ("april".equalsIgnoreCase(args[1])) {
                     p.getInventory().addItem(CrateFunctions.AprilCrate());
                     p.updateInventory();
                 }
-                if (args[1].equalsIgnoreCase("fishing")) {
+                if ("fishing".equalsIgnoreCase(args[1])) {
                     p.getInventory().addItem(CrateFunctions.FishingCrate());
                     p.updateInventory();
                 }
             }
         }
-        if (label.equalsIgnoreCase("givexp")) {
+        if ("givexp".equalsIgnoreCase(label)) {
             if (args.length == 2) {
                 Player p = Bukkit.getPlayer(args[0]);
                 double xp = Double.parseDouble(args[1]);
@@ -455,13 +455,13 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
 
         //DIFFERENT SOUNDS FOR RARITY
-        if (rarity.equals("Common"))
+        if ("Common".equals(rarity))
             p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 2f);
-        if (rarity.equals("Rare"))
+        if ("Rare".equals(rarity))
             p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.5f);
-        if (rarity.equals("Epic"))
+        if ("Epic".equals(rarity))
             p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
-        if (rarity.equals("Legendary"))
+        if ("Legendary".equals(rarity))
             p.playSound(p.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f);
         new BukkitRunnable() {
             @Override

@@ -24,11 +24,11 @@ public class MineBombHandler implements Listener, CommandExecutor {
             if (sender.isOp()) {
                 Player p = Bukkit.getPlayer(args[0]);
                 String rarity = args[1];
-                if (rarity.equalsIgnoreCase("common")) {
+                if ("common".equalsIgnoreCase(rarity)) {
 
-                } else if (rarity.equalsIgnoreCase("rare")) {
+                } else if ("rare".equalsIgnoreCase(rarity)) {
 
-                } else if (rarity.equalsIgnoreCase("epic")) {
+                } else if ("epic".equalsIgnoreCase(rarity)) {
 
                 }
             }

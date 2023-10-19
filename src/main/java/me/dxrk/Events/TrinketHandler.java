@@ -43,19 +43,19 @@ public class TrinketHandler implements Listener, CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if (label.equalsIgnoreCase("giveshard")) {
+        if ("giveshard".equalsIgnoreCase(label)) {
             if (sender.hasPermission("rank.owner")) {
                 if (args.length == 2) {
                     Player p = Bukkit.getPlayer(args[0]);
-                    if (args[1].equalsIgnoreCase("Common")) {
+                    if ("Common".equalsIgnoreCase(args[1])) {
                         p.getInventory().addItem(commonShard());
-                    } else if (args[1].equalsIgnoreCase("Rare")) {
+                    } else if ("Rare".equalsIgnoreCase(args[1])) {
                         p.getInventory().addItem(rareShard());
-                    } else if (args[1].equalsIgnoreCase("Epic")) {
+                    } else if ("Epic".equalsIgnoreCase(args[1])) {
                         p.getInventory().addItem(epicShard());
-                    } else if (args[1].equalsIgnoreCase("Legendary")) {
+                    } else if ("Legendary".equalsIgnoreCase(args[1])) {
                         p.getInventory().addItem(legShard());
-                    } else if (args[1].equalsIgnoreCase("Heroic")) {
+                    } else if ("Heroic".equalsIgnoreCase(args[1])) {
                         p.getInventory().addItem(herShard());
                     }
 
@@ -63,20 +63,20 @@ public class TrinketHandler implements Listener, CommandExecutor {
             }
 
         }
-        if (label.equalsIgnoreCase("givetrinket")) {
+        if ("givetrinket".equalsIgnoreCase(label)) {
 
             if (sender.hasPermission("rank.owner")) {
                 if (args.length == 2) {
                     Player p = Bukkit.getPlayer(args[0]);
-                    if (args[1].equalsIgnoreCase("Common")) {
+                    if ("Common".equalsIgnoreCase(args[1])) {
                         p.getInventory().addItem(commonTrinket(1));
-                    } else if (args[1].equalsIgnoreCase("Rare")) {
+                    } else if ("Rare".equalsIgnoreCase(args[1])) {
                         p.getInventory().addItem(rareTrinket(1));
-                    } else if (args[1].equalsIgnoreCase("Epic")) {
+                    } else if ("Epic".equalsIgnoreCase(args[1])) {
                         p.getInventory().addItem(epicTrinket(1));
-                    } else if (args[1].equalsIgnoreCase("Legendary")) {
+                    } else if ("Legendary".equalsIgnoreCase(args[1])) {
                         p.getInventory().addItem(legTrinket(1));
-                    } else if (args[1].equalsIgnoreCase("Heroic")) {
+                    } else if ("Heroic".equalsIgnoreCase(args[1])) {
                         p.getInventory().addItem(herTrinket(1));
                     }
 
@@ -84,21 +84,21 @@ public class TrinketHandler implements Listener, CommandExecutor {
                 if (args.length == 3) {
                     int i = Integer.parseInt(args[2]);
                     Player p = Bukkit.getPlayer(args[0]);
-                    if (args[1].equalsIgnoreCase("Common")) {
+                    if ("Common".equalsIgnoreCase(args[1])) {
                         p.getInventory().addItem(commonTrinket(i));
-                    } else if (args[1].equalsIgnoreCase("Rare")) {
+                    } else if ("Rare".equalsIgnoreCase(args[1])) {
                         p.getInventory().addItem(rareTrinket(i));
-                    } else if (args[1].equalsIgnoreCase("Epic")) {
+                    } else if ("Epic".equalsIgnoreCase(args[1])) {
                         p.getInventory().addItem(epicTrinket(i));
-                    } else if (args[1].equalsIgnoreCase("Legendary")) {
+                    } else if ("Legendary".equalsIgnoreCase(args[1])) {
                         p.getInventory().addItem(legTrinket(i));
-                    } else if (args[1].equalsIgnoreCase("Heroic")) {
+                    } else if ("Heroic".equalsIgnoreCase(args[1])) {
                         p.getInventory().addItem(herTrinket(i));
                     }
                 }
             }
         }
-        if (label.equalsIgnoreCase("trinket") || label.equalsIgnoreCase("trinkets")) {
+        if ("trinket".equalsIgnoreCase(label) || "trinkets".equalsIgnoreCase(label)) {
             Player p = (Player) sender;
             if (p.getEquipment().getItemInMainHand().getType().equals(Material.DIAMOND_PICKAXE) || p.getEquipment().getItemInMainHand().getType().equals(Material.IRON_PICKAXE) || p.getEquipment().getItemInMainHand().getType().equals(Material.GOLDEN_PICKAXE)
                     || p.getEquipment().getItemInMainHand().getType().equals(Material.STONE_PICKAXE) || p.getEquipment().getItemInMainHand().getType().equals(Material.WOODEN_PICKAXE)) {
@@ -595,19 +595,19 @@ public class TrinketHandler implements Listener, CommandExecutor {
                     } else if (items[i].getItemMeta().getDisplayName().equals(heroic)) {
                         e.getInventory().setResult(null);
                         break;
-                    } else if (name.length >= 3 && name[0].equals("Common")) {
+                    } else if (name.length >= 3 && "Common".equals(name[0])) {
                         e.getInventory().setResult(commonShard(5));
                         break;
-                    } else if (name.length >= 3 && name[0].equals("Rare")) {
+                    } else if (name.length >= 3 && "Rare".equals(name[0])) {
                         e.getInventory().setResult(rareShard(5));
                         break;
-                    } else if (name.length >= 3 && name[0].equals("Epic")) {
+                    } else if (name.length >= 3 && "Epic".equals(name[0])) {
                         e.getInventory().setResult(epicShard(5));
                         break;
-                    } else if (name.length >= 3 && name[0].equals("Legendary")) {
+                    } else if (name.length >= 3 && "Legendary".equals(name[0])) {
                         e.getInventory().setResult(legShard(5));
                         break;
-                    } else if (name.length >= 3 && name[0].equals("Heroic")) {
+                    } else if (name.length >= 3 && "Heroic".equals(name[0])) {
                         e.getInventory().setResult(herShard(5));
                         break;
                     } else {

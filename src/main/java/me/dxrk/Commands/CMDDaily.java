@@ -122,7 +122,7 @@ public class CMDDaily implements Listener, CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if (label.equalsIgnoreCase("daily")) {
+        if ("daily".equalsIgnoreCase(label)) {
             Player p = (Player) sender;
             boolean b = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode");
             if(b){
@@ -139,7 +139,7 @@ public class CMDDaily implements Listener, CommandExecutor {
 
 
     public void giveRewards(Player p, String rank) {
-        if (rank.equals("free")) {
+        if ("free".equals(rank)) {
             Random r = new Random();
             if (r.nextInt(100) == 1) {
                 LocksmithHandler.getInstance().addKey(p, "Rank", 1);
@@ -153,37 +153,37 @@ public class CMDDaily implements Listener, CommandExecutor {
             this.settings.getDaily().set(p.getUniqueId() + ".FreeReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily Claimed!"));
         }
-        if (rank.equals("sponsor")) {
+        if ("sponsor".equals(rank)) {
             LocksmithHandler.getInstance().addKey(p, "Token", 3);
             this.settings.getDaily().set(p.getUniqueId() + ".SponsorReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &b&lSponsor &bClaimed!"));
         }
-        if (rank.equals("vip")) {
+        if ("vip".equals(rank)) {
             LocksmithHandler.getInstance().addKey(p, "Token", 3);
             LocksmithHandler.getInstance().addKey(p, "Alpha", 5);
             this.settings.getDaily().set(p.getUniqueId() + ".VIPReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &a&lVIP &bClaimed!"));
         }
-        if (rank.equals("mvp")) {
+        if ("mvp".equals(rank)) {
             Tokens.getInstance().addTokens(p, 100000);
             LocksmithHandler.getInstance().addKey(p, "Beta", 5);
             this.settings.getDaily().set(p.getUniqueId() + ".MVPReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &6&lMVP &bClaimed!"));
         }
-        if (rank.equals("hero")) {
+        if ("hero".equals(rank)) {
             LocksmithHandler.getInstance().addKey(p, "Community", 5);
             LocksmithHandler.getInstance().addKey(p, "Omega", 3);
             this.settings.getDaily().set(p.getUniqueId() + ".HeroReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &c&lHero &bClaimed!"));
         }
-        if (rank.equals("demi-god")) {
+        if ("demi-god".equals(rank)) {
             Tokens.getInstance().addTokens(p, 150000);
             LocksmithHandler.getInstance().addKey(p, "Omega", 5);
             LocksmithHandler.getInstance().addKey(p, "Seasonal", 1);
             this.settings.getDaily().set(p.getUniqueId() + ".Demi-GodReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &5&lDemi-God &bClaimed!"));
         }
-        if (rank.equals("titan")) {
+        if ("titan".equals(rank)) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givetrinket " + p.getName() + " common");
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givetrinket " + p.getName() + " rare");
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givetrinket " + p.getName() + " epic");
@@ -191,20 +191,20 @@ public class CMDDaily implements Listener, CommandExecutor {
             this.settings.getDaily().set(p.getUniqueId() + ".TitanReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &3&lTitan &bClaimed!"));
         }
-        if (rank.equals("god")) {
+        if ("god".equals(rank)) {
             PickXPHandler.getInstance().addXP(p, 10000);
             LocksmithHandler.getInstance().addKey(p, "Token", 10);
             this.settings.getDaily().set(p.getUniqueId() + ".GodReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &d&lGod &bClaimed!"));
         }
-        if (rank.equals("olympian")) {
+        if ("olympian".equals(rank)) {
             LocksmithHandler.getInstance().addKey(p, "Omega", 10);
             LocksmithHandler.getInstance().addKey(p, "Community", 10);
             LocksmithHandler.getInstance().addKey(p, "Seasonal", 2);
             this.settings.getDaily().set(p.getUniqueId() + ".OlympianReward", getTodayDate());
             p.sendMessage(m.c("&f&lRewards &8| &bDaily &e&lOlympian &bClaimed!"));
         }
-        if (rank.equals("genesis")) {
+        if ("genesis".equals(rank)) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate " + p.getName() + " genesis");
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "giveegg " + p.getName());
             this.settings.getDaily().set(p.getUniqueId() + ".GenesisReward", getTodayDate());

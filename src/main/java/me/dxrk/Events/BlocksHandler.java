@@ -73,7 +73,7 @@ public class BlocksHandler implements CommandExecutor, Listener {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (label.equalsIgnoreCase("blocks")) {
+        if ("blocks".equalsIgnoreCase(label)) {
             if (!(sender instanceof Player p))
                 return false;
             int blocksbroken = PlayerDataHandler.getInstance().getPlayerData(p).getInt("BlocksBroken");

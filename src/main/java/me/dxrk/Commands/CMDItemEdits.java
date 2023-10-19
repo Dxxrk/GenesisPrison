@@ -20,7 +20,7 @@ public class CMDItemEdits implements CommandExecutor {
     public Methods methods = Methods.getInstance();
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (label.equalsIgnoreCase("rename")) {
+        if ("rename".equalsIgnoreCase(label)) {
             if (!(sender instanceof Player))
                 return false;
             Player p = (Player) sender;
@@ -47,7 +47,7 @@ public class CMDItemEdits implements CommandExecutor {
             p.sendMessage(
                     ChatColor.translateAlternateColorCodes('&', "&c&ki&bExistor&c&ki&r &aYou have renamed your item to '" + allArgs + "&a'"));
         }
-        if (label.equalsIgnoreCase("addlore")) {
+        if ("addlore".equalsIgnoreCase(label)) {
             if (!(sender instanceof Player))
                 return false;
             Player p = (Player) sender;
@@ -80,7 +80,7 @@ public class CMDItemEdits implements CommandExecutor {
             p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&c&ki&bExistor&c&ki&r &aYou have added '" + allArgs + "&a' to your items lore!"));
         }
-        if (label.equalsIgnoreCase("dellore")) {
+        if ("dellore".equalsIgnoreCase(label)) {
             if (!(sender instanceof Player))
                 return false;
             Player p = (Player) sender;
@@ -115,7 +115,7 @@ public class CMDItemEdits implements CommandExecutor {
             p.getEquipment().getItemInMainHand().setItemMeta(am);
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&ki&bExistor&c&ki&r &aYou have removed a part of your items lore!"));
         }
-        if (label.equalsIgnoreCase("relore")) {
+        if ("relore".equalsIgnoreCase(label)) {
             if (!(sender instanceof Player))
                 return false;
             Player p = (Player) sender;

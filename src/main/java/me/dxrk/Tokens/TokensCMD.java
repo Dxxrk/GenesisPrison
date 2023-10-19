@@ -82,7 +82,7 @@ public class TokensCMD implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("Tokens") || cmd.getName().equalsIgnoreCase("Token"))
             if (!(sender instanceof Player)) {
-                if (args[0].equalsIgnoreCase("Add")) {
+                if ("Add".equalsIgnoreCase(args[0])) {
                     Player reciever = Bukkit.getServer().getPlayer(args[1]);
                     if (!reciever.isOnline()) {
                         sender.sendMessage(ChatColor.RED + args[1] + " is not online!");
@@ -94,7 +94,7 @@ public class TokensCMD implements CommandExecutor, Listener {
                         this.tokens.addTokens(reciever, amount);
                     }
                 }
-                if (args[0].equalsIgnoreCase("Random")) {
+                if ("Random".equalsIgnoreCase(args[0])) {
                     Player reciever = Bukkit.getServer().getPlayer(args[1]);
                     if (!reciever.isOnline()) {
                         sender.sendMessage(ChatColor.RED + args[1] + " is not online!");
@@ -118,15 +118,15 @@ public class TokensCMD implements CommandExecutor, Listener {
                     p.sendMessage(ChatColor.AQUA + "/Tokens Withdraw" + ChatColor.GRAY + " - " + ChatColor.RED + "Withdraw your tokens to sell or trade!");
                     p.sendMessage(s);
                 } else {
-                    if (args[0].equalsIgnoreCase("Help")) {
+                    if ("Help".equalsIgnoreCase(args[0])) {
                         p.sendMessage(s);
                         p.sendMessage(ChatColor.AQUA + "/Tokens Balance" + ChatColor.GRAY + " - " + ChatColor.RED + "Displays your token balance");
                         p.sendMessage(ChatColor.AQUA + "/Tokens Send (Player) (Amount)" + ChatColor.GRAY + " - " + ChatColor.RED + "Send someone tokens");
                         p.sendMessage(ChatColor.AQUA + "/Tokens Withdraw" + ChatColor.GRAY + " - " + ChatColor.RED + "Withdraw your tokens to sell or trade!");
                         p.sendMessage(s);
-                    } else if (args[0].equalsIgnoreCase("Balance") || args[0].equalsIgnoreCase("Bal")) {
+                    } else if ("Balance".equalsIgnoreCase(args[0]) || "Bal".equalsIgnoreCase(args[0])) {
                         prefixMsg(p, "&e⛀" + this.tokens.getTokens(p));
-                    } else if (args[0].equalsIgnoreCase("WithDraw")) {
+                    } else if ("WithDraw".equalsIgnoreCase(args[0])) {
                         boolean b = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode");
                         if(b){
                             p.sendMessage(m.c("&cYou can't access this while in buildmode."));
@@ -144,7 +144,7 @@ public class TokensCMD implements CommandExecutor, Listener {
                         p.getInventory().addItem(tokenVoucher(amount));
 
 
-                    } else if (args[0].equalsIgnoreCase("Send")) {
+                    } else if ("Send".equalsIgnoreCase(args[0])) {
                         if (args.length >= 2) {
                             Player reciever = Bukkit.getServer().getPlayer(args[1]);
                             if (reciever == null) {
@@ -170,7 +170,7 @@ public class TokensCMD implements CommandExecutor, Listener {
                         } else {
                             prefixMsg(p, "&cUsage: /Tokens Send (Player) (Amount)");
                         }
-                    } else if (args[0].equalsIgnoreCase("Add")) {
+                    } else if ("Add".equalsIgnoreCase(args[0])) {
                         if (p.isOp()) {
                             Player reciever = Bukkit.getServer().getPlayer(args[1]);
                             if (!reciever.isOnline()) {
@@ -187,7 +187,7 @@ public class TokensCMD implements CommandExecutor, Listener {
                         } else {
                             p.sendMessage(ChatColor.RED + "No perm");
                         }
-                    } else if (args[0].equalsIgnoreCase("take")) {
+                    } else if ("take".equalsIgnoreCase(args[0])) {
                         if (!p.hasPermission("rank.owner")) return false;
                         Player player = Bukkit.getPlayer(args[1]);
                         tokens.takeTokens(player, Double.parseDouble(args[2]));

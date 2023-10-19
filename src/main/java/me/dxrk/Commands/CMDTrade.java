@@ -226,7 +226,7 @@ public class CMDTrade implements Listener, CommandExecutor {
                 }.runTaskLater(Main.plugin, 20 * 60L);
             }
             if (args.length == 2) {
-                if (args[0].equalsIgnoreCase("accept")) {
+                if ("accept".equalsIgnoreCase(args[0])) {
                     String code = generateCode();
                     Player player1 = Bukkit.getPlayer(args[1]);
                     if (waitingTrade.contains(player1) && waitingTrade.contains(p)) {
@@ -236,7 +236,7 @@ public class CMDTrade implements Listener, CommandExecutor {
                 }
             }
             if (args.length == 2) {
-                if (args[0].equalsIgnoreCase("decline")) {
+                if ("decline".equalsIgnoreCase(args[0])) {
                     Player player1 = Bukkit.getPlayer(args[1]);
                     if (waitingTrade.contains(player1) && waitingTrade.contains(p)) {
                         waitingTrade.remove(player1);

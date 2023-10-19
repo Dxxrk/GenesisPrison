@@ -43,7 +43,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
         for (ItemStack i : p.getInventory().getContents()) {
             if (i != null && i.getType().equals(Material.PLAYER_HEAD) && i.hasItemMeta() && i.getItemMeta().hasLore() && activeMonster.containsKey(p)) {
                 String active = ChatColor.stripColor(i.getItemMeta().getDisplayName()).split(" ")[1];
-                if (active.equals("(Active)")) {
+                if ("(Active)".equals(active)) {
                     if (loreline <= 3) {
                         String lore = ChatColor.stripColor(i.getItemMeta().getLore().get(loreline));
                         String first = lore.split("%")[0];
@@ -251,7 +251,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
             }
             if (p.getEquipment().getItemInMainHand().getType().equals(Material.PLAYER_HEAD)) {
                 String active = ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getDisplayName()).split(" ")[1];
-                if (p.getEquipment().getItemInMainHand().hasItemMeta() && p.getEquipment().getItemInMainHand().getItemMeta().hasLore() && active.equals("(Inactive)")) {
+                if (p.getEquipment().getItemInMainHand().hasItemMeta() && p.getEquipment().getItemInMainHand().getItemMeta().hasLore() && "(Inactive)".equals(active)) {
                     e.setCancelled(true);
                     if (activeMonster.containsKey(p)) {
                         p.sendMessage(m.c("&f&lMonsters &8| &7You have a monster active already."));
@@ -261,7 +261,7 @@ public class MonsterHandler implements Listener, CommandExecutor {
                     activeMonster.put(p, p.getEquipment().getItemInMainHand());
                     return;
                 }
-                if (p.getEquipment().getItemInMainHand().getType().equals(Material.PLAYER_HEAD) && p.getEquipment().getItemInMainHand().hasItemMeta() && p.getEquipment().getItemInMainHand().getItemMeta().hasLore() && active.equals("(Active)")) {
+                if (p.getEquipment().getItemInMainHand().getType().equals(Material.PLAYER_HEAD) && p.getEquipment().getItemInMainHand().hasItemMeta() && p.getEquipment().getItemInMainHand().getItemMeta().hasLore() && "(Active)".equals(active)) {
                     e.setCancelled(true);
                     if (activeMonster.containsKey(p)) {
                         deactivateMonster(p, p.getEquipment().getItemInMainHand());

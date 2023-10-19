@@ -62,7 +62,7 @@ public class CMDDp implements CommandExecutor {
                 return false;
             }
             if (args.length == 1) {
-                if (args[0].equalsIgnoreCase("refresh")) {
+                if ("refresh".equalsIgnoreCase(args[0])) {
                     sender.sendMessage("&c&lGenesis&b&lDP&7 DP Queue has been refreshed!");
                     for (Player p : Bukkit.getOnlinePlayers()) {
                         if (!p.isOp()) {
@@ -76,14 +76,14 @@ public class CMDDp implements CommandExecutor {
                         this.online.remove(p);
                     }
                 }
-                if (args[0].equalsIgnoreCase("help")) {
+                if ("help".equalsIgnoreCase(args[0])) {
                     sender.sendMessage("&7&l&m---------------<&c&lGenesis&b&lDP&7&l&m>---------------");
                     sender.sendMessage("&7/Dp hand  to give away the item in your hand.");
                     sender.sendMessage("&7/Dp hand* to give away the item in your hand to everyone!");
                     sender.sendMessage("&7/Dp command (name) (command)");
                     sender.sendMessage("&7&l&m---------------<&c&lGenesis&b&lDP&7&l&m>---------------");
                 }
-                if (args[0].equalsIgnoreCase("hand") &&
+                if ("hand".equalsIgnoreCase(args[0]) &&
                         sender instanceof Player) {
                     Player p = (Player) sender;
                     if (p.getEquipment().getItemInMainHand() == null)
@@ -116,7 +116,7 @@ public class CMDDp implements CommandExecutor {
                     }.runTaskLater(Main.plugin, 40L);
                     return true;
                 }
-                if (args[0].equalsIgnoreCase("hand*") &&
+                if ("hand*".equalsIgnoreCase(args[0]) &&
                         sender instanceof Player) {
                     Player p = (Player) sender;
                     if (p.getEquipment().getItemInMainHand() == null)
@@ -140,7 +140,7 @@ public class CMDDp implements CommandExecutor {
                 }
             }
             if (args.length == 3 &&
-                    args[0].equalsIgnoreCase("command")) {
+                    "command".equalsIgnoreCase(args[0])) {
                 Player win = selectPlayer();
                 String name = ChatColor.translateAlternateColorCodes('&', args[1]);
                 String command = args[2].replace("_", " ").replace("#p", win.getName());

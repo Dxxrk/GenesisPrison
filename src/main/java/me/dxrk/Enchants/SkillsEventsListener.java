@@ -28,7 +28,7 @@ public class SkillsEventsListener implements Listener {
     public static double getEventXP() {
         double amt = 1;
         for (String s : activeEvents) {
-            if (s.equals("Allure") || s.equals("Strong Desire")) {
+            if ("Allure".equals(s) || "Strong Desire".equals(s)) {
                 amt += 0.25;
             }
         }
@@ -40,7 +40,7 @@ public class SkillsEventsListener implements Listener {
     public static double getEventFortune() {
         double amt = 1;
         for (String s : activeEvents) {
-            if (s.equals("Typhoon") || s.equals("Tsunami")) {
+            if ("Typhoon".equals(s) || "Tsunami".equals(s)) {
                 amt += 0.1;
             }
         }
@@ -52,7 +52,7 @@ public class SkillsEventsListener implements Listener {
     public static double getEventKeyFortune() {
         double amt = 0;
         for (String s : activeEvents) {
-            if (s.equals("Thunderstorm") || s.equals("ThunderBolt")) {
+            if ("Thunderstorm".equals(s) || "ThunderBolt".equals(s)) {
                 amt += 25;
             }
         }
@@ -62,10 +62,10 @@ public class SkillsEventsListener implements Listener {
     public static double getEventToken() {
         double amt = 1;
         for (String s : activeEvents) {
-            if (s.equals("War Torn")) {
+            if ("War Torn".equals(s)) {
                 amt += 0.25;
             }
-            if (s.equals("Bloodshed")) {
+            if ("Bloodshed".equals(s)) {
                 amt += 0.25;
             }
         }
@@ -75,7 +75,7 @@ public class SkillsEventsListener implements Listener {
     public static double getEventMulti() {
         double amt = 0;
         for (String s : activeEvents) {
-            if (s.equals("Scorched Earth") || s.equals("Meteor Shower")) {
+            if ("Scorched Earth".equals(s) || "Meteor Shower".equals(s)) {
                 amt += 50;
             }
         }

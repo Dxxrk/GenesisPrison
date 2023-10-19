@@ -67,11 +67,11 @@ public abstract class TextualComponent implements Cloneable {
 	}
 	
 	static boolean isTextKey(String key){
-		return key.equals("translate") || key.equals("text") || key.equals("score") || key.equals("selector");
+		return "translate".equals(key) || "text".equals(key) || "score".equals(key) || "selector".equals(key);
 	}
 	
 	static boolean isTranslatableText(TextualComponent component){
-		return component instanceof ComplexTextTypeComponent && ((ComplexTextTypeComponent)component).getKey().equals("translate");
+		return component instanceof ComplexTextTypeComponent && "translate".equals(((ComplexTextTypeComponent)component).getKey());
 	}
 	
 	/**
@@ -199,7 +199,7 @@ public abstract class TextualComponent implements Cloneable {
 			String key = null;
 			Map<String, String> value = new HashMap<String, String>();
 			for(Map.Entry<String, Object> valEntry : map.entrySet()){
-				if(valEntry.getKey().equals("key")){
+				if("key".equals(valEntry.getKey())){
 					key = (String) valEntry.getValue();
 				}else if(valEntry.getKey().startsWith("value.")){
 					value.put(((String) valEntry.getKey()).substring(6) /* Strips out the value prefix */, valEntry.getValue().toString());

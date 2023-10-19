@@ -660,32 +660,32 @@ public class PickaxeSkillTree implements Listener {
             skillsUnlocked.add(skill);
 
             String[] firstword = skill.split(" ");
-            if (firstword[0].equals("Token")) {
+            if ("Token".equals(firstword[0])) {
                 double tokenboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillTokenBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillTokenBoost", tokenboost + 0.02);
             }
-            if (firstword[0].equals("Luck")) {
+            if ("Luck".equals(firstword[0])) {
                 double luckboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillLuckBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillLuckBoost", luckboost + 0.02);
             }
-            if (firstword[0].equals("Fortune")) {
+            if ("Fortune".equals(firstword[0])) {
                 double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillFortuneBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.02);
             }
-            if(firstword[0].equals("Gem")) {
+            if("Gem".equals(firstword[0])) {
                 double gemboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillGemBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillGemBoost", gemboost + 0.05);
             }
-            if (firstword[0].equals("250") || firstword[0].equals("500") || firstword[0].equals("750")) {
+            if ("250".equals(firstword[0]) || "500".equals(firstword[0]) || "750".equals(firstword[0])) {
                 int maxlevel = PlayerDataHandler.getInstance().getPlayerData(p).getInt("KFMaxLevelRaise");
                 int maxleveladd = parseInt(firstword[0]);
                 PlayerDataHandler.getInstance().getPlayerData(p).set("KFMaxLevelRaise", maxlevel + maxleveladd);
             }
-            if (firstword[0].equals("+20%")) {
+            if ("+20%".equals(firstword[0])) {
                 int keyboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillKeyBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillKeyBoost", keyboost + 20);
             }
-            if (firstword[0].equals("+30%")) {
+            if ("+30%".equals(firstword[0])) {
                 int keyboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillKeyBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillKeyBoost", keyboost + 30);
             }
@@ -746,32 +746,32 @@ public class PickaxeSkillTree implements Listener {
             skillsUnlocked.add(skill);
 
             String[] firstword = skill.split(" ");
-            if (firstword[0].equals("Token")) {
+            if ("Token".equals(firstword[0])) {
                 double tokenboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillTokenBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillTokenBoost", tokenboost + 0.02);
             }
-            if (firstword[0].equals("Luck")) {
+            if ("Luck".equals(firstword[0])) {
                 double luckboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillLuckBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillLuckBoost", luckboost + 0.02);
             }
-            if (firstword[0].equals("Fortune")) {
+            if ("Fortune".equals(firstword[0])) {
                 double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillFortuneBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.02);
             }
-            if(firstword[0].equals("Gem")) {
+            if("Gem".equals(firstword[0])) {
                 double gemboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillGemBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillGemBoost", gemboost + 0.05);
             }
-            if (firstword[0].equals("1250") || firstword[0].equals("1500") || firstword[0].equals("1750")) {
+            if ("1250".equals(firstword[0]) || "1500".equals(firstword[0]) || "1750".equals(firstword[0])) {
                 int maxlevel = PlayerDataHandler.getInstance().getPlayerData(p).getInt("FortuneMaxLevelRaise");
                 int maxleveladd = parseInt(firstword[0]);
                 PlayerDataHandler.getInstance().getPlayerData(p).set("FortuneMaxLevelRaise", maxlevel + maxleveladd);
             }
-            if (firstword[0].equals("8%")) {
+            if ("8%".equals(firstword[0])) {
                 double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillFortuneBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.08);
             }
-            if (firstword[0].equals("12%")) {
+            if ("12%".equals(firstword[0])) {
                 double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillFortuneBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.12);
             }
@@ -832,32 +832,32 @@ public class PickaxeSkillTree implements Listener {
             skillsUnlocked.add(skill);
 
             String[] firstword = skill.split(" ");
-            if (firstword[0].equals("Token")) {
+            if ("Token".equals(firstword[0])) {
                 double tokenboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillTokenBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillTokenBoost", tokenboost + 0.02);
             }
-            if (firstword[0].equals("Luck")) {
+            if ("Luck".equals(firstword[0])) {
                 double luckboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillLuckBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillLuckBoost", luckboost + 0.02);
             }
-            if (firstword[0].equals("Fortune")) {
+            if ("Fortune".equals(firstword[0])) {
                 double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillFortuneBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.02);
             }
-            if(firstword[0].equals("Gem")) {
+            if("Gem".equals(firstword[0])) {
                 double gemboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillGemBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillGemBoost", gemboost + 0.05);
             }
-            if (firstword[0].equals("150") || firstword[0].equals("250") || firstword[0].equals("350")) {
+            if ("150".equals(firstword[0]) || "250".equals(firstword[0]) || "350".equals(firstword[0])) {
                 int maxlevel = PlayerDataHandler.getInstance().getPlayerData(p).getInt("JunkpileMaxLevelRaise");
                 int maxleveladd = parseInt(firstword[0]);
                 PlayerDataHandler.getInstance().getPlayerData(p).set("JunkpileMaxLevelRaise", maxlevel + maxleveladd);
             }
-            if (firstword[0].equals("+100%")) {
+            if ("+100%".equals(firstword[0])) {
                 double skilljunkpilemultiboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillJunkpileMultiBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillJunkpileMultiBoost", skilljunkpilemultiboost + 1);
             }
-            if (firstword[0].equals("+200%")) {
+            if ("+200%".equals(firstword[0])) {
                 double skilljunkpilemultiboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillJunkpileMultiBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillJunkpileMultiBoost", skilljunkpilemultiboost + 2);
             }
@@ -917,32 +917,32 @@ public class PickaxeSkillTree implements Listener {
             skillsUnlocked.add(skill);
 
             String[] firstword = skill.split(" ");
-            if (firstword[0].equals("Token")) {
+            if ("Token".equals(firstword[0])) {
                 double tokenboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillTokenBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillTokenBoost", tokenboost + 0.02);
             }
-            if (firstword[0].equals("Luck")) {
+            if ("Luck".equals(firstword[0])) {
                 double luckboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillLuckBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillLuckBoost", luckboost + 0.02);
             }
-            if (firstword[0].equals("Fortune")) {
+            if ("Fortune".equals(firstword[0])) {
                 double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillFortuneBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.02);
             }
-            if(firstword[0].equals("Gem")) {
+            if("Gem".equals(firstword[0])) {
                 double gemboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillGemBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillGemBoost", gemboost + 0.05);
             }
-            if (firstword[0].equals("500") || firstword[0].equals("1000") || firstword[0].equals("1500")) {
+            if ("500".equals(firstword[0]) || "1000".equals(firstword[0]) || "1500".equals(firstword[0])) {
                 int maxlevel = PlayerDataHandler.getInstance().getPlayerData(p).getInt("XPFMaxLevelRaise");
                 int maxleveladd = parseInt(firstword[0]);
                 PlayerDataHandler.getInstance().getPlayerData(p).set("XPFMaxLevelRaise", maxlevel + maxleveladd);
             }
-            if (firstword[0].equals("+300%")) {
+            if ("+300%".equals(firstword[0])) {
                 int junkpilexpboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillJunkpileXPBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillJunkpileXPBoost", junkpilexpboost + 3);
             }
-            if (firstword[0].equals("+500%")) {
+            if ("+500%".equals(firstword[0])) {
                 int junkpilexpboost = PlayerDataHandler.getInstance().getPlayerData(p).getInt("SkillJunkpileXPBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillJunkpileXPBoost", junkpilexpboost + 5);
             }
@@ -1001,32 +1001,32 @@ public class PickaxeSkillTree implements Listener {
 
             skillsUnlocked.add(skill);
             String[] firstword = skill.split(" ");
-            if (firstword[0].equals("Token")) {
+            if ("Token".equals(firstword[0])) {
                 double tokenboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillTokenBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillTokenBoost", tokenboost + 0.02);
             }
-            if (firstword[0].equals("Luck")) {
+            if ("Luck".equals(firstword[0])) {
                 double luckboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillLuckBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillLuckBoost", luckboost + 0.02);
             }
-            if (firstword[0].equals("Fortune")) {
+            if ("Fortune".equals(firstword[0])) {
                 double fortuneboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillFortuneBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillFortuneBoost", fortuneboost + 0.02);
             }
-            if(firstword[0].equals("Gem")) {
+            if("Gem".equals(firstword[0])) {
                 double gemboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillGemBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillGemBoost", gemboost + 0.05);
             }
-            if (firstword[0].equals("200") || firstword[0].equals("300") || firstword[0].equals("500")) {
+            if ("200".equals(firstword[0]) || "300".equals(firstword[0]) || "500".equals(firstword[0])) {
                 int maxlevel = PlayerDataHandler.getInstance().getPlayerData(p).getInt("TFMaxLevelRaise");
                 int maxleveladd = parseInt(firstword[0]);
                 PlayerDataHandler.getInstance().getPlayerData(p).set("TFMaxLevelRaise", maxlevel + maxleveladd);
             }
-            if (firstword[0].equals("8%")) {
+            if ("8%".equals(firstword[0])) {
                 double tokenboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillTokenBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillTokenBoost", tokenboost + 0.08);
             }
-            if (firstword[0].equals("12%")) {
+            if ("12%".equals(firstword[0])) {
                 double tokenboost = PlayerDataHandler.getInstance().getPlayerData(p).getDouble("SkillTokenBoost");
                 PlayerDataHandler.getInstance().getPlayerData(p).set("SkillTokenBoost", tokenboost + 0.12);
             }

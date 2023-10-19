@@ -44,7 +44,7 @@ public class TagsHandler implements Listener, CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
 
-        if (label.equalsIgnoreCase("randomtag")) {
+        if ("randomtag".equalsIgnoreCase(label)) {
             if (cs.isOp()) {
                 if (args.length == 1) {
                     Player p = Bukkit.getServer().getPlayer(args[0]);

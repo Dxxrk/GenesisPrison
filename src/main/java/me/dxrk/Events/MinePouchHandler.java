@@ -104,7 +104,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
         double unity = CMDGang.getInstance().getUnityLevel(gang);
         double gem = 1;
         for (String s : settings.getGangs().getStringList(gang + ".PerksUnlocked")) {
-            if (s.equals("Increased Gems")) {
+            if ("Increased Gems".equals(s)) {
                 gem += 0.10;
             }
         }
@@ -337,18 +337,18 @@ public class MinePouchHandler implements Listener, CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("gems") || cmd.getName().equalsIgnoreCase("gem")) {
             if (args.length == 1) {
                 Player p = (Player) sender;
-                if (args[0].equalsIgnoreCase("withdraw")) {
+                if ("withdraw".equalsIgnoreCase(args[0])) {
                     p.sendMessage(m.c("&cError: Please specify an amount"));
                     return false;
                 }
-                if (args[0].equalsIgnoreCase("shop")) {
+                if ("shop".equalsIgnoreCase(args[0])) {
                     p.openInventory(GemShop());
                     return false;
                 }
             }
             if (args.length == 2) {
                 Player p = (Player) sender;
-                if (args[0].equalsIgnoreCase("withdraw")) {
+                if ("withdraw".equalsIgnoreCase(args[0])) {
                     int gems = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Gems");
                     int amount = Integer.parseInt(args[1]);
                     if (amount > gems || amount < 0) {
@@ -360,7 +360,7 @@ public class MinePouchHandler implements Listener, CommandExecutor {
                 }
             }
             if (args.length == 3) {
-                if (args[0].equalsIgnoreCase("add")) {
+                if ("add".equalsIgnoreCase(args[0])) {
                     Player player = Bukkit.getPlayer(args[1]);
                     int gems = Integer.parseInt(args[2]);
                     addGems(player, gems);

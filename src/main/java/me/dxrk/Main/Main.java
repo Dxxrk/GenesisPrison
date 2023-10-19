@@ -566,23 +566,23 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
 
-        if (label.equalsIgnoreCase("motdchange")) {
+        if ("motdchange".equalsIgnoreCase(label)) {
             if (!cs.hasPermission("rank.owner")) return false;
             if (args.length == 2) {
-                if (args[0].equalsIgnoreCase("sale")) {
+                if ("sale".equalsIgnoreCase(args[0])) {
 
                     motd = c("&3&lSeason 4!   &c&lGenesis &b&lPrison!   &e&l[1.8.x-1.19.x]\n                    &c&l>> &a&l" + args[1] + "% Sale Now! &c&l<<");
                 }
             }
         }
-        if (label.equalsIgnoreCase("workmode")) {
+        if ("workmode".equalsIgnoreCase(label)) {
             if (!cs.isOp()) return false;
             if (args.length == 1) {
-                if (args[0].equalsIgnoreCase("enable")) {                             //&4&lMaintenance Mode
+                if ("enable".equalsIgnoreCase(args[0])) {                             //&4&lMaintenance Mode
                     savemotd = motd;
                     motd = c("                        &c&lGenesis &b&lPrison!\n                   &4&lMaintenance Mode");
                 }
-                if (args[0].equalsIgnoreCase("disable")) {
+                if ("disable".equalsIgnoreCase(args[0])) {
                     motd = savemotd;
                 }
             }

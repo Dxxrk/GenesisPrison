@@ -209,7 +209,7 @@ public class CMDHelp implements Listener, CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("help")) {
             Player p = (Player) sender;
             if (args.length == 1) {
-                if (args[0].equalsIgnoreCase("redeem")) {
+                if ("redeem".equalsIgnoreCase(args[0])) {
                     p.sendMessage(m.c("&a- &e/Redeem &bcan be used to reclaim the money you previously spent on the store."));
                     p.sendMessage(m.c("&a- &bThis comes in the form of a Coupon."));
                     p.sendMessage(m.c("&a- &bBecause the store has changed so much we figured this would make the most sense."));
