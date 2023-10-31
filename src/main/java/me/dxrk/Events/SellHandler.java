@@ -377,7 +377,7 @@ public class SellHandler implements Listener, CommandExecutor {
                 cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "&dYour Multi: &b" + getMulti((Player) cs)));
             } else if (args.length == 1) {
                 if (!cs.hasPermission("rank.admin")) return false;
-                if (args[0].equalsIgnoreCase("add")) {
+                if ("add".equalsIgnoreCase(args[0])) {
                     cs.sendMessage(ChatColor.RED + "Specify a Players Name!");
                 }
             } else if (args.length == 2) {
@@ -385,7 +385,7 @@ public class SellHandler implements Listener, CommandExecutor {
                     cs.sendMessage(ChatColor.RED + "No Permission.");
                     return false;
                 }
-                if (args[0].equalsIgnoreCase("add")) {
+                if ("add".equalsIgnoreCase(args[0])) {
                     Player reciever = Bukkit.getServer().getPlayer(args[1]);
                     if (!reciever.isOnline()) {
                         cs.sendMessage(ChatColor.RED + args[1] + " is not online!");
@@ -393,7 +393,7 @@ public class SellHandler implements Listener, CommandExecutor {
                         cs.sendMessage(ChatColor.RED + "You must specify an amount");
                     }
                 }
-                if (args[0].equalsIgnoreCase("set")) {
+                if ("set".equalsIgnoreCase(args[0])) {
                     Player reciever = Bukkit.getServer().getPlayer(args[1]);
                     if (!reciever.isOnline()) {
                         cs.sendMessage(ChatColor.RED + args[1] + " is not online!");
@@ -404,7 +404,7 @@ public class SellHandler implements Listener, CommandExecutor {
             } else if (args.length == 3) {
                 Player reciever = Bukkit.getServer().getPlayer(args[1]);
                 if (!cs.hasPermission("rank.admin")) return false;
-                if (args[0].equalsIgnoreCase("add")) {
+                if ("add".equalsIgnoreCase(args[0])) {
 
                     if (isDbl(args[2])) {
                         if (reciever == null) {
@@ -423,7 +423,7 @@ public class SellHandler implements Listener, CommandExecutor {
 
                     }
                 }
-                if (args[0].equalsIgnoreCase("set")) {
+                if ("set".equalsIgnoreCase(args[0])) {
 
                     if (isDbl(args[2])) {
                         if (reciever == null) {

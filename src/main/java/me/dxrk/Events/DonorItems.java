@@ -41,7 +41,7 @@ public class DonorItems implements Listener, CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (label.equalsIgnoreCase("giveenchant")) {
+        if ("giveenchant".equalsIgnoreCase(label)) {
             if (cs.hasPermission("rank.owner")) {
                 if (args.length == 3) {
                     Player receiver = Bukkit.getServer().getPlayer(args[0]);

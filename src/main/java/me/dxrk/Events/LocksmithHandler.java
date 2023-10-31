@@ -28,7 +28,7 @@ public class LocksmithHandler implements Listener, CommandExecutor {
     public SettingsManager settings = SettingsManager.getInstance();
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (label.equalsIgnoreCase("locksmith") || label.equalsIgnoreCase("ls") || label.equalsIgnoreCase("keys")) {
+        if ("locksmith".equalsIgnoreCase(label) || "ls".equalsIgnoreCase(label) || "keys".equalsIgnoreCase(label)) {
             if (!(sender instanceof Player))
                 return false;
             openInv((Player) sender);
@@ -105,35 +105,35 @@ public class LocksmithHandler implements Listener, CommandExecutor {
         ItemStack a;
         a = new ItemStack(Material.TRIPWIRE_HOOK, 1);
         ItemMeta am = a.getItemMeta();
-        if (name.equals("Alpha")) {
+        if ("Alpha".equals(name)) {
             a = new ItemStack(Material.TRIPWIRE_HOOK, 1);
             am.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7&lAlpha &7Key &b(" + amt + ")"));
         }
-        if (name.equals("Beta")) {
+        if ("Beta".equals(name)) {
             a = new ItemStack(Material.TRIPWIRE_HOOK, 1);
             am.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&lBeta &7Key &b(" + amt + ")"));
         }
-        if (name.equals("Omega")) {
+        if ("Omega".equals(name)) {
             a = new ItemStack(Material.TRIPWIRE_HOOK, 1);
             am.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&4&lOmega &7Key &b(" + amt + ")"));
         }
-        if (name.equals("Token")) {
+        if ("Token".equals(name)) {
             a = new ItemStack(Material.TRIPWIRE_HOOK, 1);
             am.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&e&lToken &7Key &b(" + amt + ")"));
         }
-        if (name.equals("Vote")) {
+        if ("Vote".equals(name)) {
             a = new ItemStack(Material.TRIPWIRE_HOOK, 1);
             am.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&f&lVote &7Key &b(" + amt + ")"));
         }
-        if (name.equals("Seasonal")) {
+        if ("Seasonal".equals(name)) {
             a = new ItemStack(Material.TRIPWIRE_HOOK, 1);
             am.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&4&l&ki&f&lSeasonal&4&l&ki&r &7Key &b(" + amt + ")"));
         }
-        if (name.equals("Community")) {
+        if ("Community".equals(name)) {
             a = new ItemStack(Material.TRIPWIRE_HOOK, 1);
             am.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&5&lCommunity &7Key &b(" + amt + ")"));
         }
-        if (name.equals("Rank")) {
+        if ("Rank".equals(name)) {
             a = new ItemStack(Material.TRIPWIRE_HOOK, 1);
             am.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&3&lRank &7Key &b(" + amt + ")"));
         }

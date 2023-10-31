@@ -49,10 +49,10 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         }
 
 
-        if (label.equalsIgnoreCase("prestige")) {
+        if ("prestige".equalsIgnoreCase(label)) {
             openInv(p);
         }
-        if (label.equalsIgnoreCase("addprestige")) {
+        if ("addprestige".equalsIgnoreCase(label)) {
             if (sender.isOp()) {
                 if (args.length == 2) {
                     Player reciever = Bukkit.getPlayer(args[0]);

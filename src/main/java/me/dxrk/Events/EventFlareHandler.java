@@ -111,7 +111,7 @@ public class EventFlareHandler implements Listener, CommandExecutor {
 
             }
             if(args.length == 1) {
-                if(args[0].equalsIgnoreCase("zeus")) {
+                if("zeus".equalsIgnoreCase(args[0])) {
                     giveFlareItem(p, "Zeus", true);
                 }
             }

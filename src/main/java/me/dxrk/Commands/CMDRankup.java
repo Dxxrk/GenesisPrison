@@ -37,18 +37,18 @@ public class CMDRankup implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player p = (Player) sender;
-        if (label.equalsIgnoreCase("rankup")) {
+        if ("rankup".equalsIgnoreCase(label)) {
             this.rankup.rankup(p);
             this.settings.saveRankupPrices();
         }
 
-        if (label.equalsIgnoreCase("maxrankup") || label.equalsIgnoreCase("rankupmax")) {
+        if ("maxrankup".equalsIgnoreCase(label) || "rankupmax".equalsIgnoreCase(label)) {
             if (p == null)
                 return false;
             this.rankup.MaxRankup(p);
             this.settings.saveRankupPrices();
         }
-        if (label.equalsIgnoreCase("setrank")) {
+        if ("setrank".equalsIgnoreCase(label)) {
             if (p.hasPermission("admin.setrank")) {
                 if (args.length == 2) {
                     Player reciever = Bukkit.getServer().getPlayer(args[0]);

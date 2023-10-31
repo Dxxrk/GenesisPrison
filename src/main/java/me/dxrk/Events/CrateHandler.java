@@ -105,21 +105,21 @@ public class CrateHandler implements Listener, CommandExecutor {
 
 
     public String formatKey(String s) {
-        if (s.equalsIgnoreCase("vote"))
+        if ("vote".equalsIgnoreCase(s))
             return "Vote";
-        if (s.equalsIgnoreCase("alpha"))
+        if ("alpha".equalsIgnoreCase(s))
             return "Alpha";
-        if (s.equalsIgnoreCase("beta"))
+        if ("beta".equalsIgnoreCase(s))
             return "Beta";
-        if (s.equalsIgnoreCase("omega"))
+        if ("omega".equalsIgnoreCase(s))
             return "Omega";
-        if (s.equalsIgnoreCase("seasonal"))
+        if ("seasonal".equalsIgnoreCase(s))
             return "Seasonal";
-        if (s.equalsIgnoreCase("token"))
+        if ("token".equalsIgnoreCase(s))
             return "Token";
-        if (s.equalsIgnoreCase("rank"))
+        if ("rank".equalsIgnoreCase(s))
             return "Rank";
-        if (s.equalsIgnoreCase("community"))
+        if ("community".equalsIgnoreCase(s))
             return "Community";
         return "Error";
     }
@@ -210,31 +210,31 @@ public class CrateHandler implements Listener, CommandExecutor {
 
     private List<ItemStack> crateItems(String crate) {
         List<ItemStack> items = new ArrayList<>();
-        if (crate.equals("Alpha")) {
+        if ("Alpha".equals(crate)) {
             items.add(crateItem(c("&e30,000 Tokens"), Material.MAGMA_CREAM, 50));
             items.add(crateItem(c("&e&lToken &7Key"), Material.TRIPWIRE_HOOK, 25));
             items.add(crateItem(c("&c&lBeta &7Key"), Material.TRIPWIRE_HOOK, 15));
             items.add(crateItem(c("&a+1.0 Multi"), Material.EMERALD, 10));
             return items;
         }
-        if (crate.equals("Beta")) {
+        if ("Beta".equals(crate)) {
             items.add(crateItem(c("&e50,000 Tokens"), Material.MAGMA_CREAM, 50));
             items.add(crateItem(c("&e2x &e&lToken &7Key"), Material.TRIPWIRE_HOOK, 25));
             items.add(crateItem(c("&7&lAlpha &7Key"), Material.TRIPWIRE_HOOK, 10));
             items.add(crateItem(c("&4&lOmega &7Key"), Material.TRIPWIRE_HOOK, 10));
             items.add(crateItem(c("&a+1.5 Multi"), Material.EMERALD, 5));
         }
-        if (crate.equals("Omega")) {
+        if ("Omega".equals(crate)) {
             items.add(crateItem(c("&e70,000 Tokens"), Material.MAGMA_CREAM, 50));
             items.add(crateItem(c("&e3x &e&lToken &7Key"), Material.TRIPWIRE_HOOK, 25));
             items.add(crateItem(c("&e2x &c&lBeta &7Key"), Material.TRIPWIRE_HOOK, 15));
             items.add(crateItem(c("&a+3.0 Multi"), Material.EMERALD, 9));
             items.add(crateItem(c("&4&l&ki&f&lSeasonal&4&l&ki&r &7Key"), Material.TRIPWIRE_HOOK, 1));
         }
-        if (crate.equals("Token")) {
+        if ("Token".equals(crate)) {
             items.add(crateItem(c("&e75,000-250,000 Tokens"), Material.MAGMA_CREAM, 100));
         }
-        if (crate.equals("Vote")) {
+        if ("Vote".equals(crate)) {
             items.add(crateItem(c("&e100,000-500,000 Tokens"), Material.MAGMA_CREAM, 40));
             items.add(crateItem(c("&e3x &e&lToken &7Key"), Material.TRIPWIRE_HOOK, 25));
             items.add(crateItem(c("&a&l5,000 Pickaxe XP"), Material.EXPERIENCE_BOTTLE, 15));
@@ -242,7 +242,7 @@ public class CrateHandler implements Listener, CommandExecutor {
             items.add(crateItem(c("&4&l&ki&f&lSeasonal&4&l&ki&r &7Key"), Material.TRIPWIRE_HOOK, 9));
             items.add(crateItem(c("&3&lRank &7Key"), Material.TRIPWIRE_HOOK, 1));
         }
-        if (crate.equals("Seaosnal")) {
+        if ("Seaosnal".equals(crate)) {
             items.add(crateItem(c("&e300,000 Tokens"), Material.MAGMA_CREAM, 40));
             items.add(crateItem(c("&a+15.0 Multi"), Material.EMERALD, 25));
             items.add(crateItem(c("&a&l10,000 Pickaxe XP"), Material.EXPERIENCE_BOTTLE, 20));
@@ -250,7 +250,7 @@ public class CrateHandler implements Listener, CommandExecutor {
             items.add(crateItem(c("&3&lRank &7Key"), Material.TRIPWIRE_HOOK, 2));
             items.add(crateItem(c("&f&l&k[&7&l*&f&l&k]&r &c&lGenesis &b&lCrate &f&l&k[&7&l*&f&l&k]&r"), Material.ENDER_CHEST, 0.5));
         }
-        if (crate.equals("Rank")) {
+        if ("Rank".equals(crate)) {
             items.add(crateItem(c("&b&lSponsor Rank"), Material.NETHER_STAR, 15));
             items.add(crateItem(c("&a&lVIP Rank"), Material.NETHER_STAR, 15));
             items.add(crateItem(c("&6&lMVP Rank"), Material.NETHER_STAR, 20));
@@ -261,7 +261,7 @@ public class CrateHandler implements Listener, CommandExecutor {
             items.add(crateItem(c("&e&lOlympian Rank"), Material.NETHER_STAR, 1));
             items.add(crateItem(c("&a&l&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls &f&lRank"), Material.NETHER_STAR, 0.1));
         }
-        if (crate.equals("Community")) {
+        if ("Community".equals(crate)) {
             items.add(crateItem(c("&bRandom &7Tag"), Material.NAME_TAG, 21));
             items.add(crateItem(c("&b2x Sell Boost 10:00"), BoostsHandler.getInstance().Boost((short) 12, "sell", 2, 600), 13));
             items.add(crateItem(c("&e2x Token Boost 10:00"), BoostsHandler.getInstance().Boost((short) 11, "token", 2, 600), 13));
@@ -282,28 +282,28 @@ public class CrateHandler implements Listener, CommandExecutor {
     }
 
     public void openCrate(Player p, String crate, int amt) {
-        if (crate.equals("Alpha")) {
+        if ("Alpha".equals(crate)) {
             openAlpha(p, amt);
         }
-        if (crate.equals("Beta")) {
+        if ("Beta".equals(crate)) {
             openBeta(p, amt);
         }
-        if (crate.equals("Omega")) {
+        if ("Omega".equals(crate)) {
             openOmega(p, amt);
         }
-        if (crate.equals("Vote")) {
+        if ("Vote".equals(crate)) {
             openVote(p, amt);
         }
-        if (crate.equals("Token")) {
+        if ("Token".equals(crate)) {
             openToken(p, amt);
         }
-        if (crate.equals("Community")) {
+        if ("Community".equals(crate)) {
             openCommunity(p, amt);
         }
-        if (crate.equals("Seasonal")) {
+        if ("Seasonal".equals(crate)) {
             openSeasonal(p, amt);
         }
-        if (crate.equals("Rank")) {
+        if ("Rank".equals(crate)) {
             openRank(p, amt);
         }
     }
@@ -555,25 +555,25 @@ public class CrateHandler implements Listener, CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (label.equalsIgnoreCase("crateinfo")) {
+        if ("crateinfo".equalsIgnoreCase(label)) {
             if (args.length == 1) {
                 Player p = (Player) sender;
                 String crate = args[0];
-                if (crate.equalsIgnoreCase("alpha")) {
+                if ("alpha".equalsIgnoreCase(crate)) {
                     openCrateInv(p, "Alpha");
-                } else if (crate.equalsIgnoreCase("beta")) {
+                } else if ("beta".equalsIgnoreCase(crate)) {
                     openCrateInv(p, "Beta");
-                } else if (crate.equalsIgnoreCase("omega")) {
+                } else if ("omega".equalsIgnoreCase(crate)) {
                     openCrateInv(p, "Omega");
-                } else if (crate.equalsIgnoreCase("token")) {
+                } else if ("token".equalsIgnoreCase(crate)) {
                     openCrateInv(p, "Token");
-                } else if (crate.equalsIgnoreCase("seasonal")) {
+                } else if ("seasonal".equalsIgnoreCase(crate)) {
                     openCrateInv(p, "Seasonal");
-                } else if (crate.equalsIgnoreCase("rank")) {
+                } else if ("rank".equalsIgnoreCase(crate)) {
                     openCrateInv(p, "Rank");
-                } else if (crate.equalsIgnoreCase("community")) {
+                } else if ("community".equalsIgnoreCase(crate)) {
                     openCrateInv(p, "Community");
-                } else if (crate.equalsIgnoreCase("vote")) {
+                } else if ("vote".equalsIgnoreCase(crate)) {
                     openCrateInv(p, "Vote");
                 } else {
                     p.sendMessage(c("&f&lCrates &8| &cNot a Crate."));
@@ -582,7 +582,7 @@ public class CrateHandler implements Listener, CommandExecutor {
                 sender.sendMessage(c("&f&lCrates &8| &cPlease Specify a Crate."));
             }
         }
-        if (label.equalsIgnoreCase("openall")) {
+        if ("openall".equalsIgnoreCase(label)) {
             Player p = (Player) sender;
             if (p.hasPermission("command.openall")) {
                 openAll(p);
@@ -610,7 +610,7 @@ public class CrateHandler implements Listener, CommandExecutor {
         }
 
 
-        if (label.equalsIgnoreCase("cratekey"))
+        if ("cratekey".equalsIgnoreCase(label))
             if (args.length == 0) {
                 StringBuilder keys = new StringBuilder();
                 for (String s : this.cr.getKeys(false)) {
@@ -629,7 +629,7 @@ public class CrateHandler implements Listener, CommandExecutor {
                 if (args.length == 1) {
                     Player p = (Player) sender;
                     if (p.hasPermission("cratekey.give")) {
-                        if (formatKey(args[0]).equalsIgnoreCase("error")) {
+                        if ("error".equalsIgnoreCase(formatKey(args[0]))) {
                             p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cThat key does not exist."));
                             return false;
                         }

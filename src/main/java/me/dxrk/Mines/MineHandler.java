@@ -168,7 +168,7 @@ public class MineHandler implements Listener, CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
 
-        if (label.equalsIgnoreCase("updatemine")) {
+        if ("updatemine".equalsIgnoreCase(label)) {
             if (args.length == 1) {
                 Player p = Bukkit.getPlayer(args[0]);
                 updateMine(p, RankupHandler.instance.getRank(p));

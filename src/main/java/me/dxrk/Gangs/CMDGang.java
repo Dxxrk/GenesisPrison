@@ -220,7 +220,7 @@ public class CMDGang implements Listener, CommandExecutor {
         List<String> perks = settings.getGangs().getStringList(gang + ".PerksUnlocked");
         int harmony = 1;
         for (String s : perks) {
-            if (s.equals("Harmony Level 2") || s.equals("Harmony Level 4")) {
+            if ("Harmony Level 2".equals(s) || "Harmony Level 4".equals(s)) {
                 harmony += 1;
             }
         }
@@ -231,10 +231,10 @@ public class CMDGang implements Listener, CommandExecutor {
         List<String> perks = settings.getGangs().getStringList(gang + ".PerksUnlocked");
         double harmony = 1;
         for (String s : perks) {
-            if (s.equals("Harmony Level 3")) {
+            if ("Harmony Level 3".equals(s)) {
                 harmony += 0.5;
             }
-            if (s.equals("Harmony Level 5")) {
+            if ("Harmony Level 5".equals(s)) {
                 harmony += 1.5;
             }
         }
@@ -317,10 +317,10 @@ public class CMDGang implements Listener, CommandExecutor {
                 }
                 return false;
             }
-            if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
+            if (args.length == 1 && "help".equalsIgnoreCase(args[0])) {
                 sendGangHelp(p);
             }
-            if (args.length == 1 && args[0].equalsIgnoreCase("invite")) {
+            if (args.length == 1 && "invite".equalsIgnoreCase(args[0])) {
                 if (g.hasGang(p) && !settings.getGangs().getString(g.getGang(p) + ".Owner").equals(p.getUniqueId().toString())) {
                     p.sendMessage(m.c("&f&lGangs &8| &bOnly the Owner of the gang can invite."));
                 } else if (g.hasGang(p) && settings.getGangs().getString(g.getGang(p) + ".Owner").equals(p.getUniqueId().toString())) {
@@ -329,7 +329,7 @@ public class CMDGang implements Listener, CommandExecutor {
                     p.sendMessage(m.c("&f&lGangs &8| &bYou are not in a gang."));
                 }
             }
-            if (args.length == 2 && args[0].equalsIgnoreCase("invite")) {
+            if (args.length == 2 && "invite".equalsIgnoreCase(args[0])) {
                 if (g.hasGang(p) == false) {
                     p.sendMessage(m.c("&f&lGangs &8| &bYou are not in a gang."));
                     return false;
@@ -369,7 +369,7 @@ public class CMDGang implements Listener, CommandExecutor {
                     }
                 }.runTaskLater(Main.plugin, 20 * 60L);
             }
-            if (args.length == 2 && args[0].equalsIgnoreCase("join")) {
+            if (args.length == 2 && "join".equalsIgnoreCase(args[0])) {
                 String gang = "";
                 for (String name : settings.getGangs().getKeys(false)) {
                     if (name.compareToIgnoreCase(args[1]) == 0) {
@@ -398,14 +398,14 @@ public class CMDGang implements Listener, CommandExecutor {
                     p.sendMessage(m.c("&f&lGangs &8| &a" + gang + " &bHas not invited you."));
                 }
             }
-            if (args.length == 1 && args[0].equalsIgnoreCase("create")) {
+            if (args.length == 1 && "create".equalsIgnoreCase(args[0])) {
                 if (g.hasGang(p))
                     p.sendMessage(m.c("&f&lGangs &8| &bYou are already in a gang."));
                 else {
                     p.sendMessage(m.c("&f&lGangs &8| &bPlease Specify a Name(Case Sensitive)."));
                 }
             }
-            if (args.length == 2 && args[0].equalsIgnoreCase("create")) {
+            if (args.length == 2 && "create".equalsIgnoreCase(args[0])) {
                 if (g.hasGang(p)) {
                     p.sendMessage(m.c("&f&lGangs &8| &bYou are already in a gang."));
                     return false;
@@ -420,28 +420,28 @@ public class CMDGang implements Listener, CommandExecutor {
                 g.createGang(p, args[1]);
                 p.sendMessage(m.c("&f&lGangs &8| &a" + args[1] + " &bHas been created."));
             }
-            if (args.length == 1 && args[0].equalsIgnoreCase("upgrade")) {
+            if (args.length == 1 && "upgrade".equalsIgnoreCase(args[0])) {
                 if (g.hasGang(p) == false) {
                     p.sendMessage(m.c("&f&lGangs &8| &bYou are not in a gang."));
                     return false;
                 }
                 openGangShop(p);
             }
-            if (args.length == 1 && args[0].equalsIgnoreCase("upgrades")) {
+            if (args.length == 1 && "upgrades".equalsIgnoreCase(args[0])) {
                 if (g.hasGang(p) == false) {
                     p.sendMessage(m.c("&f&lGangs &8| &bYou are not in a gang."));
                     return false;
                 }
                 openGangShop(p);
             }
-            if (args.length == 1 && args[0].equalsIgnoreCase("info")) {
+            if (args.length == 1 && "info".equalsIgnoreCase(args[0])) {
                 if (g.hasGang(p)) {
                     sendGang(p, p);
                 } else {
                     p.sendMessage(m.c("&f&lGangs &8| &bPlease Specify a gang."));
                 }
             }
-            if (args.length == 2 && args[0].equalsIgnoreCase("info")) {
+            if (args.length == 2 && "info".equalsIgnoreCase(args[0])) {
                 for (String name : settings.getGangs().getKeys(false)) {
                     if (name.compareToIgnoreCase(args[1]) == 0) {
                         sendGang(p, name);
@@ -470,7 +470,7 @@ public class CMDGang implements Listener, CommandExecutor {
                     p.sendMessage(m.c("&f&lGangs &8| &bCould not find that gang."));
                 }
             }
-            if (args.length == 2 && args[0].equalsIgnoreCase("kick")) {
+            if (args.length == 2 && "kick".equalsIgnoreCase(args[0])) {
                 String gang = g.getGang(p);
                 if (!g.hasGang(p)) return false;
                 if (g.hasGang(p) && !settings.getGangs().getString(g.getGang(p) + ".Owner").equals(p.getUniqueId().toString())) {
@@ -504,7 +504,7 @@ public class CMDGang implements Listener, CommandExecutor {
                     p.sendMessage(m.c("&f&lGangs &8| &bCould not find that player."));
                 }
             }
-            if (args.length == 2 && args[0].equalsIgnoreCase("setowner")) {
+            if (args.length == 2 && "setowner".equalsIgnoreCase(args[0])) {
                 if (!g.hasGang(p)) return false;
                 if (g.hasGang(p) && !settings.getGangs().getString(g.getGang(p) + ".Owner").equals(p.getUniqueId().toString())) {
                     p.sendMessage(m.c("&f&lGangs &8| &bOnly the Owner of the gang can change ownership."));
@@ -520,7 +520,7 @@ public class CMDGang implements Listener, CommandExecutor {
                 }
                 settings.saveGangs();
             }
-            if (args.length == 1 && args[0].equalsIgnoreCase("delete")) {
+            if (args.length == 1 && "delete".equalsIgnoreCase(args[0])) {
                 String gang = g.getGang(p);
                 if (!g.hasGang(p)) return false;
                 if (g.hasGang(p) && !settings.getGangs().getString(g.getGang(p) + ".Owner").equals(p.getUniqueId().toString())) {
@@ -532,7 +532,7 @@ public class CMDGang implements Listener, CommandExecutor {
                 PlayerDataHandler.getInstance().getPlayerData(p).set("Gang", "");
                 settings.saveGangs();
             }
-            if (args.length == 1 && args[0].equalsIgnoreCase("leave")) {
+            if (args.length == 1 && "leave".equalsIgnoreCase(args[0])) {
                 if (g.hasGang(p) == false) {
                     p.sendMessage(m.c("&f&lGangs &8| &bYou are not in a gang."));
                     return false;
@@ -543,7 +543,7 @@ public class CMDGang implements Listener, CommandExecutor {
                 }
                 g.removeMember(p, g.getGang(p));
             }
-            if (args.length == 1 && args[0].equalsIgnoreCase("chat")) {
+            if (args.length == 1 && "chat".equalsIgnoreCase(args[0])) {
                 if (g.hasGang(p) == false) {
                     p.sendMessage(m.c("&f&lGangs &8| &bYou are not in a gang."));
                     return false;

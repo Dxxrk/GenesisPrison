@@ -859,20 +859,20 @@ public class AuctionHouseHandler implements Listener, CommandExecutor {
                 openAuctionHouse(p, 1, "none");
             }
             if (args.length == 1) {
-                if (args[0].equalsIgnoreCase("sell")) {
+                if ("sell".equalsIgnoreCase(args[0])) {
                     p.sendMessage(m.c("&f&lAuctionHouse &8| &7/ah sell <amount> <price per item>."));
                 }
-                if (args[0].equalsIgnoreCase("help")) {
+                if ("help".equalsIgnoreCase(args[0])) {
                     p.sendMessage(m.c("&f&lAuctionHouse &8| &7/ah sell <amount> <price per item>."));
                 }
             }
             if (args.length == 2) {
-                if (args[0].equalsIgnoreCase("sell")) {
+                if ("sell".equalsIgnoreCase(args[0])) {
                     p.sendMessage(m.c("&f&lAuctionHouse &8| &7/ah sell <amount> <price per item>."));
                 }
             }
             if (args.length == 3) {
-                if (args[0].equalsIgnoreCase("sell")) {
+                if ("sell".equalsIgnoreCase(args[0])) {
                     double tokens = Double.parseDouble(args[2]);
                     if (tokens < 0) {
                         p.sendMessage(m.c("&cError: Cannot parse number."));

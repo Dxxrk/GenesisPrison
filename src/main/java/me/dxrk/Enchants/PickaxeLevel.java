@@ -112,7 +112,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
             Player p = (Player) sender;
 
 
-            if (label.equalsIgnoreCase("pick")) {
+            if ("pick".equalsIgnoreCase(label)) {
                 if (!p.getEquipment().getItemInMainHand().getType().equals(Material.DIAMOND_PICKAXE)) {
                     boolean b = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode");
                     if(b){
@@ -131,7 +131,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
         if (sender instanceof Player) {
             Player p = (Player) sender;
-            if (label.equalsIgnoreCase("pickaxe")) {
+            if ("pickaxe".equalsIgnoreCase(label)) {
                 if (!p.hasPermission("rank.owner")) {
                     return false;
                 }
@@ -139,13 +139,13 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 p.updateInventory();
             }
         }
-        if (label.equalsIgnoreCase("resetpickaxe")) {
+        if ("resetpickaxe".equalsIgnoreCase(label)) {
             if (sender.hasPermission("genesis.resetpickaxe")) {
                 Player reciever = Bukkit.getPlayerExact(args[0]);
                 resetPickaxe(reciever);
             }
         }
-        if (label.equalsIgnoreCase("setskillpoints")) {
+        if ("setskillpoints".equalsIgnoreCase(label)) {
             if (sender.hasPermission("genesis.setskillpoints")) {
                 Player reciever = Bukkit.getPlayerExact(args[0]);
                 int amount = parseInt(args[1]);
@@ -388,7 +388,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         for (String s : ilore) {
             if (ChatColor.stripColor(s).contains("Enchants") || ChatColor.stripColor(s).contains("Trinkets") || ChatColor.stripColor(s).contains("Level:") || ChatColor.stripColor(s).contains("Progress:")
                     || ChatColor.stripColor(s).contains("Trinket")) continue;
-            if (s.equals(" ")) continue;
+            if (" ".equals(s)) continue;
             for (String ss : Enchants()) {
                 if (ChatColor.stripColor(s).contains(ss)) {
                     Enchants.add(s);
@@ -416,7 +416,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         for (String s : ilore) {
             if (ChatColor.stripColor(s).contains("Enchants") || ChatColor.stripColor(s).contains("Trinkets") || ChatColor.stripColor(s).contains("Level:") || ChatColor.stripColor(s).contains("Progress:"))
                 continue;
-            if (s.equals(" ")) continue;
+            if (" ".equals(s)) continue;
             for (String ss : Trinkets()) {
                 if (ChatColor.stripColor(s).contains(ss)) {
                     Trinkets.add(s);

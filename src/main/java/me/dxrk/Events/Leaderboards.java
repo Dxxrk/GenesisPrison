@@ -256,10 +256,10 @@ public class Leaderboards implements Listener, CommandExecutor {
             File mineFile = var[i];
             String name = mineFile.getName().split("\\.")[0];
             UUID id = UUID.fromString(name);
-            if (name.equals("7dd67277-1c1a-42e7-98ac-aa64eb122ec8")) continue;
-            if (name.equals("c32dfc2e-6780-4dbb-9baf-9ca671fbd35f")) continue;
-            if (name.equals("6a137295-d6e3-4a4d-b4e8-9d09898f9057")) continue;
-            if (name.equals("8ae918d9-21ad-4184-a26e-abcf8d0ac6d9")) continue;
+            if ("7dd67277-1c1a-42e7-98ac-aa64eb122ec8".equals(name)) continue;
+            if ("c32dfc2e-6780-4dbb-9baf-9ca671fbd35f".equals(name)) continue;
+            if ("6a137295-d6e3-4a4d-b4e8-9d09898f9057".equals(name)) continue;
+            if ("8ae918d9-21ad-4184-a26e-abcf8d0ac6d9".equals(name)) continue;
             int prestige = PlayerDataHandler.getInstance().getPlayerData(id).getInt("Prestiges") * 50000;
             int rank = PlayerDataHandler.getInstance().getPlayerData(id).getInt("Level");
             int total = prestige + rank;
@@ -278,9 +278,9 @@ public class Leaderboards implements Listener, CommandExecutor {
             File mineFile = var[i];
             String name = mineFile.getName().split("\\.")[0];
             UUID id = UUID.fromString(name);
-            if (name.equals("7dd67277-1c1a-42e7-98ac-aa64eb122ec8")) continue;
-            if (name.equals("c32dfc2e-6780-4dbb-9baf-9ca671fbd35f")) continue;
-            if (name.equals("8ae918d9-21ad-4184-a26e-abcf8d0ac6d9")) continue;
+            if ("7dd67277-1c1a-42e7-98ac-aa64eb122ec8".equals(name)) continue;
+            if ("c32dfc2e-6780-4dbb-9baf-9ca671fbd35f".equals(name)) continue;
+            if ("8ae918d9-21ad-4184-a26e-abcf8d0ac6d9".equals(name)) continue;
             int blocks = PlayerDataHandler.getInstance().getPlayerData(id).getInt("BlocksBroken");
             orderblocks.put(blocks, name);
         }
@@ -296,9 +296,9 @@ public class Leaderboards implements Listener, CommandExecutor {
             File mineFile = var[i];
             String name = mineFile.getName().split("\\.")[0];
             UUID id = UUID.fromString(name);
-            if (name.equals("7dd67277-1c1a-42e7-98ac-aa64eb122ec8")) continue;
-            if (name.equals("c32dfc2e-6780-4dbb-9baf-9ca671fbd35f")) continue;
-            if (name.equals("8ae918d9-21ad-4184-a26e-abcf8d0ac6d9")) continue;
+            if ("7dd67277-1c1a-42e7-98ac-aa64eb122ec8".equals(name)) continue;
+            if ("c32dfc2e-6780-4dbb-9baf-9ca671fbd35f".equals(name)) continue;
+            if ("8ae918d9-21ad-4184-a26e-abcf8d0ac6d9".equals(name)) continue;
             int time = PlayerDataHandler.getInstance().getPlayerData(id).getInt("TimePlayed");
             ordertime.put(time, name);
         }

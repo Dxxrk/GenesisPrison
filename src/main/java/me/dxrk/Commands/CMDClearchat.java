@@ -14,7 +14,7 @@ public class CMDClearchat implements CommandExecutor {
 
 
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
-        if (label.equalsIgnoreCase("clearchat")) {
+        if ("clearchat".equalsIgnoreCase(label)) {
             for (int i = 0; i < 100; i++)
                 Bukkit.broadcastMessage(" ");
             Bukkit.broadcastMessage(c("&c&k;&bExistor&c&k;&r &7Chat has been cleared."));

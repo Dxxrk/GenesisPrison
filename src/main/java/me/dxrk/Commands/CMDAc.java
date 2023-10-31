@@ -25,7 +25,7 @@ public class CMDAc implements CommandExecutor, Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (label.equalsIgnoreCase("ac")) {
+        if ("ac".equalsIgnoreCase(label)) {
             if (!(sender instanceof Player))
                 return false;
             if (!sender.hasPermission("staffchat.use"))

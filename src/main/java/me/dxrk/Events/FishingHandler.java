@@ -424,7 +424,7 @@ public class FishingHandler implements Listener, CommandExecutor {
                 lore.add(m.c("&c" + Enchant + " &e" + plus));
                 PlayerDataHandler.getInstance().getPlayerData(p).set("Crystals", crystals - price);
                 int previouslevel = getEnchantLevel(p, "Bait");
-                if (Enchant.equalsIgnoreCase("Bait") && previouslevel <= 2) {
+                if ("Bait".equalsIgnoreCase(Enchant) && previouslevel <= 2) {
                     pm.removeEnchant(Enchantment.LURE);
                     pm.addEnchant(Enchantment.LURE, previouslevel + 1, true);
                 }
@@ -450,7 +450,7 @@ public class FishingHandler implements Listener, CommandExecutor {
                     lore.set(line, m.c("&c" + Enchant + " &e" + plus));
                     PlayerDataHandler.getInstance().getPlayerData(p).set("Crystals", crystals - price);
                     int previouslevel = getEnchantLevel(p, "Bait");
-                    if (Enchant.equalsIgnoreCase("Bait") && previouslevel <= 2) {
+                    if ("Bait".equalsIgnoreCase(Enchant) && previouslevel <= 2) {
                         pm.removeEnchant(Enchantment.LURE);
                         pm.addEnchant(Enchantment.LURE, previouslevel + 1, true);
                     }
@@ -557,12 +557,12 @@ public class FishingHandler implements Listener, CommandExecutor {
                 p.sendMessage(m.c("&f&lCrystals &8 | &b" + PlayerDataHandler.getInstance().getPlayerData(p).getInt("Crystals")));
             }
             if (strings.length == 1) {
-                if (strings[0].equalsIgnoreCase("shop")) {
+                if ("shop".equalsIgnoreCase(strings[0])) {
                     Player p = (Player) commandSender;
                     openFishingShop(p);
                 }
             } else if (strings.length == 3) {
-                if (strings[0].equalsIgnoreCase("give")) {
+                if ("give".equalsIgnoreCase(strings[0])) {
                     if (commandSender.isOp()) {
                         Player reciever = Bukkit.getPlayer(strings[1]);
                         int crystals = parseInt(strings[2]);

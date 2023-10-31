@@ -292,7 +292,7 @@ public class RankupHandler implements Listener, CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 
-        if (label.equalsIgnoreCase("autorankup") || label.equalsIgnoreCase("aru")) {
+        if ("autorankup".equalsIgnoreCase(label) || "aru".equalsIgnoreCase(label)) {
             Player p = (Player) sender;
             if (!aru.contains(p)) {
                 aru.add(p);
@@ -308,7 +308,7 @@ public class RankupHandler implements Listener, CommandExecutor {
 
 
         }
-        if (label.equalsIgnoreCase("givemoney")) {
+        if ("givemoney".equalsIgnoreCase(label)) {
             if (sender.isOp()) {
                 if (args.length == 2) {
                     if (isInt(args[1])) {

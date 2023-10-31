@@ -57,7 +57,7 @@ public class CMDRanks implements Listener, CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if (label.equalsIgnoreCase("giverank")) {
+        if ("giverank".equalsIgnoreCase(label)) {
             if (args.length == 3) {
                 Player p = Bukkit.getPlayer(args[0]);
                 giveRank(p, args[1] + " " + args[2]);

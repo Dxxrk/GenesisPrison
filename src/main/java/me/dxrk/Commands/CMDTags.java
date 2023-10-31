@@ -197,7 +197,7 @@ public class CMDTags implements Listener, CommandExecutor {
                 }
             } else if (args.length == 1) {
                 Player p = (Player) sender;
-                if (args[0].equalsIgnoreCase("off")) {
+                if ("off".equalsIgnoreCase(args[0])) {
                     settings.getData().set(p.getUniqueId() + ".Tag", "");
                     settings.saveData();
                     p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Your tag has been removed!"));
@@ -211,7 +211,7 @@ public class CMDTags implements Listener, CommandExecutor {
                     return false;
                 }
                 String tag;
-                if (args[1].equalsIgnoreCase("random")) {
+                if ("random".equalsIgnoreCase(args[1])) {
                     tag = randomTagName();
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "manuaddp " + give.getName() + " " + "Tag." + tag);
                 } else {

@@ -33,7 +33,7 @@ public class CMDVanish implements Listener, CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (label.equalsIgnoreCase("vanish") || label.equalsIgnoreCase("v") || label.equalsIgnoreCase("ev") || label.equalsIgnoreCase("evanish")) {
+        if ("vanish".equalsIgnoreCase(label) || "v".equalsIgnoreCase(label) || "ev".equalsIgnoreCase(label) || "evanish".equalsIgnoreCase(label)) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 if (vanished.contains(player)) {

@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 public class CMDTrash implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (label.equalsIgnoreCase("trash")) {
+        if ("trash".equalsIgnoreCase(label)) {
             if (!(sender instanceof Player))
                 return false;
             Player p = (Player) sender;

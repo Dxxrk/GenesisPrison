@@ -158,7 +158,7 @@ public class CMDMine implements CommandExecutor, Listener {
     @SuppressWarnings("deprecation")
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (label.equalsIgnoreCase("mine")) {
+        if ("mine".equalsIgnoreCase(label)) {
             if (args.length == 0) {
                 if (!(sender instanceof Player)) return false;
                 Player p = (Player) sender;
@@ -166,7 +166,7 @@ public class CMDMine implements CommandExecutor, Listener {
             }
             if (args.length == 1) {
                 Player p = (Player) sender;
-                if (args[0].equalsIgnoreCase("teleport") || args[0].equalsIgnoreCase("tp") || args[0].equalsIgnoreCase("home") || args[0].equalsIgnoreCase("go")) {
+                if ("teleport".equalsIgnoreCase(args[0]) || "tp".equalsIgnoreCase(args[0]) || "home".equalsIgnoreCase(args[0]) || "go".equalsIgnoreCase(args[0])) {
                     if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("HasMine")) {
                         Mine m = MineSystem.getInstance().getMineByPlayer(p);
                         Location loc = new Location(m.getMineWorld(), m.getSpawnLocation().getX(), m.getSpawnLocation().getY(), m.getSpawnLocation().getZ(), -90, 0);
@@ -188,14 +188,14 @@ public class CMDMine implements CommandExecutor, Listener {
                         p.sendMessage(c("&f&lMine &8| &7Unable to find your mine(/mine)."));
                     }
                 }
-                if(args[0].equalsIgnoreCase("expand")) {
+                if("expand".equalsIgnoreCase(args[0])) {
                     Mine m = MineSystem.getInstance().getMineByPlayer(p);
                     m.expandMine(1);
                 }
             }
             if (args.length == 2) {
                 Player p = (Player) sender;
-                if (args[0].equalsIgnoreCase("visit")) {
+                if ("visit".equalsIgnoreCase(args[0])) {
                     OfflinePlayer visit = Bukkit.getOfflinePlayer(args[1]);
                     UUID id = visit.getUniqueId();
 
@@ -215,7 +215,7 @@ public class CMDMine implements CommandExecutor, Listener {
                     }
 
                 }
-                if(args[0].equalsIgnoreCase("delete")) {
+                if("delete".equalsIgnoreCase(args[0])) {
                     if(!p.isOp()) return false;
                     OfflinePlayer delete = Bukkit.getOfflinePlayer(args[1]);
                     UUID id = delete.getUniqueId();

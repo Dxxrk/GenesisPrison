@@ -73,7 +73,7 @@ public class KitAndWarp implements Listener {
             b++;
         }
         assert first != null;
-        if ((first.equalsIgnoreCase("/kit") || first.equalsIgnoreCase("/kits")) &&
+        if (("/kit".equalsIgnoreCase(first) || "/kits".equalsIgnoreCase(first)) &&
                 second == null) {
             boolean z = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode");
             if(z){
@@ -91,14 +91,14 @@ public class KitAndWarp implements Listener {
                 donorkits.then(s).tooltip(ChatColor.RED + "You do not have this kit!").command("/kit " + s).color(ChatColor.RED).then(", ").color(ChatColor.GRAY);
             }
             donorkits.send(p);
-        } else if ((first.equalsIgnoreCase("/kit") || first.equalsIgnoreCase("/kits")) && second != null) {
+        } else if (("/kit".equalsIgnoreCase(first) || "/kits".equalsIgnoreCase(first)) && second != null) {
             e.setCancelled(true);
             boolean z = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode");
             if(z){
                 p.sendMessage(m.c("&cYou can't access this while in buildmode."));
                 return;
             }
-            if (second.equalsIgnoreCase("demi-godkeys")) {
+            if ("demi-godkeys".equalsIgnoreCase(second)) {
                 if (p.hasPermission("rank.demi-god")) {
                     if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitDemiGodKeys") == 0 || p.hasPermission("rank.admin")) {
                         LocksmithHandler.getInstance().addKey(p, "token", 5);
@@ -112,7 +112,7 @@ public class KitAndWarp implements Listener {
                     }
                 }
             }
-            if (second.equalsIgnoreCase("titankeys")) {
+            if ("titankeys".equalsIgnoreCase(second)) {
                 if (p.hasPermission("rank.titan")) {
                     if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitTitanKeys") == 0 || p.hasPermission("rank.admin")) {
                         LocksmithHandler.getInstance().addKey(p, "token", 7);
@@ -126,7 +126,7 @@ public class KitAndWarp implements Listener {
                     }
                 }
             }
-            if (second.equalsIgnoreCase("godkeys")) {
+            if ("godkeys".equalsIgnoreCase(second)) {
                 if (p.hasPermission("rank.god")) {
                     if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitGodKeys") == 0 || p.hasPermission("rank.admin")) {
                         LocksmithHandler.getInstance().addKey(p, "token", 9);
@@ -141,7 +141,7 @@ public class KitAndWarp implements Listener {
                     }
                 }
             }
-            if (second.equalsIgnoreCase("olympiankeys")) {
+            if ("olympiankeys".equalsIgnoreCase(second)) {
                 if (p.hasPermission("rank.olympian")) {
                     if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitOlympianKeys") == 0 || p.hasPermission("rank.admin")) {
                         LocksmithHandler.getInstance().addKey(p, "token", 11);
@@ -156,7 +156,7 @@ public class KitAndWarp implements Listener {
                     }
                 }
             }
-            if (second.equalsIgnoreCase("genesiskeys")) {
+            if ("genesiskeys".equalsIgnoreCase(second)) {
                 if (p.hasPermission("rank.genesis")) {
                     if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitGenesisKeys") == 0 || p.hasPermission("rank.admin")) {
                         LocksmithHandler.getInstance().addKey(p, "token", 13);
@@ -171,7 +171,7 @@ public class KitAndWarp implements Listener {
                     }
                 }
             }
-            if (second.equalsIgnoreCase("god")) {
+            if ("god".equalsIgnoreCase(second)) {
                 if (p.hasPermission("rank.god")) {
                     if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitGod") == 0 || p.hasPermission("rank.admin")) {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate " + p.getName() + " contraband");
@@ -182,7 +182,7 @@ public class KitAndWarp implements Listener {
                     }
                 }
             }
-            if (second.equalsIgnoreCase("olympian")) {
+            if ("olympian".equalsIgnoreCase(second)) {
                 if (p.hasPermission("rank.olympian")) {
                     if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitOlympian") == 0 || p.hasPermission("rank.admin")) {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate " + p.getName() + " contraband");
@@ -194,7 +194,7 @@ public class KitAndWarp implements Listener {
                     }
                 }
             }
-            if (second.equalsIgnoreCase("genesis")) {
+            if ("genesis".equalsIgnoreCase(second)) {
                 if (p.hasPermission("rank.genesis")) {
                     if (PlayerDataHandler.getInstance().getPlayerData(p).getInt("KitGenesis") == 0 || p.hasPermission("rank.admin")) {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "givecrate " + p.getName() + " contraband");
@@ -207,7 +207,7 @@ public class KitAndWarp implements Listener {
                 }
             }
         }
-        if ((first.equalsIgnoreCase("/warp") || first.equalsIgnoreCase("/warps")) &&
+        if (("/warp".equalsIgnoreCase(first) || "/warps".equalsIgnoreCase(first)) &&
                 second == null) {
             e.setCancelled(true);
 

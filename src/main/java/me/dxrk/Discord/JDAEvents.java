@@ -161,18 +161,18 @@ public class JDAEvents extends ListenerAdapter implements Listener, CommandExecu
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
 
-        if (label.equalsIgnoreCase("discord")) {
+        if ("discord".equalsIgnoreCase(label)) {
             if (args.length == 0) {
                 cs.sendMessage(m.c("&bJoin the Discord: &dhttps://discord.gg/arWtNhM3aZ"));
             }
             if (args.length == 1) {
                 Player p = (Player) cs;
-                if (args[0].equalsIgnoreCase("link"))
+                if ("link".equalsIgnoreCase(args[0]))
                     p.sendMessage(m.c("&bPlease react to the message in &7#minecraft-link &bin the discord"));
                 return false;
             }
             if (args.length == 2) {
-                if (args[0].equalsIgnoreCase("link")) {
+                if ("link".equalsIgnoreCase(args[0])) {
                     Player p = (Player) cs;
 
                     if (settings.getDiscord().contains(p.getUniqueId().toString())) {

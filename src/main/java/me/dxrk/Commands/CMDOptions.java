@@ -89,31 +89,31 @@ public class CMDOptions implements Listener, CommandExecutor {
     }
 
     public static String TagColor(String s) {
-        if (s.equalsIgnoreCase("default"))
+        if ("default".equalsIgnoreCase(s))
             return m.c("&f&ki&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls&f&ki&r");
-        if (s.equalsIgnoreCase("pink"))
+        if ("pink".equalsIgnoreCase(s))
             return m.c("&f&ki&d&lGenesis&f&ki&r");
-        if (s.equalsIgnoreCase("aqua"))
+        if ("aqua".equalsIgnoreCase(s))
             return m.c("&f&ki&b&lGenesis&f&ki&r");
-        if (s.equalsIgnoreCase("lime"))
+        if ("lime".equalsIgnoreCase(s))
             return m.c("&f&ki&a&lGenesis&f&ki&r");
-        if (s.equalsIgnoreCase("yellow"))
+        if ("yellow".equalsIgnoreCase(s))
             return m.c("&f&ki&e&lGenesis&f&ki&r");
-        if (s.equalsIgnoreCase("red"))
+        if ("red".equalsIgnoreCase(s))
             return m.c("&f&ki&c&lGenesis&f&ki&r");
-        if (s.equalsIgnoreCase("green"))
+        if ("green".equalsIgnoreCase(s))
             return m.c("&f&ki&2&lGenesis&f&ki&r");
-        if (s.equalsIgnoreCase("gold"))
+        if ("gold".equalsIgnoreCase(s))
             return m.c("&f&ki&6&lGenesis&f&ki&r");
-        if (s.equalsIgnoreCase("cyan"))
+        if ("cyan".equalsIgnoreCase(s))
             return m.c("&f&ki&3&lGenesis&f&ki&r");
-        if (s.equalsIgnoreCase("white"))
+        if ("white".equalsIgnoreCase(s))
             return m.c("&f&ki&f&lGenesis&f&ki&r");
-        if (s.equalsIgnoreCase("blue"))
+        if ("blue".equalsIgnoreCase(s))
             return m.c("&f&ki&c&lGenesis&f&ki&r");
-        if (s.equalsIgnoreCase("purple"))
+        if ("purple".equalsIgnoreCase(s))
             return m.c("&f&ki&5&lGenesis&f&ki&r");
-        if (s.equalsIgnoreCase("thematic"))
+        if ("thematic".equalsIgnoreCase(s))
             return m.c("&f&ki&c&lG&b&le&c&ln&b&le&c&ls&b&li&c&ls&f&ki&r");
         return m.c("&f&ki&4&lG&c&le&6&ln&e&le&a&ls&b&li&d&ls&f&ki&r");
     }
@@ -140,7 +140,7 @@ public class CMDOptions implements Listener, CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if (label.equalsIgnoreCase("options")) {
+        if ("options".equalsIgnoreCase(label)) {
             Player p = (Player) sender;
             openOptions(p);
         }
@@ -151,7 +151,7 @@ public class CMDOptions implements Listener, CommandExecutor {
             else
                 p.sendMessage(m.c("&cNo Permission"));
             if(p.isOp()) {
-                if(args[0].equalsIgnoreCase("reload")) {
+                if("reload".equalsIgnoreCase(args[0])) {
                     SettingsManager.getInstance().reloadConfig();
                 }
             }
@@ -223,10 +223,10 @@ public class CMDOptions implements Listener, CommandExecutor {
             if (e.getCurrentItem().equals(Spacer())) return;
             if (e.getCurrentItem().getType().equals(Material.INK_SAC)) {
                 String[] name = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()).split(" ");
-                if (name[1].equals("Enabled")) {
+                if ("Enabled".equals(name[1])) {
                     this.settings.getOptions().set(p.getUniqueId() + "." + name[0], false);
 
-                } else if (name[1].equals("Disabled")) {
+                } else if ("Disabled".equals(name[1])) {
                     this.settings.getOptions().set(p.getUniqueId() + "." + name[0], true);
 
                 }
