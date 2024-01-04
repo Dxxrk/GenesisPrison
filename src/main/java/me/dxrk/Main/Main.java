@@ -18,7 +18,7 @@ import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Mines.*;
 import me.dxrk.Tokens.TokensCMD;
 import me.dxrk.Tokens.TokensListener;
-import me.dxrk.Vote.BuycraftUtil;
+import me.dxrk.Vote.BuycraftUtilOld;
 import me.dxrk.Vote.CMDVote;
 import me.dxrk.Vote.CMDVoteShop;
 import net.milkbowl.vault.chat.Chat;
@@ -220,8 +220,8 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("autorankup").setExecutor(new RankupHandler());
         getCommand("aru").setExecutor(new RankupHandler());
         getCommand("giveplotitem").setExecutor(new MineHandler());
-        getCommand("buymsg").setExecutor(new BuycraftUtil());
-        getCommand("createcoupon").setExecutor(new BuycraftUtil());
+        getCommand("buymsg").setExecutor(new BuycraftUtilOld());
+        getCommand("createcoupon").setExecutor(new BuycraftUtilOld());
         getCommand("options").setExecutor(new CMDOptions());
         getCommand("daily").setExecutor(new CMDDaily());
         getCommand("discord").setExecutor(new JDAEvents());
@@ -234,7 +234,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("giverank").setExecutor(new CMDRanks());
         getCommand("removemine").setExecutor(new MineHandler());
         getCommand("updatemine").setExecutor(new MineHandler());
-        getCommand("redeem").setExecutor(new BuycraftUtil());
+        getCommand("redeem").setExecutor(new BuycraftUtilOld());
         getCommand("stats").setExecutor(new CMDStats());
         getCommand("ah").setExecutor(new AuctionHouseHandler());
         getCommand("auctionhouse").setExecutor(new AuctionHouseHandler());
