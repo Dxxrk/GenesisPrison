@@ -1,5 +1,6 @@
 package me.dxrk.Commands;
 
+import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import org.bukkit.Bukkit;
@@ -86,13 +87,14 @@ public class CMDRanks implements Listener, CommandExecutor {
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if (p.getEquipment().getItemInMainHand() == null) return;
+        if (p.getEquipment().getItemInMainHand().getType().equals(Material.AIR)) return;
 
         if (p.getEquipment().getItemInMainHand().getType().equals(Material.NETHER_STAR)) {
             if (p.getEquipment().getItemInMainHand().hasItemMeta()) {
                 if ((e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) && ranks().contains(ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getDisplayName().split(" ")[0]))) {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "manuaddsub " + p.getName() + " " + ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getDisplayName().split(" ")[0]));
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bc &e&l" + p.getName() + " &f&lHas redeemed " + p.getEquipment().getItemInMainHand().getItemMeta().getDisplayName());
+                    PlayerDataHandler.getInstance().getPlayerData(p).set("Rank", ChatColor.stripColor(p.getEquipment().getItemInMainHand().getItemMeta().getDisplayName().split(" ")[0]));
                     if (p.getEquipment().getItemInMainHand().getAmount() == 1) {
                         p.setItemInHand(null);
                     } else {

@@ -92,6 +92,12 @@ public class PlayerDataHandler implements Listener {
                 pl.set("Name", name);
 
             }
+            if (pl.get("Staff") == null) {
+                pl.set("Staff", "None");
+            }
+            if (pl.get("Rank") == null) {
+                pl.set("Rank", "None");
+            }
             if (pl.get("HasMine") == null) {
                 pl.set("HasMine", false);
 

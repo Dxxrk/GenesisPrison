@@ -280,7 +280,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         registerEvents(this, new Listener[]{new CMDTags()});
         registerEvents(this, new Listener[]{new ProtectOP()});
         registerEvents(this, new Listener[]{new BlocksHandler()});
-        registerEvents(this, new Listener[]{new ChatHandler()});
+        registerEvents(this, new Listener[]{new NewChatHandler()});
         registerEvents(this, new Listener[]{new CMDVote()});
         registerEvents(this, new Listener[]{new DeathLogger()});
         registerEvents(this, new Listener[]{new TokensListener()});
