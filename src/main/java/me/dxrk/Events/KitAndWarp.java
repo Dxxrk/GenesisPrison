@@ -3,6 +3,9 @@ package me.dxrk.Events;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import mkremins.fanciful.FancyMessage;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -10,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,15 +86,26 @@ public class KitAndWarp implements Listener {
             }
             e.setCancelled(true);
             p.sendMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "Kits:");
-            FancyMessage donorkits = new FancyMessage("");
+            TextComponent donorkits = null;
+
             for (String s : getDonorKits()) {
                 if (p.hasPermission("Essentials.kits." + s)) {
-                    donorkits.then(s).tooltip(ChatColor.GRAY + "Click for kit!").command("/kit " + s).color(ChatColor.DARK_AQUA).then(", ").color(ChatColor.GRAY);
+                    if(donorkits == null) {
+                        donorkits = Component.text()
+                                .append(Component.text(s+", ").color(NamedTextColor.DARK_AQUA))
+                                .build();
+
+                    } else {
+                        donorkits = donorkits.append(Component.text(s+", ").color(NamedTextColor.DARK_AQUA));
+                    }
+                    //donorkits.then(s).tooltip(ChatColor.GRAY + "Click for kit!").command("/kit " + s).color(ChatColor.DARK_AQUA).then(", ").color(ChatColor.GRAY);
+
                     continue;
                 }
-                donorkits.then(s).tooltip(ChatColor.RED + "You do not have this kit!").command("/kit " + s).color(ChatColor.RED).then(", ").color(ChatColor.GRAY);
+                //donorkits.then(s).tooltip(ChatColor.RED + "You do not have this kit!").command("/kit " + s).color(ChatColor.RED).then(", ").color(ChatColor.GRAY);
             }
-            donorkits.send(p);
+
+            p.sendMessage(donorkits);
         } else if (("/kit".equalsIgnoreCase(first) || "/kits".equalsIgnoreCase(first)) && second != null) {
             e.setCancelled(true);
             boolean z = PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("BuildMode");
