@@ -26,17 +26,13 @@ public class NicknameHandler implements Listener, CommandExecutor {
 
         if (cmd.getName().equalsIgnoreCase("nick") || cmd.getName().equalsIgnoreCase("nickname")) {
             TextComponent msg = Component.text()
-                    .append(Component.text("Enter your Nickname(No Color Codes):").decoration(TextDecoration.BOLD, true).color(NamedTextColor.GREEN))
+                    .append(Component.text("Enter your Nickname:").decoration(TextDecoration.BOLD, true).color(NamedTextColor.GREEN))
                     .build();
             p.sendMessage(msg);
             waitingForNick.add(p);
         }
 
         return false;
-    }
-
-    public static void openNickInv(Component name, Player p) {
-        String s = name.compact().examinableName();
     }
 
 

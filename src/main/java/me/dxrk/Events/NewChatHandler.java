@@ -11,6 +11,8 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,6 +21,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.Objects;
 
 public class NewChatHandler implements Listener {
     Methods m = Methods.getInstance();
@@ -169,50 +172,93 @@ public class NewChatHandler implements Listener {
     }
 
     public TextComponent prefix(Player p) {
-        TextComponent prefix = null;
+        TextComponent prefix;
+
+        String name = p.getName();
+
+        if(!Objects.equals(PlayerDataHandler.getInstance().getPlayerData(p).getString("Nickname"), name)) {
+            name = PlayerDataHandler.getInstance().getPlayerData(p).getString("Nickname");
+        }
+
         if (p.getName().equalsIgnoreCase("Dxrk")) {
             prefix = getPrefix(p, "Owner", "Dxrk", true, NamedTextColor.LIGHT_PURPLE, NamedTextColor.WHITE, false);
         } else if (p.getName().equalsIgnoreCase("Pikashoo")) {
             prefix = getPrefix(p, "Developer", "Pikashoo", true, NamedTextColor.WHITE, NamedTextColor.GREEN, false);
         } else if (PlayerDataHandler.getInstance().getPlayerData(p).get("Staff").equals("Mod")) {
-            prefix = getPrefix(p, "Mod", p.getName(), true, NamedTextColor.BLUE, NamedTextColor.AQUA, false);
+            prefix = getPrefix(p, "Mod", name, true, NamedTextColor.BLUE, NamedTextColor.AQUA, false);
         } else if (PlayerDataHandler.getInstance().getPlayerData(p).get("Staff").equals("Builder")) {
-            prefix = getPrefix(p, "Builder", p.getName(), true, NamedTextColor.DARK_GREEN, NamedTextColor.GREEN, false);
+            prefix = getPrefix(p, "Builder", name, true, NamedTextColor.DARK_GREEN, NamedTextColor.GREEN, false);
         } else if (PlayerDataHandler.getInstance().getPlayerData(p).get("Rank").equals("Genesis")) {
-            prefix = getPrefix(p, "", p.getName(), true, NamedTextColor.WHITE, NamedTextColor.WHITE, true);
+            prefix = getPrefix(p, "", name, true, NamedTextColor.WHITE, NamedTextColor.WHITE, true);
         } else if (PlayerDataHandler.getInstance().getPlayerData(p).get("Rank").equals("Olympian")) {
-            prefix = getPrefix(p, "Olympian", p.getName(), true, NamedTextColor.GOLD, NamedTextColor.YELLOW, false);
+            prefix = getPrefix(p, "Olympian", name, true, NamedTextColor.GOLD, NamedTextColor.YELLOW, false);
         } else if (PlayerDataHandler.getInstance().getPlayerData(p).get("Rank").equals("God")) {
-            prefix = getPrefix(p, "God", p.getName(), true, NamedTextColor.DARK_PURPLE, NamedTextColor.LIGHT_PURPLE, false);
+            prefix = getPrefix(p, "God", name, true, NamedTextColor.DARK_PURPLE, NamedTextColor.LIGHT_PURPLE, false);
         } else if (PlayerDataHandler.getInstance().getPlayerData(p).get("Rank").equals("Titan")) {
-            prefix = getPrefix(p, "Titan", p.getName(), true, NamedTextColor.AQUA, NamedTextColor.DARK_AQUA, false);
+            prefix = getPrefix(p, "Titan", name, true, NamedTextColor.AQUA, NamedTextColor.DARK_AQUA, false);
         } else if (PlayerDataHandler.getInstance().getPlayerData(p).get("Rank").equals("Demi-God")) {
-            prefix = getPrefix(p, "Demi-God", p.getName(), true, NamedTextColor.LIGHT_PURPLE, NamedTextColor.DARK_PURPLE, false);
+            prefix = getPrefix(p, "Demi-God", name, true, NamedTextColor.LIGHT_PURPLE, NamedTextColor.DARK_PURPLE, false);
         } else if (PlayerDataHandler.getInstance().getPlayerData(p).get("Rank").equals("Hero")) {
-            prefix = getPrefix(p, "Hero", p.getName(), false, NamedTextColor.DARK_RED, NamedTextColor.RED, false);
+            prefix = getPrefix(p, "Hero", name, false, NamedTextColor.DARK_RED, NamedTextColor.RED, false);
         } else if (PlayerDataHandler.getInstance().getPlayerData(p).get("Rank").equals("MVP")) {
-            prefix = getPrefix(p, "MVP", p.getName(), false, NamedTextColor.YELLOW, NamedTextColor.GOLD, false);
+            prefix = getPrefix(p, "MVP", name, false, NamedTextColor.YELLOW, NamedTextColor.GOLD, false);
         } else if (PlayerDataHandler.getInstance().getPlayerData(p).get("Rank").equals("VIP")) {
-            prefix = getPrefix(p, "VIP", p.getName(), false, NamedTextColor.DARK_GREEN, NamedTextColor.GREEN, false);
+            prefix = getPrefix(p, "VIP", name, false, NamedTextColor.DARK_GREEN, NamedTextColor.GREEN, false);
         } else if (PlayerDataHandler.getInstance().getPlayerData(p).get("Rank").equals("Sponsor")) {
-            prefix = getPrefix(p, "Sponsor", p.getName(), false, NamedTextColor.DARK_AQUA, NamedTextColor.AQUA, false);
+            prefix = getPrefix(p, "Sponsor", name, false, NamedTextColor.DARK_AQUA, NamedTextColor.AQUA, false);
         } else {
-            prefix = getPrefix(p, "", p.getName(), false, NamedTextColor.AQUA, NamedTextColor.AQUA, false);
+            prefix = getPrefix(p, "", name, false, NamedTextColor.AQUA, NamedTextColor.AQUA, false);
         }
         return prefix;
     }
 
+    public TextColor chatColor(String color) {
+        return switch (color) {
+            case "White" -> NamedTextColor.WHITE;
+            case "Yellow" -> NamedTextColor.YELLOW;
+            case "Blue" -> NamedTextColor.BLUE;
+            case "Green" -> NamedTextColor.DARK_GREEN;
+            case "Purple" -> NamedTextColor.DARK_PURPLE;
+            case "Gold" -> NamedTextColor.GOLD;
+            case "Red" -> NamedTextColor.RED;
+            case "Lime" -> NamedTextColor.GREEN;
+            default -> NamedTextColor.AQUA;
+        };
+    }
+
     public TextComponent message(Player p, Component msg) {
-        TextComponent message = null;
+        TextComponent message;
         if (p.getName().equalsIgnoreCase("Dxrk")) {
             message = Component.text()
                     .append(msg.decoration(TextDecoration.BOLD, true).color(NamedTextColor.WHITE))
                     .hoverEvent(HoverEvent.showText(Component.text()))
                     .build();
 
-        } else {
+        } else if(p.getName().equalsIgnoreCase("Pikashoo")) {
             message = Component.text()
-                    .append(msg.decoration(TextDecoration.BOLD, false).color(NamedTextColor.GRAY))
+                    .append(msg.decoration(TextDecoration.BOLD, true).color(NamedTextColor.WHITE))
+                    .hoverEvent(HoverEvent.showText(Component.text()))
+                    .build();
+        } else if(p.getName().equals("_Lone_Ninja_")) {
+            message = Component.text()
+                    .append(msg.decoration(TextDecoration.BOLD, true).color(NamedTextColor.RED))
+                    .hoverEvent(HoverEvent.showText(Component.text()))
+                    .build();
+        } else if(p.getName().equals("32j")) {
+            message = Component.text()
+                    .append(msg.decoration(TextDecoration.BOLD, true).color(NamedTextColor.LIGHT_PURPLE))
+                    .hoverEvent(HoverEvent.showText(Component.text()))
+                    .build();
+        }
+        else if(p.hasPermission("rank.Mod")) {
+            message = Component.text()
+                    .append(msg.decoration(TextDecoration.BOLD, true).color(NamedTextColor.AQUA))
+                    .hoverEvent(HoverEvent.showText(Component.text()))
+                    .build();
+        }
+        else {
+            message = Component.text()
+                    .append(msg.decoration(TextDecoration.BOLD, false).color(chatColor(this.settings.getcolor().getString(p.getName() + ".Color"))))
                     .hoverEvent(HoverEvent.showText(Component.text()))
                     .build();
         }
@@ -228,12 +274,35 @@ public class NewChatHandler implements Listener {
         ItemStack pitem = p.getInventory().getItemInMainHand();
         if (pitem.getType().equals(Material.AIR) || !pitem.hasItemMeta()) {
             if(NicknameHandler.waitingForNick.contains(p)) {
-                NicknameHandler.openNickInv(e.message(), p);
+                PlayerDataHandler.getInstance().getPlayerData(p).set("Nickname", PlainTextComponentSerializer.plainText().serialize(e.message()));
+                PlayerDataHandler.getInstance().savePlayerData(p);
+
+                TextComponent msg = Component.text()
+                        .append(Component.text("Nickname saved as: ").decoration(TextDecoration.BOLD, true).color(NamedTextColor.GREEN))
+                        .append(Component.text(Methods.getInstance().c(settings.getcolor().getString(p.getName()+".Nickname"))))
+                        .build();
+
+                p.sendMessage(msg);
+                NicknameHandler.waitingForNick.remove(p);
+                return;
             }
             for (Player ps : Bukkit.getOnlinePlayers()) {
                 ps.sendMessage(prefix(p).append(message(p, e.message())));
                 Bukkit.getConsoleSender().sendMessage(prefix(p).append(message(p, e.message())));
             }
+            return;
+        }
+        if(NicknameHandler.waitingForNick.contains(p)) {
+            PlayerDataHandler.getInstance().getPlayerData(p).set("Nickname", PlainTextComponentSerializer.plainText().serialize(e.message()));
+            PlayerDataHandler.getInstance().savePlayerData(p);
+
+            TextComponent msg = Component.text()
+                    .append(Component.text("Nickname saved as: ").decoration(TextDecoration.BOLD, true).color(NamedTextColor.GREEN))
+                    .append(Component.text(Methods.getInstance().c(settings.getcolor().getString(p.getName()+".Nickname"))))
+                    .build();
+
+            p.sendMessage(msg);
+            NicknameHandler.waitingForNick.remove(p);
             return;
         }
         TextComponent item = Component.text()

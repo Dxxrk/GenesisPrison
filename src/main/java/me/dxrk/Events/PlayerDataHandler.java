@@ -90,7 +90,9 @@ public class PlayerDataHandler implements Listener {
             String uuid = p.getUniqueId().toString();
             if (pl.get("Name") == null) {
                 pl.set("Name", name);
-
+            }
+            if (pl.get("Nickname") == null) {
+                pl.set("Nickname", name);
             }
             if (pl.get("Staff") == null) {
                 pl.set("Staff", "None");

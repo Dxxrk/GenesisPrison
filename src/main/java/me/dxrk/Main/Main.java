@@ -169,8 +169,8 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         //getCommand("CoinFlip").setExecutor(new CMDCoinflip());
         getCommand("Tokens").setExecutor(new TokensCMD());
         getCommand("Token").setExecutor(new TokensCMD());
-        getCommand("nick").setExecutor(new CMDNickname());
-        getCommand("nickname").setExecutor(new CMDNickname());
+        getCommand("nick").setExecutor(new NicknameHandler());
+        getCommand("nickname").setExecutor(new NicknameHandler());
         getCommand("nicknames").setExecutor(new CMDNickname());
         getCommand("mine").setExecutor(new CMDMine());
         getCommand("vanish").setExecutor(new CMDVanish());
