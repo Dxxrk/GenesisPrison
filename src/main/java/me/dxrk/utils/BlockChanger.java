@@ -148,6 +148,7 @@ public class BlockChanger {
     static {
 
         Class<?> worldServer = ReflectionUtils.getNMSClass("server.level", "WorldServer");
+        Class<?> serverLevel = ReflectionUtils.getNMSClass("server.level", "ServerLevel");
         Class<?> world = ReflectionUtils.getNMSClass("world.level", "World");
         Class<?> craftWorld = ReflectionUtils.getCraftClass("CraftWorld");
         Class<?> craftBlock = ReflectionUtils.getCraftClass("block.CraftBlock");
@@ -2856,33 +2857,57 @@ final class ReflectionUtils {
      */
     public static final String NMS_VERSION;
 
+    /*static {
+        String found = Bukkit.getServer().getMinecraftVersion();
+        try {
+            Class.forName("org.bukkit.craftbukkit.entity.CraftPlayer");
+        } catch (ClassNotFoundException e) {
+            found = null;
+        }
+        if (found == null) throw new IllegalArgumentException(
+                "Failed to get Server Version.");
+        NMS_VERSION = found;
+    }*/
+
     static { // This needs to be right below VERSION because of initialization order.
         // This package loop is used to avoid implementation-dependant strings like
         // Bukkit.getVersion() or Bukkit.getBukkitVersion()
         // which allows easier testing as well.
         String found = null;
-        for (Package pack : Package.getPackages()) {
-            String name = pack.getName();
+        String[] bukkitVer = Bukkit.getServer().getBukkitVersion().split("-");
+        boolean above20_5 = Integer.parseInt(bukkitVer[0].split("\\.")[1]) >= 21 || bukkitVer[0].equals("1.20.5");
+        if(!above20_5) {
+            for (Package pack : Package.getPackages()) {
+                String name = pack.getName();
+                // .v because there are other packages.
+                if (name.startsWith("org.bukkit.craftbukkit.v")) {
+                    found = pack.getName().split("\\.")[3];
 
-            // .v because there are other packages.
-            if (name.startsWith("org.bukkit.craftbukkit.v")) {
-                found = pack.getName().split("\\.")[3];
-
-                // Just a final guard to make sure it finds this important class.
-                // As a protection for forge+bukkit implementation that tend to mix versions.
-                // The real CraftPlayer should exist in the package.
-                // Note: Doesn't seem to function properly. Will need to separate the version
-                // handler for NMS and CraftBukkit for softwares like catmc.
-                try {
-                    Class.forName("org.bukkit.craftbukkit." + found + ".entity.CraftPlayer");
-                    break;
-                } catch (ClassNotFoundException e) {
-                    found = null;
+                    // Just a final guard to make sure it finds this important class.
+                    // As a protection for forge+bukkit implementation that tend to mix versions.
+                    // The real CraftPlayer should exist in the package.
+                    // Note: Doesn't seem to function properly. Will need to separate the version
+                    // handler for NMS and CraftBukkit for softwares like catmc.
+                    try {
+                        Class.forName("org.bukkit.craftbukkit." + found + ".entity.CraftPlayer");
+                        break;
+                    } catch (ClassNotFoundException e) {
+                        found = null;
+                    }
                 }
             }
+            if (found == null) throw new IllegalArgumentException(
+                    "Failed to parse server version. Could not find any package starting with name: 'org.bukkit.craftbukkit.v'");
+        } else {
+            found = Bukkit.getServer().getMinecraftVersion();
+            try {
+                Class.forName("org.bukkit.craftbukkit.entity.CraftPlayer");
+            } catch (ClassNotFoundException e) {
+                found = null;
+            }
+            if (found == null) throw new IllegalArgumentException(
+                    "Failed to get Server Version.");
         }
-        if (found == null) throw new IllegalArgumentException(
-                "Failed to parse server version. Could not find any package starting with name: 'org.bukkit.craftbukkit.v'");
         NMS_VERSION = found;
     }
 
@@ -2912,7 +2937,7 @@ final class ReflectionUtils {
     public static final int PATCH_NUMBER;
 
     static {
-        String[] split = NMS_VERSION.substring(1).split("_");
+        String[] split = NMS_VERSION.substring(1).split("\\.");
         if (split.length < 1) {
             throw new IllegalStateException(
                     "Version number division error: " + Arrays.toString(split) + ' ' + getVersionInformation());
@@ -3001,7 +3026,9 @@ final class ReflectionUtils {
      * "https://www.spigotmc.org/threads/spigot-bungeecord-1-17.510208/#post-4184317">Spigot
      * Thread</a>
      */
-    public static final String CRAFTBUKKIT_PACKAGE = "org.bukkit.craftbukkit." + NMS_VERSION + '.',
+
+
+    public static final String CRAFTBUKKIT_PACKAGE = "org.bukkit.craftbukkit.",
             NMS_PACKAGE = v(17, "net.minecraft.").orElse("net.minecraft.server." + NMS_VERSION + '.');
     /**
      * A nullable public accessible field only available in {@code EntityPlayer}.

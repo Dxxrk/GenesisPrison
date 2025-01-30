@@ -52,8 +52,8 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         ItemMeta am = a.getItemMeta();
         List<String> lore = new ArrayList<>();
         am.setDisplayName("s");
-        am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
-        am.addEnchant(Enchantment.DURABILITY, 32000, true);
+        am.addEnchant(Enchantment.EFFICIENCY, 32000, true);
+        am.addEnchant(Enchantment.UNBREAKING, 32000, true);
         am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         lore.add(c("&b&m-<>-&aEnchants&b&m-<>- "));
         lore.add(c("&cFortune &e10"));
@@ -1231,7 +1231,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
     public static void spawnFireworks(Location location, int amount) {
         Location loc = location;
-        Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
+        Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK_ROCKET);
         FireworkMeta fwm = fw.getFireworkMeta();
 
         fwm.setPower(2);
@@ -1241,7 +1241,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         fw.detonate();
 
         for (int i = 0; i < amount; i++) {
-            Firework fw2 = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
+            Firework fw2 = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK_ROCKET);
             fw2.setFireworkMeta(fwm);
         }
     }

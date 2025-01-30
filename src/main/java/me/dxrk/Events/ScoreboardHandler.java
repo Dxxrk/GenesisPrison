@@ -1,6 +1,5 @@
 package me.dxrk.Events;
 
-import com.connorlinfoot.titleapi.TitleAPI;
 import com.earth2me.essentials.Essentials;
 import me.dxrk.Commands.CMDOptions;
 import me.dxrk.Commands.CMDVanish;
@@ -8,6 +7,10 @@ import me.dxrk.Enchants.SkillsEventsListener;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Tokens.Tokens;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import net.minecraft.server.MinecraftServer;
@@ -47,9 +50,8 @@ public class ScoreboardHandler implements Listener {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
-    private static String format(double tps) {
-        return ((tps > 18.0) ? ChatColor.GREEN : (tps > 16.0) ? ChatColor.YELLOW : ChatColor.RED).toString()
-                + Math.min(Math.round(tps * 100.0) / 100.0, 20.0);
+    private static TextComponent format(double tps) {
+        return Component.text(Math.min(Math.round(tps * 100.0) / 100.0, 20.0)).color((tps > 18.0) ? NamedTextColor.GREEN : (tps > 16.0) ? NamedTextColor.YELLOW : NamedTextColor.RED);
     }
 
     public static ChatColor rainbowSB() {
@@ -672,14 +674,18 @@ public class ScoreboardHandler implements Listener {
             @Override
             public void run() {
 
-                String tps = "";
+                TextComponent tps = null;
 
-                String store = c("&6store.mcgenesis.net");
+                double[] recentTps = new double[4];
+                recentTps[0] = MinecraftServer.getServer().tps5s.getAverage();
+                recentTps[1] = MinecraftServer.getServer().tps1.getAverage();
+                recentTps[2] = MinecraftServer.getServer().tps5.getAverage();
+                recentTps[3] = MinecraftServer.getServer().tps15.getAverage();
 
-                for (double tpss : MinecraftServer.getServer().recentTps) {
-                    String tp = (format(tpss));
-
-                    tps = c("&7Server TPS: " + tp);
+                for (double tpss : recentTps) {
+                    TextComponent tp = (format(tpss));
+                    tps = Component.text("Server TPS: ").color(NamedTextColor.GRAY)
+                            .append(tp);
                 }
 
                 int ping = getPing(p);
@@ -713,11 +719,56 @@ public class ScoreboardHandler implements Listener {
                 String timer;
                 timer = c("&d" + BoostsHandler.timeFormat(BoostsHandler.time.getOrDefault(p.getUniqueId(), 0)));
 
+                //HEADER
+                TextComponent genesis = Component.text("Genesis").decoration(TextDecoration.BOLD, true).color(NamedTextColor.RED)
+                        .append(Component.text("MC").decoration(TextDecoration.BOLD, true).color(NamedTextColor.AQUA));
+                TextComponent connectedTo = Component.text("Connected to: ").color(NamedTextColor.AQUA)
+                        .append(Component.text("Prison").color(NamedTextColor.RED));
+                TextComponent playersOn = Component.text("Players Online: ").color(NamedTextColor.LIGHT_PURPLE)
+                        .append(Component.text(getPlayersOnline()).color(NamedTextColor.RED));
+                TextComponent pingc = Component.text("Ping: ").color(NamedTextColor.GRAY)
+                        .append(Component.text(ping).color(NamedTextColor.GREEN));
+                TextComponent voteParty = Component.text("VoteParty: ").color(NamedTextColor.LIGHT_PURPLE)
+                        .append(Component.text((30 - servervotes) + "/30").color(NamedTextColor.AQUA));
+                //FOOTER
+                TextComponent gap = Component.text("/").color(NamedTextColor.AQUA);
+                TextComponent keys = Component.text("keys go here").color(NamedTextColor.WHITE);
+                TextComponent events = Component.text("Active Events: ").color(NamedTextColor.YELLOW)
+                        .append(Component.text(SkillsEventsListener.events).color(NamedTextColor.YELLOW));
+                TextComponent store = Component.text("store.mcgenesis.net").color(NamedTextColor.RED);
+
+                TextComponent grayLine = Component.text("=-=-=-=-=-=-=-=-=-=-=-=-=-").decoration(TextDecoration.STRIKETHROUGH, true).color(NamedTextColor.GRAY);
+                TextComponent grayLine1 = Component.text("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-").decoration(TextDecoration.STRIKETHROUGH, true).color(NamedTextColor.GRAY);
+                TextComponent darkGrayLine = Component.text("=-=-=-=-=-=-=-=-=-=-=-=-=-").decoration(TextDecoration.STRIKETHROUGH, true).color(NamedTextColor.DARK_GRAY);
+                TextComponent darkGrayLine1 = Component.text("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-").decoration(TextDecoration.STRIKETHROUGH, true).color(NamedTextColor.DARK_GRAY);
+
                 if (titlechanged == false) {
                     //Add keys, stock market, event, and websites into tablist
 
-
-                    TitleAPI.sendTabTitle(p,
+                    p.sendPlayerListHeaderAndFooter(
+                            genesis
+                                    .appendNewline()
+                                    .append(connectedTo)
+                                    .appendNewline()
+                                    .append(playersOn)
+                                    .appendNewline()
+                                    .append(pingc)
+                                    .appendNewline()
+                                    .append(voteParty)
+                                    .appendNewline()
+                                    .appendNewline()
+                                    .append(darkGrayLine)
+                            ,
+                            grayLine1
+                                    .appendNewline().decoration(TextDecoration.STRIKETHROUGH, false)
+                                    .appendNewline()
+                                    .append(keys)
+                                    .appendNewline()
+                                    .append(events)
+                                    .appendNewline()
+                                    .append(store)
+                    );
+                    /*TitleAPI.sendTabTitle(p,
                             //Header
                             c("&c&lGenesis&b&lMC" +
                                     "\n&bConnected to: &cPrison" +
@@ -732,10 +783,33 @@ public class ScoreboardHandler implements Listener {
                                     "\n\n&eActive Events: &e" + SkillsEventsListener.events +
                                     "\n" + boost +
                                     "\n" + timer +
-                                    "\n\n" + store));
+                                    "\n\n" + store));*/
                     titlechanged = true;
                 } else {
-                    TitleAPI.sendTabTitle(p,
+                    p.sendPlayerListHeaderAndFooter(
+                            genesis
+                                    .appendNewline()
+                                    .append(connectedTo)
+                                    .appendNewline()
+                                    .append(playersOn)
+                                    .appendNewline()
+                                    .append(pingc)
+                                    .appendNewline()
+                                    .append(voteParty)
+                                    .appendNewline()
+                                    .appendNewline()
+                                    .append(grayLine)
+                            ,
+                            darkGrayLine1
+                                    .appendNewline().decoration(TextDecoration.STRIKETHROUGH, false)
+                                    .appendNewline()
+                                    .append(keys)
+                                    .appendNewline()
+                                    .append(events)
+                                    .appendNewline()
+                                    .append(store)
+                    );
+                    /*TitleAPI.sendTabTitle(p,
                             //Header
                             c("&c&lGenesis&b&lMC" +
                                     "\n&bConnected to: &cPrison" +
@@ -750,7 +824,7 @@ public class ScoreboardHandler implements Listener {
                                     "\n\n&eActive Events: &e" + SkillsEventsListener.events +
                                     "\n" + boost +
                                     "\n" + timer +
-                                    "\n\n" + store));
+                                    "\n\n" + store));*/
                     titlechanged = false;
                 }
                 if (!p.isOnline()) {

@@ -11,7 +11,6 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -159,7 +158,7 @@ public class NewChatHandler implements Listener {
         TextComponent com = Component.text()
                 .append(Component.text("i").decoration(TextDecoration.BOLD, bold).decoration(TextDecoration.OBFUSCATED, true).color(magicColor))
                 .append(Component.text(rank).decoration(TextDecoration.BOLD, bold).color(NamedTextColor.WHITE))
-                .append(Component.text("i").decoration(TextDecoration.BOLD, bold).decoration(TextDecoration.OBFUSCATED, true).color(rankColor))
+                .append(Component.text("i").decoration(TextDecoration.BOLD, bold).decoration(TextDecoration.OBFUSCATED, true).color(magicColor))
                 .append(Component.text(" " + name + " ").decoration(TextDecoration.BOLD, bold).color(magicColor))
                 .append(Component.text("» ").color(NamedTextColor.DARK_GRAY))
                 .hoverEvent(HoverEvent.showText(Component.text()

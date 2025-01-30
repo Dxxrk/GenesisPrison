@@ -1,3 +1,4 @@
+/*
 package me.dxrk.Events;
 
 import me.dxrk.Commands.CMDAc;
@@ -7,7 +8,6 @@ import me.dxrk.Gangs.Gangs;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Tokens.Tokens;
-import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -731,3 +731,4 @@ public class ChatHandler implements Listener, CommandExecutor {
     private boolean cchat = false;
 
 }
+*/

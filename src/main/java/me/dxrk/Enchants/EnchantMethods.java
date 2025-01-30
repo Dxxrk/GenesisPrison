@@ -10,7 +10,6 @@ import me.dxrk.Mines.MineSystem;
 import me.dxrk.Tokens.Tokens;
 import me.dxrk.Vote.CMDVoteShop;
 import me.dxrk.utils.WaveEffect;
-import mkremins.fanciful.FancyMessage;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -87,8 +86,8 @@ public class EnchantMethods implements CommandExecutor {
         ItemMeta am = a.getItemMeta();
         List<String> lore = new ArrayList<>();
         am.setDisplayName(c("&cTest Pickaxe"));
-        am.addEnchant(Enchantment.DIG_SPEED, 32000, true);
-        am.addEnchant(Enchantment.DURABILITY, 32000, true);
+        am.addEnchant(Enchantment.EFFICIENCY, 32000, true);
+        am.addEnchant(Enchantment.UNBREAKING, 32000, true);
         am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         lore.add(c("&b&m-<>-&aEnchants&b&m-<>- "));
         lore.add(c("&c" + Enchant + " &e9999"));
@@ -949,7 +948,7 @@ public class EnchantMethods implements CommandExecutor {
                 }
             }
             if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".LuckyBlock-Messages")) {
-                FancyMessage msg = new FancyMessage(c("&f&lLuckyblocks &8| &7(hover)"));
+                /*FancyMessage msg = new FancyMessage(c("&f&lLuckyblocks &8| &7(hover)"));
                 msg.color(ChatColor.WHITE);
                 msg.style(ChatColor.BOLD);
                 ArrayList<String> tooltip = new ArrayList<>();
@@ -977,7 +976,7 @@ public class EnchantMethods implements CommandExecutor {
                     tooltip.add(c("&fSeasonal: +" + totalseasonal));
                 }
                 msg.tooltip(tooltip);
-                msg.send(p);
+                msg.send(p);*/
             }
         }
     }

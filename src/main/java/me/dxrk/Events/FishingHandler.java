@@ -376,7 +376,7 @@ public class FishingHandler implements Listener, CommandExecutor {
         ItemStack rod = new ItemStack(Material.FISHING_ROD);
         ItemMeta meta = rod.getItemMeta();
         meta.setDisplayName(m.c("&cStarter Rod"));
-        meta.addEnchant(Enchantment.DURABILITY, 32000, true);
+        meta.addEnchant(Enchantment.UNBREAKING, 32000, true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         List<String> lore = new ArrayList<>();
         lore.add(m.c("&b&m-<>-§aEnchants&b&m-<>-"));
@@ -706,7 +706,8 @@ public class FishingHandler implements Listener, CommandExecutor {
         short count = 0;
         for (ItemStack item : p.getInventory().getContents()) {
             if (item == null) continue;
-            if (item.getType() == Material.TROPICAL_FISH && item.getData().getData() == a) {
+            if (item.getType() == Material.TROPICAL_FISH && item.getData().getData() == a) { // this needs changed since getData().getData() is deprecated and likely does not work anymore due to several changes in game. Also look into axolotls :D
+                //to elaborate, i assume, when this was made you had to use bytes to get the different fish, this is no longer the case. use MATERIAL.SALMON, MATERIAL.COD, etc instead
                 count += item.getAmount();
             }
         }

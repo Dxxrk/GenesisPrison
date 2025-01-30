@@ -3,7 +3,6 @@ package me.dxrk.Vote;
 
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -21,7 +20,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +36,7 @@ public class CMDVoteShop implements Listener, CommandExecutor {
         ItemStack i = new ItemStack(Material.PURPLE_STAINED_GLASS_PANE);
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(m.c("&9Genesis&bVote"));
-        im.addEnchant(Enchantment.DURABILITY, 3, true);
+        im.addEnchant(Enchantment.UNBREAKING, 3, true);
         im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         i.setItemMeta(im);
         return i;

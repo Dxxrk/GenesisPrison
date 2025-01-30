@@ -74,7 +74,7 @@ public class CMDMine implements CommandExecutor, Listener {
         portal.setItemMeta(pm);
         mineMenu.setItem(2, portal);
 
-        ItemStack upgrade = new ItemStack(Material.GRASS);
+        ItemStack upgrade = new ItemStack(Material.GRASS_BLOCK);
         ItemMeta um = upgrade.getItemMeta();
         um.setDisplayName(c("&aGo into Build Mode"));
         upgrade.setItemMeta(um);
@@ -354,7 +354,7 @@ public class CMDMine implements CommandExecutor, Listener {
                 }
             }
             if (e.getSlot() == 22) {
-                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.WATER, 1));
+                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.WATER_BUCKET, 1));
                 MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
                 if (FishingHandler.getInstance().hasPick(p)) {
                     PlayerDataHandler.getInstance().savePickaxe(p);

@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -26,7 +26,7 @@
             <plugin>
                 <groupId>ca.bkaw</groupId>
                 <artifactId>paper-nms-maven-plugin</artifactId>
-                <version>1.4.2</version>
+                <version>1.4.5</version>
                 <executions>
                     <execution>
                         <phase>process-classes</phase>
@@ -48,7 +48,7 @@
                         <artifact>
                             <groupId>org.purpurmc.purpur</groupId>
                             <artifactId>dev-bundle</artifactId>
-                            <version>1.20.4-R0.1-SNAPSHOT</version>
+                            <version>1.21.1-R0.1-SNAPSHOT</version>
                             <!-- ${gameVersion} will be replaced with the game version to use -->
                         </artifact>
                     </devBundle>
@@ -144,7 +144,7 @@
             <!-- Custom dev bundles get the group id ca.bkaw.nms instead of just ca.bkaw -->
             <groupId>ca.bkaw.nms</groupId>
             <artifactId>purpur-nms-build</artifactId> <!-- Note that this is forktest-nms -->
-            <version>1.20.4-SNAPSHOT</version>
+            <version>1.21.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
@@ -176,7 +176,7 @@
         <dependency>
             <groupId>net.citizensnpcs</groupId>
             <artifactId>citizens-main</artifactId>
-            <version>2.0.33-SNAPSHOT</version>
+            <version>2.0.35-SNAPSHOT</version>
             <type>jar</type>
             <scope>provided</scope>
             <exclusions>
@@ -223,14 +223,7 @@
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>5.2.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.ConnorLinfoot</groupId>
-            <artifactId>TitleAPI</artifactId>
-            <version>1.8.1</version>
+            <version>5.3.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -244,7 +237,7 @@
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
-            <version>7.0.9</version>
+            <version>7.0.12</version>
             <scope>provided</scope>
         </dependency>
 

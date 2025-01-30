@@ -420,9 +420,9 @@ public class TrinketHandler implements Listener, CommandExecutor {
         ItemStack i = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', "&9Genesis"));
-        im.addEnchant(Enchantment.DURABILITY, 0, false);
+        im.addEnchant(Enchantment.UNBREAKING, 0, false);
         i.setItemMeta(im);
-        i.removeEnchantment(Enchantment.DURABILITY);
+        i.removeEnchantment(Enchantment.UNBREAKING);
         return i;
     }
 

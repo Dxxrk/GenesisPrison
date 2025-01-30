@@ -2,7 +2,6 @@ package me.dxrk.Events;
 
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
-import mkremins.fanciful.FancyMessage;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -13,7 +12,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -226,7 +224,7 @@ public class KitAndWarp implements Listener {
                 second == null) {
             e.setCancelled(true);
 
-            FancyMessage minewarps = new FancyMessage("");
+            /*FancyMessage minewarps = new FancyMessage("");
             p.sendMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "Mine Warps:");
 
             for (String s : getRankedMines()) {
@@ -242,7 +240,7 @@ public class KitAndWarp implements Listener {
                 }
                 otherwarps.then(s).tooltip(ChatColor.RED + "You can not warp here!").command("/warp " + s).color(ChatColor.RED).then(", ").color(ChatColor.GRAY);
             }
-            otherwarps.send(p);
+            otherwarps.send(p);*/
         }
     }
 }

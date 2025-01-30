@@ -1,6 +1,5 @@
 package me.dxrk.Events;
 
-import com.connorlinfoot.titleapi.TitleAPI;
 import me.dxrk.Enchants.PickaxeLevel;
 import me.dxrk.Enchants.PickaxeSkillTree;
 import me.dxrk.Main.Main;
@@ -8,6 +7,10 @@ import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Mines.MineHandler;
 import me.dxrk.Vote.CMDVoteShop;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -22,6 +25,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -273,7 +277,9 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         RankupHandler.getInstance().setRank(p, 1);
         Main.econ.withdrawPlayer(p, Main.econ.getBalance(p));
         PlayerDataHandler.getInstance().savePlayerData(p);
-        TitleAPI.sendTitle(p, 2, 40, 2, m.c("&c&lPrestiged!"), m.c("&b&lPrestige +1"));
+        Title t = Title.title(Component.text("Prestiged!").decorate(TextDecoration.BOLD).color(NamedTextColor.RED), Component.text("Prestige +1").decorate(TextDecoration.BOLD).color(NamedTextColor.BLUE),
+                Title.Times.times(Duration.ofMillis(100), Duration.ofSeconds(2), Duration.ofMillis(100)));
+
         MineHandler.getInstance().updateMine(p, 1);
         CMDVoteShop.addCoupon(p, 0.25);
         LocksmithHandler.getInstance().addKey(p, "Seasonal", 1);

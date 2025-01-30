@@ -1,17 +1,21 @@
 package me.dxrk.Events;
 
 
-import com.connorlinfoot.titleapi.TitleAPI;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Mines.MineSystem;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -101,34 +105,44 @@ public class MomentumHandler implements Listener {
     public static void sendTitleMomentum(Player p) {
         int seconds = getSeconds(p.getUniqueId());
         if (seconds == 300) {
-            TitleAPI.sendTitle(p, 2, 40, 2, m.c("&d&lMomentum"), m.c("&b&l5% Income"));
+            Title t = Title.title(Component.text("Momentum").decorate(TextDecoration.BOLD).color(NamedTextColor.LIGHT_PURPLE), Component.text("5% Income").decorate(TextDecoration.BOLD).color(NamedTextColor.AQUA),
+                    Title.Times.times(Duration.ofMillis(100), Duration.ofSeconds(2), Duration.ofMillis(100)));
         }
         if (seconds == 600) {
-            TitleAPI.sendTitle(p, 2, 40, 2, m.c("&d&lMomentum"), m.c("&b&l10% Income"));
+            Title t = Title.title(Component.text("Momentum").decorate(TextDecoration.BOLD).color(NamedTextColor.LIGHT_PURPLE), Component.text("10% Income").decorate(TextDecoration.BOLD).color(NamedTextColor.AQUA),
+                    Title.Times.times(Duration.ofMillis(100), Duration.ofSeconds(2), Duration.ofMillis(100)));
         }
         if (seconds == 900) {
-            TitleAPI.sendTitle(p, 2, 40, 2, m.c("&d&lMomentum"), m.c("&b&l15% Income"));
+            Title t = Title.title(Component.text("Momentum").decorate(TextDecoration.BOLD).color(NamedTextColor.LIGHT_PURPLE), Component.text("15% Income").decorate(TextDecoration.BOLD).color(NamedTextColor.AQUA),
+                    Title.Times.times(Duration.ofMillis(100), Duration.ofSeconds(2), Duration.ofMillis(100)));
         }
         if (seconds == 1200) {
-            TitleAPI.sendTitle(p, 2, 40, 2, m.c("&d&lMomentum"), m.c("&b&l20% Income"));
+            Title t = Title.title(Component.text("Momentum").decorate(TextDecoration.BOLD).color(NamedTextColor.LIGHT_PURPLE), Component.text("20% Income").decorate(TextDecoration.BOLD).color(NamedTextColor.AQUA),
+                    Title.Times.times(Duration.ofMillis(100), Duration.ofSeconds(2), Duration.ofMillis(100)));
         }
         if (seconds == 1500) {
-            TitleAPI.sendTitle(p, 2, 40, 2, m.c("&d&lMomentum"), m.c("&b&l25% Income"));
+            Title t = Title.title(Component.text("Momentum").decorate(TextDecoration.BOLD).color(NamedTextColor.LIGHT_PURPLE), Component.text("25% Income").decorate(TextDecoration.BOLD).color(NamedTextColor.AQUA),
+                    Title.Times.times(Duration.ofMillis(100), Duration.ofSeconds(2), Duration.ofMillis(100)));
         }
         if (seconds == 1800) {
-            TitleAPI.sendTitle(p, 2, 40, 2, m.c("&d&lMomentum"), m.c("&b&l30% Income"));
+            Title t = Title.title(Component.text("Momentum").decorate(TextDecoration.BOLD).color(NamedTextColor.LIGHT_PURPLE), Component.text("30% Income").decorate(TextDecoration.BOLD).color(NamedTextColor.AQUA),
+                    Title.Times.times(Duration.ofMillis(100), Duration.ofSeconds(2), Duration.ofMillis(100)));
         }
         if (seconds == 2100) {
-            TitleAPI.sendTitle(p, 2, 40, 2, m.c("&d&lMomentum"), m.c("&b&l35% Income"));
+            Title t = Title.title(Component.text("Momentum").decorate(TextDecoration.BOLD).color(NamedTextColor.LIGHT_PURPLE), Component.text("35% Income").decorate(TextDecoration.BOLD).color(NamedTextColor.AQUA),
+                    Title.Times.times(Duration.ofMillis(100), Duration.ofSeconds(2), Duration.ofMillis(100)));
         }
         if (seconds == 2400) {
-            TitleAPI.sendTitle(p, 2, 40, 2, m.c("&d&lMomentum"), m.c("&b&l40% Income"));
+            Title t = Title.title(Component.text("Momentum").decorate(TextDecoration.BOLD).color(NamedTextColor.LIGHT_PURPLE), Component.text("40% Income").decorate(TextDecoration.BOLD).color(NamedTextColor.AQUA),
+                    Title.Times.times(Duration.ofMillis(100), Duration.ofSeconds(2), Duration.ofMillis(100)));
         }
         if (seconds == 2700) {
-            TitleAPI.sendTitle(p, 2, 40, 2, m.c("&d&lMomentum"), m.c("&b&l45% Income"));
+            Title t = Title.title(Component.text("Momentum").decorate(TextDecoration.BOLD).color(NamedTextColor.LIGHT_PURPLE), Component.text("45% Income").decorate(TextDecoration.BOLD).color(NamedTextColor.AQUA),
+                    Title.Times.times(Duration.ofMillis(100), Duration.ofSeconds(2), Duration.ofMillis(100)));
         }
         if (seconds == 3000) {
-            TitleAPI.sendTitle(p, 2, 40, 2, m.c("&d&lMomentum"), m.c("&b&l50% Income"));
+            Title t = Title.title(Component.text("Momentum").decorate(TextDecoration.BOLD).color(NamedTextColor.LIGHT_PURPLE), Component.text("50% Income").decorate(TextDecoration.BOLD).color(NamedTextColor.AQUA),
+                    Title.Times.times(Duration.ofMillis(100), Duration.ofSeconds(2), Duration.ofMillis(100)));
         }
 
     }

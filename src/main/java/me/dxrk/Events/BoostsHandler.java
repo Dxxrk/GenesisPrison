@@ -221,11 +221,11 @@ public class BoostsHandler implements Listener, CommandExecutor {
         lore.add(m.c("&bPower: &a" + power));
         lore.add(m.c("&bLength: &a" + timeFormat(duration)));
         bm.setLore(lore);
-        bm.addEnchant(Enchantment.DURABILITY, 0, false);
+        bm.addEnchant(Enchantment.UNBREAKING, 0, false);
         bm.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         bm.addItemFlags(ItemFlag.values());
         boost.setItemMeta(bm);
-        boost.removeEnchantment(Enchantment.DURABILITY);
+        boost.removeEnchantment(Enchantment.UNBREAKING);
         return boost;
     }
 

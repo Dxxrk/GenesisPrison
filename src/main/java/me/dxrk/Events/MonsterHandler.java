@@ -3,15 +3,13 @@ package me.dxrk.Events;
 
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.DoubleTag;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,6 +24,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -292,12 +291,9 @@ public class MonsterHandler implements Listener, CommandExecutor {
         lore.add(m.c("&7Rarity: " + rarity));
         lore.add(m.c("&7Boost: &b" + bonusmoney + "% Income Boost"));
         lm.setLore(lore);
+        NamespacedKey key = new NamespacedKey(Main.plugin, "stopStacking");
+        lm.getPersistentDataContainer().set(key, PersistentDataType.DOUBLE, new Random().nextDouble());
         ladon.setItemMeta(lm);
-        net.minecraft.world.item.ItemStack i2 = CraftItemStack.asNMSCopy(ladon);
-        CompoundTag itemcompound = (i2.hasTag()) ? i2.getTag() : new CompoundTag();
-        itemcompound.put("toStopStacking", DoubleTag.valueOf(new Random().nextDouble()));
-        i2.setTag(itemcompound);
-        ladon = CraftItemStack.asBukkitCopy(i2);
         return ladon;
     }
 
@@ -312,12 +308,9 @@ public class MonsterHandler implements Listener, CommandExecutor {
         lore.add(m.c("&7Rarity: " + rarity));
         lore.add(m.c("&7Boost: &e" + bonus + "% Token Boost"));
         im.setLore(lore);
+        NamespacedKey key = new NamespacedKey(Main.plugin, "stopStacking");
+        im.getPersistentDataContainer().set(key, PersistentDataType.DOUBLE, new Random().nextDouble());
         item.setItemMeta(im);
-        net.minecraft.world.item.ItemStack i2 = CraftItemStack.asNMSCopy(item);
-        CompoundTag itemcompound = (i2.hasTag()) ? i2.getTag() : new CompoundTag();
-        itemcompound.put("toStopStacking", DoubleTag.valueOf(new Random().nextDouble()));
-        i2.setTag(itemcompound);
-        item = CraftItemStack.asBukkitCopy(i2);
         return item;
     }
 
@@ -332,12 +325,9 @@ public class MonsterHandler implements Listener, CommandExecutor {
         lore.add(m.c("&7Rarity: " + rarity));
         lore.add(m.c("&7Boost: &a" + bonus + "% Gem Boost"));
         im.setLore(lore);
+        NamespacedKey key = new NamespacedKey(Main.plugin, "stopStacking");
+        im.getPersistentDataContainer().set(key, PersistentDataType.DOUBLE, new Random().nextDouble());
         item.setItemMeta(im);
-        net.minecraft.world.item.ItemStack i2 = CraftItemStack.asNMSCopy(item);
-        CompoundTag itemcompound = (i2.hasTag()) ? i2.getTag() : new CompoundTag();
-        itemcompound.put("toStopStacking", DoubleTag.valueOf(new Random().nextDouble()));
-        i2.setTag(itemcompound);
-        item = CraftItemStack.asBukkitCopy(i2);
         return item;
     }
 
@@ -353,12 +343,9 @@ public class MonsterHandler implements Listener, CommandExecutor {
         lore.add(m.c("&7Boosts: &b" + bonus + "% Income Boost"));
         lore.add(m.c("             &e" + bonus2 + "% Token Boost"));
         im.setLore(lore);
+        NamespacedKey key = new NamespacedKey(Main.plugin, "stopStacking");
+        im.getPersistentDataContainer().set(key, PersistentDataType.DOUBLE, new Random().nextDouble());
         item.setItemMeta(im);
-        net.minecraft.world.item.ItemStack i2 = CraftItemStack.asNMSCopy(item);
-        CompoundTag itemcompound = (i2.hasTag()) ? i2.getTag() : new CompoundTag();
-        itemcompound.put("toStopStacking", DoubleTag.valueOf(new Random().nextDouble()));
-        i2.setTag(itemcompound);
-        item = CraftItemStack.asBukkitCopy(i2);
         return item;
     }
 
@@ -375,12 +362,9 @@ public class MonsterHandler implements Listener, CommandExecutor {
         lore.add(m.c("             &e" + bonus2 + "% Token Boost"));
         lore.add(m.c("             &a" + bonus3 + "% Gem Boost"));
         im.setLore(lore);
+        NamespacedKey key = new NamespacedKey(Main.plugin, "stopStacking");
+        im.getPersistentDataContainer().set(key, PersistentDataType.DOUBLE, new Random().nextDouble());
         item.setItemMeta(im);
-        net.minecraft.world.item.ItemStack i2 = CraftItemStack.asNMSCopy(item);
-        CompoundTag itemcompound = (i2.hasTag()) ? i2.getTag() : new CompoundTag();
-        itemcompound.put("toStopStacking", DoubleTag.valueOf(new Random().nextDouble()));
-        i2.setTag(itemcompound);
-        item = CraftItemStack.asBukkitCopy(i2);
         return item;
     }
 

@@ -10,7 +10,6 @@ import me.dxrk.Events.SellHandler;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
-import mkremins.fanciful.FancyMessage;
 import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.*;
 import org.bukkit.block.Chest;
@@ -299,7 +298,7 @@ public class CMDVote implements Listener, CommandExecutor {
                     return;
                 }
                 if (e.getCurrentItem().getDurability() == 5) {
-                    Player p = (Player) e.getWhoClicked();
+                    /*Player p = (Player) e.getWhoClicked();
                     p.sendMessage("");
                     FancyMessage vote = (new FancyMessage("✔      ")).color(ChatColor.AQUA).style(ChatColor.BOLD);
                     vote.then("Click me to vote").color(ChatColor.AQUA).style(ChatColor.UNDERLINE).tooltip(ChatColor.GRAY + "Click here.");
@@ -316,7 +315,7 @@ public class CMDVote implements Listener, CommandExecutor {
                     vote.then("      ✔").color(ChatColor.AQUA).style(ChatColor.BOLD);
                     vote.send(p);
                     p.sendMessage("");
-                    p.closeInventory();
+                    p.closeInventory();*/
                 }
             }
         }

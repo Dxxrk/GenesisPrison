@@ -151,9 +151,9 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
 
 
         getCommand("blocks").setExecutor(new BlocksHandler());
-        getCommand("ChatColor").setExecutor(new ChatHandler());
+        /*getCommand("ChatColor").setExecutor(new ChatHandler());
         //getCommand("Chat").setExecutor(new ChatHandler());
-        getCommand("MuteChat").setExecutor(new ChatHandler());
+        getCommand("MuteChat").setExecutor(new ChatHandler());*/
         getCommand("rename").setExecutor(new CMDRename());
         getCommand("renamepaper").setExecutor(new CMDRename());
         getCommand("relore").setExecutor(new CMDRename());
@@ -260,6 +260,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("crystals").setExecutor(new FishingHandler());
         getCommand("buildmode").setExecutor(new BuildModeHandler());
         getCommand("giveflare").setExecutor(new EventFlareHandler());
+        getCommand("listversions").setExecutor(this);
 
         registerEvents(this, new Listener[]{new MonsterHandler()});
         registerEvents(this, new Listener[]{new CMDVanish()});
@@ -334,12 +335,12 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
                     }
                     //HASTE
                     if (settings.getOptions().getBoolean(p.getUniqueId() + ".Haste-Effect")) {
-                        if (!p.hasPotionEffect(PotionEffectType.FAST_DIGGING)) {
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 999999, 10));
+                        if (!p.hasPotionEffect(PotionEffectType.HASTE)) {
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, 999999, 10));
                         }
                     } else {
-                        if (p.hasPotionEffect(PotionEffectType.FAST_DIGGING)) {
-                            p.removePotionEffect(PotionEffectType.FAST_DIGGING);
+                        if (p.hasPotionEffect(PotionEffectType.HASTE)) {
+                            p.removePotionEffect(PotionEffectType.HASTE);
                         }
                     }
                     //NIGHT VISION
@@ -586,6 +587,12 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
                     motd = savemotd;
                 }
             }
+        }
+        if(label.equalsIgnoreCase("listversions")) {
+            cs.sendMessage("Bukkit.getServer().getClass().getPackage().getName() = "+Bukkit.getServer().getClass().getPackage().getName());
+            cs.sendMessage("Bukkit.getVersion() = "+ Bukkit.getVersion());
+            cs.sendMessage("Bukkit.getBukkitVersion() = "+Bukkit.getServer().getBukkitVersion());
+            cs.sendMessage("Bukkit.getMinecraftVersion() = "+Bukkit.getServer().getMinecraftVersion());
         }
 
 

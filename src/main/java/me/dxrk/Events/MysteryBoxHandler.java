@@ -13,18 +13,19 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_20_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_20_R3.util.CraftMagicNumbers;
+import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -34,13 +35,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.EnderChest;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class MysteryBoxHandler implements Listener, CommandExecutor {
 
@@ -58,7 +55,8 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
     public void spawnItem(ItemStack i, Location loc) {
         Item item = loc.getWorld().dropItem(loc, i);
         final ArmorStand stand = loc.getWorld().spawn(loc, ArmorStand.class);
-        stand.setPassenger(item);
+        //stand.setPassenger(item);
+        stand.addPassenger(item);
     }
 
     @EventHandler
@@ -265,18 +263,19 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
         BlockPos bp = new BlockPos(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
         //PacketPlayOutBlockChange change = new PacketPlayOutBlockChange(s, bp);
 
-        ClientboundBlockUpdatePacket update = new ClientboundBlockUpdatePacket(bp, CraftMagicNumbers.getBlock(Material.ENDER_CHEST, (new EnderChest(BlockFace.NORTH)).getData()));
+        ClientboundBlockUpdatePacket update = new ClientboundBlockUpdatePacket(bp, CraftMagicNumbers.getBlock(Material.ENDER_CHEST).defaultBlockState().rotate(Rotation.NONE));
         if (Yaw.getYaw(p).equals(Yaw.NORTH)) {
-             update = new ClientboundBlockUpdatePacket(bp, CraftMagicNumbers.getBlock(Material.ENDER_CHEST, (new EnderChest(BlockFace.SOUTH)).getData()));
+            update = new ClientboundBlockUpdatePacket(bp, CraftMagicNumbers.getBlock(Material.ENDER_CHEST).defaultBlockState().rotate(Rotation.CLOCKWISE_180));
         }
         if (Yaw.getYaw(p).equals(Yaw.EAST)) {
-            update = new ClientboundBlockUpdatePacket(bp, CraftMagicNumbers.getBlock(Material.ENDER_CHEST, (new EnderChest(BlockFace.WEST)).getData()));
+            update = new ClientboundBlockUpdatePacket(bp, CraftMagicNumbers.getBlock(Material.ENDER_CHEST).defaultBlockState().rotate(Rotation.COUNTERCLOCKWISE_90));
         }
         if (Yaw.getYaw(p).equals(Yaw.SOUTH)) {
-            update = new ClientboundBlockUpdatePacket(bp, CraftMagicNumbers.getBlock(Material.ENDER_CHEST, (new EnderChest(BlockFace.NORTH)).getData()));
+            update = new ClientboundBlockUpdatePacket(bp, CraftMagicNumbers.getBlock(Material.ENDER_CHEST).defaultBlockState().rotate(Rotation.NONE));
         }
         if (Yaw.getYaw(p).equals(Yaw.WEST)) {
-            update = new ClientboundBlockUpdatePacket(bp, CraftMagicNumbers.getBlock(Material.ENDER_CHEST, (new EnderChest(BlockFace.EAST)).getData()));
+            update = new ClientboundBlockUpdatePacket(bp, CraftMagicNumbers.getBlock(Material.ENDER_CHEST).defaultBlockState().rotate(Rotation.CLOCKWISE_90)); // test if this works, get the rotation for each afterward
+
         }
 
         ClientboundBlockEventPacket event = new ClientboundBlockEventPacket(bp, Blocks.ENDER_CHEST, 1, 1);
@@ -359,7 +358,19 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
         stand.setSmall(true);
         //stand.setItemSlot(EquipmentSlot.HEAD, CraftItemStack.asNMSCopy(item));
         //PacketPlayOutSpawnEntityLiving spawnP = new PacketPlayOutSpawnEntityLiving(stand);
-        ClientboundAddEntityPacket spawn = new ClientboundAddEntityPacket(stand);
+        ClientboundAddEntityPacket spawn = new ClientboundAddEntityPacket(
+                stand.getId(),
+                stand.getUUID(),
+                stand.getX(),
+                stand.getY(),
+                stand.getZ(),
+                loc.getPitch(),
+                loc.getYaw(),
+                stand.getType(),
+                0,
+                Vec3.ZERO,
+                loc.getYaw()
+        );
         //PacketPlayOutEntityEquipment EquipP = new PacketPlayOutEntityEquipment(stand.getId(), 4, CraftItemStack.asNMSCopy(item));
         List<Pair<EquipmentSlot, net.minecraft.world.item.ItemStack>> list = new ArrayList<>();
         list.add(new Pair<>(EquipmentSlot.HEAD, CraftItemStack.asNMSCopy(item)));
@@ -379,7 +390,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
             @Override
             public void run() {
                 if (up == 25) {
-                    //PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(stand.getId());
+
                     ClientboundRemoveEntitiesPacket remove = new ClientboundRemoveEntitiesPacket(stand.getId());
                     ((CraftPlayer) p).getHandle().connection.send(remove);
                     startAnimation(p, crate, loc.clone().add(0, 3, 0));
@@ -389,11 +400,12 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
                 Location l = new Location(loc.getWorld(), center.getX(), center.getY(), center.getZ(), rotate, 0);
                 //stand.setLocation(center.getX(), center.getY() + y, center.getZ(), l.getYaw(), 0);
                 stand.moveTo(center.getX(), center.getY() + y, center.getZ(), l.getYaw(), 0);
-                //Vector3f v = new Vector3f(0, rotate, 0);
+
                 Rotations angle = new Rotations(0, rotate, 0);
                 stand.setHeadPose(angle);
 
                 ((CraftPlayer) p).getHandle().connection.send(new ClientboundTeleportEntityPacket(stand));
+
                 ((CraftPlayer) p).getHandle().connection.send(new ClientboundSetEntityDataPacket(stand.getId(), stand.getEntityData().packDirty()));
 
                 up++;
@@ -440,7 +452,19 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
 
         ClientboundSetEntityDataPacket metadatap = new ClientboundSetEntityDataPacket(stand.getId(), stand.getEntityData().packDirty());
 
-        ClientboundAddEntityPacket addItem = new ClientboundAddEntityPacket(item);
+        ClientboundAddEntityPacket addItem = new ClientboundAddEntityPacket(
+                item.getId(),
+                item.getUUID(),
+                item.getX(),
+                item.getY(),
+                item.getZ(),
+                loc.getPitch(),
+                loc.getYaw(),
+                item.getType(),
+                0,
+                Vec3.ZERO,
+                loc.getYaw()
+        );
         //((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntity(item, 2, 100));
         ((CraftPlayer)p).getHandle().connection.send(addItem);
         //PacketPlayOutAttachEntity attach = new PacketPlayOutAttachEntity(0, item, stand);
@@ -449,6 +473,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
         ((CraftPlayer) p).getHandle().connection.send(equip);
         //((CraftPlayer) p).getHandle().playerConnection.sendPacket(EquipP);
         ((CraftPlayer) p).getHandle().connection.send(metadatap);
+
         ((CraftPlayer) p).getHandle().connection.send(new ClientboundTeleportEntityPacket(stand));
         ((CraftPlayer) p).getHandle().connection.send(link);
 
@@ -550,7 +575,19 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
                 stand.setInvisible(true);
                 stand.setSmall(true);
                 stand.setItemSlot(EquipmentSlot.HEAD, CraftItemStack.asNMSCopy(item));
-                ClientboundAddEntityPacket spawnP = new ClientboundAddEntityPacket(stand);
+                ClientboundAddEntityPacket spawnP = new ClientboundAddEntityPacket(
+                        stand.getId(),
+                        stand.getUUID(),
+                        stand.getX(),
+                        stand.getY(),
+                        stand.getZ(),
+                        loc.getPitch(),
+                        loc.getYaw(),
+                        stand.getType(),
+                        0,
+                        Vec3.ZERO,
+                        loc.getYaw()
+                );
                 //PacketPlayOutEntityEquipment EquipP = new PacketPlayOutEntityEquipment(stand.getId(), 4, CraftItemStack.asNMSCopy(item));
                 List<Pair<EquipmentSlot, net.minecraft.world.item.ItemStack>> list = new ArrayList<>();
                 list.add(new Pair<>(EquipmentSlot.HEAD, CraftItemStack.asNMSCopy(item)));
@@ -575,6 +612,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
                         //stand.teleport(center.clone().add(0, y, 0));
                         Location l = center.clone().add(0, y, 0);
                         stand.moveTo(l.getX(), l.getY(), l.getZ(), 0, 0);
+
                         ((CraftPlayer) p).getHandle().connection.send(new ClientboundTeleportEntityPacket(stand));
                         up++;
                     }
