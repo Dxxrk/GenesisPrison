@@ -80,7 +80,7 @@ public class CMDMine implements CommandExecutor, Listener {
         upgrade.setItemMeta(um);
         mineMenu.setItem(6, upgrade);
 
-        ItemStack reset = new ItemStack(Material.REDSTONE_WALL_TORCH);
+        ItemStack reset = new ItemStack(Material.REDSTONE_TORCH);
         ItemMeta rm = reset.getItemMeta();
         rm.setDisplayName(c("&aMine Reset Settings"));
         reset.setItemMeta(rm);

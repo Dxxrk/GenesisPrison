@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.phys.Vec3;
@@ -114,6 +115,7 @@ public class MysteryBoxHandler implements Listener, CommandExecutor {
     @EventHandler
     public void onPlace(PlayerInteractEvent e) {
         Player p = e.getPlayer();
+
 
         if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
         if (p.getEquipment().getItemInMainHand() == null) return;

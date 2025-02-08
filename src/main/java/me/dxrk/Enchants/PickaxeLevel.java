@@ -52,7 +52,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         ItemMeta am = a.getItemMeta();
         List<String> lore = new ArrayList<>();
         am.setDisplayName("s");
-        am.addEnchant(Enchantment.EFFICIENCY, 32000, true);
+        am.addEnchant(Enchantment.EFFICIENCY, 6, true);
         am.addEnchant(Enchantment.UNBREAKING, 32000, true);
         am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         lore.add(c("&b&m-<>-&aEnchants&b&m-<>- "));

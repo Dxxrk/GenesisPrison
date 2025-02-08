@@ -19,9 +19,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.*;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MineHandler implements Listener, CommandExecutor {
 
@@ -52,6 +57,30 @@ public class MineHandler implements Listener, CommandExecutor {
     // You then use the list to grab materials +-1 from the initial mineblock | i.e if the block is moss stone, you would also get cobblestone and stone in your mine
     // So on and so forth with every single block up until you get to prestige 2000, which is 40 different initial mine blocks
     // This also means changing the blocks that the donator ranks get to be more precise and balanced and not as grindy to reach the next block.
+
+    /*public static Map<Material, Float> MAT_HARDNESS = new HashMap<>();
+    public static SortedMap<Material, Float> orderblocks = new TreeMap<>();
+
+    private static void addHardness() {
+        Arrays.stream(Material.values()).filter(Material::isBlock).filter(Material::isItem).forEach(MineHandler::h);
+    }
+
+    private static void h(Material mat) {
+        MAT_HARDNESS.put(mat, mat.getHardness());
+    }
+
+    private static List<ItemStack> blocks() {
+        addHardness();
+        MAT_HARDNESS.get
+    }*/
+
+
+    private static List<Material> zone1() { // basic overworld
+        List<Material> blocks = new ArrayList<>();
+        blocks.add(Material.STONE);
+        blocks.add(Material.)
+    }
+
 
     private static List<ItemStack> mineBlocks() {
         List<ItemStack> mineblocks = new ArrayList<>();

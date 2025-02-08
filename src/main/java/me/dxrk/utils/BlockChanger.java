@@ -1,17 +1,5 @@
 package me.dxrk.utils;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -23,27 +11,43 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.util.datafix.fixes.LeavesFix;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
+import org.enginehub.linbus.stream.token.LinToken;
+
 /**
+ * @version 1.8.2
  * @author TheGaming999
- * @version 1.8.1
- * @apiNote 1.7 - 1.20 easy to use class to take advantage of different methods
- * that allow you to change blocks at rocket speeds
- * <p>
- * Made with the help of <a href=
- * "https://github.com/CryptoMorin/XSeries/blob/master/src/main/java/com/cryptomorin/xseries/ReflectionUtils.java">ReflectionUtils</a>
- * by <a href="https://github.com/CryptoMorin">CryptoMorin</a>
- * </p>
- * <p>
- * Uses the methods found
- * <a href="https://www.spigotmc.org/threads/395868/">here</a> by
- * <a href="https://www.spigotmc.org/members/220001/">NascentNova</a>
- * </p>
- * <p>
- * Async methods were made using
- * <a href="https://www.spigotmc.org/threads/409003/">How to handle
- * heavy splittable tasks</a> by
- * <a href="https://www.spigotmc.org/members/43809/">7smile7</a>
- * </p>
+ * @apiNote 1.7 - 1.20.4 easy to use class to take advantage of different
+ *          methods
+ *          that allow you to change blocks at rocket speeds
+ *          <p>
+ *          Made with the help of <a href=
+ *          "https://github.com/CryptoMorin/XSeries/blob/master/src/main/java/com/cryptomorin/xseries/ReflectionUtils.java">ReflectionUtils</a>
+ *          by <a href="https://github.com/CryptoMorin">CryptoMorin</a>
+ *          </p>
+ *          <p>
+ *          Uses the methods found
+ *          <a href="https://www.spigotmc.org/threads/395868/">here</a> by
+ *          <a href="https://www.spigotmc.org/members/220001/">NascentNova</a>
+ *          </p>
+ *          <p>
+ *          Async methods were made using
+ *          <a href="https://www.spigotmc.org/threads/409003/">How to handle
+ *          heavy splittable tasks</a> by
+ *          <a href="https://www.spigotmc.org/members/43809/">7smile7</a>
+ *          </p>
  */
 public class BlockChanger {
 
@@ -70,6 +74,11 @@ public class BlockChanger {
      * <i>Block.getByName({@literal<net.minecraft.world.item.Item>})</i>
      */
     private static final MethodHandle NMS_BLOCK_FROM_NAME;
+    /**
+     * <p>
+     * Invoked parameters ->
+     * <i>{@literal<net.minecraft.world.block.Block>}.getName()</i>
+     */
     private static final MethodHandle NMS_BLOCK_NAME;
     /**
      * <p>
@@ -146,9 +155,12 @@ public class BlockChanger {
     private static final Object AIR_BLOCK_DATA;
 
     static {
-
-        Class<?> worldServer = ReflectionUtils.getNMSClass("server.level", "WorldServer");
-        Class<?> serverLevel = ReflectionUtils.getNMSClass("server.level", "ServerLevel");
+        Class<?> worldServer = null;
+        if(!ReflectionUtils.supports(20, 5)) {
+            worldServer = ReflectionUtils.getNMSClass("server.level", "WorldServer");
+        } else {
+            worldServer = ReflectionUtils.getNMSClass("server.level", "ServerLevel");
+        }
         Class<?> world = ReflectionUtils.getNMSClass("world.level", "World");
         Class<?> craftWorld = ReflectionUtils.getCraftClass("CraftWorld");
         Class<?> craftBlock = ReflectionUtils.getCraftClass("block.CraftBlock");
@@ -230,11 +242,12 @@ public class BlockChanger {
         // Method names
         String asBlock = ReflectionUtils.supports(18) || ReflectionUtils.MINOR_NUMBER < 8 ? "a" : "asBlock";
         String blockGetByName = ReflectionUtils.supports(8) ? "getByName" : "idk";
-        String blockGetName = ReflectionUtils.supports(20) ? "f" : ReflectionUtils.supports(18) ? "h" : "a";
-        String getBlockData = ReflectionUtils.supports(20) ? "n"
+        String blockGetName = ReflectionUtils.supports(21) ? "g" : ReflectionUtils.supports(20) ? ReflectionUtils.supportsPatch(4) ? "h" : "f" // figure out why not work??
+                : ReflectionUtils.supports(18) ? "h" : "a";
+        String getBlockData = ReflectionUtils.supports(21) ? "o" : ReflectionUtils.supports(20) ? ReflectionUtils.supportsPatch(4) ? "o" : "n"
                 : ReflectionUtils.supports(19) ? ReflectionUtils.supportsPatch(3) ? "o" : "m"
                 : ReflectionUtils.supports(18) ? "n" : "getBlockData";
-        String getItem = ReflectionUtils.supports(20) ? "d" : ReflectionUtils.supports(18) ? "c" : "getItem";
+        String getItem = ReflectionUtils.supports(20) ? "g" : ReflectionUtils.supports(20) ? "d" : ReflectionUtils.supports(18) ? "c" : "getItem";
         String setType = ReflectionUtils.supports(18) ? "a" : "setTypeAndData";
         String getChunkAt = ReflectionUtils.supports(18) ? "d" : "getChunkAt";
         String chunkSetType = ReflectionUtils.supports(18) ? "a" : ReflectionUtils.MINOR_NUMBER < 8 ? "setTypeId"
@@ -245,7 +258,8 @@ public class BlockChanger {
                 : "setType";
         String setXYZ = ReflectionUtils.supports(13) ? "d" : "c";
         String getBlockData2 = ReflectionUtils.supports(13) ? "getNMS" : "getBlockData";
-        String removeTileEntity = ReflectionUtils.supports(19) ? "n" : ReflectionUtils.supports(18) ? "m"
+        String removeTileEntity = ReflectionUtils.supports(20) ? "o" : ReflectionUtils.supports(20) && ReflectionUtils.supportsPatch(4) ? "o"
+                : ReflectionUtils.supports(19) ? "n" : ReflectionUtils.supports(18) ? "m"
                 : ReflectionUtils.supports(14) ? "removeTileEntity" : ReflectionUtils.supports(13) ? "n"
                 : ReflectionUtils.supports(9) ? "s" : ReflectionUtils.supports(8) ? "t" : "p";
 
@@ -280,9 +294,9 @@ public class BlockChanger {
         BlockPositionConstructor blockPositionConstructor = null;
 
         try {
-            worldGetHandle = lookup.findVirtual(craftWorld, "getHandle", MethodType.methodType(worldServer));
-            worldGetChunk = lookup.findVirtual(worldServer, getChunkAt,
-                    MethodType.methodType(chunk, int.class, int.class));
+                worldGetHandle = lookup.findVirtual(craftWorld, "getHandle", MethodType.methodType(worldServer));
+                worldGetChunk = lookup.findVirtual(worldServer, getChunkAt,
+                        MethodType.methodType(chunk, int.class, int.class));
             nmsItemStackCopy = lookup.findStatic(craftItemStack, "asNMSCopy",
                     MethodType.methodType(worldItemStack, ItemStack.class));
             blockFromItem = lookup.findStatic(block, asBlock, MethodType.methodType(block, item));
@@ -314,7 +328,8 @@ public class BlockChanger {
             blockDataFromLegacyData = ReflectionUtils.MINOR_NUMBER <= 12
                     ? lookup.findVirtual(block, "fromLegacyData", fromLegacyDataMethodType) : null;
             chunkSetTypeM = lookup.findVirtual(chunk, chunkSetType, chunkSetTypeMethodType);
-            blockNotify = lookup.findVirtual(worldServer, notify, notifyMethodType);
+                blockNotify = lookup.findVirtual(worldServer, notify, notifyMethodType);
+
             chunkGetSections = lookup.findVirtual(chunk, getSections,
                     MethodType.methodType(ReflectionUtils.toArrayClass(chunkSection)));
             chunkSectionSetType = lookup.findVirtual(chunkSection, sectionSetType, chunkSectionSetTypeMethodType);
@@ -398,7 +413,7 @@ public class BlockChanger {
         TILE_ENTITY_MANAGER = ReflectionUtils.supports(8) ? new TileEntityManagerSupported()
                 : new TileEntityManagerDummy();
 
-        Arrays.stream(Material.values()).filter(b -> b.isBlock()).forEach(BlockChanger::addNMSBlockData);
+            Arrays.stream(Material.values()).filter(Material::isBlock).forEach(BlockChanger::addNMSBlockData);
 
         NMS_BLOCK_MATERIALS.put(Material.AIR, AIR_BLOCK_DATA);
 
@@ -450,15 +465,14 @@ public class BlockChanger {
      * Added for debugging purposes.
      * </p>
      */
-    public static void test() {
-    }
+    public static void test() {}
 
     private static void addNMSBlockData(Material material) {
+        if(!material.isItem()) return;
         ItemStack itemStack = new ItemStack(material);
         Object nmsData = getNMSBlockData(itemStack);
         if (nmsData != null) NMS_BLOCK_MATERIALS.put(material, nmsData);
     }
-
     private static void addNMSWorld(World world) {
         if (world == null) return;
         Object nmsWorld = getNMSWorld(world);
@@ -514,7 +528,7 @@ public class BlockChanger {
     /**
      * Changes block type using native NMS world block type and data setter
      * {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      *
      * @param world    world where the block is located
@@ -532,7 +546,7 @@ public class BlockChanger {
     /**
      * Changes block type using native NMS world block type and data setter
      * {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      *
      * @param world     world where the block is located
@@ -550,7 +564,7 @@ public class BlockChanger {
     /**
      * Changes block type using native NMS world block type and data setter
      * {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      *
      * @param world    world where the block is located
@@ -574,7 +588,7 @@ public class BlockChanger {
     /**
      * Changes block type using native NMS world block type and data setter
      * {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      *
      * @param world     world where the block is located
@@ -595,7 +609,7 @@ public class BlockChanger {
     /**
      * Changes block type using native NMS world block type and data setter
      * {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      *
      * @param world    world where the block is located
@@ -613,7 +627,7 @@ public class BlockChanger {
     /**
      * Changes block type using native NMS world block type and data setter
      * {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      *
      * @param world     world where the block is located
@@ -627,7 +641,7 @@ public class BlockChanger {
     /**
      * Changes block type using native NMS world block type and data setter
      * {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      *
      * @param world    world where the block is located
@@ -654,7 +668,7 @@ public class BlockChanger {
     /**
      * Changes block type using native NMS world block type and data setter
      * {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      *
      * @param world     world where the block is located
@@ -674,7 +688,7 @@ public class BlockChanger {
     /**
      * Changes block type using native NMS world block type and data setter
      * {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      *
      * @param location location to put the block at
@@ -691,7 +705,7 @@ public class BlockChanger {
     /**
      * Changes block type using native NMS world block type and data setter
      * {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      *
      * @param location  location to put the block at
@@ -704,7 +718,7 @@ public class BlockChanger {
     /**
      * Changes block type using native NMS world block type and data setter
      * {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      *
      * @param location location to put the block at
@@ -730,7 +744,7 @@ public class BlockChanger {
     /**
      * Changes block type using native NMS world block type and data setter
      * {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      *
      * @param location  location to put the block at
@@ -749,7 +763,7 @@ public class BlockChanger {
     /**
      * Asynchronously changes block type using native NMS world block type and data
      * setter {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      * <br>
      * <br>
@@ -778,7 +792,7 @@ public class BlockChanger {
     /**
      * Mass changes block types using native NMS world block type and data setter
      * {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      *
      * @param world     world where the blocks are located at
@@ -811,7 +825,7 @@ public class BlockChanger {
     /**
      * Mass changes block types using native NMS world block type and data setter
      * {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      *
      * @param world     world where the blocks are located at
@@ -841,7 +855,7 @@ public class BlockChanger {
     /**
      * Asynchronously changes block types using native NMS world block type and data
      * setter {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      * <br>
      * <br>
@@ -882,7 +896,7 @@ public class BlockChanger {
      * from the given ItemStack
      * using native NMS world block type and data setter
      * {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
+     * which surpasses bukkit's {@linkplain Block#setType(Material)
      * Block.setType(Material)} speed.
      * <br>
      * <br>
@@ -906,9 +920,6 @@ public class BlockChanger {
                                                                   boolean physics) {
         World world = loc1.getWorld();
         Object nmsWorld = getWorld(world);
-        if (itemStack.getType() == Material.LAVA) {
-            BLOCK_DATA_GETTER.fromItemStack(itemStack);
-        }
         Object blockData = getBlockData(itemStack);
         int x1 = Math.min(loc1.getBlockX(), loc2.getBlockX());
         int y1 = Math.min(loc1.getBlockY(), loc2.getBlockY());
@@ -951,31 +962,6 @@ public class BlockChanger {
         return workloadFinishFuture;
     }
 
-    /**
-     * Asynchronously fills a cuboid from a corner to another with blocks retrieved
-     * from the given ItemStack
-     * using native NMS world block type and data setter
-     * {@code nmsWorld.setTypeAndData(...)},
-     * which surpasses bukkit's {@linkplain org.bukkit.block.Block#setType(Material)
-     * Block.setType(Material)} speed.
-     * <br>
-     * <br>
-     * Async within this context means:
-     * <ul>
-     * <li>There won't be any TPS loss no matter the amount of blocks being set</li>
-     * <li>It can be safely executed inside an asynchronous task</li>
-     * </ul>
-     *
-     * @param world     world where the blocks are located at
-     * @param loc1      first corner
-     * @param loc2      second corner
-     * @param itemStack ItemStack to apply on the created blocks
-     * @param physics   whether physics such as gravity should be applied or not
-     * @throws IllegalArgumentException if material is not perceived as a block
-     *                                  material
-     * @throws NullPointerException     if the specified material has no block data
-     *                                  assigned to it
-     */
     public static CompletableFuture<Void> setCuboidAsynchronously(Location loc1, Location loc2, ItemStack itemStack,
                                                                   ItemStack itemstack2, ItemStack itemstack3, boolean physics) {
         World world = loc1.getWorld();
@@ -1625,6 +1611,71 @@ public class BlockChanger {
         });
         return workloadFinishFuture;
     }
+    /**
+     * @param loc1 Point 1
+     * @param loc2 Point 2
+     * @param physics Whether to do block physics
+     * @param itemStacks Map of ItemStacks and their respective chances to appear
+     * @param depth Map of ItemStacks and the y level for which they should start appearing
+
+     */
+    public static CompletableFuture<Void> setSectionCuboidAsynchronously(Location loc1, Location loc2,
+                                                                         boolean physics, Map<ItemStack, Integer> itemStacks, Map<ItemStack, Double> depth) {
+        World world = loc1.getWorld();
+        Object nmsWorld = getWorld(world);
+        Map<ItemStack, Object> blockData = new HashMap<>();
+
+        for(ItemStack i : itemStacks.keySet()) {
+            blockData.put(i, getBlockData(i));
+        }
+
+        int x1 = Math.min(loc1.getBlockX(), loc2.getBlockX());
+        int y1 = Math.min(loc1.getBlockY(), loc2.getBlockY());
+        int z1 = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
+        int x2 = Math.max(loc1.getBlockX(), loc2.getBlockX());
+        int y2 = Math.max(loc1.getBlockY(), loc2.getBlockY());
+        int z2 = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
+        int baseX = x1;
+        int baseY = y1;
+        int baseZ = z1;
+        int sizeX = Math.abs(x2 - x1) + 1;
+        int sizeY = Math.abs(y2 - y1) + 1;
+        int sizeZ = Math.abs(z2 - z1) + 1;
+        int x3 = 0, y3 = 0, z3 = 0;
+        Location location = new Location(loc1.getWorld(), baseX + x3, baseY + y3, baseZ + z3);
+        int cuboidSize = sizeX * sizeY * sizeZ;
+        Object blockPosition = newMutableBlockPosition(location);
+        CompletableFuture<Void> workloadFinishFuture = new CompletableFuture<>();
+        WorkloadRunnable workloadRunnable = new WorkloadRunnable();
+        BukkitTask workloadTask = Bukkit.getScheduler().runTaskTimer(PLUGIN, workloadRunnable, 1, 1);
+        for (int i = 0; i < cuboidSize; i++) {
+
+            Map<ItemStack, SectionSetWorkload> workloads = new HashMap<>();
+            for(ItemStack item : blockData.keySet()) {
+                workloads.put(item, new SectionSetWorkload(nmsWorld, blockPosition, blockData.get(item), location.clone(),
+                        physics));
+            }
+            if (++x3 >= sizeX) {
+                x3 = 0;
+                if (++y3 >= sizeY) {
+                    y3 = 0;
+                    ++z3;
+                }
+            }
+            location.setX(baseX + x3);
+            location.setY(baseY + y3);
+            location.setZ(baseZ + z3);
+            Random r = new Random();
+            for(ItemStack itemm : workloads.keySet()) {
+                if(r.nextInt((100/itemStacks.get(itemm))) == 0 && location.clone().getY() <= depth.get(itemm)) workloadRunnable.addWorkload(workloads.get(itemm));
+            }
+        }
+        workloadRunnable.whenComplete(() -> {
+            workloadFinishFuture.complete(null);
+            workloadTask.cancel();
+        });
+        return workloadFinishFuture;
+    }
 
     private static Object getSection(Object nmsChunk, Object[] sections, int y) {
         return BLOCK_UPDATER.getSection(nmsChunk, sections, y);
@@ -1697,6 +1748,17 @@ public class BlockChanger {
             return ITEM_TO_BLOCK_DATA.invoke(block);
         } catch (Throwable e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static @Nullable Object getNMSBlockData(@Nullable Block block) {
+        try {
+            if(block == null) return null;
+
+
+        } catch(Throwable e) {
+
         }
         return null;
     }
@@ -1780,6 +1842,7 @@ public class BlockChanger {
     }
 
     /**
+     *
      * @param world (Bukkit world) can be null for versions 1.8+
      * @param x     point
      * @param y     point
@@ -1796,12 +1859,13 @@ public class BlockChanger {
     }
 
     /**
+     *
      * @param world (Bukkit world) can be null for 1.8+
      * @param x     x pos
      * @param y     y pos
      * @param z     z pos
      * @return constructs a mutable block position that can be modified using
-     * {@link #setBlockPosition(Object, Object, Object, Object)}
+     *         {@link #setBlockPosition(Object, Object, Object, Object)}
      */
     public static Object newMutableBlockPosition(@Nullable Object world, Object x, Object y, Object z) {
         try {
@@ -1813,9 +1877,10 @@ public class BlockChanger {
     }
 
     /**
+     *
      * @param location Location to get coordinates from
      * @return constructs a mutable block position that can be modified using
-     * {@link #setBlockPosition(Object, Object, Object, Object)}
+     *         {@link #setBlockPosition(Object, Object, Object, Object)}
      */
     public static Object newMutableBlockPosition(Location location) {
         try {
@@ -1828,12 +1893,13 @@ public class BlockChanger {
     }
 
     /**
+     *
      * @param mutableBlockPosition MutableBlockPosition to modify
      * @param x                    new x pos
      * @param y                    new y pos
      * @param z                    new z pos
      * @return modified MutableBlockPosition (no need to set the variable to the
-     * returned MutableBlockPosition)
+     *         returned MutableBlockPosition)
      */
     public static Object setBlockPosition(Object mutableBlockPosition, Object x, Object y, Object z) {
         try {
@@ -1845,6 +1911,7 @@ public class BlockChanger {
     }
 
     /**
+     *
      * @param itemStack bukkit ItemStack
      * @return nms block data from bukkit item stack
      * @throws IllegalArgumentException if material is not a block
@@ -1856,6 +1923,7 @@ public class BlockChanger {
     }
 
     /**
+     *
      * @param material to get block data for
      * @return stored nms block data for the specified material
      */
@@ -1879,6 +1947,7 @@ public class BlockChanger {
     }
 
     /**
+     *
      * @return nms air block data
      */
     public static Object getAirBlockData() {
@@ -1886,6 +1955,7 @@ public class BlockChanger {
     }
 
     /**
+     *
      * @param world to get nms world for
      * @return stored nms world for the specified world
      */
@@ -1894,6 +1964,7 @@ public class BlockChanger {
     }
 
     /**
+     *
      * @param worldName to get nms world for
      * @return stored nms world for the specified world name
      */
@@ -1903,19 +1974,20 @@ public class BlockChanger {
 
     /**
      * @return all available block materials for the current version separated by
-     * commas as follows:
-     * <p>
-     * <i>dirt, stone, glass, etc...</i>
+     *         commas as follows:
+     *         <p>
+     *         <i>dirt, stone, glass, etc...</i>
      */
     public static String getAvailableBlockMaterials() {
         return AVAILABLE_BLOCKS;
     }
 
     /**
+     *
      * @return a list of nms block materials including block materials that cannot
-     * be given as
-     * items in an inventory,
-     * such as lava and water.
+     *         be given as
+     *         items in an inventory,
+     *         such as lava and water.
      */
     public static Set<String> getAllNMSBlockMaterials() {
         return NMS_BLOCK_NAMES.keySet();
@@ -1931,11 +2003,14 @@ public class BlockChanger {
     }
 
     /**
+     *
      * @apiNote physics: 3 = yes, 2 = no
+     *
      */
     public static class UncheckedSetters {
 
         /**
+         *
          * @param nmsWorld      using {@link BlockChanger#getWorld(World)
          *                      getWorld(World)} or {@link BlockChanger#getWorld(String)
          *                      getWorld(String)}
@@ -1957,6 +2032,7 @@ public class BlockChanger {
         }
 
         /**
+         *
          * @param nmsWorld      using {@link BlockChanger#getWorld(World)
          *                      getWorld(World)} or {@link BlockChanger#getWorld(String)
          *                      getWorld(String)}
@@ -1983,6 +2059,7 @@ public class BlockChanger {
         }
 
         /**
+         *
          * @param nmsWorld      using {@link BlockChanger#getWorld(World)
          *                      getWorld(World)} or {@link BlockChanger#getWorld(String)
          *                      getWorld(String)}
@@ -2070,8 +2147,7 @@ public class BlockChanger {
 
     }
 
-    private static class TileEntityManagerSupported implements TileEntityManager {
-    }
+    private static class TileEntityManagerSupported implements TileEntityManager {}
 
     private static class TileEntityManagerDummy implements TileEntityManager {
 
@@ -2086,8 +2162,7 @@ public class BlockChanger {
         }
 
         @Override
-        public void destroyTileEntity(Object nmsWorld, Object blockPosition) {
-        }
+        public void destroyTileEntity(Object nmsWorld, Object blockPosition) {}
 
     }
 
@@ -2172,7 +2247,6 @@ public class BlockChanger {
         @Override
         public Object fromItemStack(ItemStack itemStack) {
             try {
-                if (!itemStack.getType().isSolid()) return getBlockData(itemStack.getType());
                 Object nmsItem = getNMSItem(itemStack);
                 if (nmsItem == null) return AIR_BLOCK_DATA;
                 return NMS_BLOCK_FROM_ITEM.invoke(nmsItem);
@@ -2792,7 +2866,7 @@ class BlockUpdaterLatest implements BlockUpdater {
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2022 Crypto Morin
+ * Copyright (c) 2023 Crypto Morin
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -2834,7 +2908,7 @@ class BlockUpdaterLatest implements BlockUpdater {
  * Mapping Viewer</a>
  *
  * @author Crypto Morin
- * @version 7.0.0
+ * @version 7.1.0.0.1
  */
 final class ReflectionUtils {
     /**
@@ -2856,18 +2930,6 @@ final class ReflectionUtils {
      * Legacy</a>
      */
     public static final String NMS_VERSION;
-
-    /*static {
-        String found = Bukkit.getServer().getMinecraftVersion();
-        try {
-            Class.forName("org.bukkit.craftbukkit.entity.CraftPlayer");
-        } catch (ClassNotFoundException e) {
-            found = null;
-        }
-        if (found == null) throw new IllegalArgumentException(
-                "Failed to get Server Version.");
-        NMS_VERSION = found;
-    }*/
 
     static { // This needs to be right below VERSION because of initialization order.
         // This package loop is used to avoid implementation-dependant strings like
@@ -2920,8 +2982,15 @@ final class ReflectionUtils {
      */
     public static final int MINOR_NUMBER;
     /**
-     * The raw patch version number.
-     * E.g. {@code v1_17_R1} to {@code 1}
+     * The raw patch version number. Refers to the
+     * <a href="https://en.wikipedia.org/wiki/Software_versioning">major.minor.patch
+     * version scheme</a>.
+     * E.g.
+     * <ul>
+     * <li>{@code v1.20.4} to {@code 4}</li>
+     * <li>{@code v1.18.2} to {@code 2}</li>
+     * <li>{@code v1.19.1} to {@code 1}</li>
+     * </ul>
      * <p>
      * I'd not recommend developers to support individual patches at all. You should
      * always support the latest patch.
@@ -2937,35 +3006,71 @@ final class ReflectionUtils {
     public static final int PATCH_NUMBER;
 
     static {
-        String[] split = NMS_VERSION.substring(1).split("\\.");
-        if (split.length < 1) {
-            throw new IllegalStateException(
-                    "Version number division error: " + Arrays.toString(split) + ' ' + getVersionInformation());
-        }
+        String found = null;
+        String[] BukkitVer = Bukkit.getServer().getBukkitVersion().split("-");
+        boolean above20_5 = Integer.parseInt(BukkitVer[0].split("\\.")[1]) >= 21 || BukkitVer[0].equals("1.20.5");
+        if(above20_5) {
+            String[] split = NMS_VERSION.substring(1).split("\\.");
+            if (split.length < 1) {
+                throw new IllegalStateException(
+                        "Version number division error: " + Arrays.toString(split) + ' ' + getVersionInformation());
+            }
 
-        String minorVer = split[1];
-        try {
-            MINOR_NUMBER = Integer.parseInt(minorVer);
-            if (MINOR_NUMBER < 0)
-                throw new IllegalStateException("Negative minor number? " + minorVer + ' ' + getVersionInformation());
-        } catch (Throwable ex) {
-            throw new RuntimeException("Failed to parse minor number: " + minorVer + ' ' + getVersionInformation(), ex);
-        }
-
-        // Don't use \d, it'd also match negative number (if it somehow ever happened?)
-        Matcher bukkitVer = Pattern.compile("^[0-9]+\\.[0-9]+\\.([0-9]+)").matcher(Bukkit.getBukkitVersion());
-        if (bukkitVer.find()) { // matches() won't work, we just want to match the start using "^"
+            String minorVer = split[1];
             try {
-                // group(0) gives the whole matched string, we just want the captured group.
-                PATCH_NUMBER = Integer.parseInt(bukkitVer.group(1));
+                MINOR_NUMBER = Integer.parseInt(minorVer);
+                if (MINOR_NUMBER < 0)
+                    throw new IllegalStateException("Negative minor number? " + minorVer + ' ' + getVersionInformation());
             } catch (Throwable ex) {
-                throw new RuntimeException("Failed to parse minor number: " + bukkitVer + ' ' + getVersionInformation(),
-                        ex);
+                throw new RuntimeException("Failed to parse minor number: " + minorVer + ' ' + getVersionInformation(), ex);
+            }
+
+            // Bukkit.getBukkitVersion() = "1.12.2-R0.1-SNAPSHOT"
+            Matcher bukkitVer = Pattern.compile("^\\d+\\.\\d+\\.(\\d+)").matcher(Bukkit.getBukkitVersion());
+            if (bukkitVer.find()) { // matches() won't work, we just want to match the start using "^"
+                try {
+                    // group(0) gives the whole matched string, we just want the captured group.
+                    PATCH_NUMBER = Integer.parseInt(bukkitVer.group(1));
+                } catch (Throwable ex) {
+                    throw new RuntimeException("Failed to parse minor number: " + bukkitVer + ' ' + getVersionInformation(),
+                            ex);
+                }
+            } else {
+                // 1.8-R0.1-SNAPSHOT
+                PATCH_NUMBER = 0;
             }
         } else {
-            // 1.8-R0.1-SNAPSHOT
-            PATCH_NUMBER = 0;
+            String[] split = NMS_VERSION.substring(1).split("_");
+            if (split.length < 1) {
+                throw new IllegalStateException(
+                        "Version number division error: " + Arrays.toString(split) + ' ' + getVersionInformation());
+            }
+
+            String minorVer = split[1];
+            try {
+                MINOR_NUMBER = Integer.parseInt(minorVer);
+                if (MINOR_NUMBER < 0)
+                    throw new IllegalStateException("Negative minor number? " + minorVer + ' ' + getVersionInformation());
+            } catch (Throwable ex) {
+                throw new RuntimeException("Failed to parse minor number: " + minorVer + ' ' + getVersionInformation(), ex);
+            }
+
+            // Bukkit.getBukkitVersion() = "1.12.2-R0.1-SNAPSHOT"
+            Matcher bukkitVer = Pattern.compile("^\\d+\\.\\d+\\.(\\d+)").matcher(Bukkit.getBukkitVersion());
+            if (bukkitVer.find()) { // matches() won't work, we just want to match the start using "^"
+                try {
+                    // group(0) gives the whole matched string, we just want the captured group.
+                    PATCH_NUMBER = Integer.parseInt(bukkitVer.group(1));
+                } catch (Throwable ex) {
+                    throw new RuntimeException("Failed to parse minor number: " + bukkitVer + ' ' + getVersionInformation(),
+                            ex);
+                }
+            } else {
+                // 1.8-R0.1-SNAPSHOT
+                PATCH_NUMBER = 0;
+            }
         }
+
     }
 
     /**
@@ -2987,13 +3092,13 @@ final class ReflectionUtils {
      *
      * @param minorVersion the minor version to get the patch number of.
      * @return the patch number of the given minor version if recognized, otherwise
-     * null.
+     *         null.
      * @since 7.0.0
      */
     public static Integer getLatestPatchNumberOf(int minorVersion) {
         if (minorVersion <= 0) throw new IllegalArgumentException("Minor version must be positive: " + minorVersion);
 
-        // https://minecraft.fandom.com/wiki/Java_Edition_version_history
+        // https://minecraft.wiki/w/Java_Edition_version_history
         // There are many ways to do this, but this is more visually appealing.
         int[] patches = { /* 1 */ 1, /* 2 */ 5, /* 3 */ 2, /* 4 */ 7, /* 5 */ 2, /* 6 */ 4, /* 7 */ 10, /* 8 */ 8, // I
                 // don't
@@ -3015,7 +3120,7 @@ final class ReflectionUtils {
                 /* 15 */ 2, // ,| \=/ |,
                 /* 16 */ 5, // _/ \ | / \_
                 /* 17 */ 1, // \_!_/
-                /* 18 */ 2, /* 19 */ 4, /* 20 */ 0,};
+                /* 18 */ 2, /* 19 */ 4, /* 20 */ 4, /* 21 */4};
 
         if (minorVersion > patches.length) return null;
         return patches[minorVersion - 1];
@@ -3026,9 +3131,7 @@ final class ReflectionUtils {
      * "https://www.spigotmc.org/threads/spigot-bungeecord-1-17.510208/#post-4184317">Spigot
      * Thread</a>
      */
-
-
-    public static final String CRAFTBUKKIT_PACKAGE = "org.bukkit.craftbukkit.",
+    public static final String CRAFTBUKKIT_PACKAGE = v(21, "org.bukkit.craftbukkit.").v(20, 5, "org.bukkit.craftbukkit.").orElse("org.bukkit.craftbukkit." + NMS_VERSION + '.'),
             NMS_PACKAGE = v(17, "net.minecraft.").orElse("net.minecraft.server." + NMS_VERSION + '.');
     /**
      * A nullable public accessible field only available in {@code EntityPlayer}.
@@ -3051,18 +3154,31 @@ final class ReflectionUtils {
     private static final MethodHandle SEND_PACKET;
 
     static {
-        Class<?> entityPlayer = getNMSClass("server.level", "EntityPlayer");
+        Class<?> entityPlayer;
         Class<?> craftPlayer = getCraftClass("entity.CraftPlayer");
         Class<?> playerConnection = getNMSClass("server.network", "PlayerConnection");
+        Class<?> playerCommonConnection;
+        if (supports(20) && supportsPatch(2)) {
+            // The packet send method has been abstracted from ServerGamePacketListenerImpl
+            // to ServerCommonPacketListenerImpl in 1.20.2
+            playerCommonConnection = getNMSClass("server.network", "ServerCommonPacketListenerImpl");
+        } else {
+            playerCommonConnection = playerConnection;
+        }
+        if(supports(20, 5)) {
+            entityPlayer = getNMSClass("server.level", "ServerPlayer");
+        } else {
+            entityPlayer = getNMSClass("server.level", "EntityPlayer");
+        }
 
         MethodHandles.Lookup lookup = MethodHandles.lookup();
         MethodHandle sendPacket = null, getHandle = null, connection = null;
 
         try {
-            connection = lookup.findGetter(entityPlayer, v(20, "c").v(17, "b").orElse("playerConnection"),
+            connection = lookup.findGetter(entityPlayer, v(21, "c").v(20, "c").v(17, "b").orElse("playerConnection"),
                     playerConnection);
             getHandle = lookup.findVirtual(craftPlayer, "getHandle", MethodType.methodType(entityPlayer));
-            sendPacket = lookup.findVirtual(playerConnection, v(18, "a").orElse("sendPacket"),
+            sendPacket = lookup.findVirtual(playerCommonConnection, v(21, "b").v(20, 2, "b").v(18, "a").orElse("sendPacket"),
                     MethodType.methodType(void.class, getNMSClass("network.protocol", "Packet")));
         } catch (NoSuchMethodException | NoSuchFieldException | IllegalAccessException ex) {
             ex.printStackTrace();
@@ -3073,17 +3189,29 @@ final class ReflectionUtils {
         GET_HANDLE = getHandle;
     }
 
-    private ReflectionUtils() {
-    }
+    private ReflectionUtils() {}
 
     /**
-     * This method is purely for readability.
-     * No performance is gained.
+     * Gives the {@code handle} object if the server version is equal or greater
+     * than the given version.
+     * This method is purely for readability and should be always used with
+     * {@link VersionHandler#orElse(Object)}.
      *
+     * @see #v(int, int, Object)
+     * @see VersionHandler#orElse(Object)
      * @since 5.0.0
      */
     public static <T> VersionHandler<T> v(int version, T handle) {
         return new VersionHandler<>(version, handle);
+    }
+
+    /**
+     * Overload for {@link #v(int, T)} that supports patch versions
+     *
+     * @since 9.5.0
+     */
+    public static <T> VersionHandler<T> v(int version, int patch, T handle) {
+        return new VersionHandler<>(version, patch, handle);
     }
 
     public static <T> CallableVersionHandler<T> v(int version, Callable<T> handle) {
@@ -3105,6 +3233,20 @@ final class ReflectionUtils {
     /**
      * Checks whether the server version is equal or greater than the given version.
      *
+     * @param minorNumber the minor version to compare the server version with.
+     * @param patchNumber the patch number to compare the server version with.
+     * @return true if the version is equal or newer, otherwise false.
+     * @see #MINOR_NUMBER
+     * @see #PATCH_NUMBER
+     * @since 7.1.0
+     */
+    public static boolean supports(int minorNumber, int patchNumber) {
+        return MINOR_NUMBER == minorNumber ? supportsPatch(patchNumber) : supports(minorNumber);
+    }
+
+    /**
+     * Checks whether the server version is equal or greater than the given version.
+     *
      * @param patchNumber the version to compare the server version with.
      * @return true if the version is equal or newer, otherwise false.
      * @see #PATCH_NUMBER
@@ -3118,19 +3260,24 @@ final class ReflectionUtils {
      * Get a NMS (net.minecraft.server) class which accepts a package for 1.17
      * compatibility.
      *
-     * @param newPackage the 1.17 package name.
-     * @param name       the name of the class.
+     * @param packageName the 1.17+ package name of this class.
+     * @param name        the name of the class.
      * @return the NMS class or null if not found.
      * @since 4.0.0
      */
     @Nullable
-    public static Class<?> getNMSClass(@Nonnull String newPackage, @Nonnull String name) {
-        if (supports(17)) name = newPackage + '.' + name;
-        return getNMSClass(name);
+    public static Class<?> getNMSClass(@Nullable String packageName, @Nonnull String name) {
+        if (packageName != null && supports(17)) name = packageName + '.' + name;
+
+        try {
+            return Class.forName(NMS_PACKAGE + name);
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     /**
-     * Get a NMS (net.minecraft.server) class.
+     * Get a NMS {@link #NMS_PACKAGE} class.
      *
      * @param name the name of the class.
      * @return the NMS class or null if not found.
@@ -3138,12 +3285,7 @@ final class ReflectionUtils {
      */
     @Nullable
     public static Class<?> getNMSClass(@Nonnull String name) {
-        try {
-            return Class.forName(NMS_PACKAGE + name);
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-            return null;
-        }
+        return getNMSClass(null, name);
     }
 
     /**
@@ -3222,11 +3364,14 @@ final class ReflectionUtils {
         try {
             return Class.forName(CRAFTBUKKIT_PACKAGE + name);
         } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-            return null;
+            throw new RuntimeException(ex);
         }
     }
 
+    /**
+     * @deprecated Use {@link #toArrayClass(Class)} instead.
+     */
+    @Deprecated
     public static Class<?> getArrayClass(String clazz, boolean nms) {
         clazz = "[L" + (nms ? NMS_PACKAGE : CRAFTBUKKIT_PACKAGE) + clazz + ';';
         try {
@@ -3237,6 +3382,18 @@ final class ReflectionUtils {
         }
     }
 
+    /**
+     * Gives an array version of a class. For example if you wanted
+     * {@code EntityPlayer[]} you'd use:
+     *
+     * <pre>{@code
+     * Class EntityPlayer = ReflectionUtils.getNMSClass("...", "EntityPlayer");
+     * Class EntityPlayerArray = ReflectionUtils.toArrayClass(EntityPlayer);
+     * }</pre>
+     *
+     * @param clazz the class to get the array version of. You could use for
+     *              multi-dimensions arrays too.
+     */
     public static Class<?> toArrayClass(Class<?> clazz) {
         try {
             return Class.forName("[L" + clazz.getName() + ';');
@@ -3247,26 +3404,39 @@ final class ReflectionUtils {
     }
 
     public static final class VersionHandler<T> {
-        private int version;
+        private int version, patch;
         private T handle;
 
         private VersionHandler(int version, T handle) {
-            if (supports(version)) {
+            this(version, 0, handle);
+        }
+
+        private VersionHandler(int version, int patch, T handle) {
+            if (supports(version) && supportsPatch(patch)) {
                 this.version = version;
+                this.patch = patch;
                 this.handle = handle;
             }
         }
 
         public VersionHandler<T> v(int version, T handle) {
-            if (version == this.version)
-                throw new IllegalArgumentException("Cannot have duplicate version handles for version: " + version);
-            if (version > this.version && supports(version)) {
+            return v(version, 0, handle);
+        }
+
+        public VersionHandler<T> v(int version, int patch, T handle) {
+            if (version == this.version && patch == this.patch) throw new IllegalArgumentException(
+                    "Cannot have duplicate version handles for version: " + version + '.' + patch);
+            if (version > this.version && supports(version) && patch >= this.patch && supportsPatch(patch)) {
                 this.version = version;
+                this.patch = patch;
                 this.handle = handle;
             }
             return this;
         }
 
+        /**
+         * If none of the previous version checks matched, it'll return this object.
+         */
         public T orElse(T handle) {
             return this.version == 0 ? handle : this.handle;
         }
@@ -3302,5 +3472,4 @@ final class ReflectionUtils {
             }
         }
     }
-
 }
