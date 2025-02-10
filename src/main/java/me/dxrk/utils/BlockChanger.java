@@ -1667,7 +1667,11 @@ public class BlockChanger {
             location.setZ(baseZ + z3);
             Random r = new Random();
             for(ItemStack itemm : workloads.keySet()) {
-                if(r.nextInt((100/itemStacks.get(itemm))) == 0 && location.clone().getY() <= depth.get(itemm)) workloadRunnable.addWorkload(workloads.get(itemm));
+                double ylevel = loc2.clone().getY() - loc1.clone().getY();
+                double d = ylevel/depth.get(itemm);
+                boolean place = location.clone().getY() <= d;
+
+                if(r.nextInt((100/itemStacks.get(itemm))) == 0 && place) workloadRunnable.addWorkload(workloads.get(itemm));
             }
         }
         workloadRunnable.whenComplete(() -> {

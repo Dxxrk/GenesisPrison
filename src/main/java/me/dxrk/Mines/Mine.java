@@ -33,7 +33,12 @@ public class Mine {
     private int Blocks;
 
 
-    public Mine(String name, Location c1, Location c2, ItemStack b1, ItemStack b2, ItemStack b3, Location spawn, World world, double reset) {
+    public Mine(String name, Location c1, Location c2, Location spawn, World world, double reset, ItemStack... items) {
+        Map<ItemStack>
+        for(ItemStack i : items) {
+
+        }
+
         this.mineName = name;
         this.corner1 = c1;
         this.corner2 = c2;
@@ -43,6 +48,8 @@ public class Mine {
         this.spawnLocation = spawn;
         this.mineWorld = world;
         this.resetpercent = reset;
+
+
     }
 
     public boolean isLocationInMine(Location paramLocation) {

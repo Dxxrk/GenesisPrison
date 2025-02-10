@@ -17,6 +17,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -74,11 +75,32 @@ public class MineHandler implements Listener, CommandExecutor {
         MAT_HARDNESS.get
     }*/
 
+    public ItemStack mineBlock(Material mat, double depth, double chance) {
+        ItemStack item = new ItemStack(mat);
+        ItemMeta im = item.getItemMeta();
+        List<String> lore = new ArrayList<>();
+        lore.add(String.valueOf(depth));
+        lore.add(String.valueOf(chance));
+        im.setLore(lore);
+        item.setItemMeta(im);
+        return item;
+    }
 
-    private static List<Material> zone1() { // basic overworld
-        List<Material> blocks = new ArrayList<>();
-        blocks.add(Material.STONE);
-        blocks.add(Material.)
+
+
+    private static List<ItemStack> zone1() { // basic overworld
+        List<ItemStack> items = new ArrayList<>();
+        items.add(new ItemStack(Material.COBBLESTONE));
+        items.add(new ItemStack(Material.COAL_ORE));
+        items.add(new ItemStack(Material.COPPER_ORE));
+        items.add(new ItemStack(Material.IRON_ORE));
+        items.add(new ItemStack(Material.LAPIS_ORE));
+        items.add(new ItemStack(Material.GOLD_ORE));
+        items.add(new ItemStack(Material.REDSTONE_ORE));
+        items.add(new ItemStack(Material.DIAMOND_ORE));
+        items.add(new ItemStack(Material.EMERALD_ORE));
+
+        return items;
     }
 
 
