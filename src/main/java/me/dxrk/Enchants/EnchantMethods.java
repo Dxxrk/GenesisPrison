@@ -226,9 +226,9 @@ public class EnchantMethods implements CommandExecutor {
 
         int blocksInThirds = blocks / 5;
 
-        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds * fortune * levelcap)));
-        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocksInThirds * fortune * levelcap)));
-        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocksInThirds * fortune * levelcap)));
+        //sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds * fortune * levelcap)));
+        //sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocksInThirds * fortune * levelcap)));
+        //sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocksInThirds * fortune * levelcap)));
 
         int tokens = (int) (KeysHandler.tokensPerBlock(p) * (blocks / 3) * levelcap);
         Tokens.getInstance().addTokens(p, tokens);
@@ -269,9 +269,9 @@ public class EnchantMethods implements CommandExecutor {
 
         int blocksInThirds = (amountblocks / 10) / 3;
 
-        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds * fortune * levelcap)));
-        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocksInThirds * fortune * levelcap)));
-        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocksInThirds * fortune * levelcap)));
+        //sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocksInThirds * fortune * levelcap)));
+        //sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocksInThirds * fortune * levelcap)));
+        //sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocksInThirds * fortune * levelcap)));
 
 
         int tokens = (int) (KeysHandler.tokensPerBlock(p) * (amountblocks / 6) * levelcap);
@@ -361,9 +361,9 @@ public class EnchantMethods implements CommandExecutor {
         if (fortune == 0)
             fortune = 1;
 
-        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune)));
-        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune)));
-        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocks * fortune)));
+        //sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune)));
+        //sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune)));
+        //sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocks * fortune)));
 
 
         int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * 5);
@@ -426,9 +426,9 @@ public class EnchantMethods implements CommandExecutor {
 
                 double levelcap = 1 + (level / 100);
 
-                sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune * levelcap)));
-                sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune * levelcap)));
-                sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocks * fortune * levelcap)));
+                //sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune * levelcap)));
+                //sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune * levelcap)));
+                //sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocks * fortune * levelcap)));
 
 
                 int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks * levelcap * 5);
@@ -472,9 +472,9 @@ public class EnchantMethods implements CommandExecutor {
         if (fortune == 0)
             fortune = 1;
 
-        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune)));
-        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune)));
-        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocks * fortune)));
+        //sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune)));
+        //sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune)));
+        //sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocks * fortune)));
 
         int tokens = (int) (KeysHandler.tokensPerBlock(p) * blocks);
         Tokens.getInstance().addTokens(p, tokens);
@@ -537,9 +537,9 @@ public class EnchantMethods implements CommandExecutor {
         if (fortune == 0)
             fortune = 1;
 
-        sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune)));
-        sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune)));
-        sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocks * fortune)));
+        //sellblocks.add(new ItemStack(m.getBlock1().getType(), (int) (blocks * fortune)));
+        //sellblocks.add(new ItemStack(m.getBlock2().getType(), (int) (blocks * fortune)));
+        //sellblocks.add(new ItemStack(m.getBlock3().getType(), (int) (blocks * fortune)));
 
         int tokens = KeysHandler.tokensPerBlock(p) * blocks * 5;
         Tokens.getInstance().addTokens(p, tokens);

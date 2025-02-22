@@ -265,11 +265,13 @@ public class SellHandler implements Listener, CommandExecutor {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
+        p.sendMessage("1 Block You're breaking: "+ e.getBlock().getLocation());
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
         if (!m.isLocationInMine(e.getBlock().getLocation()) && !p.isOp()) {
             e.setCancelled(true);
             return;
         }
+        p.sendMessage("2 You're breaking: "+ e.getBlock().getLocation());
         if (!m.isLocationInMine(e.getBlock().getLocation()) && p.isOp()) {
             if (p.getEquipment().getItemInMainHand() != null &&
                     p.getEquipment().getItemInMainHand().getType() == Material.DIAMOND_PICKAXE || p.getEquipment().getItemInMainHand().getType() == Material.WOODEN_PICKAXE
@@ -279,15 +281,12 @@ public class SellHandler implements Listener, CommandExecutor {
             }
             return;
         }
+        p.sendMessage("2 You're breaking: "+ e.getBlock().getLocation());
 
         double fortuity = Functions.Foruity(p);
         double skill = SkillsEventsListener.getSkillsBoostFortune(p);
         double event1 = SkillsEventsListener.getEventFortune();
 
-        if (!MineSystem.getInstance().getMineByPlayer(p).isLocationInMine(e.getBlock().getLocation()) && !p.isOp()) {
-            e.setCancelled(true);
-            return;
-        }
 
 
         if (!e.isCancelled()) {

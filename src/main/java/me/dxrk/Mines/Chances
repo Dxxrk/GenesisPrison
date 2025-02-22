@@ -1,0 +1,65 @@
+static List<BlockChance> zoneChances() {
+        List<BlockChance> chances = new ArrayList<>();
+
+        // Cobblestone: Always present, gradually decreasing
+        chances.add(new BlockChance(
+                new ItemStack(Material.COBBLESTONE),
+                95, 0, 0,     // Start very high, end at 0%
+                1,             // Peak level (unused)
+                1.0, 1.0,      // Allowed anywhere
+                false,         // Linear distribution
+                1             // Available from level 1
+        ));
+
+        // Coal Ore: Early game resource
+        chances.add(new BlockChance(
+                new ItemStack(Material.COAL_ORE),
+                5, 40, 5,      // Start at 5%, peak at 40%, end at 5%
+                15,            // Peaks at level 15
+                0.7, 1.0,      // Depth restrictions
+                true,          // Parabolic distribution
+                1             // Available from level 1
+        ));
+
+        // Iron Ore: Mid-early game resource
+        chances.add(new BlockChance(
+                new ItemStack(Material.IRON_ORE),
+                0, 35, 10,     // Start at 0%, peak at 35%, end at 10%
+                25,            // Peaks at level 25
+                0.6, 0.9,      // Depth restrictions
+                true,          // Parabolic distribution
+                10            // Only appears from level 10
+        ));
+
+        // Gold Ore: Mid game resource
+        chances.add(new BlockChance(
+                new ItemStack(Material.GOLD_ORE),
+                0, 30, 15,     // Start at 0%, peak at 30%, end at 15%
+                40,            // Peaks at level 40
+                0.4, 0.8,      // Depth restrictions
+                true,          // Parabolic distribution
+                20            // Only appears from level 20
+        ));
+
+        // Diamond Ore: Late mid-game resource
+        chances.add(new BlockChance(
+                new ItemStack(Material.DIAMOND_ORE),
+                0, 25, 20,     // Start at 0%, peak at 25%, end at 20%
+                60,            // Peaks at level 60
+                0.0, 0.6,      // Depth restrictions
+                true,          // Parabolic distribution
+                30            // Only appears from level 30
+        ));
+
+        // Emerald Ore: Linear increase with level
+        chances.add(new BlockChance(
+                new ItemStack(Material.EMERALD_ORE),
+                0, 0, 15,      // Linear increase to 15%
+                100,           // Peak level (unused for linear)
+                0.2, 0.4,      // Very restricted depth
+                false,         // Linear distribution
+                40            // Only appears from level 40
+        ));
+
+        return chances;
+    }

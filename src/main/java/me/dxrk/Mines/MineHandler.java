@@ -104,6 +104,9 @@ public class MineHandler implements Listener, CommandExecutor {
     }
 
 
+
+
+
     private static List<ItemStack> mineBlocks() {
         List<ItemStack> mineblocks = new ArrayList<>();
         mineblocks.add(new ItemStack(Material.COBBLESTONE)); //0
@@ -192,22 +195,6 @@ public class MineHandler implements Listener, CommandExecutor {
     public void updateMine(Player p, int prestige) {
         List<ItemStack> blocks = Blocks(prestige);
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
-        if (PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("CustomBlock") == null) {
-            if (prestige == 0) {
-                m.setBlock1(new ItemStack(Material.COBBLESTONE));
-                m.setBlock2(new ItemStack(Material.COBBLESTONE));
-                m.setBlock3(new ItemStack(Material.COBBLESTONE));
-            } else {
-                m.setBlock1(blocks.get(0));
-                m.setBlock2(blocks.get(1));
-                m.setBlock3(blocks.get(2));
-            }
-        } else {
-            ItemStack block = PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("CustomBlock");
-            m.setBlock1(block);
-            m.setBlock2(block);
-            m.setBlock3(block);
-        }
         m.save();
         m.reset();
 
@@ -267,7 +254,7 @@ public class MineHandler implements Listener, CommandExecutor {
     }
 
     public void createMine(String name, Location corner1, Location corner2, Location spawn, World world, double percent) {
-        Mine m = new Mine(name, corner1, corner2, new ItemStack(Material.COBBLESTONE), new ItemStack(Material.COBBLESTONE), new ItemStack(Material.COBBLESTONE), spawn, world, percent);
+        Mine m = new Mine(name, corner1, corner2, spawn, world, percent);
         m.save();
         MineSystem.getInstance().addActiveMine(m);
     }

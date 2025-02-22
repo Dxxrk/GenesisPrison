@@ -2,6 +2,7 @@ package me.dxrk.Main;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.ListenerOptions;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
@@ -33,6 +34,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
@@ -89,15 +92,20 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             }
         }*/
     }
-
+    public static PacketInterceptor interceptor;
+    public static DynamicMultiBlockPacketSender packetSender;
     public void onEnable() {
-
         plugin = this;
         INSTANCE = this;
         Mines.getInstance().enable();
         PlayerDataHandler.getInstance().loadPlayerData();
         System.out.println(MineSystem.getInstance().getActiveMines());
         MineWorldCreator.getInstance().createMineWorld("mines");
+
+        interceptor = new PacketInterceptor(this);
+        packetSender = new DynamicMultiBlockPacketSender(this);
+
+
 
         ProtocolLibrary.getProtocolManager().addPacketListener(
 // I mark my listener as async, as I don't use the Bukkit API. Please note that
@@ -301,7 +309,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         registerEvents(this, new Listener[]{new LocksmithHandler()});
         registerEvents(this, new Listener[]{new RankupHandler()});
         registerEvents(this, new Listener[]{new ScoreboardHandler()});
-        registerEvents(this, new Listener[]{new TrinketHandler()});
+        //registerEvents(this, new Listener[]{new TrinketHandler()});
         registerEvents(this, new Listener[]{new CMDOptions()});
         registerEvents(this, new Listener[]{new CMDDaily()});
         registerEvents(this, new Listener[]{new JDAEvents()});
@@ -317,6 +325,8 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         // For when maintenance active, use this ||
         //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "workmode enable");
         MomentumHandler.runMomentum();
+
+
 
 
         new BukkitRunnable() {
@@ -553,6 +563,16 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             }
         }.runTaskTimer(this, 0, 20 * 150L);
 
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+        //this.blockHandler.injectPlayer(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onLeave(PlayerQuitEvent e) {
+        //this.blockHandler.removePlayer(e.getPlayer());
     }
 
 

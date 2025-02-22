@@ -48,11 +48,11 @@ public class PickaxeLevel implements Listener, CommandExecutor {
     public SettingsManager settings = SettingsManager.getInstance();
 
     public ItemStack pickaxe() {
-        ItemStack a = new ItemStack(Material.WOODEN_PICKAXE, 1, (short) 0);
+        ItemStack a = new ItemStack(Material.WOODEN_PICKAXE);
         ItemMeta am = a.getItemMeta();
         List<String> lore = new ArrayList<>();
         am.setDisplayName("s");
-        am.addEnchant(Enchantment.EFFICIENCY, 6, true);
+        am.addEnchant(Enchantment.EFFICIENCY, 32000, true);
         am.addEnchant(Enchantment.UNBREAKING, 32000, true);
         am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         lore.add(c("&b&m-<>-&aEnchants&b&m-<>- "));
