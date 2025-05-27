@@ -17,7 +17,7 @@ import java.util.List;
 
 public class NicknameHandler implements Listener, CommandExecutor {
 
-    private HashMap<Player, String> currentLetter = new HashMap<>();
+    private HashMap<Player, String> currentLetter = new HashMap<>(); //TODO this probably isn't as efficient as it could be
 
     public static List<Player> waitingForNick = new ArrayList<>();
 

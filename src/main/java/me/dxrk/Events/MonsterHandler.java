@@ -30,7 +30,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 import static java.lang.Integer.parseInt;
-
+@Deprecated
 public class MonsterHandler implements Listener, CommandExecutor {
     private static Methods m = Methods.getInstance();
 

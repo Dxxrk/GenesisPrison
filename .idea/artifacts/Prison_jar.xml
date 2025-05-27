@@ -3,7 +3,7 @@
     <output-path>$USER_HOME$/Desktop/genesis/NEWJAR</output-path>
     <root id="archive" name="GenesisPrison.jar">
       <element id="module-output" name="Prison" />
-      <element id="library" level="project" name="Maven: net.dv8tion:JDA:5.0.0-beta.13" />
+      <element id="library" level="project" name="Maven: net.dv8tion:JDA:5.3.0" />
     </root>
   </artifact>
 </component>

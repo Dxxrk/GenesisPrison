@@ -185,7 +185,6 @@ public class CMDTags implements Listener, CommandExecutor {
     }
 
     public static void addRandomTag(Player p) {
-        Main.perms.playerAdd(p, "Tag." + randomTagName());
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

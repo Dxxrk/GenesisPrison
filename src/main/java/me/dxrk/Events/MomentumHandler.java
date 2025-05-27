@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
 
-
+@Deprecated
 public class MomentumHandler implements Listener {
 
     public static HashMap<UUID, ArrayList<Long>> momentum = new HashMap<>();

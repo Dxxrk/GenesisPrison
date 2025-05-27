@@ -8,6 +8,7 @@ import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Mines.Mine;
+import me.dxrk.Mines.MineHandler;
 import me.dxrk.Mines.MineSystem;
 import me.dxrk.Tokens.Tokens;
 import org.bukkit.Bukkit;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
+@Deprecated
 public class SellHandler implements Listener, CommandExecutor {
 
 
@@ -141,7 +142,7 @@ public class SellHandler implements Listener, CommandExecutor {
             p.sendMessage(c("&f&l" + enchantName + " &8| &b+$" + format(total * amountotal) + " &7& &e⛀" + format(tokens)));
         }
 
-        Main.econ.depositPlayer(p, total * amountotal);
+
         if (CMDGang.harmony.contains(gang)) {
             double htokens = CMDGang.harmonyTokens.get(gang);
             CMDGang.harmonyTokens.put(Gangs.getInstance().getGang(p), htokens + tokens);
@@ -195,14 +196,13 @@ public class SellHandler implements Listener, CommandExecutor {
         p.updateInventory();
 
 
-        Main.econ.depositPlayer(p, total * amountotal);
         if (CMDGang.harmony.contains(gang)) {
             double hmoney = CMDGang.harmonyMoney.get(gang);
             CMDGang.harmonyMoney.put(gang, hmoney + (total * amountotal));
         }
         double percents;
         p.getScoreboard().getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
-        percents = Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) * 100.0D;
+        percents = 100 / RankupHandler.getInstance().rankPrice(p) * 100.0D;
         double dmultiply = percents * 10.0D;
         double dRound = Math.round(dmultiply) / 10.0D;
         if (dRound >= 100.0D) {
@@ -253,25 +253,25 @@ public class SellHandler implements Listener, CommandExecutor {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
-        Mine m = MineSystem.getInstance().getMineByPlayer(p);
-        if (m.isLocationInMine(e.getBlock().getLocation())) {
-            e.setCancelled(true);
-        }
-        if (!m.isLocationInMine(e.getBlock().getLocation()) && !BuildModeHandler.playersinbm.containsKey(p.getUniqueId()) && !p.isOp()) {
-            e.setCancelled(true);
+        if(MineHandler.getInstance().hasMine(p)) {
+            Mine m = MineSystem.getInstance().getMineByPlayer(p);
+            if (m.isLocationInMine(e.getBlock().getLocation())) {
+                e.setCancelled(true);
+            }
+            if (!m.isLocationInMine(e.getBlock().getLocation()) && !p.isOp()) {
+                e.setCancelled(true);
+            }
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
-        p.sendMessage("1 Block You're breaking: "+ e.getBlock().getLocation());
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
         if (!m.isLocationInMine(e.getBlock().getLocation()) && !p.isOp()) {
             e.setCancelled(true);
             return;
         }
-        p.sendMessage("2 You're breaking: "+ e.getBlock().getLocation());
         if (!m.isLocationInMine(e.getBlock().getLocation()) && p.isOp()) {
             if (p.getEquipment().getItemInMainHand() != null &&
                     p.getEquipment().getItemInMainHand().getType() == Material.DIAMOND_PICKAXE || p.getEquipment().getItemInMainHand().getType() == Material.WOODEN_PICKAXE

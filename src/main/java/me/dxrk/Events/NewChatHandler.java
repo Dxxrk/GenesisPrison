@@ -248,16 +248,14 @@ public class NewChatHandler implements Listener {
                     .append(msg.decoration(TextDecoration.BOLD, true).color(NamedTextColor.LIGHT_PURPLE))
                     .hoverEvent(HoverEvent.showText(Component.text()))
                     .build();
-        }
-        else if(p.hasPermission("rank.Mod")) {
+        } else if(p.hasPermission("rank.Mod")) {
             message = Component.text()
                     .append(msg.decoration(TextDecoration.BOLD, true).color(NamedTextColor.AQUA))
                     .hoverEvent(HoverEvent.showText(Component.text()))
                     .build();
-        }
-        else {
+        } else {
             message = Component.text()
-                    .append(msg.decoration(TextDecoration.BOLD, false).color(chatColor(this.settings.getcolor().getString(p.getName() + ".Color"))))
+                    .append(msg.decoration(TextDecoration.BOLD, false).color(chatColor(PlayerDataHandler.getInstance().getPlayerData(p).getString("ChatColor")))) //TODO reroute this to playerdata (with everything else)
                     .hoverEvent(HoverEvent.showText(Component.text()))
                     .build();
         }
@@ -320,14 +318,14 @@ public class NewChatHandler implements Listener {
                             .replacement(item)
                             .build()
                     ))));
-            Bukkit.getConsoleSender().sendMessage(prefix(p).append(message(p, e.message()
-                    .replaceText(TextReplacementConfig.builder()
-                            .match("\\[item\\]")
-                            .once()
-                            .replacement(item)
-                            .build()
-                    ))));
         }
+        Bukkit.getConsoleSender().sendMessage(prefix(p).append(message(p, e.message()
+                .replaceText(TextReplacementConfig.builder()
+                        .match("\\[item\\]")
+                        .once()
+                        .replacement(item)
+                        .build()
+                ))));
 
 
     }

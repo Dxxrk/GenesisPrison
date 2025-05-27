@@ -30,7 +30,7 @@ import java.util.Random;
 
 import static java.lang.Integer.parseInt;
 
-
+@Deprecated
 public class FishingHandler implements Listener, CommandExecutor {
 
     public Methods m = Methods.getInstance();

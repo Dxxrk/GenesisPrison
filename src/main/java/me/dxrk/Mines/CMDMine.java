@@ -1,6 +1,5 @@
 package me.dxrk.Mines;
 
-import me.dxrk.Events.BuildModeHandler;
 import me.dxrk.Events.FishingHandler;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.RankupHandler;
@@ -160,8 +159,7 @@ public class CMDMine implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if ("mine".equalsIgnoreCase(label)) {
             if (args.length == 0) {
-                if (!(sender instanceof Player)) return false;
-                Player p = (Player) sender;
+                if (!(sender instanceof Player p)) return false;
                 openMineInventory(p);
             }
             if (args.length == 1) {
@@ -169,28 +167,13 @@ public class CMDMine implements CommandExecutor, Listener {
                 if ("teleport".equalsIgnoreCase(args[0]) || "tp".equalsIgnoreCase(args[0]) || "home".equalsIgnoreCase(args[0]) || "go".equalsIgnoreCase(args[0])) {
                     if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("HasMine")) {
                         Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                        Location loc = new Location(m.getMineWorld(), m.getSpawnLocation().getX(), m.getSpawnLocation().getY(), m.getSpawnLocation().getZ(), -90, 0);
+                        Location loc = new Location(m.getMineWorld(), m.getSpawnLocation().getX(), m.getSpawnLocation().getY(), m.getSpawnLocation().getZ(), 90, 0);
                         p.teleport(loc);
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                int minesize = PlayerDataHandler.getInstance().getPlayerData(p).getInt("MineSize");
-                                if (minesize == 1 || minesize == 2) {
-                                    Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 83, 34.5, m.getSpawnLocation().getZ());
-                                }
-                                if (minesize == 3) {
-                                    Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 103, 39.5, m.getSpawnLocation().getZ());
-                                }
-                            }
-                        }.runTaskLater(Main.plugin, 20L);
+                        Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 150, 0.5, m.getSpawnLocation().getZ());
 
                     } else {
                         p.sendMessage(c("&f&lMine &8| &7Unable to find your mine(/mine)."));
                     }
-                }
-                if("expand".equalsIgnoreCase(args[0])) {
-                    Mine m = MineSystem.getInstance().getMineByPlayer(p);
-                    m.expandMine(1);
                 }
             }
             if (args.length == 2) {
@@ -246,120 +229,20 @@ public class CMDMine implements CommandExecutor, Listener {
             e.setCancelled(true);
             if (e.getSlot() == 4) {
                 if (!PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("HasMine")) {
-                    MineHandler.getInstance().CreateMine(p, "mineschem", "mines");
+                    MineHandler.getInstance().CreateMine(p, "MineWorld");
                 } else {
                     Mine m = MineSystem.getInstance().getMineByPlayer(p);
                     Location loc = new Location(m.getMineWorld(), m.getSpawnLocation().getX(), m.getSpawnLocation().getY(), m.getSpawnLocation().getZ(), -90, 0);
                     p.teleport(loc);
-                    Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 119, 0.5, m.getSpawnLocation().getZ());
+                    //TODO worldborder
+                    //Methods.getInstance().createWorldBorder(p, m.getMineWorld(), 119, 0.5, m.getSpawnLocation().getZ());
                 }
-            }
-            if (e.getSlot() == 6) {
-                if(!BuildModeHandler.playersinbm.containsKey(p.getUniqueId()))
-                    BuildModeHandler.getInstance().BMPutPlayer(p);
-                else BuildModeHandler.getInstance().BMRemovePlayer(p);
             }
             if (e.getSlot() == 21) {
                 openResetInventory(p, MineSystem.getInstance().getMineByPlayer(p).getResetPercent());
             }
             if (e.getSlot() == 23) {
                 openBlockInventory(p);
-            }
-        }
-        if (e.getView().getTitle().equals(c("&3&lChoose a Custom Block"))) {
-            if (e.getClickedInventory().equals(p.getInventory())) {
-                e.setCancelled(true);
-                return;
-            }
-            e.setCancelled(true);
-            if (e.getSlot() == 0) {
-                if (!p.hasPermission("rank.sponsor")) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.STONE_BRICKS));
-                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
-                if (FishingHandler.getInstance().hasRod(p)) {
-                    FishingHandler.getInstance().saveRod(p);
-                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
-                }
-            }
-            if (e.getSlot() == 2) {
-                if (!p.hasPermission("rank.vip")) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.COAL_BLOCK));
-                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
-                if (FishingHandler.getInstance().hasRod(p)) {
-                    FishingHandler.getInstance().saveRod(p);
-                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
-                }
-            }
-            if (e.getSlot() == 4) {
-                if (!p.hasPermission("rank.mvp")) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.NETHERRACK));
-                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
-                if (FishingHandler.getInstance().hasRod(p)) {
-                    FishingHandler.getInstance().saveRod(p);
-                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
-                }
-            }
-            if (e.getSlot() == 6) {
-                if (!p.hasPermission("rank.hero")) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.PRISMARINE, 1, (short) 2));
-                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
-                if (FishingHandler.getInstance().hasRod(p)) {
-                    FishingHandler.getInstance().saveRod(p);
-                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
-                }
-            }
-            if (e.getSlot() == 8) {
-                if (!p.hasPermission("rank.demi-god")) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.NETHER_BRICK));
-                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
-                if (FishingHandler.getInstance().hasRod(p)) {
-                    FishingHandler.getInstance().saveRod(p);
-                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
-                }
-            }
-            if (e.getSlot() == 10) {
-                if (!p.hasPermission("rank.titan")) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.WHITE_TERRACOTTA, 1, (short) 0));
-                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
-                if (FishingHandler.getInstance().hasRod(p)) {
-                    FishingHandler.getInstance().saveRod(p);
-                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
-                }
-            }
-            if (e.getSlot() == 12) {
-                if (!p.hasPermission("rank.god")) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.PURPLE_TERRACOTTA, 1, (short) 10));
-                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
-                if (FishingHandler.getInstance().hasRod(p)) {
-                    FishingHandler.getInstance().saveRod(p);
-                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
-                }
-            }
-            if (e.getSlot() == 14) {
-                if (!p.hasPermission("rank.olympian")) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.GREEN_TERRACOTTA, 1, (short) 13));
-                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
-                if (FishingHandler.getInstance().hasRod(p)) {
-                    FishingHandler.getInstance().saveRod(p);
-                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
-                }
-            }
-            if (e.getSlot() == 16) {
-                if (!p.hasPermission("rank.genesis")) return;
-                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.GRAY_TERRACOTTA, 1, (short) 7));
-                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
-                if (FishingHandler.getInstance().hasRod(p)) {
-                    FishingHandler.getInstance().saveRod(p);
-                    p.getInventory().setItem(FishingHandler.getInstance().getRodSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Pickaxe"));
-                }
-            }
-            if (e.getSlot() == 22) {
-                PlayerDataHandler.getInstance().getPlayerData(p).set("CustomBlock", new ItemStack(Material.WATER_BUCKET, 1));
-                MineHandler.getInstance().updateMine(p, RankupHandler.getInstance().getRank(p));
-                if (FishingHandler.getInstance().hasPick(p)) {
-                    PlayerDataHandler.getInstance().savePickaxe(p);
-                    p.getInventory().setItem(FishingHandler.getInstance().getPickSlot(p), PlayerDataHandler.getInstance().getPlayerData(p).getItemStack("Rod"));
-                }
             }
         }
         if (e.getView().getTitle().equals(c("&c&lChange Reset Percentage"))) {

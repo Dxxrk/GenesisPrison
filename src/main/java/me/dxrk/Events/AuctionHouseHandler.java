@@ -23,7 +23,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.util.*;
-
+@Deprecated
 public class AuctionHouseHandler implements Listener, CommandExecutor {
 
     public static AuctionHouseHandler instance = new AuctionHouseHandler();

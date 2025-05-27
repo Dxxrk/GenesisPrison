@@ -24,7 +24,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
+@Deprecated
 public class CMDVoteShop implements Listener, CommandExecutor {
 
     public static SettingsManager settings = SettingsManager.getInstance();

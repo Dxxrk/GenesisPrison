@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
-
+@Deprecated
 public class PickaxeSkillTree implements Listener {
 
     static Methods m = Methods.getInstance();

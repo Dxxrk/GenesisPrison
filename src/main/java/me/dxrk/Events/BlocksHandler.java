@@ -15,7 +15,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
-
+@Deprecated
 public class BlocksHandler implements CommandExecutor, Listener {
     public static HashMap<Player, Integer> blocks = new HashMap<>();
 

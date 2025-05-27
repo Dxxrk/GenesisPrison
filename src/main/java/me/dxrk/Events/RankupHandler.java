@@ -18,7 +18,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-
+@Deprecated
 public class RankupHandler implements Listener, CommandExecutor {
     public SettingsManager settings = SettingsManager.getInstance();
 
@@ -169,11 +169,11 @@ public class RankupHandler implements Listener, CommandExecutor {
 
     public void rankup(Player p) {
         if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("Ethereal")) {
-            if (Main.econ.getBalance(p) < rankPrice(p)) {
-                p.sendMessage(c("&f&lLevel &8| &7You need &a$" + Main.formatAmt(rankPrice(p) - Main.econ.getBalance(p)) + " &7to rankup."));
+            if (100 < rankPrice(p)) {
+                p.sendMessage(c("&f&lLevel &8| &7You need &a$" + Main.formatAmt(rankPrice(p) - 100) + " &7to rankup."));
                 return;
             }
-            Main.econ.withdrawPlayer(p, rankPrice(p));
+            
             upRank(p);
             p.getScoreboard().getTeam("prestige").setPrefix(c("&7Prestige: "));
             p.getScoreboard().getTeam("prestige").setSuffix(c("&e&lEthereal"));
@@ -181,7 +181,7 @@ public class RankupHandler implements Listener, CommandExecutor {
             p.getScoreboard().getTeam("prank").setSuffix(c("&b&l" + getRank(p)));
             double percents;
             p.getScoreboard().getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
-            percents = (Main.econ.getBalance(p) / rankPrice(p) * 100);
+            percents = (100 / rankPrice(p) * 100);
             double dmultiply = percents * 10.0;
             double dRound = Math.round(dmultiply) / 10.0;
 
@@ -195,16 +195,16 @@ public class RankupHandler implements Listener, CommandExecutor {
         }
 
 
-        if (Main.econ.getBalance(p) < rankPrice(p)) {
-            p.sendMessage(c("&f&lLevel &8| &7You need &a$" + Main.formatAmt(rankPrice(p) - Main.econ.getBalance(p)) + " &7to rankup."));
+        if (100 < rankPrice(p)) {
+            p.sendMessage(c("&f&lLevel &8| &7You need &a$" + Main.formatAmt(rankPrice(p) - 100) + " &7to rankup."));
             return;
         }
-        Main.econ.withdrawPlayer(p, rankPrice(p));
+        
         upRank(p);
         p.getScoreboard().getTeam("prank").setSuffix(c("&b" + getRank(p)));
         double percents;
         p.getScoreboard().getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
-        percents = (Main.econ.getBalance(p) / rankPrice(p) * 100);
+        percents = (100 / rankPrice(p) * 100);
         double dmultiply = percents * 10.0;
         double dRound = Math.round(dmultiply) / 10.0;
 
@@ -217,12 +217,12 @@ public class RankupHandler implements Listener, CommandExecutor {
     }
 
     public void MaxRankup(Player p) {
-        if (Main.econ.getBalance(p) < rankPrice(p)) {
+        if (100 < rankPrice(p)) {
             return;
         }
         if (PlayerDataHandler.getInstance().getPlayerData(p).getBoolean("Ethereal")) {
-            while (Main.econ.getBalance(p) > rankPrice(p)) {
-                Main.econ.withdrawPlayer(p, rankPrice(p));
+            while (100 > rankPrice(p)) {
+                
                 upRank(p);
             }
             p.getScoreboard().getTeam("prestige").setPrefix(c("&7Prestige: "));
@@ -231,7 +231,7 @@ public class RankupHandler implements Listener, CommandExecutor {
             p.getScoreboard().getTeam("prank").setSuffix(c("&b&l" + getRank(p)));
             double percents;
             p.getScoreboard().getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
-            percents = (Main.econ.getBalance(p) / rankPrice(p) * 100);
+            percents = (100 / rankPrice(p) * 100);
             double dmultiply = percents * 10.0;
             double dRound = Math.round(dmultiply) / 10.0;
 
@@ -243,14 +243,14 @@ public class RankupHandler implements Listener, CommandExecutor {
             }
             return;
         }
-        while (Main.econ.getBalance(p) > rankPrice(p)) {
-            Main.econ.withdrawPlayer(p, rankPrice(p));
+        while (100 > rankPrice(p)) {
+            
             upRank(p);
         }
         p.getScoreboard().getTeam("prank").setSuffix(c("&b" + getRank(p)));
         double percents;
         p.getScoreboard().getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
-        percents = (Main.econ.getBalance(p) / rankPrice(p) * 100);
+        percents = (100 / rankPrice(p) * 100);
         double dmultiply = percents * 10.0;
         double dRound = Math.round(dmultiply) / 10.0;
 
@@ -266,10 +266,10 @@ public class RankupHandler implements Listener, CommandExecutor {
 
     public void autorankup(Player p) {
 
-        if (Main.econ.getBalance(p) < rankPrice(p)) {
+        if (100 < rankPrice(p)) {
             return;
         }
-        Main.econ.withdrawPlayer(p, rankPrice(p));
+        
         upRank(p);
     }
 

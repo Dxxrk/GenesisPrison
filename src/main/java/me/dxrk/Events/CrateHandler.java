@@ -498,30 +498,6 @@ public class CrateHandler implements Listener, CommandExecutor {
             if (ri > 72 && ri <= 84) {
                 BoostsHandler.getInstance().giveBoost(p, "gem", 2, 600);
             }
-            if (ri > 84 && ri <= 86) {
-                Main.perms.playerAdd(p, "ChatColor.White");
-            }
-            if (ri > 86 && ri <= 88) {
-                Main.perms.playerAdd(p, "ChatColor.Yellow");
-            }
-            if (ri > 88 && ri <= 90) {
-                Main.perms.playerAdd(p, "ChatColor.Blue");
-            }
-            if (ri > 90 && ri <= 92) {
-                Main.perms.playerAdd(p, "ChatColor.Green");
-            }
-            if (ri > 92 && ri <= 94) {
-                Main.perms.playerAdd(p, "ChatColor.Purple");
-            }
-            if (ri > 94 && ri <= 96) {
-                Main.perms.playerAdd(p, "ChatColor.Gold");
-            }
-            if (ri > 96 && ri <= 98) {
-                Main.perms.playerAdd(p, "ChatColor.Red");
-            }
-            if (ri > 98) {
-                Main.perms.playerAdd(p, "ChatColor.Lime");
-            }
         }
     }
 
@@ -592,7 +568,7 @@ public class CrateHandler implements Listener, CommandExecutor {
             p.getScoreboard().getTeam("prank").setSuffix(c("&b" + RankupHandler.getInstance().getRank(p)));
             double percents;
             p.getScoreboard().getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
-            percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) * 100);
+            percents = (100 / RankupHandler.getInstance().rankPrice(p) * 100);
             double dmultiply = percents * 10.0;
             double dRound = Math.round(dmultiply) / 10.0;
             if (RankupHandler.getInstance().getRank(p) == 100) {

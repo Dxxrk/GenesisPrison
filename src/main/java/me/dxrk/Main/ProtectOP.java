@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ProtectOP implements Listener {
 
-    private List<String> staff = Arrays.asList("Dxrk", "32j", "BakonStrip", "Pikashoo", "_Lone_Ninja_");
+    private List<String> staff = Arrays.asList("Dxrk", "32j", "BakonStrip", "Pikashoo", "_Lone_Ninja_", "quope", "Hyperi0n_");
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {

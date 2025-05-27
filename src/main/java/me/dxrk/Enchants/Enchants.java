@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
-
+@Deprecated
 public class Enchants implements Listener {
 
     static String c(String s) {
@@ -156,9 +156,6 @@ public class Enchants implements Listener {
             }
             Functions.Multiply(p);
             Mine m = MineSystem.getInstance().getMineByPlayer(p);
-            if (m.getBlocksLeftPercentage() < m.getResetPercent()) {
-                m.reset();
-            }
         }
     }
 

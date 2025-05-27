@@ -5,12 +5,12 @@ import me.dxrk.Main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.WorldCreator;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
+import java.util.HashSet;
 
 public class Mines {
 
@@ -31,9 +31,6 @@ public class Mines {
         loadMines();
     }
 
-    public void disable() {
-    }
-
     public void createFolder() {
         File var1 = new File(Main.plugin.getDataFolder() + File.separator + "mines");
         if (!var1.exists()) {
@@ -41,29 +38,36 @@ public class Mines {
         }
     }
 
-    public void preLoadWorlds() {
-        File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "mines")).listFiles();
-        File[] var = mineFiles;
-        assert mineFiles != null;
-        int amountOfMines = mineFiles.length;
-        for (int i = 0; i < amountOfMines; ++i) {
-            File mineFile = var[i];
-            String name = mineFile.getName().split("\\.")[0];
-            if (Bukkit.getWorld(name) == null) {
-                new WorldCreator(name).createWorld();
-            }
+    /**
+     * Force loads all chunks within a cuboid defined by two corner points
+     * @param minPoint The minimum corner of the cuboid
+     * @param maxPoint The maximum corner of the cuboid
+     */
+    public void forceLoadChunksInCuboid(Location minPoint, Location maxPoint) {
+        // Ensure both locations are in the same world
+        if (!minPoint.getWorld().equals(maxPoint.getWorld())) {
+            throw new IllegalArgumentException("Both locations must be in the same world!");
         }
-    }
 
-    public void unloadWorlds() {
-        File[] mineFiles = (new File(Main.plugin.getDataFolder() + File.separator + "mines")).listFiles();
-        File[] var = mineFiles;
-        assert mineFiles != null;
-        int amountOfMines = mineFiles.length;
-        for (int i = 0; i < amountOfMines; ++i) {
-            File mineFile = var[i];
-            String name = mineFile.getName().split("\\.")[0];
-            MineWorldCreator.getInstance().unloadWorld(Bukkit.getWorld(name));
+        World world = minPoint.getWorld();
+
+        // Get the actual min/max coordinates (in case they were passed in wrong order)
+        int minX = Math.min(minPoint.getBlockX(), maxPoint.getBlockX());
+        int maxX = Math.max(minPoint.getBlockX(), maxPoint.getBlockX());
+        int minZ = Math.min(minPoint.getBlockZ(), maxPoint.getBlockZ());
+        int maxZ = Math.max(minPoint.getBlockZ(), maxPoint.getBlockZ());
+
+        // Convert block coordinates to chunk coordinates
+        int minChunkX = minX >> 4; // Equivalent to minX / 16 but faster
+        int maxChunkX = maxX >> 4;
+        int minChunkZ = minZ >> 4;
+        int maxChunkZ = maxZ >> 4;
+
+        // Load all chunks in the range
+        for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
+            for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+                world.setChunkForceLoaded(chunkX, chunkZ, true);
+            }
         }
     }
 
@@ -78,9 +82,6 @@ public class Mines {
 
             try {
                 String mineName = config.getString("mine_name");
-                if (Bukkit.getWorld(config.getString("mine_world")) == null) {
-                    new WorldCreator(config.getString("mine_world")).createWorld();
-                }
                 World mineWorld = Bukkit.getWorld(config.getString("mine_world"));
                 Location minPoint = new Location(mineWorld, config.getDouble("min_point.X"), config.getDouble("min_point.Y"), config.getDouble("min_point.Z"));
                 Location maxPoint = new Location(mineWorld, config.getDouble("max_point.X"), config.getDouble("max_point.Y"), config.getDouble("max_point.Z"));
@@ -99,7 +100,11 @@ public class Mines {
                 System.out.println(" ");
             }
         }
+        World world = Bukkit.getWorld("MineWorld");
 
+        Location point1 = new Location(world, -20, -63, -20);
+        Location point2 = new Location(world, 20, 3, 20);
+        forceLoadChunksInCuboid(point1, point2);
         this.areMinesLoaded = true;
     }
 

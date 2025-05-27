@@ -23,7 +23,7 @@ public class Tokens {
     String prefix = ChatColor.translateAlternateColorCodes('&', "&f&lTokens &8|&r ");
 
     public double getBalance(Player p) {
-        return Main.econ.getBalance(p);
+        return 100;
     }
 
     public boolean hasTokens(Player p, double tokens) {

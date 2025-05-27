@@ -16,7 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+@Deprecated
 public class SkillsEventsListener implements Listener {
 
     static SettingsManager settings = SettingsManager.getInstance();

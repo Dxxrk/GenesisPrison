@@ -1,10 +1,8 @@
 package me.dxrk.Mines;
 
 import me.dxrk.Main.Main;
-import me.dxrk.utils.BlockChanger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,8 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class Mine {
@@ -37,23 +33,31 @@ public class Mine {
         this.corner1 = c1;
         this.corner2 = c2;
         this.spawnLocation = spawn;
-        this.mineWorld = world;
         this.resetpercent = reset;
+        this.mineWorld = world;
+        this.Blocks = 0;
     }
 
     public boolean isLocationInMine(Location paramLocation) {
+        // Check for null values first
         if (paramLocation == null)
             return false;
         if (paramLocation.getWorld() == null)
             return false;
         if (getMineWorld() == null)
             return false;
-        if (getMineWorld()
-                .equals(paramLocation.getWorld()) &&
-                paramLocation.getBlockY() >= this.getMinPoint().getBlockY() && paramLocation.getBlockY() <= this.getMaxPoint().getBlockY())
-            return paramLocation.getBlockX() >= this.getMinPoint().getBlockX() && paramLocation.getBlockX() <= this.getMaxPoint().getBlockX() &&
-                    paramLocation.getBlockZ() >= this.getMinPoint().getBlockZ() && paramLocation.getBlockZ() <= this.getMaxPoint().getBlockZ();
-        return false;
+
+        // Check if worlds match
+        if (!getMineWorld().equals(paramLocation.getWorld()))
+            return false;
+
+        // Check if all coordinates are within bounds
+        return paramLocation.getBlockY() >= this.getMinPoint().getBlockY() &&
+                paramLocation.getBlockY() <= this.getMaxPoint().getBlockY() &&
+                paramLocation.getBlockX() >= this.getMinPoint().getBlockX() &&
+                paramLocation.getBlockX() <= this.getMaxPoint().getBlockX() &&
+                paramLocation.getBlockZ() >= this.getMinPoint().getBlockZ() &&
+                paramLocation.getBlockZ() <= this.getMaxPoint().getBlockZ();
     }
 
 
@@ -95,43 +99,33 @@ public class Mine {
         this.resetpercent = reset;
     }
 
+    //TODO Rework this to lower the count by 1 every time player breaks a block in the mine.
 
     public int getTotalBlocks() {
-        int b = 0;
-        Location location1 = this.corner1;
-        Location location2 = this.corner2;
-        for (int i = location1.getBlockX(); i <= location2.getBlockX(); i++) {
-            for (int j = location1.getBlockZ(); j <= location2.getBlockZ(); j++) {
-                for (int k = location1.getBlockY(); k <= location2.getY(); k++)
-                    b++;
-            }
-        }
-        return b;
+            return 112627;
     }
 
-    public int getBlocksMined() {
-        int b = 0;
-        Location location1 = this.corner1;
-        Location location2 = this.corner2;
-        for (int i = location1.getBlockX(); i <= location2.getBlockX(); i++) {
-            for (int j = location1.getBlockZ(); j <= location2.getBlockZ(); j++) {
-                for (int k = location1.getBlockY(); k <= location2.getY(); k++) {
-                    if (location1.getWorld().getBlockAt(i, k, j).getType() == Material.AIR)
-                        b++;
-                }
-            }
+    public void mineBlock() {
+        this.Blocks += 1;
+    }
+
+    public int getBlocksMined() { // If 27 blocks mined this == 112600
+        if(getTotalBlocks() > 0) {
+            return getTotalBlocks() - this.Blocks;
         }
-        return b;
+        return 0;
     }
 
     public float getBlocksLeftPercentage() {
-        int i = this.getBlocksMined();
-        int j = this.getTotalBlocks();
-        if (i == 0)
-            return 100.0F;
-        return 100.0F - (float) i / j * 100.0F;
-    }
+        int blocksMined = this.getBlocksMined();
+        int totalBlocks = this.getTotalBlocks();
 
+        if (totalBlocks == 0) {
+            return 0.0F;
+        }
+
+        return 100.0F * (totalBlocks - blocksMined) / totalBlocks;
+    }
 
     public void save() {
         try {
@@ -142,7 +136,6 @@ public class Mine {
             FileConfiguration config = YamlConfiguration.loadConfiguration(mineFile);
 
             config.set("mine_name", this.getMineName());
-            config.set("mine_world", this.getMineWorld().getName());
             config.set("min_point.X", this.getMinPoint().getX());
             config.set("min_point.Y", this.getMinPoint().getY());
             config.set("min_point.Z", this.getMinPoint().getZ());
@@ -152,6 +145,7 @@ public class Mine {
             config.set("spawn_loc.X", this.getSpawnLocation().getX());
             config.set("spawn_loc.Y", this.getSpawnLocation().getY());
             config.set("spawn_loc.Z", this.getSpawnLocation().getZ());
+            config.set("mine_world", this.getMineWorld().getName());
             config.set("reset", this.getResetPercent());
             config.save(mineFile);
         } catch (Exception e) {
@@ -172,47 +166,18 @@ public class Mine {
         }
         UUID id = UUID.fromString(this.getMineName());
         Player p = Bukkit.getPlayer(id);
-        Main.packetSender.sendDynamicAreaPackets(p, this.getMinPoint(), this.getMaxPoint(), 1, DynamicMultiBlockPacketSender.createDefaultBlockChances());
+
+        Main.packetSender.sendDynamicAreaPacketsChunk(p, this.getMinPoint(), this.getMaxPoint(), 1, DynamicMultiBlockPacketSender.createDefaultBlockChances());
+        this.Blocks = 0;
         //BlockChanger.setDynamicCuboidAsynchronously(this.getMinPoint(), this.getMaxPoint(), 1, false);
     }
 
-    public void expandMine(int i) {
-        this.setMinPoint(-i, -i, -i);
-        this.setMaxPoint(i, 0, i);
-        Bukkit.getScheduler().runTaskAsynchronously(Main.plugin,
-                () -> {
-                    Location floor1 = new Location(this.getMineWorld(), this.getMinPoint().getX() - i, this.getMinPoint().getY() - i, this.getMinPoint().getZ() - i);
-                    Location floor2 = new Location(this.getMineWorld(), this.getMaxPoint().getX() + i, this.getMinPoint().getY() - i, this.getMaxPoint().getZ() + i);
-                    //BlockChanger.setSectionCuboidAsynchronously(floor1, floor2, new ItemStack(Material.BEDROCK), false);
 
-                    Location wallone1 = new Location(this.getMineWorld(), this.getMinPoint().getX() - i, this.getMinPoint().getY() - i, this.getMinPoint().getZ() - i);
-                    Location wallone2 = new Location(this.getMineWorld(), this.getMinPoint().getX() - i, this.getMaxPoint().getY(), this.getMaxPoint().getZ() + i); // SOUTH WALL
-                    //BlockChanger.setSectionCuboidAsynchronously(wallone1, wallone2, new ItemStack(Material.BEDROCK), false);
-
-                    Location walltwo1 = new Location(this.getMineWorld(), this.getMinPoint().getX() - i, this.getMinPoint().getY() - i, this.getMinPoint().getZ() - i);
-                    Location walltwo2 = new Location(this.getMineWorld(), this.getMaxPoint().getX() + i, this.getMaxPoint().getY(), this.getMinPoint().getZ() - i); // EAST WALL
-                    //BlockChanger.setSectionCuboidAsynchronously(walltwo1, walltwo2, new ItemStack(Material.BEDROCK), false);
-
-                    Location wallthree1 = new Location(this.getMineWorld(), this.getMaxPoint().getX() + i, this.getMinPoint().getY() - i, this.getMinPoint().getZ() - i);
-                    Location wallthree2 = new Location(this.getMineWorld(), this.getMaxPoint().getX() + i, this.getMaxPoint().getY(), this.getMaxPoint().getZ() + i); // NORTH WALL
-                    //BlockChanger.setSectionCuboidAsynchronously(wallthree1, wallthree2, new ItemStack(Material.BEDROCK), false);
-
-                    Location wallfour1 = new Location(this.getMineWorld(), this.getMinPoint().getX() - i, this.getMinPoint().getY() - i, this.getMaxPoint().getZ() + i);
-                    Location wallfour2 = new Location(this.getMineWorld(), this.getMaxPoint().getX() + i, this.getMaxPoint().getY(), this.getMaxPoint().getZ() + i); // WEST WALL
-                    //BlockChanger.setSectionCuboidAsynchronously(wallfour1, wallfour2, new ItemStack(Material.BEDROCK), false);
-                });
-        this.save();
-        this.reset();
-    }
-
-
-    public boolean delete() {
+    public void delete() {
         File file = new File(Main.plugin.getDataFolder() + File.separator + "mines", getMineName() + ".yml");
         if (file.exists()) {
             file.delete();
-            return true;
         }
-        return false;
     }
 
 }

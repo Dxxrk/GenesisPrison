@@ -36,7 +36,6 @@ public class TagsHandler implements Listener, CommandExecutor {
             giveRandomTag(p);
             return;
         }
-        Main.perms.playerAdd(p, "tags." + tags.get(ri));
         p.sendMessage(m.c("&f&lTags &8| &bUnlocked &7" + tags.get(ri) + " &bTag!"));
     }
 

@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
-
+@Deprecated
 public class PrestigeHandler implements Listener, CommandExecutor {
 
     Methods m = Methods.getInstance();
@@ -275,19 +275,16 @@ public class PrestigeHandler implements Listener, CommandExecutor {
         int prestiges = PlayerDataHandler.getInstance().getPlayerData(p).getInt("Prestiges");
         PlayerDataHandler.getInstance().getPlayerData(p).set("Prestiges", (prestiges + 1));
         RankupHandler.getInstance().setRank(p, 1);
-        Main.econ.withdrawPlayer(p, Main.econ.getBalance(p));
         PlayerDataHandler.getInstance().savePlayerData(p);
         Title t = Title.title(Component.text("Prestiged!").decorate(TextDecoration.BOLD).color(NamedTextColor.RED), Component.text("Prestige +1").decorate(TextDecoration.BOLD).color(NamedTextColor.BLUE),
                 Title.Times.times(Duration.ofMillis(100), Duration.ofSeconds(2), Duration.ofMillis(100)));
 
-        MineHandler.getInstance().updateMine(p, 1);
+
         CMDVoteShop.addCoupon(p, 0.25);
-        LocksmithHandler.getInstance().addKey(p, "Seasonal", 1);
         int prestigepoints = PlayerDataHandler.getInstance().getPlayerData(p).getInt("PrestigePoints");
         PlayerDataHandler.getInstance().getPlayerData(p).set("PrestigePoints", prestigepoints + 1);
         settings.saveRankupPrices();
         prestiges++;
-        MineHandler.getInstance().updateMine(p, prestiges);
     }
 
     public static void addPrestiges(Player p, int amt) {

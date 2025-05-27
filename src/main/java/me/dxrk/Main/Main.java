@@ -2,14 +2,12 @@ package me.dxrk.Main;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.ListenerOptions;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedGameProfile;
 import com.comphenix.protocol.wrappers.WrappedServerPing;
-import com.earth2me.essentials.Essentials;
 import me.dxrk.Commands.*;
 import me.dxrk.Discord.JDAEvents;
 import me.dxrk.Discord.jdaHandler;
@@ -19,15 +17,14 @@ import me.dxrk.Gangs.CMDGang;
 import me.dxrk.Mines.*;
 import me.dxrk.Tokens.TokensCMD;
 import me.dxrk.Tokens.TokensListener;
-import me.dxrk.Vote.BuycraftUtilOld;
 import me.dxrk.Vote.CMDVote;
 import me.dxrk.Vote.CMDVoteShop;
-import net.milkbowl.vault.chat.Chat;
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -39,7 +36,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -53,18 +49,18 @@ import java.util.*;
 public class Main extends JavaPlugin implements Listener, CommandExecutor {
 
     private static Main INSTANCE;
-    public static Permission perms = null;
-    public static Economy econ = null;
-    public static Chat chat = null;
     public ArrayList<String> Sb = new ArrayList<>();
     public static Plugin plugin;
     public static Scoreboard sb;
     SettingsManager settings = SettingsManager.getInstance();
-    public static Essentials ess;
 
     public static String c(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
+
+    public static TextComponent prefix = Component.text("Eternity").color(TextColor.color(0x6D31E8)).decoration(TextDecoration.BOLD, true)
+            .append(Component.text("MC ").color(TextColor.color(0x00C2FF)).decoration(TextDecoration.BOLD, true))
+                    .append(Component.text("⎜ ").color(NamedTextColor.GRAY).decoration(TextDecoration.BOLD, false));
 
     //@SuppressWarnings("deprecation")
     private void handlePing(WrappedServerPing ping) {
@@ -81,26 +77,38 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         worlds.add("Prison");
         //worlds.add("world_the_end");
         worlds.add("Build");
-        worlds.add("Dxrk");
+        worlds.add("CaveWorld");
+        worlds.add("FishingWorld");
+        worlds.add("Spawn");
+        worlds.add("MineWorld");
         return worlds;
     }
 
     private void loadWorlds() {
-        /*for (String s : worlds()) {
+        for (String s : worlds()) {
             if(Bukkit.getWorld(s) == null) {
+                if(s.equalsIgnoreCase("Spawn")) {
+                    World spawn = new WorldCreator("Spawn").type(WorldType.FLAT)
+                            .generatorSettings("{\"layers\": [{\"block\": \"air\", \"height\": 1}], \"biome\":\"plains\"}").createWorld();
+                    continue;
+                }
+                if(s.equalsIgnoreCase("MineWorld")) {
+                    World mine = new WorldCreator("MineWorld").type(WorldType.FLAT)
+                            .generatorSettings("{\"layers\": [{\"block\": \"air\", \"height\": 1}], \"biome\":\"plains\"}").createWorld();
+                    continue;
+                }
                 new WorldCreator(s).createWorld();
             }
-        }*/
+        }
     }
     public static PacketInterceptor interceptor;
     public static DynamicMultiBlockPacketSender packetSender;
     public void onEnable() {
         plugin = this;
         INSTANCE = this;
+        loadWorlds();
         Mines.getInstance().enable();
         PlayerDataHandler.getInstance().loadPlayerData();
-        System.out.println(MineSystem.getInstance().getActiveMines());
-        MineWorldCreator.getInstance().createMineWorld("mines");
 
         interceptor = new PacketInterceptor(this);
         packetSender = new DynamicMultiBlockPacketSender(this);
@@ -119,11 +127,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
                     }
                 });
 
-        ess = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
-        setupEconomy();
         this.settings.setup(this);
-        setupPermissions();
-        setupChat();
         if (this.settings.getOptions().get("numberofmines") == null) {
             this.settings.getOptions().set("numberofmines", 0);
             this.settings.saveOptions();
@@ -140,24 +144,17 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
             settings.getOptions().set("DiscordToken", "");
         }
 
+
         AuctionHouseHandler.getInstance().loadAH();
-        TrinketHandler t = new TrinketHandler();
-        t.customShardCommon();
-        t.customShardRare();
-        t.customShardEpic();
-        t.customShardLegendary();
-        t.customShardHeroic();
-        t.commonSharding();
-        t.rareSharding();
-        t.epicSharding();
-        t.legendarySharding();
-        t.commonShardingOpened();
-        t.rareShardingOpened();
-        t.epicShardingOpened();
-        t.legendaryShardingOpened();
-        t.heroicSharding();
 
-
+        getCommand("ptime").setExecutor(new EssentialsCommands());
+        getCommand("fly").setExecutor(new EssentialsCommands());
+        getCommand("spawn").setExecutor(new EssentialsCommands());
+        getCommand("warp").setExecutor(new EssentialsCommands());
+        getCommand("gms").setExecutor(new EssentialsCommands());
+        getCommand("gmc").setExecutor(new EssentialsCommands());
+        getCommand("gma").setExecutor(new EssentialsCommands());
+        getCommand("gmsp").setExecutor(new EssentialsCommands());
         getCommand("blocks").setExecutor(new BlocksHandler());
         /*getCommand("ChatColor").setExecutor(new ChatHandler());
         //getCommand("Chat").setExecutor(new ChatHandler());
@@ -179,7 +176,6 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("Token").setExecutor(new TokensCMD());
         getCommand("nick").setExecutor(new NicknameHandler());
         getCommand("nickname").setExecutor(new NicknameHandler());
-        getCommand("nicknames").setExecutor(new CMDNickname());
         getCommand("mine").setExecutor(new CMDMine());
         getCommand("vanish").setExecutor(new CMDVanish());
         getCommand("v").setExecutor(new CMDVanish());
@@ -192,15 +188,10 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("motdchange").setExecutor(this);
         getCommand("workmode").setExecutor(this);
         getCommand("prestige").setExecutor(new PrestigeHandler());
-        getCommand("giveenchant").setExecutor(new DonorItems());
         getCommand("boost").setExecutor(new BoostsHandler());
         getCommand("giveboost").setExecutor(new BoostsHandler());
         getCommand("blockstop").setExecutor(new Leaderboards());
         getCommand("addprestige").setExecutor(new PrestigeHandler());
-        getCommand("giveshard").setExecutor(new TrinketHandler());
-        getCommand("givetrinket").setExecutor(new TrinketHandler());
-        getCommand("trinket").setExecutor(new TrinketHandler());
-        getCommand("trinkets").setExecutor(new TrinketHandler());
         getCommand("relore").setExecutor(new CMDItemEdits());
         getCommand("addlore").setExecutor(new CMDItemEdits());
         getCommand("dellore").setExecutor(new CMDItemEdits());
@@ -212,11 +203,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("rankup").setExecutor(new CMDRankup());
         getCommand("maxrankup").setExecutor(new CMDRankup());
         getCommand("rankupmax").setExecutor(new CMDRankup());
-        getCommand("locksmith").setExecutor(new LocksmithHandler());
-        getCommand("ls").setExecutor(new LocksmithHandler());
-        getCommand("keys").setExecutor(new LocksmithHandler());
         getCommand("clearchat").setExecutor(new CMDClearchat());
-        getCommand("dp").setExecutor(new CMDDp());
         getCommand("multi").setExecutor(new SellHandler());
         getCommand("withdraw").setExecutor(new SellHandler());
         getCommand("setrank").setExecutor(new CMDRankup());
@@ -228,10 +215,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("autorankup").setExecutor(new RankupHandler());
         getCommand("aru").setExecutor(new RankupHandler());
         getCommand("giveplotitem").setExecutor(new MineHandler());
-        getCommand("buymsg").setExecutor(new BuycraftUtilOld());
-        getCommand("createcoupon").setExecutor(new BuycraftUtilOld());
         getCommand("options").setExecutor(new CMDOptions());
-        getCommand("daily").setExecutor(new CMDDaily());
         getCommand("discord").setExecutor(new JDAEvents());
         getCommand("ranktop").setExecutor(new Leaderboards());
         getCommand("rankstop").setExecutor(new Leaderboards());
@@ -242,12 +226,9 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("giverank").setExecutor(new CMDRanks());
         getCommand("removemine").setExecutor(new MineHandler());
         getCommand("updatemine").setExecutor(new MineHandler());
-        getCommand("redeem").setExecutor(new BuycraftUtilOld());
         getCommand("stats").setExecutor(new CMDStats());
         getCommand("ah").setExecutor(new AuctionHouseHandler());
         getCommand("auctionhouse").setExecutor(new AuctionHouseHandler());
-        getCommand("gems").setExecutor(new MinePouchHandler());
-        getCommand("gem").setExecutor(new MinePouchHandler());
         getCommand("help").setExecutor(new CMDHelp());
         getCommand("leaderboard").setExecutor(new Leaderboards());
         getCommand("leaderboards").setExecutor(new Leaderboards());
@@ -266,10 +247,10 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         getCommand("sellfish").setExecutor(new FishingHandler());
         getCommand("rod").setExecutor(new FishingHandler());
         getCommand("crystals").setExecutor(new FishingHandler());
-        getCommand("buildmode").setExecutor(new BuildModeHandler());
-        getCommand("giveflare").setExecutor(new EventFlareHandler());
         getCommand("listversions").setExecutor(this);
 
+        registerEvents(this, new Listener[]{new ToolHandler()});
+        registerEvents(this, new Listener[]{new JoinQuitHandler()});
         registerEvents(this, new Listener[]{new MonsterHandler()});
         registerEvents(this, new Listener[]{new CMDVanish()});
         registerEvents(this, new Listener[]{new MomentumHandler()});
@@ -279,21 +260,17 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         registerEvents(this, new Listener[]{new CMDTrade()});
         registerEvents(this, new Listener[]{new Leaderboards()});
         registerEvents(this, new Listener[]{new CMDHelp()});
-        registerEvents(this, new Listener[]{new MinePouchHandler()});
         registerEvents(this, new Listener[]{new AuctionHouseHandler()});
         registerEvents(this, new Listener[]{new CMDStats()});
         registerEvents(this, new Listener[]{new CMDRanks()});
         registerEvents(this, new Listener[]{new CMDVoteShop()});
         registerEvents(this, new Listener[]{new TokensCMD()});
-        registerEvents(this, new Listener[]{new KitAndWarp()});
         registerEvents(this, new Listener[]{new CMDTags()});
         registerEvents(this, new Listener[]{new ProtectOP()});
         registerEvents(this, new Listener[]{new BlocksHandler()});
         registerEvents(this, new Listener[]{new NewChatHandler()});
         registerEvents(this, new Listener[]{new CMDVote()});
-        registerEvents(this, new Listener[]{new DeathLogger()});
         registerEvents(this, new Listener[]{new TokensListener()});
-        registerEvents(this, new Listener[]{new CMDNickname()});
         registerEvents(this, new Listener[]{new PickaxeLevel()});
         registerEvents(this, new Listener[]{new Enchants()});
         registerEvents(this, new Listener[]{new PickXPHandler()});
@@ -301,24 +278,19 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         registerEvents(this, new Listener[]{new MineHandler()});
         registerEvents(this, new Listener[]{new Leaderboards()});
         registerEvents(this, new Listener[]{new CMDMine()});
-        registerEvents(this, new Listener[]{new DonorItems()});
         registerEvents(this, new Listener[]{new CrateHandler()});
         registerEvents(this, new Listener[]{new SellHandler()});
         registerEvents(this, new Listener[]{new PlayerDataHandler()});
         registerEvents(this, new Listener[]{new KeysHandler()});
-        registerEvents(this, new Listener[]{new LocksmithHandler()});
         registerEvents(this, new Listener[]{new RankupHandler()});
         registerEvents(this, new Listener[]{new ScoreboardHandler()});
         //registerEvents(this, new Listener[]{new TrinketHandler()});
         registerEvents(this, new Listener[]{new CMDOptions()});
-        registerEvents(this, new Listener[]{new CMDDaily()});
         registerEvents(this, new Listener[]{new JDAEvents()});
         registerEvents(this, new Listener[]{new MysteryBoxHandler()});
         registerEvents(this, new Listener[]{new PrestigeHandler()});
         registerEvents(this, new Listener[]{new PickaxeSkillTree()});
         registerEvents(this, new Listener[]{new FishingHandler()});
-        registerEvents(this, new Listener[]{new BuildModeHandler()});
-        registerEvents(this, new Listener[]{new EventFlareHandler()});
         registerEvents(this, new Listener[]{this});
         // For when sale is active, use this ||
         //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "motdchange sale 20");
@@ -684,19 +656,6 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
 
     }
 
-    private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        perms = rsp.getProvider();
-        return perms != null;
-    }
-
-    private boolean setupChat() {
-        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
-        chat = rsp.getProvider();
-        return chat != null;
-
-    }
-
 
     public void registerEvents(Plugin plugin, Listener[] listeners) {
         byte b;
@@ -709,15 +668,7 @@ public class Main extends JavaPlugin implements Listener, CommandExecutor {
         }
     }
 
-    private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null)
-            return false;
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null)
-            return false;
-        econ = rsp.getProvider();
-        return econ != null;
-    }
+
 
 
 }

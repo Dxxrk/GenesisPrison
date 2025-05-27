@@ -1,6 +1,5 @@
 package me.dxrk.Events;
 
-import com.earth2me.essentials.Essentials;
 import me.dxrk.Commands.CMDOptions;
 import me.dxrk.Commands.CMDVanish;
 import me.dxrk.Enchants.SkillsEventsListener;
@@ -11,8 +10,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
 import net.minecraft.server.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,9 +30,6 @@ public class ScoreboardHandler implements Listener {
 
     static SettingsManager settings = SettingsManager.getInstance();
 
-
-    public static Permission perms = null;
-    public static Economy econ = null;
 
     public static int getPlayersOnline() {
         int x = 0;
@@ -143,10 +137,9 @@ public class ScoreboardHandler implements Listener {
         return "";
     }
 
-    static Essentials ess = (Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
 
     public static boolean isAFK(Player p) {
-        return ess.getUser(p) != null && ess.getUser(p).isAfk();
+        return false;
     }
 
 
@@ -182,7 +175,7 @@ public class ScoreboardHandler implements Listener {
         }
         double percents;
         p.getScoreboard().getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
-        percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) * 100);
+        percents = (100 / RankupHandler.getInstance().rankPrice(p) * 100);
         double dmultiply = percents * 10.0;
         double dRound = Math.round(dmultiply) / 10.0;
 
@@ -616,7 +609,7 @@ public class ScoreboardHandler implements Listener {
         }
         double percents;
         NewBoard.getTeam("balance").setSuffix(c("&a" + Main.formatAmt(Tokens.getInstance().getBalance(p))));
-        percents = (Main.econ.getBalance(p) / RankupHandler.getInstance().rankPrice(p) * 100);
+        percents = (100 / RankupHandler.getInstance().rankPrice(p) * 100);
         double dmultiply = percents * 10.0;
         double dRound = Math.round(dmultiply) / 10.0;
         //adjust for new rank without "prestige" and change rankuphandler. + change scoreboard titles

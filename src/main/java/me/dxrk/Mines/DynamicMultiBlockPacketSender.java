@@ -4,20 +4,25 @@ import it.unimi.dsi.fastutil.shorts.Short2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
+import net.minecraft.network.protocol.game.ClientboundLevelChunkWithLightPacket;
 import net.minecraft.network.protocol.game.ClientboundSectionBlocksUpdatePacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.ticks.LevelChunkTicks;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -26,10 +31,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+
 
 public class DynamicMultiBlockPacketSender {
     private final Plugin plugin;
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     public DynamicMultiBlockPacketSender(Plugin plugin) {
         this.plugin = plugin;
@@ -62,92 +69,61 @@ public class DynamicMultiBlockPacketSender {
         }
     }
 
-    /**
-     * Holds block data for a specific chunk section
-     */
     private static class ChunkSectionData {
         final SectionPos sectionPos;
         final Short2ObjectMap<BlockState> blockStates;
-        final List<Packet<ClientGamePacketListener>> blockEntityPackets;
 
         ChunkSectionData(SectionPos sectionPos) {
             this.sectionPos = sectionPos;
             this.blockStates = new Short2ObjectLinkedOpenHashMap<>();
-            this.blockEntityPackets = new ArrayList<>();
         }
 
         void addBlock(BlockPos pos, BlockState state, ServerLevel level) {
-            short relativePos = (short) SectionPos.sectionRelativePos(pos);
+            short relativePos = SectionPos.sectionRelativePos(pos);
             blockStates.put(relativePos, state);
-
-            // Handle block entities
-            if (state.hasBlockEntity()) {
-                BlockEntity blockEntity = level.getBlockEntity(pos);
-                if (blockEntity != null) {
-                    Packet<ClientGamePacketListener> packet = blockEntity.getUpdatePacket();
-                    if (packet != null) {
-                        blockEntityPackets.add(packet);
-                    }
-                }
-            }
         }
     }
 
-    /**
-     * Calculates the weight for a block type at a given level
-     */
+
     private static double calculateWeight(BlockChance block, int level) {
-        // If below minimum level, return 0 weight
         if (level < block.minimumLevel()) {
             return 0;
         }
 
         if (!block.isParabolic) {
-            // Linear interpolation for non-parabolic blocks
             double t = (level - block.minimumLevel()) /
                     (double) (100 - block.minimumLevel());
             return block.startWeight() + (block.endWeight() - block.startWeight()) * t;
         }
 
-        // Normalize the level to a 0-1 range between minimum level and peak
         double normalizedLevel;
         if (level <= block.peakLevel()) {
             normalizedLevel = (level - block.minimumLevel()) /
                     (block.peakLevel() - block.minimumLevel());
         } else {
-            // After peak, normalize between peak and max level
             normalizedLevel = 1 + (level - block.peakLevel()) /
                     (100 - block.peakLevel());
         }
 
-        // Quadratic function that starts at minimumLevel
         if (normalizedLevel < 0) {
             return 0;
         }
 
         if (level <= block.peakLevel()) {
-            // Rising phase: quadratic increase to peak
             double t = normalizedLevel;
             return block.startWeight() + (block.peakWeight() - block.startWeight()) * (t * t);
         } else {
-            // Falling phase: linear decrease from peak to end
             double t = (level - block.peakLevel()) / (100 - block.peakLevel());
             return block.peakWeight() + (block.endWeight() - block.peakWeight()) * t;
         }
     }
 
-    /**
-     * Converts a Material to BlockState
-     */
     private BlockState materialToBlockState(Material material) {
-        net.minecraft.world.level.block.Block nmsBlock =
-                org.bukkit.craftbukkit.util.CraftMagicNumbers.getBlock(material);
+        Block nmsBlock =
+                CraftMagicNumbers.getBlock(material);
         return nmsBlock.defaultBlockState();
     }
 
-    /**
-     * Selects a random block based on level and depth
-     */
     private Material getRandomBlockForLevelAndDepth(
             int level,
             double currentRelY,
@@ -186,12 +162,9 @@ public class DynamicMultiBlockPacketSender {
         return blockChances.get(blockChances.size() - 1).itemStack().getType();
     }
 
-    /**
-     * Debug logs a message if debug mode is enabled
-     */
-    private void debugLog(String message) {
+    private void debugLog() {
         if (DEBUG) {
-            plugin.getLogger().info("[Debug] " + message);
+            plugin.getLogger().info("[Debug] " + "Finished sending all packets");
         }
     }
 
@@ -199,9 +172,295 @@ public class DynamicMultiBlockPacketSender {
         return new BlockPos.MutableBlockPos(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     }
 
-    /**
-     * Sends multi-block change packets for an area using dynamic block distribution
-     */
+    public List<ChunkPos> getPos(Location loc1, Location loc2) {
+        World world = loc1.getWorld();
+        ServerLevel serverLevel = ((CraftWorld) world).getHandle();
+
+
+        int x1 = Math.min(loc1.getBlockX(), loc2.getBlockX());
+        int y1 = Math.min(loc1.getBlockY(), loc2.getBlockY());
+        int z1 = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
+        int x2 = Math.max(loc1.getBlockX(), loc2.getBlockX());
+        int y2 = Math.max(loc1.getBlockY(), loc2.getBlockY());
+        int z2 = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
+
+        int minChunkX = x1 >> 4;
+        int maxChunkX = x2 >> 4;
+        int minChunkZ = z1 >> 4;
+        int maxChunkZ = z2 >> 4;
+        List<ChunkPos> chunkPositions = new ArrayList<>();
+        for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
+            for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+                ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
+                chunkPositions.add(chunkPos);
+            }
+        }
+        return chunkPositions;
+    }
+
+    public Map<ChunkPos, LevelChunk> getModifiedChunks(Location loc1, Location loc2, Player player, int level, List<BlockChance> blockChances) {
+        if (!loc1.getWorld().equals(loc2.getWorld())) {
+            throw new IllegalArgumentException("Locations must be in the same world");
+        }
+        if (blockChances.isEmpty()) {
+            throw new IllegalArgumentException("Block chances list cannot be empty");
+        }
+
+        // Get NMS handles
+        ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
+        World world = loc1.getWorld();
+        ServerLevel serverLevel = ((CraftWorld) world).getHandle();
+
+
+        int x1 = Math.min(loc1.getBlockX(), loc2.getBlockX());
+        int y1 = Math.min(loc1.getBlockY(), loc2.getBlockY());
+        int z1 = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
+        int x2 = Math.max(loc1.getBlockX(), loc2.getBlockX());
+        int y2 = Math.max(loc1.getBlockY(), loc2.getBlockY());
+        int z2 = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
+
+
+        double totalHeight = 0;
+        if (totalHeight <= 0) totalHeight = 1;
+        else {
+            totalHeight = y2 - y1;
+        }
+        double finalTotalHeight = totalHeight;
+        int minChunkX = x1 >> 4;
+        int maxChunkX = x2 >> 4;
+        int minChunkZ = z1 >> 4;
+        int maxChunkZ = z2 >> 4;
+        Map<ChunkPos, LevelChunk> modifiedChunks = new HashMap<>();
+        for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
+            for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+                ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
+
+                if (!serverLevel.getChunkSource().hasChunk(chunkX, chunkZ)) {
+                    continue;
+                }
+
+                LevelChunk realChunk = serverLevel.getChunk(chunkX, chunkZ);
+
+                LevelChunk fakeChunk = createFakeChunk(realChunk, serverLevel);
+                modifiedChunks.put(chunkPos, fakeChunk);
+
+                int startX = Math.max(x1, chunkX << 4);
+                int endX = Math.min(x2, (chunkX << 4) + 15);
+                int startZ = Math.max(z1, chunkZ << 4);
+                int endZ = Math.min(z2, (chunkZ << 4) + 15);
+
+                for (int x = startX; x <= endX; x++) {
+                    for (int z = startZ; z <= endZ; z++) {
+                        for (int y = y1; y <= y2; y++) {
+                            int sectionIndex = fakeChunk.getSectionIndex(y >> 4);
+                            if (sectionIndex < 0 || sectionIndex >= fakeChunk.getSections().length) {
+                                continue;
+                            }
+
+                            int relX = x & 0xF;
+                            int relZ = z & 0xF;
+                            int relY = y & 0xF;
+
+                            double currentRelY = (y - y1) / finalTotalHeight;
+
+                            Material material = getRandomBlockForLevelAndDepth(
+                                    level,
+                                    currentRelY,
+                                    blockChances
+                            );
+                            BlockState blockState = materialToBlockState(material);
+                            LevelChunkSection section = fakeChunk.getSection(sectionIndex);
+                            if (section != null) {
+                                section.setBlockState(relX, relY, relZ, blockState, false);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return modifiedChunks;
+    }
+
+
+    public void sendDynamicAreaPacketsChunk(
+            Player player,
+            Location loc1,
+            Location loc2,
+            int level,
+            List<BlockChance> blockChances
+    ) {
+        if (!loc1.getWorld().equals(loc2.getWorld())) {
+            throw new IllegalArgumentException("Locations must be in the same world");
+        }
+        if (blockChances.isEmpty()) {
+            throw new IllegalArgumentException("Block chances list cannot be empty");
+        }
+
+
+        // Get NMS handles
+        ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
+        World world = loc1.getWorld();
+        ServerLevel serverLevel = ((CraftWorld) world).getHandle();
+
+        if (!player.getWorld().equals(world)) {
+            plugin.getLogger().info("Player " + player.getName() + " is not in the target world. Skipping packet send.");
+            return;
+        }
+
+        int x1 = Math.min(loc1.getBlockX(), loc2.getBlockX());
+        int y1 = Math.min(loc1.getBlockY(), loc2.getBlockY());
+        int z1 = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
+        int x2 = Math.max(loc1.getBlockX(), loc2.getBlockX());
+        int y2 = Math.max(loc1.getBlockY(), loc2.getBlockY());
+        int z2 = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
+
+
+        double totalHeight = 0;
+        if (totalHeight <= 0) totalHeight = 1;
+        else {
+            totalHeight = y2 - y1;
+        }
+        double finalTotalHeight = totalHeight;
+        CompletableFuture.runAsync(() -> {
+            try {
+                int minChunkX = x1 >> 4;
+                int maxChunkX = x2 >> 4;
+                int minChunkZ = z1 >> 4;
+                int maxChunkZ = z2 >> 4;
+
+                Map<ChunkPos, LevelChunk> modifiedChunks = new HashMap<>();
+
+                for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
+                    for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+                        ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
+
+                        if (!serverLevel.getChunkSource().hasChunk(chunkX, chunkZ)) {
+                            continue;
+                        }
+
+                        LevelChunk realChunk = serverLevel.getChunk(chunkX, chunkZ);
+
+                        LevelChunk fakeChunk = createFakeChunk(realChunk, serverLevel);
+                        modifiedChunks.put(chunkPos, fakeChunk);
+
+                        int startX = Math.max(x1, chunkX << 4);
+                        int endX = Math.min(x2, (chunkX << 4) + 15);
+                        int startZ = Math.max(z1, chunkZ << 4);
+                        int endZ = Math.min(z2, (chunkZ << 4) + 15);
+
+                        for (int x = startX; x <= endX; x++) {
+                            for (int z = startZ; z <= endZ; z++) {
+                                for (int y = y1; y <= y2; y++) {
+                                    int sectionIndex = fakeChunk.getSectionIndex(y >> 4);
+                                    if (sectionIndex < 0 || sectionIndex >= fakeChunk.getSections().length) {
+                                        continue;
+                                    }
+
+                                    int relX = x & 0xF;
+                                    int relZ = z & 0xF;
+                                    int relY = y & 0xF;
+
+                                    double currentRelY = (y - y1) / finalTotalHeight;
+
+                                    Material material = getRandomBlockForLevelAndDepth(
+                                            level,
+                                            currentRelY,
+                                            blockChances
+                                    );
+                                    BlockState blockState = materialToBlockState(material);
+                                    LevelChunkSection section = fakeChunk.getSection(sectionIndex);
+                                    if (section != null) {
+                                        section.setBlockState(relX, relY, relZ, blockState, false);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                final Map<ChunkPos, LevelChunk> finalModifiedChunks = modifiedChunks;
+                try {
+                    if (!player.getWorld().equals(world)) {
+                        plugin.getLogger().info("Player " + player.getName() + " changed worlds. Skipping packet send.");
+                        return;
+                    }
+                    for (LevelChunk fakeChunk : finalModifiedChunks.values()) {
+                        ClientboundLevelChunkWithLightPacket packet = new ClientboundLevelChunkWithLightPacket(
+                                fakeChunk,
+                                serverLevel.getLightEngine(),
+                                null,
+                                null,
+                                true
+                        );
+                        serverPlayer.connection.send(packet);
+                    }
+                } catch (Exception e) {
+                    plugin.getLogger().warning("Failed to send chunk packets: " + e.getMessage());
+                    if (DEBUG) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                plugin.getLogger().warning("Failed to process dynamic area packets: " + e.getMessage());
+                if (DEBUG) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+    private LevelChunk createFakeChunk(LevelChunk original, ServerLevel level) {
+        ChunkPos pos = original.getPos();
+
+        LevelChunkSection[] originalSections = original.getSections();
+        LevelChunkSection[] clonedSections = new LevelChunkSection[originalSections.length];
+
+        for (int i = 0; i < originalSections.length; i++) {
+            LevelChunkSection originalSection = originalSections[i];
+            if (originalSection != null && !originalSection.hasOnlyAir()) {
+                clonedSections[i] = new LevelChunkSection(
+                        level.registryAccess().registryOrThrow(Registries.BIOME),
+                        level,
+                        pos,
+                        i + level.getMinSection()
+                );
+
+                for (int x = 0; x < 16; x++) {
+                    for (int y = 0; y < 16; y++) {
+                        for (int z = 0; z < 16; z++) {
+                            BlockState state = originalSection.getBlockState(x, y, z);
+                            if (!state.isAir()) {
+                                clonedSections[i].setBlockState(x, y, z, state, false);
+                            }
+                        }
+                    }
+                }
+            } else {
+                clonedSections[i] = new LevelChunkSection(
+                        level.registryAccess().registryOrThrow(Registries.BIOME),
+                        level,
+                        pos,
+                        i + level.getMinSection()
+                );
+            }
+        }
+
+        return new LevelChunk(
+                level,
+                pos,
+                original.getUpgradeData(),
+                new LevelChunkTicks<>(),
+                new LevelChunkTicks<>(),
+                original.getInhabitedTime(),
+                clonedSections,
+                null,
+                original.getBlendingData()
+        );
+    }
+
+    //new method for when staff visit player to see what they're mining
+
     public void sendDynamicAreaPackets(
             Player player,
             Location loc1,
@@ -216,9 +475,7 @@ public class DynamicMultiBlockPacketSender {
             throw new IllegalArgumentException("Block chances list cannot be empty");
         }
 
-        debugLog("Starting packet send for player: " + player.getName());
 
-        // Get NMS handles
         ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
         World world = loc1.getWorld();
         ServerLevel serverLevel = ((CraftWorld) world).getHandle();
@@ -242,10 +499,7 @@ public class DynamicMultiBlockPacketSender {
         double totalHeight = y2 - y1;
         if (totalHeight <= 0) totalHeight = 1;
 
-        // Generate block data for each position
-        Map<Location, Material> locs = new HashMap<>();
         for (int i = 0; i < cuboidSize; i++) {
-            // Skip if chunk isn't loaded
             if (!serverLevel.getChunkSource().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
                 Chunk c = location.getChunk();
                 c.load();
@@ -276,21 +530,17 @@ public class DynamicMultiBlockPacketSender {
                     ++z;
                 }
             }
-            locs.put(location.clone(), material);
             location.setX(x1 + x);
             location.setY(y1 + y);
             location.setZ(z1 + z);
         }
 
-        debugLog("Generated " + sectionDataMap.size() + " chunk sections");
-
-        // Send packets for each chunk section
         for (ChunkSectionData sectionData : sectionDataMap.values()) {
             if (sectionData.blockStates.isEmpty()) {
                 continue;
             }
 
-            try {// Send multi-block update packet
+            try {
                 serverPlayer.connection.send(
                         new ClientboundSectionBlocksUpdatePacket(
                                 sectionData.sectionPos,
@@ -298,12 +548,6 @@ public class DynamicMultiBlockPacketSender {
                                 sectionData.blockStates.values().toArray(BlockState[]::new)
                         )
                 );
-
-
-                // Send any block entity packets
-                for (Packet<ClientGamePacketListener> packet : sectionData.blockEntityPackets) {
-                    serverPlayer.connection.send(packet);
-                }
             } catch (Exception e) {
                 plugin.getLogger().warning("Failed to send packet for section " +
                         sectionData.sectionPos + ": " + e.getMessage());
@@ -312,15 +556,102 @@ public class DynamicMultiBlockPacketSender {
                 }
             }
         }
-        PacketInterceptor.blockLocs.put(player, locs);
-        debugLog("Finished sending all packets");
     }
 
+    public void jackhammer(
+            Player player,
+            Location loc1,
+            Location loc2
+    ) {
+        if (!loc1.getWorld().equals(loc2.getWorld())) {
+            throw new IllegalArgumentException("Locations must be in the same world");
+        }
+
+
+        ServerPlayer serverPlayer = ((CraftPlayer) player).getHandle();
+        World world = loc1.getWorld();
+        ServerLevel serverLevel = ((CraftWorld) world).getHandle();
+
+        int x1 = Math.min(loc1.getBlockX(), loc2.getBlockX());
+        int y1 = Math.min(loc1.getBlockY(), loc2.getBlockY());
+        int z1 = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
+        int x2 = Math.max(loc1.getBlockX(), loc2.getBlockX());
+        int y2 = Math.max(loc1.getBlockY(), loc2.getBlockY());
+        int z2 = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
+        int sizeX = Math.abs(x2 - x1) + 1;
+        int sizeY = Math.abs(y2 - y1) + 1;
+        int sizeZ = Math.abs(z2 - z1) + 1;
+        int cuboidSize = sizeX * sizeY * sizeZ;
+
+        Map<SectionPos, ChunkSectionData> sectionDataMap = new HashMap<>();
+
+        int x = 0, y = 0, z = 0;
+        Location location = new Location(world, x1, y1, z1);
+
+        double totalHeight = y2 - y1;
+        if (totalHeight <= 0) totalHeight = 1;
+
+        for (int i = 0; i < cuboidSize; i++) {
+            if (!serverLevel.getChunkSource().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
+                Chunk c = location.getChunk();
+                c.load();
+            }
+
+            BlockPos.MutableBlockPos pos = getBlockPos(location);
+            SectionPos sectionPos = SectionPos.of(pos);
+
+            ChunkSectionData sectionData = sectionDataMap.computeIfAbsent(
+                    sectionPos,
+                    ChunkSectionData::new
+            );
+
+            double currentRelY = (location.getY() - y1) / totalHeight;
+            Material material = Material.AIR;
+
+            BlockState blockState = materialToBlockState(material);
+            sectionData.addBlock(pos, blockState, serverLevel);
+
+            if (++x >= sizeX) {
+                x = 0;
+                if (++y >= sizeY) {
+                    y = 0;
+                    ++z;
+                }
+            }
+
+            location.setX(x1 + x);
+            location.setY(y1 + y);
+            location.setZ(z1 + z);
+        }
+
+        for (ChunkSectionData sectionData : sectionDataMap.values()) {
+            if (sectionData.blockStates.isEmpty()) {
+                continue;
+            }
+
+            try {
+                serverPlayer.connection.send(
+                        new ClientboundSectionBlocksUpdatePacket(
+                                sectionData.sectionPos,
+                                sectionData.blockStates.keySet(),
+                                sectionData.blockStates.values().toArray(BlockState[]::new)
+                        )
+                );
+            } catch (Exception e) {
+                plugin.getLogger().warning("Failed to send packet for section " +
+                        sectionData.sectionPos + ": " + e.getMessage());
+                if (DEBUG) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    //TODO Change this to set the blocks destroy stage, also FIX SOUND
     public void sendDestroyPacket(Player p, Location loc) {
         ServerPlayer serverPlayer = ((CraftPlayer) p).getHandle();
         World world = loc.getWorld();
         ServerLevel serverLevel = ((CraftWorld) world).getHandle();
-
         BlockPos pos = new BlockPos(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
         try {
             serverPlayer.connection.send(
@@ -338,15 +669,12 @@ public class DynamicMultiBlockPacketSender {
         }
     }
 
-    /**
-     * Creates the default block chances configuration
-     */
     public static List<BlockChance> createDefaultBlockChances() {
         List<BlockChance> chances = new ArrayList<>();
 
         // Cobblestone: Always present, gradually decreasing
         chances.add(new BlockChance(
-                new ItemStack(Material.COBBLESTONE),
+                new ItemStack(Material.COPPER_BLOCK),
                 95, 0, 0,     // Start very high, end at 0%
                 1,             // Peak level (unused)
                 1.0, 1.0,      // Allowed anywhere

@@ -69,10 +69,6 @@
       <url>https://maven.citizensnpcs.co/repo</url>
     </repository>
     <repository>
-      <id>essentials-releases</id>
-      <url>https://repo.essentialsx.net/snapshots/</url>
-    </repository>
-    <repository>
       <id>codemc-repo</id>
       <url>https://repo.codemc.io/repository/maven-public/</url>
     </repository>
@@ -83,6 +79,10 @@
     <repository>
       <id>sk89q-repo</id>
       <url>https://maven.enginehub.org/repo/</url>
+    </repository>
+    <repository>
+      <id>matteodev</id>
+      <url>https://maven.devs.beer/</url>
     </repository>
   </repositories>
   <pluginRepositories>
@@ -96,6 +96,12 @@
       <groupId>ca.bkaw.nms</groupId>
       <artifactId>purpur-nms-build</artifactId>
       <version>1.21.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>dev.lone</groupId>
+      <artifactId>api-itemsadder</artifactId>
+      <version>4.0.9</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -129,12 +135,6 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>net.essentialsx</groupId>
-      <artifactId>EssentialsX</artifactId>
-      <version>2.21.0-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>com.github.ElgarL</groupId>
       <artifactId>groupmanager</artifactId>
       <version>3.2</version>
@@ -144,12 +144,6 @@
       <groupId>com.comphenix.protocol</groupId>
       <artifactId>ProtocolLib</artifactId>
       <version>5.3.0</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.MilkBowl</groupId>
-      <artifactId>VaultAPI</artifactId>
-      <version>1.7.1</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

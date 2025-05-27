@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Random;
 
 import static java.lang.Integer.parseInt;
-
+@Deprecated
 public class EnchantMethods implements CommandExecutor {
 
 
@@ -244,7 +244,6 @@ public class EnchantMethods implements CommandExecutor {
         int amountblocks = 0;
 
         Mine m = MineSystem.getInstance().getMineByPlayer(p);
-        amountblocks = m.getTotalBlocks() - m.getBlocksMined();
 
         m.reset();
 
@@ -584,19 +583,6 @@ public class EnchantMethods implements CommandExecutor {
             if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Junkpile-Messages") == true) {
                 p.sendMessage(c("&f&lJunkpile &8| &b+$0.05 Coupon"));
             }
-        } else if (rr >= 77) {
-            int rint = r.nextInt(4);
-            if (rint == 0) {
-                p.getInventory().addItem(TrinketHandler.getInstance().commonShard());
-            } else if (rint == 1) {
-                p.getInventory().addItem(TrinketHandler.getInstance().rareShard());
-            } else if (rint == 2) {
-                p.getInventory().addItem(TrinketHandler.getInstance().epicShard());
-            } else if (rint == 3) {
-                p.getInventory().addItem(TrinketHandler.getInstance().legShard());
-            } else if (rint == 4) {
-                p.getInventory().addItem(TrinketHandler.getInstance().herShard());
-            }
         }
     }
 
@@ -698,7 +684,6 @@ public class EnchantMethods implements CommandExecutor {
         int gems = r.nextInt(max - min) + min;
         if (this.settings.getOptions().getBoolean(p.getUniqueId() + ".Treasury-Messages"))
             p.sendMessage(c("&f&lTreasury &8| &a+" + gems + " Gems"));
-        MinePouchHandler.addGems(p, gems);
     }
 
     public static HashMap<Player, Double> battlecry = new HashMap<>();

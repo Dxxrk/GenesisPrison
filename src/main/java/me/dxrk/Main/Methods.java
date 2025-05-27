@@ -62,6 +62,9 @@ public class Methods {
     }
 
 
+    public TextColor toColor(int color) {
+        return TextColor.color(color);
+    }
 
     //Use with specific HEX codes needed.
     public TextComponent colorText(String s, TextColor color, TextDecoration style, boolean on) { //for use with net.kyori.adventure.text.format.TextColor.color /// USAGE: color(0x<HEX CODE>)

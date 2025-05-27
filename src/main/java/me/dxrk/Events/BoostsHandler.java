@@ -21,7 +21,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-
+@Deprecated
 public class BoostsHandler implements Listener, CommandExecutor {
     Methods m = Methods.getInstance();
 

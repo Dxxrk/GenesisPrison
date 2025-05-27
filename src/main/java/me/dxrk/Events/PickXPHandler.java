@@ -17,7 +17,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.List;
 import java.util.Random;
-
+@Deprecated
 public class PickXPHandler
         implements Listener {
 

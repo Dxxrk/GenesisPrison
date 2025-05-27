@@ -276,7 +276,6 @@ public class CMDGang implements Listener, CommandExecutor {
                     for (Player p : Bukkit.getOnlinePlayers()) {
                         if (g.getGang(p).equals(gang) && !ScoreboardHandler.isAFK(p)) {
                             p.sendMessage(m.c("&f&lGangs &8| &bFrom Harmony: &e⛀" + toPlayert + " &a$" + toPlayerm));
-                            Main.econ.depositPlayer(p, toPlayerm);
                             Tokens.getInstance().addTokens(p, toPlayert);
                         }
                     }

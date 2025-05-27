@@ -3,7 +3,6 @@ package me.dxrk.Vote;
 
 import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.model.VotifierEvent;
-import me.dxrk.Events.LocksmithHandler;
 import me.dxrk.Events.PlayerDataHandler;
 import me.dxrk.Events.ScoreboardHandler;
 import me.dxrk.Events.SellHandler;
@@ -27,7 +26,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.time.LocalDate;
 import java.util.*;
-
+@Deprecated
 public class CMDVote implements Listener, CommandExecutor {
 
     Methods m = Methods.getInstance();
@@ -159,7 +158,7 @@ public class CMDVote implements Listener, CommandExecutor {
                 settings.getVote().set(p.getUniqueId() + ".VotePoints", votePoints - 1);
                 settings.saveVote();
                 i.setItem(35, VotePointsPaper(p));
-                LocksmithHandler.getInstance().addKey(p, "Rank", 2);
+
                 settings.saveLocksmith();
             } else if (e.getRawSlot() == crateposition) {
                 ItemStack crate = new ItemStack(Material.ENDER_CHEST, 1);
@@ -192,7 +191,6 @@ public class CMDVote implements Listener, CommandExecutor {
                     settings.getVote().set(p.getUniqueId() + ".VotePoints", votePoints - 1);
                     settings.saveVote();
                     i.setItem(35, VotePointsPaper(p));
-                    LocksmithHandler.getInstance().addKey(p, "Beta", 10);
                     settings.saveLocksmith();
                 } else if (reward == 1) {
                     ItemStack omegakey = new ItemStack(Material.TRIPWIRE_HOOK, 1);
@@ -203,7 +201,6 @@ public class CMDVote implements Listener, CommandExecutor {
                     settings.getVote().set(p.getUniqueId() + ".VotePoints", votePoints - 1);
                     settings.saveVote();
                     i.setItem(35, VotePointsPaper(p));
-                    LocksmithHandler.getInstance().addKey(p, "Omega", 10);
                     settings.saveLocksmith();
                 } else {
                     ItemStack multi = new ItemStack(Material.EMERALD, 1);
@@ -252,7 +249,7 @@ public class CMDVote implements Listener, CommandExecutor {
                 base = 1.0E12D;
             if (i.getItemMeta().getDisplayName().contains(ChatColor.stripColor("750 Trillion")))
                 base = 750.0E12D;
-            Main.econ.depositPlayer(p, base);
+
         } else if (i.getType().equals(Material.PRISMARINE_CRYSTALS)) {
             String base = getInt(i.getItemMeta().getDisplayName());
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "tokens add " + p.getName() + " " + base);
@@ -503,11 +500,6 @@ public class CMDVote implements Listener, CommandExecutor {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "activeboost Sell VoteParty 3.0 900");
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (ScoreboardHandler.isAFK(p)) continue;
-            LocksmithHandler.getInstance().addKey(p, "alpha", 1);
-            LocksmithHandler.getInstance().addKey(p, "beta", 1);
-            LocksmithHandler.getInstance().addKey(p, "omega", 1);
-            LocksmithHandler.getInstance().addKey(p, "seasonal", 1);
-            LocksmithHandler.getInstance().addKey(p, "community", 1);
             p.sendMessage(m.c("&f&lVoteParty &8| &b+1 Alpha Key"));
             p.sendMessage(m.c("&f&lVoteParty &8| &b+1 Beta Key"));
             p.sendMessage(m.c("&f&lVoteParty &8| &b+1 Omega Key"));

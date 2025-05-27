@@ -1,6 +1,5 @@
 package me.dxrk.Events;
 
-import com.earth2me.essentials.Essentials;
 import me.dxrk.Main.Main;
 import me.dxrk.Main.Methods;
 import me.dxrk.Main.SettingsManager;
@@ -33,7 +32,6 @@ public class Leaderboards implements Listener, CommandExecutor {
     Methods m = Methods.getInstance();
 
 
-    static Essentials ess = (Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
 
     public ItemStack Head(OfflinePlayer p) {
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
@@ -312,7 +310,6 @@ public class Leaderboards implements Listener, CommandExecutor {
             if (p.getName().equals("32j")) continue;
             if (p.getName().equals("Drinkk")) continue;
             if (!p.isOnline()) continue;
-            if (ess.getUser(p) != null && ess.getUser(p).isAfk()) continue;
 
             int time = PlayerDataHandler.getInstance().getPlayerData(p).getInt("TimePlayed");
             PlayerDataHandler.getInstance().getPlayerData(p).set("TimePlayed", time + 1);

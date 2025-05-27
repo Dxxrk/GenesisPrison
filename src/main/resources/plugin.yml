@@ -2,10 +2,19 @@ name: GenesisPrison
 main: me.dxrk.Main.Main
 version: 2.0.1
 description: Genesis Prison Core
-api-version: '1.20'
+api-version: '1.21'
 depend: [ProtocolLib]
 load: POSTWORLD
 commands:
+  saferestart:
+  ptime:
+  gmc:
+  gms:
+  gma:
+  gmsp:
+  warp:
+  spawn:
+  fly:
   listversions:
   giveflare:
   spawncrate:

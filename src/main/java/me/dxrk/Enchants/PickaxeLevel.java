@@ -2,7 +2,6 @@ package me.dxrk.Enchants;
 
 import me.dxrk.Events.PickXPHandler;
 import me.dxrk.Events.PlayerDataHandler;
-import me.dxrk.Events.TrinketHandler;
 import me.dxrk.Main.SettingsManager;
 import me.dxrk.Tokens.Tokens;
 import org.bukkit.*;
@@ -32,7 +31,7 @@ import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
-
+@Deprecated
 public class PickaxeLevel implements Listener, CommandExecutor {
 
     static String c(String s) {
@@ -52,7 +51,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
         ItemMeta am = a.getItemMeta();
         List<String> lore = new ArrayList<>();
         am.setDisplayName("s");
-        am.addEnchant(Enchantment.EFFICIENCY, 32000, true);
+        am.addEnchant(Enchantment.EFFICIENCY, 65026, true);
         am.addEnchant(Enchantment.UNBREAKING, 32000, true);
         am.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         lore.add(c("&b&m-<>-&aEnchants&b&m-<>- "));
@@ -108,8 +107,7 @@ public class PickaxeLevel implements Listener, CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
+        if (sender instanceof Player p) {
 
 
             if ("pick".equalsIgnoreCase(label)) {
@@ -129,13 +127,15 @@ public class PickaxeLevel implements Listener, CommandExecutor {
 
         }
 
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
+        if (sender instanceof Player p) {
             if ("pickaxe".equalsIgnoreCase(label)) {
                 if (!p.hasPermission("rank.owner")) {
                     return false;
                 }
-                p.getInventory().addItem(pickaxe());
+                Tool pTool = ToolHandler.getInstance().createTool(Tool.defaultMiningPickaxe, p.getUniqueId().toString());
+
+                ItemStack pToolItem = ToolHandler.getInstance().createToolItem(pTool);
+                p.getInventory().addItem(pToolItem);
                 p.updateInventory();
             }
         }
@@ -1154,7 +1154,6 @@ public class PickaxeLevel implements Listener, CommandExecutor {
                 return;
             }
             if (e.getSlot() == 52) {
-                TrinketHandler.getInstance().openTrinkets(p);
                 return;
             }
             if (e.getSlot() == 48) {
