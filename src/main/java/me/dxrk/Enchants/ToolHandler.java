@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import me.dxrk.Enchants.Tool.ToolType;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
@@ -37,7 +38,7 @@ import java.util.*;
 
 public class ToolHandler implements Listener {
 
-    public static ToolHandler instance = new ToolHandler();
+    static ToolHandler instance = new ToolHandler();
 
     public static ToolHandler getInstance() {
         return instance;
@@ -73,6 +74,18 @@ public class ToolHandler implements Listener {
                 p.getInventory().setItem(i, createToolItem(tool));
             }
         }
+    }
+    public Tool toolFromItemStack(ItemStack item) {
+        NamespacedKey key = new NamespacedKey(Main.plugin, "tool-id");
+        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+        String id = null;
+        if(container.has(key, PersistentDataType.STRING)) {
+            id = container.get(key, PersistentDataType.STRING);
+        }
+        String[] split = id.split("\\.");
+        String name = split[0];
+        String uuid = split[1];
+        return ToolHandler.getInstance().load(name, uuid);
     }
 
 
@@ -152,6 +165,17 @@ public class ToolHandler implements Listener {
         return roman;
     }
 
+    public int getMaxXP(int level) {
+        if(level == 1) {
+            return 1000;
+        }
+        return (int) (1000*(Math.pow(level, 1.38)));
+    }
+
+    public void updateItem(Player p, ItemStack item) {
+
+    }
+
     public ItemStack createToolItem(Tool tool) {
         ItemStack item = new ItemStack(convertToolTypetoMaterial(tool.getType()));
         ItemMeta im = item.getItemMeta();
@@ -168,7 +192,7 @@ public class ToolHandler implements Listener {
         lore.add(Component.text(" ⎜ EXP: ").color(TextColor.color(0x8a7f80)).decoration(TextDecoration.ITALIC, false)
                 .append(Component.text(Math.round(tool.getXP())).color(TextColor.color(0x1bd51b)).decoration(TextDecoration.ITALIC, false))
                 .append(Component.text(" / ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false))
-                .append(Component.text("maxNumber").color(TextColor.color(0xdc143c)).decoration(TextDecoration.ITALIC, false)));
+                .append(Component.text(getMaxXP(tool.getLevel())).color(TextColor.color(0xdc143c)).decoration(TextDecoration.ITALIC, false)));
         lore.add(Component.text(" "));
         lore.add(Component.text("Enchants:").color(TextColor.color(0xfffdd0)).decoration(TextDecoration.BOLD, true).decoration(TextDecoration.ITALIC, false));
         for(Enchant e : tool.getEnchants()) {

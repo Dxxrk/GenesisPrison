@@ -11,6 +11,9 @@ import com.comphenix.protocol.wrappers.WrappedAttribute;
 import com.comphenix.protocol.wrappers.WrappedLevelChunkData;
 import com.destroystokyo.paper.antixray.ChunkPacketInfo;
 import me.dxrk.Enchants.EnchantsNEW;
+import me.dxrk.Enchants.Tool;
+import me.dxrk.Enchants.ToolHandler;
+import me.dxrk.Events.PickaxeEvents;
 import me.dxrk.Main.Main;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
@@ -168,11 +171,13 @@ public class PacketInterceptor {
                 if(p.getEquipment().getItemInMainHand().getType() == Material.AIR) return;
                 BlockPosition pos = packet.getBlockPositionModifier().read(0);
                 Location loc = pos.toLocation(p.getWorld());
+                Tool tool = ToolHandler.getInstance().toolFromItemStack(p.getEquipment().getItemInMainHand());
                 if(!MineHandler.getInstance().hasMine(p)) return;
                 Mine m = MineSystem.getInstance().getMineByPlayer(p);
                 if (loc != null && m.isLocationInMine(loc)) {
                     event.setCancelled(true);
                     m.mineBlock();
+                    PickaxeEvents.getInstance().addXP(tool, p);
                     breakPacket(p, loc);
                     if (m.getBlocksLeftPercentage() > m.getResetPercent()) {
                         m.reset();

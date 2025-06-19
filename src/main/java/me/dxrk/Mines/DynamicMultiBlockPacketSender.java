@@ -38,6 +38,10 @@ public class DynamicMultiBlockPacketSender {
     private final Plugin plugin;
     private static final boolean DEBUG = false;
 
+    public void thisisNew() {
+
+    }
+
     public DynamicMultiBlockPacketSender(Plugin plugin) {
         this.plugin = plugin;
     }

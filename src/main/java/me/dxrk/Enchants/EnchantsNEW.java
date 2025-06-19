@@ -29,18 +29,7 @@ public class EnchantsNEW {
 
     private Map<Player, Integer> KeyFinder = new HashMap<>();
 
-    public Tool toolFromItemStack(ItemStack item) {
-        NamespacedKey key = new NamespacedKey(Main.plugin, "tool-id");
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-        String id = null;
-        if(container.has(key, PersistentDataType.STRING)) {
-            id = container.get(key, PersistentDataType.STRING);
-        }
-        String[] split = id.split("\\.");
-        String name = split[0];
-        String uuid = split[1];
-        return ToolHandler.getInstance().load(name, uuid);
-    }
+    private ToolHandler t = ToolHandler.getInstance();
 
     public static boolean hasEnchant(Tool tool, Enchant enchant) {
         return tool.getEnchants().contains(enchant);
@@ -60,7 +49,7 @@ public class EnchantsNEW {
     }
 
     public void keyFinder(Player p, ItemStack hand) {
-        Tool tool = toolFromItemStack(hand);
+        Tool tool = t.toolFromItemStack(hand);
         if(!tool.hasEnchant(Enchant.KEY_FINDER)) return;
         int level = tool.getEnchantLevel(Enchant.KEY_FINDER);
         if(!KeyFinder.containsKey(p)) {
@@ -110,7 +99,7 @@ public class EnchantsNEW {
     }
 
     public void Jackhammer(Player p, Mine m, Location loc, ItemStack hand) {
-        Tool tool = toolFromItemStack(hand);
+        Tool tool = t.toolFromItemStack(hand);
         if(!tool.hasEnchant(Enchant.JACKHAMMER)) return;
         int level = tool.getEnchantLevel(Enchant.JACKHAMMER);
         DynamicMultiBlockPacketSender jackhammer = new DynamicMultiBlockPacketSender(Main.plugin);

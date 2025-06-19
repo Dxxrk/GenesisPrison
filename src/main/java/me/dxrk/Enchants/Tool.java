@@ -101,9 +101,15 @@ public class Tool {
 
         this.enchants.put(enchant, level);
     }
+    public void resetXP() {
+        this.xp = 0;
+    }
 
     public void addXP(int xp) {
         this.xp += xp;
+    }
+    public void levelUp() {
+        ++this.level;
     }
 
     private void createFolder() {
